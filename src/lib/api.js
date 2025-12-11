@@ -8,7 +8,7 @@ import { supabase } from './supabase';
 
 // Create axios instance
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:3001/api',
+  baseURL: import.meta.env.VITE_API_URL || 'https://workflow-backend-f5p2.onrender.com/api',
   timeout: 30000,
   headers: {
     'Content-Type': 'application/json',
@@ -169,7 +169,7 @@ export const apiService = {
   chat: {
     stream: (message, conversationHistory = []) => {
       // Note: Streaming uses fetch, not axios
-      return fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/api/chat/stream`, {
+      return fetch(`${import.meta.env.VITE_API_URL || 'https://workflow-backend-f5p2.onrender.com'}/api/chat/stream`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -35,7 +35,13 @@ export const aiService = {
     } catch (error) {
       // Better error handling for connection issues
       if (!error.response) {
-        throw new Error('Cannot connect to backend server. Please make sure the backend is running on http://localhost:3001');
+        // Check if we're in production (basic check)
+        const isProd = window.location.hostname !== 'localhost';
+        const errorMsg = isProd
+          ? 'Cannot connect to backend server. Please check your network connection.'
+          : 'Cannot connect to backend server. Please make sure the backend is running on http://localhost:3001';
+
+        throw new Error(errorMsg);
       }
 
       // Handle 400 Bad Request errors with more detail
@@ -75,7 +81,11 @@ export const aiService = {
     } catch (error) {
       // Better error handling for connection issues
       if (!error.response) {
-        throw new Error('Cannot connect to backend server. Please make sure the backend is running on http://localhost:3001');
+        const isProd = window.location.hostname !== 'localhost';
+        const errorMsg = isProd
+          ? 'Cannot connect to backend server. Please check your network connection.'
+          : 'Cannot connect to backend server. Please make sure the backend is running on http://localhost:3001';
+        throw new Error(errorMsg);
       }
       // Handle 429 rate limit errors gracefully
       if (error.response?.status === 429) {
@@ -241,7 +251,11 @@ export const aiService = {
       return responseData?.text || responseData?.content || responseData || '';
     } catch (error) {
       if (!error.response) {
-        throw new Error('Cannot connect to backend server. Please make sure the backend is running on http://localhost:3001');
+        const isProd = window.location.hostname !== 'localhost';
+        const errorMsg = isProd
+          ? 'Cannot connect to backend server. Please check your network connection.'
+          : 'Cannot connect to backend server. Please make sure the backend is running on http://localhost:3001';
+        throw new Error(errorMsg);
       }
 
       if (error.response?.status === 404) {
