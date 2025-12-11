@@ -5,7 +5,9 @@
 
 import express from 'express';
 import multer from 'multer';
-import pdfParse from 'pdf-parse';
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+const pdfParse = require('pdf-parse');
 import aiProviderService from '../services/aiProviderService.js';
 import { searchService } from '../services/searchService.js';
 import { authenticate } from '../middleware/auth.js';
