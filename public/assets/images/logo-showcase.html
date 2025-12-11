@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workflow AI Logo Showcase</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 40px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            font-size: 48px;
+            font-weight: 800;
+            color: #0046FF;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        .subtitle {
+            text-align: center;
+            color: #64748B;
+            font-size: 18px;
+            margin-bottom: 60px;
+        }
+        .section {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .section-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #0F172A;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #E2E8F0;
+        }
+        .logo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        .logo-item {
+            text-align: center;
+            padding: 30px;
+            background: #F8FAFC;
+            border-radius: 12px;
+            border: 2px solid #E2E8F0;
+            transition: all 0.3s ease;
+        }
+        .logo-item:hover {
+            border-color: #0046FF;
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px rgba(0, 70, 255, 0.1);
+        }
+        .logo-item img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 15px;
+        }
+        .logo-label {
+            font-weight: 600;
+            color: #475569;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+        .dark-bg {
+            background: #0A0E27;
+            padding: 40px;
+            border-radius: 12px;
+            margin-top: 20px;
+        }
+        .dark-bg .logo-item {
+            background: #13182E;
+            border-color: #1E2640;
+        }
+        .color-palette {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+        .color-box {
+            flex: 1;
+            min-width: 150px;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            color: white;
+            font-weight: 600;
+        }
+        .color-primary {
+            background: #0046FF;
+        }
+        .color-purple {
+            background: #7C3AED;
+        }
+        .color-gradient {
+            background: linear-gradient(135deg, #0046FF 0%, #7C3AED 100%);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Workflow AI</h1>
+        <p class="subtitle">Logo Design Showcase</p>
+
+        <div class="section">
+            <h2 class="section-title">Full Logos (Light Mode)</h2>
+            <div class="logo-grid">
+                <div class="logo-item">
+                    <img src="logo.svg" alt="Workflow AI Logo">
+                    <div class="logo-label">Standard Logo</div>
+                </div>
+                <div class="logo-item">
+                    <img src="logo-horizontal.svg" alt="Workflow AI Horizontal">
+                    <div class="logo-label">Horizontal Layout</div>
+                </div>
+                <div class="logo-item">
+                    <img src="logo-premium.svg" alt="Workflow AI Premium">
+                    <div class="logo-label">Premium Version</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Icon Only</h2>
+            <div class="logo-grid">
+                <div class="logo-item">
+                    <img src="logo-icon.svg" alt="Workflow AI Icon" style="max-width: 200px;">
+                    <div class="logo-label">Icon (Light Mode)</div>
+                </div>
+                <div class="logo-item dark-bg">
+                    <img src="logo-icon-dark.svg" alt="Workflow AI Icon Dark" style="max-width: 200px;">
+                    <div class="logo-label" style="color: #E8EAED;">Icon (Dark Mode)</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Dark Mode Variants</h2>
+            <div class="dark-bg">
+                <div class="logo-grid">
+                    <div class="logo-item">
+                        <img src="logo-dark.svg" alt="Workflow AI Dark">
+                        <div class="logo-label" style="color: #E8EAED;">Full Logo (Dark)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Brand Colors</h2>
+            <div class="color-palette">
+                <div class="color-box color-primary">
+                    <div style="font-size: 18px; margin-bottom: 5px;">Primary Blue</div>
+                    <div style="font-size: 14px; opacity: 0.9;">#0046FF</div>
+                </div>
+                <div class="color-box color-purple">
+                    <div style="font-size: 18px; margin-bottom: 5px;">Purple</div>
+                    <div style="font-size: 14px; opacity: 0.9;">#7C3AED</div>
+                </div>
+                <div class="color-box color-gradient">
+                    <div style="font-size: 18px; margin-bottom: 5px;">Gradient</div>
+                    <div style="font-size: 14px; opacity: 0.9;">Blue → Purple</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Design Elements</h2>
+            <div style="line-height: 1.8; color: #475569;">
+                <p><strong>Briefcase Icon:</strong> Represents career and professional opportunities</p>
+                <p><strong>AI Sparkles:</strong> Symbolizes artificial intelligence and smart matching</p>
+                <p><strong>Upward Arrow:</strong> Represents growth, progress, and career advancement</p>
+                <p><strong>Connection Lines:</strong> Represents networking and the talent marketplace</p>
+                <p><strong>Gradient Colors:</strong> Blue to Purple representing innovation and technology</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+

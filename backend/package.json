@@ -1,0 +1,48 @@
+{
+  "name": "workflows-backend",
+  "version": "1.0.0",
+  "description": "Backend API for Workflows job board with Supabase, Stripe, and Resend",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "verify": "node verify-setup.js",
+    "migrate": "node scripts/migrate.js",
+    "seed": "node scripts/seed.js"
+  },
+  "keywords": [
+    "supabase",
+    "stripe",
+    "resend",
+    "api"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.20.0",
+    "@google/generative-ai": "^0.2.1",
+    "@supabase/supabase-js": "^2.38.5",
+    "axios": "^1.13.2",
+    "bcryptjs": "^2.4.3",
+    "cohere-ai": "^7.7.0",
+    "compromise": "^14.10.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "express-rate-limit": "^7.1.5",
+    "helmet": "^7.1.0",
+    "joi": "^17.11.0",
+    "jsonwebtoken": "^9.0.2",
+    "natural": "^6.10.3",
+    "node-cron": "^3.0.3",
+    "openai": "^4.20.1",
+    "resend": "^2.1.0",
+    "stripe": "^14.7.0",
+    "winston": "^3.11.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.5",
+    "nodemon": "^3.0.2"
+  }
+}

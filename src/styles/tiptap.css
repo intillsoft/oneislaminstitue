@@ -1,0 +1,87 @@
+/* TipTap Editor Styles */
+
+.tiptap-editor {
+  @apply min-h-[200px] focus:outline-none;
+}
+
+.tiptap-editor .ProseMirror {
+  @apply outline-none;
+}
+
+.tiptap-editor .ProseMirror p {
+  @apply mb-4 last:mb-0;
+}
+
+.tiptap-editor .ProseMirror h1,
+.tiptap-editor .ProseMirror h2,
+.tiptap-editor .ProseMirror h3 {
+  @apply font-bold mb-2 mt-4 first:mt-0;
+}
+
+.tiptap-editor .ProseMirror h1 {
+  @apply text-2xl;
+}
+
+.tiptap-editor .ProseMirror h2 {
+  @apply text-xl;
+}
+
+.tiptap-editor .ProseMirror h3 {
+  @apply text-lg;
+}
+
+.tiptap-editor .ProseMirror ul,
+.tiptap-editor .ProseMirror ol {
+  @apply my-4 pl-6;
+}
+
+.tiptap-editor .ProseMirror ul {
+  @apply list-disc;
+}
+
+.tiptap-editor .ProseMirror ol {
+  @apply list-decimal;
+}
+
+.tiptap-editor .ProseMirror li {
+  @apply mb-2;
+}
+
+.tiptap-editor .ProseMirror a {
+  @apply text-workflow-primary underline hover:text-workflow-primary-600;
+}
+
+.tiptap-editor .ProseMirror strong {
+  @apply font-bold;
+}
+
+.tiptap-editor .ProseMirror em {
+  @apply italic;
+}
+
+.tiptap-editor .ProseMirror code {
+  @apply bg-[#F8FAFC] dark:bg-[#1A2139] px-2 py-1 rounded text-sm font-mono;
+}
+
+.tiptap-editor .ProseMirror blockquote {
+  @apply border-l-4 border-workflow-primary pl-4 italic my-4;
+}
+
+.tiptap-editor .ProseMirror hr {
+  @apply border-t border-[#E2E8F0] dark:border-[#1E2640] my-6;
+}
+
+.tiptap-editor .ProseMirror p.is-editor-empty:first-child::before {
+  @apply text-[#64748B] dark:text-[#8B92A3] float-left h-0 pointer-events-none;
+  content: attr(data-placeholder);
+}
+
+.tiptap-editor .ProseMirror:focus {
+  @apply outline-none;
+}
+
+/* Selection */
+.tiptap-editor .ProseMirror ::selection {
+  @apply bg-workflow-primary-100 dark:bg-workflow-primary-900/30;
+}
+

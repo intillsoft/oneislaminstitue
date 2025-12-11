@@ -1,0 +1,40 @@
+{
+  "name": "job-scrapers",
+  "version": "1.0.0",
+  "description": "Web scrapers for Indeed, LinkedIn, and Glassdoor",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "scrape:indeed": "node scrapers/indeed-scraper.js",
+    "scrape:linkedin": "node scrapers/linkedin-scraper.js",
+    "scrape:glassdoor": "node scrapers/glassdoor-scraper.js",
+    "setup:db": "node scripts/setup-database.js",
+    "test": "node --test"
+  },
+  "keywords": [
+    "scraper",
+    "jobs",
+    "indeed",
+    "linkedin",
+    "glassdoor"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "puppeteer": "^21.5.2",
+    "puppeteer-extra": "^3.3.6",
+    "puppeteer-extra-plugin-stealth": "^2.11.2",
+    "pg": "^8.11.3",
+    "dotenv": "^16.3.1",
+    "axios": "^1.6.2",
+    "node-cron": "^3.0.3",
+    "user-agents": "^1.0.1291",
+    "cheerio": "^1.0.0-rc.12",
+    "winston": "^3.11.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.5"
+  }
+}
+

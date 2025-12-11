@@ -1,0 +1,58 @@
+<svg width="200" height="60" viewBox="0 0 200 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="darkGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#6693FF;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#A78BFA;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="darkGradientLight" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#99B7FF;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#C4B5FD;stop-opacity:1" />
+    </linearGradient>
+    <filter id="darkGlow">
+      <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Icon -->
+  <g transform="translate(0, 5)">
+    <!-- Main Briefcase Shape -->
+    <path d="M8 12C8 10.3431 9.34315 9 11 9H19C20.6569 9 22 10.3431 22 12V20C22 21.6569 20.6569 23 19 23H11C9.34315 23 8 21.6569 8 20V12Z" fill="url(#darkGradient)" filter="url(#darkGlow)"/>
+    
+    <!-- Briefcase Handle -->
+    <path d="M12 9V7C12 5.34315 13.3431 4 15 4H15.5C17.1569 4 18.5 5.34315 18.5 7V9" stroke="url(#darkGradient)" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+    
+    <!-- AI Sparkle Elements -->
+    <circle cx="12" cy="16" r="1.5" fill="#FFFFFF" opacity="0.95"/>
+    <circle cx="18" cy="16" r="1.5" fill="#FFFFFF" opacity="0.95"/>
+    <circle cx="15" cy="19" r="1" fill="#FFFFFF" opacity="0.85"/>
+    
+    <!-- Connection Lines -->
+    <path d="M15 12L15 8" stroke="url(#darkGradientLight)" stroke-width="1" stroke-linecap="round" opacity="0.7"/>
+    <path d="M11 16L8 16" stroke="url(#darkGradientLight)" stroke-width="1" stroke-linecap="round" opacity="0.5"/>
+    <path d="M19 16L22 16" stroke="url(#darkGradientLight)" stroke-width="1" stroke-linecap="round" opacity="0.5"/>
+    
+    <!-- Upward Arrow -->
+    <path d="M15 20L15 24M15 24L12.5 21.5M15 24L17.5 21.5" stroke="url(#darkGradient)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  
+  <!-- Text -->
+  <text x="35" y="38" font-family="Inter, -apple-system, BlinkMacSystemFont, sans-serif" font-size="24" font-weight="700" fill="#E8EAED" letter-spacing="-0.5">
+    Workflow
+  </text>
+  <text x="35" y="50" font-family="Inter, -apple-system, BlinkMacSystemFont, sans-serif" font-size="10" font-weight="500" fill="#A78BFA" letter-spacing="1" opacity="0.9">
+    AI
+  </text>
+</svg>
+
+
+
+
+
+
+
+
+

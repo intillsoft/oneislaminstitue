@@ -1,0 +1,223 @@
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { DollarSign, TrendingUp, MapPin, Briefcase, Award, Loader2 } from 'lucide-react';
+import { aiService } from '../../services/aiService';
+import { useToast } from '../../components/ui/Toast';
+
+const SalaryIntelligence = () => {
+    const [formData, setFormData] = useState({
+        jobTitle: '',
+        location: '',
+        experienceLevel: 'Mid-Level',
+        industry: 'Technology',
+        skills: '' // comma separated in UI, array in API
+    });
+    const [prediction, setPrediction] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
+    const { error: showError } = useToast();
+
+    const handlePredict = async () => {
+        if (!formData.jobTitle || !formData.location) {
+            showError('Please fill in Job Title and Location');
+            return;
+        }
+
+        setIsLoading(true);
+        setPrediction(null);
+
+        try {
+            // API expects snake_case most likely, but aiService wrapper handles it?
+            // Checking aiService.js: it expects params (job_title, location, experience, industry, skills) in `predictSalary` args
+            // and converts them to snake_case payload.
+            // Wait, aiService.js: predictSalary(jobTitle, location, experienceLevel, skills = [])
+
+            const skillsArray = formData.skills.split(',').map(s => s.trim()).filter(Boolean);
+
+            const result = await aiService.predictSalary(
+                formData.jobTitle,
+                formData.location,
+                formData.experienceLevel,
+                formData.industry,
+                skillsArray
+            );
+
+            setPrediction(result);
+        } catch (err) {
+            console.error('Salary prediction error:', err);
+            showError('Failed to predict salary. Please try again.');
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    return (
+        <div className="max-w-7xl mx-auto p-8 space-y-8">
+            {/* Header */}
+            <div className="text-center space-y-6">
+                <div className="inline-block p-4 rounded-full bg-blue-100 dark:bg-blue-900/30">
+                    <DollarSign className="w-12 h-12 text-blue-600 dark:text-blue-400" />
+                </div>
+                <h1 className="text-4xl font-extrabold text-gray-900 dark:text-white">
+                    Salary <span className="text-blue-600 dark:text-blue-400">Intelligence</span>
+                </h1>
+                <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+                    Get AI-powered salary predictions for your role and experience.
+                </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+                {/* Form Side */}
+                <div className="md:col-span-1">
+                    <motion.div
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        className="bg-white dark:bg-[#13182E] rounded-2xl shadow-xl p-6 border border-gray-100 dark:border-[#1E2640] space-y-6"
+                    >
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                <Briefcase className="w-4 h-4 inline mr-2" />
+                                Job Title
+                            </label>
+                            <input
+                                type="text"
+                                value={formData.jobTitle}
+                                onChange={(e) => setFormData({ ...formData, jobTitle: e.target.value })}
+                                placeholder="e.g. Senior Product Designer"
+                                className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-[#1E2640] bg-gray-50 dark:bg-[#0A0E27] text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                            />
+                        </div>
+
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                <MapPin className="w-4 h-4 inline mr-2" />
+                                Location
+                            </label>
+                            <input
+                                type="text"
+                                value={formData.location}
+                                onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+                                placeholder="e.g. San Francisco, CA"
+                                className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-[#1E2640] bg-gray-50 dark:bg-[#0A0E27] text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                            />
+                        </div>
+
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                <Award className="w-4 h-4 inline mr-2" />
+                                Experience Level
+                            </label>
+                            <select
+                                value={formData.experienceLevel}
+                                onChange={(e) => setFormData({ ...formData, experienceLevel: e.target.value })}
+                                className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-[#1E2640] bg-gray-50 dark:bg-[#0A0E27] text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                            >
+                                <option>Entry Level</option>
+                                <option>Mid-Level</option>
+                                <option>Senior</option>
+                                <option>Lead/Manager</option>
+                                <option>Executive</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                Skills (Optional)
+                            </label>
+                            <input
+                                type="text"
+                                value={formData.skills}
+                                onChange={(e) => setFormData({ ...formData, skills: e.target.value })}
+                                placeholder="React, Node.js, FEMA..."
+                                className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-[#1E2640] bg-gray-50 dark:bg-[#0A0E27] text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                            />
+                            <p className="text-xs text-gray-500 mt-1">Comma separated</p>
+                        </div>
+
+                        <button
+                            onClick={handlePredict}
+                            disabled={isLoading}
+                            className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold hover:shadow-lg transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+                        >
+                            {isLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : "Predict Salary"}
+                        </button>
+                    </motion.div>
+                </div>
+
+                {/* Result Side */}
+                <div className="md:col-span-2">
+                    <AnimatePresence mode="wait">
+                        {prediction ? (
+                            <motion.div
+                                key="result"
+                                initial={{ opacity: 0, scale: 0.9 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                className="bg-white dark:bg-[#13182E] rounded-2xl shadow-xl p-8 border border-gray-100 dark:border-[#1E2640] h-full flex flex-col justify-center items-center text-center space-y-6"
+                            >
+                                <h3 className="text-lg font-medium text-gray-500 dark:text-gray-400">
+                                    Estimated Salary Range for
+                                    <br />
+                                    <span className="text-gray-900 dark:text-white font-bold text-xl">
+                                        {formData.jobTitle}
+                                    </span>
+                                </h3>
+
+                                <div className="py-8">
+                                    <span className="text-5xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-teal-500">
+                                        {prediction.estimated_salary || prediction.salary_range || "$0 - $0"}
+                                    </span>
+                                </div>
+
+                                <div className="grid grid-cols-2 gap-4 w-full max-w-sm">
+                                    <div className="p-4 bg-gray-50 dark:bg-[#0A0E27] rounded-xl">
+                                        <p className="text-xs text-gray-500 uppercase tracking-wide">Min</p>
+                                        <p className="font-bold text-gray-900 dark:text-white">{prediction.min_salary || "N/A"}</p>
+                                    </div>
+                                    <div className="p-4 bg-gray-50 dark:bg-[#0A0E27] rounded-xl">
+                                        <p className="text-xs text-gray-500 uppercase tracking-wide">Max</p>
+                                        <p className="font-bold text-gray-900 dark:text-white">{prediction.max_salary || "N/A"}</p>
+                                    </div>
+                                </div>
+
+                                {prediction.confidence && (
+                                    <div className="text-sm text-gray-500 flex items-center gap-2">
+                                        <div className={`w-2 h-2 rounded-full ${prediction.confidence > 0.7 ? 'bg-green-500' : 'bg-yellow-500'}`} />
+                                        AI Confidence: {Math.round(prediction.confidence * 100)}%
+                                    </div>
+                                )}
+
+                                {prediction.market_demand && (
+                                    <div className="pt-4 border-t border-gray-100 dark:border-[#1E2640] w-full">
+                                        <h4 className="font-medium text-gray-900 dark:text-white mb-2 flex items-center justify-center gap-2">
+                                            <TrendingUp className="w-4 h-4" /> Market Trend
+                                        </h4>
+                                        <p className="text-gray-600 dark:text-gray-400 text-sm">
+                                            {prediction.market_demand}
+                                        </p>
+                                    </div>
+                                )}
+
+                            </motion.div>
+                        ) : (
+                            <motion.div
+                                key="empty"
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                className="h-full flex flex-col justify-center items-center text-center p-8 border-2 border-dashed border-gray-200 dark:border-gray-800 rounded-2xl"
+                            >
+                                <TrendingUp className="w-16 h-16 text-gray-200 dark:text-gray-700 mb-4" />
+                                <p className="text-gray-500 dark:text-gray-400">
+                                    Enter job details to see AI salary predictions.
+                                </p>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+                </div>
+            </div>
+
+        </div>
+    );
+};
+};
+
+export default SalaryIntelligence;

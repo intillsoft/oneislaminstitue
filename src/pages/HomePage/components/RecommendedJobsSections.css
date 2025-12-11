@@ -1,0 +1,379 @@
+/* Netflix-Style Premium Recommendation Sections */
+.recommended-jobs-container {
+  width: 100%;
+  padding: 2rem 0;
+}
+
+.recommended-jobs-section {
+  margin-bottom: 3rem;
+  position: relative;
+}
+
+.section-header-horizontal {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding: 0 1rem;
+}
+
+.section-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.view-all-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  color: var(--text-primary);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.view-all-button:hover {
+  background: var(--surface-100);
+  border-color: var(--workflow-primary);
+  color: var(--workflow-primary);
+  transform: translateX(4px);
+}
+
+/* Horizontal Carousel */
+.jobs-carousel-horizontal {
+  position: relative;
+  padding: 0 1rem;
+}
+
+.jobs-carousel-inner {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  /* Firefox */
+  -ms-overflow-style: none;
+  /* IE/Edge */
+}
+
+.jobs-carousel-inner::-webkit-scrollbar {
+  display: none;
+  /* Chrome/Safari */
+}
+
+/* Premium Job Card - Netflix Style */
+.job-card {
+  flex: 0 0 280px;
+  min-width: 280px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.98) 100%);
+  border-radius: 12px;
+  padding: 1.25rem;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.04),
+    0 1px 3px rgba(0, 0, 0, 0.02);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Dark mode card */
+.dark .job-card {
+  background: linear-gradient(135deg, rgba(19, 24, 46, 0.95) 0%, rgba(26, 33, 57, 0.98) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.3),
+    0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Premium hover effect */
+.job-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(0, 70, 255, 0.03) 0%, rgba(0, 70, 255, 0.06) 100%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+.job-card:hover::before {
+  opacity: 1;
+}
+
+.job-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow:
+    0 12px 32px rgba(0, 70, 255, 0.15),
+    0 6px 16px rgba(0, 0, 0, 0.1),
+    0 0 0 1px rgba(0, 70, 255, 0.1);
+  border-color: rgba(0, 70, 255, 0.2);
+}
+
+.dark .job-card:hover {
+  box-shadow:
+    0 16px 40px rgba(0, 70, 255, 0.25),
+    0 8px 20px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(0, 70, 255, 0.3);
+  border-color: rgba(0, 70, 255, 0.4);
+}
+
+/* Card Header */
+.job-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.job-company-logo {
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  transition: all 0.3s ease;
+}
+
+.dark .job-company-logo {
+  background: linear-gradient(135deg, #1a2139 0%, #13182e 100%);
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.job-card:hover .job-company-logo {
+  transform: scale(1.1) rotate(3deg);
+  box-shadow:
+    0 4px 12px rgba(0, 70, 255, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+.logo-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Match Badge */
+.match-badge {
+  padding: 0.375rem 0.75rem;
+  background: linear-gradient(135deg, #0046FF 0%, #0052E0 100%);
+  color: white;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  box-shadow:
+    0 2px 8px rgba(0, 70, 255, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+
+  0%,
+  100% {
+    box-shadow:
+      0 2px 8px rgba(0, 70, 255, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  }
+
+  50% {
+    box-shadow:
+      0 4px 16px rgba(0, 70, 255, 0.5),
+      inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  }
+}
+
+/* Job Title */
+.job-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 0.5rem 0;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  transition: color 0.3s ease;
+}
+
+.job-card:hover .job-title {
+  color: var(--workflow-primary);
+}
+
+/* Job Company */
+.job-company {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  margin: 0 0 1rem 0;
+  font-weight: 500;
+}
+
+/* Job Details */
+.job-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.dark .job-details {
+  border-top-color: rgba(255, 255, 255, 0.08);
+}
+
+.job-location,
+.job-salary {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.job-location svg,
+.job-salary svg {
+  color: var(--workflow-primary);
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+}
+
+.job-card:hover .job-location svg,
+.job-card:hover .job-salary svg {
+  opacity: 1;
+}
+
+/* Scroll Buttons */
+.scroll-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  width: 48px;
+  height: 48px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.1),
+    0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.dark .scroll-button {
+  background: rgba(19, 24, 46, 0.95);
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.3),
+    0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.scroll-button:hover {
+  background: white;
+  border-color: var(--workflow-primary);
+  transform: translateY(-50%) scale(1.1);
+  box-shadow:
+    0 6px 16px rgba(0, 70, 255, 0.2),
+    0 3px 8px rgba(0, 0, 0, 0.1);
+}
+
+.dark .scroll-button:hover {
+  background: rgba(26, 33, 57, 1);
+  box-shadow:
+    0 6px 16px rgba(0, 70, 255, 0.3),
+    0 3px 8px rgba(0, 0, 0, 0.3);
+}
+
+.scroll-button.left {
+  left: -24px;
+}
+
+.scroll-button.right {
+  right: -24px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .job-card {
+    flex: 0 0 240px;
+    min-width: 240px;
+  }
+
+  .section-title {
+    font-size: 1.25rem;
+  }
+
+  .scroll-button {
+    width: 40px;
+    height: 40px;
+  }
+
+  .scroll-button.left {
+    left: -20px;
+  }
+
+  .scroll-button.right {
+    right: -20px;
+  }
+}
+
+/* Loading State */
+.loading-skeleton {
+  background: linear-gradient(90deg,
+      rgba(0, 0, 0, 0.03) 25%,
+      rgba(0, 0, 0, 0.05) 50%,
+      rgba(0, 0, 0, 0.03) 75%);
+  background-size: 200% 100%;
+  animation: loading-shimmer 1.5s ease-in-out infinite;
+}
+
+.dark .loading-skeleton {
+  background: linear-gradient(90deg,
+      rgba(255, 255, 255, 0.03) 25%,
+      rgba(255, 255, 255, 0.05) 50%,
+      rgba(255, 255, 255, 0.03) 75%);
+}
+
+@keyframes loading-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Scrollbar Hide Utility */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}

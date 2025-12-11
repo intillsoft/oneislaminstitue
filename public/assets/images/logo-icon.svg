@@ -1,0 +1,57 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="iconGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0046FF;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#7C3AED;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="iconGradientLight" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#336FFF;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8B5CF6;stop-opacity:1" />
+    </linearGradient>
+    <filter id="iconGlow">
+      <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <radialGradient id="bgGradient" cx="50%" cy="50%">
+      <stop offset="0%" style="stop-color:#E6EDFF;stop-opacity:0.3" />
+      <stop offset="100%" style="stop-color:#F3F4F6;stop-opacity:0" />
+    </radialGradient>
+  </defs>
+  
+  <!-- Background Circle (subtle) -->
+  <circle cx="32" cy="32" r="30" fill="url(#bgGradient)"/>
+  
+  <!-- Main Briefcase Shape -->
+  <path d="M18 24C18 20.6863 20.6863 18 24 18H40C43.3137 18 46 20.6863 46 24V36C46 39.3137 43.3137 42 40 42H24C20.6863 42 18 39.3137 18 36V24Z" fill="url(#iconGradient)" filter="url(#iconGlow)"/>
+  
+  <!-- Briefcase Handle -->
+  <path d="M26 18V14C26 11.7909 27.7909 10 30 10H34C36.2091 10 38 11.7909 38 14V18" stroke="url(#iconGradient)" stroke-width="2" stroke-linecap="round" fill="none"/>
+  
+  <!-- AI Sparkle Elements -->
+  <circle cx="26" cy="30" r="2" fill="#FFFFFF" opacity="0.95"/>
+  <circle cx="38" cy="30" r="2" fill="#FFFFFF" opacity="0.95"/>
+  <circle cx="32" cy="34" r="1.5" fill="#FFFFFF" opacity="0.85"/>
+  <circle cx="29" cy="32" r="1" fill="#FFFFFF" opacity="0.7"/>
+  <circle cx="35" cy="32" r="1" fill="#FFFFFF" opacity="0.7"/>
+  
+  <!-- Connection Lines (Network/AI theme) -->
+  <path d="M32 24L32 18" stroke="url(#iconGradientLight)" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/>
+  <path d="M24 30L18 30" stroke="url(#iconGradientLight)" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/>
+  <path d="M40 30L46 30" stroke="url(#iconGradientLight)" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/>
+  <path d="M32 36L32 42" stroke="url(#iconGradientLight)" stroke-width="1.5" stroke-linecap="round" opacity="0.3"/>
+  
+  <!-- Upward Arrow (Growth/Career) -->
+  <path d="M32 36L32 48M32 48L26 42M32 48L38 42" stroke="url(#iconGradient)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,77 @@
+<svg width="220" height="70" viewBox="0 0 220 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="premiumGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0046FF;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#5B21B6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#7C3AED;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="premiumGradientLight" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#336FFF;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8B5CF6;stop-opacity:1" />
+    </linearGradient>
+    <filter id="premiumGlow">
+      <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="premiumShadow">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="2"/>
+      <feOffset dx="0" dy="2" result="offsetblur"/>
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="0.3"/>
+      </feComponentTransfer>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Icon with enhanced design -->
+  <g transform="translate(0, 10)" filter="url(#premiumShadow)">
+    <!-- Main Briefcase Shape with rounded corners -->
+    <path d="M10 16C10 13.7909 11.7909 12 14 12H22C24.2091 12 26 13.7909 26 16V24C26 26.2091 24.2091 28 22 28H14C11.7909 28 10 26.2091 10 24V16Z" fill="url(#premiumGradient)" filter="url(#premiumGlow)"/>
+    
+    <!-- Briefcase Handle -->
+    <path d="M14 12V9C14 7.34315 15.3431 6 17 6H19C20.6569 6 22 7.34315 22 9V12" stroke="url(#premiumGradient)" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+    
+    <!-- Enhanced AI Sparkle Elements -->
+    <circle cx="15" cy="20" r="1.8" fill="#FFFFFF" opacity="1"/>
+    <circle cx="21" cy="20" r="1.8" fill="#FFFFFF" opacity="1"/>
+    <circle cx="18" cy="23" r="1.2" fill="#FFFFFF" opacity="0.9"/>
+    <circle cx="16.5" cy="19" r="0.8" fill="#FFFFFF" opacity="0.7"/>
+    <circle cx="19.5" cy="19" r="0.8" fill="#FFFFFF" opacity="0.7"/>
+    
+    <!-- Connection Lines (Network/AI theme) - Enhanced -->
+    <path d="M18 16L18 12" stroke="url(#premiumGradientLight)" stroke-width="1.2" stroke-linecap="round" opacity="0.7"/>
+    <path d="M14 20L10 20" stroke="url(#premiumGradientLight)" stroke-width="1.2" stroke-linecap="round" opacity="0.5"/>
+    <path d="M22 20L26 20" stroke="url(#premiumGradientLight)" stroke-width="1.2" stroke-linecap="round" opacity="0.5"/>
+    <path d="M18 24L18 28" stroke="url(#premiumGradientLight)" stroke-width="1.2" stroke-linecap="round" opacity="0.4"/>
+    
+    <!-- Upward Arrow (Growth/Career) - Enhanced -->
+    <path d="M18 24L18 30M18 30L14.5 27M18 30L21.5 27" stroke="url(#premiumGradient)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    
+    <!-- Additional decorative elements -->
+    <circle cx="12" cy="18" r="0.5" fill="url(#premiumGradientLight)" opacity="0.6"/>
+    <circle cx="24" cy="18" r="0.5" fill="url(#premiumGradientLight)" opacity="0.6"/>
+  </g>
+  
+  <!-- Text with enhanced typography -->
+  <text x="40" y="42" font-family="Inter, -apple-system, BlinkMacSystemFont, sans-serif" font-size="32" font-weight="800" fill="#0046FF" letter-spacing="-0.8">
+    Workflow
+  </text>
+  <text x="40" y="58" font-family="Inter, -apple-system, BlinkMacSystemFont, sans-serif" font-size="12" font-weight="600" fill="#7C3AED" letter-spacing="2" opacity="0.9">
+    AI POWERED
+  </text>
+</svg>
+
+
+
+
+
+
+
+
+
