@@ -119,22 +119,6 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Start cron jobs (if enabled)
-if (process.env.ENABLE_CRON_JOBS === 'true') {
-  try {
-    const cronModule = await import('./cron/jobCrawler.js');
-    if (cronModule && cronModule.startAllCronJobs) {
-      cronModule.startAllCronJobs();
-      logger.info('Cron jobs enabled and started');
-    } else {
-      logger.warn('Cron jobs module loaded but startAllCronJobs function not found');
-    }
-  } catch (error) {
-    logger.warn('Failed to start cron jobs (this is non-critical):', error.message);
-    // Don't fail server startup if cron jobs fail to load
-  }
-}
-
 // Start server
 app.listen(PORT, async () => {
   logger.info(`🚀 Server running on port ${PORT}`);
@@ -142,6 +126,19 @@ app.listen(PORT, async () => {
 
   if (process.env.ENABLE_CRON_JOBS !== 'true') {
     console.log('💡 Tip: Set ENABLE_CRON_JOBS=true to enable automatic job crawling');
+  } else {
+    // Start cron jobs (if enabled) - Load dynamically to not block server start
+    try {
+      const cronModule = await import('./cron/jobCrawler.js');
+      if (cronModule && cronModule.startAllCronJobs) {
+        cronModule.startAllCronJobs();
+        logger.info('Cron jobs enabled and started');
+      } else {
+        logger.warn('Cron jobs module loaded but startAllCronJobs function not found');
+      }
+    } catch (error) {
+      logger.warn('Failed to start cron jobs (this is non-critical):', error.message);
+    }
   }
 
   // Start enhanced Autopilot cron job (runs every 5 minutes for continuous checking)
