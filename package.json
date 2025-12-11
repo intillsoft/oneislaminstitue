@@ -2,6 +2,9 @@
     "name": "workflow",
     "version": "1.0.0",
     "private": true,
+    "engines": {
+        "node": ">=18.0.0"
+    },
     "dependencies": {
         "@dhiwise/component-tagger": "^1.0.1",
         "@radix-ui/react-slot": "^1.2.4",
