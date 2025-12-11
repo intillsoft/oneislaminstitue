@@ -687,209 +687,242 @@ const BoltChat = ({ onNewChat, searchHistory = [], onHistoryClick }) => {
                     </div>
                   )}
                 </motion.div>
-              ))}
-
-              {/* Typing Indicator */}
-              {isTyping && !currentStream && (
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="flex gap-4 justify-start"
-                >
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-workflow-primary to-purple-600 flex items-center justify-center flex-shrink-0 mt-1 shadow-lg">
-                    <Sparkles className="w-4 h-4 text-white" />
-                  </div>
-                  <div className="flex-1 max-w-4xl">
-                    <div className="rounded-2xl p-4 bg-gray-100 dark:bg-[#13182E] text-gray-900 dark:text-white">
-                      <div className="flex items-center gap-2">
-                        <div className="flex gap-1.5">
-                          <div className="w-2 h-2 bg-workflow-primary rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                          <div className="w-2 h-2 bg-workflow-primary rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                          <div className="w-2 h-2 bg-workflow-primary rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
-                        </div>
-                        <span className="text-xs text-gray-500 dark:text-gray-400 ml-2">Thinking...</span>
+                {/* User Message Actions (Edit/Copy) - Rendered outside to keep layout clean but associated */ }
+                {
+                  message.type === 'user' && (
+                    <div className="flex justify-end pr-14 -mt-2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                      <div className="flex gap-1 bg-white dark:bg-[#13182E] rounded-lg shadow-sm border border-gray-100 dark:border-gray-800 p-1">
+                        <button
+                          onClick={() => {
+                            setInput(message.content);
+                            inputRef.current?.focus();
+                          }}
+                          className="p-1.5 text-gray-400 hover:text-workflow-primary hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-all"
+                          title="Edit message"
+                        >
+                          <Edit2 className="w-3.5 h-3.5" />
+                        </button>
+                        <button
+                          onClick={() => handleCopy(message.content, message.id)}
+                          className="p-1.5 text-gray-400 hover:text-workflow-primary hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-all"
+                          title="Copy text"
+                        >
+                          {copiedId === message.id ? (
+                            <Check className="w-3.5 h-3.5 text-green-500" />
+                          ) : (
+                            <Copy className="w-3.5 h-3.5" />
+                          )}
+                        </button>
                       </div>
                     </div>
-                  </div>
-                </motion.div>
-              )}
+                  )
+                }
+              </React.Fragment>
+              ))}
 
-              {/* Streaming Message */}
-              {isStreaming && currentStream && (
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="flex gap-4 justify-start"
-                >
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-workflow-primary to-purple-600 flex items-center justify-center flex-shrink-0 mt-1 shadow-lg">
-                    <Sparkles className="w-4 h-4 text-white" />
-                  </div>
-                  <div className="flex-1 max-w-4xl">
-                    <div className="rounded-2xl p-4 bg-gray-100 dark:bg-[#13182E] text-gray-900 dark:text-white">
-                      <p className="whitespace-pre-wrap text-sm leading-relaxed">
-                        {currentStream}
-                        <span className="inline-block w-2 h-4 bg-workflow-primary dark:bg-purple-500 animate-pulse ml-1" />
-                      </p>
+          {/* Typing Indicator */}
+          {isTyping && !currentStream && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="flex gap-4 justify-start"
+            >
+              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-workflow-primary to-purple-600 flex items-center justify-center flex-shrink-0 mt-1 shadow-lg">
+                <Sparkles className="w-4 h-4 text-white" />
+              </div>
+              <div className="flex-1 max-w-4xl">
+                <div className="rounded-2xl p-4 bg-gray-100 dark:bg-[#13182E] text-gray-900 dark:text-white">
+                  <div className="flex items-center gap-2">
+                    <div className="flex gap-1.5">
+                      <div className="w-2 h-2 bg-workflow-primary rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                      <div className="w-2 h-2 bg-workflow-primary rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                      <div className="w-2 h-2 bg-workflow-primary rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
                     </div>
+                    <span className="text-xs text-gray-500 dark:text-gray-400 ml-2">Thinking...</span>
                   </div>
-                </motion.div>
-              )}
-
-              <div ref={messagesEndRef} />
-            </>
+                </div>
+              </div>
+            </motion.div>
           )}
-        </div>
-      </div>
 
-      {/* Input Area - Only show when there are messages */}
-      {!isEmpty && (
-        <div className="p-4">
-          <div className="max-w-4xl mx-auto">
-            {error && (
-              <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="mb-3 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg flex items-center justify-between"
+          {/* Streaming Message */}
+          {isStreaming && currentStream && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="flex gap-4 justify-start"
+            >
+              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-workflow-primary to-purple-600 flex items-center justify-center flex-shrink-0 mt-1 shadow-lg">
+                <Sparkles className="w-4 h-4 text-white" />
+              </div>
+              <div className="flex-1 max-w-4xl">
+                <div className="rounded-2xl p-4 bg-gray-100 dark:bg-[#13182E] text-gray-900 dark:text-white">
+                  <p className="whitespace-pre-wrap text-sm leading-relaxed">
+                    {currentStream}
+                    <span className="inline-block w-2 h-4 bg-workflow-primary dark:bg-purple-500 animate-pulse ml-1" />
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+          )}
+
+          <div ref={messagesEndRef} />
+        </>
+          )}
+      </div>
+    </div>
+
+      {/* Input Area - Only show when there are messages */ }
+  {
+    !isEmpty && (
+      <div className="p-4">
+        <div className="max-w-4xl mx-auto">
+          {error && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mb-3 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg flex items-center justify-between"
+            >
+              <p className="text-sm text-red-700 dark:text-red-400">{error}</p>
+              <button
+                onClick={() => setError(null)}
+                className="text-red-500 hover:text-red-700 dark:hover:text-red-300"
               >
-                <p className="text-sm text-red-700 dark:text-red-400">{error}</p>
+                <X className="w-4 h-4" />
+              </button>
+            </motion.div>
+          )}
+
+          {/* Input Form */}
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleSend();
+            }}
+            className="relative"
+          >
+            {/* File Input */}
+            <input
+              type="file"
+              ref={fileInputRef}
+              onChange={handleFileUpload}
+              className="hidden"
+              accept=".txt,.md,.json,.csv,.pdf,.docx"
+            />
+
+            {/* Selected File Indicator */}
+            {selectedFile && (
+              <div className="absolute -top-12 left-0 bg-gray-100 dark:bg-gray-800 rounded-lg px-3 py-2 flex items-center gap-2 border border-gray-200 dark:border-gray-700 shadow-sm animate-in fade-in slide-in-from-bottom-2">
+                <div className="p-1 bg-workflow-primary/10 rounded">
+                  <FileText className="w-4 h-4 text-workflow-primary" />
+                </div>
+                <span className="text-sm truncate max-w-[200px] text-gray-700 dark:text-gray-300">
+                  {selectedFile.name}
+                </span>
                 <button
-                  onClick={() => setError(null)}
-                  className="text-red-500 hover:text-red-700 dark:hover:text-red-300"
+                  type="button"
+                  onClick={removeFile}
+                  className="ml-2 text-gray-400 hover:text-red-500 transition-colors"
                 >
                   <X className="w-4 h-4" />
                 </button>
-              </motion.div>
+              </div>
             )}
 
-            {/* Input Form */}
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                handleSend();
-              }}
-              className="relative"
-            >
-              {/* File Input */}
-              <input
-                type="file"
-                ref={fileInputRef}
-                onChange={handleFileUpload}
-                className="hidden"
-                accept=".txt,.md,.json,.csv,.pdf,.docx"
+            <div className="flex items-end gap-3 bg-white dark:bg-[#2A2D3A] rounded-2xl px-4 py-3 border border-gray-200 dark:border-gray-700 focus-within:border-workflow-primary dark:focus-within:border-purple-500 transition-all shadow-lg hover:shadow-xl">
+              {/* Attachment Button */}
+              <button
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                className="p-2 text-gray-400 hover:text-workflow-primary dark:hover:text-purple-400 hover:bg-gray-100/50 dark:hover:bg-gray-800/50 rounded-full transition-all"
+                title="Attach file"
+              >
+                <Paperclip className="w-5 h-5" />
+              </button>
+
+              <textarea
+                ref={inputRef}
+                value={input}
+                onChange={(e) => {
+                  setInput(e.target.value);
+                  e.target.style.height = 'auto';
+                  e.target.style.height = `${Math.min(e.target.scrollHeight, 200)}px`;
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    handleSend();
+                  }
+                }}
+                placeholder={isListening ? "Listening..." : "Ask anything or attach a file..."}
+                rows={1}
+                className="flex-1 bg-transparent text-sm text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 resize-none focus:outline-none overflow-hidden min-h-[24px] max-h-[200px] py-2"
               />
 
-              {/* Selected File Indicator */}
-              {selectedFile && (
-                <div className="absolute -top-12 left-0 bg-gray-100 dark:bg-gray-800 rounded-lg px-3 py-2 flex items-center gap-2 border border-gray-200 dark:border-gray-700 shadow-sm animate-in fade-in slide-in-from-bottom-2">
-                  <div className="p-1 bg-workflow-primary/10 rounded">
-                    <FileText className="w-4 h-4 text-workflow-primary" />
-                  </div>
-                  <span className="text-sm truncate max-w-[200px] text-gray-700 dark:text-gray-300">
-                    {selectedFile.name}
-                  </span>
+              <div className="flex items-center gap-2 flex-shrink-0">
+                {recognition && (
                   <button
                     type="button"
-                    onClick={removeFile}
-                    className="ml-2 text-gray-400 hover:text-red-500 transition-colors"
+                    onClick={isListening ? stopVoiceSearch : startVoiceSearch}
+                    className={`p-2 rounded-full transition-all duration-200 relative ${isListening
+                      ? 'bg-red-50 text-red-500'
+                      : 'text-gray-400 hover:text-workflow-primary dark:hover:text-purple-400 hover:bg-gray-100/50 dark:hover:bg-gray-800/50'
+                      }`}
+                    aria-label={isListening ? 'Stop voice search' : 'Start voice search'}
+                  >
+                    {isListening && (
+                      <span className="absolute inset-0 rounded-full bg-red-400/20 animate-ping"></span>
+                    )}
+                    {isListening ? (
+                      <MicOff className="w-5 h-5 relative z-10" />
+                    ) : (
+                      <Mic className="w-5 h-5" />
+                    )}
+                  </button>
+                )}
+
+                {input && (
+                  <button
+                    type="button"
+                    onClick={() => setInput('')}
+                    className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 rounded-full hover:bg-gray-100/50 dark:hover:bg-gray-800/50 transition-colors"
+                    aria-label="Clear input"
                   >
                     <X className="w-4 h-4" />
                   </button>
-                </div>
-              )}
+                )}
 
-              <div className="flex items-end gap-3 bg-white dark:bg-[#2A2D3A] rounded-2xl px-4 py-3 border border-gray-200 dark:border-gray-700 focus-within:border-workflow-primary dark:focus-within:border-purple-500 transition-all shadow-lg hover:shadow-xl">
-                {/* Attachment Button */}
-                <button
-                  type="button"
-                  onClick={() => fileInputRef.current?.click()}
-                  className="p-2 text-gray-400 hover:text-workflow-primary dark:hover:text-purple-400 hover:bg-gray-100/50 dark:hover:bg-gray-800/50 rounded-full transition-all"
-                  title="Attach file"
-                >
-                  <Paperclip className="w-5 h-5" />
-                </button>
-
-                <textarea
-                  ref={inputRef}
-                  value={input}
-                  onChange={(e) => {
-                    setInput(e.target.value);
-                    e.target.style.height = 'auto';
-                    e.target.style.height = `${Math.min(e.target.scrollHeight, 200)}px`;
-                  }}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' && !e.shiftKey) {
-                      e.preventDefault();
-                      handleSend();
-                    }
-                  }}
-                  placeholder={isListening ? "Listening..." : "Ask anything or attach a file..."}
-                  rows={1}
-                  className="flex-1 bg-transparent text-sm text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 resize-none focus:outline-none overflow-hidden min-h-[24px] max-h-[200px] py-2"
-                />
-
-                <div className="flex items-center gap-2 flex-shrink-0">
-                  {recognition && (
-                    <button
-                      type="button"
-                      onClick={isListening ? stopVoiceSearch : startVoiceSearch}
-                      className={`p-2 rounded-full transition-all duration-200 relative ${isListening
-                        ? 'bg-red-50 text-red-500'
-                        : 'text-gray-400 hover:text-workflow-primary dark:hover:text-purple-400 hover:bg-gray-100/50 dark:hover:bg-gray-800/50'
-                        }`}
-                      aria-label={isListening ? 'Stop voice search' : 'Start voice search'}
-                    >
-                      {isListening && (
-                        <span className="absolute inset-0 rounded-full bg-red-400/20 animate-ping"></span>
-                      )}
-                      {isListening ? (
-                        <MicOff className="w-5 h-5 relative z-10" />
-                      ) : (
-                        <Mic className="w-5 h-5" />
-                      )}
-                    </button>
-                  )}
-
-                  {input && (
-                    <button
-                      type="button"
-                      onClick={() => setInput('')}
-                      className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 rounded-full hover:bg-gray-100/50 dark:hover:bg-gray-800/50 transition-colors"
-                      aria-label="Clear input"
-                    >
-                      <X className="w-4 h-4" />
-                    </button>
-                  )}
-
-                  {isStreaming ? (
-                    <button
-                      type="button"
-                      onClick={handleStop}
-                      className="p-2 bg-red-500 text-white rounded-full hover:bg-red-600 transition-all duration-200 hover:scale-105 active:scale-95 shadow-lg"
-                      aria-label="Stop generation"
-                    >
-                      <Square className="w-5 h-5" />
-                    </button>
-                  ) : (
-                    <button
-                      type="submit"
-                      disabled={(!input.trim() && !selectedFile) || isStreaming}
-                      className="p-2 bg-workflow-primary text-white rounded-full hover:bg-workflow-primary-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 hover:scale-105 active:scale-95 shadow-lg"
-                      aria-label="Send message"
-                    >
-                      <Send className="w-5 h-5" />
-                    </button>
-                  )}
-                </div>
+                {isStreaming ? (
+                  <button
+                    type="button"
+                    onClick={handleStop}
+                    className="p-2 bg-red-500 text-white rounded-full hover:bg-red-600 transition-all duration-200 hover:scale-105 active:scale-95 shadow-lg"
+                    aria-label="Stop generation"
+                  >
+                    <Square className="w-5 h-5" />
+                  </button>
+                ) : (
+                  <button
+                    type="submit"
+                    disabled={(!input.trim() && !selectedFile) || isStreaming}
+                    className="p-2 bg-workflow-primary text-white rounded-full hover:bg-workflow-primary-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 hover:scale-105 active:scale-95 shadow-lg"
+                    aria-label="Send message"
+                  >
+                    <Send className="w-5 h-5" />
+                  </button>
+                )}
               </div>
-            </form>
+            </div>
+          </form>
 
-            <p className="text-xs text-gray-500 dark:text-gray-500 mt-3 text-center">
-              AI can make mistakes. Verify important information.
-            </p>
-          </div>
+          <p className="text-xs text-gray-500 dark:text-gray-500 mt-3 text-center">
+            AI can make mistakes. Verify important information.
+          </p>
         </div>
-      )}
-    </div>
+      </div>
+    )
+  }
+    </div >
   );
 };
 

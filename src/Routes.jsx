@@ -128,6 +128,7 @@ const AnimatedRoutes = () => {
         }
       />
       <Route path="/jobs/detail" element={<JobDetailApplication />} />
+      <Route path="/jobs/detail/:id" element={<JobDetailApplication />} />
       <Route
         path="/applications/new"
         element={

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams, useParams } from 'react-router-dom';
 import Icon from 'components/AppIcon';
 import Image from 'components/AppImage';
 import Breadcrumb from 'components/ui/Breadcrumb';
@@ -18,11 +18,12 @@ import { formatJobData, formatRequirements, formatBenefits } from '../../utils/j
 
 const JobDetailApplication = () => {
   const [searchParams] = useSearchParams();
-  const jobId = searchParams.get('id');
+  const { id: paramId } = useParams();
+  const jobId = paramId || searchParams.get('id');
   const { user } = useAuthContext();
   const { success, error: showError } = useToast();
   const navigate = useNavigate();
-  
+
   const [job, setJob] = useState(null);
   const [isApplicationFormOpen, setIsApplicationFormOpen] = useState(false);
   const [isJobSaved, setIsJobSaved] = useState(false);
@@ -57,15 +58,15 @@ const JobDetailApplication = () => {
     try {
       setLoading(true);
       const jobData = await jobService.getById(jobId);
-      
+
       if (!jobData) {
         throw new Error('Job not found');
       }
-      
+
       // Format job data to ensure requirements/benefits are arrays
       const formattedJob = formatJobData(jobData);
       setJob(formattedJob);
-      
+
       // Load similar jobs
       if (jobData) {
         loadSimilarJobs(jobData);
@@ -95,7 +96,7 @@ const JobDetailApplication = () => {
 
   const checkIfSaved = async () => {
     if (!user) return;
-    
+
     try {
       const saved = await jobService.getSavedJobs();
       const savedIds = new Set(saved.map(sj => sj.job_id || sj.job?.id));
@@ -246,7 +247,7 @@ const JobDetailApplication = () => {
     <div className="min-h-screen bg-white dark:bg-[#0A0E27]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <Breadcrumb />
-        
+
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
           {/* Main Content */}
           <div className="lg:col-span-2">
@@ -277,11 +278,10 @@ const JobDetailApplication = () => {
                 <div className="flex items-center gap-2 ml-4">
                   <button
                     onClick={handleSaveJob}
-                    className={`p-2 rounded-lg transition-colors ${
-                      isJobSaved 
-                        ? 'bg-workflow-primary-50 dark:bg-workflow-primary-900/20 text-workflow-primary' 
+                    className={`p-2 rounded-lg transition-colors ${isJobSaved
+                        ? 'bg-workflow-primary-50 dark:bg-workflow-primary-900/20 text-workflow-primary'
                         : 'text-[#64748B] dark:text-[#8B92A3] hover:bg-[#F8FAFC] dark:hover:bg-[#1A2139]'
-                    }`}
+                      }`}
                     aria-label={isJobSaved ? 'Unsave job' : 'Save job'}
                   >
                     <Icon name={isJobSaved ? "Bookmark" : "Bookmark"} size={20} />
