@@ -34,18 +34,17 @@ const JobPreviewPanel = ({ job, onClose, isSaved, onSave }) => {
               <p className="text-text-secondary dark:text-gray-400 font-medium">{job?.company}</p>
             </div>
           </div>
-          
+
           <div className="flex items-center space-x-2">
             <button
               onClick={onSave}
-              className={`p-2 rounded-lg transition-smooth ${
-                isSaved 
-                  ? 'text-error bg-error-50 hover:bg-error-100' :'text-text-secondary hover:text-error hover:bg-error-50'
-              }`}
+              className={`p-2 rounded-lg transition-smooth ${isSaved
+                  ? 'text-error bg-error-50 hover:bg-error-100' : 'text-text-secondary hover:text-error hover:bg-error-50'
+                }`}
             >
               <Icon name="Heart" size={20} fill={isSaved ? "currentColor" : "none"} />
             </button>
-            
+
             <button
               onClick={onClose}
               className="p-2 text-text-secondary hover:text-text-primary hover:bg-surface rounded-lg transition-smooth"
@@ -67,7 +66,7 @@ const JobPreviewPanel = ({ job, onClose, isSaved, onSave }) => {
             <Icon name="MapPin" size={16} />
             <span>{job?.location}</span>
           </div>
-          
+
           <div className="flex items-center space-x-2">
             <Icon name="Clock" size={16} />
             <span>{job?.employmentType}</span>
@@ -114,13 +113,13 @@ const JobPreviewPanel = ({ job, onClose, isSaved, onSave }) => {
             {(() => {
               // Ensure requirements is always an array
               const requirements = formatRequirements(job?.requirements);
-              
+
               if (requirements.length === 0) {
                 return (
                   <p className="text-sm text-text-secondary dark:text-gray-400 italic">No requirements listed</p>
                 );
               }
-              
+
               return requirements.map((requirement, index) => (
                 <div key={index} className="flex items-start space-x-2">
                   <Icon name="Check" size={14} color="#059669" className="mt-0.5 flex-shrink-0" />
@@ -151,14 +150,14 @@ const JobPreviewPanel = ({ job, onClose, isSaved, onSave }) => {
       {/* Actions */}
       <div className="p-6 border-t border-border dark:border-gray-700 space-y-3">
         <Link
-          to={`/job-detail-application?id=${job?.id}`}
+          to={`/jobs/detail/${job?.id}`}
           className="w-full btn-primary text-center block"
         >
           Apply Now
         </Link>
-        
+
         <Link
-          to={`/job-detail-application?id=${job?.id}`}
+          to={`/jobs/detail/${job?.id}`}
           className="w-full btn-secondary text-center block"
         >
           View Full Details
@@ -169,7 +168,7 @@ const JobPreviewPanel = ({ job, onClose, isSaved, onSave }) => {
             <Icon name="Share2" size={16} />
             <span>Share</span>
           </button>
-          
+
           <button className="flex items-center space-x-1 text-sm text-text-secondary dark:text-gray-400 hover:text-text-primary dark:hover:text-white transition-smooth">
             <Icon name="Flag" size={16} />
             <span>Report</span>

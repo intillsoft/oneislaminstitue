@@ -19,12 +19,11 @@ const JobCard = ({ job, isSaved, onSave, onSelect, isSelected }) => {
   const requirements = formatRequirements(job?.requirements);
 
   return (
-    <div 
-      className={`group relative bg-white dark:bg-[#13182E] border border-[#E2E8F0] dark:border-[#1E2640] rounded-lg p-4 transition-all duration-200 cursor-pointer hover:shadow-md ${
-        isSelected 
-          ? 'border-workflow-primary dark:border-workflow-primary-400 ring-1 ring-workflow-primary-100 dark:ring-workflow-primary-900/20' 
+    <div
+      className={`group relative bg-white dark:bg-[#13182E] border border-[#E2E8F0] dark:border-[#1E2640] rounded-lg p-4 transition-all duration-200 cursor-pointer hover:shadow-md ${isSelected
+          ? 'border-workflow-primary dark:border-workflow-primary-400 ring-1 ring-workflow-primary-100 dark:ring-workflow-primary-900/20'
           : 'hover:border-workflow-primary-300 dark:hover:border-workflow-primary-500'
-      } ${job?.featured ? 'ring-1 ring-accent-500 dark:ring-accent-400 border-accent-500 dark:border-accent-400' : ''}`}
+        } ${job?.featured ? 'ring-1 ring-accent-500 dark:ring-accent-400 border-accent-500 dark:border-accent-400' : ''}`}
       onClick={onSelect}
     >
       {/* Featured Badge */}
@@ -41,11 +40,10 @@ const JobCard = ({ job, isSaved, onSave, onSelect, isSelected }) => {
           e?.stopPropagation();
           onSave();
         }}
-        className={`absolute top-4 right-4 z-10 p-2.5 rounded-lg transition-all duration-200 min-h-[44px] min-w-[44px] flex items-center justify-center ${
-          isSaved 
-            ? 'text-error-600 dark:text-error-400 bg-error-50 dark:bg-error-900/20 hover:bg-error-100 dark:hover:bg-error-900/30' 
+        className={`absolute top-4 right-4 z-10 p-2.5 rounded-lg transition-all duration-200 min-h-[44px] min-w-[44px] flex items-center justify-center ${isSaved
+            ? 'text-error-600 dark:text-error-400 bg-error-50 dark:bg-error-900/20 hover:bg-error-100 dark:hover:bg-error-900/30'
             : 'text-[#64748B] dark:text-[#8B92A3] bg-white dark:bg-[#1A2139] hover:bg-error-50 dark:hover:bg-error-900/20 hover:text-error-600 dark:hover:text-error-400 border border-[#E2E8F0] dark:border-[#1E2640]'
-        }`}
+          }`}
         aria-label={isSaved ? 'Unsave job' : 'Save job'}
       >
         <Icon name="Heart" size={20} fill={isSaved ? "currentColor" : "none"} />
@@ -132,14 +130,14 @@ const JobCard = ({ job, isSaved, onSave, onSelect, isSelected }) => {
           />
         )}
         <Link
-          to={`/job-detail-application?id=${job?.id}`}
+          to={`/jobs/detail/${job?.id}`}
           onClick={(e) => e?.stopPropagation()}
           className="flex-1 px-3 py-2 text-xs font-medium text-workflow-primary hover:text-workflow-primary-700 dark:hover:text-workflow-primary-300 border border-workflow-primary hover:bg-workflow-primary-50 dark:hover:bg-workflow-primary-900/20 rounded transition-all text-center"
         >
           View
         </Link>
         <Link
-          to={`/job-detail-application?id=${job?.id}`}
+          to={`/jobs/detail/${job?.id}`}
           onClick={(e) => e?.stopPropagation()}
           className="flex-1 px-3 py-2 text-xs font-semibold bg-workflow-primary text-white hover:bg-workflow-primary-600 dark:hover:bg-workflow-primary-500 rounded transition-all text-center"
         >

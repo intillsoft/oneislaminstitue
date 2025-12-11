@@ -56,7 +56,7 @@ const SimilarJobsCarousel = ({ jobs }) => {
               </div>
               <div className="flex-1 min-w-0">
                 <Link
-                  to="/job-detail-application"
+                  to={`/jobs/detail/${job?.id}`}
                   className="text-lg font-semibold text-text-primary hover:text-primary-600 transition-smooth line-clamp-1"
                 >
                   {job?.title}
@@ -105,8 +105,8 @@ const SimilarJobsCarousel = ({ jobs }) => {
                     </div>
                     <div className="flex-1 min-w-0">
                       <Link
-                        to="/job-detail-application"
-                        className="text-lg font-semibold text-text-primary hover:text-primary-600 transition-smooth line-clamp-2"
+                        to={`/jobs/detail/${job?.id}`}
+                        className="text-lg font-semibold text-text-primary hover:text-primary-600 transition-smooth line-clamp-1"
                       >
                         {job?.title}
                       </Link>
@@ -116,7 +116,7 @@ const SimilarJobsCarousel = ({ jobs }) => {
                       <Icon name="Bookmark" size={16} className="text-secondary-400" />
                     </button>
                   </div>
-                  
+
                   <div className="space-y-2 text-sm text-text-muted">
                     <div className="flex items-center space-x-1">
                       <Icon name="MapPin" size={14} />
@@ -153,9 +153,8 @@ const SimilarJobsCarousel = ({ jobs }) => {
               <button
                 key={index}
                 onClick={() => goToSlide(index)}
-                className={`w-2 h-2 rounded-full transition-smooth ${
-                  index === currentIndex ? 'bg-primary-600' : 'bg-secondary-300'
-                }`}
+                className={`w-2 h-2 rounded-full transition-smooth ${index === currentIndex ? 'bg-primary-600' : 'bg-secondary-300'
+                  }`}
               />
             ))}
           </div>

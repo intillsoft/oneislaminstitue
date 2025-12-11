@@ -7,7 +7,7 @@ const ShareJobModal = ({ job, onClose }) => {
   const [message, setMessage] = useState('');
   const [isEmailSending, setIsEmailSending] = useState(false);
 
-  const jobUrl = `${window.location?.origin}/job-detail-application?id=${job?.id}`;
+  const jobUrl = `${window.location?.origin}/jobs/detail/${job?.id}`;
 
   const shareOptions = [
     {
@@ -112,9 +112,8 @@ const ShareJobModal = ({ job, onClose }) => {
               />
               <button
                 onClick={handleCopyLink}
-                className={`btn-secondary px-4 py-2 transition-smooth ${
-                  copied ? 'bg-accent-50 text-accent-600 border-accent-200' : ''
-                }`}
+                className={`btn-secondary px-4 py-2 transition-smooth ${copied ? 'bg-accent-50 text-accent-600 border-accent-200' : ''
+                  }`}
               >
                 {copied ? (
                   <>
@@ -165,7 +164,7 @@ const ShareJobModal = ({ job, onClose }) => {
                   required
                 />
               </div>
-              
+
               <div>
                 <label className="block text-sm font-medium text-text-primary mb-2">
                   Personal Message (Optional)

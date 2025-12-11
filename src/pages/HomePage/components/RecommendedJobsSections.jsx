@@ -352,7 +352,7 @@ const RecommendedJobsSections = () => {
         viewport={{ once: true }}
         transition={{ duration: 0.4, delay: index * 0.1 }}
         whileHover={{ y: -4 }}
-        onClick={() => navigate(`/job-detail-application?id=${job.id}`)}
+        onClick={() => navigate(`/jobs/detail/${job.id}`)}
       >
         <div className="job-card-header">
           <div className="job-company-logo">
