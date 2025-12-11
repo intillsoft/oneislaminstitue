@@ -177,218 +177,216 @@ export const apiService = {
   chat: {
     stream: (message, conversationHistory = []) => {
       // Note: Streaming uses fetch, not axios
-      stream: (message, conversationHistory = []) => {
-        // Note: Streaming uses fetch, not axios
-        return fetch(`${API_ROOT}/api/chat/stream`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${supabase.auth.getSession().then(({ data }) => data.session?.access_token)}`, // Needs token for auth
-          },
-          body: JSON.stringify({ message, conversation_history: conversationHistory }),
-        });
-      },
-        send: (message, conversationHistory = []) => api.post('/chat', { message, conversation_history: conversationHistory }),
-          getHistory: () => api.get('/chat/history'),
-            saveHistory: (messages) => api.post('/chat/history', { messages }),
+      return fetch(`${API_ROOT}/api/chat/stream`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${supabase.auth.getSession().then(({ data }) => data.session?.access_token)}`, // Needs token for auth
+        },
+        body: JSON.stringify({ message, conversation_history: conversationHistory }),
+      });
+    },
+    send: (message, conversationHistory = []) => api.post('/chat', { message, conversation_history: conversationHistory }),
+    getHistory: () => api.get('/chat/history'),
+    saveHistory: (messages) => api.post('/chat/history', { messages }),
   },
 
-    // Direct API methods for components that need them
-    get: (url, config) => api.get(url, config),
-    post: (url, data, config) => api.post(url, data, config),
-    put: (url, data, config) => api.put(url, data, config),
-    delete: (url, config) => api.delete(url, config),
-    patch: (url, data, config) => api.patch(url, data, config),
+  // Direct API methods for components that need them
+  get: (url, config) => api.get(url, config),
+  post: (url, data, config) => api.post(url, data, config),
+  put: (url, data, config) => api.put(url, data, config),
+  delete: (url, config) => api.delete(url, config),
+  patch: (url, data, config) => api.patch(url, data, config),
 
-    // Job Crawler Services
-    jobCrawler: {
-      crawl: (data) => api.post('/job-crawler/crawl', data),
-      schedule: () => api.post('/job-crawler/schedule'),
-      getStatus: () => api.get('/job-crawler/status'),
+  // Job Crawler Services
+  jobCrawler: {
+    crawl: (data) => api.post('/job-crawler/crawl', data),
+    schedule: () => api.post('/job-crawler/schedule'),
+    getStatus: () => api.get('/job-crawler/status'),
+  },
+
+  // Talent Marketplace Services
+  talent: {
+    // Profile
+    getProfile: (id) => api.get(`/talent/profile/${id}`),
+    createOrUpdateProfile: (data) => api.post('/talent/profile', data),
+
+    // Gigs
+    getGigs: (params) => api.get('/talent/gigs', { params }),
+    getGig: (id) => api.get(`/talent/gigs/${id}`),
+    createGig: (data) => api.post('/talent/gigs', data),
+    updateGig: (id, data) => api.put(`/talent/gigs/${id}`, data),
+    deleteGig: (id) => api.delete(`/talent/gigs/${id}`),
+
+    // Orders
+    getOrders: (params) => api.get('/talent/orders', { params }),
+    createOrder: (data) => api.post('/talent/orders', data),
+    updateOrder: (id, data) => api.put(`/talent/orders/${id}`, data),
+
+    // Messages
+    getMessages: (params) => api.get('/talent/messages', { params }),
+    sendMessage: (data) => api.post('/talent/messages', data),
+
+    // Discovery
+    discoverTalents: (params) => api.get('/talent/discover', { params }),
+
+    // Dashboard
+    getDashboard: () => api.get('/talent/dashboard'),
+    getDashboardStats: () => api.get('/talent/dashboard/stats'),
+
+    // Conversations
+    getConversations: () => api.get('/talent/conversations'),
+
+    // Deliver Order
+    deliverOrder: (orderId, data) => api.post(`/talent/orders/${orderId}/deliver`, data),
+  },
+
+  // Applications
+  applications: {
+    create: (data) => api.post('/applications', data),
+    getByJobId: (jobId) => api.get(`/applications/job/${jobId}`),
+  },
+
+  // User Profile
+  profile: {
+    get: () => api.get('/profile'),
+    update: (data) => api.put('/profile', data),
+    uploadAvatar: (file) => {
+      const formData = new FormData();
+      formData.append('avatar', file);
+      return api.post('/profile/avatar', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
     },
+    requestRoleChange: (data) => api.post('/profile/request-role-change', data),
+    getRoleChangeRequests: () => api.get('/profile/role-change-requests'),
+    approveRoleChangeRequest: (id) => api.put(`/profile/role-change-requests/${id}/approve`),
+    rejectRoleChangeRequest: (id, data) => api.put(`/profile/role-change-requests/${id}/reject`, data),
+  },
 
-    // Talent Marketplace Services
-    talent: {
-      // Profile
-      getProfile: (id) => api.get(`/talent/profile/${id}`),
-      createOrUpdateProfile: (data) => api.post('/talent/profile', data),
+  // Companies
+  companies: {
+    getAll: (params = {}) => api.get('/companies', { params }),
+    getById: (id) => api.get(`/companies/${id}`),
+    create: (data) => api.post('/companies', data),
+    update: (id, data) => api.put(`/companies/${id}`, data),
+    getJobs: (companyId) => api.get(`/companies/${companyId}/jobs`),
+  },
 
-      // Gigs
-      getGigs: (params) => api.get('/talent/gigs', { params }),
-      getGig: (id) => api.get(`/talent/gigs/${id}`),
-      createGig: (data) => api.post('/talent/gigs', data),
-      updateGig: (id, data) => api.put(`/talent/gigs/${id}`, data),
-      deleteGig: (id) => api.delete(`/talent/gigs/${id}`),
+  // Subscriptions
+  subscriptions: {
+    getCurrent: () => api.get('/billing/subscription'),
+    createCheckout: (tier) => api.post('/billing/checkout', { tier }),
+    createPortal: () => api.post('/billing/portal'),
+    update: (tier) => api.post('/billing/subscription/update', { tier }),
+    cancel: () => api.post('/billing/subscription/cancel'),
+  },
 
-      // Orders
-      getOrders: (params) => api.get('/talent/orders', { params }),
-      createOrder: (data) => api.post('/talent/orders', data),
-      updateOrder: (id, data) => api.put(`/talent/orders/${id}`, data),
+  // Email Preferences
+  email: {
+    getPreferences: () => api.get('/email/preferences'),
+    updatePreference: (emailType, enabled) => api.put(`/email/preferences/${emailType}`, { enabled }),
+    unsubscribe: (token) => api.post('/email/unsubscribe', { token }),
+  },
 
-      // Messages
-      getMessages: (params) => api.get('/talent/messages', { params }),
-      sendMessage: (data) => api.post('/talent/messages', data),
+  // Unified Messaging System (for all roles)
+  messages: {
+    // Conversations
+    getConversations: () => api.get('/messages/conversations'),
+    getConversation: (userId) => api.get(`/messages/conversation/${userId}`),
 
-      // Discovery
-      discoverTalents: (params) => api.get('/talent/discover', { params }),
+    // Messages
+    getMessages: (conversationId) => api.get(`/messages/${conversationId}`),
+    sendMessage: (conversationId, data) => api.post(`/messages/${conversationId}`, data),
+    markAsRead: (messageId) => api.put(`/messages/${messageId}/read`),
 
-      // Dashboard
-      getDashboard: () => api.get('/talent/dashboard'),
-      getDashboardStats: () => api.get('/talent/dashboard/stats'),
+    // AI Features
+    getAISuggestions: (conversationId, context) => api.post('/messages/ai/suggestions', { conversationId, context }),
+    improveMessage: (message, improvementType) => api.post('/messages/ai/improve', { message, improvement_type: improvementType }),
+  },
 
-      // Conversations
-      getConversations: () => api.get('/talent/conversations'),
+  // Admin Endpoints
+  admin: {
+    getDashboard: (dateRange) => api.get('/admin/dashboard', { params: { dateRange } }),
+    getUsers: (params) => api.get('/admin/users', { params }),
+    getUserById: (id) => api.get(`/admin/users/${id}`),
+    updateUser: (id, data) => api.put(`/admin/users/${id}`, data),
+    deleteUser: (id) => api.delete(`/admin/users/${id}`),
+    suspendUser: (id, reason) => api.post(`/admin/users/${id}/suspend`, { reason }),
+    getJobs: (params) => api.get('/admin/jobs', { params }),
+    getApplications: (params) => api.get('/admin/applications', { params }),
+    getAnalytics: (dateRange) => api.get('/admin/analytics', { params: { dateRange } }),
+    getModeration: (params) => api.get('/admin/moderation', { params }),
+    approveModeration: (id) => api.post(`/admin/moderation/${id}/approve`),
+    rejectModeration: (id, reason) => api.post(`/admin/moderation/${id}/reject`, { reason }),
+    updateSettings: (data) => api.put('/admin/settings', data),
+    getReports: () => api.get('/admin/reports'),
+    generateReport: (data) => api.post('/admin/reports/generate', data),
+  },
 
-      // Deliver Order
-      deliverOrder: (orderId, data) => api.post(`/talent/orders/${orderId}/deliver`, data),
-    },
+  // Statistics Endpoints
+  statistics: {
+    getOverview: (dateRange) => api.get('/statistics/overview', { params: { dateRange } }),
+    getUserStats: () => api.get('/statistics/user'),
+    getJobStats: (dateRange) => api.get('/statistics/jobs', { params: { dateRange } }),
+    getApplicationStats: (dateRange) => api.get('/statistics/applications', { params: { dateRange } }),
+    getRevenueStats: (dateRange) => api.get('/statistics/revenue', { params: { dateRange } }),
+  },
 
-    // Applications
-    applications: {
-      create: (data) => api.post('/applications', data),
-      getByJobId: (jobId) => api.get(`/applications/job/${jobId}`),
-    },
+  // Autopilot Endpoints (formerly Auto-Apply)
+  autopilot: {
+    getSettings: () => api.get('/autopilot/settings'),
+    saveSettings: (data) => api.post('/autopilot/settings', data),
+    getLogs: (params) => api.get('/autopilot/logs', { params }),
+    process: () => api.post('/autopilot/process'),
+  },
+  // Legacy Auto-Apply Endpoints (for backward compatibility)
+  autoApply: {
+    getSettings: () => api.get('/autopilot/settings'),
+    saveSettings: (data) => api.post('/autopilot/settings', data),
+    getLogs: (params) => api.get('/autopilot/logs', { params }),
+    process: () => api.post('/autopilot/process'),
+  },
 
-    // User Profile
-    profile: {
-      get: () => api.get('/profile'),
-      update: (data) => api.put('/profile', data),
-      uploadAvatar: (file) => {
-        const formData = new FormData();
-        formData.append('avatar', file);
-        return api.post('/profile/avatar', formData, {
-          headers: { 'Content-Type': 'multipart/form-data' },
-        });
-      },
-      requestRoleChange: (data) => api.post('/profile/request-role-change', data),
-      getRoleChangeRequests: () => api.get('/profile/role-change-requests'),
-      approveRoleChangeRequest: (id) => api.put(`/profile/role-change-requests/${id}/approve`),
-      rejectRoleChangeRequest: (id, data) => api.put(`/profile/role-change-requests/${id}/reject`, data),
-    },
+  // Notification Endpoints
+  notifications: {
+    getAll: (params) => api.get('/notifications', { params }),
+    getUnreadCount: () => api.get('/notifications/unread-count'),
+    markAsRead: (id) => api.put(`/notifications/${id}/read`),
+    delete: (id) => api.delete(`/notifications/${id}`),
+    getPreferences: () => api.get('/notifications/preferences'),
+    updatePreferences: (data) => api.put('/notifications/preferences', data),
+  },
 
-    // Companies
-    companies: {
-      getAll: (params = {}) => api.get('/companies', { params }),
-      getById: (id) => api.get(`/companies/${id}`),
-      create: (data) => api.post('/companies', data),
-      update: (id, data) => api.put(`/companies/${id}`, data),
-      getJobs: (companyId) => api.get(`/companies/${companyId}/jobs`),
-    },
+  // Subscription Endpoints
+  subscriptions: {
+    getPlans: () => api.get('/subscriptions/plans'),
+    getCurrent: () => api.get('/subscriptions/current'),
+    upgrade: (data) => api.post('/subscriptions/upgrade', data),
+    cancel: () => api.post('/subscriptions/cancel'),
+  },
 
-    // Subscriptions
-    subscriptions: {
-      getCurrent: () => api.get('/billing/subscription'),
-      createCheckout: (tier) => api.post('/billing/checkout', { tier }),
-      createPortal: () => api.post('/billing/portal'),
-      update: (tier) => api.post('/billing/subscription/update', { tier }),
-      cancel: () => api.post('/billing/subscription/cancel'),
-    },
+  // Recruiter Endpoints
+  recruiter: {
+    getDashboard: (dateRange) => api.get('/recruiter/dashboard', { params: { dateRange } }),
+    getJobs: (params) => api.get('/recruiter/jobs', { params }),
+    createJob: (data) => api.post('/recruiter/jobs', data),
+    getJobById: (id) => api.get(`/recruiter/jobs/${id}`),
+    updateJob: (id, data) => api.put(`/recruiter/jobs/${id}`, data),
+    deleteJob: (id) => api.delete(`/recruiter/jobs/${id}`),
+    publishJob: (id) => api.post(`/recruiter/jobs/${id}/publish`),
+    deactivateJob: (id) => api.post(`/recruiter/jobs/${id}/deactivate`),
+    getJobApplicants: (jobId, params) => api.get(`/recruiter/jobs/${jobId}/applicants`, { params }),
+    updateApplicantStatus: (jobId, applicantId, status, notes) =>
+      api.put(`/recruiter/jobs/${jobId}/applicants/${applicantId}`, { status, notes }),
+    getCandidates: (params) => api.get('/recruiter/candidates', { params }),
+    getCandidateById: (id) => api.get(`/recruiter/candidates/${id}`),
+    saveCandidate: (id) => api.post(`/recruiter/candidates/${id}/save`),
+    getAnalytics: (dateRange) => api.get('/recruiter/analytics', { params: { dateRange } }),
+    updateSettings: (data) => api.put('/recruiter/settings', data),
+    sendEmail: (data) => api.post('/recruiter/emails/send', data),
+    scheduleInterview: (data) => api.post('/recruiter/interviews/schedule', data),
+  },
+};
 
-    // Email Preferences
-    email: {
-      getPreferences: () => api.get('/email/preferences'),
-      updatePreference: (emailType, enabled) => api.put(`/email/preferences/${emailType}`, { enabled }),
-      unsubscribe: (token) => api.post('/email/unsubscribe', { token }),
-    },
-
-    // Unified Messaging System (for all roles)
-    messages: {
-      // Conversations
-      getConversations: () => api.get('/messages/conversations'),
-      getConversation: (userId) => api.get(`/messages/conversation/${userId}`),
-
-      // Messages
-      getMessages: (conversationId) => api.get(`/messages/${conversationId}`),
-      sendMessage: (conversationId, data) => api.post(`/messages/${conversationId}`, data),
-      markAsRead: (messageId) => api.put(`/messages/${messageId}/read`),
-
-      // AI Features
-      getAISuggestions: (conversationId, context) => api.post('/messages/ai/suggestions', { conversationId, context }),
-      improveMessage: (message, improvementType) => api.post('/messages/ai/improve', { message, improvement_type: improvementType }),
-    },
-
-    // Admin Endpoints
-    admin: {
-      getDashboard: (dateRange) => api.get('/admin/dashboard', { params: { dateRange } }),
-      getUsers: (params) => api.get('/admin/users', { params }),
-      getUserById: (id) => api.get(`/admin/users/${id}`),
-      updateUser: (id, data) => api.put(`/admin/users/${id}`, data),
-      deleteUser: (id) => api.delete(`/admin/users/${id}`),
-      suspendUser: (id, reason) => api.post(`/admin/users/${id}/suspend`, { reason }),
-      getJobs: (params) => api.get('/admin/jobs', { params }),
-      getApplications: (params) => api.get('/admin/applications', { params }),
-      getAnalytics: (dateRange) => api.get('/admin/analytics', { params: { dateRange } }),
-      getModeration: (params) => api.get('/admin/moderation', { params }),
-      approveModeration: (id) => api.post(`/admin/moderation/${id}/approve`),
-      rejectModeration: (id, reason) => api.post(`/admin/moderation/${id}/reject`, { reason }),
-      updateSettings: (data) => api.put('/admin/settings', data),
-      getReports: () => api.get('/admin/reports'),
-      generateReport: (data) => api.post('/admin/reports/generate', data),
-    },
-
-    // Statistics Endpoints
-    statistics: {
-      getOverview: (dateRange) => api.get('/statistics/overview', { params: { dateRange } }),
-      getUserStats: () => api.get('/statistics/user'),
-      getJobStats: (dateRange) => api.get('/statistics/jobs', { params: { dateRange } }),
-      getApplicationStats: (dateRange) => api.get('/statistics/applications', { params: { dateRange } }),
-      getRevenueStats: (dateRange) => api.get('/statistics/revenue', { params: { dateRange } }),
-    },
-
-    // Autopilot Endpoints (formerly Auto-Apply)
-    autopilot: {
-      getSettings: () => api.get('/autopilot/settings'),
-      saveSettings: (data) => api.post('/autopilot/settings', data),
-      getLogs: (params) => api.get('/autopilot/logs', { params }),
-      process: () => api.post('/autopilot/process'),
-    },
-    // Legacy Auto-Apply Endpoints (for backward compatibility)
-    autoApply: {
-      getSettings: () => api.get('/autopilot/settings'),
-      saveSettings: (data) => api.post('/autopilot/settings', data),
-      getLogs: (params) => api.get('/autopilot/logs', { params }),
-      process: () => api.post('/autopilot/process'),
-    },
-
-    // Notification Endpoints
-    notifications: {
-      getAll: (params) => api.get('/notifications', { params }),
-      getUnreadCount: () => api.get('/notifications/unread-count'),
-      markAsRead: (id) => api.put(`/notifications/${id}/read`),
-      delete: (id) => api.delete(`/notifications/${id}`),
-      getPreferences: () => api.get('/notifications/preferences'),
-      updatePreferences: (data) => api.put('/notifications/preferences', data),
-    },
-
-    // Subscription Endpoints
-    subscriptions: {
-      getPlans: () => api.get('/subscriptions/plans'),
-      getCurrent: () => api.get('/subscriptions/current'),
-      upgrade: (data) => api.post('/subscriptions/upgrade', data),
-      cancel: () => api.post('/subscriptions/cancel'),
-    },
-
-    // Recruiter Endpoints
-    recruiter: {
-      getDashboard: (dateRange) => api.get('/recruiter/dashboard', { params: { dateRange } }),
-      getJobs: (params) => api.get('/recruiter/jobs', { params }),
-      createJob: (data) => api.post('/recruiter/jobs', data),
-      getJobById: (id) => api.get(`/recruiter/jobs/${id}`),
-      updateJob: (id, data) => api.put(`/recruiter/jobs/${id}`, data),
-      deleteJob: (id) => api.delete(`/recruiter/jobs/${id}`),
-      publishJob: (id) => api.post(`/recruiter/jobs/${id}/publish`),
-      deactivateJob: (id) => api.post(`/recruiter/jobs/${id}/deactivate`),
-      getJobApplicants: (jobId, params) => api.get(`/recruiter/jobs/${jobId}/applicants`, { params }),
-      updateApplicantStatus: (jobId, applicantId, status, notes) =>
-        api.put(`/recruiter/jobs/${jobId}/applicants/${applicantId}`, { status, notes }),
-      getCandidates: (params) => api.get('/recruiter/candidates', { params }),
-      getCandidateById: (id) => api.get(`/recruiter/candidates/${id}`),
-      saveCandidate: (id) => api.post(`/recruiter/candidates/${id}/save`),
-      getAnalytics: (dateRange) => api.get('/recruiter/analytics', { params: { dateRange } }),
-      updateSettings: (data) => api.put('/recruiter/settings', data),
-      sendEmail: (data) => api.post('/recruiter/emails/send', data),
-      scheduleInterview: (data) => api.post('/recruiter/interviews/schedule', data),
-    },
-  };
-
-  export default api;
+export default api;
