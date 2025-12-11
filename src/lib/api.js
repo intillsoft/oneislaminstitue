@@ -46,7 +46,11 @@ api.interceptors.response.use(
         (error.request && !error.response);
 
       if (isConnectionRefused) {
-        return Promise.reject(new Error('Cannot connect to backend server. Please make sure the backend is running on http://localhost:3001. Start it with: cd backend && npm start'));
+        const isProd = window.location.hostname !== 'localhost';
+        const msg = isProd
+          ? 'Unable to connect to the server. Please check your connection or try again later.'
+          : 'Cannot connect to backend server. Please make sure the backend is running on http://localhost:3001. Start it with: cd backend && npm start';
+        return Promise.reject(new Error(msg));
       }
 
       return Promise.reject(new Error('Network error. Please check your internet connection and try again.'));
