@@ -48,7 +48,7 @@ const ApplicationPipeline = ({ filterStatus, applications = [] }) => {
   // Transform applications to display format
   const transformedApplications = applications.map(app => {
     const job = jobsData[app.job_id] || {};
-    const appliedDate = app.applied_at ? new Date(app.applied_at) : new Date(app.created_at);
+    const appliedDate = app.applied_at ? new Date(app.applied_at) : (app.created_at ? new Date(app.created_at) : new Date());
     const daysAgo = Math.floor((new Date() - appliedDate) / (1000 * 60 * 60 * 24));
 
     // Calculate probability based on status
@@ -76,7 +76,7 @@ const ApplicationPipeline = ({ filterStatus, applications = [] }) => {
       position: job.title || 'Unknown Position',
       location: job.location || 'Location not specified',
       salary: job.salary || 'Salary not specified',
-      appliedDate: format(appliedDate, 'yyyy-MM-dd'),
+      appliedDate: !isNaN(appliedDate.getTime()) ? format(appliedDate, 'yyyy-MM-dd') : format(new Date(), 'yyyy-MM-dd'),
       status: app.status,
       stage: stageMap[app.status] || app.status,
       nextAction: getNextAction(app.status, app.applied_at),
@@ -312,8 +312,8 @@ const ApplicationPipeline = ({ filterStatus, applications = [] }) => {
           <div
             key={app?.id}
             className={`bg-white dark:bg-[#13182E] border rounded-lg p-4 md:p-6 hover:shadow-lg transition-shadow ${selectedApps.has(app.id)
-                ? 'border-workflow-primary bg-workflow-primary-50 dark:bg-workflow-primary-900/20'
-                : 'border-gray-200 dark:border-[#1E2640]'
+              ? 'border-workflow-primary bg-workflow-primary-50 dark:bg-workflow-primary-900/20'
+              : 'border-gray-200 dark:border-[#1E2640]'
               }`}
           >
             {/* Header Row */}

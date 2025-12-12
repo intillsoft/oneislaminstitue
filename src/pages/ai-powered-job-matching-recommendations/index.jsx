@@ -44,7 +44,7 @@ const AIPoweredJobMatchingRecommendations = () => {
     try {
       setLoading(true);
 
-      // Get user's default resume
+      // Get user's default resume (needed for profile extraction)
       const resumes = await resumeService.getAll();
       const defaultResume = resumes.find(r => r.is_default) || resumes[0];
 
@@ -54,13 +54,39 @@ const AIPoweredJobMatchingRecommendations = () => {
         return;
       }
 
+      // Extract user profile from resume for UI display
+      const resumeContent = defaultResume.content_json || {};
+      setUserProfile({
+        name: user.email?.split('@')[0] || 'User',
+        skills: extractSkills(resumeContent),
+        experience: '5 years', // Placeholder
+        desiredRole: defaultResume.title || 'Developer',
+      });
+
+      // Fetch personalized recommendations from backend
+      // This uses the AdvancedRecommendationEngine on the server
+      try {
+        const recommendations = await aiService.getPersonalizedRecommendations({
+          limit: 20,
+          minScore: filters.minMatch || 50,
+        });
+
+        if (recommendations && recommendations.length > 0) {
+          setMatchingJobs(recommendations);
+          return;
+        }
+      } catch (backendError) {
+        console.warn('Backend recommendation service unavailable, falling back to client-side:', backendError);
+      }
+
+      // FALLBACK: Client-side matching if backend fails or returns no results
       // Get all jobs
       const jobsResult = await jobService.getAll({ pageSize: 50 });
       const jobs = jobsResult.data || [];
 
-      // Match jobs with resume using AI
+      // Match jobs with resume using AI (legacy loop)
       const matches = [];
-      for (const job of jobs.slice(0, 20)) { // Limit to 20 for performance
+      for (const job of jobs.slice(0, 10)) { // Reduced limit for fallback
         try {
           const matchResult = await aiService.matchJob(defaultResume.id, job.id);
           matches.push({
@@ -72,32 +98,16 @@ const AIPoweredJobMatchingRecommendations = () => {
           });
         } catch (error) {
           console.error(`Error matching job ${job.id}:`, error);
-          // Fallback: add job with 0 match score
-          matches.push({
-            ...job,
-            matchScore: 0,
-            skillGaps: [],
-            matchedSkills: [],
-          });
+          matches.push({ ...job, matchScore: 0 });
         }
       }
 
-      // Sort by match score
       matches.sort((a, b) => b.matchScore - a.matchScore);
       setMatchingJobs(matches);
 
-      // Extract user profile from resume
-      const resumeContent = defaultResume.content_json || {};
-      setUserProfile({
-        name: user.email?.split('@')[0] || 'User',
-        skills: extractSkills(resumeContent),
-        experience: '5 years', // TODO: Extract from resume
-        desiredRole: 'Developer', // TODO: Extract from resume
-      });
-
     } catch (error) {
       console.error('Error loading recommendations:', error);
-      showError('Failed to load AI recommendations. Make sure backend is running.');
+      showError('Failed to load AI recommendations. Please check your connection.');
     } finally {
       setLoading(false);
     }

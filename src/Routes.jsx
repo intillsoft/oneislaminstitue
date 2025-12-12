@@ -478,6 +478,8 @@ const AnimatedRoutes = () => {
       <Route path="/job-search-browse" element={<Navigate replace to="/jobs" />} />
       <Route path="/job-seeker-dashboard" element={<Navigate replace to="/dashboard" />} />
       <Route path="/workflow-application-tracking-analytics" element={<Navigate replace to="/dashboard/applications" />} />
+      <Route path="/dashboard/profile" element={<Navigate replace to="/profile" />} />
+      <Route path="/user-profile" element={<Navigate replace to="/profile" />} />
 
       <Route path="*" element={<NotFound />} />
     </RouterRoutes>

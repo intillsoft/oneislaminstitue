@@ -162,6 +162,7 @@ export const apiService = {
     getSkillAnalysis: () => api.get('/ai/career/skill-analysis', { timeout: 60000 }),
     generateCompletion: (data) => api.post('/ai/completion', data, { timeout: 120000 }),
     validateInput: (data) => api.post('/ai/validate', data, { timeout: 60000 }),
+    getRecommendations: (params) => api.get('/recommendations/jobs', { params, timeout: 60000 }),
 
     // Talent AI
     optimizeGig: (data) => api.post('/ai/talent/gig-doctor', data, { timeout: 120000 }),

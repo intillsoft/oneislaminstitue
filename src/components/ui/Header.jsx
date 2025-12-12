@@ -175,6 +175,24 @@ const Header = () => {
             })}
           </nav>
 
+          {/* Search Bar - Desktop */}
+          <div className="hidden md:flex flex-1 max-w-md mx-8">
+            <div className="relative w-full">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <Search className="h-5 w-5 text-gray-400" />
+              </div>
+              <form onSubmit={handleSearchSubmit}>
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="block w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-[#1E2640] rounded-lg leading-5 bg-gray-50 dark:bg-[#13182E] text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:bg-white focus:ring-1 focus:ring-workflow-primary focus:border-workflow-primary sm:text-sm transition-colors duration-200"
+                  placeholder="Search jobs, companies, or talent..."
+                />
+              </form>
+            </div>
+          </div>
+
           {/* Right Side Actions */}
           <div className="flex items-center gap-3">
             {/* Dark Mode Toggle - Visible on tablet and desktop */}
@@ -223,7 +241,7 @@ const Header = () => {
                       className="absolute right-0 mt-2 w-48 bg-white dark:bg-[#13182E] rounded-xl shadow-modal border border-[#E2E8F0] dark:border-[#1E2640] overflow-hidden z-50"
                     >
                       <Link
-                        to="/user-profile"
+                        to="/profile"
                         className="flex items-center gap-3 px-4 py-3 hover:bg-secondary-100 dark:hover:bg-dark-surface transition-colors"
                         onClick={() => setIsUserMenuOpen(false)}
                       >
@@ -255,13 +273,13 @@ const Header = () => {
             ) : (
               <div className="flex items-center gap-3">
                 <Link
-                  to="/login"
+                  to="/job-seeker-registration-login"
                   className="px-4 py-2 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-300 text-sm font-medium"
                 >
                   Sign In
                 </Link>
                 <Link
-                  to="/register"
+                  to="/job-seeker-registration-login"
                   className="px-4 py-2 bg-workflow-primary text-white rounded-lg hover:bg-workflow-primary-600 transition-all duration-300 shadow-soft hover:shadow-card-hover hover:scale-105 active:scale-95 text-sm font-medium"
                 >
                   Sign Up

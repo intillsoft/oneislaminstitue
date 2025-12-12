@@ -96,6 +96,28 @@ export const aiService = {
   },
 
   /**
+   * Get Personalized Job Recommendations (Bulk)
+   */
+  async getPersonalizedRecommendations(options = {}) {
+    try {
+      const response = await apiService.ai.getRecommendations({
+        limit: options.limit || 20,
+        minScore: options.minScore || 60,
+        includeExplanations: options.includeExplanations !== false,
+        useAI: options.useAI !== false
+      });
+
+      if (response.data && response.data.success && response.data.data) {
+        return response.data.data.recommendations || [];
+      }
+      return [];
+    } catch (error) {
+      console.warn('Recommendation API failed, falling back to local matching:', error);
+      throw error;
+    }
+  },
+
+  /**
    * Generate Interview Questions
    */
   async generateInterviewQuestions(jobDescription, companyName = null, difficulty = 'medium') {
