@@ -6,13 +6,14 @@ import { useToast } from '../../components/ui/Toast';
 import { useNavigate } from 'react-router-dom';
 import { aiService } from '../../services/aiService';
 import { apiService } from '../../lib/api';
-import { 
-  Sparkles, Send, Settings, Zap, FileText, Download, 
+import {
+  Sparkles, Send, Settings, Zap, FileText, Download,
   Copy, ThumbsUp, ThumbsDown, RefreshCw, X, Maximize2,
   Minimize2, MessageSquare, Code, Palette, Globe, CheckCircle2, Edit2
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import TypingIndicator from '../../components/ui/TypingIndicator';
+import AILoader from '../../components/ui/AILoader';
 import { extractAndCorrect, correctSpelling } from '../../utils/spellChecker';
 
 const ResumeGeneratorAI = () => {
@@ -30,7 +31,7 @@ const ResumeGeneratorAI = () => {
   const [resumeLimit, setResumeLimit] = useState(1);
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
-  
+
   const [resumeData, setResumeData] = useState({
     jobTitle: '',
     experienceLevel: '',
@@ -71,11 +72,11 @@ const ResumeGeneratorAI = () => {
       // Get user's subscription tier
       const tier = profile?.subscription_tier || user?.subscription_tier || 'free';
       setSubscriptionTier(tier);
-      
+
       // Get resume count
       const resumes = await resumeService.getAll();
       setResumeCount(resumes?.length || 0);
-      
+
       // Set limits based on tier (admins have unlimited)
       const isAdmin = profile?.role === 'admin' || user?.role === 'admin';
       if (isAdmin) {
@@ -97,7 +98,7 @@ const ResumeGeneratorAI = () => {
   const checkResumeLimit = () => {
     const isAdmin = profile?.role === 'admin' || user?.role === 'admin';
     if (isAdmin) return true; // Admins have unlimited
-    
+
     if (resumeLimit === -1) return true; // Unlimited tier
     return resumeCount < resumeLimit;
   };
@@ -117,14 +118,14 @@ const ResumeGeneratorAI = () => {
 
     try {
       const lowerMessage = message.toLowerCase().trim();
-      
+
       // Check if user wants to generate resume
-      const wantsToGenerate = lowerMessage.includes('generate') || 
-                             lowerMessage.includes('create') || 
-                             lowerMessage.includes('make') ||
-                             lowerMessage.includes('build') ||
-                             (lowerMessage.includes('resume') && (lowerMessage.includes('start') || lowerMessage.includes('begin')));
-      
+      const wantsToGenerate = lowerMessage.includes('generate') ||
+        lowerMessage.includes('create') ||
+        lowerMessage.includes('make') ||
+        lowerMessage.includes('build') ||
+        (lowerMessage.includes('resume') && (lowerMessage.includes('start') || lowerMessage.includes('begin')));
+
       if (wantsToGenerate && conversationMode === 'chat') {
         // Check resume limit
         if (!checkResumeLimit()) {
@@ -200,9 +201,9 @@ IMPORTANT: Be warm, friendly, and conversational. Use emojis sparingly but effec
       });
 
       // Update conversation context
-      setConversationContext(prev => [...prev, 
-        { role: 'user', content: message },
-        { role: 'assistant', content: aiResponse }
+      setConversationContext(prev => [...prev,
+      { role: 'user', content: message },
+      { role: 'assistant', content: aiResponse }
       ].slice(-20)); // Keep last 20 messages
 
       setMessages(prev => [...prev, {
@@ -214,7 +215,7 @@ IMPORTANT: Be warm, friendly, and conversational. Use emojis sparingly but effec
       // Enhanced fallback responses
       const lowerMessage = message.toLowerCase();
       let fallbackResponse = '';
-      
+
       if (lowerMessage.includes('ats') || lowerMessage.includes('applicant tracking')) {
         fallbackResponse = `**ATS Optimization Tips:**\n\n1. Use standard section headings (Experience, Education, Skills)\n2. Include relevant keywords from job descriptions\n3. Use simple, clean formatting\n4. Avoid graphics, tables, or complex layouts\n5. Save as PDF for best compatibility\n\nWould you like me to help optimize your resume for ATS?`;
       } else if (lowerMessage.includes('skill') || lowerMessage.includes('competenc')) {
@@ -245,7 +246,7 @@ IMPORTANT: Be warm, friendly, and conversational. Use emojis sparingly but effec
       // Use spell checker for experience level
       const corrected = extractAndCorrect(message, 'experience');
       let expLevel = corrected || message.toLowerCase();
-      
+
       // Fallback to keyword matching if spell checker didn't find a match
       if (!corrected) {
         if (expLevel.includes('entry') || expLevel.includes('junior') || expLevel.includes('beginner')) {
@@ -258,11 +259,11 @@ IMPORTANT: Be warm, friendly, and conversational. Use emojis sparingly but effec
           expLevel = 'executive';
         }
       }
-      
-      const friendlyMessage = corrected && corrected !== message.toLowerCase() 
+
+      const friendlyMessage = corrected && corrected !== message.toLowerCase()
         ? `Great! I understood "${message}" as **${expLevel}** level. 💼`
         : `Great! **${expLevel}** level it is. 💼`;
-      
+
       setResumeData(prev => ({ ...prev, experienceLevel: expLevel }));
       setMessages(prev => [...prev, {
         role: 'assistant',
@@ -273,11 +274,11 @@ IMPORTANT: Be warm, friendly, and conversational. Use emojis sparingly but effec
       // Use spell checker for industry
       const corrected = extractAndCorrect(message, 'industry');
       const industry = corrected || message;
-      
+
       const friendlyMessage = corrected && corrected !== message.toLowerCase()
         ? `Excellent! I understood "${message}" as **${industry}** industry. 🏢`
         : `Excellent! **${industry}** industry. 🏢`;
-      
+
       setResumeData(prev => ({ ...prev, industry }));
       setMessages(prev => [...prev, {
         role: 'assistant',
@@ -304,24 +305,24 @@ IMPORTANT: Be warm, friendly, and conversational. Use emojis sparingly but effec
     } else if (conversationMode === 'ready') {
       // Use spell checker for style
       const corrected = extractAndCorrect(message, 'style');
-      const styleMatch = corrected || ['professional', 'creative', 'technical'].find(s => 
+      const styleMatch = corrected || ['professional', 'creative', 'technical'].find(s =>
         message.toLowerCase().includes(s)
       );
-      
+
       if (styleMatch) {
         const friendlyMessage = corrected && corrected !== message.toLowerCase()
           ? `Perfect! I understood "${message}" as **${styleMatch}** style. Let's create your resume!`
           : `Perfect! **${styleMatch}** style it is. Let's create your resume!`;
-        
+
         setResumeData(prev => ({ ...prev, style: styleMatch }));
         setConversationMode('generating');
-        
+
         setMessages(prev => [...prev, {
           role: 'assistant',
           content: friendlyMessage,
           timestamp: new Date()
         }]);
-        
+
         await handleGenerate();
       } else {
         setMessages(prev => [...prev, {
@@ -343,9 +344,9 @@ IMPORTANT: Be warm, friendly, and conversational. Use emojis sparingly but effec
       }]);
 
       // Validate all required fields
-      if (!resumeData.jobTitle || !resumeData.experienceLevel || !resumeData.industry || 
-          !resumeData.skills || resumeData.skills.length === 0 || 
-          !resumeData.achievements || resumeData.achievements.length === 0) {
+      if (!resumeData.jobTitle || !resumeData.experienceLevel || !resumeData.industry ||
+        !resumeData.skills || resumeData.skills.length === 0 ||
+        !resumeData.achievements || resumeData.achievements.length === 0) {
         throw new Error('Missing required information. Please provide all details.');
       }
 
@@ -372,7 +373,7 @@ IMPORTANT: Be warm, friendly, and conversational. Use emojis sparingly but effec
       } else {
         resumeContent = generatedResume;
       }
-      
+
       if (!resumeContent || typeof resumeContent !== 'object' || Object.keys(resumeContent).length === 0) {
         throw new Error('Invalid resume data received. Please try again.');
       }
@@ -394,9 +395,9 @@ IMPORTANT: Be warm, friendly, and conversational. Use emojis sparingly but effec
       }]);
 
       success('Resume generated and saved successfully!');
-      
+
       setTimeout(() => {
-        navigate(`/resume-builder-ai-enhancement?resumeId=${savedResume.id}`, { 
+        navigate(`/resume-builder-ai-enhancement?resumeId=${savedResume.id}`, {
           replace: true,
           state: { resumeId: savedResume.id }
         });
@@ -442,7 +443,7 @@ IMPORTANT: Be warm, friendly, and conversational. Use emojis sparingly but effec
       <Helmet>
         <title>AI Resume Generator - Workflows</title>
       </Helmet>
-      
+
       <div className={`${isFullscreen ? 'fixed inset-0 z-50' : 'min-h-screen'} bg-background dark:bg-[#0A0E27] transition-all duration-300`}>
         <div className={`${isFullscreen ? 'h-full' : 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8'}`}>
           {!isFullscreen && <div className="mb-6"><div className="text-sm text-text-secondary dark:text-[#8B92A3]">Resume Generator</div></div>}
@@ -467,7 +468,7 @@ IMPORTANT: Be warm, friendly, and conversational. Use emojis sparingly but effec
                   </p>
                 </div>
               </div>
-              
+
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => setShowTools(!showTools)}
@@ -558,24 +559,23 @@ IMPORTANT: Be warm, friendly, and conversational. Use emojis sparingly but effec
                       <Sparkles className="w-4 h-4 text-white" />
                     </div>
                   )}
-                  
+
                   <div className={`flex-1 max-w-3xl ${msg.role === 'user' ? 'order-2' : ''}`}>
                     <div
-                      className={`rounded-2xl p-4 ${
-                        msg.role === 'user'
+                      className={`rounded-2xl p-4 ${msg.role === 'user'
                           ? 'bg-workflow-primary text-white ml-auto'
                           : 'bg-white dark:bg-[#1A2139] text-text-primary dark:text-[#E8EAED] border border-border dark:border-[#1E2640] shadow-sm'
-                      }`}
+                        }`}
                     >
                       <div className="prose prose-sm dark:prose-invert max-w-none">
-                        <div className="whitespace-pre-wrap" dangerouslySetInnerHTML={{ 
+                        <div className="whitespace-pre-wrap" dangerouslySetInnerHTML={{
                           __html: msg.content.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                                            .replace(/\*(.*?)\*/g, '<em>$1</em>')
-                                            .replace(/\n/g, '<br />')
+                            .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                            .replace(/\n/g, '<br />')
                         }} />
                       </div>
                     </div>
-                    
+
                     {msg.role === 'assistant' && (
                       <div className="flex items-center gap-2 mt-2">
                         <button
@@ -614,10 +614,10 @@ IMPORTANT: Be warm, friendly, and conversational. Use emojis sparingly but effec
                       <div className="flex-1 max-w-3xl order-2 relative group">
                         <div className="rounded-2xl p-4 bg-workflow-primary text-white ml-auto">
                           <div className="prose prose-sm dark:prose-invert max-w-none">
-                            <div className="whitespace-pre-wrap" dangerouslySetInnerHTML={{ 
+                            <div className="whitespace-pre-wrap" dangerouslySetInnerHTML={{
                               __html: msg.content.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                                                .replace(/\*(.*?)\*/g, '<em>$1</em>')
-                                                .replace(/\n/g, '<br />')
+                                .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                                .replace(/\n/g, '<br />')
                             }} />
                           </div>
                         </div>
@@ -634,10 +634,10 @@ IMPORTANT: Be warm, friendly, and conversational. Use emojis sparingly but effec
                               const editedContent = prompt(msg.content);
                               if (editedContent && editedContent !== msg.content) {
                                 // Update the message
-                                setMessages(prev => prev.map(m => 
+                                setMessages(prev => prev.map(m =>
                                   m.id === msg.id ? { ...m, content: editedContent } : m
                                 ));
-                                
+
                                 // Regenerate AI response
                                 setIsTyping(true);
                                 try {
@@ -645,7 +645,7 @@ IMPORTANT: Be warm, friendly, and conversational. Use emojis sparingly but effec
                                     role: m.role,
                                     content: m.id === msg.id ? editedContent : m.content,
                                   }));
-                                  
+
                                   const result = await aiService.generateCompletion(
                                     `User message: ${editedContent}\n\nContext: ${JSON.stringify(resumeData)}`,
                                     {
@@ -654,7 +654,7 @@ IMPORTANT: Be warm, friendly, and conversational. Use emojis sparingly but effec
                                       temperature: 0.7,
                                     }
                                   );
-                                  
+
                                   const aiResponse = {
                                     role: 'assistant',
                                     content: result,
@@ -680,7 +680,7 @@ IMPORTANT: Be warm, friendly, and conversational. Use emojis sparingly but effec
                   )}
                 </motion.div>
               ))}
-              
+
               {isTyping && (
                 <motion.div
                   initial={{ opacity: 0 }}
@@ -695,7 +695,7 @@ IMPORTANT: Be warm, friendly, and conversational. Use emojis sparingly but effec
                   </div>
                 </motion.div>
               )}
-              
+
               <div ref={messagesEndRef} />
             </div>
 
@@ -731,7 +731,7 @@ IMPORTANT: Be warm, friendly, and conversational. Use emojis sparingly but effec
                     <Send className="w-4 h-4" />
                   </button>
                 </div>
-                
+
                 <div className="flex items-center justify-between mt-2 text-xs text-text-secondary dark:text-[#8B92A3]">
                   <div className="flex items-center gap-4">
                     <button
