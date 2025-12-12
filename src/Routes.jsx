@@ -6,8 +6,8 @@ import ErrorBoundary from "components/ErrorBoundary";
 import Header from "components/ui/Header";
 import MobileBottomNav from "components/ui/MobileBottomNav";
 import ProtectedRoute from "components/ProtectedRoute";
-import JobSeekerRegistrationLogin from "pages/login";
-import JobDetailApplication from "pages/jobs/detail";
+import JobSeekerRegistrationLogin from "pages/job-seeker-registration-login";
+import JobDetailApplication from "pages/job-detail-application";
 import JobApplicationPage from "pages/job-application";
 import JobSearchBrowse from "pages/job-search-browse"; // Keeping component name, file structure might still be old
 import JobSeekerDashboard from "pages/job-seeker-dashboard";
