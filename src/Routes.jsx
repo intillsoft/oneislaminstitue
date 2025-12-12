@@ -103,8 +103,7 @@ const AnimatedRoutes = () => {
           <JobSeekerRegistrationLogin />
         </motion.div>
       } />
-      {/* Redundant login route kept for backward compatibility if needed, or redirect */}
-      <Route path="/login" element={<JobSeekerRegistrationLogin />} />
+
 
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/reset-password" element={<ResetPassword />} />
