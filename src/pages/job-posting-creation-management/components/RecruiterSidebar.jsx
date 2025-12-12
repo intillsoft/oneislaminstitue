@@ -4,53 +4,53 @@ import Icon from 'components/AppIcon';
 
 const RecruiterSidebar = ({ isCollapsed, toggleCollapse, isMobile, closeMobileSidebar }) => {
   const location = useLocation();
-  
+
   // Navigation items
   const navigationItems = [
-    { 
-      label: 'Dashboard', 
-      path: '/recruiter-dashboard-analytics', 
+    {
+      label: 'Dashboard',
+      path: '/recruiter-dashboard-analytics',
       icon: 'BarChart3',
       badge: null
     },
-    { 
-      label: 'Job Postings', 
-      path: '/job-posting-creation-management', 
+    {
+      label: 'Job Postings',
+      path: '/job-posting-creation-management',
       icon: 'Briefcase',
       badge: { count: 6, color: 'bg-primary text-white' }
     },
-    { 
-      label: 'Applications', 
-      path: '/job-detail-application', 
+    {
+      label: 'Applications',
+      path: '/job-detail-application',
       icon: 'FileText',
       badge: { count: 12, color: 'bg-success text-white' }
     },
-    { 
-      label: 'Company Profile', 
-      path: '/company-registration-profile-setup', 
+    {
+      label: 'Company Profile',
+      path: '/company-registration-profile-setup',
       icon: 'Building2',
       badge: null
     },
-    { 
-      label: 'Browse Jobs', 
-      path: '/job-search-browse', 
+    {
+      label: 'Browse Jobs',
+      path: '/jobs',
       icon: 'Search',
       badge: null
     }
   ];
-  
+
   // Secondary navigation items
   const secondaryNavItems = [
     { label: 'Settings', path: '#', icon: 'Settings' },
     { label: 'Billing', path: '#', icon: 'CreditCard' },
     { label: 'Help & Support', path: '#', icon: 'HelpCircle' }
   ];
-  
+
   // Check if a path is active
   const isActivePath = (path) => {
     return location?.pathname === path;
   };
-  
+
   return (
     <div className="h-screen flex flex-col">
       {/* Sidebar Header */}
@@ -61,7 +61,7 @@ const RecruiterSidebar = ({ isCollapsed, toggleCollapse, isMobile, closeMobileSi
           </div>
           {!isCollapsed && <span className="text-lg font-semibold text-text-primary">NicheBoard</span>}
         </Link>
-        
+
         {!isMobile && (
           <button
             onClick={toggleCollapse}
@@ -70,7 +70,7 @@ const RecruiterSidebar = ({ isCollapsed, toggleCollapse, isMobile, closeMobileSi
             <Icon name={isCollapsed ? "ChevronRight" : "ChevronLeft"} size={20} />
           </button>
         )}
-        
+
         {isMobile && (
           <button
             onClick={closeMobileSidebar}
@@ -107,17 +107,16 @@ const RecruiterSidebar = ({ isCollapsed, toggleCollapse, isMobile, closeMobileSi
             <Link
               key={item?.path}
               to={item?.path}
-              className={`flex items-center ${isCollapsed ? 'justify-center' : 'justify-between'} px-3 py-2 rounded-md transition-smooth ${
-                isActivePath(item?.path)
-                  ? 'bg-primary-50 text-primary' :'text-text-secondary hover:bg-surface hover:text-text-primary'
-              }`}
+              className={`flex items-center ${isCollapsed ? 'justify-center' : 'justify-between'} px-3 py-2 rounded-md transition-smooth ${isActivePath(item?.path)
+                  ? 'bg-primary-50 text-primary' : 'text-text-secondary hover:bg-surface hover:text-text-primary'
+                }`}
               onClick={isMobile ? closeMobileSidebar : undefined}
             >
               <div className="flex items-center">
                 <Icon name={item?.icon} size={20} className="flex-shrink-0" />
                 {!isCollapsed && <span className="ml-3 text-sm font-medium">{item?.label}</span>}
               </div>
-              
+
               {!isCollapsed && item?.badge && (
                 <span className={`inline-flex items-center justify-center px-2 py-0.5 rounded-full text-xs font-medium ${item?.badge?.color}`}>
                   {item?.badge?.count}
@@ -134,9 +133,8 @@ const RecruiterSidebar = ({ isCollapsed, toggleCollapse, isMobile, closeMobileSi
             <Link
               key={item?.label}
               to={item?.path}
-              className={`flex items-center px-3 py-2 rounded-md transition-smooth text-text-secondary hover:bg-surface hover:text-text-primary ${
-                isCollapsed ? 'justify-center' : ''
-              }`}
+              className={`flex items-center px-3 py-2 rounded-md transition-smooth text-text-secondary hover:bg-surface hover:text-text-primary ${isCollapsed ? 'justify-center' : ''
+                }`}
               onClick={isMobile ? closeMobileSidebar : undefined}
             >
               <Icon name={item?.icon} size={20} className="flex-shrink-0" />
@@ -148,9 +146,8 @@ const RecruiterSidebar = ({ isCollapsed, toggleCollapse, isMobile, closeMobileSi
       {/* Logout Button */}
       <div className="p-4 border-t border-border">
         <button
-          className={`flex items-center px-3 py-2 rounded-md transition-smooth text-text-secondary hover:bg-surface hover:text-error ${
-            isCollapsed ? 'justify-center w-full' : ''
-          }`}
+          className={`flex items-center px-3 py-2 rounded-md transition-smooth text-text-secondary hover:bg-surface hover:text-error ${isCollapsed ? 'justify-center w-full' : ''
+            }`}
         >
           <Icon name="LogOut" size={20} className="flex-shrink-0" />
           {!isCollapsed && <span className="ml-3 text-sm">Sign Out</span>}

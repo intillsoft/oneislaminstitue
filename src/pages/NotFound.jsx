@@ -16,16 +16,16 @@ const NotFound = () => {
             The page you're looking for doesn't exist or has been moved.
           </p>
         </div>
-        
+
         <div className="space-y-4">
           <Link
-            to="/job-search-browse"
+            to="/jobs"
             className="btn-primary w-full inline-flex items-center justify-center space-x-2"
           >
             <Icon name="Search" size={20} />
             <span>Browse Jobs</span>
           </Link>
-          
+
           <Link
             to="/job-seeker-registration-login"
             className="btn-secondary w-full inline-flex items-center justify-center space-x-2"

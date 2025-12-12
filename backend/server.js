@@ -12,8 +12,10 @@ import logger from './utils/logger.js';
 
 // Routes
 import billingRoutes from './routes/billing.js';
+import jobsRoutes from './routes/jobs.js';
 import webhookRoutes from './routes/webhooks.js';
 import emailRoutes from './routes/email.js';
+import jobsRoutes from './routes/jobs.js';
 import messagesRoutes from './routes/messages.js';
 import aiRoutes from './routes/ai.js';
 import chatRoutes from './routes/chat.js';
@@ -97,6 +99,7 @@ app.use('/api/webhooks', webhookRoutes); // No auth for webhooks
 
 // Job crawler (needs auth)
 app.use('/api/job-crawler', authenticate, jobCrawlerRoutes);
+app.use('/api/jobs', jobsRoutes);
 
 // Talent routes - routes handle their own authentication (some public, some authenticated)
 app.use('/api/talent', talentRoutes); // Routes handle auth individually - some public, some require auth

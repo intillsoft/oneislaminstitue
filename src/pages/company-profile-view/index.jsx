@@ -27,10 +27,10 @@ const CompanyProfileView = () => {
   const loadCompany = async () => {
     try {
       setLoading(true);
-      
+
       // Try to find company by ID first, then by name slug
       let query = supabase.from('companies').select('*');
-      
+
       // If companyId looks like a UUID, search by ID
       if (companyId && companyId.match(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i)) {
         query = query.eq('id', companyId);
@@ -39,13 +39,13 @@ const CompanyProfileView = () => {
         const nameFromSlug = companyId?.replace(/-/g, ' ');
         query = query.ilike('name', `%${nameFromSlug}%`);
       }
-      
+
       const { data, error } = await query.limit(1).maybeSingle();
-      
+
       if (error && error.code !== 'PGRST116') {
         throw error;
       }
-      
+
       if (data) {
         setCompany(data);
       } else {
@@ -115,7 +115,7 @@ const CompanyProfileView = () => {
                 <p className="text-text-secondary dark:text-gray-400 mb-6">
                   The company profile you're looking for doesn't exist or has been removed.
                 </p>
-                <Link to="/job-search-browse" className="btn-primary">
+                <Link to="/jobs" className="btn-primary">
                   Browse Jobs
                 </Link>
               </div>
@@ -138,22 +138,22 @@ const CompanyProfileView = () => {
         <main className="pt-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <Breadcrumb />
-            
+
             {/* Header */}
             <div className="bg-background dark:bg-[#13182E] rounded-lg shadow-sm border border-border dark:border-gray-700 p-6 mb-6">
               <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
                 <div className="w-24 h-24 rounded-lg overflow-hidden bg-white dark:bg-gray-800 border border-border dark:border-gray-700 flex items-center justify-center flex-shrink-0">
                   {company.logo ? (
-                    <Image 
-                      src={company.logo} 
-                      alt={company.name || 'Company logo'} 
+                    <Image
+                      src={company.logo}
+                      alt={company.name || 'Company logo'}
                       className="w-full h-full object-contain"
                     />
                   ) : (
                     <Icon name="Building2" size={48} className="text-secondary-400 dark:text-gray-600" />
                   )}
                 </div>
-                
+
                 <div className="flex-1">
                   <div className="flex items-start justify-between">
                     <div>
@@ -238,7 +238,7 @@ const CompanyProfileView = () => {
             {/* View Jobs Button */}
             <div className="bg-background dark:bg-[#13182E] rounded-lg shadow-sm border border-border dark:border-gray-700 p-6">
               <Link
-                to={`/job-search-browse?company=${encodeURIComponent(company.name)}`}
+                to={`/jobs?company=${encodeURIComponent(company.name)}`}
                 className="btn-primary w-full md:w-auto flex items-center justify-center space-x-2"
               >
                 <Icon name="Briefcase" size={16} />

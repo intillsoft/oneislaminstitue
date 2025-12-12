@@ -11,9 +11,9 @@ const Footer = () => {
     {
       title: 'Product',
       links: [
-        { label: 'Browse Jobs', path: '/job-search-browse' },
+        { label: 'Browse Jobs', path: '/jobs' },
         { label: 'Browse Talents', path: '/talent/discover' },
-        { label: 'For Recruiters', path: '/recruiter-dashboard-analytics' },
+        { label: 'For Recruiters', path: '/recruiter/dashboard' },
         { label: 'Pricing', path: '/pricing' },
       ]
     },

@@ -460,7 +460,7 @@ const RecommendedJobsSections = () => {
             className="view-all-button"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            onClick={() => navigate('/job-search-browse')}
+            onClick={() => navigate('/jobs')}
           >
             View All <ArrowRight className="ml-2 w-4 h-4" />
           </motion.button>

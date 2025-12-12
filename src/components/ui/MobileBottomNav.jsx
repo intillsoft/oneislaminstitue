@@ -15,7 +15,7 @@ const MobileBottomNav = () => {
     if (!isAuthenticated) {
       return [
         { path: '/', label: 'Home', icon: Home },
-        { path: '/job-search-browse', label: 'Search', icon: Search },
+        { path: '/jobs', label: 'Search', icon: Search },
         { path: '/talent/discover', label: 'Discover', icon: Users },
         { path: '/job-seeker-registration-login', label: 'Sign In', icon: User }
       ];
@@ -25,7 +25,7 @@ const MobileBottomNav = () => {
     if (userRole === 'admin') {
       return [
         { path: '/', label: 'Home', icon: Home },
-        { path: '/job-search-browse', label: 'Search', icon: Search },
+        { path: '/jobs', label: 'Search', icon: Search },
         { path: '/talent/discover', label: 'Discover', icon: Users },
         { path: '/admin-moderation-management', label: 'Admin', icon: Shield },
         { path: '/user-profile', label: 'Profile', icon: User }
@@ -36,7 +36,7 @@ const MobileBottomNav = () => {
     if (userRole === 'talent') {
       return [
         { path: '/', label: 'Home', icon: Home },
-        { path: '/job-search-browse', label: 'Search', icon: Search },
+        { path: '/jobs', label: 'Search', icon: Search },
         { path: '/talent/dashboard', label: 'Dashboard', icon: Briefcase },
         { path: '/talent/discover', label: 'Discover', icon: Users },
         { path: '/user-profile', label: 'Profile', icon: User }
@@ -47,7 +47,7 @@ const MobileBottomNav = () => {
     if (userRole === 'recruiter') {
       return [
         { path: '/', label: 'Home', icon: Home },
-        { path: '/job-search-browse', label: 'Search', icon: Search },
+        { path: '/jobs', label: 'Search', icon: Search },
         { path: '/talent/discover', label: 'Discover', icon: Users },
         { path: '/recruiter-dashboard-analytics', label: 'Dashboard', icon: Briefcase },
         { path: '/user-profile', label: 'Profile', icon: User }
@@ -57,7 +57,7 @@ const MobileBottomNav = () => {
     // Job seeker navigation (default)
     return [
       { path: '/', label: 'Home', icon: Home },
-      { path: '/job-search-browse', label: 'Search', icon: Search },
+      { path: '/jobs', label: 'Search', icon: Search },
       { path: '/talent/discover', label: 'Discover', icon: Users },
       { path: '/workflow-application-tracking-analytics', label: 'Applications', icon: FileText },
       { path: '/user-profile', label: 'Profile', icon: User }
@@ -84,7 +84,7 @@ const MobileBottomNav = () => {
         {navItems.map((item) => {
           const active = isActive(item.path);
           const Icon = item.icon;
-          
+
           return (
             <Link
               key={item.path}
@@ -100,11 +100,10 @@ const MobileBottomNav = () => {
               )}
               <motion.div
                 whileTap={{ scale: 0.9 }}
-                className={`flex flex-col items-center justify-center gap-1 px-3 py-2 rounded-xl transition-colors ${
-                  active 
-                    ? 'text-[#0046FF]' 
+                className={`flex flex-col items-center justify-center gap-1 px-3 py-2 rounded-xl transition-colors ${active
+                    ? 'text-[#0046FF]'
                     : 'text-gray-500 dark:text-gray-400'
-                }`}
+                  }`}
               >
                 <Icon className={`w-6 h-6 ${active ? 'scale-110' : ''} transition-transform`} />
                 <span className={`text-xs font-medium ${active ? 'font-semibold' : ''}`}>

@@ -85,7 +85,7 @@ const JobApplicationPage = () => {
 
     if (!jobId) {
       showError('Job ID is required');
-      navigate('/job-search-browse');
+      navigate('/jobs');
       return;
     }
 
@@ -142,7 +142,7 @@ const JobApplicationPage = () => {
     } catch (error) {
       console.error('Error loading data:', error);
       showError('Failed to load job details');
-      navigate('/job-search-browse');
+      navigate('/jobs');
     } finally {
       setLoading(false);
     }
@@ -278,7 +278,7 @@ const JobApplicationPage = () => {
       success('Application submitted successfully! You will receive a confirmation email shortly.');
 
       setTimeout(() => {
-        navigate('/job-seeker-dashboard?tab=applications');
+        navigate('/dashboard?tab=applications');
       }, 1500);
     } catch (error) {
       console.error('Application submission error:', error);

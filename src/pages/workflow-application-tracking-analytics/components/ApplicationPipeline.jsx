@@ -50,7 +50,7 @@ const ApplicationPipeline = ({ filterStatus, applications = [] }) => {
     const job = jobsData[app.job_id] || {};
     const appliedDate = app.applied_at ? new Date(app.applied_at) : new Date(app.created_at);
     const daysAgo = Math.floor((new Date() - appliedDate) / (1000 * 60 * 60 * 24));
-    
+
     // Calculate probability based on status
     const probabilityMap = {
       'accepted': 100,
@@ -60,7 +60,7 @@ const ApplicationPipeline = ({ filterStatus, applications = [] }) => {
       'rejected': 0,
       'withdrawn': 0
     };
-    
+
     const stageMap = {
       'applied': 'Application Submitted',
       'screening': 'Phone Screen',
@@ -69,7 +69,7 @@ const ApplicationPipeline = ({ filterStatus, applications = [] }) => {
       'rejected': 'Not Selected',
       'withdrawn': 'Withdrawn'
     };
-    
+
     return {
       id: app.id,
       company: job.company || 'Unknown Company',
@@ -93,8 +93,8 @@ const ApplicationPipeline = ({ filterStatus, applications = [] }) => {
     const date = appliedAt ? new Date(appliedAt) : new Date();
     const followUpDate = new Date(date);
     followUpDate.setDate(followUpDate.getDate() + 7);
-    
-    switch(status) {
+
+    switch (status) {
       case 'interview':
         return `Follow up on interview status`;
       case 'screening':
@@ -110,8 +110,8 @@ const ApplicationPipeline = ({ filterStatus, applications = [] }) => {
 
 
   // Search and filter
-  let filteredApplications = filterStatus === 'all' 
-    ? transformedApplications 
+  let filteredApplications = filterStatus === 'all'
+    ? transformedApplications
     : transformedApplications?.filter(app => {
       if (filterStatus === 'offer') return app.status === 'accepted';
       return app.status === filterStatus;
@@ -214,7 +214,7 @@ const ApplicationPipeline = ({ filterStatus, applications = [] }) => {
   };
 
   const getStatusIcon = (status) => {
-    switch(status) {
+    switch (status) {
       case 'offer':
         return <CheckCircle className="w-4 h-4" />;
       case 'rejected':
@@ -311,11 +311,10 @@ const ApplicationPipeline = ({ filterStatus, applications = [] }) => {
         {filteredApplications?.map((app) => (
           <div
             key={app?.id}
-            className={`bg-white dark:bg-[#13182E] border rounded-lg p-4 md:p-6 hover:shadow-lg transition-shadow ${
-              selectedApps.has(app.id)
+            className={`bg-white dark:bg-[#13182E] border rounded-lg p-4 md:p-6 hover:shadow-lg transition-shadow ${selectedApps.has(app.id)
                 ? 'border-workflow-primary bg-workflow-primary-50 dark:bg-workflow-primary-900/20'
                 : 'border-gray-200 dark:border-[#1E2640]'
-            }`}
+              }`}
           >
             {/* Header Row */}
             <div className="flex items-start gap-3 mb-4">
@@ -326,52 +325,52 @@ const ApplicationPipeline = ({ filterStatus, applications = [] }) => {
                 className="mt-1 w-4 h-4 text-workflow-primary focus:ring-workflow-primary border-[#E2E8F0] dark:border-[#1E2640] rounded"
               />
               <div className="flex items-start justify-between gap-4 flex-1">
-              <div className="flex items-start gap-4 flex-1">
-                <img
-                  src={app?.companyLogo}
-                  alt={`${app?.company} logo`}
-                  className="w-12 h-12 rounded-lg object-cover flex-shrink-0"
-                />
-                <div className="flex-1 min-w-0">
-                  <h3 className="text-lg font-bold text-gray-900 dark:text-[#E8EAED] mb-1">{app?.position}</h3>
-                  <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-[#8B92A3] mb-2">
-                    <Building className="w-4 h-4" />
-                    {app?.company}
-                  </div>
-                  <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600 dark:text-[#8B92A3]">
-                    <div className="flex items-center gap-1">
-                      <MapPin className="w-4 h-4" />
-                      {app?.location}
+                <div className="flex items-start gap-4 flex-1">
+                  <img
+                    src={app?.companyLogo}
+                    alt={`${app?.company} logo`}
+                    className="w-12 h-12 rounded-lg object-cover flex-shrink-0"
+                  />
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-lg font-bold text-gray-900 dark:text-[#E8EAED] mb-1">{app?.position}</h3>
+                    <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-[#8B92A3] mb-2">
+                      <Building className="w-4 h-4" />
+                      {app?.company}
                     </div>
-                    <div className="flex items-center gap-1">
-                      <DollarSign className="w-4 h-4" />
-                      {app?.salary}
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <Clock className="w-4 h-4" />
-                      Applied {app?.daysInStage} days ago
+                    <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600 dark:text-[#8B92A3]">
+                      <div className="flex items-center gap-1">
+                        <MapPin className="w-4 h-4" />
+                        {app?.location}
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <DollarSign className="w-4 h-4" />
+                        {app?.salary}
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <Clock className="w-4 h-4" />
+                        Applied {app?.daysInStage} days ago
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div className="flex items-center gap-2 flex-shrink-0">
-                <button 
-                  onClick={() => navigate(`/application-detail?id=${app.id}`)}
-                  className="text-[#0046FF] hover:text-blue-700"
-                  title="View Details"
-                >
-                  <FileText className="w-5 h-5" />
-                </button>
-                {app.job_id && (
-                  <button 
-                    onClick={() => navigate(`/job-detail-application?id=${app.job_id}`)}
+                <div className="flex items-center gap-2 flex-shrink-0">
+                  <button
+                    onClick={() => navigate(`/application-detail?id=${app.id}`)}
                     className="text-[#0046FF] hover:text-blue-700"
-                    title="View Job"
+                    title="View Details"
                   >
-                    <ExternalLink className="w-5 h-5" />
+                    <FileText className="w-5 h-5" />
                   </button>
-                )}
-              </div>
+                  {app.job_id && (
+                    <button
+                      onClick={() => navigate(`/job-detail-application?id=${app.job_id}`)}
+                      className="text-[#0046FF] hover:text-blue-700"
+                      title="View Job"
+                    >
+                      <ExternalLink className="w-5 h-5" />
+                    </button>
+                  )}
+                </div>
               </div>
             </div>
 
@@ -446,8 +445,8 @@ const ApplicationPipeline = ({ filterStatus, applications = [] }) => {
           </div>
           <h3 className="text-xl font-bold text-gray-900 dark:text-[#E8EAED] mb-2">No applications found</h3>
           <p className="text-gray-600 dark:text-[#8B92A3] mb-4">Try adjusting your filters or apply to jobs to get started</p>
-          <button 
-            onClick={() => navigate('/job-search-browse')}
+          <button
+            onClick={() => navigate('/jobs')}
             className="px-6 py-2 bg-[#0046FF] text-white rounded-lg font-medium hover:bg-blue-700 transition-colors"
           >
             Browse Jobs

@@ -8,7 +8,7 @@ const RegisterForm = ({ onSuccess, isLoading: externalLoading }) => {
   const { signUp, signInWithOAuth } = useAuthContext();
   const { success, error: showError } = useToast();
   const navigate = useNavigate();
-  
+
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -86,7 +86,7 @@ const RegisterForm = ({ onSuccess, isLoading: externalLoading }) => {
 
   const handleSubmit = async (e) => {
     e?.preventDefault();
-    
+
     if (!validateForm()) return;
 
     setIsLoading(true);
@@ -105,7 +105,7 @@ const RegisterForm = ({ onSuccess, isLoading: externalLoading }) => {
       } else {
         // Wait a bit then navigate
         setTimeout(() => {
-          navigate('/job-seeker-dashboard');
+          navigate('/dashboard');
         }, 2000);
       }
     } catch (error) {
@@ -121,7 +121,7 @@ const RegisterForm = ({ onSuccess, isLoading: externalLoading }) => {
   const handleChange = (e) => {
     const { name, value, type, checked } = e?.target;
     const newValue = type === 'checkbox' ? checked : value;
-    
+
     setFormData(prev => ({
       ...prev,
       [name]: newValue
@@ -131,7 +131,7 @@ const RegisterForm = ({ onSuccess, isLoading: externalLoading }) => {
     if (name === 'password') {
       setPasswordStrength(calculatePasswordStrength(value));
     }
-    
+
     // Clear errors when user starts typing
     if (errors?.[name]) {
       setErrors(prev => ({ ...prev, [name]: '' }));
@@ -254,11 +254,11 @@ const RegisterForm = ({ onSuccess, isLoading: externalLoading }) => {
             className="absolute inset-y-0 right-0 pr-3 flex items-center"
             disabled={loading}
           >
-            <Icon 
-              name={showPassword ? "EyeOff" : "Eye"} 
-              size={16} 
+            <Icon
+              name={showPassword ? "EyeOff" : "Eye"}
+              size={16}
               color="#64748B"
-              className="hover:text-[#0F172A] dark:hover:text-[#E8EAED] transition-smooth" 
+              className="hover:text-[#0F172A] dark:hover:text-[#E8EAED] transition-smooth"
             />
           </button>
         </div>
@@ -266,7 +266,7 @@ const RegisterForm = ({ onSuccess, isLoading: externalLoading }) => {
           <div className="mt-2">
             <div className="flex items-center gap-2 mb-1">
               <div className="flex-1 h-2 bg-[#E2E8F0] dark:bg-[#1E2640] rounded-full overflow-hidden">
-                <div 
+                <div
                   className={`h-full transition-all ${getPasswordStrengthColor(passwordStrength)}`}
                   style={{ width: `${(passwordStrength / 5) * 100}%` }}
                 />
@@ -310,11 +310,11 @@ const RegisterForm = ({ onSuccess, isLoading: externalLoading }) => {
             className="absolute inset-y-0 right-0 pr-3 flex items-center"
             disabled={loading}
           >
-            <Icon 
-              name={showConfirmPassword ? "EyeOff" : "Eye"} 
-              size={16} 
+            <Icon
+              name={showConfirmPassword ? "EyeOff" : "Eye"}
+              size={16}
               color="#64748B"
-              className="hover:text-[#0F172A] dark:hover:text-[#E8EAED] transition-smooth" 
+              className="hover:text-[#0F172A] dark:hover:text-[#E8EAED] transition-smooth"
             />
           </button>
         </div>

@@ -19,7 +19,7 @@ const JobSeekerDashboard = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const activeTab = searchParams.get('tab') || 'overview';
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
-  
+
   const setActiveTab = (tab) => {
     // Use replace: true to prevent page refresh/navigation
     setSearchParams({ tab }, { replace: true });
@@ -134,7 +134,7 @@ const JobSeekerDashboard = () => {
 
   return (
     <div className="bg-white dark:bg-[#0A0E27] min-h-screen pb-16 transition-colors duration-300 overflow-x-hidden">
-      <DashboardAIAssistant 
+      <DashboardAIAssistant
         dashboardType="job-seeker"
         contextData={{
           metrics,
@@ -147,45 +147,45 @@ const JobSeekerDashboard = () => {
         isCollapsed={isSidebarCollapsed}
         onCollapseChange={setIsSidebarCollapsed}
       />
-      
+
       {/* Main Content */}
       <div className={`transition-all duration-300 ${isSidebarCollapsed ? 'lg:ml-16' : 'lg:ml-[260px]'}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
           <Breadcrumb />
-          
+
           <div className="flex-1">
             <div className="bg-white dark:bg-[#13182E] rounded-lg shadow-sm border border-[#E2E8F0] dark:border-[#1E2640] p-6 mb-6 transition-colors duration-300">
               <div className="flex items-center justify-between mb-6">
                 <div>
                   <h1 className="text-2xl font-bold text-[#0F172A] dark:text-[#E8EAED]">
-                    {activeTab === 'overview' ? 'Dashboard' : 
-                     activeTab === 'applications' ? 'Applications' : 
-                     activeTab === 'saved' ? 'Saved Jobs' : 
-                     activeTab === 'alerts' ? 'Job Alerts' : 'Dashboard'}
+                    {activeTab === 'overview' ? 'Dashboard' :
+                      activeTab === 'applications' ? 'Applications' :
+                        activeTab === 'saved' ? 'Saved Jobs' :
+                          activeTab === 'alerts' ? 'Job Alerts' : 'Dashboard'}
                   </h1>
                   <p className="text-[#475569] dark:text-[#B4B9C4] mt-1">
-                    {activeTab === 'overview' ? `Welcome back, ${userData?.name}` : 
-                     activeTab === 'applications' ? 'Track your job applications' : 
-                     activeTab === 'saved' ? 'Jobs you\'ve saved for later' : 
-                     activeTab === 'alerts' ? 'Manage your job alert preferences' : ''}
+                    {activeTab === 'overview' ? `Welcome back, ${userData?.name}` :
+                      activeTab === 'applications' ? 'Track your job applications' :
+                        activeTab === 'saved' ? 'Jobs you\'ve saved for later' :
+                          activeTab === 'alerts' ? 'Manage your job alert preferences' : ''}
                   </p>
                 </div>
-                
+
                 <div className="flex space-x-3">
-                  <Link 
-                    to="/resume-builder-ai-enhancement" 
+                  <Link
+                    to="/dashboard/resume-builder"
                     className="btn-secondary flex items-center space-x-2"
                   >
                     <Icon name="Upload" size={16} />
                     <span className="hidden sm:inline">Update Resume</span>
                   </Link>
-                  <Link to="/job-search-browse" className="btn-primary flex items-center space-x-2">
+                  <Link to="/jobs" className="btn-primary flex items-center space-x-2">
                     <Icon name="Search" size={16} />
                     <span className="hidden sm:inline">Find Jobs</span>
                   </Link>
                 </div>
               </div>
-              
+
               {renderTabContent()}
             </div>
           </div>

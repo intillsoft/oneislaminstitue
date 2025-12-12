@@ -1098,7 +1098,7 @@ const HomePage = () => {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6 }}
-                onClick={() => navigate('/job-search-browse')}
+                onClick={() => navigate('/jobs')}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >

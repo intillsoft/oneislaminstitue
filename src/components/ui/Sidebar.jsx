@@ -67,8 +67,8 @@ const Sidebar = ({ isOpen, onClose, isCollapsed, onToggleCollapse }) => {
   // Navigation items based on role
   const navigationItems = {
     'job-seeker': [
-      { label: 'Dashboard', path: '/job-seeker-dashboard', icon: 'LayoutDashboard' },
-      { label: 'Browse Jobs', path: '/job-search-browse', icon: 'Search' },
+      { label: 'Dashboard', path: '/dashboard', icon: 'LayoutDashboard' },
+      { label: 'Browse Jobs', path: '/jobs', icon: 'Search' },
       { label: 'Applications', path: '/workflow-application-tracking-analytics', icon: 'FileText' },
       { label: 'Resume Builder', path: '/resume-builder-ai-enhancement', icon: 'FileEdit' },
       { label: 'Profile', path: '/user-profile', icon: 'User' },
@@ -151,11 +151,10 @@ const Sidebar = ({ isOpen, onClose, isCollapsed, onToggleCollapse }) => {
             key={item.path}
             to={item.path}
             onClick={handleNavClick}
-            className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 min-h-[44px] ${
-              isActive(item.path)
+            className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 min-h-[44px] ${isActive(item.path)
                 ? 'bg-workflow-primary-50 dark:bg-workflow-primary-900/20 text-workflow-primary dark:text-workflow-primary-400 font-semibold'
                 : 'text-[#64748B] dark:text-[#8B92A3] hover:bg-[#F8FAFC] dark:hover:bg-[#1A2139] hover:text-[#0F172A] dark:hover:text-[#E8EAED]'
-            }`}
+              }`}
           >
             <Icon name={item.icon} size={20} />
             {!isCollapsed && <span className="text-sm font-medium">{item.label}</span>}

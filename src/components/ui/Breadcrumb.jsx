@@ -6,12 +6,12 @@ import { BackButton } from './NavigationButtons';
 const Breadcrumb = ({ customItems = null, showBackButton = false }) => {
   const location = useLocation();
   const navigate = useNavigate();
-  
+
   const pathMappings = {
     '/': 'Home',
-    '/job-search-browse': 'Browse Jobs',
+    '/jobs': 'Browse Jobs',
     '/job-detail-application': 'Job Details',
-    '/job-seeker-dashboard': 'Dashboard',
+    '/dashboard': 'Dashboard',
     '/job-seeker-registration-login': 'Sign In',
     '/company-registration-profile-setup': 'Company Setup',
     '/job-posting-creation-management': 'Post Job',
@@ -31,7 +31,7 @@ const Breadcrumb = ({ customItems = null, showBackButton = false }) => {
     pathSegments?.forEach((segment, index) => {
       currentPath += `/${segment}`;
       const label = pathMappings?.[currentPath] || segment?.replace(/-/g, ' ')?.replace(/\b\w/g, l => l?.toUpperCase());
-      
+
       breadcrumbs?.push({
         label,
         path: currentPath,
@@ -52,8 +52,8 @@ const Breadcrumb = ({ customItems = null, showBackButton = false }) => {
   return (
     <nav className="flex items-center space-x-3 mb-6" aria-label="Breadcrumb">
       {showBackButton && (
-        <BackButton 
-          onClick={() => navigate(-1)} 
+        <BackButton
+          onClick={() => navigate(-1)}
           className="mr-2"
         />
       )}
@@ -61,15 +61,15 @@ const Breadcrumb = ({ customItems = null, showBackButton = false }) => {
         {breadcrumbs?.map((crumb, index) => (
           <li key={crumb?.path} className="flex items-center">
             {index > 0 && (
-              <Icon 
-                name="ChevronRight" 
-                size={16} 
-                className="mx-2 text-[#CBD5E1] dark:text-[#2A3142]" 
+              <Icon
+                name="ChevronRight"
+                size={16}
+                className="mx-2 text-[#CBD5E1] dark:text-[#2A3142]"
                 aria-hidden="true"
               />
             )}
             {crumb?.isLast || index === breadcrumbs?.length - 1 ? (
-              <span 
+              <span
                 className="text-[#0F172A] dark:text-[#E8EAED] font-semibold truncate max-w-xs sm:max-w-sm"
                 aria-current="page"
               >

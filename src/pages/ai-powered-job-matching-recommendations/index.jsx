@@ -18,7 +18,7 @@ const AIPoweredJobMatchingRecommendations = () => {
   const { user } = useAuthContext();
   const { success, error: showError } = useToast();
   const navigate = useNavigate();
-  
+
   const [showChatbot, setShowChatbot] = useState(false);
   const [selectedJob, setSelectedJob] = useState(null);
   const [recommendedJobs, setRecommendedJobs] = useState([]);
@@ -43,11 +43,11 @@ const AIPoweredJobMatchingRecommendations = () => {
   const loadRecommendations = async () => {
     try {
       setLoading(true);
-      
+
       // Get user's default resume
       const resumes = await resumeService.getAll();
       const defaultResume = resumes.find(r => r.is_default) || resumes[0];
-      
+
       if (!defaultResume) {
         showError('Please create a resume first to get AI recommendations');
         navigate('/resume-builder-ai-enhancement');
@@ -193,7 +193,7 @@ const AIPoweredJobMatchingRecommendations = () => {
                 <Icon name="MessageCircle" size={16} />
                 <span>AI Career Advisor</span>
               </button>
-              <Link to="/job-search-browse" className="btn-primary flex items-center space-x-2">
+              <Link to="/jobs" className="btn-primary flex items-center space-x-2">
                 <Icon name="Search" size={16} />
                 <span>Browse All Jobs</span>
               </Link>

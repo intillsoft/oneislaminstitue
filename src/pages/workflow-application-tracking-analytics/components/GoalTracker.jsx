@@ -35,7 +35,7 @@ const GoalTracker = () => {
     const now = new Date();
     const monthStart = startOfMonth(now);
     const monthEnd = endOfMonth(now);
-    
+
     const monthApps = applications.filter(app => {
       if (!app.applied_at) return false;
       const appDate = parseISO(app.applied_at);
@@ -100,7 +100,7 @@ const GoalTracker = () => {
 
   const achievements = useMemo(() => {
     const achievementsList = [];
-    
+
     if (applications.length >= 20) {
       achievementsList.push({
         title: 'Consistency Champion',
@@ -136,7 +136,7 @@ const GoalTracker = () => {
   }, [applications]);
 
   const getStatusColor = (status) => {
-    switch(status) {
+    switch (status) {
       case 'on-track':
         return 'bg-green-100 text-green-700 border-green-200';
       case 'behind':
@@ -208,7 +208,7 @@ const GoalTracker = () => {
           <h3 className="text-xl font-bold text-gray-900 dark:text-[#E8EAED] mb-2">No applications yet</h3>
           <p className="text-gray-600 dark:text-[#8B92A3] mb-4">Start applying to jobs to track your goals!</p>
           <a
-            href="/job-search-browse"
+            href="/jobs"
             className="inline-flex items-center gap-2 px-6 py-3 bg-[#0046FF] text-white rounded-lg font-medium hover:bg-blue-700"
           >
             Browse Jobs
@@ -217,78 +217,76 @@ const GoalTracker = () => {
       ) : (
         <div className="space-y-4">
           {goals?.map((goal) => {
-          const progress = (goal?.current / goal?.target) * 100;
-          return (
-            <div
-              key={goal?.id}
-              className="bg-white dark:bg-[#13182E] border border-gray-200 dark:border-[#1E2640] rounded-lg p-6"
-            >
-              {/* Goal Header */}
-              <div className="flex items-start justify-between gap-4 mb-4">
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-2">
-                    <h3 className="font-bold text-gray-900 dark:text-[#E8EAED]">{goal?.title}</h3>
-                    <span className={`px-2 py-1 rounded text-xs font-medium ${getCategoryColor(goal?.category)}`}>
-                      {goal?.category}
-                    </span>
-                    <span className={`px-2 py-1 rounded border text-xs font-medium ${getStatusColor(goal?.status)}`}>
-                      {goal?.status === 'on-track' ? 'On Track' : goal?.status === 'behind' ? 'Behind' : 'Completed'}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-4 text-sm text-gray-600 dark:text-[#8B92A3]">
-                    <span className="flex items-center gap-1">
-                      <Calendar className="w-4 h-4" />
-                      {goal?.timeframe}
-                    </span>
-                    <span>Due: {goal?.deadline}</span>
-                  </div>
-                </div>
-                <button className="text-gray-600 dark:text-[#8B92A3] hover:text-gray-900 dark:hover:text-[#E8EAED]">
-                  <Edit className="w-5 h-5" />
-                </button>
-              </div>
-              {/* Progress Bar */}
-              <div className="mb-4">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm text-gray-700 dark:text-[#B4B9C4]">
-                    Progress: <span className="font-bold">{goal?.current}</span> / {goal?.target}
-                  </span>
-                  <span className="text-sm font-bold text-gray-900 dark:text-[#E8EAED]">{Math.round(progress)}%</span>
-                </div>
-                <div className="w-full h-3 bg-gray-200 dark:bg-[#1E2640] rounded-full overflow-hidden">
-                  <div
-                    className={`h-full rounded-full transition-all ${
-                      progress >= 100 ? 'bg-green-600' : progress >= 80 ? 'bg-[#0046FF]' : 'bg-yellow-500'
-                    }`}
-                    style={{ width: `${Math.min(progress, 100)}%` }}
-                  />
-                </div>
-              </div>
-              {/* Milestones */}
-              <div className="bg-gray-50 dark:bg-[#1A2139] rounded-lg p-4">
-                <h4 className="text-sm font-medium text-gray-700 dark:text-[#B4B9C4] mb-3">Milestones</h4>
-                <div className="flex items-center justify-between">
-                  {goal?.milestones?.map((milestone, index) => (
-                    <div key={index} className="flex flex-col items-center gap-2">
-                      <div className={`w-8 h-8 rounded-full flex items-center justify-center border-2 ${
-                        milestone?.completed
-                          ? 'bg-[#0046FF] border-[#0046FF] text-white'
-                          : 'bg-white dark:bg-[#13182E] border-gray-300 dark:border-[#1E2640] text-gray-400 dark:text-[#8B92A3]'
-                      }`}>
-                        {milestone?.completed ? (
-                          <CheckCircle className="w-5 h-5" />
-                        ) : (
-                          <span className="text-xs font-bold">{milestone?.value}</span>
-                        )}
-                      </div>
-                      <span className="text-xs text-gray-600 dark:text-[#8B92A3] text-center">{milestone?.label}</span>
+            const progress = (goal?.current / goal?.target) * 100;
+            return (
+              <div
+                key={goal?.id}
+                className="bg-white dark:bg-[#13182E] border border-gray-200 dark:border-[#1E2640] rounded-lg p-6"
+              >
+                {/* Goal Header */}
+                <div className="flex items-start justify-between gap-4 mb-4">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-2">
+                      <h3 className="font-bold text-gray-900 dark:text-[#E8EAED]">{goal?.title}</h3>
+                      <span className={`px-2 py-1 rounded text-xs font-medium ${getCategoryColor(goal?.category)}`}>
+                        {goal?.category}
+                      </span>
+                      <span className={`px-2 py-1 rounded border text-xs font-medium ${getStatusColor(goal?.status)}`}>
+                        {goal?.status === 'on-track' ? 'On Track' : goal?.status === 'behind' ? 'Behind' : 'Completed'}
+                      </span>
                     </div>
-                  ))}
+                    <div className="flex items-center gap-4 text-sm text-gray-600 dark:text-[#8B92A3]">
+                      <span className="flex items-center gap-1">
+                        <Calendar className="w-4 h-4" />
+                        {goal?.timeframe}
+                      </span>
+                      <span>Due: {goal?.deadline}</span>
+                    </div>
+                  </div>
+                  <button className="text-gray-600 dark:text-[#8B92A3] hover:text-gray-900 dark:hover:text-[#E8EAED]">
+                    <Edit className="w-5 h-5" />
+                  </button>
+                </div>
+                {/* Progress Bar */}
+                <div className="mb-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-sm text-gray-700 dark:text-[#B4B9C4]">
+                      Progress: <span className="font-bold">{goal?.current}</span> / {goal?.target}
+                    </span>
+                    <span className="text-sm font-bold text-gray-900 dark:text-[#E8EAED]">{Math.round(progress)}%</span>
+                  </div>
+                  <div className="w-full h-3 bg-gray-200 dark:bg-[#1E2640] rounded-full overflow-hidden">
+                    <div
+                      className={`h-full rounded-full transition-all ${progress >= 100 ? 'bg-green-600' : progress >= 80 ? 'bg-[#0046FF]' : 'bg-yellow-500'
+                        }`}
+                      style={{ width: `${Math.min(progress, 100)}%` }}
+                    />
+                  </div>
+                </div>
+                {/* Milestones */}
+                <div className="bg-gray-50 dark:bg-[#1A2139] rounded-lg p-4">
+                  <h4 className="text-sm font-medium text-gray-700 dark:text-[#B4B9C4] mb-3">Milestones</h4>
+                  <div className="flex items-center justify-between">
+                    {goal?.milestones?.map((milestone, index) => (
+                      <div key={index} className="flex flex-col items-center gap-2">
+                        <div className={`w-8 h-8 rounded-full flex items-center justify-center border-2 ${milestone?.completed
+                            ? 'bg-[#0046FF] border-[#0046FF] text-white'
+                            : 'bg-white dark:bg-[#13182E] border-gray-300 dark:border-[#1E2640] text-gray-400 dark:text-[#8B92A3]'
+                          }`}>
+                          {milestone?.completed ? (
+                            <CheckCircle className="w-5 h-5" />
+                          ) : (
+                            <span className="text-xs font-bold">{milestone?.value}</span>
+                          )}
+                        </div>
+                        <span className="text-xs text-gray-600 dark:text-[#8B92A3] text-center">{milestone?.label}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
         </div>
       )}
       {/* Achievements */}
@@ -305,25 +303,25 @@ const GoalTracker = () => {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {achievements?.map((achievement, index) => {
-            const Icon = achievement?.icon;
-            return (
-              <div
-                key={index}
-                className="bg-white border border-yellow-200 rounded-lg p-4"
-              >
-                <div className="flex items-center gap-3 mb-2">
-                  <div className="p-2 bg-yellow-100 rounded-lg">
-                    <Icon className="w-5 h-5 text-yellow-600" />
+              const Icon = achievement?.icon;
+              return (
+                <div
+                  key={index}
+                  className="bg-white border border-yellow-200 rounded-lg p-4"
+                >
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className="p-2 bg-yellow-100 rounded-lg">
+                      <Icon className="w-5 h-5 text-yellow-600" />
+                    </div>
+                    <div className="flex-1">
+                      <h4 className="font-bold text-gray-900 text-sm">{achievement?.title}</h4>
+                    </div>
                   </div>
-                  <div className="flex-1">
-                    <h4 className="font-bold text-gray-900 text-sm">{achievement?.title}</h4>
-                  </div>
+                  <p className="text-xs text-gray-600 mb-2">{achievement?.description}</p>
+                  <span className="text-xs text-gray-500">{achievement?.date}</span>
                 </div>
-                <p className="text-xs text-gray-600 mb-2">{achievement?.description}</p>
-                <span className="text-xs text-gray-500">{achievement?.date}</span>
-              </div>
-            );
-          })}
+              );
+            })}
           </div>
         )}
       </div>

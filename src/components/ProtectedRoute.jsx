@@ -7,12 +7,12 @@ import React from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { useAuthContext } from '../contexts/AuthContext';
 
-const ProtectedRoute = ({ 
-  children, 
-  requireSubscription = false, 
+const ProtectedRoute = ({
+  children,
+  requireSubscription = false,
   requiredTier = null,
   requiredRole = null,
-  allowedRoles = null 
+  allowedRoles = null
 }) => {
   const { user, loading, profile, loadingProfile } = useAuthContext();
   const location = useLocation();
@@ -34,22 +34,22 @@ const ProtectedRoute = ({
 
   // Check role requirements
   const userRole = profile?.role || 'job-seeker';
-  
+
   if (requiredRole && userRole !== requiredRole) {
     // User doesn't have the required role
-    return <Navigate to="/job-seeker-dashboard" replace />;
+    return <Navigate to="/dashboard" replace />;
   }
 
   if (allowedRoles && !allowedRoles.includes(userRole)) {
     // User role not in allowed list
-    return <Navigate to="/job-seeker-dashboard" replace />;
+    return <Navigate to="/dashboard" replace />;
   }
 
   // Check subscription requirements
   if (requireSubscription) {
     const subscriptionTier = profile?.subscription_tier || 'free';
     const tierHierarchy = { free: 0, basic: 1, premium: 2, pro: 3 };
-    
+
     if (requiredTier && tierHierarchy[subscriptionTier] < tierHierarchy[requiredTier]) {
       return <Navigate to="/pricing" replace />;
     }

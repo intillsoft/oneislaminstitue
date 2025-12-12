@@ -9,7 +9,7 @@ import ProtectedRoute from "components/ProtectedRoute";
 import JobSeekerRegistrationLogin from "pages/job-seeker-registration-login";
 import JobDetailApplication from "pages/job-detail-application";
 import JobApplicationPage from "pages/job-application";
-import JobSearchBrowse from "pages/job-search-browse";
+import JobSearchBrowse from "pages/job-search-browse"; // Keeping component name, file structure might still be old
 import JobSeekerDashboard from "pages/job-seeker-dashboard";
 import RecruiterDashboardAnalytics from "pages/recruiter-dashboard-analytics";
 import CompanyRegistrationProfileSetup from "pages/company-registration-profile-setup";

@@ -12,7 +12,7 @@ const ApplicationTracker = () => {
   const { user } = useAuthContext();
   const { error: showError } = useToast();
   const navigate = useNavigate();
-  
+
   const [filter, setFilter] = useState('all');
   const [applications, setApplications] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -72,8 +72,8 @@ const ApplicationTracker = () => {
     return statusTextMap[status] || status;
   };
 
-  const filteredApplications = filter === 'all' 
-    ? applications 
+  const filteredApplications = filter === 'all'
+    ? applications
     : applications?.filter(app => app?.status === filter);
 
   if (loading) {
@@ -92,7 +92,7 @@ const ApplicationTracker = () => {
         <Icon name="FileText" className="w-16 h-16 text-[#64748B] dark:text-[#8B92A3] mx-auto mb-4" />
         <h3 className="text-lg font-semibold text-[#0F172A] dark:text-[#E8EAED] mb-2">No applications yet</h3>
         <p className="text-[#64748B] dark:text-[#8B92A3] mb-4">Start applying to jobs to track your progress</p>
-        <Link to="/job-search-browse" className="btn-primary inline-flex items-center">
+        <Link to="/jobs" className="btn-primary inline-flex items-center">
           <Icon name="Search" size={16} className="mr-2" />
           Browse Jobs
         </Link>
@@ -126,11 +126,10 @@ const ApplicationTracker = () => {
           <button
             key={status}
             onClick={() => setFilter(status)}
-            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-              filter === status
+            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${filter === status
                 ? 'bg-workflow-primary text-white'
                 : 'bg-[#F8FAFC] dark:bg-[#1A2139] text-[#64748B] dark:text-[#8B92A3] hover:bg-[#E2E8F0] dark:hover:bg-[#1E2640]'
-            }`}
+              }`}
           >
             {status.charAt(0).toUpperCase() + status.slice(1)}
           </button>
@@ -143,7 +142,7 @@ const ApplicationTracker = () => {
           const job = application.job || {};
           const statusInfo = getStatusInfo(application.status);
           const StatusIcon = Icon;
-          
+
           return (
             <div
               key={application.id}

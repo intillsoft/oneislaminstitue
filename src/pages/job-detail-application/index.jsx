@@ -42,7 +42,7 @@ const JobDetailApplication = () => {
       setLoading(false);
       // Don't navigate immediately, show error first
       setTimeout(() => {
-        navigate('/job-search-browse');
+        navigate('/jobs');
       }, 2000);
     }
   }, [jobId, navigate, showError]);
@@ -51,7 +51,7 @@ const JobDetailApplication = () => {
     if (!jobId) {
       showError('Job ID is required');
       setLoading(false);
-      setTimeout(() => navigate('/job-search-browse'), 2000);
+      setTimeout(() => navigate('/jobs'), 2000);
       return;
     }
 
@@ -74,7 +74,7 @@ const JobDetailApplication = () => {
     } catch (error) {
       console.error('Error loading job:', error);
       showError(`Failed to load job details: ${error.message || 'Unknown error'}`);
-      setTimeout(() => navigate('/job-search-browse'), 2000);
+      setTimeout(() => navigate('/jobs'), 2000);
     } finally {
       setLoading(false);
     }
@@ -135,7 +135,7 @@ const JobDetailApplication = () => {
       navigate('/job-seeker-registration-login');
       return;
     }
-    navigate(`/job-application?jobId=${jobId}`);
+    navigate(`/applications/new?jobId=${jobId}`);
   };
 
   const handleApplicationSubmit = async (applicationData) => {
@@ -279,8 +279,8 @@ const JobDetailApplication = () => {
                   <button
                     onClick={handleSaveJob}
                     className={`p-2 rounded-lg transition-colors ${isJobSaved
-                        ? 'bg-workflow-primary-50 dark:bg-workflow-primary-900/20 text-workflow-primary'
-                        : 'text-[#64748B] dark:text-[#8B92A3] hover:bg-[#F8FAFC] dark:hover:bg-[#1A2139]'
+                      ? 'bg-workflow-primary-50 dark:bg-workflow-primary-900/20 text-workflow-primary'
+                      : 'text-[#64748B] dark:text-[#8B92A3] hover:bg-[#F8FAFC] dark:hover:bg-[#1A2139]'
                       }`}
                     aria-label={isJobSaved ? 'Unsave job' : 'Save job'}
                   >
@@ -319,7 +319,7 @@ const JobDetailApplication = () => {
               {/* Apply Button & AI Assistant */}
               <div className="flex gap-3">
                 <Link
-                  to={`/job-application?jobId=${jobId}`}
+                  to={`/applications/new?jobId=${jobId}`}
                   className="flex-1 btn-primary flex items-center justify-center space-x-2 py-3"
                 >
                   <Icon name="Send" size={18} />

@@ -12,7 +12,7 @@ const SavedJobs = ({ limit, showViewAll = false, setActiveTab }) => {
   const { user } = useAuthContext();
   const { success, error: showError } = useToast();
   const navigate = useNavigate();
-  
+
   const [savedJobs, setSavedJobs] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -85,7 +85,7 @@ const SavedJobs = ({ limit, showViewAll = false, setActiveTab }) => {
         <Icon name="Bookmark" className="w-12 h-12 text-[#64748B] dark:text-[#8B92A3] mx-auto mb-4" />
         <h3 className="text-lg font-semibold text-[#0F172A] dark:text-[#E8EAED] mb-2">No saved jobs</h3>
         <p className="text-[#64748B] dark:text-[#8B92A3] mb-4">Start saving jobs you're interested in</p>
-        <Link to="/job-search-browse" className="btn-primary inline-flex items-center">
+        <Link to="/jobs" className="btn-primary inline-flex items-center">
           <Icon name="Search" size={16} className="mr-2" />
           Browse Jobs
         </Link>
@@ -124,7 +124,7 @@ const SavedJobs = ({ limit, showViewAll = false, setActiveTab }) => {
         {displayJobs.map((savedJob) => {
           const job = savedJob.job || savedJob;
           const jobId = job.id || savedJob.job_id;
-          
+
           return (
             <div key={savedJob.id || jobId} className="p-6 hover:bg-[#F8FAFC] dark:hover:bg-[#1A2139] transition-colors">
               <div className="flex items-start justify-between">

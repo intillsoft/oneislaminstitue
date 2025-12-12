@@ -8,7 +8,7 @@ const LoginForm = ({ onSuccess, isLoading: externalLoading }) => {
   const { signIn, signInWithOAuth } = useAuthContext();
   const { success, error: showError } = useToast();
   const navigate = useNavigate();
-  
+
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -39,7 +39,7 @@ const LoginForm = ({ onSuccess, isLoading: externalLoading }) => {
 
   const handleSubmit = async (e) => {
     e?.preventDefault();
-    
+
     if (!validateForm()) return;
 
     setIsLoading(true);
@@ -49,7 +49,7 @@ const LoginForm = ({ onSuccess, isLoading: externalLoading }) => {
       if (onSuccess) {
         onSuccess({ email: formData.email });
       } else {
-        navigate('/job-seeker-dashboard');
+        navigate('/dashboard');
       }
     } catch (error) {
       console.error('Login error:', error);
@@ -79,7 +79,7 @@ const LoginForm = ({ onSuccess, isLoading: externalLoading }) => {
       ...prev,
       [name]: type === 'checkbox' ? checked : value
     }));
-    
+
     // Clear errors when user starts typing
     if (errors?.[name]) {
       setErrors(prev => ({ ...prev, [name]: '' }));
@@ -156,11 +156,11 @@ const LoginForm = ({ onSuccess, isLoading: externalLoading }) => {
             className="absolute inset-y-0 right-0 pr-3 flex items-center"
             disabled={loading}
           >
-            <Icon 
-              name={showPassword ? "EyeOff" : "Eye"} 
-              size={16} 
+            <Icon
+              name={showPassword ? "EyeOff" : "Eye"}
+              size={16}
               color="#64748B"
-              className="hover:text-[#0F172A] dark:hover:text-[#E8EAED] transition-smooth" 
+              className="hover:text-[#0F172A] dark:hover:text-[#E8EAED] transition-smooth"
             />
           </button>
         </div>
@@ -185,8 +185,8 @@ const LoginForm = ({ onSuccess, isLoading: externalLoading }) => {
           />
           <span className="ml-2 text-sm text-[#64748B] dark:text-[#8B92A3]">Remember me</span>
         </label>
-        <Link 
-          to="/forgot-password" 
+        <Link
+          to="/forgot-password"
           className="text-sm text-workflow-primary hover:text-workflow-primary-600 transition-smooth"
         >
           Forgot password?
