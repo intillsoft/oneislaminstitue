@@ -15,7 +15,7 @@ import billingRoutes from './routes/billing.js';
 import jobsRoutes from './routes/jobs.js';
 import webhookRoutes from './routes/webhooks.js';
 import emailRoutes from './routes/email.js';
-import jobsRoutes from './routes/jobs.js';
+
 import messagesRoutes from './routes/messages.js';
 import aiRoutes from './routes/ai.js';
 import chatRoutes from './routes/chat.js';
