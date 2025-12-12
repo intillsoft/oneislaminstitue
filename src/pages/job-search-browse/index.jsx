@@ -19,7 +19,7 @@ const JobSearchBrowse = () => {
   const { user } = useAuthContext();
   const { success, error: showError } = useToast();
   const navigate = useNavigate();
-  
+
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedFilters, setSelectedFilters] = useState({
     location: [],
@@ -44,7 +44,7 @@ const JobSearchBrowse = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalJobs, setTotalJobs] = useState(0);
   const [showRecommended, setShowRecommended] = useState(true);
-  
+
   const searchInputRef = useRef(null);
 
   // Load saved jobs and recommended jobs on mount
@@ -73,16 +73,16 @@ const JobSearchBrowse = () => {
       };
 
       const result = await jobService.getAll(filters);
-      
+
       if (currentPage === 1) {
         setJobs(result.data || []);
       } else {
         setJobs(prev => [...prev, ...(result.data || [])]);
       }
-      
+
       setTotalJobs(result.total || 0);
       setHasMore((result.data?.length || 0) === 20);
-      
+
       // Select first job if available and none selected
       if (result.data?.length > 0 && !selectedJobId && currentPage === 1) {
         setSelectedJobId(result.data[0].id);
@@ -113,19 +113,19 @@ const JobSearchBrowse = () => {
 
   const loadRecommendedJobs = async () => {
     if (!user) return;
-    
+
     try {
       setIsLoadingRecommended(true);
-      
+
       // Get ALL jobs (both platform-created and crawled) - no source filter
       const jobsResult = await jobService.getAll({ pageSize: 50 });
       const allJobs = jobsResult.data || [];
-      
+
       // Ensure we have both platform and crawled jobs, mix them for variety
       const platformJobs = allJobs.filter(j => j.source === 'manual' || !j.source);
       const crawledJobs = allJobs.filter(j => j.source && j.source !== 'manual');
       const mixedJobs = [...crawledJobs, ...platformJobs].sort(() => Math.random() - 0.5);
-      
+
       if (allJobs.length === 0) {
         setRecommendedJobs([]);
         return;
@@ -134,7 +134,7 @@ const JobSearchBrowse = () => {
       // Get user's default resume for matching
       const resumes = await resumeService.getAll();
       const defaultResume = resumes.find(r => r.is_default) || resumes[0];
-      
+
       // If no resume, show jobs with default scores
       if (!defaultResume) {
         const defaultMatches = allJobs.slice(0, 3).map(job => ({
@@ -159,7 +159,7 @@ const JobSearchBrowse = () => {
 
       // Detect user's field/career category
       const userField = detectUserField(resumeData);
-      
+
       // STRICT pre-filtering: Only show jobs that match user's field and profile
       let personalizedJobs = allJobs;
       if (userProfile.jobTitle || userProfile.skills.length > 0 || userProfile.industry || userField) {
@@ -175,33 +175,33 @@ const JobSearchBrowse = () => {
           }
 
           const jobText = `${job.title} ${job.description || ''} ${job.company || ''} ${job.location || ''}`.toLowerCase();
-          
+
           // THIRD: Check for STRICT job title match (requires core keywords)
-          const titleMatch = userProfile.jobTitle 
+          const titleMatch = userProfile.jobTitle
             ? matchesJobTitle(userProfile.jobTitle, job.title)
             : false;
-          
+
           // FOURTH: Check for skill matches (must match at least 3 skills for non-title matches)
-          const skillMatches = userProfile.skills.filter(skill => 
+          const skillMatches = userProfile.skills.filter(skill =>
             skill.length > 2 && jobText.includes(skill)
           ).length;
           const skillMatch = skillMatches >= 3; // Increased from 2 to 3
-          
+
           // FIFTH: Check for industry match
-          const industryMatch = userProfile.industry 
+          const industryMatch = userProfile.industry
             ? jobText.includes(userProfile.industry.toLowerCase())
             : false;
-          
+
           // Job must match title STRICTLY, OR have strong skill/industry match
           // Title match is required if user has a clear job title
           if (userProfile.jobTitle && userProfile.jobTitle.length > 3) {
             return titleMatch || (skillMatch && industryMatch);
           }
-          
+
           // If no clear title, require strong skill match
           return skillMatch || industryMatch;
         });
-        
+
         // If no personalized matches, don't show random jobs
         if (personalizedJobs.length === 0) {
           console.warn('No jobs match user profile - user field:', userField, 'job title:', userProfile.jobTitle);
@@ -214,71 +214,71 @@ const JobSearchBrowse = () => {
 
       // FAST MODE: Show keyword-based matches immediately (2-3 seconds)
       const jobsToShow = personalizedJobs.slice(0, 3);
-      
+
       // Calculate keyword scores immediately
       const quickMatches = jobsToShow.map(job => {
         const jobText = `${job.title} ${job.description || ''} ${job.company || ''}`.toLowerCase();
-        const keywordMatches = userProfile.skills.filter(skill => 
+        const keywordMatches = userProfile.skills.filter(skill =>
           skill.length > 2 && jobText.includes(skill)
         ).length;
-        const titleMatch = userProfile.jobTitle && 
-          userProfile.jobTitle.toLowerCase().split(/\s+/).some(word => 
+        const titleMatch = userProfile.jobTitle &&
+          userProfile.jobTitle.toLowerCase().split(/\s+/).some(word =>
             word.length > 3 && jobText.includes(word)
           ) ? 1 : 0;
-        const industryMatch = userProfile.industry && 
+        const industryMatch = userProfile.industry &&
           jobText.includes(userProfile.industry.toLowerCase()) ? 1 : 0;
-        
+
         // Enhanced keyword scoring (60-95% range)
         const baseScore = 60;
         const skillScore = Math.min(keywordMatches * 6, 25);
         const titleScore = titleMatch * 15;
         const industryScore = industryMatch * 10;
         const matchScore = Math.min(baseScore + skillScore + titleScore + industryScore, 95);
-        
+
         return {
           ...job,
           matchScore,
         };
       });
-      
+
       // Sort and show immediately - limit to 3
       const initialMatches = quickMatches
         .sort((a, b) => b.matchScore - a.matchScore)
         .slice(0, 3);
-      
+
       setRecommendedJobs(initialMatches);
       setIsLoadingRecommended(false);
-      
+
       // Enhance with AI in background (non-blocking)
       const enhanceWithAI = async () => {
         try {
           const { requestThrottler } = await import('../../utils/requestThrottler');
-          
+
           const enhancedPromises = initialMatches.slice(0, 3).map(async (job) => {
             try {
-              const timeoutPromise = new Promise((_, reject) => 
+              const timeoutPromise = new Promise((_, reject) =>
                 setTimeout(() => reject(new Error('Timeout')), 12000) // 12s timeout
               );
-              
-              const matchPromise = requestThrottler.add(() => 
+
+              const matchPromise = requestThrottler.add(() =>
                 aiService.matchJob(defaultResume.id, job.id)
               );
-              
+
               const matchResult = await Promise.race([matchPromise, timeoutPromise]);
               return {
-            ...job,
+                ...job,
                 matchScore: matchResult.match_score || job.matchScore,
               };
             } catch (error) {
               return job; // Keep original score
             }
           });
-          
+
           const enhanced = await Promise.allSettled(enhancedPromises);
           const successful = enhanced
             .filter(r => r.status === 'fulfilled')
             .map(r => r.value);
-          
+
           if (successful.length > 0) {
             setRecommendedJobs(prev => {
               const updated = [...prev];
@@ -295,7 +295,7 @@ const JobSearchBrowse = () => {
           console.warn('Background AI enhancement failed:', error);
         }
       };
-      
+
       // Start background enhancement
       enhanceWithAI();
 
@@ -310,7 +310,7 @@ const JobSearchBrowse = () => {
           matchScore: 50,
         })));
       } catch (fallbackError) {
-      setRecommendedJobs([]);
+        setRecommendedJobs([]);
       }
     } finally {
       setIsLoadingRecommended(false);
@@ -371,52 +371,52 @@ const JobSearchBrowse = () => {
     <div className="bg-white dark:bg-[#0A0E27] min-h-screen overflow-x-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <Breadcrumb />
-        
+
         {/* Search Header */}
         <div className="mb-6">
           <form onSubmit={handleSearch} className="relative">
-              <input
-                ref={searchInputRef}
-                type="text"
-                value={searchQuery}
+            <input
+              ref={searchInputRef}
+              type="text"
+              value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search jobs, companies, keywords..."
               className="w-full px-4 py-3 pl-12 pr-40 rounded-lg border border-[#E2E8F0] dark:border-[#1E2640] bg-white dark:bg-[#13182E] text-[#0F172A] dark:text-[#E8EAED] focus:outline-none focus:ring-2 focus:ring-workflow-primary"
             />
             <Icon name="Search" className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-[#64748B] dark:text-[#8B92A3]" />
             <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex items-center gap-2">
-                <VoiceSearch
-                  onTranscript={(text) => {
-                    if (text && text.trim()) {
-                      setSearchQuery(text);
-                      setCurrentPage(1);
-                      // Trigger search immediately
-                      setTimeout(() => {
-                        loadJobs();
-                      }, 300);
-                    }
-                  }}
-                  onError={(error) => {
-                    console.error('Voice search error:', error);
-                    if (error !== 'no-speech') {
-                      showError('Voice search failed. Please try again.');
-                    }
-                  }}
-                />
-                <button
-                  type="button"
+              <VoiceSearch
+                onTranscript={(text) => {
+                  if (text && text.trim()) {
+                    setSearchQuery(text);
+                    setCurrentPage(1);
+                    // Trigger search immediately
+                    setTimeout(() => {
+                      loadJobs();
+                    }, 300);
+                  }
+                }}
+                onError={(error) => {
+                  console.error('Voice search error:', error);
+                  if (error !== 'no-speech') {
+                    showError('Voice search failed. Please try again.');
+                  }
+                }}
+              />
+              <button
+                type="button"
                 onClick={() => setIsAdvancedSearchOpen(true)}
                 className="px-3 py-1.5 text-sm text-[#64748B] dark:text-[#8B92A3] hover:text-workflow-primary"
               >
                 Advanced
-                </button>
-                    <button
+              </button>
+              <button
                 type="submit"
                 className="px-4 py-1.5 bg-workflow-primary text-white rounded hover:bg-workflow-primary-600 transition-colors"
               >
                 Search
-                    </button>
-                  </div>
+              </button>
+            </div>
           </form>
         </div>
 
@@ -444,52 +444,52 @@ const JobSearchBrowse = () => {
               </div>
             ) : recommendedJobs.length > 0 ? (
               <>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {recommendedJobs.map((job) => {
-                const companyData = Array.isArray(job.companies) ? job.companies[0] : job.companies;
-                return (
-                  <div
-                    key={job.id}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {recommendedJobs.map((job) => {
+                    const companyData = Array.isArray(job.companies) ? job.companies[0] : job.companies;
+                    return (
+                      <div
+                        key={job.id}
                         className="bg-white dark:bg-[#13182E] border-2 border-workflow-primary/30 dark:border-workflow-primary/50 rounded-lg p-4 hover:shadow-lg transition-all hover:border-workflow-primary/50"
-                  >
-                    <div className="flex items-start justify-between mb-2">
-                      <div className="flex-1">
-                        <h4 className="font-semibold text-[#0F172A] dark:text-[#E8EAED] mb-1">{job.title}</h4>
-                        <p className="text-sm text-[#64748B] dark:text-[#8B92A3]">{job.company || companyData?.name || 'Unknown'}</p>
-                      </div>
-                      <div className="px-2 py-1 bg-workflow-primary/20 dark:bg-workflow-primary/30 text-workflow-primary text-xs font-bold rounded">
-                        {job.matchScore || 0}%
-                      </div>
-                    </div>
+                      >
+                        <div className="flex items-start justify-between mb-2">
+                          <div className="flex-1">
+                            <h4 className="font-semibold text-[#0F172A] dark:text-[#E8EAED] mb-1">{job.title}</h4>
+                            <p className="text-sm text-[#64748B] dark:text-[#8B92A3]">{job.company || companyData?.name || 'Unknown'}</p>
+                          </div>
+                          <div className="px-2 py-1 bg-workflow-primary/20 dark:bg-workflow-primary/30 text-workflow-primary text-xs font-bold rounded">
+                            {job.matchScore || 0}%
+                          </div>
+                        </div>
                         <p className="text-xs text-[#64748B] dark:text-[#8B92A3] mb-3">{job.location}</p>
                         <div className="flex gap-2">
                           <Link
-                            to={`/job-detail-application?id=${job.id}`}
+                            to={`/jobs/detail/${job.id}`}
                             className="flex-1 px-3 py-2 text-xs font-medium text-workflow-primary hover:text-workflow-primary-700 dark:hover:text-workflow-primary-300 border border-workflow-primary hover:bg-workflow-primary-50 dark:hover:bg-workflow-primary-900/20 rounded transition-all text-center"
                             onClick={(e) => e.stopPropagation()}
                           >
                             View Details
                           </Link>
                           <Link
-                            to={`/job-detail-application?id=${job.id}`}
+                            to={`/jobs/detail/${job.id}`}
                             className="flex-1 px-3 py-2 text-xs font-semibold bg-workflow-primary text-white hover:bg-workflow-primary-600 dark:hover:bg-workflow-primary-500 rounded transition-all text-center"
                             onClick={(e) => e.stopPropagation()}
                           >
                             Apply
                           </Link>
                         </div>
-                  </div>
-                );
-              })}
-            </div>
-            <div className="mt-4 text-center">
-              <Link
-                to="/ai-powered-job-matching-recommendations"
-                className="text-sm text-workflow-primary hover:text-workflow-primary-600 dark:hover:text-workflow-primary-400 font-medium"
-              >
-                View All Recommendations →
-              </Link>
-            </div>
+                      </div>
+                    );
+                  })}
+                </div>
+                <div className="mt-4 text-center">
+                  <Link
+                    to="/ai-powered-job-matching-recommendations"
+                    className="text-sm text-workflow-primary hover:text-workflow-primary-600 dark:hover:text-workflow-primary-400 font-medium"
+                  >
+                    View All Recommendations →
+                  </Link>
+                </div>
               </>
             ) : (
               <div className="text-center py-4 text-sm text-[#64748B] dark:text-[#8B92A3]">
@@ -530,38 +530,38 @@ const JobSearchBrowse = () => {
           {/* Filters Sidebar */}
           <div className="lg:col-span-1">
             <div className="sticky top-6">
-            <SearchFilters
-              filters={selectedFilters}
-              selectedFilters={selectedFilters}
-              onFilterChange={(key, value) => {
-                setSelectedFilters(prev => ({
-                  ...prev,
-                  [key]: value
-                }));
-                setCurrentPage(1);
-              }}
-              onClearAll={() => {
-                setSelectedFilters({
-                  location: [],
-                  employmentType: [],
-                  salaryRange: '',
-                  companySize: '',
-                  postingDate: '',
-                  experienceLevel: '',
-                  remoteWork: false
-                });
-                setCurrentPage(1);
-              }}
-              activeFiltersCount={
-                (selectedFilters.location?.length || 0) +
-                (selectedFilters.employmentType?.length || 0) +
-                (selectedFilters.salaryRange ? 1 : 0) +
-                (selectedFilters.companySize ? 1 : 0) +
-                (selectedFilters.postingDate ? 1 : 0) +
-                (selectedFilters.experienceLevel ? 1 : 0) +
-                (selectedFilters.remoteWork ? 1 : 0)
-              }
-            />
+              <SearchFilters
+                filters={selectedFilters}
+                selectedFilters={selectedFilters}
+                onFilterChange={(key, value) => {
+                  setSelectedFilters(prev => ({
+                    ...prev,
+                    [key]: value
+                  }));
+                  setCurrentPage(1);
+                }}
+                onClearAll={() => {
+                  setSelectedFilters({
+                    location: [],
+                    employmentType: [],
+                    salaryRange: '',
+                    companySize: '',
+                    postingDate: '',
+                    experienceLevel: '',
+                    remoteWork: false
+                  });
+                  setCurrentPage(1);
+                }}
+                activeFiltersCount={
+                  (selectedFilters.location?.length || 0) +
+                  (selectedFilters.employmentType?.length || 0) +
+                  (selectedFilters.salaryRange ? 1 : 0) +
+                  (selectedFilters.companySize ? 1 : 0) +
+                  (selectedFilters.postingDate ? 1 : 0) +
+                  (selectedFilters.experienceLevel ? 1 : 0) +
+                  (selectedFilters.remoteWork ? 1 : 0)
+                }
+              />
             </div>
           </div>
 
@@ -570,13 +570,13 @@ const JobSearchBrowse = () => {
             {isLoading && jobs.length === 0 ? (
               <div className="flex items-center justify-center py-12">
                 <AILoader size="large" text="Finding perfect jobs for you..." variant="pulse" />
-                </div>
+              </div>
             ) : jobs.length === 0 ? (
               <div className="text-center py-12">
                 <Icon name="Search" className="w-16 h-16 text-[#64748B] dark:text-[#8B92A3] mx-auto mb-4" />
                 <p className="text-lg font-semibold text-[#0F172A] dark:text-[#E8EAED] mb-2">No jobs found</p>
                 <p className="text-sm text-[#64748B] dark:text-[#8B92A3]">Try adjusting your search or filters</p>
-                </div>
+              </div>
             ) : (
               <>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
@@ -620,18 +620,18 @@ const JobSearchBrowse = () => {
                   </button>
                 )}
               </>
-              )}
-            </div>
+            )}
           </div>
+        </div>
 
         {/* Advanced Search Modal */}
         {isAdvancedSearchOpen && (
-        <AdvancedSearchModal
-          isOpen={isAdvancedSearchOpen}
-          onClose={() => setIsAdvancedSearchOpen(false)}
+          <AdvancedSearchModal
+            isOpen={isAdvancedSearchOpen}
+            onClose={() => setIsAdvancedSearchOpen(false)}
             filters={selectedFilters}
             onApplyFilters={setSelectedFilters}
-        />
+          />
         )}
       </div>
     </div>

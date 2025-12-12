@@ -29,7 +29,7 @@ const ProtectedRoute = ({
   // Require authentication
   if (!user) {
     // Redirect to login with return path
-    return <Navigate to="/job-seeker-registration-login" state={{ from: location }} replace />;
+    return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
   // Check role requirements

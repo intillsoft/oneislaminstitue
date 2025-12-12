@@ -960,7 +960,7 @@ const HomePage = () => {
                                         initial={{ opacity: 0, y: 10 }}
                                         animate={{ opacity: 1, y: 0 }}
                                         transition={{ delay: idx * 0.1 }}
-                                        onClick={() => navigate(`/job-detail-application?id=${job.id}`)}
+                                        onClick={() => navigate(`/jobs/detail?id=${job.id}`)}
                                       >
                                         <div className="chat-job-header">
                                           <h4>{job.title}</h4>
@@ -1117,7 +1117,7 @@ const HomePage = () => {
                     viewport={{ once: true }}
                     transition={{ duration: 0.5, delay: index * 0.1 }}
                     whileHover={{ y: -8 }}
-                    onClick={() => navigate(`/job-detail-application?id=${job.id}`)}
+                    onClick={() => navigate(`/jobs/detail?id=${job.id}`)}
                   >
                     <div className="job-card-header">
                       <div className="company-logo-wrapper">
