@@ -37,8 +37,9 @@ class AdvancedRecommendationEngine {
                 return [];
             }
 
-            // 2. Get all active jobs
-            const { data: jobs, error } = await supabase
+            // 2. Get ALL jobs (platform jobs + crawled jobs)
+            // First get platform jobs
+            const { data: platformJobs, error: platformError } = await supabase
                 .from('jobs')
                 .select(`
           *,
@@ -46,12 +47,33 @@ class AdvancedRecommendationEngine {
         `)
                 .or('status.eq.active,status.eq.published,status.is.null')
                 .order('created_at', { ascending: false })
-                .limit(200);
+                .limit(100);
 
-            if (error) {
-                logger.error('Error fetching jobs for recommendations:', error);
-                return [];
+            if (platformError) {
+                logger.error('Error fetching platform jobs:', platformError);
             }
+
+            // Then get crawled jobs
+            const { data: crawledJobs, error: crawledError } = await supabase
+                .from('crawled_jobs')
+                .select('*')
+                .or('status.eq.active,status.is.null')
+                .order('created_at', { ascending: false })
+                .limit(100);
+
+            if (crawledError) {
+                logger.error('Error fetching crawled jobs:', crawledError);
+            }
+
+            // Combine both sources
+            const jobs = [
+                ...(platformJobs || []),
+                ...(crawledJobs || []).map(job => ({
+                    ...job,
+                    source: 'crawled',
+                    companies: job.company ? { name: job.company, logo: null } : null
+                }))
+            ];
 
             if (!jobs || jobs.length === 0) {
                 logger.warn('No jobs available for recommendations');
