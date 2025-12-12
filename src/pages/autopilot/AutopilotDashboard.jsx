@@ -34,7 +34,7 @@ const AutopilotDashboard = () => {
 
     useEffect(() => {
         if (!user) {
-            navigate('/job-seeker-registration-login');
+            navigate('/login');
             return;
         }
         loadDashboardData();

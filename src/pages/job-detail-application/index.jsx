@@ -109,7 +109,7 @@ const JobDetailApplication = () => {
   const handleSaveJob = async () => {
     if (!user) {
       showError('Please sign in to save jobs');
-      navigate('/job-seeker-registration-login');
+      navigate('/login');
       return;
     }
 
@@ -132,7 +132,7 @@ const JobDetailApplication = () => {
   const handleApply = () => {
     if (!user) {
       showError('Please sign in to apply');
-      navigate('/job-seeker-registration-login');
+      navigate('/login');
       return;
     }
     navigate(`/applications/new?jobId=${jobId}`);

@@ -10,9 +10,9 @@ const Breadcrumb = ({ customItems = null, showBackButton = false }) => {
   const pathMappings = {
     '/': 'Home',
     '/jobs': 'Browse Jobs',
-    '/job-detail-application': 'Job Details',
+    '/jobs/detail': 'Job Details',
     '/dashboard': 'Dashboard',
-    '/job-seeker-registration-login': 'Sign In',
+    '/login': 'Sign In',
     '/company-registration-profile-setup': 'Company Setup',
     '/job-posting-creation-management': 'Post Job',
     '/recruiter-dashboard-analytics': 'Dashboard',

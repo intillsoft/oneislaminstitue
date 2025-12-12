@@ -363,7 +363,7 @@ const ApplicationPipeline = ({ filterStatus, applications = [] }) => {
                   </button>
                   {app.job_id && (
                     <button
-                      onClick={() => navigate(`/job-detail-application?id=${app.job_id}`)}
+                      onClick={() => navigate(`/jobs/detail?id=${app.job_id}`)}
                       className="text-[#0046FF] hover:text-blue-700"
                       title="View Job"
                     >
@@ -408,7 +408,7 @@ const ApplicationPipeline = ({ filterStatus, applications = [] }) => {
               </button>
               {app.job_id && (
                 <button
-                  onClick={() => navigate(`/job-detail-application?id=${app.job_id}`)}
+                  onClick={() => navigate(`/jobs/detail?id=${app.job_id}`)}
                   className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-[#1A2139] text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-[#1E2640] rounded-lg font-medium hover:bg-gray-50 dark:hover:bg-[#13182E] transition-colors"
                 >
                   <ExternalLink className="w-4 h-4" />

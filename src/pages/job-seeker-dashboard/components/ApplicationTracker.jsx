@@ -43,7 +43,7 @@ const ApplicationTracker = () => {
       <div className="text-center py-12">
         <Icon name="FileText" className="w-16 h-16 text-[#64748B] dark:text-[#8B92A3] mx-auto mb-4" />
         <p className="text-[#64748B] dark:text-[#8B92A3] mb-4">Sign in to track your applications</p>
-        <Link to="/job-seeker-registration-login" className="btn-primary inline-flex items-center">
+        <Link to="/login" className="btn-primary inline-flex items-center">
           Sign In
         </Link>
       </div>
@@ -160,7 +160,7 @@ const ApplicationTracker = () => {
                     )}
                     <div className="flex-1">
                       <Link
-                        to={`/job-detail-application?id=${job.id}`}
+                        to={`/jobs/detail?id=${job.id}`}
                         className="text-lg font-semibold text-[#0F172A] dark:text-[#E8EAED] hover:text-workflow-primary transition-colors"
                       >
                         {job.title}

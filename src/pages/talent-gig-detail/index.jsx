@@ -57,7 +57,7 @@ const GigDetail = () => {
   const handleOrder = async () => {
     if (!user) {
       showError('Please sign in to place an order');
-      navigate('/job-seeker-registration-login');
+      navigate('/login');
       return;
     }
 

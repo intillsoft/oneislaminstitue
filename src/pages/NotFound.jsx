@@ -27,7 +27,7 @@ const NotFound = () => {
           </Link>
 
           <Link
-            to="/job-seeker-registration-login"
+            to="/login"
             className="btn-secondary w-full inline-flex items-center justify-center space-x-2"
           >
             <Icon name="Home" size={20} />

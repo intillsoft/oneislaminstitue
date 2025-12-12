@@ -17,7 +17,7 @@ const MobileBottomNav = () => {
         { path: '/', label: 'Home', icon: Home },
         { path: '/jobs', label: 'Search', icon: Search },
         { path: '/talent/discover', label: 'Discover', icon: Users },
-        { path: '/job-seeker-registration-login', label: 'Sign In', icon: User }
+        { path: '/login', label: 'Sign In', icon: User }
       ];
     }
 

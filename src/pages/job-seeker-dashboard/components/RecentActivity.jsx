@@ -144,7 +144,7 @@ const RecentActivity = () => {
                   </span>
                   {activity.jobId && (
                     <Link
-                      to={`/job-detail-application?id=${activity.jobId}`}
+                      to={`/jobs/detail?id=${activity.jobId}`}
                       className="text-xs text-workflow-primary hover:text-workflow-primary-600 flex items-center gap-1"
                     >
                       View Details

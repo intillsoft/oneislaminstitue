@@ -6,8 +6,8 @@ import ErrorBoundary from "components/ErrorBoundary";
 import Header from "components/ui/Header";
 import MobileBottomNav from "components/ui/MobileBottomNav";
 import ProtectedRoute from "components/ProtectedRoute";
-import JobSeekerRegistrationLogin from "pages/job-seeker-registration-login";
-import JobDetailApplication from "pages/job-detail-application";
+import JobSeekerRegistrationLogin from "pages/login";
+import JobDetailApplication from "pages/jobs/detail";
 import JobApplicationPage from "pages/job-application";
 import JobSearchBrowse from "pages/job-search-browse"; // Keeping component name, file structure might still be old
 import JobSeekerDashboard from "pages/job-seeker-dashboard";
@@ -104,7 +104,7 @@ const AnimatedRoutes = () => {
         </motion.div>
       } />
       {/* Redundant login route kept for backward compatibility if needed, or redirect */}
-      <Route path="/job-seeker-registration-login" element={<JobSeekerRegistrationLogin />} />
+      <Route path="/login" element={<JobSeekerRegistrationLogin />} />
 
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/reset-password" element={<ResetPassword />} />
@@ -493,7 +493,7 @@ const HeaderWrapper = () => {
   const hideHeaderPaths = [
     '/login',
     '/register',
-    '/job-seeker-registration-login',
+    '/login',
     '/forgot-password',
     '/reset-password'
   ];

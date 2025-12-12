@@ -155,7 +155,7 @@ const JobMatchCard = ({ job, userSkills, onSelect, isSelected }) => {
         {/* Actions */}
         <div className="flex gap-3 mt-4">
           <Link
-            to={`/job-detail-application?id=${job?.id}`}
+            to={`/jobs/detail?id=${job?.id}`}
             className="flex-1 btn-primary text-sm text-center"
             onClick={(e) => e?.stopPropagation()}
           >

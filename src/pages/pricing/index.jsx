@@ -121,7 +121,7 @@ const Pricing = () => {
   const handleSelectPlan = async (tierId) => {
     if (tierId === 'free') {
       if (!user) {
-        navigate('/job-seeker-registration-login');
+        navigate('/login');
       } else {
         success('You are already on the Free plan');
       }
@@ -129,7 +129,7 @@ const Pricing = () => {
     }
 
     if (!user) {
-      navigate('/job-seeker-registration-login?redirect=/pricing');
+      navigate('/login?redirect=/pricing');
       return;
     }
 

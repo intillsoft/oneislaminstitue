@@ -21,7 +21,7 @@ const RecruiterSidebar = ({ isCollapsed, toggleCollapse, isMobile, closeMobileSi
     },
     {
       label: 'Applications',
-      path: '/job-detail-application',
+      path: '/jobs/detail',
       icon: 'FileText',
       badge: { count: 12, color: 'bg-success text-white' }
     },

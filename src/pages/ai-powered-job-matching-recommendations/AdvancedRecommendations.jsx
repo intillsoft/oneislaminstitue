@@ -21,7 +21,7 @@ const AdvancedRecommendations = () => {
         if (user) {
             loadRecommendations();
         } else {
-            navigate('/job-seeker-registration-login');
+            navigate('/login');
         }
     }, [user]);
 

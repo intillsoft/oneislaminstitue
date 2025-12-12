@@ -35,7 +35,7 @@ const TalentRegistration = () => {
 
     if (!user) {
       showError('Please sign in first');
-      navigate('/job-seeker-registration-login');
+      navigate('/login');
       return;
     }
 

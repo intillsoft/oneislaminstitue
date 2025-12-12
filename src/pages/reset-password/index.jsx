@@ -79,7 +79,7 @@ const ResetPassword = () => {
       await auth.updatePassword(formData.password);
       success('Password reset successfully! Redirecting to login...');
       setTimeout(() => {
-        navigate('/job-seeker-registration-login');
+        navigate('/login');
       }, 2000);
     } catch (error) {
       console.error('Reset password error:', error);
@@ -241,7 +241,7 @@ const ResetPassword = () => {
 
             <div className="text-center">
               <Link
-                to="/job-seeker-registration-login"
+                to="/login"
                 className="text-sm text-workflow-primary hover:text-workflow-primary-600 transition-smooth"
               >
                 Back to Sign In

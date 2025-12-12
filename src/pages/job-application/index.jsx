@@ -79,7 +79,7 @@ const JobApplicationPage = () => {
   useEffect(() => {
     if (!user) {
       showError('Please sign in to apply for jobs');
-      navigate('/job-seeker-registration-login');
+      navigate('/login');
       return;
     }
 
@@ -340,7 +340,7 @@ const JobApplicationPage = () => {
                 </div>
               </div>
               <Link
-                to={`/job-detail-application?id=${jobId}`}
+                to={`/jobs/detail?id=${jobId}`}
                 className="text-workflow-primary hover:text-workflow-primary-600 dark:hover:text-workflow-primary-400 text-sm font-medium"
               >
                 View Job Details
@@ -735,7 +735,7 @@ const JobApplicationPage = () => {
                 )}
               </button>
               <Link
-                to={`/job-detail-application?id=${jobId}`}
+                to={`/jobs/detail?id=${jobId}`}
                 className="px-6 py-3 rounded-lg font-semibold border-2 border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-all duration-200 flex items-center justify-center gap-2 min-h-[44px]"
               >
                 <Icon name="ArrowLeft" size={18} />

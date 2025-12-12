@@ -374,7 +374,7 @@ const AISearchResults = () => {
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ duration: 0.3, delay: index * 0.05 }}
                           whileHover={{ y: -4 }}
-                          onClick={() => navigate(`/job-detail-application?id=${job.id}`)}
+                          onClick={() => navigate(`/jobs/detail?id=${job.id}`)}
                         >
                           <div className="job-card-header">
                             <div className="company-logo-wrapper">

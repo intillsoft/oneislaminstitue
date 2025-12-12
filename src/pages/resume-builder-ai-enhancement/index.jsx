@@ -211,7 +211,7 @@ const ResumeBuilderAIEnhancement = () => {
   const handleSave = async (data) => {
     if (!user) {
       showError('Please sign in to save your resume');
-      navigate('/job-seeker-registration-login');
+      navigate('/login');
       return;
     }
 

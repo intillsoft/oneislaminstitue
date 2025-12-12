@@ -48,7 +48,7 @@ const JobsManagementSection = () => {
   };
 
   const handleView = (jobId) => {
-    navigate(`/job-detail-application?id=${jobId}`);
+    navigate(`/jobs/detail?id=${jobId}`);
   };
 
   const handleDelete = async (jobId) => {

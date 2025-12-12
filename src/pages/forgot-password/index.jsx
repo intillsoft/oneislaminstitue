@@ -118,7 +118,7 @@ const ForgotPassword = () => {
 
               <div className="text-center">
                 <Link
-                  to="/job-seeker-registration-login"
+                  to="/login"
                   className="text-sm text-workflow-primary hover:text-workflow-primary-600 transition-smooth"
                 >
                   Back to Sign In
@@ -138,7 +138,7 @@ const ForgotPassword = () => {
                 The link will expire in 1 hour. If you don't see the email, check your spam folder.
               </p>
               <Link
-                to="/job-seeker-registration-login"
+                to="/login"
                 className="text-sm text-workflow-primary hover:text-workflow-primary-600 transition-smooth"
               >
                 Back to Sign In

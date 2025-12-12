@@ -20,7 +20,7 @@ const AuthCallback = () => {
 
         if (error) {
           showError(errorDescription || 'Authentication failed');
-          setTimeout(() => navigate('/job-seeker-registration-login'), 2000);
+          setTimeout(() => navigate('/login'), 2000);
           return;
         }
 
@@ -62,16 +62,16 @@ const AuthCallback = () => {
           const errorParam = searchParams.get('error');
           if (errorParam) {
             showError('Authentication error occurred');
-            setTimeout(() => navigate('/job-seeker-registration-login'), 2000);
+            setTimeout(() => navigate('/login'), 2000);
           } else {
             // No token, redirect to login
-            navigate('/job-seeker-registration-login');
+            navigate('/login');
           }
         }
       } catch (error) {
         console.error('Auth callback error:', error);
         showError('Failed to complete authentication');
-        setTimeout(() => navigate('/job-seeker-registration-login'), 2000);
+        setTimeout(() => navigate('/login'), 2000);
       }
     };
 

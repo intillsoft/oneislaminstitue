@@ -90,7 +90,7 @@ const TalentDashboard = () => {
           <Icon name="Lock" className="w-16 h-16 text-[#64748B] dark:text-[#8B92A3] mx-auto mb-4" />
           <h2 className="text-xl font-semibold text-[#0F172A] dark:text-[#E8EAED] mb-2">Sign in required</h2>
           <p className="text-[#64748B] dark:text-[#8B92A3] mb-4">Please sign in to access your talent dashboard</p>
-          <Link to="/job-seeker-registration-login" className="btn-primary inline-flex items-center">
+          <Link to="/login" className="btn-primary inline-flex items-center">
             Sign In
           </Link>
         </div>

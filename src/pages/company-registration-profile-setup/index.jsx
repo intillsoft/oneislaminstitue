@@ -259,7 +259,7 @@ const CompanyRegistrationProfileSetup = () => {
     
     if (!user) {
       showError('Please sign in to create a company profile');
-      navigate('/job-seeker-registration-login');
+      navigate('/login');
       return;
     }
     

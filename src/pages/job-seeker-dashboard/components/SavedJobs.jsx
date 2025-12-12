@@ -39,7 +39,7 @@ const SavedJobs = ({ limit, showViewAll = false, setActiveTab }) => {
 
   const handleRemoveJob = async (jobId) => {
     if (!user) {
-      navigate('/job-seeker-registration-login');
+      navigate('/login');
       return;
     }
 
@@ -58,7 +58,7 @@ const SavedJobs = ({ limit, showViewAll = false, setActiveTab }) => {
       <div className="bg-background rounded-lg border border-border shadow-soft p-6 text-center">
         <Icon name="Bookmark" className="w-12 h-12 text-[#64748B] dark:text-[#8B92A3] mx-auto mb-4" />
         <p className="text-[#64748B] dark:text-[#8B92A3] mb-4">Sign in to save jobs</p>
-        <Link to="/job-seeker-registration-login" className="btn-primary inline-flex items-center">
+        <Link to="/login" className="btn-primary inline-flex items-center">
           Sign In
         </Link>
       </div>
@@ -139,7 +139,7 @@ const SavedJobs = ({ limit, showViewAll = false, setActiveTab }) => {
                     )}
                     <div className="flex-1">
                       <Link
-                        to={`/job-detail-application?id=${jobId}`}
+                        to={`/jobs/detail?id=${jobId}`}
                         className="text-lg font-semibold text-[#0F172A] dark:text-[#E8EAED] hover:text-workflow-primary transition-colors"
                       >
                         {job.title}
@@ -168,7 +168,7 @@ const SavedJobs = ({ limit, showViewAll = false, setActiveTab }) => {
                 </div>
                 <div className="flex items-center gap-2 ml-4 flex-shrink-0">
                   <Link
-                    to={`/job-detail-application?id=${jobId}`}
+                    to={`/jobs/detail?id=${jobId}`}
                     className="px-4 py-2 bg-workflow-primary text-white rounded-lg hover:bg-workflow-primary-600 transition-colors text-sm font-medium flex items-center gap-2"
                   >
                     <Icon name="Eye" size={16} />

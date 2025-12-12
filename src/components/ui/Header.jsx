@@ -273,13 +273,13 @@ const Header = () => {
             ) : (
               <div className="flex items-center gap-3">
                 <Link
-                  to="/job-seeker-registration-login"
+                  to="/login"
                   className="px-4 py-2 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-300 text-sm font-medium"
                 >
                   Sign In
                 </Link>
                 <Link
-                  to="/job-seeker-registration-login"
+                  to="/login"
                   className="px-4 py-2 bg-workflow-primary text-white rounded-lg hover:bg-workflow-primary-600 transition-all duration-300 shadow-soft hover:shadow-card-hover hover:scale-105 active:scale-95 text-sm font-medium"
                 >
                   Sign Up

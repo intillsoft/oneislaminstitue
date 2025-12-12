@@ -320,7 +320,7 @@ const JobSearchBrowse = () => {
   const handleSaveJob = async (jobId) => {
     if (!user) {
       showError('Please sign in to save jobs');
-      navigate('/job-seeker-registration-login');
+      navigate('/login');
       return;
     }
 

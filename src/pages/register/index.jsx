@@ -325,7 +325,7 @@ const Register = () => {
             <div className="mt-6 text-center">
               <p className="text-sm text-text-secondary dark:text-dark-text-secondary">
                 Already have an account?{' '}
-                <Link to="/job-seeker-registration-login" className="text-workflow-primary hover:underline font-medium">
+                <Link to="/login" className="text-workflow-primary hover:underline font-medium">
                   Sign In
                 </Link>
               </p>

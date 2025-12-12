@@ -44,7 +44,7 @@ const ApplicationDetail = () => {
     if (user && applicationId) {
       loadApplication();
     } else if (!user) {
-      navigate('/job-seeker-registration-login');
+      navigate('/login');
     }
   }, [user, applicationId]);
 
@@ -257,7 +257,7 @@ const ApplicationDetail = () => {
 
                 <div className="mt-4 flex gap-3">
                   <Link
-                    to={`/job-detail-application?id=${job.id}`}
+                    to={`/jobs/detail?id=${job.id}`}
                     className="btn-outline text-sm"
                   >
                     <Icon name="ExternalLink" size={16} className="mr-2" />

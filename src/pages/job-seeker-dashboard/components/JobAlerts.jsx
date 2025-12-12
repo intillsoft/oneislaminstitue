@@ -49,7 +49,7 @@ const JobAlerts = () => {
 
   const handleToggleAlert = async (id, currentStatus) => {
     if (!user) {
-      navigate('/job-seeker-registration-login');
+      navigate('/login');
       return;
     }
 
@@ -111,7 +111,7 @@ const JobAlerts = () => {
 
   const handleCreateAlert = async () => {
     if (!user) {
-      navigate('/job-seeker-registration-login');
+      navigate('/login');
       return;
     }
 
@@ -147,7 +147,7 @@ const JobAlerts = () => {
       <div className="text-center py-12">
         <Icon name="Bell" className="w-16 h-16 text-[#64748B] dark:text-[#8B92A3] mx-auto mb-4" />
         <p className="text-[#64748B] dark:text-[#8B92A3] mb-4">Sign in to create job alerts</p>
-        <Button onClick={() => navigate('/job-seeker-registration-login')}>
+        <Button onClick={() => navigate('/login')}>
           Sign In
         </Button>
       </div>

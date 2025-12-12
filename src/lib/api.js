@@ -73,7 +73,7 @@ api.interceptors.response.use(
       }
 
       // Redirect to login if refresh fails
-      window.location.href = '/job-seeker-registration-login';
+      window.location.href = '/login';
       return Promise.reject(new Error('Session expired. Please sign in again.'));
     }
 
