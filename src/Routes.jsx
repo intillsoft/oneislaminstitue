@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Routes as RouterRoutes, Route, useLocation } from "react-router-dom";
+import { BrowserRouter, Routes as RouterRoutes, Route, useLocation, Navigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import ScrollToTop from "components/ScrollToTop";
 import ErrorBoundary from "components/ErrorBoundary";
@@ -469,6 +469,16 @@ const AnimatedRoutes = () => {
         }
       />
       <Route path="/talent/discover" element={<TalentDiscover />} />
+      {/* Legacy Redirects for SEO and Bookmarks */}
+      <Route path="/resume-generator-ai" element={<Navigate replace to="/dashboard/resume-generator" />} />
+      <Route path="/resume-builder-ai-enhancement" element={<Navigate replace to="/dashboard/resume-builder" />} />
+      <Route path="/career-advisor-ai" element={<Navigate replace to="/dashboard/career-advisor" />} />
+      <Route path="/ai-powered-job-matching-recommendations" element={<Navigate replace to="/dashboard/recommended" />} />
+      <Route path="/recruiter-dashboard-analytics" element={<Navigate replace to="/recruiter/dashboard" />} />
+      <Route path="/job-search-browse" element={<Navigate replace to="/jobs" />} />
+      <Route path="/job-seeker-dashboard" element={<Navigate replace to="/dashboard" />} />
+      <Route path="/workflow-application-tracking-analytics" element={<Navigate replace to="/dashboard/applications" />} />
+
       <Route path="*" element={<NotFound />} />
     </RouterRoutes>
   );
