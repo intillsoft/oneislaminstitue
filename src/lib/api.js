@@ -8,7 +8,7 @@ import { supabase } from './supabase';
 
 // Create axios instance
 // Define the backend root URL (no /api)
-const API_ROOT = import.meta.env.VITE_API_URL || 'https://workflow-backend-f5p2.onrender.com';
+const API_ROOT = import.meta.env.VITE_API_URL || 'https://workflow-d9q5.onrender.com';
 
 // Create axios instance
 const api = axios.create({
