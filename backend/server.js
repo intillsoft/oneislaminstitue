@@ -30,6 +30,7 @@ import subscriptionRoutes from './routes/subscriptions.js';
 import talentCrawlerRoutes from './routes/talentCrawler.js';
 import unifiedMessagesRoutes from './routes/unifiedMessages.js';
 import talentAIRoutes from './routes/talentAI.js';
+import aiResumeRoutes from './routes/aiResume.js';
 import { authenticate } from './middleware/auth.js';
 
 dotenv.config();
@@ -117,6 +118,7 @@ app.use('/api/subscriptions', subscriptionRoutes); // Subscription routes (some 
 app.use('/api/talent-crawler', talentCrawlerRoutes); // Talent crawler routes (admin only)
 app.use('/api/talent-ai', authenticate, talentAIRoutes); // Talent AI features (needs auth)
 app.use('/api/recommendations', authenticate, recommendationsRoutes); // Recommendations routes (needs auth)
+app.use('/api/ai-resume', aiResumeRoutes); // World-class resume AI (auth handled per route)
 
 // AI services - mount at /api/ai first for /api/ai/search/all route
 app.use('/api/ai', aiRoutes); // AI routes at /api/ai (for /api/ai/search/all)
