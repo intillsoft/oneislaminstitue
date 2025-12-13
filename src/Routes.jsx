@@ -16,8 +16,11 @@ import CompanyRegistrationProfileSetup from "pages/company-registration-profile-
 import CompanyProfileView from "pages/company-profile-view";
 import JobPostingCreationManagement from "pages/job-posting-creation-management";
 import AdminModerationManagement from "pages/admin-moderation-management";
-import ResumeBuilderAIEnhancement from "pages/resume-builder-ai-enhancement";
-import ResumeGeneratorAI from "pages/resume-generator-ai";
+// Premium Resume System
+import ResumeDashboard from "pages/resume/ResumeDashboard";
+import ResumeEditor from "pages/resume/ResumeEditor";
+import PublicResumeView from "pages/resume/PublicResumeView";
+import ResumeGeneratorAI from "pages/resume-generator-ai"; // Keeping as legacy or AI-first entry point if needed
 import CareerAdvisorAI from "pages/career-advisor-ai";
 import AIPoweredJobMatchingRecommendations from "pages/ai-powered-job-matching-recommendations";
 import InterviewPrep from "pages/interview-prep/InterviewPrep";
@@ -137,6 +140,18 @@ const AnimatedRoutes = () => {
         }
       />
       <Route path="/jobs" element={<JobSearchBrowse />} />
+
+      {/* Premium Resume System Routes */}
+      <Route path="/resume" element={<Navigate to="/resume/dashboard" replace />} />
+      <Route path="/resume/dashboard" element={<ProtectedRoute><ResumeDashboard /></ProtectedRoute>} />
+      <Route path="/resume/new" element={<ProtectedRoute><ResumeEditor /></ProtectedRoute>} />
+      <Route path="/resume/edit/:id" element={<ProtectedRoute><ResumeEditor /></ProtectedRoute>} />
+      <Route path="/resume/view/:id" element={<PublicResumeView />} />
+
+      {/* Legacy Redirects */}
+      <Route path="/resume-builder" element={<Navigate to="/resume/dashboard" replace />} />
+      <Route path="/resume-generator" element={<Navigate to="/resume/new" replace />} />
+
       <Route path="/dashboard" element={
         <ProtectedRoute>
           <JobSeekerDashboard />

@@ -54,6 +54,26 @@ export const resumeService = {
   },
 
   /**
+   * Get public resume by ID (no auth required if visibility is public)
+   */
+  async getPublicById(id) {
+    try {
+      const { data, error } = await supabase
+        .from('resumes')
+        .select('*')
+        .eq('id', id)
+        .eq('visibility', 'public')
+        .single();
+
+      if (error) throw error;
+      return data;
+    } catch (error) {
+      console.error('Get public resume error:', error);
+      throw new Error('Resume not found or private');
+    }
+  },
+
+  /**
    * Create resume - FIXED to properly save content
    */
   async create(resumeData) {
