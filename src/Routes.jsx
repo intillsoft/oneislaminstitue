@@ -209,6 +209,10 @@ const AnimatedRoutes = () => {
 
       {/* Tools & Features (Standardized URLs) */}
       <Route
+        path="/dashboard/resume-builder"
+        element={<Navigate to="/resume/dashboard" replace />}
+      />
+      <Route
         path="/dashboard/resume-generator"
         element={
           <ProtectedRoute>
