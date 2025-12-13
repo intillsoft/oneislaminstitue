@@ -475,62 +475,71 @@ const ResumeGeneratorAI = () => {
         <div className={`${isFullscreen ? 'h-full' : 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8'}`}>
           {!isFullscreen && <div className="mb-6"><div className="text-sm text-text-secondary dark:text-[#8B92A3]">Resume Generator</div></div>}
 
-          {/* Advanced ChatGPT-like Interface */}
-          <div className={`${isFullscreen ? 'h-full' : 'h-[calc(100vh-12rem)]'} bg-white dark:bg-[#13182E] rounded-lg shadow-xl border border-border dark:border-[#1E2640] flex flex-col overflow-hidden`}>
-            {/* Modern Header */}
-            <div className="flex items-center justify-between p-4 border-b border-border dark:border-[#1E2640] bg-gradient-to-r from-workflow-primary/5 to-workflow-primary/10 dark:from-workflow-primary/10 dark:to-workflow-primary/20">
-              <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-gradient-to-br from-workflow-primary to-workflow-primary-600 rounded-full flex items-center justify-center shadow-lg">
-                  <Sparkles className="w-5 h-5 text-white" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-bold text-text-primary dark:text-[#E8EAED] flex items-center gap-2">
-                    AI Resume Assistant
-                    <span className="text-xs font-normal bg-workflow-primary/20 text-workflow-primary px-2 py-0.5 rounded-full">
-                      7+ Features
-                    </span>
-                  </h3>
-                  <p className="text-xs text-text-secondary dark:text-[#8B92A3]">
-                    {resumeCount}/{resumeLimit === -1 ? '∞' : resumeLimit} resumes • {subscriptionTier} plan {atsScore && `• ATS: ${atsScore}/100`}
-                  </p>
-                </div>
-              </div>
+          {/* Advanced ChatGPT-like Interface with Premium Glassmorphism */}
+          <div className={`${isFullscreen ? 'h-full' : 'h-[calc(100vh-8rem)]'} bg-white/50 dark:bg-[#13182E]/50 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/20 dark:border-slate-700/50 flex flex-col overflow-hidden relative`}>
 
-              <div className="flex items-center gap-2">
-                {autoSave && (
-                  <span className="text-xs bg-green-500/20 text-green-600 dark:text-green-400 px-2 py-1 rounded flex items-center gap-1">
-                    <CheckCircle2 className="w-3 h-3" />
-                    Auto-save ON
-                  </span>
-                )}
-                <button
-                  onClick={handleManualSave}
-                  className="p-2 rounded-lg hover:bg-surface-100 dark:hover:bg-[#1A2139] transition-colors"
-                  title="Save manually"
-                >
-                  <Save className="w-5 h-5 text-text-secondary dark:text-[#8B92A3]" />
-                </button>
-                <button
-                  onClick={() => setShowFeatures(!showFeatures)}
-                  className="p-2 rounded-lg hover:bg-surface-100 dark:hover:bg-[#1A2139] transition-colors"
-                  title="Features"
-                >
-                  <Zap className="w-5 h-5 text-text-secondary dark:text-[#8B92A3]" />
-                </button>
-                <button
-                  onClick={() => setShowTools(!showTools)}
-                  className="p-2 rounded-lg hover:bg-surface-100 dark:hover:bg-[#1A2139] transition-colors"
-                  title="Tools"
-                >
-                  <Settings className="w-5 h-5 text-text-secondary dark:text-[#8B92A3]" />
-                </button>
-                <button
-                  onClick={() => setIsFullscreen(!isFullscreen)}
-                  className="p-2 rounded-lg hover:bg-surface-100 dark:hover:bg-[#1A2139] transition-colors"
-                  title={isFullscreen ? "Exit Fullscreen" : "Fullscreen"}
-                >
-                  {isFullscreen ? <Minimize2 className="w-5 h-5 text-text-secondary dark:text-[#8B92A3]" /> : <Maximize2 className="w-5 h-5 text-text-secondary dark:text-[#8B92A3]" />}
-                </button>
+            {/* Ambient Background Glow */}
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-32 bg-indigo-500/10 blur-[100px] pointer-events-none" />
+
+            {/* Premium Floating Header */}
+            <div className="z-20 p-4 pb-0">
+              <div className="flex items-center justify-between p-4 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border border-white/20 dark:border-slate-700 rounded-xl shadow-sm">
+                <div className="flex items-center space-x-4">
+                  <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-violet-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-500/20 transform hover:scale-105 transition-transform duration-300">
+                    <Sparkles className="w-5 h-5 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                      AI Resume Assistant
+                      <span className="text-[10px] font-bold bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 px-2 py-0.5 rounded-full border border-indigo-100 dark:border-indigo-800 tracking-wide uppercase">
+                        Beta
+                      </span>
+                    </h3>
+                    <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">
+                      {resumeCount}/{resumeLimit === -1 ? '∞' : resumeLimit} credits • {subscriptionTier} plan {atsScore && <span className="text-emerald-500 font-bold">• ATS: {atsScore}</span>}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  {autoSave && (
+                    <span className="hidden sm:flex items-center gap-1.5 text-xs font-medium text-emerald-600 bg-emerald-50 dark:bg-emerald-900/20 px-3 py-1.5 rounded-full border border-emerald-100 dark:border-emerald-800/30">
+                      <CheckCircle2 className="w-3.5 h-3.5" />
+                      Auto-save active
+                    </span>
+                  )}
+
+                  <div className="h-8 w-px bg-slate-200 dark:bg-slate-700 mx-2 hidden sm:block" />
+
+                  <button
+                    onClick={handleManualSave}
+                    className="p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700/50 text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-all duration-300"
+                    title="Save manually"
+                  >
+                    <Save className="w-5 h-5" />
+                  </button>
+                  <button
+                    onClick={() => setShowFeatures(!showFeatures)}
+                    className={`p-2.5 rounded-xl transition-all duration-300 ${showFeatures ? 'bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400' : 'hover:bg-slate-100 dark:hover:bg-slate-700/50 text-slate-500 dark:text-slate-400'}`}
+                    title="Features"
+                  >
+                    <Zap className="w-5 h-5" />
+                  </button>
+                  <button
+                    onClick={() => setShowTools(!showTools)}
+                    className={`p-2.5 rounded-xl transition-all duration-300 ${showTools ? 'bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400' : 'hover:bg-slate-100 dark:hover:bg-slate-700/50 text-slate-500 dark:text-slate-400'}`}
+                    title="Tools"
+                  >
+                    <Settings className="w-5 h-5" />
+                  </button>
+                  <button
+                    onClick={() => setIsFullscreen(!isFullscreen)}
+                    className="p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700/50 text-slate-500 dark:text-slate-400 transition-all duration-300"
+                    title={isFullscreen ? "Exit Fullscreen" : "Fullscreen"}
+                  >
+                    {isFullscreen ? <Minimize2 className="w-5 h-5" /> : <Maximize2 className="w-5 h-5" />}
+                  </button>
+                </div>
               </div>
             </div>
 
@@ -592,8 +601,8 @@ const ResumeGeneratorAI = () => {
                             key={template.id}
                             onClick={() => setSelectedTemplate(template.id)}
                             className={`p-2 rounded-lg border-2 transition-all ${selectedTemplate === template.id
-                                ? 'border-workflow-primary bg-workflow-primary/10'
-                                : 'border-border dark:border-dark-border hover:border-workflow-primary/50'
+                              ? 'border-workflow-primary bg-workflow-primary/10'
+                              : 'border-border dark:border-dark-border hover:border-workflow-primary/50'
                               }`}
                           >
                             <Icon className="w-4 h-4 mb-1 mx-auto" />
@@ -625,8 +634,8 @@ const ResumeGeneratorAI = () => {
                   <div className={`flex-1 max-w-3xl ${msg.role === 'user' ? 'order-2' : ''}`}>
                     <div
                       className={`rounded-2xl p-4 ${msg.role === 'user'
-                          ? 'bg-workflow-primary text-white ml-auto'
-                          : 'bg-white dark:bg-[#1A2139] text-text-primary dark:text-[#E8EAED] border border-border dark:border-[#1E2640] shadow-sm'
+                        ? 'bg-workflow-primary text-white ml-auto'
+                        : 'bg-white dark:bg-[#1A2139] text-text-primary dark:text-[#E8EAED] border border-border dark:border-[#1E2640] shadow-sm'
                         }`}
                     >
                       <div className="prose prose-sm dark:prose-invert max-w-none">
