@@ -3,24 +3,21 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
     Save, Layout, Sparkles, ChevronLeft, Eye, EyeOff,
-    Download, History, Settings, CheckCircle2, AlertCircle
+    Download, History, Settings, CheckCircle2, AlertCircle,
+    FileText, User, Search, Maximize2, Zap
 } from 'lucide-react';
-import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
 import { resumeService } from '../../services/resumeService';
-import { pdfExporter } from '../../services/pdfExporter';
 import { useAuthContext } from '../../contexts/AuthContext';
 import { useToast } from '../../components/ui/Toast';
-import useDebounce from '../../hooks/useDebounce';
 import Button from '../../components/ui/Button';
+
+// V2 Components
 import ResumePreview from './components/ResumePreview';
-import ResumeForm from './components/ResumeForm';
-import AIAssistantSidebar from './components/AIAssistantSidebar';
+import ResumeEditorManual from './components/ResumeEditorManual';
 import TemplateSelector from './components/TemplateSelector';
-import ATSScoreCard from '../../components/resume-builder/ATSScoreCard';
-import '../../styles/resume-layout.css';
 
 // Auto-save delay
-const AUTOSAVE_DELAY = 2000;
+const AUTOSAVE_DELAY = 1000;
 
 const ResumeEditor = () => {
     const { id } = useParams();
@@ -28,15 +25,23 @@ const ResumeEditor = () => {
     const { user } = useAuthContext();
     const { success, error: showError } = useToast();
 
-    // State
+    // --- State ---
     const [resume, setResume] = useState(null);
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
     const [lastSaved, setLastSaved] = useState(null);
-    const [showPreview, setShowPreview] = useState(true);
-    const [showAI, setShowAI] = useState(false);
-    const [isExporting, setIsExporting] = useState(false);
-    const [activeSection, setActiveSection] = useState('personal');
+
+    // UI Layout State
+    const [activeTab, setActiveTab] = useState('editor'); // For mobile
+    const [showVisuals, setShowVisuals] = useState({
+        heatmap: false,
+        eyeTracking: false,
+        ats: false
+    });
+
+    // Toggle for Center Column Mode
+    const [editorMode, setEditorMode] = useState('manual'); // 'manual' | 'chat'
+
     const [resumeData, setResumeData] = useState({
         personalInfo: {},
         summary: '',
@@ -47,43 +52,20 @@ const ResumeEditor = () => {
         certifications: []
     });
 
-    const resumePreviewRef = useRef(null);
-
-    // Debounce the resume data for auto-saving
-    const debouncedResumeData = useDebounce(resumeData, AUTOSAVE_DELAY);
-
     // Analytics State
     const [atsScore, setAtsScore] = useState(0);
+    const saveTimeoutRef = useRef(null);
 
+    // --- Effects ---
     useEffect(() => {
         if (id) {
             loadResume();
         } else if (user) {
-            // New Resume Mode: Create draft and redirect
             createNewResume();
         }
     }, [id, user]);
 
-    // Auto-save effect
-    useEffect(() => {
-        if (debouncedResumeData && id && !loading) {
-            saveResume(debouncedResumeData, true);
-        }
-    }, [debouncedResumeData]);
-
-    // Calculate ATS Score Effect (Mock Logic for now)
-    useEffect(() => {
-        let score = 0;
-        if (resumeData.personalInfo?.name) score += 10;
-        if (resumeData.personalInfo?.email) score += 10;
-        if (resumeData.summary?.length > 50) score += 15;
-        if (resumeData.experience?.length > 0) score += 25;
-        if (resumeData.education?.length > 0) score += 15;
-        if (resumeData.skills?.length > 0) score += 15;
-        if (resumeData.projects?.length > 0) score += 10;
-        setAtsScore(Math.min(score, 100)); // Cap at 100
-    }, [resumeData]);
-
+    // --- Actions ---
     const createNewResume = async () => {
         try {
             setLoading(true);
@@ -107,24 +89,29 @@ const ResumeEditor = () => {
             setLoading(true);
             const data = await resumeService.getById(id);
             setResume(data);
-            if (data.content_json) {
-                setResumeData(data.content_json);
-            }
+            if (data.content_json) setResumeData(data.content_json);
             if (data.ats_score) setAtsScore(data.ats_score);
             setLastSaved(new Date(data.updated_at));
         } catch (error) {
-            console.error('Failed to load resume:', error);
-            showError('Could not load resume');
             navigate('/resume/dashboard');
         } finally {
             setLoading(false);
         }
     };
 
+    // Auto-save Logic
     const handleDataChange = useCallback((newData) => {
         setResumeData(newData);
-        // Note: Auto-save handled by useEffect on debouncedData
-    }, []);
+        if (saveTimeoutRef.current) clearTimeout(saveTimeoutRef.current);
+        setSaving(true);
+        saveTimeoutRef.current = setTimeout(async () => {
+            try {
+                await saveResume(newData, true);
+            } catch (err) {
+                console.error('Auto-save failed:', err);
+            }
+        }, AUTOSAVE_DELAY);
+    }, [id]);
 
     const saveResume = async (data = resumeData, silent = false) => {
         if (!id) return;
@@ -132,228 +119,252 @@ const ResumeEditor = () => {
             setSaving(true);
             const updatedResume = await resumeService.update(id, {
                 content: data,
-                completeness_score: atsScore, // Sync local score
-                ats_score: atsScore
+                completeness_score: calculateCompleteness(data)
             });
-
             setLastSaved(new Date());
             setResume(prev => ({ ...prev, ...updatedResume }));
-
-            if (!silent) success('Resume saved successfully');
+            if (!silent) success('Saved');
         } catch (err) {
-            if (!silent) showError('Failed to save resume');
-            console.error(err);
+            if (!silent) showError('Failed to save');
         } finally {
             setSaving(false);
         }
     };
 
-    const handleExport = async () => {
-        if (!resumePreviewRef.current) return;
-
-        setIsExporting(true);
-        try {
-            // Find the actual resume paper element
-            const element = resumePreviewRef.current.querySelector('.resume-template');
-            // OR pass the wrapper if template class isn't strictly there
-            // But we need to be specific to avoid capturing background
-
-            // Fallback to the wrapper ref if class not found, but it might include padding
-            const target = element || resumePreviewRef.current;
-
-            const result = await pdfExporter.exportResume(target, resumeData);
-            if (result.success) {
-                success('Resume exported successfully');
-            } else {
-                showError('Failed to export PDF');
-            }
-        } catch (error) {
-            showError('Export failed');
-            console.error(error);
-        } finally {
-            setIsExporting(false);
-        }
-    };
-
-    // Handle template change
     const handleTemplateChange = async (templateId) => {
         try {
             await resumeService.update(id, { template: templateId });
             setResume(prev => ({ ...prev, template_id: templateId }));
             success('Template updated');
-        } catch (err) {
-            showError('Failed to change template');
-        }
+        } catch (err) { showError('Failed to change template'); }
     };
 
-    if (loading) return <div className="min-h-screen flex items-center justify-center"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-workflow-primary"></div></div>;
+    const calculateCompleteness = (data) => {
+        let score = 0;
+        if (data.personalInfo?.name) score += 10;
+        if (data.summary?.length > 50) score += 20;
+        if (data.experience?.length > 0) score += 40;
+        if (data.skills?.length > 0) score += 30;
+        return score;
+    };
 
-    // Strict Layout Implementation
+    if (loading) return <div className="h-screen flex items-center justify-center bg-slate-900 text-white"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-500"></div></div>;
+
+    // --- LAYOUT ---
     return (
-        <div className="resume-builder-container">
-            {/* Global Styles */}
-            <link rel="stylesheet" href="/src/styles/resume-layout.css" />
+        <div className="h-screen w-screen flex flex-col bg-[#0F1117] text-slate-300 font-sans overflow-hidden">
 
-            {/* EDITOR PANEL - FIXED WIDTH 420px */}
-            <div className="editor-panel custom-scrollbar">
-                {/* Header */}
-                <div className="sticky top-0 z-[100] bg-white/95 backdrop-blur-sm border-b border-gray-200 pb-4 mb-6 pt-2">
-                    <div className="flex items-center justify-between mb-4">
+            {/* 1. Header (Minimal) */}
+            <header className="h-14 bg-[#161B22] border-b border-[#30363D] flex items-center justify-between px-4 z-50">
+                <div className="flex items-center gap-4">
+                    <button onClick={() => navigate('/resume/dashboard')} className="p-2 hover:bg-[#30363D] rounded-lg transition-colors">
+                        <ChevronLeft className="w-5 h-5 text-slate-400 font-bold" />
+                    </button>
+                    <div className="h-6 w-px bg-[#30363D]" />
+                    <div>
+                        <input
+                            value={resume?.title || ''}
+                            onChange={(e) => setResume(prev => ({ ...prev, title: e.target.value }))}
+                            onBlur={() => resumeService.update(id, { title: resume.title })}
+                            className="bg-transparent border-none text-white font-bold text-sm focus:ring-0 p-0 w-48"
+                        />
+                        <div className="flex items-center gap-2 text-[10px] uppercase font-bold tracking-wider text-slate-500">
+                            <span>{resume?.template_id || 'Modern'} Template</span>
+                            {saving ? <span className="text-indigo-400">Saving...</span> : <span>Saved {lastSaved?.toLocaleTimeString()}</span>}
+                        </div>
+                    </div>
+                </div>
+
+                <div className="flex items-center gap-3">
+                    <button
+                        onClick={() => window.print()}
+                        className="px-4 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold rounded-full transition-all shadow-lg shadow-indigo-500/20 flex items-center gap-2"
+                    >
+                        <Download className="w-3 h-3" /> Export PDF
+                    </button>
+                </div>
+            </header>
+
+            {/* 2. Main Workspace (3-Column Notebook Layout) */}
+            <div className="flex-1 flex overflow-hidden">
+
+                {/* COLUMN 1: LEFT HUB (15%) */}
+                <div className="hidden lg:flex w-[280px] flex-col border-r border-[#30363D] bg-[#0D1117]">
+                    <div className="p-4 border-b border-[#30363D]">
+                        <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-4">Resume Hub</h3>
+                        <div className="space-y-1">
+                            <div className="p-3 rounded-lg bg-[#161B22] border border-[#30363D] flex items-center gap-3">
+                                <div className="p-2 bg-indigo-500/20 rounded-md">
+                                    <FileText className="w-4 h-4 text-indigo-400" />
+                                </div>
+                                <div>
+                                    <div className="text-white text-sm font-bold truncate max-w-[120px]">{resume?.title}</div>
+                                    <div className="text-[10px] text-slate-500">Last edited just now</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="flex-1 overflow-y-auto p-4">
+                        <h4 className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-3">Templates</h4>
+                        <div className="grid grid-cols-2 gap-2">
+                            {['Modern', 'Professional', 'Executive', 'Creative', 'Technical'].map(t => (
+                                <button
+                                    key={t}
+                                    onClick={() => handleTemplateChange(t.toLowerCase())}
+                                    className={`p-2 rounded border text-xs text-left transition-all ${(resume?.template_id || 'modern') === t.toLowerCase()
+                                            ? 'bg-indigo-900/30 border-indigo-500 text-indigo-300'
+                                            : 'bg-[#161B22] border-[#30363D] hover:border-slate-500'
+                                        }`}
+                                >
+                                    {t}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className="p-4 border-t border-[#30363D]">
+                        <div className="flex items-center justify-between text-xs text-slate-400">
+                            <span>ATS Score</span>
+                            <span className={`font-bold ${atsScore >= 70 ? 'text-emerald-400' : 'text-amber-400'}`}>{atsScore}/100</span>
+                        </div>
+                        <div className="mt-2 h-1 bg-[#21262D] rounded-full overflow-hidden">
+                            <div className="h-full bg-gradient-to-r from-indigo-500 to-purple-500" style={{ width: `${atsScore}%` }} />
+                        </div>
+                    </div>
+                </div>
+
+                {/* COLUMN 2: COMMAND CENTER (50%) */}
+                <div className="flex-1 min-w-[320px] max-w-4xl border-r border-[#30363D] bg-[#0F1117] flex flex-col relative">
+                    {/* Toggle Switch */}
+                    <div className="absolute top-4 left-1/2 -translate-x-1/2 z-20 bg-[#161B22] border border-[#30363D] p-1 rounded-full flex gap-1 shadow-xl">
                         <button
-                            onClick={() => navigate('/resume/dashboard')}
-                            className="p-2 -ml-2 hover:bg-gray-100 rounded-full transition-colors text-slate-500"
+                            onClick={() => setEditorMode('manual')}
+                            className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all ${editorMode === 'manual' ? 'bg-indigo-600 text-white shadow-lg' : 'text-slate-400 hover:text-white'
+                                }`}
                         >
-                            <ChevronLeft className="w-5 h-5" />
+                            Manual Edit
                         </button>
+                        <button
+                            onClick={() => setEditorMode('chat')}
+                            className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all ${editorMode === 'chat' ? 'bg-indigo-600 text-white shadow-lg' : 'text-slate-400 hover:text-white'
+                                }`}
+                        >
+                            <span className="flex items-center gap-1"><Sparkles className="w-3 h-3" /> AI Chat</span>
+                        </button>
+                    </div>
+
+                    {/* Editor Content */}
+                    <div className="flex-1 overflow-y-auto custom-scrollbar p-8 pt-20">
+                        {editorMode === 'manual' ? (
+                            <div className="max-w-2xl mx-auto">
+                                <ResumeEditorManual
+                                    data={resumeData}
+                                    onChange={handleDataChange}
+                                />
+                            </div>
+                        ) : (
+                            <div className="max-w-xl mx-auto flex flex-col items-center justify-center h-full text-center space-y-6">
+                                <div className="w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-2xl shadow-indigo-500/20">
+                                    <Sparkles className="w-8 h-8 text-white" />
+                                </div>
+                                <h2 className="text-2xl font-bold text-white">AI Command Center</h2>
+                                <p className="text-slate-400 max-w-md">
+                                    Describe your target role or paste a job description. I will rewrite your entire resume to match it perfectly.
+                                </p>
+                                <div className="w-full relative">
+                                    <textarea
+                                        className="w-full bg-[#161B22] border border-[#30363D] rounded-xl p-4 text-sm text-white focus:ring-2 focus:ring-indigo-500 outline-none h-32 resize-none"
+                                        placeholder="e.g. 'Tailor my resume for a Senior Product Manager role at Netflix...'"
+                                    />
+                                    <button className="absolute bottom-4 right-4 bg-indigo-600 hover:bg-indigo-500 text-white p-2 rounded-lg transition-colors">
+                                        <Zap className="w-4 h-4" />
+                                    </button>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                </div>
+
+                {/* COLUMN 3: VISUAL INTELLIGENCE (35%) */}
+                <div className="hidden xl:flex w-[450px] flex-col bg-[#0D1117] border-l border-[#30363D] relative">
+                    {/* Visual Toggles */}
+                    <div className="h-12 border-b border-[#30363D] flex items-center justify-around px-4">
                         <div className="flex items-center gap-2">
-                            {saving ? (
-                                <span className="text-xs font-medium text-indigo-500 animate-pulse">Saving...</span>
-                            ) : (
-                                <span className="text-xs font-medium text-emerald-500 flex items-center gap-1">
-                                    <CheckCircle2 className="w-3 h-3" /> Saved
-                                </span>
+                            <span className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Overlays:</span>
+                            <ToggleIcon
+                                active={showVisuals.heatmap}
+                                icon={Search}
+                                label="Heatmap"
+                                onClick={() => setShowVisuals(s => ({ ...s, heatmap: !s.heatmap }))}
+                            />
+                            <ToggleIcon
+                                active={showVisuals.eyeTracking}
+                                icon={Eye}
+                                label="Eye Track"
+                                onClick={() => setShowVisuals(s => ({ ...s, eyeTracking: !s.eyeTracking }))}
+                            />
+                        </div>
+                    </div>
+
+                    <div className="flex-1 overflow-y-auto p-8 relative bg-[#1F242C]">
+                        {/* THE PREVIEW */}
+                        <div className="transform scale-[0.65] origin-top shadow-2xl transition-all duration-300 relative group">
+                            <ResumePreview
+                                data={resumeData}
+                                template={resume?.template_id || 'modern'}
+                            />
+
+                            {/* OVERLAYS */}
+                            {showVisuals.heatmap && (
+                                <div className="absolute inset-0 bg-indigo-500/10 mix-blend-multiply pointer-events-none z-10" />
+                                /* In prod: Real heatmap logic overlaying spans */
+                            )}
+                            {showVisuals.eyeTracking && (
+                                <div className="absolute inset-0 z-20 pointer-events-none">
+                                    {/* Mock Eye Tracking Path */}
+                                    <svg className="w-full h-full opacity-50">
+                                        <path d="M 50 50 L 200 50 L 50 150 L 200 150" stroke="red" strokeWidth="4" fill="none" className="animate-dash" />
+                                        <circle cx="50" cy="50" r="10" fill="red" className="animate-ping" />
+                                    </svg>
+                                </div>
                             )}
                         </div>
                     </div>
 
-                    <div className="space-y-4">
-                        <h1 className="text-xl font-bold text-slate-900 truncate pr-4">
-                            {resume?.title || 'Untitled Resume'}
-                        </h1>
-                        <TemplateSelector
-                            currentTemplate={resume?.template_id}
-                            onSelect={handleTemplateChange}
-                        />
-                    </div>
-                </div>
-
-                {/* Form Content */}
-                <div className="pb-24">
-                    <ResumeForm
-                        data={resumeData}
-                        onChange={handleDataChange}
-                        activeSection={activeSection}
-                        setActiveSection={setActiveSection}
-                    />
-                </div>
-            </div>
-
-            {/* PREVIEW PANEL - TAKE REMAINING SPACE */}
-            <div className="preview-panel flex-col items-center">
-
-                {/* PDF Export & AI Controls Header */}
-                <div className="w-full max-w-[8.5in] flex items-center justify-between mb-6 px-4">
-                    <div className="flex items-center gap-4">
-                        <Button
-                            onClick={() => setShowAI(!showAI)}
-                            className={`gap-2 rounded-xl transition-all duration-300 shadow-sm hover:shadow-md ${showAI
-                                ? 'bg-gradient-to-r from-violet-500 to-indigo-600 text-white shadow-indigo-200 border-transparent'
-                                : 'bg-white text-slate-700 border border-slate-200 hover:border-indigo-300'}`}
-                        >
-                            <Sparkles className={`w-4 h-4 ${showAI ? 'animate-pulse' : 'text-indigo-500'}`} />
-                            <span className="hidden md:inline font-medium">AI Assistant</span>
-                        </Button>
-                    </div>
-
-                    <Button
-                        variant="primary"
-                        className="gap-2 rounded-xl shadow-lg shadow-blue-200 bg-blue-600 hover:bg-blue-700 border-none"
-                        onClick={handleExport}
-                        disabled={isExporting}
-                    >
-                        {isExporting ? (
-                            <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent" />
-                        ) : (
-                            <Download className="w-4 h-4" />
-                        )}
-                        <span className="hidden md:inline font-medium">
-                            {isExporting ? 'Exporting...' : 'Export PDF'}
-                        </span>
-                    </Button>
-                </div>
-
-                {/* ATS Score Card - ABSOLUTE POSITIONED or Sticky */}
-                <div className="absolute top-6 right-6 z-20 hidden xl:block w-80">
-                    <ATSScoreCard
-                        score={atsScore}
-                        formattingScore={Math.min(50, Math.floor(atsScore / 2))}
-                        keywordsScore={Math.min(50, Math.ceil(atsScore / 2))}
-                    />
-                </div>
-
-                {/* Desktop Zoom Controls */}
-                <div className="absolute bottom-6 right-6 z-30 flex items-center gap-2 bg-white border border-gray-200 rounded-full shadow-lg p-1.5 opacity-0 hover:opacity-100 transition-opacity">
-                    <button className="p-1.5 hover:bg-gray-100 rounded-full" title="Zoom Out">
-                        <span className="text-lg leading-none">-</span>
-                    </button>
-                    <span className="text-xs font-medium w-12 text-center">100%</span>
-                    <button className="p-1.5 hover:bg-gray-100 rounded-full" title="Zoom In">
-                        <span className="text-lg leading-none">+</span>
-                    </button>
-                </div>
-
-                {/* The Paper */}
-                <div className="resume-paper transform-gpu origin-top" ref={resumePreviewRef}>
-                    {loading ? (
-                        <div className="flex items-center justify-center h-full text-slate-400">Loading preview...</div>
-                    ) : (
-                        <ResumePreview
-                            data={resumeData}
-                            template={resume?.template_id}
-                        />
-                    )}
-                </div>
-            </div>
-
-            {/* MOBILE: Floating Preview Button */}
-            <button
-                className="floating-preview-button md:hidden"
-                onClick={() => setShowPreview(true)}
-            >
-                <Eye className="w-6 h-6" />
-            </button>
-
-            {/* MOBILE: Full Screen Preview Modal */}
-            {showPreview && (
-                <div className="mobile-preview-modal md:hidden">
-                    <div className="sticky top-0 z-[1000] flex items-center justify-between p-4 bg-white border-b border-gray-200 mb-4 rounded-xl shadow-sm">
-                        <h3 className="font-bold text-slate-900">Preview</h3>
-                        <div className="flex gap-2">
-                            <Button
-                                size="sm"
-                                variant="outline"
-                                onClick={() => setShowPreview(false)}
-                            >
-                                <Layout className="w-4 h-4 mr-2" /> Edit
-                            </Button>
-                            <Button size="sm" variant="primary" onClick={handleExport} disabled={isExporting}>
-                                <Download className="w-4 h-4" />
-                            </Button>
-                        </div>
-                    </div>
-                    <div className="flex justify-center pb-20">
-                        <div className="resume-paper transform scale-90 origin-top">
-                            <ResumePreview
-                                data={resumeData}
-                                template={resume?.template_id}
-                            />
+                    {/* Feedback Footer */}
+                    <div className="h-48 border-t border-[#30363D] bg-[#161B22] p-6">
+                        <h4 className="text-xs font-bold text-white mb-4 flex items-center gap-2">
+                            <Zap className="w-4 h-4 text-emerald-400" /> AI Suggestions
+                        </h4>
+                        <div className="space-y-3">
+                            <SuggestionItem label="Add metrics to 'Project Manager' role" difficulty="High Impact" />
+                            <SuggestionItem label="Swap 'Responsible for' with 'Orchestrated'" difficulty="Easy Win" />
                         </div>
                     </div>
                 </div>
-            )}
 
-            {/* AI Assistant Sidebar */}
-            <AnimatePresence>
-                {showAI && (
-                    <AIAssistantSidebar
-                        resumeData={resumeData}
-                        onUpdate={handleDataChange}
-                        onClose={() => setShowAI(false)}
-                    />
-                )}
-            </AnimatePresence>
+            </div>
         </div>
     );
 };
+
+// UI Helpers
+const ToggleIcon = ({ active, icon: Icon, onClick, label }) => (
+    <button
+        onClick={onClick}
+        title={label}
+        className={`p-1.5 rounded-lg transition-all ${active ? 'bg-indigo-500/20 text-indigo-400' : 'text-slate-500 hover:bg-[#30363D]'}`}
+    >
+        <Icon className="w-4 h-4" />
+    </button>
+);
+
+const SuggestionItem = ({ label, difficulty }) => (
+    <div className="flex items-center justify-between p-3 bg-[#0D1117] border border-[#30363D] rounded-lg">
+        <span className="text-xs text-slate-300">{label}</span>
+        <span className="text-[10px] font-bold text-emerald-400 bg-emerald-400/10 px-2 py-0.5 rounded uppercase">{difficulty}</span>
+    </div>
+);
 
 export default ResumeEditor;
