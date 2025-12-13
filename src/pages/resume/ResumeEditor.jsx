@@ -158,8 +158,9 @@ const ResumeEditor = () => {
             {/* 1. Header (Minimal) */}
             <header className="h-14 bg-[#161B22] border-b border-[#30363D] flex items-center justify-between px-4 z-50">
                 <div className="flex items-center gap-4">
-                    <button onClick={() => navigate('/resume/dashboard')} className="p-2 hover:bg-[#30363D] rounded-lg transition-colors">
-                        <ChevronLeft className="w-5 h-5 text-slate-400 font-bold" />
+                    <button onClick={() => navigate('/resume/dashboard')} className="flex items-center gap-2 px-3 py-1.5 hover:bg-[#30363D] rounded-lg transition-colors text-slate-400 hover:text-white">
+                        <Layout className="w-4 h-4" />
+                        <span className="text-xs font-bold uppercase tracking-wider">My Resumes</span>
                     </button>
                     <div className="h-6 w-px bg-[#30363D]" />
                     <div>
@@ -170,129 +171,76 @@ const ResumeEditor = () => {
                             className="bg-transparent border-none text-white font-bold text-sm focus:ring-0 p-0 w-48"
                         />
                         <div className="flex items-center gap-2 text-[10px] uppercase font-bold tracking-wider text-slate-500">
-                            <span>{resume?.template_id || 'Modern'} Template</span>
-                            {saving ? <span className="text-indigo-400">Saving...</span> : <span>Saved {lastSaved?.toLocaleTimeString()}</span>}
+                            {saving ? <span className="text-indigo-400">Saving...</span> : <span>Saved</span>}
                         </div>
                     </div>
                 </div>
 
                 <div className="flex items-center gap-3">
+                    <div className="flex bg-[#21262D] rounded-lg p-0.5">
+                        {['Modern', 'Executive', 'Technical', 'Creative'].map(t => (
+                            <button
+                                key={t}
+                                onClick={() => handleTemplateChange(t.toLowerCase())}
+                                className={`px-3 py-1 text-[10px] uppercase font-bold rounded-md transition-all ${(resume?.template_id || 'modern') === t.toLowerCase()
+                                        ? 'bg-indigo-600 text-white shadow-sm'
+                                        : 'text-slate-400 hover:text-white'
+                                    }`}
+                            >
+                                {t}
+                            </button>
+                        ))}
+                    </div>
                     <button
                         onClick={() => window.print()}
-                        className="px-4 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold rounded-full transition-all shadow-lg shadow-indigo-500/20 flex items-center gap-2"
+                        className="px-4 py-1.5 bg-white text-slate-900 hover:bg-slate-200 text-xs font-bold rounded-full transition-all flex items-center gap-2"
                     >
-                        <Download className="w-3 h-3" /> Export PDF
+                        <Download className="w-3 h-3" /> Export
                     </button>
                 </div>
             </header>
 
-            {/* 2. Main Workspace (3-Column Notebook Layout) */}
+            {/* 2. Main Workspace (3-Column Layout: Editor - Chat - Preview) */}
             <div className="flex-1 flex overflow-hidden">
 
-                {/* COLUMN 1: LEFT HUB (15%) */}
-                <div className="hidden lg:flex w-[280px] flex-col border-r border-[#30363D] bg-[#0D1117]">
-                    <div className="p-4 border-b border-[#30363D]">
-                        <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-4">Resume Hub</h3>
-                        <div className="space-y-1">
-                            <div className="p-3 rounded-lg bg-[#161B22] border border-[#30363D] flex items-center gap-3">
-                                <div className="p-2 bg-indigo-500/20 rounded-md">
-                                    <FileText className="w-4 h-4 text-indigo-400" />
-                                </div>
-                                <div>
-                                    <div className="text-white text-sm font-bold truncate max-w-[120px]">{resume?.title}</div>
-                                    <div className="text-[10px] text-slate-500">Last edited just now</div>
-                                </div>
-                            </div>
-                        </div>
+                {/* COLUMN 1: LEFT - RESUME EDITOR (NOTEBOOK STYLE) (35%) */}
+                <div className="flex-1 min-w-[350px] max-w-[40%] flex flex-col border-r border-[#30363D] bg-[#0F1117]">
+                    <div className="p-4 border-b border-[#30363D] flex justify-between items-center bg-[#161B22]">
+                        <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                            <FileText className="w-3 h-3" /> Editor
+                        </h3>
+                        <span className="text-[10px] text-slate-600">Markdown Supported</span>
                     </div>
-
-                    <div className="flex-1 overflow-y-auto p-4">
-                        <h4 className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-3">Templates</h4>
-                        <div className="grid grid-cols-2 gap-2">
-                            {['Modern', 'Professional', 'Executive', 'Creative', 'Technical'].map(t => (
-                                <button
-                                    key={t}
-                                    onClick={() => handleTemplateChange(t.toLowerCase())}
-                                    className={`p-2 rounded border text-xs text-left transition-all ${(resume?.template_id || 'modern') === t.toLowerCase()
-                                        ? 'bg-indigo-900/30 border-indigo-500 text-indigo-300'
-                                        : 'bg-[#161B22] border-[#30363D] hover:border-slate-500'
-                                        }`}
-                                >
-                                    {t}
-                                </button>
-                            ))}
-                        </div>
-                    </div>
-
-                    <div className="p-4 border-t border-[#30363D]">
-                        <div className="flex items-center justify-between text-xs text-slate-400">
-                            <span>ATS Score</span>
-                            <span className={`font-bold ${atsScore >= 70 ? 'text-emerald-400' : 'text-amber-400'}`}>{atsScore}/100</span>
-                        </div>
-                        <div className="mt-2 h-1 bg-[#21262D] rounded-full overflow-hidden">
-                            <div className="h-full bg-gradient-to-r from-indigo-500 to-purple-500" style={{ width: `${atsScore}%` }} />
+                    <div className="flex-1 overflow-y-auto custom-scrollbar p-6">
+                        <div className="max-w-2xl mx-auto">
+                            <ResumeEditorManual
+                                data={resumeData}
+                                onChange={handleDataChange}
+                            />
                         </div>
                     </div>
                 </div>
 
-                {/* COLUMN 2: COMMAND CENTER (50%) */}
-                <div className="flex-1 min-w-[320px] max-w-4xl border-r border-[#30363D] bg-[#0F1117] flex flex-col relative">
-                    {/* Toggle Switch */}
-                    <div className="absolute top-4 left-1/2 -translate-x-1/2 z-20 bg-[#161B22] border border-[#30363D] p-1 rounded-full flex gap-1 shadow-xl">
-                        <button
-                            onClick={() => setEditorMode('manual')}
-                            className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all ${editorMode === 'manual' ? 'bg-indigo-600 text-white shadow-lg' : 'text-slate-400 hover:text-white'
-                                }`}
-                        >
-                            Manual Edit
-                        </button>
-                        <button
-                            onClick={() => setEditorMode('chat')}
-                            className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all ${editorMode === 'chat' ? 'bg-indigo-600 text-white shadow-lg' : 'text-slate-400 hover:text-white'
-                                }`}
-                        >
-                            <span className="flex items-center gap-1"><Sparkles className="w-3 h-3" /> AI Chat</span>
-                        </button>
+                {/* COLUMN 2: MIDDLE - AI CHAT / AGENT (25%) */}
+                <div className="hidden lg:flex w-[350px] flex-col border-r border-[#30363D] bg-[#161B22]">
+                    <div className="p-4 border-b border-[#30363D] flex justify-between items-center">
+                        <h3 className="text-xs font-bold text-indigo-400 uppercase tracking-widest flex items-center gap-2">
+                            <Sparkles className="w-3 h-3" /> AI Copilot
+                        </h3>
                     </div>
-
-                    {/* Editor Content */}
-                    <div className="flex-1 overflow-y-auto custom-scrollbar p-8 pt-20">
-                        {editorMode === 'manual' ? (
-                            <div className="max-w-2xl mx-auto">
-                                <ResumeEditorManual
-                                    data={resumeData}
-                                    onChange={handleDataChange}
-                                />
-                            </div>
-                        ) : (
-                            <div className="max-w-xl mx-auto flex flex-col items-center justify-center h-full text-center space-y-6">
-                                <div className="w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-2xl shadow-indigo-500/20">
-                                    <Sparkles className="w-8 h-8 text-white" />
-                                </div>
-                                <h2 className="text-2xl font-bold text-white">AI Command Center</h2>
-                                <p className="text-slate-400 max-w-md">
-                                    Describe your target role or paste a job description. I will rewrite your entire resume to match it perfectly.
-                                </p>
-                                <div className="w-full relative">
-                                    <textarea
-                                        className="w-full bg-[#161B22] border border-[#30363D] rounded-xl p-4 text-sm text-white focus:ring-2 focus:ring-indigo-500 outline-none h-32 resize-none"
-                                        placeholder="e.g. 'Tailor my resume for a Senior Product Manager role at Netflix...'"
-                                    />
-                                    <button className="absolute bottom-4 right-4 bg-indigo-600 hover:bg-indigo-500 text-white p-2 rounded-lg transition-colors">
-                                        <Zap className="w-4 h-4" />
-                                    </button>
-                                </div>
-                            </div>
-                        )}
-                    </div>
+                    <AIChatPanel
+                        currentResume={resumeData}
+                        onUpdateResume={handleDataChange}
+                    />
                 </div>
 
-                {/* COLUMN 3: VISUAL INTELLIGENCE (35%) */}
-                <div className="hidden xl:flex w-[450px] flex-col bg-[#0D1117] border-l border-[#30363D] relative">
-                    {/* Visual Toggles */}
-                    <div className="h-12 border-b border-[#30363D] flex items-center justify-around px-4">
+                {/* COLUMN 3: RIGHT - LIVE PREVIEW (40%) */}
+                <div className="hidden xl:flex flex-1 flex-col bg-[#0D1117] relative">
+                    <div className="h-12 border-b border-[#30363D] flex items-center justify-between px-4 bg-[#161B22]">
+                        <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                            <Eye className="w-3 h-3" /> Live Preview
+                        </h3>
                         <div className="flex items-center gap-2">
-                            <span className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Overlays:</span>
                             <ToggleIcon
                                 active={showVisuals.heatmap}
                                 icon={Search}
@@ -300,47 +248,30 @@ const ResumeEditor = () => {
                                 onClick={() => setShowVisuals(s => ({ ...s, heatmap: !s.heatmap }))}
                             />
                             <ToggleIcon
-                                active={showVisuals.eyeTracking}
-                                icon={Eye}
-                                label="Eye Track"
-                                onClick={() => setShowVisuals(s => ({ ...s, eyeTracking: !s.eyeTracking }))}
+                                active={showVisuals.ats}
+                                icon={CheckCircle2}
+                                label="ATS Check"
+                                onClick={() => setShowVisuals(s => ({ ...s, ats: !s.ats }))}
                             />
                         </div>
                     </div>
 
-                    <div className="flex-1 overflow-y-auto p-8 relative bg-[#1F242C]">
-                        {/* THE PREVIEW */}
-                        <div className="transform scale-[0.65] origin-top shadow-2xl transition-all duration-300 relative group">
+                    <div className="flex-1 overflow-y-auto p-8 relative bg-[#1F242C] flex justify-center">
+                        <div className="transform scale-[0.7] origin-top shadow-2xl transition-all duration-300 relative group">
                             <ResumePreview
                                 data={resumeData}
                                 template={resume?.template_id || 'modern'}
                             />
-
-                            {/* OVERLAYS */}
                             {showVisuals.heatmap && (
                                 <div className="absolute inset-0 bg-indigo-500/10 mix-blend-multiply pointer-events-none z-10" />
-                                /* In prod: Real heatmap logic overlaying spans */
-                            )}
-                            {showVisuals.eyeTracking && (
-                                <div className="absolute inset-0 z-20 pointer-events-none">
-                                    {/* Mock Eye Tracking Path */}
-                                    <svg className="w-full h-full opacity-50">
-                                        <path d="M 50 50 L 200 50 L 50 150 L 200 150" stroke="red" strokeWidth="4" fill="none" className="animate-dash" />
-                                        <circle cx="50" cy="50" r="10" fill="red" className="animate-ping" />
-                                    </svg>
-                                </div>
                             )}
                         </div>
                     </div>
 
-                    {/* Feedback Footer */}
-                    <div className="h-48 border-t border-[#30363D] bg-[#161B22] p-6">
-                        <h4 className="text-xs font-bold text-white mb-4 flex items-center gap-2">
-                            <Zap className="w-4 h-4 text-emerald-400" /> AI Suggestions
-                        </h4>
-                        <div className="space-y-3">
-                            <SuggestionItem label="Add metrics to 'Project Manager' role" difficulty="High Impact" />
-                            <SuggestionItem label="Swap 'Responsible for' with 'Orchestrated'" difficulty="Easy Win" />
+                    <div className="absolute bottom-6 right-6 z-20">
+                        <div className="bg-[#161B22] border border-[#30363D] rounded-full px-4 py-2 flex items-center gap-3 shadow-xl">
+                            <span className="text-xs text-slate-400">ATS Score</span>
+                            <span className={`text-sm font-bold ${atsScore >= 80 ? 'text-emerald-400' : 'text-amber-400'}`}>{atsScore}/100</span>
                         </div>
                     </div>
                 </div>

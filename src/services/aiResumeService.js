@@ -102,5 +102,42 @@ export const aiResumeService = {
       Input: "${text}"`;
 
         return await aiService.generateCompletion(prompt);
+    },
+
+    // 6. Conversational Interface (The Master Brain)
+    chat: async (userPrompt, currentData) => {
+        // Mock processing - In production this calls a sophisticated agent with tools
+
+        const lowerHelper = userPrompt.toLowerCase();
+        let newData = JSON.parse(JSON.stringify(currentData)); // Deep clone
+        let message = "I've updated your resume based on your request.";
+        let suggestedChanges = false;
+
+        // Heuristic Mock Logic for Demo
+        if (lowerHelper.includes('optimize') || lowerHelper.includes('polish')) {
+            // Mock "Polish": Capitalize titles, ensure bullets end with periods (mock)
+            message = "I've polished the language to be more professional and consistent.";
+            suggestedChanges = true;
+        }
+        else if (lowerHelper.includes('actionize')) {
+            // Mock: Would run actionize on all bullets
+            message = "I've applied the XYZ impact formula to your experience section.";
+            suggestedChanges = true;
+        }
+        else if (lowerHelper.includes('ats')) {
+            message = "Your Resume scores 82/100. I've added missing keywords: 'Agile', 'Scalability'.";
+            // Mock: add a skill
+            if (!newData.skills.includes('Agile')) newData.skills.push('Agile');
+            suggestedChanges = true;
+        }
+        else {
+            message = "I can help with that. Could you provide a bit more detail?";
+        }
+
+        return {
+            message,
+            newData,
+            suggestedChanges
+        };
     }
 };
