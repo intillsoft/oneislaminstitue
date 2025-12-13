@@ -209,14 +209,6 @@ const AnimatedRoutes = () => {
 
       {/* Tools & Features (Standardized URLs) */}
       <Route
-        path="/dashboard/resume-builder"
-        element={
-          <ProtectedRoute>
-            <ResumeBuilderAIEnhancement />
-          </ProtectedRoute>
-        }
-      />
-      <Route
         path="/dashboard/resume-generator"
         element={
           <ProtectedRoute>
