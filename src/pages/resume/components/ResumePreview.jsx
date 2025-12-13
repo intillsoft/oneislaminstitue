@@ -427,7 +427,7 @@ const TechnicalTemplate = ({ data }) => {
                     <div className="text-[#CE9178]"><span className="text-[#9CDCFE]">email</span> = "{personalInfo?.email}";</div>
                     <div className="text-[#CE9178]"><span className="text-[#9CDCFE]">stack</span> = ["{skillsList.slice(0, 3).join('", "')}"];</div>
                 </div>
-                <div className="text-[#569CD6]">}</div>
+                <div className="text-[#569CD6]">{`}`}</div>
             </header>
 
             <div className="grid grid-cols-12 gap-8">

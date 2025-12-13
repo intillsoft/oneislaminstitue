@@ -1,5 +1,5 @@
 
-import { supabase } from '../lib/supabaseClient'; // Ensure you have this client
+import { supabase } from '../lib/supabase'; // Ensure you have this client
 
 class AIResumeService {
     /**
