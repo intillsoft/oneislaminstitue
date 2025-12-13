@@ -157,14 +157,13 @@ const ResumeDashboard = () => {
                     ) : filteredResumes.length > 0 ? (
                         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
                             <AnimatePresence>
-                                {filteredResumes.map((resume) => (
-                                    <ResumeCard
-                                        key={resume.id}
-                                        resume={resume}
-                                        onDelete={handleDelete}
-                                        onDuplicate={handleDuplicate}
-                                        onClick={() => navigate(`/resume/edit/${resume.id}`)}
-                                    />
+                                <ResumeCard
+                                    key={resume.id}
+                                    resume={resume}
+                                    onDelete={handleDelete}
+                                    onDuplicate={handleDuplicate}
+                                    onClick={() => navigate(`/resume/edit/${resume.id}`)}
+                                />
                                 ))}
                             </AnimatePresence>
                             {/* Create New Card moved to end of grid */}
@@ -178,22 +177,15 @@ const ResumeDashboard = () => {
                                     <Plus className="w-6 h-6 text-workflow-primary" />
                                 </div>
                                 <h3 className="font-semibold text-gray-900 dark:text-white">New Resume</h3>
+                                <p className="text-sm text-gray-500 mt-1">Start from scratch or use AI</p>
                             </motion.button>
                         </div>
                     ) : (
                         <EmptyState onAction={() => navigate('/resume/new')} />
                     )}
                 </div>
-                <h3 className="font-semibold text-gray-900 dark:text-white">Create New Resume</h3>
-                <p className="text-sm text-gray-500 mt-1">Start from scratch or use AI</p>
-            </motion.button>
+            </div>
         </div>
-    ) : (
-        <EmptyState onAction={() => navigate('/resume/new')} />
-    )
-}
-            </div >
-        </div >
     );
 };
 
