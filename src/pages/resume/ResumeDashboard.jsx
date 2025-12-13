@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
     FileText, Plus, MoreVertical, Star, Clock,
     Download, Trash2, Copy, BarChart3, Search,
-    Briefcase, CheckCircle2, ChevronRight
+    Briefcase, CheckCircle2, ChevronRight, Sparkles
 } from 'lucide-react';
 import { resumeService } from '../../services/resumeService';
 import { useAuthContext } from '../../contexts/AuthContext';
@@ -86,7 +86,7 @@ const ResumeDashboard = () => {
                     </div>
 
                     <div className="flex items-center gap-3 w-full md:w-auto">
-                        <div className="relative flex-1 md:flex-none">
+                        <div className="relative flex-1 md:flex-none hidden lg:block">
                             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                             <input
                                 type="text"
@@ -96,6 +96,15 @@ const ResumeDashboard = () => {
                                 className="w-full pl-9 pr-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-sm focus:ring-2 focus:ring-workflow-primary"
                             />
                         </div>
+
+                        <Button
+                            variant="outline"
+                            onClick={() => navigate('/dashboard/resume-generator')}
+                            className="flex items-center gap-2"
+                        >
+                            <Sparkles className="w-4 h-4 text-workflow-primary" />
+                            <span className="hidden sm:inline">AI Generator</span>
+                        </Button>
 
                         <Button
                             onClick={() => navigate('/resume/new')}
@@ -306,9 +315,15 @@ const EmptyState = ({ onAction }) => (
         <p className="text-gray-500 dark:text-gray-400 max-w-sm text-center mb-8">
             Create your first professional resume today. Use our AI to generate one in seconds or start from scratch.
         </p>
-        <Button onClick={onAction} className="px-8">
-            Create Resume
-        </Button>
+        <div className="flex gap-4">
+            <Button variant="outline" onClick={() => window.location.href = '/dashboard/resume-generator'} className="gap-2">
+                <Sparkles className="w-4 h-4 text-workflow-primary" />
+                Generate with AI
+            </Button>
+            <Button onClick={onAction} className="px-8">
+                Create Manually
+            </Button>
+        </div>
     </div>
 );
 
