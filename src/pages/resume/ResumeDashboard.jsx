@@ -116,68 +116,84 @@ const ResumeDashboard = () => {
                     </div>
                 </div>
 
-                {/* Analytics Overview Cards */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <StatsCard
-                        icon={FileText}
-                        label="Total Resumes"
-                        value={resumes.length}
-                        color="blue"
-                    />
-                    <StatsCard
-                        icon={Star}
-                        label="Avg. ATS Score"
-                        value={resumes.length ? Math.round(resumes.reduce((acc, r) => acc + (r.ats_score || 0), 0) / resumes.length) : 0}
-                        color="emerald"
-                        suffix="/100"
-                    />
-                    <StatsCard
-                        icon={Briefcase}
-                        label="Job Matches"
-                        value="12"
-                        color="purple"
-                        subtext="3 new this week"
-                    />
+                {/* Templates Library Section (New) */}
+                <div className="space-y-4">
+                    <div className="flex justify-between items-center px-1">
+                        <h2 className="text-xl font-bold text-gray-900 dark:text-white">Start from a Template</h2>
+                        <button className="text-sm text-workflow-primary hover:text-blue-700 font-medium">View All Templates</button>
+                    </div>
+                    <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                        {['Modern', 'Executive', 'Tech', 'Creative', 'Minimal'].map((template) => (
+                            <motion.button
+                                key={template}
+                                whileHover={{ y: -4 }}
+                                onClick={() => navigate('/resume/new')}
+                                className="group flex flex-col items-start text-left bg-white dark:bg-gray-800 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 hover:border-workflow-primary hover:shadow-lg transition-all"
+                            >
+                                <div className="w-full aspect-[3/4] bg-gray-100 dark:bg-gray-900 relative">
+                                    {/* Mock Preview */}
+                                    <div className="absolute inset-2 bg-white dark:bg-gray-800 shadow-sm opacity-50 group-hover:opacity-100 transition-opacity" />
+                                </div>
+                                <div className="p-3 w-full">
+                                    <h3 className="font-semibold text-gray-900 dark:text-white text-sm">{template}</h3>
+                                    <p className="text-xs text-gray-500">Professional</p>
+                                </div>
+                            </motion.button>
+                        ))}
+                    </div>
                 </div>
 
-                {/* Resume Grid */}
-                {loading ? (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {[1, 2, 3].map(i => <ResumeSkeleton key={i} />)}
+                {/* Recent Resumes Section */}
+                <div className="space-y-4">
+                    <div className="flex justify-between items-center px-1">
+                        <h2 className="text-xl font-bold text-gray-900 dark:text-white">Recent Resumes</h2>
+                        {/* Filter controls could go here */}
                     </div>
-                ) : filteredResumes.length > 0 ? (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        <AnimatePresence>
-                            {filteredResumes.map((resume) => (
-                                <ResumeCard
-                                    key={resume.id}
-                                    resume={resume}
-                                    onDelete={handleDelete}
-                                    onDuplicate={handleDuplicate}
-                                    onClick={() => navigate(`/resume/edit/${resume.id}`)}
-                                />
-                            ))}
-                        </AnimatePresence>
 
-                        {/* Create New Card */}
-                        <motion.button
-                            whileHover={{ scale: 1.02 }}
-                            whileTap={{ scale: 0.98 }}
-                            onClick={() => navigate('/resume/new')}
-                            className="flex flex-col items-center justify-center min-h-[300px] rounded-xl border-2 border-dashed border-gray-300 dark:border-gray-700 hover:border-workflow-primary hover:bg-blue-50/50 dark:hover:bg-blue-900/10 transition-all group"
-                        >
-                            <div className="w-16 h-16 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                                <Plus className="w-8 h-8 text-workflow-primary" />
-                            </div>
-                            <h3 className="font-semibold text-gray-900 dark:text-white">Create New Resume</h3>
-                            <p className="text-sm text-gray-500 mt-1">Start from scratch or use AI</p>
-                        </motion.button>
-                    </div>
-                ) : (
-                    <EmptyState onAction={() => navigate('/resume/new')} />
-                )}
-            </div>
+                    {loading ? (
+                        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                            {[1, 2, 3, 4].map(i => <ResumeSkeleton key={i} />)}
+                        </div>
+                    ) : filteredResumes.length > 0 ? (
+                        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                            <AnimatePresence>
+                                {filteredResumes.map((resume) => (
+                                    <ResumeCard
+                                        key={resume.id}
+                                        resume={resume}
+                                        onDelete={handleDelete}
+                                        onDuplicate={handleDuplicate}
+                                        onClick={() => navigate(`/resume/edit/${resume.id}`)}
+                                    />
+                                ))}
+                            </AnimatePresence>
+                            {/* Create New Card moved to end of grid */}
+                            <motion.button
+                                whileHover={{ scale: 1.02 }}
+                                whileTap={{ scale: 0.98 }}
+                                onClick={() => navigate('/resume/new')}
+                                className="flex flex-col items-center justify-center min-h-[280px] rounded-xl border-2 border-dashed border-gray-300 dark:border-gray-700 hover:border-workflow-primary hover:bg-blue-50/50 dark:hover:bg-blue-900/10 transition-all group bg-transparent"
+                            >
+                                <div className="w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                                    <Plus className="w-6 h-6 text-workflow-primary" />
+                                </div>
+                                <h3 className="font-semibold text-gray-900 dark:text-white">New Resume</h3>
+                            </motion.button>
+                        </div>
+                    ) : (
+                        <EmptyState onAction={() => navigate('/resume/new')} />
+                    )}
+                </div>
+                <h3 className="font-semibold text-gray-900 dark:text-white">Create New Resume</h3>
+                <p className="text-sm text-gray-500 mt-1">Start from scratch or use AI</p>
+            </motion.button>
         </div>
+    ) : (
+        <EmptyState onAction={() => navigate('/resume/new')} />
+    )
+}
+            </div >
+        </div >
     );
 };
 
