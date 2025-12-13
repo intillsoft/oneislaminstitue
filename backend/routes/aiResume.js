@@ -217,7 +217,7 @@ router.post('/save', authenticate, async (req, res) => {
 
 /**
  * POST /api/ai-resume/generate
- * AI-powered resume generation with advanced features
+ * AI-powered resume generation with XYZ Formula & Deep Intelligence
  */
 router.post('/generate', authenticate, async (req, res) => {
     try {
@@ -227,71 +227,66 @@ router.post('/generate', authenticate, async (req, res) => {
             return res.status(400).json({ error: 'Missing required fields' });
         }
 
-        // Build intelligent prompt
-        const prompt = `Create a professional, ATS-optimized resume for a ${experienceLevel} ${jobTitle} in the ${industry} industry.
-
-REQUIREMENTS:
-- Professional summary (150-200 words) highlighting key strengths
-- 3-4 work experience entries with bullet points showcasing achievements
-- Skills section organized by category
-- Education section
-- Use ${style} writing style
-- Include quantifiable achievements with numbers
-- Optimize for ATS systems
-
-SKILLS TO INCLUDE:
-${skills.join(', ')}
-
-KEY ACHIEVEMENTS TO HIGHLIGHT:
-${achievements.map((a, i) => `${i + 1}. ${a}`).join('\n')}
-
-Return JSON format:
-{
-  "summary": "professional summary text",
-  "experience": [
-    {
-      "title": "Job Title",
-      "company": "Company Name",
-      "duration": "2020 - Present",
-      "bullets": ["Achievement 1", "Achievement 2", "Achievement 3"]
-    }
-  ],
-  "skills": {
-    "Technical": ["skill1", "skill2"],
-    "Soft Skills": ["skill3", "skill4"]
-  },
-  "education": [
-    {
-      "degree": "Degree Name",
-      "institution": "University",
-      "year": "2020"
-    }
-  ]
-}`;
+        // REVOLUTIONARY PROMPT ENGINEERING: XYZ Formula
+        const prompt = `
+        You are the world's best resume writer, known for creating "unignorable" resumes.
+        
+        TASK: Write a high-impact resume for a ${experienceLevel} ${jobTitle} in the ${industry} industry.
+        
+        CRITICAL RULES:
+        1. **XYZ FORMULA**: Every bullet point must follow the structure: "Accomplished [X] as measured by [Y], by doing [Z]".
+        2. **QUANTIFY EVERYTHING**: Use specific numbers, percentages, and dollar amounts (estimate if needed based on typical industry standards for this level).
+        3. **STRONG ACTION VERBS**: Start every bullet with power words (e.g., "Spearheaded", "Engineered", "Orchestrated"). Avoid weak words like "Helped" or "Responsible for".
+        4. **ATS OPTIMIZATION**: Naturally weave in the provided skills.
+        
+        INPUT DATA:
+        - Skills: ${skills.join(', ')}
+        - Key Achievements (Raw): ${achievements.map((a, i) => `${i + 1}. ${a}`).join('\n')}
+        
+        OUTPUT FORMAT (JSON ONLY):
+        {
+          "summary": "3-4 sentence powerful professional summary. Open with years of experience and top achievement.",
+          "experience": [
+            {
+              "title": "Job Title",
+              "company": "Company Name",
+              "duration": "2020 - Present",
+              "bullets": [
+                "Spearheaded [Project] resulting in [Metric] increase by leveraging [Tech/Skill]...",
+                "Orchestrated [Initiative] that saved $[Amount] annually by implementing [Strategy]..."
+              ]
+            }
+          ],
+          "skills": {
+             "Technical": ["Hard Skill 1", "Hard Skill 2"],
+             "Soft Skills": ["Leadership", "Strategic Thinking"]
+          },
+          "education": [...]
+        }`;
 
         const aiResponse = await aiProviderService.generateCompletion(prompt, {
-            systemMessage: 'You are an expert resume writer and career coach. Create professional, ATS-optimized resumes.',
-            max_tokens: 2000,
+            systemMessage: 'You are an elite career coach. You hate generic resumes. You write concise, metric-heavy, result-oriented content.',
+            max_tokens: 2500,
             temperature: 0.7,
         });
 
-        // Parse AI response
+        // Parse AI response (Robust JSON extraction)
         let resumeContent;
         try {
-            // Try to extract JSON from response
             const jsonMatch = aiResponse.match(/\{[\s\S]*\}/);
             if (jsonMatch) {
                 resumeContent = JSON.parse(jsonMatch[0]);
             } else {
-                throw new Error('No JSON found in response');
+                throw new Error('No JSON found');
             }
         } catch (parseError) {
-            // Fallback: create structured content
+            // Fallback Logic
+            logger.error("AI JSON Parse Error", parseError);
             resumeContent = {
-                summary: aiResponse.split('\n').slice(0, 3).join(' '),
+                summary: "Experienced professional seeking new opportunities.",
                 experience: [],
-                skills: { Technical: skills.slice(0, 5), 'Soft Skills': ['Communication', 'Leadership', 'Problem Solving'] },
-                education: [],
+                skills: { Technical: skills },
+                education: []
             };
         }
 
@@ -370,7 +365,7 @@ router.get('/templates', async (req, res) => {
 
 /**
  * POST /api/ai-resume/job-match
- * Match resume against job description
+ * Intelligent Job Fit Analysis & Gap Detection
  */
 router.post('/job-match', authenticate, async (req, res) => {
     try {
@@ -380,30 +375,44 @@ router.post('/job-match', authenticate, async (req, res) => {
             return res.status(400).json({ error: 'Resume and job description required' });
         }
 
-        const resumeText = JSON.stringify(resumeContent).toLowerCase();
-        const jobText = jobDescription.toLowerCase();
+        // Use AI for Deep Semantic Matching instead of simple regex
+        const prompt = `
+        Analyze the fit between this resume and the job description.
+        
+        JOB DESCRIPTION:
+        ${jobDescription.substring(0, 1000)}...
+        
+        RESUME SUMMARY:
+        ${JSON.stringify(resumeContent.summary)}
+        ${JSON.stringify(resumeContent.skills)}
+        
+        OUTPUT JSON:
+        {
+            "matchScore": <number 0-100>,
+            "recommendation": "<Strong/Good/Weak>",
+            "matchedKeywords": ["list", "of", "matches"],
+            "missingKeywords": ["critical", "missing", "skills"],
+            "suggestions": ["specific advice to improve fit"]
+        }
+        `;
 
-        // Extract keywords from job description
-        const jobWords = jobText.split(/\s+/).filter(word => word.length > 3);
-        const uniqueJobWords = [...new Set(jobWords)];
+        const aiResponse = await aiProviderService.generateCompletion(prompt, {
+            systemMessage: 'You are an expert recruiter. Analyze candidate fit strictly.',
+            max_tokens: 1000,
+            temperature: 0.3,
+        });
 
-        // Find matches
-        const matches = uniqueJobWords.filter(word => resumeText.includes(word));
-        const matchPercentage = Math.round((matches.length / uniqueJobWords.length) * 100);
-
-        // Identify missing keywords
-        const missing = uniqueJobWords.filter(word => !resumeText.includes(word)).slice(0, 10);
+        let analysisData;
+        try {
+            const jsonMatch = aiResponse.match(/\{[\s\S]*\}/);
+            analysisData = jsonMatch ? JSON.parse(jsonMatch[0]) : { matchScore: 50, missingKeywords: [] };
+        } catch (e) {
+            analysisData = { matchScore: 0, missingKeywords: [], suggestions: ["Could not analyze."] };
+        }
 
         res.json({
             success: true,
-            data: {
-                matchScore: matchPercentage,
-                matchedKeywords: matches.slice(0, 15),
-                missingKeywords: missing,
-                recommendation: matchPercentage >= 70 ? 'Strong match!' :
-                    matchPercentage >= 50 ? 'Good match, add missing keywords' :
-                        'Consider tailoring resume more',
-            },
+            data: analysisData,
         });
     } catch (error) {
         logger.error('Job match error:', error);
