@@ -157,13 +157,14 @@ const ResumeDashboard = () => {
                     ) : filteredResumes.length > 0 ? (
                         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
                             <AnimatePresence>
-                                <ResumeCard
-                                    key={resume.id}
-                                    resume={resume}
-                                    onDelete={handleDelete}
-                                    onDuplicate={handleDuplicate}
-                                    onClick={() => navigate(`/resume/edit/${resume.id}`)}
-                                />
+                                {filteredResumes.map((resume) => (
+                                    <ResumeCard
+                                        key={resume.id}
+                                        resume={resume}
+                                        onDelete={handleDelete}
+                                        onDuplicate={handleDuplicate}
+                                        onClick={() => navigate(`/resume/edit/${resume.id}`)}
+                                    />
                                 ))}
                             </AnimatePresence>
                             {/* Create New Card moved to end of grid */}
