@@ -15,6 +15,7 @@ import Button from '../../components/ui/Button';
 import ResumePreview from './components/ResumePreview';
 import ResumeEditorManual from './components/ResumeEditorManual';
 import TemplateSelector from './components/TemplateSelector';
+import AIChatPanel from './components/AIChatPanel';
 
 // Auto-save delay
 const AUTOSAVE_DELAY = 1000;
@@ -213,8 +214,8 @@ const ResumeEditor = () => {
                                     key={t}
                                     onClick={() => handleTemplateChange(t.toLowerCase())}
                                     className={`p-2 rounded border text-xs text-left transition-all ${(resume?.template_id || 'modern') === t.toLowerCase()
-                                            ? 'bg-indigo-900/30 border-indigo-500 text-indigo-300'
-                                            : 'bg-[#161B22] border-[#30363D] hover:border-slate-500'
+                                        ? 'bg-indigo-900/30 border-indigo-500 text-indigo-300'
+                                        : 'bg-[#161B22] border-[#30363D] hover:border-slate-500'
                                         }`}
                                 >
                                     {t}
