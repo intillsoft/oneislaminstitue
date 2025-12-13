@@ -235,44 +235,82 @@ const ResumeEditor = () => {
                 </header>
             </div>
 
-            {/* Resizable Panels Floating Layout */}
+            {/* Resizable Panels Floating Layout (Desktop) vs Stacked (Mobile) */}
             <div className="flex-1 overflow-hidden px-4 pb-4">
-                <PanelGroup direction="horizontal" className="h-full gap-4">
-                    {/* Editor (Left Pane) - 40% Width as requested */}
-                    <Panel defaultSize={40} minSize={30} className={`flex flex-col rounded-2xl bg-white/50 dark:bg-slate-800/50 backdrop-blur-md border border-white/20 dark:border-slate-700 shadow-xl overflow-hidden transition-all duration-300 ${!showPreview ? 'w-full' : ''}`}>
-                        <div className="flex-1 overflow-y-auto custom-scrollbar p-0 w-full">
-                            <div className="sticky top-0 z-10 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-700 p-4 mb-4">
-                                <TemplateSelector
-                                    currentTemplate={resume?.template_id}
-                                    onSelect={handleTemplateChange}
-                                />
-                            </div>
-
-                            <div className="px-6 pb-20">
-                                <ResumeForm
-                                    data={resumeData}
-                                    onChange={handleDataChange}
-                                    activeSection={activeSection}
-                                    setActiveSection={setActiveSection}
-                                />
-                            </div>
+                {/* Mobile View (< md) */}
+                <div className="md:hidden h-full relative text-sm">
+                    {showPreview ? (
+                        <div className="h-full overflow-y-auto rounded-2xl bg-slate-100 dark:bg-[#0B0F17] border border-slate-200 dark:border-slate-800 shadow-inner p-4">
+                            <ResumePreview data={resumeData} template={resume?.template_id} />
+                            {/* Floating Edit Button for Mobile */}
+                            <button
+                                onClick={() => setShowPreview(false)}
+                                className="fixed bottom-6 right-6 p-4 bg-indigo-600 text-white rounded-full shadow-xl hover:bg-indigo-700 transition-all z-50 flex items-center gap-2"
+                            >
+                                <Layout className="w-5 h-5" />
+                                <span className="font-bold">Edit Resume</span>
+                            </button>
                         </div>
-                    </Panel>
+                    ) : (
+                        <div className="h-full flex flex-col rounded-2xl bg-white/50 dark:bg-slate-800/50 backdrop-blur-md border border-white/20 dark:border-slate-700 shadow-xl overflow-hidden">
+                            <div className="flex-1 overflow-y-auto custom-scrollbar">
+                                <TemplateSelector currentTemplate={resume?.template_id} onSelect={handleTemplateChange} />
+                                <div className="px-4 pb-24 pt-4">
+                                    <ResumeForm
+                                        data={resumeData}
+                                        onChange={handleDataChange}
+                                        activeSection={activeSection}
+                                        setActiveSection={setActiveSection}
+                                    />
+                                </div>
+                            </div>
+                            {/* Floating Preview Button for Mobile */}
+                            <button
+                                onClick={() => setShowPreview(true)}
+                                className="fixed bottom-6 right-6 p-4 bg-indigo-600 text-white rounded-full shadow-xl hover:bg-indigo-700 transition-all z-50 flex items-center gap-2"
+                            >
+                                <Eye className="w-5 h-5" />
+                                <span className="font-bold">Preview PDF</span>
+                            </button>
+                        </div>
+                    )}
+                </div>
 
-                    {/* Resize Handle */}
-                    {showPreview && (
+                {/* Desktop View (>= md) */}
+                <div className="hidden md:block h-full">
+                    <PanelGroup direction="horizontal" className="h-full gap-4">
+                        {/* Editor (Left Pane) - 40% Width */}
+                        <Panel defaultSize={40} minSize={30} className="flex flex-col rounded-2xl bg-white/50 dark:bg-slate-800/50 backdrop-blur-md border border-white/20 dark:border-slate-700 shadow-xl overflow-hidden">
+                            <div className="flex-1 overflow-y-auto custom-scrollbar p-0 w-full">
+                                <div className="sticky top-0 z-10 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-700 p-4 mb-4">
+                                    <TemplateSelector
+                                        currentTemplate={resume?.template_id}
+                                        onSelect={handleTemplateChange}
+                                    />
+                                </div>
+
+                                <div className="px-6 pb-20">
+                                    <ResumeForm
+                                        data={resumeData}
+                                        onChange={handleDataChange}
+                                        activeSection={activeSection}
+                                        setActiveSection={setActiveSection}
+                                    />
+                                </div>
+                            </div>
+                        </Panel>
+
+                        {/* Resize Handle */}
                         <PanelResizeHandle className="w-4 flex items-center justify-center outline-none group -ml-2 -mr-2 z-20 cursor-col-resize">
                             <div className="h-16 w-1.5 bg-slate-300 dark:bg-slate-600 rounded-full group-hover:bg-indigo-500 group-hover:w-2 transition-all shadow-sm" />
                         </PanelResizeHandle>
-                    )}
 
-                    {/* Preview (Right Pane) - 60% Width as requested */}
-                    {showPreview && (
+                        {/* Preview (Right Pane) - 60% Width */}
                         <Panel defaultSize={60} minSize={30} className="rounded-2xl bg-slate-100 dark:bg-[#0B0F17] border border-slate-200 dark:border-slate-800 shadow-inner overflow-hidden relative group">
                             {/* Background Pattern */}
                             <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'radial-gradient(#64748b 1px, transparent 1px)', backgroundSize: '24px 24px' }}></div>
 
-                            {/* Zoom Controls Overlay (New) */}
+                            {/* Zoom Controls Overlay */}
                             <div className="absolute bottom-6 right-6 z-30 flex items-center gap-2 bg-white/90 dark:bg-slate-800/90 backdrop-blur border border-slate-200 dark:border-slate-700 rounded-full shadow-lg p-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
                                 <button className="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-full transition-colors" title="Zoom Out">
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" /><line x1="8" y1="11" x2="14" y2="11" /></svg>
@@ -292,8 +330,8 @@ const ResumeEditor = () => {
                                 </div>
                             </div>
                         </Panel>
-                    )}
-                </PanelGroup>
+                    </PanelGroup>
+                </div>
             </div>
 
             {/* AI Assistant Sidebar */}
