@@ -34,8 +34,27 @@ const ResumePreview = ({ data, template = 'modern' }) => {
 
 // --- TEMPLATES ---
 
+const parseSkills = (skills) => {
+    if (!skills) return [];
+    if (Array.isArray(skills)) return skills;
+    if (typeof skills === 'object') {
+        const allSkills = [];
+        if (skills.technical && Array.isArray(skills.technical)) allSkills.push(...skills.technical);
+        if (skills.soft && Array.isArray(skills.soft)) allSkills.push(...skills.soft);
+        if (skills.tools && Array.isArray(skills.tools)) allSkills.push(...skills.tools);
+        // Fallback for other keys
+        Object.keys(skills).forEach(key => {
+            if (['technical', 'soft', 'tools', 'languages'].includes(key)) return;
+            if (Array.isArray(skills[key])) allSkills.push(...skills[key]);
+        });
+        return allSkills;
+    }
+    return [skills];
+};
+
 const ModernTemplate = ({ data }) => {
     const { personalInfo, summary, experience, education, skills } = data;
+    const skillsList = parseSkills(skills);
 
     return (
         <div className="flex h-full min-h-[297mm]">
@@ -47,6 +66,7 @@ const ModernTemplate = ({ data }) => {
                     </div>
                     <div className="text-center">
                         <h2 className="text-xl font-bold border-b border-slate-700 pb-2 mb-4">Contact</h2>
+                        {/* ... Contact details ... */}
                         <div className="space-y-3 text-sm text-slate-300">
                             {personalInfo?.email && (
                                 <div className="flex items-center gap-2">
@@ -68,17 +88,23 @@ const ModernTemplate = ({ data }) => {
                                     <Globe className="w-4 h-4 shrink-0" /> <span className="break-all">{personalInfo.website}</span>
                                 </div>
                             )}
+                            {/* LinkedIn Support added */}
+                            {personalInfo?.linkedin && (
+                                <div className="flex items-center gap-2">
+                                    <Linkedin className="w-4 h-4 shrink-0" /> <span className="break-all">{personalInfo.linkedin}</span>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
 
-                {skills && (
+                {skillsList.length > 0 && (
                     <div>
                         <h2 className="text-xl font-bold border-b border-slate-700 pb-2 mb-4">Skills</h2>
                         <div className="flex flex-wrap gap-2">
-                            {(Array.isArray(skills) ? skills : []).map((skill, i) => (
+                            {skillsList.map((skill, i) => (
                                 <span key={i} className="bg-slate-700 px-3 py-1 rounded-full text-xs">
-                                    {skill}
+                                    {typeof skill === 'string' ? skill : JSON.stringify(skill)}
                                 </span>
                             ))}
                         </div>
@@ -148,6 +174,8 @@ const ModernTemplate = ({ data }) => {
 
 const ProfessionalTemplate = ({ data }) => {
     const { personalInfo, summary, experience, education, skills } = data;
+    const skillsList = parseSkills(skills);
+
     return (
         <div className="p-10 max-w-none h-full bg-white text-gray-900 font-serif">
             <header className="text-center border-b-2 border-gray-900 pb-6 mb-8">
@@ -158,6 +186,7 @@ const ProfessionalTemplate = ({ data }) => {
                     {personalInfo?.phone && <span>• {personalInfo.phone}</span>}
                     {personalInfo?.location && <span>• {personalInfo.location}</span>}
                     {personalInfo?.website && <span>• {personalInfo.website}</span>}
+                    {personalInfo?.linkedin && <span>• {personalInfo.linkedin}</span>}
                 </div>
             </header>
 
@@ -204,11 +233,12 @@ const ProfessionalTemplate = ({ data }) => {
                     </section>
                 )}
 
-                {skills && (
+                {skillsList.length > 0 && (
                     <section>
                         <h2 className="text-sm font-bold uppercase tracking-widest border-b border-gray-300 mb-3 pb-1 font-sans text-gray-500">Skills</h2>
                         <div className="text-sm leading-relaxed">
-                            {Array.isArray(skills) ? skills.join(' • ') : skills}
+                            {/* Join with dots if they fit, otherwise standard list */}
+                            {skillsList.map(s => typeof s === 'string' ? s : '').filter(Boolean).join(' • ')}
                         </div>
                     </section>
                 )}

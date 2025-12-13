@@ -5,6 +5,7 @@ import {
     Save, Layout, Sparkles, ChevronLeft, Eye, EyeOff,
     Download, History, Settings, CheckCircle2, AlertCircle
 } from 'lucide-react';
+import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
 import { resumeService } from '../../services/resumeService';
 import { useAuthContext } from '../../contexts/AuthContext';
 import { useToast } from '../../components/ui/Toast';
@@ -48,10 +49,31 @@ const ResumeEditor = () => {
     const saveTimeoutRef = useRef(null);
 
     useEffect(() => {
-        if (id && user) {
+        if (id) {
             loadResume();
+        } else if (user) {
+            // New Resume Mode: Create draft and redirect
+            createNewResume();
         }
     }, [id, user]);
+
+    const createNewResume = async () => {
+        try {
+            setLoading(true);
+            const newResume = await resumeService.create({
+                title: 'Untitled Resume',
+                visibility: 'private',
+                content: resumeData,
+                is_draft: true
+            });
+            success('Draft created');
+            navigate(`/resume/edit/${newResume.id}`, { replace: true });
+        } catch (error) {
+            console.error('Failed to create draft:', error);
+            showError('Could not start new resume');
+            navigate('/resume/dashboard');
+        }
+    };
 
     const loadResume = async () => {
         try {
@@ -194,12 +216,11 @@ const ResumeEditor = () => {
                 </div>
             </header>
 
-            {/* Main Content Area */}
-            <div className="flex-1 flex overflow-hidden relative">
-
+            {/* Resizable Panels Layout */}
+            <PanelGroup direction="horizontal" className="flex-1 overflow-hidden">
                 {/* Editor (Left Pane) */}
-                <div className={`flex-1 overflow-y-auto custom-scrollbar transition-all duration-300 ${showPreview ? 'hidden md:block md:w-1/2 lg:w-5/12' : 'w-full'}`}>
-                    <div className="p-6 max-w-3xl mx-auto space-y-8">
+                <Panel defaultSize={50} minSize={30} className={`flex flex-col bg-gray-50 dark:bg-[#0B1120] ${!showPreview ? 'w-full' : ''}`}>
+                    <div className="flex-1 overflow-y-auto custom-scrollbar p-6 max-w-3xl mx-auto space-y-8 w-full">
                         <TemplateSelector
                             currentTemplate={resume?.template_id}
                             onSelect={handleTemplateChange}
@@ -212,42 +233,41 @@ const ResumeEditor = () => {
                             setActiveSection={setActiveSection}
                         />
                     </div>
-                </div>
+                </Panel>
+
+                {/* Resize Handle */}
+                {showPreview && (
+                    <PanelResizeHandle className="w-2 bg-gray-200 dark:bg-gray-800 hover:bg-workflow-primary/50 transition-colors cursor-col-resize z-10 flex items-center justify-center group">
+                        <div className="h-8 w-1 bg-gray-300 dark:bg-gray-600 rounded-full group-hover:bg-workflow-primary transition-colors" />
+                    </PanelResizeHandle>
+                )}
 
                 {/* Preview (Right Pane) */}
-                <AnimatePresence>
-                    {(showPreview || window.innerWidth >= 768) && (
-                        <motion.div
-                            initial={{ x: '100%' }}
-                            animate={{ x: 0 }}
-                            exit={{ x: '100%' }}
-                            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-                            className={`fixed inset-0 top-16 md:static bg-gray-100 dark:bg-[#080C17] border-l border-gray-200 dark:border-gray-800 overflow-y-auto custom-scrollbar flex-1 z-10 ${!showPreview ? 'hidden md:block' : ''}`}
-                        >
-                            <div className="h-full flex items-center justify-center p-4 lg:p-10 min-h-[1000px]">
-                                <div className="transform scale-[0.85] lg:scale-100 origin-top transition-transform h-full">
-                                    <ResumePreview
-                                        data={resumeData}
-                                        template={resume?.template_id}
-                                    />
-                                </div>
+                {showPreview && (
+                    <Panel defaultSize={50} minSize={30} className="bg-gray-100 dark:bg-[#080C17] border-l border-gray-200 dark:border-gray-800">
+                        <div className="h-full overflow-y-auto custom-scrollbar p-8 flex justify-center">
+                            <div className="transform origin-top scale-90 lg:scale-95 xl:scale-100 select-none pointer-events-none lg:pointer-events-auto">
+                                <ResumePreview
+                                    data={resumeData}
+                                    template={resume?.template_id}
+                                />
                             </div>
-                        </motion.div>
-                    )}
-                </AnimatePresence>
+                        </div>
+                    </Panel>
+                )}
+            </PanelGroup>
 
-                {/* AI Assistant Sidebar */}
-                <AnimatePresence>
-                    {showAI && (
-                        <AIAssistantSidebar
-                            resumeData={resumeData}
-                            onUpdate={handleDataChange}
-                            onClose={() => setShowAI(false)}
-                        />
-                    )}
-                </AnimatePresence>
+            {/* AI Assistant Sidebar */}
+            <AnimatePresence>
+                {showAI && (
+                    <AIAssistantSidebar
+                        resumeData={resumeData}
+                        onUpdate={handleDataChange}
+                        onClose={() => setShowAI(false)}
+                    />
+                )}
+            </AnimatePresence>
 
-            </div>
         </div>
     );
 };
