@@ -12,7 +12,8 @@
     "dev": "node --watch server.js",
     "verify": "node verify-setup.js",
     "migrate": "node scripts/migrate.js",
-    "seed": "node scripts/seed.js"
+    "seed": "node scripts/seed.js",
+    "postinstall": "cd .. && npm install && npm run build"
   },
   "keywords": [
     "supabase",
