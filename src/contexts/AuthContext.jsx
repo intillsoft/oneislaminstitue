@@ -27,6 +27,7 @@ export const AuthProvider = ({ children }) => {
 
       // Prevent refetch if profile already exists and user hasn't changed
       if (profile && profile.id === auth.user.id) {
+        setLoadingProfile(false);
         return;
       }
 
