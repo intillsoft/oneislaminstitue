@@ -1,118 +1,164 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { Mail, Phone, MapPin, Globe, Linkedin, Github, ExternalLink } from 'lucide-react';
+import { Mail, Phone, MapPin, Globe, Linkedin, Github, ExternalLink, Maximize2, X, Minimize2, ZoomIn, ZoomOut } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const ResumePreview = ({ data, template = 'modern' }) => {
     const containerRef = useRef(null);
     const contentRef = useRef(null);
     const [scale, setScale] = useState(1);
+    const [isFullScreen, setIsFullScreen] = useState(false);
 
     // Auto-Scaling Logic (Fit to Container)
     useEffect(() => {
         const calculateScale = () => {
-            if (containerRef.current && contentRef.current) {
-                const parentElement = containerRef.current.parentElement;
-                if (!parentElement) return;
+            if (!containerRef.current || !contentRef.current) return;
+            if (isFullScreen) return; // Handled by fullscreen logic
 
-                const parentWidth = parentElement.offsetWidth;
-                const resumeWidth = 794; // approx 210mm @ 96dpi (A4)
+            const parentElement = containerRef.current.parentElement;
+            if (!parentElement) return;
 
-                // Reduced padding to minimize gaps on smaller screens
-                // Dynamic padding: 8px on small, 24px on large
-                const padding = parentWidth < 600 ? 8 : 24;
+            const parentWidth = parentElement.offsetWidth;
+            const resumeWidth = 794; // approx 210mm @ 96dpi (A4)
+            const padding = parentWidth < 600 ? 16 : 48; // More breathing room
 
-                // Calculate ratio
-                const availableWidth = Math.max(0, parentWidth - padding);
-                let newScale = availableWidth / resumeWidth;
+            const availableWidth = Math.max(0, parentWidth - padding);
+            let newScale = availableWidth / resumeWidth;
 
-                // Relaxed Limiting
-                newScale = Math.min(newScale, 2.0); // Allow more zoom
-                newScale = Math.max(newScale, 0.1);
+            // Clamping
+            newScale = Math.min(newScale, 1.5);
+            newScale = Math.max(newScale, 0.2);
 
-                setScale(newScale);
-            }
+            setScale(newScale);
         };
 
         calculateScale();
-
-        const resizeObserver = new ResizeObserver((entries) => {
-            window.requestAnimationFrame(calculateScale);
-        });
-
-        if (containerRef.current?.parentElement) {
-            resizeObserver.observe(containerRef.current.parentElement);
-        }
-
+        const resizeObserver = new ResizeObserver(() => window.requestAnimationFrame(calculateScale));
+        if (containerRef.current?.parentElement) resizeObserver.observe(containerRef.current.parentElement);
         window.addEventListener('resize', calculateScale);
 
         return () => {
             resizeObserver.disconnect();
             window.removeEventListener('resize', calculateScale);
         }
-    }, []);
+    }, [isFullScreen]);
 
     // Print Style Injection
     useEffect(() => {
         const style = document.createElement('style');
         style.innerHTML = `
             @media print {
-                body * {
-                    visibility: hidden;
-                }
-                #resume-preview-content, #resume-preview-content * {
-                    visibility: visible;
-                }
+                body * { visibility: hidden; }
+                #resume-preview-content, #resume-preview-content * { visibility: visible; }
                 #resume-preview-content {
                     visibility: visible !important;
-                    position: absolute;
-                    left: 0;
-                    top: 0;
-                    margin: 0;
-                    padding: 0;
-                    width: 210mm;
-                    height: 297mm;
-                    transform: none !important; /* Reset scale for print */
+                    position: absolute; left: 0; top: 0;
+                    margin: 0; padding: 0;
+                    width: 210mm; height: 297mm;
+                    transform: none !important;
+                    box-shadow: none !important;
                 }
-                @page {
-                    size: A4;
-                    margin: 0mm;
-                }
+                @page { size: A4; margin: 0mm; }
             }
         `;
         document.head.appendChild(style);
         return () => document.head.removeChild(style);
     }, []);
 
-    // Choose template renderer
+    // Template Selector
     const renderTemplate = () => {
+        const props = { data };
         switch (template) {
-            case 'professional': return <ProfessionalTemplate data={data} />;
-            case 'executive': return <ExecutiveTemplate data={data} />;
-            case 'creative': return <CreativeTemplate data={data} />;
-            case 'technical': return <TechnicalTemplate data={data} />;
-            case 'modern': default: return <ModernTemplate data={data} />;
+            case 'professional': return <ProfessionalTemplate {...props} />;
+            case 'executive': return <ExecutiveTemplate {...props} />;
+            case 'creative': return <CreativeTemplate {...props} />;
+            case 'technical': return <TechnicalTemplate {...props} />;
+            case 'modern': default: return <ModernTemplate {...props} />;
         }
     };
 
     return (
-        <div
-            ref={containerRef}
-            className="flex justify-center items-start w-full min-h-screen pt-4 pb-20 transition-all bg-dark-bg" // Reduced top padding
-        >
-            <div
-                ref={contentRef}
-                id="resume-preview-content"
-                style={{
-                    transform: `scale(${scale})`,
-                    transformOrigin: 'top center', // Keeping top center to center horizontally
-                    width: '210mm',
-                    minHeight: '297mm',
-                    height: '297mm', // Explicit height
-                    boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)'
-                }}
-                className="bg-white text-gray-900 transition-transform duration-75 ease-linear overflow-hidden print:shadow-none"
-            >
-                {renderTemplate()}
+        <div className="relative w-full h-full flex flex-col bg-slate-900/5 dark:bg-[#0B1121] overflow-hidden group">
+
+            {/* --- CONTROLS OVERLAY --- */}
+            <div className="absolute top-4 right-4 z-40 flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <button
+                    onClick={() => setIsFullScreen(true)}
+                    className="p-2.5 bg-slate-900/80 text-white backdrop-blur-md rounded-full hover:bg-slate-800 shadow-lg hover:scale-110 transition-all border border-white/10"
+                    title="Enter Full Screen"
+                >
+                    <Maximize2 className="w-4 h-4" />
+                </button>
             </div>
+
+            {/* --- MAIN PREVIEW AREA --- */}
+            <div
+                ref={containerRef}
+                className="flex-1 overflow-y-auto custom-scrollbar flex justify-center items-start pt-8 pb-32"
+                onClick={() => setIsFullScreen(true)} // Click to view full
+            >
+                <div
+                    ref={contentRef}
+                    id="resume-preview-content"
+                    style={{
+                        transform: `scale(${scale})`,
+                        transformOrigin: 'top center',
+                        width: '210mm',
+                        minHeight: '297mm',
+                        height: '297mm',
+                    }}
+                    className="bg-white text-gray-900 shadow-2xl origin-top transition-transform duration-200 ease-out cursor-pointer hover:shadow-indigo-500/20"
+                >
+                    {renderTemplate()}
+                </div>
+            </div>
+
+            {/* --- FULL SCREEN MODAL --- */}
+            <AnimatePresence>
+                {isFullScreen && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="fixed inset-0 z-[100] bg-slate-900/95 backdrop-blur-xl flex flex-col"
+                    >
+                        {/* Header */}
+                        <div className="flex items-center justify-between px-6 py-4 border-b border-white/10 bg-white/5">
+                            <h2 className="text-white font-bold text-lg flex items-center gap-2">
+                                <Maximize2 className="w-5 h-5 text-indigo-400" /> Full Screen Preview
+                            </h2>
+                            <div className="flex items-center gap-4">
+                                <div className="flex bg-black/20 rounded-lg p-1">
+                                    <button onClick={() => setScale(s => Math.max(0.3, s - 0.1))} className="p-2 hover:bg-white/10 rounded-md text-white"><ZoomOut className="w-4 h-4" /></button>
+                                    <span className="px-3 py-2 text-xs font-mono text-white/50 w-16 text-center">{(scale * 100).toFixed(0)}%</span>
+                                    <button onClick={() => setScale(s => Math.min(2.5, s + 0.1))} className="p-2 hover:bg-white/10 rounded-md text-white"><ZoomIn className="w-4 h-4" /></button>
+                                </div>
+                                <button
+                                    onClick={() => setIsFullScreen(false)}
+                                    className="p-2 hover:bg-white/10 rounded-full text-white/70 hover:text-white transition-colors"
+                                >
+                                    <X className="w-6 h-6" />
+                                </button>
+                            </div>
+                        </div>
+
+                        {/* Content */}
+                        <div className="flex-1 overflow-auto p-12 flex justify-center bg-dots-pattern">
+                            <div
+                                style={{
+                                    transform: `scale(${scale})`,
+                                    transformOrigin: 'top center',
+                                    width: '210mm',
+                                    minHeight: '297mm',
+                                    height: '297mm',
+                                }}
+                                className="bg-white shadow-[0_0_100px_rgba(0,0,0,0.5)]"
+                            >
+                                {renderTemplate()}
+                            </div>
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </div>
     );
 };
@@ -129,17 +175,14 @@ const parseSkills = (skills) => {
     return [skills];
 };
 
-// ... (KEEPING ALL TEMPLATE COMPONENTS EXACTLY AS IS BELOW - TRUNCATED FOR BREVITY IN TOOL CALL, BUT I WILL WRITE THE FULL FILE)
-// I will include the full template code from the previous read to ensure nothing is lost.
+// --- TEMPLATES (Re-using existing exact implementations for consistency) ---
 
-// 1. MODERN PRO (Clean, Sidebar, Teal Accents)
 const ModernTemplate = ({ data }) => {
     const { personalInfo, summary, experience, education, skills } = data;
     const skillsList = parseSkills(skills);
 
     return (
         <div className="flex h-full font-sans text-sm">
-            {/* Left Sidebar */}
             <div className="w-[32%] bg-[#2D3748] text-white p-8 flex flex-col gap-8 h-full">
                 <div className="text-center">
                     <div className="w-20 h-20 bg-teal-500 rounded-full mx-auto flex items-center justify-center text-3xl font-bold mb-4 shadow-lg text-white">
@@ -148,8 +191,6 @@ const ModernTemplate = ({ data }) => {
                     <h2 className="text-lg font-bold text-white mb-1 leading-tight">{personalInfo?.name}</h2>
                     <p className="text-xs text-teal-300 opacity-90">{personalInfo?.title}</p>
                 </div>
-
-                {/* Contact */}
                 <div className="space-y-4 text-xs">
                     <h3 className="text-teal-400 font-bold uppercase tracking-widest border-b border-gray-600 pb-2 mb-3">Contact</h3>
                     <div className="space-y-3 opacity-90">
@@ -159,8 +200,6 @@ const ModernTemplate = ({ data }) => {
                         {personalInfo?.linkedin && <div className="flex items-center gap-2"><Linkedin size={12} /> <span className="truncate">LinkedIn</span></div>}
                     </div>
                 </div>
-
-                {/* Education */}
                 {education?.length > 0 && (
                     <div className="space-y-4">
                         <h3 className="text-teal-400 text-xs font-bold uppercase tracking-widest border-b border-gray-600 pb-2">Education</h3>
@@ -173,8 +212,6 @@ const ModernTemplate = ({ data }) => {
                         ))}
                     </div>
                 )}
-
-                {/* Skills */}
                 {skillsList.length > 0 && (
                     <div className="space-y-4">
                         <h3 className="text-teal-400 text-xs font-bold uppercase tracking-widest border-b border-gray-600 pb-2">Skills</h3>
@@ -186,21 +223,17 @@ const ModernTemplate = ({ data }) => {
                     </div>
                 )}
             </div>
-
-            {/* Main Content */}
             <div className="flex-1 p-8 bg-white text-slate-800 h-full">
                 <header className="mb-6 pb-4 border-b border-slate-200">
                     <h1 className="text-3xl font-extrabold text-slate-900 uppercase tracking-tight mb-1">{personalInfo?.name}</h1>
                     <p className="text-lg text-teal-600 font-medium">{personalInfo?.title}</p>
                 </header>
-
                 {summary && (
                     <section className="mb-6">
                         <h2 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Profile</h2>
                         <p className="text-xs leading-relaxed text-slate-600 text-justify">{summary}</p>
                     </section>
                 )}
-
                 {experience?.length > 0 && (
                     <section>
                         <h2 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-4">Experience</h2>
@@ -228,7 +261,6 @@ const ModernTemplate = ({ data }) => {
     );
 };
 
-// 2. EXECUTIVE (Serif, High-End, Minimalist)
 const ExecutiveTemplate = ({ data }) => (
     <div className="p-12 h-full bg-[#FAFAFA] font-serif text-[#1C1C1E]">
         <header className="text-center mb-8 relative">
@@ -242,13 +274,11 @@ const ExecutiveTemplate = ({ data }) => (
                 <span>{data.personalInfo?.location}</span>
             </div>
         </header>
-
         {data.summary && (
             <section className="mb-8 text-center max-w-xl mx-auto">
                 <p className="text-sm italic leading-relaxed text-slate-600">{data.summary}</p>
             </section>
         )}
-
         {data.experience?.length > 0 && (
             <section>
                 <div className="flex items-center gap-4 mb-6">
@@ -256,7 +286,6 @@ const ExecutiveTemplate = ({ data }) => (
                     <h2 className="uppercase tracking-widest text-[10px] font-bold text-slate-400 font-sans">Professional Experience</h2>
                     <span className="flex-1 h-px bg-slate-300"></span>
                 </div>
-
                 <div className="space-y-8">
                     {data.experience.map((exp, i) => (
                         <div key={i} className="grid grid-cols-[100px_1fr] gap-6">
@@ -283,7 +312,6 @@ const ExecutiveTemplate = ({ data }) => (
     </div>
 );
 
-// 3. CREATIVE POP (Bold Color Blocks, Grids)
 const CreativeTemplate = ({ data }) => {
     const skills = parseSkills(data.skills);
     return (
@@ -292,7 +320,6 @@ const CreativeTemplate = ({ data }) => {
                 <h1 className="text-5xl font-black tracking-tighter mb-2">{data.personalInfo?.name}</h1>
                 <p className="text-xl font-light opacity-80">{data.personalInfo?.title}</p>
             </div>
-
             <div className="flex flex-1">
                 <div className="w-1/3 p-8 bg-slate-50 border-r border-slate-100 flex flex-col gap-8">
                     <div className="space-y-3">
@@ -303,7 +330,6 @@ const CreativeTemplate = ({ data }) => {
                             <span>{data.personalInfo?.location}</span>
                         </div>
                     </div>
-
                     {data.education && (
                         <div className="space-y-3">
                             <h3 className="font-black text-indigo-600 uppercase tracking-widest text-[10px]">Education</h3>
@@ -315,7 +341,6 @@ const CreativeTemplate = ({ data }) => {
                             ))}
                         </div>
                     )}
-
                     {skills.length > 0 && (
                         <div className="space-y-3">
                             <h3 className="font-black text-indigo-600 uppercase tracking-widest text-[10px]">Skills</h3>
@@ -327,12 +352,10 @@ const CreativeTemplate = ({ data }) => {
                         </div>
                     )}
                 </div>
-
                 <div className="w-2/3 p-8 space-y-8">
                     {data.summary && (
                         <p className="text-sm font-medium leading-relaxed text-slate-700 border-l-4 border-indigo-500 pl-4 py-1 bg-slate-50/50">{data.summary}</p>
                     )}
-
                     {data.experience?.map((exp, i) => (
                         <div key={i} className="space-y-1.5">
                             <div className="flex justify-between items-center group border-b border-indigo-100 pb-1 mb-2">
@@ -351,7 +374,6 @@ const CreativeTemplate = ({ data }) => {
     );
 };
 
-// 4. TECHNICAL (Dark Mode, Monospace, Code Editor Look)
 const TechnicalTemplate = ({ data }) => {
     const skills = parseSkills(data.skills);
     return (
@@ -365,7 +387,6 @@ const TechnicalTemplate = ({ data }) => {
                         <div className="text-[#9CDCFE]">location <span className="text-[#D4D4D4]">=</span> <span className="text-[#CE9178]">"{data.personalInfo?.location}"</span>;</div>
                     </div>
                 </header>
-
                 <div className="grid grid-cols-[1fr_200px] gap-6">
                     <div className="space-y-6">
                         <div>
@@ -386,7 +407,6 @@ const TechnicalTemplate = ({ data }) => {
                             ))}
                         </div>
                     </div>
-
                     <div className="space-y-6">
                         <div>
                             <h3 className="text-[#C586C0] font-bold mb-3">// Stack</h3>
@@ -401,7 +421,6 @@ const TechnicalTemplate = ({ data }) => {
                         </div>
                     </div>
                 </div>
-
                 <div className="mt-auto pt-4 text-[#6A9955] text-[10px] text-center border-t border-[#333]">
                     {'}'} // End of Class
                 </div>
@@ -410,7 +429,6 @@ const TechnicalTemplate = ({ data }) => {
     );
 };
 
-// 5. PROFESSIONAL (Classic, Clean, Times New Roman style but modern)
 const ProfessionalTemplate = ({ data }) => (
     <div className="h-full bg-white text-gray-800 font-serif p-10">
         <header className="border-b-2 border-black pb-4 mb-6">
@@ -421,7 +439,6 @@ const ProfessionalTemplate = ({ data }) => (
                 <span>{data.personalInfo?.location}</span>
             </div>
         </header>
-
         {data.experience?.length > 0 && (
             <section className="mb-6">
                 <h2 className="text-xs font-bold uppercase border-b border-gray-300 mb-3 pb-1 font-sans text-gray-500">Professional Experience</h2>

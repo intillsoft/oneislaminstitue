@@ -123,3 +123,4 @@ The fix script is ready. Just run it in Supabase SQL Editor and your app will wo
 
 
 
+

@@ -53,3 +53,4 @@ GRANT INSERT, UPDATE, SELECT ON public.users TO authenticated;
 
 
 
+
