@@ -62,6 +62,7 @@ const ResumeEditor = () => {
 
     const [atsScore, setAtsScore] = useState(0);
     const saveTimeoutRef = useRef(null);
+    const chatPanelRef = useRef(null); // Ref for AI Chat Panel
 
     // --- Effects ---
     useEffect(() => {
@@ -137,23 +138,6 @@ const ResumeEditor = () => {
         }
     };
 
-    // --- AI Request Handler ---
-    const [aiRequest, setAiRequest] = useState(null);
-
-    const handleAIRequest = (prompt, context) => {
-        // Create a unique request with timestamp to trigger useEffect in ChatPanel
-        setAiRequest({
-            prompt,
-            context,
-            timestamp: Date.now()
-        });
-
-        // Mobile: Switch to Chat tab
-        if (isMobile) {
-            setActiveMobileTab('chat');
-        }
-    };
-
     const handleTemplateChange = async (templateId) => {
         try {
             await resumeService.update(id, { template: templateId });
@@ -169,6 +153,19 @@ const ResumeEditor = () => {
         if (data.experience?.length > 0) score += 40;
         if (data.skills?.length > 0) score += 30;
         return score;
+    };
+
+    // Handler for Manual Editor AI buttons
+    const handleAITrigger = (prompt) => {
+        if (isMobile) {
+            setActiveMobileTab('chat'); // Switch to chat tab on mobile
+        }
+        // Small delay to allow tab switch or render
+        setTimeout(() => {
+            if (chatPanelRef.current) {
+                chatPanelRef.current.triggerAction(prompt);
+            }
+        }, 100);
     };
 
     if (loading) return <div className="h-screen flex items-center justify-center bg-slate-50 dark:bg-dark-bg text-slate-900 dark:text-white"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 dark:border-workflow-primary"></div></div>;
@@ -258,15 +255,15 @@ const ResumeEditor = () => {
                                     <ResumeEditorManual
                                         data={resumeData}
                                         onChange={handleDataChange}
-                                        onAIRequest={handleAIRequest}
+                                        onAIAction={handleAITrigger}
                                     />
                                 </div>
                             )}
                             {activeMobileTab === 'chat' && (
                                 <AIChatPanel
+                                    ref={chatPanelRef}
                                     currentResume={resumeData}
                                     onUpdateResume={handleDataChange}
-                                    aiRequest={aiRequest}
                                 />
                             )}
                             {activeMobileTab === 'preview' && (
@@ -323,7 +320,7 @@ const ResumeEditor = () => {
                                     <ResumeEditorManual
                                         data={resumeData}
                                         onChange={handleDataChange}
-                                        onAIRequest={handleAIRequest}
+                                        onAIAction={handleAITrigger}
                                     />
                                 </div>
                             </div>
@@ -336,9 +333,9 @@ const ResumeEditor = () => {
                         {/* MIDDLE: CHAT */}
                         <Panel defaultSize={25} minSize={20} collapsible={true} order={2} className="flex flex-col border-r border-slate-200 dark:border-dark-border bg-white dark:bg-dark-surface">
                             <AIChatPanel
+                                ref={chatPanelRef}
                                 currentResume={resumeData}
                                 onUpdateResume={handleDataChange}
-                                aiRequest={aiRequest}
                             />
                         </Panel>
 

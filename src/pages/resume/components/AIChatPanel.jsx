@@ -1,9 +1,9 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, forwardRef, useImperativeHandle } from 'react';
 import { Send, Sparkles, Bot, User, Wand2, Star, Target, TrendingUp, Search, FileText, Linkedin, MessageSquare, Award, ChevronDown, ChevronUp, Zap, Check, X } from 'lucide-react';
 import { aiResumeService } from '../../../services/aiResumeService';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const AIChatPanel = ({ onUpdateResume, currentResume, aiRequest }) => {
+const AIChatPanel = forwardRef(({ onUpdateResume, currentResume }, ref) => {
     const [messages, setMessages] = useState([
         { role: 'assistant', text: "I'm ready. Use the Power Tools above or just ask me anything." }
     ]);
@@ -11,30 +11,31 @@ const AIChatPanel = ({ onUpdateResume, currentResume, aiRequest }) => {
     const [thinking, setThinking] = useState(false);
     const [showTools, setShowTools] = useState(true);
     const scrollRef = useRef(null);
-    const lastRequestIdRef = useRef(null);
 
     // Auto-scroll to bottom
     useEffect(() => {
         if (scrollRef.current) scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }, [messages, thinking]);
 
-    // Handle External AI Requests
-    useEffect(() => {
-        if (aiRequest && aiRequest.timestamp !== lastRequestIdRef.current) {
-            lastRequestIdRef.current = aiRequest.timestamp;
-            processPrompt(aiRequest.prompt);
+    // Expose trigger method to parent
+    useImperativeHandle(ref, () => ({
+        triggerAction: (prompt) => {
+            handleSend(prompt);
         }
-    }, [aiRequest]);
+    }));
 
-    const processPrompt = async (promptText) => {
-        if (!promptText.trim()) return;
+    const handleSend = async (manualPrompt = null) => {
+        const promptToUse = manualPrompt || input;
+        if (!promptToUse?.trim()) return;
+
+        if (!manualPrompt) setInput(''); // Clear input only if typed
 
         // Add User Message
-        setMessages(prev => [...prev, { role: 'user', text: promptText }]);
+        setMessages(prev => [...prev, { role: 'user', text: promptToUse }]);
         setThinking(true);
 
         try {
-            const response = await aiResumeService.chat(promptText, currentResume);
+            const response = await aiResumeService.chat(promptToUse, currentResume);
 
             // SECURITY: Do NOT auto-apply changes. Show review UI instead.
             if (response.suggestedChanges && response.newData) {
@@ -52,13 +53,6 @@ const AIChatPanel = ({ onUpdateResume, currentResume, aiRequest }) => {
         } finally {
             setThinking(false);
         }
-    };
-
-    const handleSend = async () => {
-        if (!input.trim()) return;
-        const prompt = input;
-        setInput('');
-        await processPrompt(prompt);
     };
 
     const handleApplyChanges = (messageIndex, newData) => {
@@ -297,7 +291,7 @@ const AIChatPanel = ({ onUpdateResume, currentResume, aiRequest }) => {
                         className="w-full pl-3 pr-10 py-3 bg-slate-100 dark:bg-dark-surface border border-slate-200 dark:border-dark-border rounded-xl focus:ring-1 focus:ring-blue-500 dark:focus:ring-workflow-primary outline-none text-xs sm:text-sm min-h-[45px] max-h-[100px] resize-none text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-dark-text-muted"
                     />
                     <button
-                        onClick={handleSend}
+                        onClick={() => handleSend(null)}
                         disabled={!input.trim() || thinking}
                         className="absolute right-2 bottom-2 p-1.5 bg-blue-600 dark:bg-workflow-primary hover:bg-blue-700 dark:hover:bg-workflow-primary-600 disabled:bg-slate-300 dark:disabled:bg-dark-border disabled:opacity-50 text-white rounded-lg transition-all"
                     >
@@ -310,7 +304,7 @@ const AIChatPanel = ({ onUpdateResume, currentResume, aiRequest }) => {
             </div>
         </div>
     );
-};
+});
 
 // Helper for success icon (can be imported or defined)
 const CheckCircle2 = ({ className }) => (

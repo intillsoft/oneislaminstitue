@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import AIContextToolbar from './AIContextToolbar';
 import { aiResumeService } from '../../../services/aiResumeService';
 
-const ResumeEditorManual = ({ data, onChange, onAIRequest }) => {
+const ResumeEditorManual = ({ data, onChange, onAIAction }) => {
     // Selection State
     const [selection, setSelection] = useState(null);
     const editorRef = useRef(null);
@@ -36,27 +36,37 @@ const ResumeEditorManual = ({ data, onChange, onAIRequest }) => {
 
     // AI Action Handlers
     const handleAIAction = async (actionId, text, fieldPath) => {
-        // Define prompts based on action and context
-        let prompt = '';
+        console.log(`AI Action: ${actionId} on "${text}" at ${fieldPath}`);
 
-        switch (actionId) {
-            case 'optimize_section':
-                prompt = `Please review the ${fieldPath} section of my resume. Identify any weak language, formatting issues, or missing information, and suggest improvements to make it stronger and more impactful.`;
-                break;
-            case 'optimize': // Personal Info
-                prompt = "Review my Personal Info section. Is it professional? Am I missing any standard contact details?";
-                break;
-            default:
-                prompt = `Please help me with "${text}" in the ${fieldPath} section.`;
+        let prompt = "";
+
+        // 1. Context Menu Optimizations
+        if (actionId === 'optimize') {
+            prompt = `Ideally rewrite this text to be more professional, impactful, and concise using action verbs:\n"${text}"`;
+        } else if (actionId === 'expand') {
+            prompt = `Expand on this concept with more detail and context:\n"${text}"`;
         }
 
-        if (onChange && prompt) {
-            // Call parent handler
-            if (onAIRequest) {
-                onAIRequest(prompt, fieldPath);
-            } else {
-                console.warn("onAIRequest prop missing in ResumeEditorManual");
-            }
+        // 2. Section Optimizations
+        else if (actionId === 'optimize_section') {
+            const sectionName = fieldPath; // We passed 'id' as fieldPath for sections
+            let sectionContent = "";
+
+            // Serialize section content for the prompt
+            if (sectionName === 'experience') sectionContent = JSON.stringify(data.experience);
+            else if (sectionName === 'summary') sectionContent = data.summary;
+            else if (sectionName === 'skills') sectionContent = JSON.stringify(data.skills);
+            else if (sectionName === 'education') sectionContent = JSON.stringify(data.education);
+            else sectionContent = JSON.stringify(data[sectionName]);
+
+            prompt = `Review and optimize my ${sectionName} section. Here is the current content:\n${sectionContent}\n\nProvide specific improvements and rewriting suggestions.`;
+        }
+
+        // Trigger the AI Chat
+        if (prompt && onAIAction) {
+            onAIAction(prompt);
+        } else {
+            console.warn("AI Action triggered but no handler connected.");
         }
     };
 
