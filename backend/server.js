@@ -95,8 +95,19 @@ app.get('/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
+// Serve static files from the React frontend app
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+app.use(express.static(path.join(__dirname, '../dist')));
+
 // API Routes - Order matters! More specific routes first
 app.use('/api/webhooks', webhookRoutes); // No auth for webhooks
+
+// ... (other API routes remain)
 
 // Job crawler (needs auth)
 app.use('/api/job-crawler', authenticate, jobCrawlerRoutes);
@@ -125,7 +136,17 @@ app.use('/api/ai', aiRoutes); // AI routes at /api/ai (for /api/ai/search/all)
 // IMPORTANT: Mount /api catch-all LAST to avoid intercepting specific routes
 app.use('/api', aiRoutes); // Also mount at /api for other routes (resumes, jobs/match, etc.)
 
-// 404 handler
+// The "catchall" handler: for any request that doesn't
+// match one above, send back React's index.html file.
+app.get('*', (req, res, next) => {
+  // If it's an API request that wasn't handled, go to 404 handler
+  if (req.path.startsWith('/api')) {
+    return next();
+  }
+  res.sendFile(path.join(__dirname, '../dist/index.html'));
+});
+
+// 404 handler (Only for API routes now)
 app.use((req, res) => {
   res.status(404).json({ error: 'Not found' });
 });
