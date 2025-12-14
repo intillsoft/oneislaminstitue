@@ -10,33 +10,31 @@ const ResumePreview = ({ data, template = 'modern' }) => {
     useEffect(() => {
         const calculateScale = () => {
             if (containerRef.current && contentRef.current) {
-                // The available width from the parent container (Panel)
-                // We access the grand-parent because containerRef is often the wrapper
                 const parentElement = containerRef.current.parentElement;
                 if (!parentElement) return;
 
                 const parentWidth = parentElement.offsetWidth;
                 const resumeWidth = 794; // approx 210mm @ 96dpi (A4)
-                const padding = 32; // Small padding for breathing room
+
+                // Reduced padding to minimize gaps on smaller screens
+                // Dynamic padding: 8px on small, 24px on large
+                const padding = parentWidth < 600 ? 8 : 24;
 
                 // Calculate ratio
                 const availableWidth = Math.max(0, parentWidth - padding);
                 let newScale = availableWidth / resumeWidth;
 
-                // Limits
-                newScale = Math.min(newScale, 1.5); // Don't zoom in crazy amounts
-                newScale = Math.max(newScale, 0.2); // Don't shrink to invisibility
+                // Relaxed Limiting
+                newScale = Math.min(newScale, 2.0); // Allow more zoom
+                newScale = Math.max(newScale, 0.1);
 
                 setScale(newScale);
             }
         };
 
-        // 1. Initial Calculation
         calculateScale();
 
-        // 2. Observer for container resize
         const resizeObserver = new ResizeObserver((entries) => {
-            // Wrap in RAF to avoid "ResizeObserver loop limit exceeded"
             window.requestAnimationFrame(calculateScale);
         });
 
@@ -44,7 +42,6 @@ const ResumePreview = ({ data, template = 'modern' }) => {
             resizeObserver.observe(containerRef.current.parentElement);
         }
 
-        // 3. Fallback window listener
         window.addEventListener('resize', calculateScale);
 
         return () => {
@@ -99,20 +96,20 @@ const ResumePreview = ({ data, template = 'modern' }) => {
     return (
         <div
             ref={containerRef}
-            className="flex justify-center items-start w-full min-h-screen pt-8 pb-32 transition-all"
+            className="flex justify-center items-start w-full min-h-screen pt-4 pb-20 transition-all bg-dark-bg" // Reduced top padding
         >
             <div
                 ref={contentRef}
                 id="resume-preview-content"
                 style={{
                     transform: `scale(${scale})`,
-                    transformOrigin: 'top center',
+                    transformOrigin: 'top center', // Keeping top center to center horizontally
                     width: '210mm',
                     minHeight: '297mm',
                     height: '297mm', // Explicit height
                     boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)'
                 }}
-                className="bg-white text-gray-900 transition-transform duration-100 ease-linear overflow-hidden print:shadow-none"
+                className="bg-white text-gray-900 transition-transform duration-75 ease-linear overflow-hidden print:shadow-none"
             >
                 {renderTemplate()}
             </div>
@@ -132,7 +129,8 @@ const parseSkills = (skills) => {
     return [skills];
 };
 
-// --- POWER TEMPLATES (ENHANCED) ---
+// ... (KEEPING ALL TEMPLATE COMPONENTS EXACTLY AS IS BELOW - TRUNCATED FOR BREVITY IN TOOL CALL, BUT I WILL WRITE THE FULL FILE)
+// I will include the full template code from the previous read to ensure nothing is lost.
 
 // 1. MODERN PRO (Clean, Sidebar, Teal Accents)
 const ModernTemplate = ({ data }) => {
