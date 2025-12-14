@@ -17,6 +17,8 @@ import ResumeEditorManual from './components/ResumeEditorManual';
 import TemplateSelector from './components/TemplateSelector';
 import AIChatPanel from './components/AIChatPanel';
 
+import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
+
 // Auto-save delay
 const AUTOSAVE_DELAY = 1000;
 
@@ -151,12 +153,16 @@ const ResumeEditor = () => {
 
     if (loading) return <div className="h-screen flex items-center justify-center bg-slate-900 text-white"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-500"></div></div>;
 
+    // --- SEARCH / VISUALS / STATE --- 
+    // Use refs for imperative panel control if needed (optional)
+    // import { PanelGroup, Panel, PanelResizeHandle } from 'react-resizable-panels'; (Added to imports)
+
     // --- LAYOUT ---
     return (
         <div className="h-screen w-screen flex flex-col bg-[#0F1117] text-slate-300 font-sans overflow-hidden">
 
             {/* 1. Header (Minimal) */}
-            <header className="h-14 bg-[#161B22] border-b border-[#30363D] flex items-center justify-between px-4 z-50">
+            <header className="h-14 bg-[#161B22] border-b border-[#30363D] flex items-center justify-between px-4 z-50 shrink-0">
                 <div className="flex items-center gap-4">
                     <button onClick={() => navigate('/resume/dashboard')} className="flex items-center gap-2 px-3 py-1.5 hover:bg-[#30363D] rounded-lg transition-colors text-slate-400 hover:text-white">
                         <Layout className="w-4 h-4" />
@@ -200,82 +206,93 @@ const ResumeEditor = () => {
                 </div>
             </header>
 
-            {/* 2. Main Workspace (3-Column Layout: Editor - Chat - Preview) */}
-            <div className="flex-1 flex overflow-hidden">
+            {/* 2. Main Workspace (Resizable 3-Panel Layout) */}
+            <div className="flex-1 overflow-hidden relative">
+                <PanelGroup direction="horizontal" autoSaveId="resume-layout-persistence">
 
-                {/* COLUMN 1: LEFT - RESUME EDITOR (NOTEBOOK STYLE) (35%) */}
-                <div className="flex-1 min-w-[350px] max-w-[40%] flex flex-col border-r border-[#30363D] bg-[#0F1117]">
-                    <div className="p-4 border-b border-[#30363D] flex justify-between items-center bg-[#161B22]">
-                        <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
-                            <FileText className="w-3 h-3" /> Editor
-                        </h3>
-                        <span className="text-[10px] text-slate-600">Markdown Supported</span>
-                    </div>
-                    <div className="flex-1 overflow-y-auto custom-scrollbar p-6">
-                        <div className="max-w-2xl mx-auto">
-                            <ResumeEditorManual
-                                data={resumeData}
-                                onChange={handleDataChange}
-                            />
+                    {/* LEFT PANEL: EDITOR (Collapsible) */}
+                    <Panel defaultSize={35} minSize={20} collapsible={true} order={1} className="flex flex-col border-r border-[#30363D] bg-[#0F1117]">
+                        <div className="p-4 border-b border-[#30363D] flex justify-between items-center bg-[#161B22] shrink-0">
+                            <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                                <FileText className="w-3 h-3" /> Editor
+                            </h3>
+                            <div className="flex items-center gap-2">
+                                <span className="text-[10px] text-slate-600">Markdown Supported</span>
+                            </div>
                         </div>
-                    </div>
-                </div>
-
-                {/* COLUMN 2: MIDDLE - AI CHAT / AGENT (25%) */}
-                <div className="hidden lg:flex w-[350px] flex-col border-r border-[#30363D] bg-[#161B22]">
-                    <div className="p-4 border-b border-[#30363D] flex justify-between items-center">
-                        <h3 className="text-xs font-bold text-indigo-400 uppercase tracking-widest flex items-center gap-2">
-                            <Sparkles className="w-3 h-3" /> AI Copilot
-                        </h3>
-                    </div>
-                    <AIChatPanel
-                        currentResume={resumeData}
-                        onUpdateResume={handleDataChange}
-                    />
-                </div>
-
-                {/* COLUMN 3: RIGHT - LIVE PREVIEW (40%) */}
-                <div className="hidden xl:flex flex-1 flex-col bg-[#0D1117] relative">
-                    <div className="h-12 border-b border-[#30363D] flex items-center justify-between px-4 bg-[#161B22]">
-                        <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
-                            <Eye className="w-3 h-3" /> Live Preview
-                        </h3>
-                        <div className="flex items-center gap-2">
-                            <ToggleIcon
-                                active={showVisuals.heatmap}
-                                icon={Search}
-                                label="Heatmap"
-                                onClick={() => setShowVisuals(s => ({ ...s, heatmap: !s.heatmap }))}
-                            />
-                            <ToggleIcon
-                                active={showVisuals.ats}
-                                icon={CheckCircle2}
-                                label="ATS Check"
-                                onClick={() => setShowVisuals(s => ({ ...s, ats: !s.ats }))}
-                            />
+                        <div className="flex-1 overflow-y-auto custom-scrollbar p-6">
+                            <div className="max-w-2xl mx-auto">
+                                <ResumeEditorManual
+                                    data={resumeData}
+                                    onChange={handleDataChange}
+                                />
+                            </div>
                         </div>
-                    </div>
+                    </Panel>
 
-                    <div className="flex-1 overflow-y-auto p-8 relative bg-[#1F242C] flex justify-center">
-                        <div className="transform scale-[0.7] origin-top shadow-2xl transition-all duration-300 relative group">
-                            <ResumePreview
-                                data={resumeData}
-                                template={resume?.template_id || 'modern'}
-                            />
-                            {showVisuals.heatmap && (
-                                <div className="absolute inset-0 bg-indigo-500/10 mix-blend-multiply pointer-events-none z-10" />
-                            )}
+                    <PanelResizeHandle className="w-1 bg-[#0D1117] hover:bg-indigo-500 transition-colors cursor-col-resize z-50 flex items-center justify-center">
+                        <div className="h-8 w-1 rounded-full bg-[#30363D]" />
+                    </PanelResizeHandle>
+
+                    {/* MIDDLE PANEL: CHAT / COMMAND CENTER (Collapsible) */}
+                    <Panel defaultSize={25} minSize={20} collapsible={true} order={2} className="flex flex-col border-r border-[#30363D] bg-[#161B22]">
+                        <div className="p-4 border-b border-[#30363D] flex justify-between items-center shrink-0">
+                            <h3 className="text-xs font-bold text-indigo-400 uppercase tracking-widest flex items-center gap-2">
+                                <Sparkles className="w-3 h-3" /> AI Copilot
+                            </h3>
                         </div>
-                    </div>
+                        <AIChatPanel
+                            currentResume={resumeData}
+                            onUpdateResume={handleDataChange}
+                        />
+                    </Panel>
 
-                    <div className="absolute bottom-6 right-6 z-20">
-                        <div className="bg-[#161B22] border border-[#30363D] rounded-full px-4 py-2 flex items-center gap-3 shadow-xl">
-                            <span className="text-xs text-slate-400">ATS Score</span>
-                            <span className={`text-sm font-bold ${atsScore >= 80 ? 'text-emerald-400' : 'text-amber-400'}`}>{atsScore}/100</span>
+                    <PanelResizeHandle className="w-1 bg-[#0D1117] hover:bg-indigo-500 transition-colors cursor-col-resize z-50 flex items-center justify-center">
+                        <div className="h-8 w-1 rounded-full bg-[#30363D]" />
+                    </PanelResizeHandle>
+
+                    {/* RIGHT PANEL: LIVE PREVIEW (Collapsible) */}
+                    <Panel defaultSize={40} minSize={20} collapsible={true} order={3} className="flex flex-col bg-[#0D1117] relative">
+                        <div className="h-12 border-b border-[#30363D] flex items-center justify-between px-4 bg-[#161B22] shrink-0">
+                            <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                                <Eye className="w-3 h-3" /> Live Preview
+                            </h3>
+                            <div className="flex items-center gap-2">
+                                <ToggleIcon
+                                    active={showVisuals.heatmap}
+                                    icon={Search}
+                                    label="Heatmap"
+                                    onClick={() => setShowVisuals(s => ({ ...s, heatmap: !s.heatmap }))}
+                                />
+                                <ToggleIcon
+                                    active={showVisuals.ats}
+                                    icon={CheckCircle2}
+                                    label="ATS Check"
+                                    onClick={() => setShowVisuals(s => ({ ...s, ats: !s.ats }))}
+                                />
+                            </div>
                         </div>
-                    </div>
-                </div>
 
+                        <div className="flex-1 overflow-y-auto p-8 relative bg-[#1F242C] flex justify-center">
+                            <div className="transform scale-[0.7] origin-top shadow-2xl transition-all duration-300 relative group w-full max-w-[800px]">
+                                <ResumePreview
+                                    data={resumeData}
+                                    template={resume?.template_id || 'modern'}
+                                />
+                                {showVisuals.heatmap && (
+                                    <div className="absolute inset-0 bg-indigo-500/10 mix-blend-multiply pointer-events-none z-10" />
+                                )}
+                            </div>
+                        </div>
+                        <div className="absolute bottom-6 right-6 z-20">
+                            <div className="bg-[#161B22] border border-[#30363D] rounded-full px-4 py-2 flex items-center gap-3 shadow-xl">
+                                <span className="text-xs text-slate-400">ATS Score</span>
+                                <span className={`text-sm font-bold ${atsScore >= 80 ? 'text-emerald-400' : 'text-amber-400'}`}>{atsScore}/100</span>
+                            </div>
+                        </div>
+                    </Panel>
+
+                </PanelGroup>
             </div>
         </div>
     );
