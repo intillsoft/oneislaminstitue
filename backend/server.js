@@ -136,15 +136,27 @@ const clientBuildPath = path.join(__dirname, '../dist');
 
 app.use(express.static(clientBuildPath));
 
-// API 404 handler (only for /api/ routes)
-app.use('/api/*', (req, res) => {
-  res.status(404).json({ error: 'API endpoint not found' });
-});
-
 // The "catch-all" handler: for any request that doesn't
 // match one above, send back React's index.html file.
+import fs from 'fs';
 app.get('*', (req, res) => {
-  res.sendFile(path.join(clientBuildPath, 'index.html'));
+  const indexPath = path.join(clientBuildPath, 'index.html');
+  if (fs.existsSync(indexPath)) {
+    res.sendFile(indexPath);
+  } else {
+    // Fail-safe: If build is missing/in-progress
+    res.status(503).send(`
+      <!DOCTYPE html>
+      <html>
+        <head><title>System Updating</title><meta http-equiv="refresh" content="10"></head>
+        <body style="font-family: sans-serif; text-align: center; padding-top: 50px;">
+          <h1>Update in Progress</h1>
+          <p>We are building the latest version of the application.</p>
+          <p>Please wait a moment and refresh.</p>
+        </body>
+      </html>
+    `);
+  }
 });
 
 // Global Error handler
