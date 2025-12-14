@@ -3,11 +3,12 @@ import { useParams, useNavigate } from 'react-router-dom';
 import {
     Layout, Sparkles, Eye,
     Download, CheckCircle2,
-    FileText, Search, Menu, X, ArrowLeft
+    FileText, Search, Menu, X, ArrowLeft, Sun, Moon
 } from 'lucide-react';
 import { resumeService } from '../../services/resumeService';
 import { useAuthContext } from '../../contexts/AuthContext';
 import { useToast } from '../../components/ui/Toast';
+import { useTheme } from '../../contexts/ThemeContext'; // Import Theme Hook
 
 // V2 Components
 import ResumePreview from './components/ResumePreview';
@@ -23,6 +24,7 @@ const ResumeEditor = () => {
     const navigate = useNavigate();
     const { user } = useAuthContext();
     const { success, error: showError } = useToast();
+    const { theme, toggleTheme } = useTheme(); // Use Theme Context
 
     // Width Check for Mobile Layout
     const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
@@ -135,6 +137,23 @@ const ResumeEditor = () => {
         }
     };
 
+    // --- AI Request Handler ---
+    const [aiRequest, setAiRequest] = useState(null);
+
+    const handleAIRequest = (prompt, context) => {
+        // Create a unique request with timestamp to trigger useEffect in ChatPanel
+        setAiRequest({
+            prompt,
+            context,
+            timestamp: Date.now()
+        });
+
+        // Mobile: Switch to Chat tab
+        if (isMobile) {
+            setActiveMobileTab('chat');
+        }
+    };
+
     const handleTemplateChange = async (templateId) => {
         try {
             await resumeService.update(id, { template: templateId });
@@ -152,38 +171,47 @@ const ResumeEditor = () => {
         return score;
     };
 
-    if (loading) return <div className="h-screen flex items-center justify-center bg-dark-bg text-white"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-workflow-primary"></div></div>;
+    if (loading) return <div className="h-screen flex items-center justify-center bg-slate-50 dark:bg-dark-bg text-slate-900 dark:text-white"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 dark:border-workflow-primary"></div></div>;
 
     // --- RENDER ---
     return (
-        <div className="h-screen w-screen flex flex-col bg-dark-bg text-dark-text font-sans overflow-hidden">
+        <div className="h-screen w-screen flex flex-col bg-slate-50 dark:bg-dark-bg text-slate-900 dark:text-dark-text font-sans overflow-hidden transition-colors duration-300">
             {/* 1. Universal Header */}
-            <header className="h-14 bg-dark-surface border-b border-dark-border flex items-center justify-between px-4 z-50 shrink-0 shadow-sm relative">
+            <header className="h-14 bg-white dark:bg-dark-surface border-b border-slate-200 dark:border-dark-border flex items-center justify-between px-4 z-50 shrink-0 shadow-sm relative transition-colors duration-300">
                 <div className="flex items-center gap-3">
                     <button
                         onClick={() => navigate('/resume/dashboard')}
-                        className="p-1.5 hover:bg-dark-surface-elevated rounded-lg transition-colors text-dark-text-secondary hover:text-white"
+                        className="p-1.5 hover:bg-slate-100 dark:hover:bg-dark-surface-elevated rounded-lg transition-colors text-slate-500 dark:text-dark-text-secondary hover:text-slate-900 dark:hover:text-white"
                     >
                         <ArrowLeft className="w-4 h-4" />
                     </button>
-                    <div className="h-6 w-px bg-dark-border hidden md:block" />
+                    <div className="h-6 w-px bg-slate-200 dark:bg-dark-border hidden md:block" />
                     <div className="flex flex-col md:flex-row gap-0 md:gap-4 items-start md:items-center">
                         <input
                             value={resume?.title || ''}
                             onChange={(e) => setResume(prev => ({ ...prev, title: e.target.value }))}
                             onBlur={() => resumeService.update(id, { title: resume.title })}
-                            className="bg-transparent border-none text-white font-bold text-sm focus:ring-0 p-0 w-32 md:w-48 placeholder-dark-text-muted transition-all"
+                            className="bg-transparent border-none text-slate-900 dark:text-white font-bold text-sm focus:ring-0 p-0 w-32 md:w-48 placeholder-slate-400 dark:placeholder-dark-text-muted transition-all"
                         />
-                        <span className="text-[10px] uppercase font-bold tracking-wider text-dark-text-muted md:flex items-center gap-1 hidden">
-                            {saving ? <span className="text-workflow-primary-300">Saving...</span> : <span>Saved</span>}
+                        <span className="text-[10px] uppercase font-bold tracking-wider text-slate-400 dark:text-dark-text-muted md:flex items-center gap-1 hidden">
+                            {saving ? <span className="text-blue-500 dark:text-workflow-primary-300">Saving...</span> : <span>Saved</span>}
                         </span>
                     </div>
                 </div>
 
                 <div className="flex items-center gap-2">
+                    {/* Theme Toggle */}
+                    <button
+                        onClick={toggleTheme}
+                        className="p-2 text-slate-500 dark:text-dark-text-secondary hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-dark-surface-elevated rounded-full transition-colors hidden md:block"
+                        title="Toggle Theme"
+                    >
+                        {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+                    </button>
+
                     {/* Mobile Template Dropdown */}
                     <select
-                        className="md:hidden bg-dark-bg border border-dark-border rounded-lg text-xs py-1 px-2 text-white outline-none"
+                        className="md:hidden bg-white dark:bg-dark-bg border border-slate-200 dark:border-dark-border rounded-lg text-xs py-1 px-2 text-slate-900 dark:text-white outline-none"
                         value={resume?.template_id || 'modern'}
                         onChange={(e) => handleTemplateChange(e.target.value)}
                     >
@@ -194,14 +222,14 @@ const ResumeEditor = () => {
                     </select>
 
                     {/* Desktop Template Toggles */}
-                    <div className="hidden md:flex bg-dark-bg rounded-lg p-0.5 border border-dark-border">
+                    <div className="hidden md:flex bg-slate-100 dark:bg-dark-bg rounded-lg p-0.5 border border-slate-200 dark:border-dark-border">
                         {['Modern', 'Executive', 'Technical', 'Creative'].map(t => (
                             <button
                                 key={t}
                                 onClick={() => handleTemplateChange(t.toLowerCase())}
                                 className={`px-3 py-1 text-[10px] uppercase font-bold rounded-md transition-all ${(resume?.template_id || 'modern') === t.toLowerCase()
-                                    ? 'bg-workflow-primary text-white shadow-sm'
-                                    : 'text-dark-text-secondary hover:text-white'
+                                    ? 'bg-white dark:bg-workflow-primary text-blue-600 dark:text-white shadow-sm'
+                                    : 'text-slate-500 dark:text-dark-text-secondary hover:text-slate-900 dark:hover:text-white'
                                     }`}
                             >
                                 {t}
@@ -211,7 +239,7 @@ const ResumeEditor = () => {
 
                     <button
                         onClick={() => window.print()}
-                        className="px-4 py-1.5 bg-white text-dark-bg hover:bg-gray-200 text-xs font-bold rounded-full transition-all flex items-center gap-2 border border-transparent shadow-sm"
+                        className="px-4 py-1.5 bg-slate-900 dark:bg-white text-white dark:text-dark-bg hover:bg-slate-800 dark:hover:bg-gray-200 text-xs font-bold rounded-full transition-all flex items-center gap-2 border border-transparent shadow-sm"
                     >
                         <Download className="w-3 h-3" /> <span className="hidden md:inline">Export</span>
                     </button>
@@ -224,17 +252,25 @@ const ResumeEditor = () => {
                     // --- MOBILE LAYOUT (Tabs) ---
                     <div className="flex flex-col h-full">
                         {/* Tab Content */}
-                        <div className="flex-1 overflow-y-auto bg-dark-bg relative">
+                        <div className="flex-1 overflow-y-auto bg-slate-50 dark:bg-dark-bg relative">
                             {activeMobileTab === 'editor' && (
                                 <div className="p-4 safe-area-bottom">
-                                    <ResumeEditorManual data={resumeData} onChange={handleDataChange} />
+                                    <ResumeEditorManual
+                                        data={resumeData}
+                                        onChange={handleDataChange}
+                                        onAIRequest={handleAIRequest}
+                                    />
                                 </div>
                             )}
                             {activeMobileTab === 'chat' && (
-                                <AIChatPanel currentResume={resumeData} onUpdateResume={handleDataChange} />
+                                <AIChatPanel
+                                    currentResume={resumeData}
+                                    onUpdateResume={handleDataChange}
+                                    aiRequest={aiRequest}
+                                />
                             )}
                             {activeMobileTab === 'preview' && (
-                                <div className="min-h-full flex justify-center bg-dark-bg p-2 overflow-x-hidden">
+                                <div className="min-h-full flex justify-center bg-slate-200 dark:bg-dark-bg p-2 overflow-x-hidden">
                                     {/* Simple Scale wrapper for mobile preview */}
                                     {/* Scale down to fit mobile width comfortably */}
                                     <div className="transform scale-[0.40] origin-top-center h-[1400px]">
@@ -245,7 +281,7 @@ const ResumeEditor = () => {
                         </div>
 
                         {/* Mobile Bottom Navigation */}
-                        <div className="h-16 bg-dark-surface border-t border-dark-border flex items-center justify-around px-2 shrink-0 z-50">
+                        <div className="h-16 bg-white dark:bg-dark-surface border-t border-slate-200 dark:border-dark-border flex items-center justify-around px-2 shrink-0 z-50">
                             <MobileTab
                                 id="editor"
                                 label="Editor"
@@ -253,7 +289,7 @@ const ResumeEditor = () => {
                                 active={activeMobileTab}
                                 onClick={setActiveMobileTab}
                             />
-                            <div className="w-px h-8 bg-dark-border" />
+                            <div className="w-px h-8 bg-slate-200 dark:bg-dark-border" />
                             <MobileTab
                                 id="chat"
                                 label="AI Copilot"
@@ -261,7 +297,7 @@ const ResumeEditor = () => {
                                 active={activeMobileTab}
                                 onClick={setActiveMobileTab}
                             />
-                            <div className="w-px h-8 bg-dark-border" />
+                            <div className="w-px h-8 bg-slate-200 dark:bg-dark-border" />
                             <MobileTab
                                 id="preview"
                                 label="Preview"
@@ -276,42 +312,44 @@ const ResumeEditor = () => {
                     <PanelGroup direction="horizontal" autoSaveId="resume-layout-persistence">
 
                         {/* LEFT: EDITOR */}
-                        <Panel defaultSize={35} minSize={25} collapsible={true} order={1} className="flex flex-col border-r border-dark-border bg-dark-bg">
-                            <div className="p-4 border-b border-dark-border flex justify-between items-center bg-dark-surface shrink-0">
-                                <h3 className="text-xs font-bold text-dark-text-secondary uppercase tracking-widest flex items-center gap-2">
+                        <Panel defaultSize={35} minSize={25} collapsible={true} order={1} className="flex flex-col border-r border-slate-200 dark:border-dark-border bg-slate-50 dark:bg-dark-bg">
+                            <div className="p-4 border-b border-slate-200 dark:border-dark-border flex justify-between items-center bg-white dark:bg-dark-surface shrink-0">
+                                <h3 className="text-xs font-bold text-slate-500 dark:text-dark-text-secondary uppercase tracking-widest flex items-center gap-2">
                                     <FileText className="w-3 h-3" /> Editor
                                 </h3>
                             </div>
-                            <div className="flex-1 overflow-y-auto custom-scrollbar p-6 bg-dark-bg">
+                            <div className="flex-1 overflow-y-auto custom-scrollbar p-6 bg-slate-50 dark:bg-dark-bg">
                                 <div className="max-w-2xl mx-auto">
                                     <ResumeEditorManual
                                         data={resumeData}
                                         onChange={handleDataChange}
+                                        onAIRequest={handleAIRequest}
                                     />
                                 </div>
                             </div>
                         </Panel>
 
-                        <PanelResizeHandle className="w-1 bg-dark-bg hover:bg-workflow-primary transition-colors cursor-col-resize z-50 flex items-center justify-center">
-                            <div className="h-8 w-1 rounded-full bg-dark-border" />
+                        <PanelResizeHandle className="w-1 bg-slate-100 dark:bg-dark-bg hover:bg-blue-600 dark:hover:bg-workflow-primary transition-colors cursor-col-resize z-50 flex items-center justify-center">
+                            <div className="h-8 w-1 rounded-full bg-slate-300 dark:bg-dark-border" />
                         </PanelResizeHandle>
 
                         {/* MIDDLE: CHAT */}
-                        <Panel defaultSize={25} minSize={20} collapsible={true} order={2} className="flex flex-col border-r border-dark-border bg-dark-surface">
+                        <Panel defaultSize={25} minSize={20} collapsible={true} order={2} className="flex flex-col border-r border-slate-200 dark:border-dark-border bg-white dark:bg-dark-surface">
                             <AIChatPanel
                                 currentResume={resumeData}
                                 onUpdateResume={handleDataChange}
+                                aiRequest={aiRequest}
                             />
                         </Panel>
 
-                        <PanelResizeHandle className="w-1 bg-dark-bg hover:bg-workflow-primary transition-colors cursor-col-resize z-50 flex items-center justify-center">
-                            <div className="h-8 w-1 rounded-full bg-dark-border" />
+                        <PanelResizeHandle className="w-1 bg-slate-100 dark:bg-dark-bg hover:bg-blue-600 dark:hover:bg-workflow-primary transition-colors cursor-col-resize z-50 flex items-center justify-center">
+                            <div className="h-8 w-1 rounded-full bg-slate-300 dark:bg-dark-border" />
                         </PanelResizeHandle>
 
                         {/* RIGHT: PREVIEW */}
-                        <Panel defaultSize={40} minSize={25} collapsible={true} order={3} className="flex flex-col bg-dark-bg relative">
-                            <div className="h-12 border-b border-dark-border flex items-center justify-between px-4 bg-dark-surface shrink-0">
-                                <h3 className="text-xs font-bold text-dark-text-secondary uppercase tracking-widest flex items-center gap-2">
+                        <Panel defaultSize={40} minSize={25} collapsible={true} order={3} className="flex flex-col bg-slate-200 dark:bg-dark-bg relative">
+                            <div className="h-12 border-b border-slate-200 dark:border-dark-border flex items-center justify-between px-4 bg-white dark:bg-dark-surface shrink-0">
+                                <h3 className="text-xs font-bold text-slate-500 dark:text-dark-text-secondary uppercase tracking-widest flex items-center gap-2">
                                     <Eye className="w-3 h-3" /> Live Preview
                                 </h3>
                                 <div className="flex items-center gap-2">
@@ -330,21 +368,21 @@ const ResumeEditor = () => {
                                 </div>
                             </div>
 
-                            <div className="flex-1 overflow-y-auto p-4 md:p-8 relative bg-dark-bg flex justify-center items-start">
+                            <div className="flex-1 overflow-y-auto p-4 md:p-8 relative bg-slate-200 dark:bg-dark-bg flex justify-center items-start">
                                 <div className="w-full relative group flex justify-center min-h-full">
                                     <ResumePreview
                                         data={resumeData}
                                         template={resume?.template_id || 'modern'}
                                     />
                                     {showVisuals.heatmap && (
-                                        <div className="absolute inset-0 bg-workflow-primary/10 mix-blend-multiply pointer-events-none z-10" />
+                                        <div className="absolute inset-0 bg-blue-600/10 dark:bg-workflow-primary/10 mix-blend-multiply pointer-events-none z-10" />
                                     )}
                                 </div>
                             </div>
                             <div className="absolute bottom-6 right-6 z-20 print:hidden">
-                                <div className="bg-dark-surface-elevated border border-dark-border rounded-full px-4 py-2 flex items-center gap-3 shadow-xl backdrop-blur-sm bg-opacity-90">
-                                    <span className="text-xs text-dark-text-secondary">ATS Score</span>
-                                    <span className={`text-sm font-bold ${atsScore >= 80 ? 'text-success-500' : 'text-warning-500'}`}>{atsScore}/100</span>
+                                <div className="bg-white/90 dark:bg-dark-surface-elevated/90 border border-slate-200 dark:border-dark-border rounded-full px-4 py-2 flex items-center gap-3 shadow-xl backdrop-blur-sm">
+                                    <span className="text-xs text-slate-600 dark:text-dark-text-secondary">ATS Score</span>
+                                    <span className={`text-sm font-bold ${atsScore >= 80 ? 'text-emerald-600 dark:text-success-500' : 'text-amber-500 dark:text-warning-500'}`}>{atsScore}/100</span>
                                 </div>
                             </div>
                         </Panel>
@@ -360,7 +398,7 @@ const ResumeEditor = () => {
 const MobileTab = ({ id, label, icon: Icon, active, onClick }) => (
     <button
         onClick={() => onClick(id)}
-        className={`flex flex-col items-center justify-center p-2 w-full transition-colors ${active === id ? 'text-workflow-primary' : 'text-dark-text-secondary hover:text-white'}`}
+        className={`flex flex-col items-center justify-center p-2 w-full transition-colors ${active === id ? 'text-blue-600 dark:text-workflow-primary' : 'text-slate-500 dark:text-dark-text-secondary hover:text-slate-900 dark:hover:text-white'}`}
     >
         <Icon className={`w-5 h-5 mb-1 ${active === id ? 'fill-current opacity-20' : ''}`} />
         <span className="text-[10px] font-bold uppercase tracking-wider">{label}</span>
@@ -371,7 +409,7 @@ const ToggleIcon = ({ active, icon: Icon, onClick, label }) => (
     <button
         onClick={onClick}
         title={label}
-        className={`p-1.5 rounded-lg transition-all ${active ? 'bg-workflow-primary/20 text-workflow-primary-300' : 'text-dark-text-secondary hover:bg-dark-border hover:text-white'}`}
+        className={`p-1.5 rounded-lg transition-all ${active ? 'bg-blue-600/10 dark:bg-workflow-primary/20 text-blue-600 dark:text-workflow-primary-300' : 'text-slate-500 dark:text-dark-text-secondary hover:bg-slate-100 dark:hover:bg-dark-border hover:text-slate-900 dark:hover:text-white'}`}
     >
         <Icon className="w-4 h-4" />
     </button>
