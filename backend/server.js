@@ -125,12 +125,29 @@ app.use('/api/ai', aiRoutes); // AI routes at /api/ai (for /api/ai/search/all)
 // IMPORTANT: Mount /api catch-all LAST to avoid intercepting specific routes
 app.use('/api', aiRoutes); // Also mount at /api for other routes (resumes, jobs/match, etc.)
 
-// 404 handler
-app.use((req, res) => {
-  res.status(404).json({ error: 'Not found' });
+// Serve static files from the React app
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+// Assuming server.js is in backend/, we need to go up one level to find dist
+const clientBuildPath = path.join(__dirname, '../dist');
+
+app.use(express.static(clientBuildPath));
+
+// API 404 handler (only for /api/ routes)
+app.use('/api/*', (req, res) => {
+  res.status(404).json({ error: 'API endpoint not found' });
 });
 
-// Error handler
+// The "catch-all" handler: for any request that doesn't
+// match one above, send back React's index.html file.
+app.get('*', (req, res) => {
+  res.sendFile(path.join(clientBuildPath, 'index.html'));
+});
+
+// Global Error handler
 app.use((err, req, res, next) => {
   logger.error('Unhandled error:', err);
   res.status(500).json({
