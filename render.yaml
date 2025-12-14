@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: workflow-frontend
+    runtime: node
+    plan: free
+    buildCommand: npm run render-build
+    startCommand: npm start
+    envVars:
+      - key: SCARF_ANALYTICS
+        value: false
+      - key: SUPABASE_URL
+        fromGroup: shared-keys
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        fromGroup: shared-keys
