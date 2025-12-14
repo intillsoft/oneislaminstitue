@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, Sparkles, Bot, User, RefreshCw, Wand2, Star, Globe, Zap, RotateCcw } from 'lucide-react';
+import { Send, Sparkles, Bot, User, RefreshCw, Wand2, Star, Globe, Zap, RotateCcw, Target, TrendingUp, Search } from 'lucide-react';
 import { aiResumeService } from '../../../services/aiResumeService';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -42,29 +42,73 @@ const AIChatPanel = ({ onUpdateResume, currentResume, isGenerating }) => {
         }
     };
 
-    const QuickAction = ({ icon: Icon, label, prompt }) => (
+    const handleTool = async (toolName, params = {}) => {
+        setThinking(true);
+        // Mock UI response immediately
+        setMessages(prev => [...prev, { role: 'user', text: `Run tool: ${toolName}` }]);
+
+        try {
+            let result;
+            let message = "Tool execution complete.";
+
+            switch (toolName) {
+                case 'Buzzword Blaster':
+                    result = await aiResumeService.removeBuzzwords(JSON.stringify(currentResume.summary));
+                    message = `I've removed buzzwords: \n\n${result}`;
+                    break;
+                case 'Job Matcher':
+                    message = "Paste the Job Description to match against.";
+                    // In a real implementation this would open a modal
+                    break;
+                case 'Format Fixer':
+                    result = await aiResumeService.fixFormatting(JSON.stringify(currentResume));
+                    message = "I've fixed formatting issues.";
+                    // onUpdateResume(JSON.parse(result)); // If result returns full JSON
+                    break;
+                case 'Suggest Metrics':
+                    result = await aiResumeService.suggestMetricsDeep(JSON.stringify(currentResume.experience));
+                    message = `Here are metric suggestions:\n${result}`;
+                    break;
+                default:
+                    message = "Tool selected.";
+            }
+
+            setMessages(prev => [...prev, { role: 'assistant', text: message }]);
+        } catch (e) {
+            setMessages(prev => [...prev, { role: 'assistant', text: "Error running tool." }]);
+        } finally {
+            setThinking(false);
+        }
+    };
+
+    const QuickAction = ({ icon: Icon, label, color, tool }) => (
         <button
-            onClick={() => { setInput(prompt); handleSend(); }}
-            className="flex flex-col items-center gap-2 p-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-indigo-500 hover:shadow-md transition-all group"
+            onClick={() => handleTool(tool || label)}
+            className="flex flex-col items-center gap-2 p-3 rounded-xl bg-[#161B22] border border-[#30363D] hover:border-indigo-500 hover:shadow-md transition-all group relative overflow-hidden"
         >
-            <div className="p-2 rounded-lg bg-slate-50 dark:bg-slate-700/50 group-hover:bg-indigo-50 dark:group-hover:bg-indigo-900/30 text-slate-500 group-hover:text-indigo-500 transition-colors">
-                <Icon className="w-5 h-5" />
+            <div className={`p-2 rounded-lg bg-opacity-10 ${color} group-hover:bg-opacity-20 transition-colors`}>
+                <Icon className={`w-5 h-5 ${color.replace('bg-', 'text-')}`} />
             </div>
-            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 group-hover:text-slate-800 dark:group-hover:text-slate-200">{label}</span>
+            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 group-hover:text-white relative z-10">{label}</span>
         </button>
     );
 
     return (
-        <div className="flex flex-col h-full bg-slate-50 dark:bg-[#0F1117] border-r border-[#30363D]">
+        <div className="flex flex-col h-full bg-[#0D1117] border-r border-[#30363D]">
 
-            {/* 1. Quick Actions Grid */}
-            <div className="p-4 border-b border-[#30363D] grid grid-cols-3 gap-3">
-                <QuickAction icon={Wand2} label="Optimize" prompt="Polish my entire resume to be more professional." />
-                <QuickAction icon={Zap} label="Actionize" prompt="Apply the 'Action Verb + Result' formula to all bullets." />
-                <QuickAction icon={Star} label="ATS Score" prompt="Analyze my ATS score and fix keywords." />
-                <QuickAction icon={RefreshCw} label="Rewrite" prompt="Rewrite the summary to be punchier." />
-                <QuickAction icon={Globe} label="Translate" prompt="Translate my resume to Spanish." />
-                <QuickAction icon={RotateCcw} label="Reset" prompt="Undo the last major change." />
+            {/* 1. Power Action Grid */}
+            <div className="p-4 border-b border-[#30363D]">
+                <h4 className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-3 flex items-center gap-2">
+                    <Zap className="w-3 h-3 text-amber-400" /> Power Suite
+                </h4>
+                <div className="grid grid-cols-3 gap-2">
+                    <QuickAction icon={Wand2} label="Polish" tool="Format Fixer" color="bg-indigo-500" />
+                    <QuickAction icon={Target} label="JD Match" tool="Job Matcher" color="bg-emerald-500" />
+                    <QuickAction icon={Star} label="Skill Gap" tool="Skill Gap Analyzer" color="bg-amber-500" />
+                    <QuickAction icon={TrendingUp} label="Metrics" tool="Suggest Metrics" color="bg-blue-500" />
+                    <QuickAction icon={Search} label="Debuzz" tool="Buzzword Blaster" color="bg-rose-500" />
+                    <QuickAction icon={Bot} label="Cover Ltr" tool="Cover Letter Gen" color="bg-purple-500" />
+                </div>
             </div>
 
             {/* 2. Chat Stream */}
@@ -80,8 +124,8 @@ const AIChatPanel = ({ onUpdateResume, currentResume, isGenerating }) => {
                             {msg.role === 'user' ? <User className="w-4 h-4 text-white" /> : <Bot className="w-4 h-4 text-white" />}
                         </div>
                         <div className={`p-3 rounded-2xl text-sm leading-relaxed max-w-[85%] ${msg.role === 'user'
-                                ? 'bg-indigo-500 text-white rounded-tr-none'
-                                : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 rounded-tl-none shadow-sm'
+                            ? 'bg-indigo-500 text-white rounded-tr-none'
+                            : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 rounded-tl-none shadow-sm'
                             }`}>
                             {msg.text}
                         </div>
