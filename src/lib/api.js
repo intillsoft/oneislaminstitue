@@ -10,7 +10,11 @@ import { supabase } from './supabase';
 // Define the backend root URL (no /api)
 // Define the backend root URL
 const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-const API_ROOT = isLocal ? 'http://localhost:3001' : (import.meta.env.VITE_API_URL || 'https://workflow.surf');
+// In production (Vercel), we use relative paths for the unified deployment
+const API_ROOT = isLocal 
+  ? (import.meta.env.VITE_API_URL || 'http://localhost:3001') 
+  : ''; 
+
 // Log configuration in dev
 if (isLocal) {
   console.log('🚀 [Workflow AI] Local Development Mode Active');

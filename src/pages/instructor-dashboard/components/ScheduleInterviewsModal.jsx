@@ -8,6 +8,7 @@ import Icon from 'components/AppIcon';
 import Modal from 'components/ui/Modal';
 import { applicationService } from '../../../services/applicationService';
 import { supabase } from '../../../lib/supabase';
+import { apiService } from '../../../lib/api';
 import { useToast } from '../../../components/ui/Toast';
 import { format } from 'date-fns';
 
@@ -135,31 +136,20 @@ const ScheduleInterviewsModal = ({ isOpen, onClose, applicationId = null }) => {
 
       // Optionally send email notification via backend
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/api/emails/send`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${localStorage.getItem('token') || ''}`,
+        await apiService.post('/emails/send', {
+          to: application.email,
+          template: 'interview-scheduled',
+          data: {
+            candidateName: `${application.first_name} ${application.last_name}`,
+            jobTitle: application.job?.title || 'the position',
+            interviewDate: formData.interviewDate,
+            interviewTime: formData.interviewTime,
+            interviewType: formData.interviewType,
+            location: formData.location,
+            meetingLink: formData.meetingLink,
+            interviewer: formData.interviewer,
           },
-          body: JSON.stringify({
-            to: application.email,
-            template: 'interview-scheduled',
-            data: {
-              candidateName: `${application.first_name} ${application.last_name}`,
-              jobTitle: application.job?.title || 'the position',
-              interviewDate: formData.interviewDate,
-              interviewTime: formData.interviewTime,
-              interviewType: formData.interviewType,
-              location: formData.location,
-              meetingLink: formData.meetingLink,
-              interviewer: formData.interviewer,
-            },
-          }),
         });
-        
-        if (!response.ok) {
-          console.warn('Failed to send interview email notification');
-        }
       } catch (emailError) {
         console.warn('Email notification error (non-critical):', emailError);
         // Don't fail the interview scheduling if email fails

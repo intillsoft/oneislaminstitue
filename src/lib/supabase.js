@@ -14,10 +14,10 @@ if (!supabaseUrl || !supabaseAnonKey) {
   console.warn('Create a .env file with VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY');
 }
 
-// Create Supabase client (with fallback for development)
+// Create Supabase client
 export const supabase = createClient(
-  supabaseUrl || 'https://placeholder.supabase.co',
-  supabaseAnonKey || 'placeholder-key',
+  supabaseUrl || '',
+  supabaseAnonKey || '',
   {
   auth: {
     autoRefreshToken: true,

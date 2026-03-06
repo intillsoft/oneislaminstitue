@@ -208,7 +208,7 @@ const BoltChat = ({ onNewChat, searchHistory = [], onHistoryClick }) => {
       const { data: { session } } = await supabase.auth.getSession();
       const token = session?.access_token;
 
-      const uploadRes = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/api/chat/upload`, {
+      const uploadRes = await fetch('/api/chat/upload', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`
@@ -276,7 +276,7 @@ const BoltChat = ({ onNewChat, searchHistory = [], onHistoryClick }) => {
       }
 
       // Stream response
-      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/api/chat/stream`, {
+      const response = await fetch('/api/chat/stream', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

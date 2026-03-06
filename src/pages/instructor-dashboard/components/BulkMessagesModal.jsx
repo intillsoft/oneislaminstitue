@@ -8,6 +8,7 @@ import Icon from 'components/AppIcon';
 import Modal from 'components/ui/Modal';
 import { applicationService } from '../../../services/applicationService';
 import { supabase } from '../../../lib/supabase';
+import { apiService } from '../../../lib/api';
 import { useToast } from '../../../components/ui/Toast';
 
 const BulkMessagesModal = ({ isOpen, onClose }) => {
@@ -132,23 +133,12 @@ const BulkMessagesModal = ({ isOpen, onClose }) => {
 
           // Try backend API first
           try {
-            const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/api/emails/send`, {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('token') || ''}`,
-              },
-              body: JSON.stringify({
-                to: app.email,
-                subject: personalizedSubject,
-                html: personalizedMessage.replace(/\n/g, '<br>'),
-                text: personalizedMessage,
-              }),
+            await apiService.post('/emails/send', {
+              to: app.email,
+              subject: personalizedSubject,
+              html: personalizedMessage.replace(/\n/g, '<br>'),
+              text: personalizedMessage,
             });
-
-            if (!response.ok) {
-              throw new Error(`HTTP ${response.status}`);
-            }
           } catch (apiError) {
             // If backend API fails, log but continue (might be in development)
             console.warn(`Backend email API not available for ${app.email}, continuing...`, apiError);

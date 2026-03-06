@@ -367,7 +367,7 @@ const InstructorNotifications = () => {
                                                     </div>
 
                                                     <div className="pt-8 border-t border-white/5 space-y-6">
-                                                        <label className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-700 ml-1">Transmission Channels</label>
+                                                        <label className="text-[10px] font-bold uppercase tracking-widest text-slate-700 ml-1">Methods</label>
                                                         <div className="grid grid-cols-1 gap-3">
                                                             {[
                                                                 { id: 'sendInApp', label: 'Internal Notification', icon: Bell },
@@ -384,9 +384,9 @@ const InstructorNotifications = () => {
                                                                     }`}
                                                                 >
                                                                     <div className="flex items-center gap-5">
-                                                                        <channel.icon size={18} className={composerData[channel.id] ? 'text-emerald-500' : 'text-slate-900'} />
-                                                                        <span className="text-[10px] font-black uppercase tracking-widest">{channel.label}</span>
-                                                                    </div>
+                                                                         <channel.icon size={18} className={composerData[channel.id] ? 'text-emerald-500' : 'text-slate-900'} />
+                                                                         <span className="text-[10px] font-bold uppercase tracking-widest">{channel.label}</span>
+                                                                     </div>
                                                                     <div className={`w-10 h-1.5 rounded-full relative transition-all ${composerData[channel.id] ? 'bg-emerald-500' : 'bg-slate-900'}`}>
                                                                         <div className={`absolute -top-1 w-3.5 h-3.5 rounded-full transition-all border-2 border-[#121214] ${composerData[channel.id] ? 'right-0 bg-white' : 'left-0 bg-slate-700'}`} />
                                                                     </div>
@@ -399,23 +399,23 @@ const InstructorNotifications = () => {
                                                 <div className="lg:col-span-3 space-y-12">
                                                     <div className="space-y-10">
                                                         <div className="space-y-4">
-                                                            <label className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-700 ml-1">Subject Header</label>
+                                                            <label className="text-[10px] font-bold uppercase tracking-widest text-slate-700 ml-1">Subject</label>
                                                             <input
                                                                 type="text"
                                                                 value={composerData.title}
                                                                 onChange={(e) => setComposerData({ ...composerData, title: e.target.value })}
-                                                                placeholder="Transmission Heading..."
-                                                                className="w-full px-6 py-4 bg-white/5 border border-white/5 rounded-xl text-base font-bold text-white focus:outline-none focus:border-emerald-500/20 transition-all uppercase placeholder:text-slate-900 tracking-tight"
+                                                                placeholder="Enter subject..."
+                                                                className="w-full px-5 py-3 bg-white/5 border border-white/5 rounded-xl text-sm font-bold text-white focus:outline-none focus:border-emerald-500/20 transition-all uppercase placeholder:text-slate-900 tracking-tight"
                                                             />
                                                         </div>
                                                         <div className="space-y-4">
-                                                            <label className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-700 ml-1">Communication Body</label>
+                                                            <label className="text-[10px] font-bold uppercase tracking-widest text-slate-700 ml-1">Message</label>
                                                             <textarea
                                                                 value={composerData.message}
                                                                 onChange={(e) => setComposerData({ ...composerData, message: e.target.value })}
-                                                                placeholder="Type your official announcement..."
+                                                                placeholder="Type your message here..."
                                                                 rows="8"
-                                                                className="w-full px-8 py-8 bg-white/[0.02] border border-white/5 rounded-[2rem] text-base font-medium text-slate-400 focus:outline-none focus:border-emerald-500/20 transition-all resize-none leading-relaxed placeholder:text-slate-900"
+                                                                className="w-full px-6 py-4 bg-white/[0.02] border border-white/5 rounded-xl text-sm font-medium text-slate-400 focus:outline-none focus:border-emerald-500/20 transition-all resize-none leading-relaxed placeholder:text-slate-900"
                                                             />
                                                         </div>
                                                     </div>
@@ -423,10 +423,10 @@ const InstructorNotifications = () => {
                                                     <button
                                                         onClick={sendNotification}
                                                         disabled={loading}
-                                                        className="w-full bg-emerald-600 text-white py-4 rounded-xl text-[11px] font-bold uppercase tracking-widest hover:bg-emerald-500 transition-all disabled:opacity-30 disabled:cursor-not-allowed flex items-center justify-center gap-3"
+                                                        className="w-full bg-emerald-600 text-white py-3.5 rounded-xl text-[10px] font-bold uppercase tracking-widest hover:bg-emerald-500 transition-all disabled:opacity-30 disabled:cursor-not-allowed flex items-center justify-center gap-3"
                                                     >
-                                                        {loading ? <div className="w-5 h-5 border-[2px] border-white/20 border-t-white rounded-full animate-spin" /> : <Send size={16} />}
-                                                        {loading ? 'Dispatching...' : 'Complete Transmission'}
+                                                        {loading ? <div className="w-4 h-4 border-[2px] border-white/20 border-t-white rounded-full animate-spin" /> : <Send size={14} />}
+                                                        {loading ? 'Sending...' : 'Send Message'}
                                                     </button>
                                                 </div>
                                             </div>
@@ -604,7 +604,7 @@ const InstructorNotifications = () => {
                                     </div>
 
                                     <div className="prose prose-invert max-w-none pt-4">
-                                        <p className="text-lg text-slate-400 font-medium leading-[1.8] whitespace-pre-wrap selection:bg-emerald-500/20 select-text">
+                                        <p className="text-sm lg:text-base text-slate-400 font-medium leading-[1.8] whitespace-pre-wrap selection:bg-emerald-500/20 select-text">
                                             {selectedNotification.message}
                                         </p>
                                     </div>
