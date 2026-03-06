@@ -1,6 +1,6 @@
 /**
- * Job Application Page - Full Page Form
- * Users can apply to jobs with resume selection, cover letter, and file uploads
+ * Enrollment Page - Full Page Form
+ * Students can enroll in courses with academic profile selection, motivation statement, and file uploads
  */
 
 import React, { useState, useEffect } from 'react';
@@ -21,7 +21,7 @@ import { useTalentAI } from '../../hooks/useTalentAI';
 
 const JobApplicationPage = () => {
   const [searchParams] = useSearchParams();
-  const jobId = searchParams.get('jobId');
+  const jobId = searchParams.get('courseId') || searchParams.get('jobId');
   const navigate = useNavigate();
   const { user } = useAuthContext();
   const { success, error: showError } = useToast();
@@ -78,14 +78,14 @@ const JobApplicationPage = () => {
 
   useEffect(() => {
     if (!user) {
-      showError('Please sign in to apply for jobs');
+      showError('Please sign in to enroll in courses');
       navigate('/login');
       return;
     }
 
     if (!jobId) {
-      showError('Job ID is required');
-      navigate('/jobs');
+      showError('Course ID is required');
+      navigate('/courses');
       return;
     }
 
@@ -141,8 +141,8 @@ const JobApplicationPage = () => {
       }
     } catch (error) {
       console.error('Error loading data:', error);
-      showError('Failed to load job details');
-      navigate('/jobs');
+      showError('Failed to load course details');
+      navigate('/courses');
     } finally {
       setLoading(false);
     }
@@ -200,7 +200,7 @@ const JobApplicationPage = () => {
     if (!formData.email.trim()) newErrors.email = 'Email is required';
     if (!formData.phone.trim()) newErrors.phone = 'Phone number is required';
     if (!formData.selectedResumeId && !formData.resumeFile) {
-      newErrors.resume = 'Please select a resume or upload a new one';
+      newErrors.resume = 'Please select an academic profile or upload a new one';
     }
 
     setErrors(newErrors);
@@ -272,13 +272,13 @@ const JobApplicationPage = () => {
       await applicationService.create(jobId, applicationData);
 
       // Clear saved form data after successful submission
-      const formKey = `job-application-${jobId}`;
+      const formKey = `course-enrollment-${jobId}`;
       localStorage.removeItem(formKey);
 
-      success('Application submitted successfully! You will receive a confirmation email shortly.');
+      success('Enrollment submitted successfully! You will receive a confirmation email shortly.');
 
       setTimeout(() => {
-        navigate('/dashboard?tab=applications');
+        navigate('/dashboard?tab=enrollments');
       }, 1500);
     } catch (error) {
       console.error('Application submission error:', error);
@@ -301,9 +301,9 @@ const JobApplicationPage = () => {
       <div className="min-h-screen bg-white dark:bg-[#0A0E27] flex items-center justify-center">
         <div className="text-center">
           <Icon name="AlertCircle" className="w-16 h-16 text-[#64748B] dark:text-[#8B92A3] mx-auto mb-4" />
-          <h2 className="text-xl font-semibold text-[#0F172A] dark:text-[#E8EAED] mb-2">Job not found</h2>
-          <Link to="/job-search-browse" className="btn-primary inline-flex items-center mt-4">
-            Browse Jobs
+          <h2 className="text-xl font-semibold text-[#0F172A] dark:text-[#E8EAED] mb-2">Course not found</h2>
+          <Link to="/courses" className="btn-primary inline-flex items-center mt-4">
+            Browse Catalog
           </Link>
         </div>
       </div>
@@ -323,7 +323,7 @@ const JobApplicationPage = () => {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <Breadcrumb />
 
-          {/* Job Info Card */}
+          {/* Course Info Card */}
           <div className="bg-white dark:bg-[#13182E] rounded-xl shadow-lg border border-gray-200 dark:border-gray-800 p-6 mb-6">
             <div className="flex items-start justify-between">
               <div className="flex-1">
@@ -340,17 +340,17 @@ const JobApplicationPage = () => {
                 </div>
               </div>
               <Link
-                to={`/jobs/detail?id=${jobId}`}
+                to={`/courses/detail/${jobId}`}
                 className="text-workflow-primary hover:text-workflow-primary-600 dark:hover:text-workflow-primary-400 text-sm font-medium"
               >
-                View Job Details
+                View Course Details
               </Link>
             </div>
           </div>
 
-          {/* Application Form */}
+          {/* Enrollment Form */}
           <form onSubmit={handleSubmit} className="bg-white dark:bg-[#13182E] rounded-xl shadow-lg border border-gray-200 dark:border-gray-800 p-6 sm:p-8">
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Application Form</h2>
+            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Course Enrollment Form</h2>
 
             {/* Personal Information */}
             <div className="mb-8">
@@ -428,24 +428,24 @@ const JobApplicationPage = () => {
               </div>
             </div>
 
-            {/* Resume Selection */}
+            {/* Academic Profile Selection */}
             <div className="mb-8">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Resume</h3>
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Academic Profile</h3>
 
               {resumes.length > 0 && (
                 <div className="mb-4">
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Select Resume <span className="text-red-500">*</span>
+                    Select Academic Profile <span className="text-red-500">*</span>
                   </label>
                   <select
                     value={formData.selectedResumeId || ''}
                     onChange={(e) => handleInputChange('selectedResumeId', e.target.value)}
                     className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#1A2139] text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-workflow-primary"
                   >
-                    <option value="">Select a resume...</option>
+                    <option value="">Select a profile...</option>
                     {resumes.map((resume) => (
                       <option key={resume.id} value={resume.id}>
-                        {resume.title || `Resume ${resume.id.slice(0, 8)}`}
+                        {resume.title || `Profile ${resume.id.slice(0, 8)}`}
                       </option>
                     ))}
                   </select>
@@ -454,7 +454,7 @@ const JobApplicationPage = () => {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  {resumes.length > 0 ? 'Or Upload New Resume' : 'Upload Resume'} <span className="text-red-500">*</span>
+                  {resumes.length > 0 ? 'Or Upload New Academic Profile' : 'Upload Academic Profile'} <span className="text-red-500">*</span>
                 </label>
                 <div className="mt-2 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 dark:border-gray-700 border-dashed rounded-lg hover:border-workflow-primary transition-colors">
                   <div className="space-y-1 text-center">
@@ -488,10 +488,10 @@ const JobApplicationPage = () => {
               </div>
             </div>
 
-            {/* Cover Letter */}
+            {/* Motivation Statement */}
             <div className="mb-8">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Cover Letter (Optional)</h3>
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Motivation Statement (Optional)</h3>
                 <span className="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-1">
                   <Icon name="Sparkles" size={12} className="text-workflow-primary" />
                   AI assistance available
@@ -502,10 +502,10 @@ const JobApplicationPage = () => {
                   <div className="flex-1">
                     <label className="text-sm font-medium text-purple-900 dark:text-purple-100 flex items-center gap-2 mb-1">
                       <Icon name="Sparkles" size={14} />
-                      AI Proposal Generator
+                      AI Statement Generator
                     </label>
                     <p className="text-xs text-purple-700 dark:text-purple-300">
-                      Generate a tailored cover letter based on your resume and the job description.
+                      Generate a tailored statement based on your profile and the course description.
                     </p>
                   </div>
                   <div className="flex items-center gap-2">
@@ -545,7 +545,7 @@ const JobApplicationPage = () => {
                   onChange={(e) => handleInputChange('coverLetter', e.target.value)}
                   rows={10}
                   className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#1A2139] text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-workflow-primary resize-none"
-                  placeholder="Write a cover letter explaining why you're a good fit for this position..."
+                  placeholder="Explain why you're interested in this course and what you hope to achieve..."
                 />
               </div>
             </div>
@@ -725,17 +725,17 @@ const JobApplicationPage = () => {
                 {submitting ? (
                   <>
                     <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-                    <span>Submitting...</span>
+                    <span>Processing Enrollment...</span>
                   </>
                 ) : (
                   <>
                     <Icon name="Send" size={18} />
-                    <span>Submit Application</span>
+                    <span>Submit Enrollment</span>
                   </>
                 )}
               </button>
               <Link
-                to={`/jobs/detail?id=${jobId}`}
+                to={`/courses/detail/${jobId}`}
                 className="px-6 py-3 rounded-lg font-semibold border-2 border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-all duration-200 flex items-center justify-center gap-2 min-h-[44px]"
               >
                 <Icon name="ArrowLeft" size={18} />

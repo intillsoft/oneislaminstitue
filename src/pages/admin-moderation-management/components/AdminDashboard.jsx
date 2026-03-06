@@ -41,13 +41,10 @@ const AdminDashboard = ({ dateRange }) => {
 
   if (loading) {
     return (
-      <div className="space-y-8">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="space-y-6 md:space-y-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {[1, 2, 3, 4, 5, 6, 7].map(i => (
-            <div key={i} className="card p-6 animate-pulse">
-              <div className="h-4 bg-surface-200 dark:bg-surface-700 rounded w-3/4 mb-2"></div>
-              <div className="h-8 bg-surface-200 dark:bg-surface-700 rounded w-1/2"></div>
-            </div>
+            <div key={i} className="p-4 md:p-6 rounded-lg bg-surface dark:bg-white/5 border border-border dark:border-white/5 animate-pulse h-24"></div>
           ))}
         </div>
       </div>
@@ -56,9 +53,9 @@ const AdminDashboard = ({ dateRange }) => {
 
   if (!dashboardData) {
     return (
-      <div className="card p-12 text-center">
-        <Icon name="AlertCircle" size={48} className="mx-auto mb-4 text-secondary-300 dark:text-gray-600" />
-        <p className="text-text-secondary dark:text-gray-400">No dashboard data available</p>
+      <div className="p-8 md:p-12 text-center rounded-lg bg-surface dark:bg-white/5 border border-border dark:border-white/5">
+        <Icon name="AlertCircle" size={40} className="mx-auto mb-4 text-text-muted opacity-30" />
+        <p className="text-text-muted">No dashboard data available</p>
       </div>
     );
   }
@@ -67,37 +64,37 @@ const AdminDashboard = ({ dateRange }) => {
   const COLORS = ['#2563EB', '#10B981', '#F59E0B', '#8B5CF6', '#64748B'];
 
   return (
-    <div className="space-y-8">
-      {/* Welcome Message */}
-      <div className="card bg-gradient-to-r from-primary-500 to-primary-600 dark:from-primary-600 dark:to-primary-700 text-white p-6">
-        <h2 className="text-2xl font-bold mb-2">Welcome back, Admin!</h2>
-        <p className="text-primary-100 dark:text-primary-200">
+    <div className="space-y-6 md:space-y-8 pb-6 md:pb-8">
+      {/* Welcome Message - Responsive */}
+      <div className="rounded-lg bg-gradient-to-r from-emerald-600 to-emerald-700 text-white p-6 md:p-8">
+        <h2 className="text-2xl md:text-3xl font-bold mb-2">Welcome back, Admin!</h2>
+        <p className="text-emerald-100 text-sm md:text-base">
           Here's what's happening on your platform today.
         </p>
       </div>
 
-      {/* Key Metrics */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div className="card bg-background dark:bg-[#13182E] border border-border dark:border-gray-700 p-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-text-secondary dark:text-gray-400 mb-1">Total Users</p>
-              <p className="text-3xl font-bold text-text-primary dark:text-white">{metrics.totalUsers.toLocaleString()}</p>
-              <p className="text-xs text-text-secondary dark:text-gray-500 mt-1">
-                {metrics.newUsers} new this period
+      {/* Key Metrics - Responsive Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="p-4 md:p-6 bg-surface dark:bg-white/5 border border-border dark:border-white/5 rounded-lg">
+          <div className="flex items-start justify-between gap-3">
+            <div className="flex-1 min-w-0">
+              <p className="text-xs md:text-sm font-medium text-text-muted mb-2">Total Users</p>
+              <p className="text-2xl md:text-3xl font-bold text-text-primary dark:text-white truncate">{metrics.totalUsers.toLocaleString()}</p>
+              <p className="text-xs text-text-muted mt-2">
+                {metrics.newUsers} new
               </p>
             </div>
-            <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/20 rounded-lg flex items-center justify-center">
-              <Icon name="Users" size={24} className="text-blue-600 dark:text-blue-400" />
+            <div className="w-10 h-10 md:w-12 md:h-12 bg-blue-100 dark:bg-blue-900/20 rounded-lg flex items-center justify-center flex-shrink-0">
+              <Icon name="Users" size={20} className="text-blue-600 dark:text-blue-400" />
             </div>
           </div>
         </div>
 
-        <div className="card bg-background dark:bg-[#13182E] border border-border dark:border-gray-700 p-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-text-secondary dark:text-gray-400 mb-1">Active Users</p>
-              <p className="text-3xl font-bold text-text-primary dark:text-white">{metrics.activeUsers.toLocaleString()}</p>
+        <div className="p-4 md:p-6 bg-surface dark:bg-white/5 border border-border dark:border-white/5 rounded-lg">
+          <div className="flex items-start justify-between gap-3">
+            <div className="flex-1 min-w-0">
+              <p className="text-xs md:text-sm font-medium text-text-muted mb-2">Active Users</p>
+              <p className="text-2xl md:text-3xl font-bold text-text-primary dark:text-white truncate">{metrics.activeUsers.toLocaleString()}</p>
               <p className="text-xs text-text-secondary dark:text-gray-500 mt-1">
                 {metrics.userGrowthRate > 0 ? '+' : ''}{metrics.userGrowthRate}% growth
               </p>

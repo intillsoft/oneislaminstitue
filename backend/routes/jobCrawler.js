@@ -25,9 +25,9 @@ router.post('/crawl', authenticate, async (req, res) => {
       .single();
 
     if (profileError || !profile || !['admin', 'recruiter'].includes(profile.role)) {
-      return res.status(403).json({ 
-        error: 'Forbidden', 
-        message: 'Admin or Recruiter role required' 
+      return res.status(403).json({
+        error: 'Forbidden',
+        message: 'Admin or Recruiter role required'
       });
     }
 
@@ -74,9 +74,9 @@ router.post('/schedule', authenticate, async (req, res) => {
       .single();
 
     if (profileError || !profile || profile.role !== 'admin') {
-      return res.status(403).json({ 
-        error: 'Forbidden', 
-        message: 'Admin role required' 
+      return res.status(403).json({
+        error: 'Forbidden',
+        message: 'Admin role required'
       });
     }
 
@@ -149,7 +149,7 @@ router.get('/status', authenticate, async (req, res) => {
       if (!sourceStats[source].lastCrawled || jobDate > new Date(sourceStats[source].lastCrawled)) {
         sourceStats[source].lastCrawled = job.scraped_at || job.created_at;
       }
-      
+
       // For crawl_results format
       if (!crawlResults[source]) {
         crawlResults[source] = {

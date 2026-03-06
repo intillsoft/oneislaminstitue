@@ -4,9 +4,8 @@ import { Save, Zap, Settings, Bell, X, Plus, BarChart3, FileText, TrendingUp, Ca
 import { useAuthContext } from '../../contexts/AuthContext';
 import { useToast } from '../../components/ui/Toast';
 import { apiService } from '../../lib/api';
-import Breadcrumb from '../../components/ui/Breadcrumb';
-import UnifiedSidebar from '../../components/ui/UnifiedSidebar';
 import TypingIndicator from '../../components/ui/TypingIndicator';
+import { EliteCard, ElitePageHeader } from '../../components/ui/EliteCard';
 
 const AutoApplySettings = () => {
   const { user } = useAuthContext();
@@ -19,7 +18,7 @@ const AutoApplySettings = () => {
     skills_required: [],
     salary_min: '',
     salary_max: '',
-    location: '',
+    location: [], // Now array for multiple locations
     remote_only: false,
     job_type: [],
     experience_level: [],
@@ -35,11 +34,14 @@ const AutoApplySettings = () => {
     notification_sms: false,
     use_ai_matching: true,
     generate_cover_letter: true,
-    min_match_score: 60,
+    min_match_score: 50,
+    allowed_platforms: ['internal', 'linkedin', 'glassdoor', 'indeed'],
+    best_resume_matching: true,
   });
 
   const [newKeyword, setNewKeyword] = useState('');
   const [newSkill, setNewSkill] = useState('');
+  const [newLocation, setNewLocation] = useState('');
   const [newExcludedCompany, setNewExcludedCompany] = useState('');
   const [newExcludedTitle, setNewExcludedTitle] = useState('');
 
@@ -79,7 +81,7 @@ const AutoApplySettings = () => {
           skills_required: data.skills_required || [],
           salary_min: data.salary_min || '',
           salary_max: data.salary_max || '',
-          location: data.location || '',
+          location: Array.isArray(data.location) ? data.location : (data.location ? [data.location] : []),
           remote_only: data.remote_only || false,
           job_type: data.job_type || [],
           experience_level: data.experience_level || [],
@@ -95,7 +97,9 @@ const AutoApplySettings = () => {
           notification_sms: data.notification_sms ?? false,
           use_ai_matching: data.use_ai_matching ?? true,
           generate_cover_letter: data.generate_cover_letter ?? true,
-          min_match_score: data.min_match_score || 60,
+          min_match_score: data.min_match_score || 50,
+          allowed_platforms: data.allowed_platforms || ['internal', 'linkedin', 'glassdoor', 'indeed'],
+          best_resume_matching: data.best_resume_matching ?? true,
         });
       }
     } catch (error) {
@@ -186,6 +190,23 @@ const AutoApplySettings = () => {
     }));
   };
 
+  const addLocation = () => {
+    if (newLocation.trim()) {
+      setSettings(prev => ({
+        ...prev,
+        location: [...(prev.location || []), newLocation.trim()],
+      }));
+      setNewLocation('');
+    }
+  };
+
+  const removeLocation = (index) => {
+    setSettings(prev => ({
+      ...prev,
+      location: Array.isArray(prev.location) ? prev.location.filter((_, i) => i !== index) : [],
+    }));
+  };
+
   const addExcludedCompany = () => {
     if (newExcludedCompany.trim()) {
       setSettings(prev => ({
@@ -222,48 +243,35 @@ const AutoApplySettings = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-white dark:bg-[#0A0E27]">
-        <UnifiedSidebar />
-        <div className="ml-0 lg:ml-64 min-h-screen flex items-center justify-center">
-          <div className="text-center">
-            <TypingIndicator />
-            <p className="mt-4 text-[#64748B] dark:text-[#8B92A3]">Loading settings...</p>
-          </div>
+      <div className="min-h-screen bg-private flex items-center justify-center">
+        <div className="text-center">
+          <TypingIndicator />
+          <p className="mt-4 text-slate-500 font-black text-[10px] uppercase tracking-widest">Synchronizing Neural Config...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-white dark:bg-[#0A0E27]">
-      <UnifiedSidebar />
-      <div className="ml-0 lg:ml-64 min-h-screen">
+    <div className="min-h-screen bg-private pb-12">
+      <div className="max-w-[1600px] mx-auto transition-all duration-300">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <Breadcrumb />
-          
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold text-[#0F172A] dark:text-[#E8EAED] mb-2">
-              Autopilot Settings
-            </h1>
-            <p className="text-[#64748B] dark:text-[#8B92A3]">
-              Automatically apply to jobs that match your criteria
-            </p>
-          </div>
+          <ElitePageHeader
+            title="Protocol Configuration"
+            description="Configure autonomous submission logic and neural filters"
+            badge="Advanced"
+          />
 
           <div className="space-y-6">
             {/* Enable/Disable Toggle */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="bg-white dark:bg-[#13182E] rounded-lg border border-[#E2E8F0] dark:border-[#1E2640] p-6"
-            >
+            <div className="bg-[#13182E]/40 backdrop-blur-3xl border border-white/5 rounded-3xl p-8">
               <div className="flex items-center justify-between">
                 <div>
-                  <h2 className="text-xl font-semibold text-[#0F172A] dark:text-[#E8EAED] mb-1">
-                    Enable Autopilot
+                  <h2 className="text-lg font-bold text-white mb-1">
+                    System Activation
                   </h2>
-                  <p className="text-sm text-[#64748B] dark:text-[#8B92A3]">
-                    Automatically apply to matching jobs
+                  <p className="text-xs text-slate-500 font-bold">
+                    Authorize autonomous submission engine
                   </p>
                 </div>
                 <label className="relative inline-flex items-center cursor-pointer">
@@ -276,19 +284,15 @@ const AutoApplySettings = () => {
                   <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-workflow-primary/20 dark:peer-focus:ring-workflow-primary/30 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-workflow-primary"></div>
                 </label>
               </div>
-            </motion.div>
+            </div>
 
             {settings.enabled && (
               <>
                 {/* Job Criteria */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="bg-white dark:bg-[#13182E] rounded-lg border border-[#E2E8F0] dark:border-[#1E2640] p-6"
-                >
-                  <h2 className="text-xl font-semibold text-[#0F172A] dark:text-[#E8EAED] mb-4 flex items-center gap-2">
-                    <Settings className="w-5 h-5" />
-                    Job Search Criteria
+                <div className="bg-[#13182E]/40 backdrop-blur-3xl border border-white/5 rounded-3xl p-8">
+                  <h2 className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 mb-8 flex items-center gap-3">
+                    <Settings className="w-4 h-4 text-workflow-primary" />
+                    Target Matrix Parameters
                   </h2>
 
                   <div className="space-y-4">
@@ -398,18 +402,42 @@ const AutoApplySettings = () => {
                       </div>
                     </div>
 
-                    {/* Location */}
                     <div>
                       <label className="block text-sm font-medium text-[#0F172A] dark:text-[#E8EAED] mb-2">
-                        Location
+                        Locations
                       </label>
-                      <input
-                        type="text"
-                        value={settings.location}
-                        onChange={(e) => setSettings(prev => ({ ...prev, location: e.target.value }))}
-                        placeholder="e.g., New York, Remote"
-                        className="w-full px-4 py-2 border border-[#E2E8F0] dark:border-[#1E2640] rounded-lg bg-white dark:bg-[#1A2139] text-[#0F172A] dark:text-[#E8EAED]"
-                      />
+                      <div className="flex gap-2 mb-2">
+                        <input
+                          type="text"
+                          value={newLocation}
+                          onChange={(e) => setNewLocation(e.target.value)}
+                          onKeyPress={(e) => e.key === 'Enter' && addLocation()}
+                          placeholder="e.g., New York, Remote"
+                          className="flex-1 px-4 py-2 border border-[#E2E8F0] dark:border-[#1E2640] rounded-lg bg-white dark:bg-[#1A2139] text-[#0F172A] dark:text-[#E8EAED]"
+                        />
+                        <button
+                          onClick={addLocation}
+                          className="px-4 py-2 bg-workflow-primary text-white rounded-lg hover:bg-workflow-primary-600 transition-colors"
+                        >
+                          <Plus className="w-4 h-4" />
+                        </button>
+                      </div>
+                      <div className="flex flex-wrap gap-2">
+                        {settings.location && settings.location.map((loc, index) => (
+                          <span
+                            key={index}
+                            className="inline-flex items-center gap-1 px-3 py-1 bg-workflow-primary/10 text-workflow-primary rounded-full text-sm"
+                          >
+                            {loc}
+                            <button
+                              onClick={() => removeLocation(index)}
+                              className="hover:text-red-500"
+                            >
+                              <X className="w-3 h-3" />
+                            </button>
+                          </span>
+                        ))}
+                      </div>
                       <label className="flex items-center gap-2 mt-2">
                         <input
                           type="checkbox"
@@ -488,54 +516,84 @@ const AutoApplySettings = () => {
                       />
                     </div>
 
-                    {/* Check Interval (Enhanced Autopilot) */}
-                    <div>
-                      <label className="block text-sm font-medium text-[#0F172A] dark:text-[#E8EAED] mb-2">
-                        Check Interval (How often to check for new jobs)
-                      </label>
-                      <div className="flex items-center gap-4">
-                        <input
-                          type="number"
-                          value={settings.check_interval_minutes || 15}
-                          onChange={(e) => setSettings(prev => ({ ...prev, check_interval_minutes: Math.max(5, parseInt(e.target.value) || 15) }))}
-                          min="5"
-                          max="1440"
-                          className="w-32 px-4 py-2 border border-[#E2E8F0] dark:border-[#1E2640] rounded-lg bg-white dark:bg-[#1A2139] text-[#0F172A] dark:text-[#E8EAED]"
-                        />
-                        <select
-                          value={settings.check_interval_unit || 'minutes'}
-                          onChange={(e) => {
-                            const unit = e.target.value;
-                            const currentMinutes = settings.check_interval_minutes || 15;
-                            const newMinutes = unit === 'hours' ? currentMinutes * 60 : currentMinutes;
-                            setSettings(prev => ({ 
-                              ...prev, 
-                              check_interval_minutes: Math.max(5, newMinutes),
-                              check_interval_unit: unit
-                            }));
-                          }}
-                          className="px-4 py-2 border border-[#E2E8F0] dark:border-[#1E2640] rounded-lg bg-white dark:bg-[#1A2139] text-[#0F172A] dark:text-[#E8EAED]"
-                        >
-                          <option value="minutes">Minutes</option>
-                          <option value="hours">Hours</option>
-                        </select>
+                    {/* Autopilot Intelligence */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div className="p-4 rounded-2xl bg-white/[0.03] border border-white/5">
+                        <label className="flex items-start gap-3 cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={settings.best_resume_matching}
+                            onChange={(e) => setSettings(prev => ({ ...prev, best_resume_matching: e.target.checked }))}
+                            className="mt-1 rounded border-white/20 bg-white/5 text-workflow-primary focus:ring-workflow-primary"
+                          />
+                          <div>
+                            <span className="text-sm font-bold text-white block mb-0.5">Neural Resume Selection</span>
+                            <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">
+                              AI will score ALL your resumes and pick the absolute best match for each job.
+                            </span>
+                          </div>
+                        </label>
                       </div>
-                      <p className="text-xs text-[#64748B] dark:text-[#8B92A3] mt-1">
-                        Autopilot will check for new jobs every {settings.check_interval_minutes || 15} {settings.check_interval_unit || 'minutes'}. 
-                        Default: 15 minutes (continuous checking)
-                      </p>
+
+                      <div className="p-4 rounded-2xl bg-white/[0.03] border border-white/5">
+                        <label className="flex items-start gap-3 cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={settings.use_ai_matching}
+                            onChange={(e) => setSettings(prev => ({ ...prev, use_ai_matching: e.target.checked }))}
+                            className="mt-1 rounded border-white/20 bg-white/5 text-workflow-primary focus:ring-workflow-primary"
+                          />
+                          <div>
+                            <span className="text-sm font-bold text-white block mb-0.5">AI Barrier Filter</span>
+                            <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">
+                              Only apply if match score exceeds {settings.min_match_score}%.
+                            </span>
+                          </div>
+                        </label>
+                      </div>
+                    </div>
+
+                    {/* Platform Targeting */}
+                    <div>
+                      <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 mb-4">
+                        Authorized Environments (Platforms)
+                      </label>
+                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                        {['internal', 'linkedin', 'glassdoor', 'indeed', 'monster', 'ziprecruiter'].map(platform => (
+                          <label
+                            key={platform}
+                            className={`flex flex-col items-center justify-center p-4 rounded-2xl border transition-all cursor-pointer ${settings.allowed_platforms?.includes(platform)
+                              ? 'bg-workflow-primary/10 border-workflow-primary/30 text-workflow-primary'
+                              : 'bg-white/[0.03] border-white/5 text-slate-500 hover:bg-white/[0.05]'
+                              }`}
+                          >
+                            <input
+                              type="checkbox"
+                              checked={settings.allowed_platforms?.includes(platform)}
+                              onChange={(e) => {
+                                const checked = e.target.checked;
+                                setSettings(prev => ({
+                                  ...prev,
+                                  allowed_platforms: checked
+                                    ? [...(prev.allowed_platforms || []), platform]
+                                    : (prev.allowed_platforms || []).filter(p => p !== platform)
+                                }));
+                              }}
+                              className="sr-only"
+                            />
+                            <div className="text-[10px] font-black uppercase tracking-widest">{platform}</div>
+                            <div className={`w-1 h-1 rounded-full mt-2 ${settings.allowed_platforms?.includes(platform) ? 'bg-workflow-primary' : 'bg-transparent'}`} />
+                          </label>
+                        ))}
+                      </div>
                     </div>
                   </div>
-                </motion.div>
+                </div>
 
                 {/* Blacklist */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="bg-white dark:bg-[#13182E] rounded-lg border border-[#E2E8F0] dark:border-[#1E2640] p-6"
-                >
-                  <h2 className="text-xl font-semibold text-[#0F172A] dark:text-[#E8EAED] mb-4">
-                    Exclusions
+                <div className="bg-[#13182E]/40 backdrop-blur-3xl border border-white/5 rounded-3xl p-8">
+                  <h2 className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 mb-8">
+                    Exclusion Protocol
                   </h2>
 
                   <div className="space-y-4">
@@ -617,17 +675,13 @@ const AutoApplySettings = () => {
                       </div>
                     </div>
                   </div>
-                </motion.div>
+                </div>
 
                 {/* Notification Preferences */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="bg-white dark:bg-[#13182E] rounded-lg border border-[#E2E8F0] dark:border-[#1E2640] p-6"
-                >
-                  <h2 className="text-xl font-semibold text-[#0F172A] dark:text-[#E8EAED] mb-4 flex items-center gap-2">
-                    <Bell className="w-5 h-5" />
-                    Notification Preferences
+                <div className="bg-[#13182E]/40 backdrop-blur-3xl border border-white/5 rounded-3xl p-8">
+                  <h2 className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 mb-8 flex items-center gap-3">
+                    <Bell className="w-4 h-4 text-workflow-primary" />
+                    Alert Routing
                   </h2>
 
                   <div className="space-y-3">
@@ -659,34 +713,30 @@ const AutoApplySettings = () => {
                       <span className="text-sm text-[#0F172A] dark:text-[#E8EAED]">SMS notifications</span>
                     </label>
                   </div>
-                </motion.div>
+                </div>
               </>
             )}
 
             {/* Save Button */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="flex justify-end gap-4"
-            >
+            <div className="flex justify-end gap-4">
               <button
                 onClick={handleSave}
                 disabled={saving}
-                className="px-6 py-3 bg-workflow-primary text-white rounded-lg hover:bg-workflow-primary-600 transition-colors flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-8 py-4 bg-workflow-primary text-white rounded-2xl hover:brightness-110 transition-all flex items-center gap-3 font-black text-[10px] uppercase tracking-widest shadow-xl shadow-workflow-primary/20 disabled:opacity-50"
               >
                 {saving ? (
                   <>
                     <TypingIndicator size="small" />
-                    Saving...
+                    Processing...
                   </>
                 ) : (
                   <>
-                    <Save className="w-5 h-5" />
-                    Save Settings
+                    <Save size={16} />
+                    Commit Protocols
                   </>
                 )}
               </button>
-            </motion.div>
+            </div>
           </div>
         </div>
       </div>

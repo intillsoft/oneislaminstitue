@@ -10,6 +10,7 @@ import Button from 'components/ui/Button';
 import Modal from 'components/ui/Modal';
 import { format } from 'date-fns';
 import ProtectedRoute from '../../components/ProtectedRoute';
+import AILoader from '../../components/ui/AILoader';
 
 const Billing = () => {
   const { user } = useAuthContext();
@@ -105,7 +106,7 @@ const Billing = () => {
   if (loading && !subscription) {
     return (
       <div className="min-h-screen bg-white dark:bg-[#0A0E27] flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-workflow-primary"></div>
+        <AILoader variant="pulse" text="Fetching billing data..." />
       </div>
     );
   }
@@ -116,7 +117,7 @@ const Billing = () => {
   return (
     <>
       <Helmet>
-        <title>Billing & Subscription - Workflow</title>
+        <title>Billing & Subscription - One Islam Institute</title>
       </Helmet>
       <div className="min-h-screen bg-white dark:bg-[#0A0E27]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
@@ -247,56 +248,56 @@ const Billing = () => {
                   {currentTier === 'free' && (
                     <>
                       <li className="flex items-center text-[#0F172A] dark:text-[#E8EAED]">
-                        <Icon name="Check" size={16} className="mr-2 text-workflow-primary" />
-                        1 Resume
+                        <Icon name="Check" size={16} className="mr-2 text-emerald-600" />
+                        1 Academic Profile
                       </li>
                       <li className="flex items-center text-[#0F172A] dark:text-[#E8EAED]">
-                        <Icon name="Check" size={16} className="mr-2 text-workflow-primary" />
-                        10 Applications/month
+                        <Icon name="Check" size={16} className="mr-2 text-emerald-600" />
+                        10 Enrollments/month
                       </li>
                       <li className="flex items-center text-[#0F172A] dark:text-[#E8EAED]">
-                        <Icon name="Check" size={16} className="mr-2 text-workflow-primary" />
-                        Basic Tracking
+                        <Icon name="Check" size={16} className="mr-2 text-emerald-600" />
+                        Basic Progress Tracking
                       </li>
                     </>
                   )}
                   {currentTier === 'basic' && (
                     <>
                       <li className="flex items-center text-[#0F172A] dark:text-[#E8EAED]">
-                        <Icon name="Check" size={16} className="mr-2 text-workflow-primary" />
-                        3 Resumes
+                        <Icon name="Check" size={16} className="mr-2 text-emerald-600" />
+                        3 Academic Profiles
                       </li>
                       <li className="flex items-center text-[#0F172A] dark:text-[#E8EAED]">
-                        <Icon name="Check" size={16} className="mr-2 text-workflow-primary" />
-                        50 Applications/month
+                        <Icon name="Check" size={16} className="mr-2 text-emerald-600" />
+                        50 Enrollments/month
                       </li>
                       <li className="flex items-center text-[#0F172A] dark:text-[#E8EAED]">
-                        <Icon name="Check" size={16} className="mr-2 text-workflow-primary" />
-                        AI Job Matching
+                        <Icon name="Check" size={16} className="mr-2 text-emerald-600" />
+                        AI Course Matching
                       </li>
                       <li className="flex items-center text-[#0F172A] dark:text-[#E8EAED]">
-                        <Icon name="Check" size={16} className="mr-2 text-workflow-primary" />
-                        Email Alerts
+                        <Icon name="Check" size={16} className="mr-2 text-emerald-600" />
+                        Academic Alerts
                       </li>
                     </>
                   )}
                   {currentTier === 'premium' && (
                     <>
                       <li className="flex items-center text-[#0F172A] dark:text-[#E8EAED]">
-                        <Icon name="Check" size={16} className="mr-2 text-workflow-primary" />
-                        10 Resumes
+                        <Icon name="Check" size={16} className="mr-2 text-emerald-600" />
+                        Unlimited Academic Profiles
                       </li>
                       <li className="flex items-center text-[#0F172A] dark:text-[#E8EAED]">
-                        <Icon name="Check" size={16} className="mr-2 text-workflow-primary" />
-                        200 Applications/month
+                        <Icon name="Check" size={16} className="mr-2 text-emerald-600" />
+                        Unlimited Enrollments/month
                       </li>
                       <li className="flex items-center text-[#0F172A] dark:text-[#E8EAED]">
-                        <Icon name="Check" size={16} className="mr-2 text-workflow-primary" />
-                        All AI Features
+                        <Icon name="Check" size={16} className="mr-2 text-emerald-600" />
+                        Advanced Academic Research
                       </li>
                       <li className="flex items-center text-[#0F172A] dark:text-[#E8EAED]">
-                        <Icon name="Check" size={16} className="mr-2 text-workflow-primary" />
-                        Priority Support
+                        <Icon name="Check" size={16} className="mr-2 text-emerald-600" />
+                        Priority Scholar Support
                       </li>
                     </>
                   )}

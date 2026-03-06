@@ -53,6 +53,10 @@ export async function handleWebhook(event) {
         await handlePaymentFailed(event.data.object);
         break;
 
+      case 'payment_intent.succeeded':
+        await handlePaymentIntentSucceeded(event.data.object);
+        break;
+
       case 'customer.subscription.trial_will_end':
         await handleTrialEnding(event.data.object);
         break;
@@ -345,6 +349,79 @@ async function handleTrialEnding(subscription) {
 /**
  * Get tier from Stripe price ID
  */
+/**
+ * Handle payment intent succeeded (Donations)
+ */
+async function handlePaymentIntentSucceeded(paymentIntent) {
+  const reference = paymentIntent.id;
+  const userId = paymentIntent.metadata?.user_id;
+  const courseId = paymentIntent.metadata?.course_id;
+  const type = paymentIntent.metadata?.type;
+
+  logger.info(`Processing donation success for reference ${reference}`);
+
+  // Update donation status
+  const { data: donation, error: updateError } = await supabase
+    .from('donations')
+    .update({ status: 'completed' })
+    .eq('reference', reference)
+    .select()
+    .single();
+
+  if (updateError) {
+    logger.error('Failed to update donation status in webhook:', updateError);
+    return;
+  }
+
+  // Handle course enrollment if applicable
+  if (type === 'course_enrollment' && courseId && userId) {
+    // Check for existing application
+    const { data: existingApp } = await supabase
+      .from('applications')
+      .select('id')
+      .eq('course_id', courseId)
+      .eq('user_id', userId)
+      .maybeSingle();
+
+    if (!existingApp) {
+      const { error: enrollError } = await supabase
+        .from('applications')
+        .insert({
+          course_id: courseId,
+          user_id: userId,
+          status: 'accepted',
+          notes: 'Auto-enrolled via verified Stripe donation'
+        });
+
+      if (enrollError) {
+        logger.error('Failed to auto-enroll user after donation:', enrollError);
+      } else {
+        logger.info(`User ${userId} auto-enrolled in course ${courseId} via donation`);
+      }
+    }
+  }
+
+  // Send donation receipt email
+  const { data: user } = await supabase
+    .from('users')
+    .select('email, name')
+    .eq('id', userId || donation.user_id)
+    .single();
+
+  if (user) {
+    await sendEmail({
+      to: user.email,
+      template: 'donation-received',
+      data: {
+        name: user.name,
+        amount: (paymentIntent.amount / 100).toFixed(2),
+        currency: paymentIntent.currency.toUpperCase(),
+        course_id: courseId
+      },
+    });
+  }
+}
+
 function getTierFromPriceId(priceId) {
   if (priceId === process.env.STRIPE_PRICE_ID_BASIC) return 'basic';
   if (priceId === process.env.STRIPE_PRICE_ID_PREMIUM) return 'premium';

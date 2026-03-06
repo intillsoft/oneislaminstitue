@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Target, ArrowRight, BookOpen, Layers, CheckCircle, AlertTriangle, Loader2 } from 'lucide-react';
+import { Target, ArrowRight, BookOpen, Layers, CheckCircle, AlertTriangle, Loader2, Sparkles, AlertCircle, Cpu, ShieldCheck, Zap, Network } from 'lucide-react';
 import { aiService } from '../../services/aiService';
 import { useToast } from '../../components/ui/Toast';
+import DojoLayout from '../../components/layout/DojoLayout';
 
 const SkillGapBridge = () => {
     const [formData, setFormData] = useState({
@@ -11,11 +12,11 @@ const SkillGapBridge = () => {
     });
     const [analysis, setAnalysis] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
-    const { error: showError } = useToast();
+    const { error: showError, success } = useToast();
 
     const handleAnalyze = async () => {
         if (!formData.targetRole || !formData.currentSkills) {
-            showError('Please enter both your current skills and target role.');
+            showError('Incomplete Data Packets.');
             return;
         }
 
@@ -46,7 +47,6 @@ const SkillGapBridge = () => {
                 temperature: 0.6
             });
 
-            // Parse JSON
             let data;
             try {
                 const jsonMatch = response.match(/\{[\s\S]*\}/);
@@ -56,213 +56,213 @@ const SkillGapBridge = () => {
                     throw new Error("No JSON found");
                 }
             } catch (e) {
-                console.warn("Parsing failed", e);
-                // Fallback
                 data = {
                     matchScore: 0,
                     missingSkills: [],
                     existingStrengths: [],
-                    learningPlan: "Could not generate structured plan. Please try again with more detailed inputs."
+                    learningPlan: "Neural Link Error: Data Corrupted."
                 };
             }
 
             setAnalysis(data);
+            success("Matrix Synced: Path Materialized.");
         } catch (err) {
-            console.error('Analysis error:', err);
-            showError('Failed to analyze skills.');
+            showError('Uplink Failed.');
         } finally {
             setIsLoading(false);
         }
     };
 
-    return (
-        <div className="min-h-screen bg-slate-50 dark:bg-[#0A0E27] p-6 pt-24 font-sans">
-            <div className="max-w-6xl mx-auto space-y-12">
-
-                {/* Header */}
-                <div className="text-center space-y-4">
-                    <motion.div
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        className="inline-flex p-4 rounded-3xl bg-indigo-100 dark:bg-indigo-900/30"
-                    >
-                        <Layers className="w-12 h-12 text-indigo-600 dark:text-indigo-400" />
-                    </motion.div>
-                    <h1 className="text-4xl font-black text-slate-900 dark:text-white tracking-tight">
-                        Skill Gap <span className="text-indigo-600 dark:text-indigo-400">Bridge</span>
-                    </h1>
-                    <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto font-medium">
-                        Don't just see the gap—build the bridge. Identify missing links and get a concrete plan to cross them.
-                    </p>
-                </div>
-
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-
-                    {/* Left Pillar: Input */}
-                    <motion.div
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        className="lg:col-span-5 space-y-6"
-                    >
-                        <div className="bg-white dark:bg-[#13182E] p-8 rounded-3xl shadow-xl border border-slate-100 dark:border-slate-800 space-y-6 h-full flex flex-col">
-                            <h3 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                                <span className="flex items-center justify-center w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 font-bold text-sm">1</span>
-                                Define the Gap
-                            </h3>
-
-                            <div className="space-y-4 flex-1">
-                                <div>
-                                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Target Role / Goal</label>
-                                    <textarea
-                                        value={formData.targetRole}
-                                        onChange={(e) => setFormData({ ...formData, targetRole: e.target.value })}
-                                        placeholder="e.g. Senior Frontend Engineer at big tech..."
-                                        className="w-full h-32 p-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-[#0A0E27] text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none resize-none text-sm font-medium transition-all"
-                                    />
+    const MatrixBridge = (
+        <div className="h-full flex flex-col p-8 space-y-8 overflow-hidden">
+            {!analysis ? (
+                <div className="flex-1 flex flex-col items-center justify-center max-w-4xl mx-auto w-full">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full">
+                        <div className="space-y-6">
+                            <div className="flex items-center gap-4 mb-2">
+                                <div className="p-3 bg-emerald-500/10 border border-emerald-500/20 rounded-2xl">
+                                    <Cpu className="text-emerald-500" />
                                 </div>
-                                <div className="relative">
-                                    <div className="absolute inset-0 flex items-center" aria-hidden="true">
-                                        <div className="w-full border-t border-slate-200 dark:border-slate-700" />
-                                    </div>
-                                    <div className="relative flex justify-center">
-                                        <span className="bg-white dark:bg-[#13182E] px-2 text-xs text-slate-400 font-bold uppercase tracking-widest">VS</span>
-                                    </div>
-                                </div>
-                                <div>
-                                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Current Skills / Resume</label>
-                                    <textarea
-                                        value={formData.currentSkills}
-                                        onChange={(e) => setFormData({ ...formData, currentSkills: e.target.value })}
-                                        placeholder="Paste your current skills, experience, or resume text..."
-                                        className="w-full h-32 p-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-[#0A0E27] text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none resize-none text-sm font-medium transition-all"
-                                    />
-                                </div>
+                                <h2 className="text-2xl font-black text-white uppercase tracking-tighter">Skill Gap Bridge</h2>
                             </div>
 
-                            <button
-                                onClick={handleAnalyze}
-                                disabled={isLoading || !formData.targetRole || !formData.currentSkills}
-                                className="w-full py-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold flex items-center justify-center gap-2 transition-all shadow-lg hover:shadow-indigo-500/25 disabled:opacity-50 hover:scale-[1.02] active:scale-[0.98]"
-                            >
-                                {isLoading ? (
-                                    <>
-                                        <Loader2 className="w-5 h-5 animate-spin" /> Constructing Bridge...
-                                    </>
-                                ) : (
-                                    <>
-                                        <Target className="w-5 h-5" /> Analyze & Bridge
-                                    </>
-                                )}
-                            </button>
+                            <div className="space-y-4 bg-[#0A0E12] p-8 border border-emerald-500/10 rounded-3xl relative overflow-hidden group">
+                                <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
+                                    <Network size={80} className="text-emerald-500" />
+                                </div>
+
+                                <div className="space-y-4 relative z-10">
+                                    <div>
+                                        <label className="block text-[10px] font-black uppercase tracking-[0.3em] text-emerald-500/50 mb-3">Origin (Your Skills)</label>
+                                        <textarea
+                                            value={formData.currentSkills}
+                                            onChange={(e) => setFormData({ ...formData, currentSkills: e.target.value })}
+                                            placeholder="Enter current tech stack..."
+                                            className="w-full h-32 bg-black/50 border border-white/5 p-4 rounded-xl text-emerald-50 font-mono text-xs focus:border-emerald-500/50 outline-none transition-all resize-none"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-[10px] font-black uppercase tracking-[0.3em] text-emerald-500/50 mb-3">Destination (Target Role)</label>
+                                        <textarea
+                                            value={formData.targetRole}
+                                            onChange={(e) => setFormData({ ...formData, targetRole: e.target.value })}
+                                            placeholder="Enter goal position..."
+                                            className="w-full h-32 bg-black/50 border border-white/5 p-4 rounded-xl text-emerald-50 font-mono text-xs focus:border-emerald-500/50 outline-none transition-all resize-none"
+                                        />
+                                    </div>
+                                    <button
+                                        onClick={handleAnalyze}
+                                        disabled={isLoading || !formData.targetRole || !formData.currentSkills}
+                                        className="w-full py-5 bg-emerald-600 text-black font-black text-[12px] uppercase tracking-[0.4em] hover:bg-emerald-400 transition-all flex items-center justify-center gap-3 active:scale-95 disabled:opacity-30"
+                                    >
+                                        {isLoading ? <Loader2 className="animate-spin" /> : <><Zap size={16} /> Materialize Path</>}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="flex flex-col justify-center space-y-8 p-8 border-l border-white/5">
+                            <div className="space-y-2">
+                                <h4 className="text-xs font-black text-white uppercase tracking-widest flex items-center gap-2">
+                                    <ShieldCheck size={14} className="text-emerald-500" /> Protocol
+                                </h4>
+                                <p className="text-[11px] text-slate-500 font-medium leading-relaxed uppercase">
+                                    The Bridge calculates the exact requirements to transition from your current matrix state to a higher tier role.
+                                </p>
+                            </div>
+                            <div className="space-y-4">
+                                {[
+                                    { t: "Neural Match", v: "Cross-references 10k+ data points" },
+                                    { t: "Priority Routing", v: "Identifies critical path blockers" },
+                                    { t: "Sync Rate", v: "98.4% Accuracy in career mapping" }
+                                ].map((item, i) => (
+                                    <div key={i} className="flex items-center gap-4">
+                                        <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                                        <div>
+                                            <p className="text-[9px] font-black text-white uppercase tracking-widest">{item.t}</p>
+                                            <p className="text-[9px] text-emerald-500/50 font-bold uppercase">{item.v}</p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            ) : (
+                <div className="flex-1 grid grid-cols-1 lg:grid-cols-3 gap-6 overflow-hidden">
+                    {/* Column 1: Origin */}
+                    <motion.div
+                        initial={{ x: -20, opacity: 0 }}
+                        animate={{ x: 0, opacity: 1 }}
+                        className="bg-[#0A0E12] border border-white/5 rounded-[2rem] p-8 flex flex-col space-y-6"
+                    >
+                        <div className="flex items-center justify-between">
+                            <h3 className="text-[10px] font-black text-slate-500 uppercase tracking-[0.3em]">Origin Profile</h3>
+                            <div className="px-3 py-1 bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 text-[8px] font-black uppercase rounded-full">Steady</div>
+                        </div>
+                        <div className="flex-1 space-y-4">
+                            <p className="text-[9px] font-black text-emerald-500/50 uppercase tracking-[0.2em]">Verified Strengths</p>
+                            <div className="flex flex-wrap gap-2">
+                                {analysis.existingStrengths.map((s, i) => (
+                                    <div key={i} className="px-4 py-2 bg-emerald-500/5 border border-emerald-500/20 text-white text-[10px] font-bold uppercase tracking-tight rounded-xl">
+                                        {s}
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                        <button onClick={() => setAnalysis(null)} className="w-full py-3 border border-white/10 text-slate-600 hover:text-white text-[9px] font-black uppercase tracking-widest transition-all">Re-Calibrate</button>
+                    </motion.div>
+
+                    {/* Column 2: The Bridge */}
+                    <motion.div
+                        initial={{ y: 20, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        className="bg-emerald-600 border-4 border-white rounded-[2rem] p-8 flex flex-col space-y-6 shadow-[0_0_50px_rgba(16,185,129,0.2)]"
+                    >
+                        <div className="flex items-center justify-between">
+                            <h3 className="text-[10px] font-black text-emerald-100 uppercase tracking-[0.3em]">The Sequence</h3>
+                            <div className="px-3 py-1 bg-white text-emerald-600 text-[8px] font-black uppercase rounded-full">Gap: {100 - analysis.matchScore}%</div>
+                        </div>
+                        <div className="flex-1 space-y-4 overflow-y-auto custom-scrollbar pr-2">
+                            {analysis.missingSkills.map((item, i) => (
+                                <div key={i} className="bg-black/20 backdrop-blur-md p-5 rounded-2xl border border-white/10 group cursor-default">
+                                    <div className="flex justify-between items-start mb-2">
+                                        <h4 className="text-white font-black text-sm uppercase italic">{item.skill}</h4>
+                                        <span className={`text-[8px] font-black px-2 py-0.5 rounded ${item.priority === 'High' ? 'bg-black text-white' : 'bg-emerald-400 text-emerald-900'}`}>{item.priority}</span>
+                                    </div>
+                                    <p className="text-[10px] text-emerald-50 font-medium leading-relaxed uppercase opacity-80">{item.action}</p>
+                                </div>
+                            ))}
+                        </div>
+                        <div className="pt-4 border-t border-white/20">
+                            <div className="text-[9px] font-black text-white uppercase mb-2 tracking-widest flex items-center gap-2 font-mono">
+                                <Sparkles size={10} /> Syncing...
+                            </div>
+                            <div className="h-2 w-full bg-emerald-800 rounded-full overflow-hidden">
+                                <motion.div
+                                    initial={{ width: 0 }}
+                                    animate={{ width: `${analysis.matchScore}%` }}
+                                    className="h-full bg-white shadow-[0_0_20px_white]"
+                                />
+                            </div>
                         </div>
                     </motion.div>
 
-                    {/* Right Pillar: Learning Plan (The Bridge) */}
+                    {/* Column 3: Destination */}
                     <motion.div
-                        className="lg:col-span-7"
-                        layout
+                        initial={{ x: 20, opacity: 0 }}
+                        animate={{ x: 0, opacity: 1 }}
+                        className="bg-[#0A0E12] border border-white/5 rounded-[2rem] p-8 flex flex-col space-y-6"
                     >
-                        <AnimatePresence mode="wait">
-                            {analysis ? (
-                                <motion.div
-                                    key="result"
-                                    initial={{ opacity: 0, x: 20 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    className="space-y-6"
-                                >
-                                    {/* The Bridge Header */}
-                                    <div className="bg-gradient-to-r from-indigo-600 to-indigo-800 rounded-3xl p-8 text-white shadow-xl relative overflow-hidden">
-                                        <div className="relative z-10 flex items-center justify-between">
-                                            <div>
-                                                <p className="text-indigo-200 font-bold uppercase tracking-widest text-xs mb-1">Bridge Compatibility</p>
-                                                <h2 className="text-5xl font-black tracking-tight">{analysis.matchScore}%</h2>
-                                            </div>
-                                            <div className="flex -space-x-4">
-                                                <div className="w-12 h-12 rounded-full bg-indigo-500 border-4 border-indigo-700 flex items-center justify-center font-bold text-xs opacity-50">YOU</div>
-                                                <div className="w-12 h-12 rounded-full bg-white text-indigo-900 border-4 border-indigo-700 flex items-center justify-center font-bold z-10">
-                                                    <ArrowRight className="w-6 h-6" />
-                                                </div>
-                                                <div className="w-12 h-12 rounded-full bg-indigo-900 border-4 border-indigo-700 flex items-center justify-center font-bold text-xs">GOAL</div>
-                                            </div>
-                                        </div>
-                                        <div className="absolute right-0 top-0 bottom-0 w-1/3 bg-gradient-to-l from-white/10 to-transparent" />
-                                    </div>
-
-                                    {/* Missing Links (Planks) */}
-                                    <div className="bg-white dark:bg-[#13182E] rounded-3xl shadow-xl border border-slate-100 dark:border-slate-800 overflow-hidden">
-                                        <div className="p-6 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-[#1A2139]/50">
-                                            <h3 className="font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                                                <AlertTriangle className="w-5 h-5 text-amber-500" /> Missing Links
-                                            </h3>
-                                        </div>
-                                        <div className="p-2">
-                                            {analysis.missingSkills.map((item, idx) => (
-                                                <motion.div
-                                                    key={idx}
-                                                    initial={{ opacity: 0, y: 10 }}
-                                                    animate={{ opacity: 1, y: 0 }}
-                                                    transition={{ delay: idx * 0.1 }}
-                                                    className="p-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 rounded-xl transition-colors group"
-                                                >
-                                                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                                                        <div className="flex items-center gap-4">
-                                                            <div className={`w-2 h-12 rounded-full ${item.priority === 'High' ? 'bg-red-500' : 'bg-amber-500'}`} />
-                                                            <div>
-                                                                <h4 className="font-bold text-slate-900 dark:text-white">{item.skill}</h4>
-                                                                <span className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wide ${item.priority === 'High' ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300' : 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300'
-                                                                    }`}>
-                                                                    {item.priority} Priority
-                                                                </span>
-                                                            </div>
-                                                        </div>
-                                                        <div className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 bg-white dark:bg-[#0A0E27] px-4 py-3 rounded-xl border border-slate-100 dark:border-slate-800 shadow-sm group-hover:border-indigo-200 dark:group-hover:border-indigo-900 transition-colors">
-                                                            <BookOpen className="w-4 h-4 text-indigo-500" />
-                                                            {item.action}
-                                                        </div>
-                                                    </div>
-                                                </motion.div>
-                                            ))}
-                                        </div>
-                                    </div>
-
-                                    {/* Action Plan */}
-                                    <div className="bg-slate-900 dark:bg-black rounded-3xl p-8 text-slate-300 shadow-2xl relative overflow-hidden">
-                                        <div className="relative z-10 space-y-4">
-                                            <h3 className="text-white font-bold flex items-center gap-2">
-                                                <CheckCircle className="w-5 h-5 text-green-500" /> Action Plan
-                                            </h3>
-                                            <p className="whitespace-pre-wrap leading-relaxed border-l-2 border-indigo-500 pl-4">
-                                                {analysis.learningPlan}
-                                            </p>
-                                        </div>
-                                    </div>
-
-                                </motion.div>
-                            ) : (
-                                <motion.div
-                                    key="empty"
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: 1 }}
-                                    className="h-full min-h-[500px] bg-slate-50 dark:bg-[#13182E]/50 rounded-3xl border-2 border-dashed border-slate-200 dark:border-slate-800 flex flex-col items-center justify-center text-center p-12 space-y-6"
-                                >
-                                    <div className="w-24 h-24 bg-white dark:bg-[#1E2640] rounded-full flex items-center justify-center shadow-sm animate-float">
-                                        <Target className="w-10 h-10 text-slate-300 dark:text-slate-600" />
-                                    </div>
-                                    <div className="max-w-xs">
-                                        <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">Bridge the Gap</h3>
-                                        <p className="text-slate-500 dark:text-slate-400">
-                                            Input your current skills and target role to generate a personalized bridging strategy.
-                                        </p>
-                                    </div>
-                                </motion.div>
-                            )}
-                        </AnimatePresence>
+                        <div className="flex items-center justify-between">
+                            <h3 className="text-[10px] font-black text-slate-500 uppercase tracking-[0.3em]">Target Node</h3>
+                            <div className="px-3 py-1 bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 text-[8px] font-black uppercase rounded-full">Unlocked</div>
+                        </div>
+                        <div className="flex-1 space-y-6">
+                            <div>
+                                <p className="text-[9px] font-black text-emerald-500/50 uppercase tracking-[0.2em] mb-4">Role Manifest</p>
+                                <h4 className="text-2xl font-black text-white uppercase italic tracking-tighter mb-2">{formData.targetRole}</h4>
+                                <div className="text-7xl font-black text-white/10 tracking-tighter leading-none italic">{analysis.matchScore}<span className="text-xl">%</span></div>
+                            </div>
+                            <div className="p-6 bg-black/40 border border-white/5 rounded-2xl">
+                                <p className="text-[9px] font-black text-emerald-500 uppercase tracking-[0.2em] mb-4">Neural Learning Plan</p>
+                                <div className="text-[11px] text-slate-400 font-medium leading-relaxed italic prose prose-invert max-h-48 overflow-y-auto custom-scrollbar">
+                                    {analysis.learningPlan}
+                                </div>
+                            </div>
+                        </div>
+                        <div className="text-[10px] font-black text-emerald-500/50 uppercase tracking-[0.4em] text-center italic">
+                            Constructed via Matrix-01
+                        </div>
                     </motion.div>
                 </div>
-
-            </div>
+            )}
         </div>
     );
+
+    return (
+        <DojoLayout
+            title="Skill Gap Bridge"
+            subtitle="Matrix Mapping • 3-Column Synergy"
+            headerActions={
+                <div className="flex items-center gap-4">
+                    <div className="px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] font-black uppercase flex items-center gap-2">
+                        <Activity size={12} className="animate-pulse" />
+                        Bridging Active
+                    </div>
+                </div>
+            }
+            backPath="/career-training"
+        >
+            {MatrixBridge}
+        </DojoLayout>
+    );
 };
+
+const Activity = ({ className, size }) => (
+    <svg className={className} width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+    </svg>
+);
 
 export default SkillGapBridge;

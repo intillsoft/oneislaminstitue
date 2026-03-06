@@ -108,12 +108,12 @@ const TalentSettings = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-white dark:bg-[#0A0E27]">
+      <div className="min-h-screen bg-bg">
         <UnifiedSidebar />
         <div className="ml-0 lg:ml-64 min-h-screen flex items-center justify-center">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-workflow-primary mx-auto mb-4"></div>
-            <p className="text-[#64748B] dark:text-[#8B92A3]">Loading settings...</p>
+            <p className="text-text-muted font-black uppercase tracking-widest text-[10px]">Loading configuration nodes...</p>
           </div>
         </div>
       </div>
@@ -121,32 +121,32 @@ const TalentSettings = () => {
   }
 
   return (
-    <div className="min-h-screen bg-white dark:bg-[#0A0E27]">
+    <div className="min-h-screen bg-bg transition-smooth">
       <UnifiedSidebar />
       <div className="ml-0 lg:ml-64 min-h-screen">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <Breadcrumb />
 
           <div className="mb-6">
-            <h1 className="text-2xl sm:text-3xl font-bold text-[#0F172A] dark:text-[#E8EAED] mb-2">
+            <h1 className="text-2xl sm:text-3xl font-black text-text-primary dark:text-white mb-2 uppercase tracking-tight">
               Talent Settings
             </h1>
-            <p className="text-[#64748B] dark:text-[#8B92A3]">
-              Manage your profile and preferences
+            <p className="text-text-muted dark:text-slate-400 font-medium">
+              Calibrate your professional identity and node preferences
             </p>
           </div>
 
           {/* Tabs */}
-          <div className="border-b border-[#E2E8F0] dark:border-[#1E2640] mb-6">
-            <nav className="flex space-x-8">
+          <div className="border-b border-border dark:border-white/5 mb-8">
+            <nav className="flex space-x-10">
               {['profile', 'pricing', 'availability', 'notifications'].map((tab) => (
                 <button
                   key={tab}
                   onClick={() => setActiveTab(tab)}
-                  className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
+                  className={`py-5 px-2 border-b-2 font-black text-[10px] uppercase tracking-widest transition-all ${
                     activeTab === tab
                       ? 'border-workflow-primary text-workflow-primary'
-                      : 'border-transparent text-[#64748B] dark:text-[#8B92A3] hover:text-[#0F172A] dark:hover:text-[#E8EAED]'
+                      : 'border-transparent text-text-muted hover:text-text-primary'
                   }`}
                 >
                   {tab.charAt(0).toUpperCase() + tab.slice(1)}
@@ -158,9 +158,9 @@ const TalentSettings = () => {
           {/* Tab Content */}
           <div className="space-y-6">
             {activeTab === 'profile' && (
-              <div className="bg-white dark:bg-[#13182E] border border-[#E2E8F0] dark:border-[#1E2640] rounded-lg p-6 space-y-6">
+              <div className="bg-bg-elevated border border-border dark:border-white/5 rounded-[2.5rem] p-10 space-y-8 shadow-2xl">
                 <div>
-                  <label className="block text-sm font-medium text-[#0F172A] dark:text-[#E8EAED] mb-2">
+                  <label className="block text-[10px] font-black text-text-muted uppercase tracking-[0.2em] mb-3 px-1">
                     Professional Title
                   </label>
                   <input
@@ -168,12 +168,12 @@ const TalentSettings = () => {
                     value={profileData.title}
                     onChange={(e) => setProfileData(prev => ({ ...prev, title: e.target.value }))}
                     placeholder="e.g., Full Stack Developer"
-                    className="w-full px-4 py-3 border border-[#E2E8F0] dark:border-[#1E2640] rounded-lg bg-white dark:bg-[#13182E] text-[#0F172A] dark:text-[#E8EAED]"
+                    className="w-full px-6 py-4 border border-border dark:border-white/10 rounded-2xl bg-bg text-text-primary dark:text-white font-bold tracking-tight focus:outline-none focus:ring-2 focus:ring-workflow-primary/40 transition-all"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-[#0F172A] dark:text-[#E8EAED] mb-2">
+                  <label className="block text-[10px] font-black text-text-muted uppercase tracking-[0.2em] mb-3 px-1">
                     Bio
                   </label>
                   <textarea
@@ -181,40 +181,40 @@ const TalentSettings = () => {
                     onChange={(e) => setProfileData(prev => ({ ...prev, bio: e.target.value }))}
                     rows={6}
                     placeholder="Tell us about yourself..."
-                    className="w-full px-4 py-3 border border-[#E2E8F0] dark:border-[#1E2640] rounded-lg bg-white dark:bg-[#13182E] text-[#0F172A] dark:text-[#E8EAED]"
+                    className="w-full px-6 py-4 border border-border dark:border-white/10 rounded-2xl bg-bg text-text-primary dark:text-white font-bold tracking-tight focus:outline-none focus:ring-2 focus:ring-workflow-primary/40 transition-all resize-none"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-[#0F172A] dark:text-[#E8EAED] mb-2">
-                    Skills
+                  <label className="block text-[10px] font-black text-text-muted uppercase tracking-[0.2em] mb-3 px-1">
+                    Technical Arsenal
                   </label>
-                  <div className="flex gap-2 mb-3">
+                  <div className="flex gap-3 mb-4">
                     <input
                       type="text"
                       value={skillInput}
                       onChange={(e) => setSkillInput(e.target.value)}
                       onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddSkill())}
-                      placeholder="Add a skill"
-                      className="flex-1 px-4 py-2 border border-[#E2E8F0] dark:border-[#1E2640] rounded-lg bg-white dark:bg-[#13182E] text-[#0F172A] dark:text-[#E8EAED]"
+                      placeholder="Add a competence"
+                      className="flex-1 px-6 py-4 border border-border dark:border-white/10 rounded-2xl bg-bg text-text-primary dark:text-white font-bold tracking-tight focus:outline-none focus:ring-2 focus:ring-workflow-primary/40 transition-all"
                     />
                     <button
                       onClick={handleAddSkill}
-                      className="px-4 py-2 bg-workflow-primary text-white rounded-lg hover:bg-workflow-primary-600"
+                      className="px-8 py-4 bg-workflow-primary text-white rounded-2xl font-black uppercase tracking-widest text-[11px] hover:bg-workflow-primary/80 transition-all shadow-lg shadow-workflow-primary/20"
                     >
-                      Add
+                      Inject
                     </button>
                   </div>
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-2 p-4 bg-bg rounded-[1.5rem] border border-border dark:border-white/5">
                     {profileData.skills.map((skill, index) => (
                       <span
                         key={index}
-                        className="px-3 py-1.5 bg-workflow-primary/10 dark:bg-workflow-primary/20 text-workflow-primary rounded-full text-sm font-medium flex items-center gap-2"
+                        className="px-3 py-1.5 bg-workflow-primary/10 border border-workflow-primary/20 text-workflow-primary rounded-xl text-[10px] font-black uppercase tracking-widest flex items-center gap-2"
                       >
                         {skill}
                         <button
                           onClick={() => handleRemoveSkill(skill)}
-                          className="hover:text-red-500"
+                          className="hover:text-red-500 transition-colors"
                         >
                           <Icon name="X" size={12} />
                         </button>
@@ -224,13 +224,13 @@ const TalentSettings = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-[#0F172A] dark:text-[#E8EAED] mb-2">
-                    Experience Level
+                  <label className="block text-[10px] font-black text-text-muted uppercase tracking-[0.2em] mb-3 px-1">
+                    Seniority Level
                   </label>
                   <select
                     value={profileData.experience_level}
                     onChange={(e) => setProfileData(prev => ({ ...prev, experience_level: e.target.value }))}
-                    className="w-full px-4 py-3 border border-[#E2E8F0] dark:border-[#1E2640] rounded-lg bg-white dark:bg-[#13182E] text-[#0F172A] dark:text-[#E8EAED]"
+                    className="w-full px-6 py-4 border border-border dark:border-white/10 rounded-2xl bg-bg text-text-primary dark:text-white font-bold tracking-tight focus:outline-none focus:ring-2 focus:ring-workflow-primary/40 transition-all appearance-none"
                   >
                     <option value="beginner">Beginner</option>
                     <option value="intermediate">Intermediate</option>
@@ -239,35 +239,35 @@ const TalentSettings = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-[#0F172A] dark:text-[#E8EAED] mb-2">
-                    Languages
+                  <label className="block text-[10px] font-black text-text-muted uppercase tracking-[0.2em] mb-3 px-1">
+                    Communication Nodes (Languages)
                   </label>
-                  <div className="flex gap-2 mb-3">
+                  <div className="flex gap-3 mb-4">
                     <input
                       type="text"
                       value={languageInput}
                       onChange={(e) => setLanguageInput(e.target.value)}
                       onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddLanguage())}
                       placeholder="Add a language"
-                      className="flex-1 px-4 py-2 border border-[#E2E8F0] dark:border-[#1E2640] rounded-lg bg-white dark:bg-[#13182E] text-[#0F172A] dark:text-[#E8EAED]"
+                      className="flex-1 px-6 py-4 border border-border dark:border-white/10 rounded-2xl bg-bg text-text-primary dark:text-white font-bold tracking-tight focus:outline-none focus:ring-2 focus:ring-workflow-primary/40 transition-all"
                     />
                     <button
                       onClick={handleAddLanguage}
-                      className="px-4 py-2 bg-workflow-primary text-white rounded-lg hover:bg-workflow-primary-600"
+                      className="px-8 py-4 bg-workflow-primary text-white rounded-2xl font-black uppercase tracking-widest text-[11px] hover:bg-workflow-primary/80 transition-all shadow-lg shadow-workflow-primary/20"
                     >
-                      Add
+                      Inject
                     </button>
                   </div>
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-2 p-4 bg-bg rounded-[1.5rem] border border-border dark:border-white/5">
                     {profileData.languages.map((lang, index) => (
                       <span
                         key={index}
-                        className="px-3 py-1.5 bg-gray-100 dark:bg-[#1A2139] text-[#0F172A] dark:text-[#E8EAED] rounded-full text-sm flex items-center gap-2"
+                        className="px-3 py-1.5 bg-bg-elevated border border-border dark:border-white/10 text-text-primary dark:text-white rounded-xl text-[10px] font-black uppercase tracking-widest flex items-center gap-2"
                       >
                         {lang}
                         <button
                           onClick={() => handleRemoveLanguage(lang)}
-                          className="hover:text-red-500"
+                          className="hover:text-red-500 transition-colors"
                         >
                           <Icon name="X" size={12} />
                         </button>
@@ -279,10 +279,10 @@ const TalentSettings = () => {
             )}
 
             {activeTab === 'pricing' && (
-              <div className="bg-white dark:bg-[#13182E] border border-[#E2E8F0] dark:border-[#1E2640] rounded-lg p-6 space-y-6">
+              <div className="bg-bg-elevated border border-border dark:border-white/5 rounded-[2.5rem] p-10 space-y-8 shadow-2xl">
                 <div>
-                  <label className="block text-sm font-medium text-[#0F172A] dark:text-[#E8EAED] mb-2">
-                    Hourly Rate ($)
+                  <label className="block text-[10px] font-black text-text-muted uppercase tracking-[0.2em] mb-3 px-1">
+                    Hourly Exchange Rate ($)
                   </label>
                   <input
                     type="number"
@@ -290,64 +290,65 @@ const TalentSettings = () => {
                     step="0.01"
                     value={profileData.hourly_rate}
                     onChange={(e) => setProfileData(prev => ({ ...prev, hourly_rate: e.target.value }))}
-                    className="w-full px-4 py-3 border border-[#E2E8F0] dark:border-[#1E2640] rounded-lg bg-white dark:bg-[#13182E] text-[#0F172A] dark:text-[#E8EAED]"
+                    className="w-full px-6 py-4 border border-border dark:border-white/10 rounded-2xl bg-bg text-text-primary dark:text-white font-bold tracking-tight focus:outline-none focus:ring-2 focus:ring-workflow-primary/40 transition-all shadow-sm"
                   />
                 </div>
               </div>
             )}
 
             {activeTab === 'availability' && (
-              <div className="bg-white dark:bg-[#13182E] border border-[#E2E8F0] dark:border-[#1E2640] rounded-lg p-6 space-y-6">
+              <div className="bg-bg-elevated border border-border dark:border-white/5 rounded-[2.5rem] p-10 space-y-8 shadow-2xl">
                 <div>
-                  <label className="block text-sm font-medium text-[#0F172A] dark:text-[#E8EAED] mb-2">
-                    Availability Status
+                  <label className="block text-[10px] font-black text-text-muted uppercase tracking-[0.2em] mb-3 px-1">
+                    Node Availability Status
                   </label>
                   <select
                     value={profileData.availability}
                     onChange={(e) => setProfileData(prev => ({ ...prev, availability: e.target.value }))}
-                    className="w-full px-4 py-3 border border-[#E2E8F0] dark:border-[#1E2640] rounded-lg bg-white dark:bg-[#13182E] text-[#0F172A] dark:text-[#E8EAED]"
+                    className="w-full px-6 py-4 border border-border dark:border-white/10 rounded-2xl bg-bg text-text-primary dark:text-white font-bold tracking-tight focus:outline-none focus:ring-2 focus:ring-workflow-primary/40 transition-all appearance-none"
                   >
-                    <option value="available">Available</option>
-                    <option value="part-time">Part-time</option>
-                    <option value="full-time">Full-time</option>
-                    <option value="unavailable">Unavailable</option>
+                    <option value="available">Available (Instant Connect)</option>
+                    <option value="part-time">Part-time Operations</option>
+                    <option value="full-time">Full-time Commitment</option>
+                    <option value="unavailable">Offline Protocol</option>
                   </select>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-[#0F172A] dark:text-[#E8EAED] mb-2">
-                    Response Time (hours)
+                  <label className="block text-[10px] font-black text-text-muted uppercase tracking-[0.2em] mb-3 px-1">
+                    Latency Threshold (Response Time hours)
                   </label>
                   <input
                     type="number"
                     min="1"
                     value={profileData.response_time}
                     onChange={(e) => setProfileData(prev => ({ ...prev, response_time: e.target.value }))}
-                    className="w-full px-4 py-3 border border-[#E2E8F0] dark:border-[#1E2640] rounded-lg bg-white dark:bg-[#13182E] text-[#0F172A] dark:text-[#E8EAED]"
+                    className="w-full px-6 py-4 border border-border dark:border-white/10 rounded-2xl bg-bg text-text-primary dark:text-white font-bold tracking-tight focus:outline-none focus:ring-2 focus:ring-workflow-primary/40 transition-all shadow-sm"
                   />
                 </div>
               </div>
             )}
 
             {activeTab === 'notifications' && (
-              <div className="bg-white dark:bg-[#13182E] border border-[#E2E8F0] dark:border-[#1E2640] rounded-lg p-6">
-                <p className="text-[#64748B] dark:text-[#8B92A3]">Notification settings coming soon...</p>
+              <div className="bg-bg-elevated border border-border dark:border-white/5 rounded-[2.5rem] p-20 text-center shadow-2xl">
+                <Icon name="Bell" className="w-16 h-16 text-bg mx-auto mb-6" />
+                <p className="text-text-muted font-black uppercase tracking-widest text-[10px]">Transmission Alerts Coming Soon...</p>
               </div>
             )}
 
-            <div className="flex items-center justify-end gap-3">
+            <div className="flex items-center justify-end gap-4 pt-8">
               <button
                 onClick={() => navigate('/talent/dashboard')}
-                className="btn-secondary"
+                className="px-8 py-4 border border-border dark:border-white/10 rounded-2xl text-text-muted font-black uppercase tracking-widest text-[11px] hover:bg-bg-elevated transition-all"
               >
-                Cancel
+                Cancel Protocol
               </button>
               <button
                 onClick={handleSave}
                 disabled={saving}
-                className="btn-primary"
+                className="px-8 py-4 bg-workflow-primary text-white rounded-2xl font-black uppercase tracking-widest text-[11px] hover:brightness-110 active:scale-95 transition-all shadow-xl shadow-workflow-primary/20 disabled:opacity-50"
               >
-                {saving ? 'Saving...' : 'Save Changes'}
+                {saving ? 'Transmitting...' : 'Commit Changes'}
               </button>
             </div>
           </div>

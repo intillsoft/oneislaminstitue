@@ -1,22 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Icon from 'components/AppIcon';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const AIChatbot = ({ onClose, userProfile }) => {
   const [messages, setMessages] = useState([
     {
       role: 'assistant',
-      content: `Hi ${userProfile?.name || 'there'}! I'm your AI Career Advisor. I can help you with:\n\n• Career guidance and advice\n• Job application strategies\n• Interview preparation tips\n• Resume optimization\n• Skill development recommendations\n\nWhat would you like to know?`,
+      content: `Hi ${userProfile?.name || 'there'}! I'm your Neural Career Architect. I can optimize your path with:\n\n• Market Vector Analysis\n• Node Application Strategy\n• Interview Protocol Simulation\n• Architecture (Resume) Refinement\n• Skill Expansion Algorithms\n\nWhat vector shall we analyze?`,
       timestamp: new Date()
     }
   ]);
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
+  const messagesEndRef = useRef(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
 
   const quickPrompts = [
-    { icon: 'Briefcase', text: 'How do I improve my application success rate?' },
-    { icon: 'TrendingUp', text: 'What skills should I learn next?' },
-    { icon: 'Target', text: 'How can I negotiate a better salary?' },
-    { icon: 'FileText', text: 'Review my resume strategy' }
+    { icon: 'Briefcase', text: 'Optimize application yield?' },
+    { icon: 'TrendingUp', text: 'Identify high-value skill nodes' },
+    { icon: 'Target', text: 'Salary negotiation protocols' },
+    { icon: 'FileText', text: 'Resume architecture review' }
   ];
 
   const handleSend = async (message = input) => {
@@ -46,7 +56,7 @@ const AIChatbot = ({ onClose, userProfile }) => {
 
       const aiResponse = {
         role: 'assistant',
-        content: result?.response || result?.data?.response || 'I apologize, but I encountered an error. Please try again.',
+        content: result?.response || result?.data?.response || 'I apologize, but my neural link encountered an anomaly. Please re-initiate.',
         timestamp: new Date()
       };
       setMessages(prev => [...prev, aiResponse]);
@@ -55,7 +65,7 @@ const AIChatbot = ({ onClose, userProfile }) => {
       // Fallback to helpful error message
       const aiResponse = {
         role: 'assistant',
-        content: `I'm having trouble connecting right now. ${error.message || 'Please try again in a moment.'}`,
+        content: `Neural uplink unstable. ${error.message || 'Retrying connection sequence...'}`,
         timestamp: new Date()
       };
       setMessages(prev => [...prev, aiResponse]);
@@ -64,131 +74,118 @@ const AIChatbot = ({ onClose, userProfile }) => {
     }
   };
 
-  const getAIResponse = (question) => {
-    const responses = {
-      default: "That's a great question! Based on your profile and current market trends, I'd recommend focusing on:\n\n1. Building strong technical fundamentals\n2. Showcasing measurable achievements\n3. Networking with industry professionals\n\nWould you like more specific guidance on any of these areas?"
-    };
-
-    if (question?.toLowerCase()?.includes('skill')) {
-      return "Based on your current skill set and market demand, I recommend learning:\n\n1. **Kubernetes** - High demand (↑45% this quarter)\n2. **GraphQL** - Increasing adoption\n3. **TypeScript** - Industry standard\n\nThese skills will increase your market value by approximately 15-20% and open up 300+ new opportunities.";
-    }
-
-    if (question?.toLowerCase()?.includes('salary') || question?.toLowerCase()?.includes('negotiate')) {
-      return "Great question about salary negotiation! Here are my top tips:\n\n1. **Research Market Rates**: Your role averages $130k-$180k\n2. **Timing is Key**: Negotiate after receiving the offer\n3. **Quantify Your Value**: Use specific achievements\n4. **Be Confident**: Your skills are in high demand\n\nWould you like a personalized salary negotiation script?";
-    }
-
-    if (question?.toLowerCase()?.includes('resume')) {
-      return "Let me help optimize your resume strategy:\n\n✅ **Current Strengths:**\n- Strong technical skill set\n- Relevant experience level\n\n📈 **Improvement Areas:**\n- Add quantifiable achievements\n- Include action verbs\n- Optimize for ATS systems\n\nWould you like me to review your resume sections in detail?";
-    }
-
-    if (question?.toLowerCase()?.includes('application') || question?.toLowerCase()?.includes('success')) {
-      return "To improve your application success rate:\n\n1. **Tailor Each Application** (↑40% response rate)\n2. **Apply Within 48 Hours** of posting\n3. **Use Keywords** from job description\n4. **Follow Up** after 1 week\n\nYour current profile has an 82% success prediction. Let's aim for 90%!";
-    }
-
-    return responses?.default;
-  };
-
   const handleQuickPrompt = (prompt) => {
     handleSend(prompt);
   };
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <div className="bg-background dark:bg-[#13182E] rounded-lg shadow-xl max-w-2xl w-full h-[600px] flex flex-col">
-        {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-border dark:border-[#1E2640]">
-          <div className="flex items-center space-x-3">
-            <div className="p-2 bg-primary/10 rounded-lg">
-              <Icon name="MessageCircle" size={24} className="text-primary" />
+    <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-[100] p-4 animate-in fade-in duration-300">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95, y: 20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.95, y: 20 }}
+        className="bg-white dark:bg-[#0A0E27] rounded-[2rem] shadow-2xl overflow-hidden w-full max-w-2xl h-[700px] flex flex-col border border-slate-200 dark:border-white/10 relative"
+      >
+        {/* Elite Header */}
+        <div className="flex items-center justify-between p-6 border-b border-slate-100 dark:border-white/5 bg-white/50 dark:bg-white/5 backdrop-blur-xl absolute top-0 left-0 right-0 z-10">
+          <div className="flex items-center space-x-4">
+            <div className="p-3 bg-workflow-primary/10 rounded-2xl border border-workflow-primary/20 shadow-glow">
+              <Icon name="Bot" size={24} className="text-workflow-primary" />
             </div>
             <div>
-              <h3 className="text-lg font-semibold text-text-primary dark:text-[#E8EAED]">AI Career Advisor</h3>
-              <div className="flex items-center space-x-2">
-                <div className="w-2 h-2 bg-success rounded-full animate-pulse" />
-                <span className="text-xs text-text-secondary dark:text-[#8B92A3]">Online</span>
-              </div>
+              <h3 className="text-lg font-[900] text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
+                Neural Career Advisor
+                <span className="px-2 py-0.5 rounded text-[10px] bg-emerald-500/10 text-emerald-500 uppercase tracking-wider font-bold">Online</span>
+              </h3>
+              <p className="text-xs font-medium text-slate-500 dark:text-slate-400">
+                Connected to Job Market Matrix
+              </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="text-text-secondary dark:text-[#8B92A3] hover:text-text-primary dark:hover:text-[#E8EAED] transition-colors"
+            className="w-10 h-10 rounded-xl hover:bg-slate-100 dark:hover:bg-white/5 flex items-center justify-center text-slate-400 hover:text-rose-500 transition-all"
           >
-            <Icon name="X" size={24} />
+            <Icon name="X" size={20} />
           </button>
         </div>
 
-        {/* Messages */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-4 pb-24">
+        {/* Messages Architecture */}
+        <div className="flex-1 overflow-y-auto pt-24 pb-32 px-6 space-y-6 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-slate-200 dark:scrollbar-thumb-white/10">
           {messages?.map((message, index) => (
-            <div
+            <motion.div
               key={index}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
               className={`flex ${message?.role === 'user' ? 'justify-end' : 'justify-start'}`}
             >
-              <div
-                className={`max-w-[80%] rounded-lg p-4 ${message?.role === 'user' ? 'bg-primary text-white' : 'bg-surface dark:bg-[#1A2139] text-text-primary dark:text-[#E8EAED] border border-border dark:border-[#1E2640]'
-                  }`}
-              >
-                <p className="text-sm whitespace-pre-line">{message?.content}</p>
-                <span className="text-xs opacity-70 mt-2 block">
+              <div className={`flex flex-col max-w-[85%] ${message.role === 'user' ? 'items-end' : 'items-start'}`}>
+                <div
+                  className={`rounded-2xl p-5 shadow-sm text-sm leading-relaxed whitespace-pre-line ${message?.role === 'user'
+                      ? 'bg-workflow-primary text-white rounded-br-none'
+                      : 'bg-slate-100 dark:bg-white/5 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-white/5 rounded-tl-none'
+                    }`}
+                >
+                  {message?.content}
+                </div>
+                <span className="text-[10px] font-bold text-slate-400 mt-2 px-1">
                   {message?.timestamp?.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                 </span>
               </div>
-            </div>
+            </motion.div>
           ))}
 
           {isTyping && (
             <div className="flex justify-start">
-              <div className="bg-surface dark:bg-[#1A2139] border border-border dark:border-[#1E2640] rounded-lg p-4 max-w-[80%]">
-                <div className="flex space-x-2">
-                  <div className="w-2 h-2 bg-text-muted dark:bg-[#8B92A3] rounded-full animate-bounce" />
-                  <div className="w-2 h-2 bg-text-muted dark:bg-[#8B92A3] rounded-full animate-bounce" style={{ animationDelay: '0.2s' }} />
-                  <div className="w-2 h-2 bg-text-muted dark:bg-[#8B92A3] rounded-full animate-bounce" style={{ animationDelay: '0.4s' }} />
-                </div>
+              <div className="bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/5 rounded-2xl rounded-tl-none p-5 flex items-center gap-2">
+                <div className="w-2 h-2 bg-workflow-primary rounded-full animate-bounce" />
+                <div className="w-2 h-2 bg-workflow-primary rounded-full animate-bounce delay-100" />
+                <div className="w-2 h-2 bg-workflow-primary rounded-full animate-bounce delay-200" />
               </div>
             </div>
           )}
+          <div ref={messagesEndRef} />
         </div>
 
-        {/* Quick Prompts */}
-        {messages?.length <= 1 && (
-          <div className="px-4 pb-24">
-            <p className="text-xs text-text-secondary dark:text-[#8B92A3] mb-2">Quick questions:</p>
-            <div className="grid grid-cols-2 gap-2">
-              {quickPrompts?.map((prompt, index) => (
-                <button
-                  key={index}
-                  onClick={() => handleQuickPrompt(prompt?.text)}
-                  className="flex items-center space-x-2 p-2 bg-surface dark:bg-[#1A2139] hover:bg-surface-100 dark:hover:bg-[#0A0E27] rounded-lg text-left transition-colors border border-border dark:border-[#1E2640]"
-                >
-                  <Icon name={prompt?.icon} size={14} className="text-primary flex-shrink-0" />
-                  <span className="text-xs text-text-primary dark:text-[#E8EAED]">{prompt?.text}</span>
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
+        {/* Quick Prompts & Input Zone */}
+        <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-white via-white to-transparent dark:from-[#0A0E27] dark:via-[#0A0E27] dark:to-transparent pt-12">
 
-        {/* Input - Suspended Style */}
-        <div className="absolute bottom-4 left-4 right-4">
-          <div className="flex gap-2 bg-white dark:bg-[#13182E] p-2 rounded-xl shadow-[0_0_15px_rgba(0,0,0,0.1)] dark:shadow-[0_0_15px_rgba(0,0,0,0.3)] border border-border dark:border-[#1E2640]">
+          {messages?.length <= 1 && (
+            <div className="mb-4 overflow-x-auto pb-2 scrollbar-hide">
+              <div className="flex gap-3">
+                {quickPrompts?.map((prompt, index) => (
+                  <button
+                    key={index}
+                    onClick={() => handleQuickPrompt(prompt?.text)}
+                    className="flex-shrink-0 flex items-center gap-2 px-4 py-2 bg-slate-50 dark:bg-white/5 hover:bg-slate-100 dark:hover:bg-white/10 rounded-xl border border-slate-200 dark:border-white/5 transition-all text-xs font-bold text-slate-600 dark:text-slate-300 group whitespace-nowrap"
+                  >
+                    <Icon name={prompt?.icon} size={14} className="text-workflow-primary" />
+                    <span>{prompt?.text}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          <div className="relative">
             <input
               type="text"
               value={input}
               onChange={(e) => setInput(e?.target?.value)}
               onKeyPress={(e) => e?.key === 'Enter' && handleSend()}
-              placeholder="Ask me anything about your career..."
-              className="flex-1 px-4 py-2 bg-transparent text-sm text-[#0F172A] dark:text-[#E8EAED] focus:outline-none"
+              placeholder="Query neural network..."
+              className="w-full pl-5 pr-14 py-4 bg-white dark:bg-[#0f1429] rounded-2xl shadow-xl border border-slate-200 dark:border-white/10 text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-workflow-primary/50 transition-all font-medium"
             />
             <button
               onClick={() => handleSend()}
               disabled={!input?.trim()}
-              className="btn-primary flex items-center justify-center p-2 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow-md transition-all"
+              className="absolute right-2 top-2 p-2 rounded-xl bg-workflow-primary text-white disabled:opacity-50 disabled:cursor-not-allowed hover:scale-105 active:scale-95 transition-all shadow-lg"
             >
-              <Icon name="Send" size={16} />
+              <Icon name="Send" size={20} />
             </button>
           </div>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 };

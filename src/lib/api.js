@@ -8,7 +8,14 @@ import { supabase } from './supabase';
 
 // Create axios instance
 // Define the backend root URL (no /api)
-const API_ROOT = import.meta.env.VITE_API_URL || 'https://workflow-d9q5.onrender.com';
+// Define the backend root URL
+const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+const API_ROOT = isLocal ? 'http://localhost:3001' : (import.meta.env.VITE_API_URL || 'https://workflow.surf');
+// Log configuration in dev
+if (isLocal) {
+  console.log('🚀 [Workflow AI] Local Development Mode Active');
+  console.log('📡 API Root set to:', API_ROOT);
+}
 
 // Create axios instance
 const api = axios.create({
@@ -72,9 +79,14 @@ api.interceptors.response.use(
         return api(originalRequest);
       }
 
-      // Redirect to login if refresh fails
-      window.location.href = '/login';
-      return Promise.reject(new Error('Session expired. Please sign in again.'));
+      // Redirect to login ONLY if we had a session that failed to refresh
+      const { data: { session: currentSession } } = await supabase.auth.getSession();
+      if (currentSession) {
+        window.location.href = '/login';
+        return Promise.reject(new Error('Session expired. Please sign in again.'));
+      }
+
+      return Promise.reject(error);
     }
 
     // Handle 403 - Forbidden
@@ -89,7 +101,8 @@ api.interceptors.response.use(
 
     // Handle 500 - Server Error
     if (error.response?.status >= 500) {
-      return Promise.reject(new Error('Server error. Please try again later or contact support.'));
+      const serverMessage = error.response?.data?.error || error.response?.data?.message;
+      return Promise.reject(new Error(serverMessage || 'Server error. Please try again later or contact support.'));
     }
 
     // Return user-friendly error message
@@ -100,23 +113,43 @@ api.interceptors.response.use(
 
 // API Methods
 export const apiService = {
-  // Jobs
-  jobs: {
-    getAll: (params = {}) => api.get('/jobs', { params }),
-    getById: (id) => api.get(`/jobs/${id}`),
-    search: (query, filters = {}) => api.post('/jobs/search', { query, filters }),
-    create: (data) => api.post('/jobs', data),
-    update: (id, data) => api.put(`/jobs/${id}`, data),
-    delete: (id) => api.delete(`/jobs/${id}`),
-    apply: (jobId, applicationData) => api.post(`/jobs/${jobId}/apply`, applicationData),
+  // Courses (formerly Jobs)
+  courses: {
+    getAll: (params = {}) => api.get('/courses', { params }),
+    getById: (id) => api.get(`/courses/${id}`),
+    search: (query, filters = {}) => api.post('/courses/search', { query, filters }),
+    create: (data) => api.post('/courses', data),
+    update: (id, data) => api.put(`/courses/${id}`, data),
+    delete: (id) => api.delete(`/courses/${id}`),
+    enroll: (courseId, enrollmentData) => api.post(`/courses/${courseId}/enroll`, enrollmentData),
   },
 
-  // Applications
+  // Legacy alias for compatibility during migration
+  jobs: {
+    getAll: (params = {}) => api.get('/courses', { params }),
+    getById: (id) => api.get(`/courses/${id}`),
+    search: (query, filters = {}) => api.post('/courses/search', { query, filters }),
+    create: (data) => api.post('/courses', data),
+    update: (id, data) => api.put(`/courses/${id}`, data),
+    delete: (id) => api.delete(`/courses/${id}`),
+    apply: (courseId, enrollmentData) => api.post(`/courses/${courseId}/enroll`, enrollmentData),
+  },
+
+  // Enrollments (formerly Applications)
+  enrollments: {
+    getAll: (params = {}) => api.get('/enrollments', { params }),
+    getById: (id) => api.get(`/enrollments/${id}`),
+    updateStatus: (id, status) => api.patch(`/enrollments/${id}/status`, { status }),
+    getAnalytics: () => api.get('/enrollments/analytics'),
+  },
+
+  // Legacy alias
   applications: {
-    getAll: (params = {}) => api.get('/applications', { params }),
-    getById: (id) => api.get(`/applications/${id}`),
-    updateStatus: (id, status) => api.patch(`/applications/${id}/status`, { status }),
-    getAnalytics: () => api.get('/applications/analytics'),
+    getAll: (params = {}) => api.get('/enrollments', { params }),
+    getById: (id) => api.get(`/enrollments/${id}`),
+    updateStatus: (id, status) => api.patch(`/enrollments/${id}/status`, { status }),
+    create: (data) => api.post('/enrollments', data),
+    getAnalytics: () => api.get('/enrollments/analytics'),
   },
 
   // Resumes
@@ -176,13 +209,14 @@ export const apiService = {
 
   // Chat Services (Bolt.new style)
   chat: {
-    stream: (message, conversationHistory = []) => {
+    stream: async (message, conversationHistory = []) => {
       // Note: Streaming uses fetch, not axios
+      const { data: { session } } = await supabase.auth.getSession();
       return fetch(`${API_ROOT}/api/chat/stream`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${supabase.auth.getSession().then(({ data }) => data.session?.access_token)}`, // Needs token for auth
+          'Authorization': session?.access_token ? `Bearer ${session.access_token}` : '',
         },
         body: JSON.stringify({ message, conversation_history: conversationHistory }),
       });
@@ -242,10 +276,10 @@ export const apiService = {
     deliverOrder: (orderId, data) => api.post(`/talent/orders/${orderId}/deliver`, data),
   },
 
-  // Applications
-  applications: {
-    create: (data) => api.post('/applications', data),
-    getByJobId: (jobId) => api.get(`/applications/job/${jobId}`),
+  // Enrollments helper
+  enrollments: {
+    create: (data) => api.post('/enrollments', data),
+    getByCourseId: (courseId) => api.get(`/enrollments/course/${courseId}`),
   },
 
   // User Profile
@@ -304,6 +338,10 @@ export const apiService = {
     // AI Features
     getAISuggestions: (conversationId, context) => api.post('/messages/ai/suggestions', { conversationId, context }),
     improveMessage: (message, improvementType) => api.post('/messages/ai/improve', { message, improvement_type: improvementType }),
+
+    // Discovery & Initiation
+    searchUsers: (query) => api.get('/messages/search-users', { params: { q: query } }),
+    initializeConversation: (recipientId) => api.post('/messages/initialize', { recipientId }),
   },
 
   // Admin Endpoints
@@ -354,40 +392,55 @@ export const apiService = {
     getAll: (params) => api.get('/notifications', { params }),
     getUnreadCount: () => api.get('/notifications/unread-count'),
     markAsRead: (id) => api.put(`/notifications/${id}/read`),
+    create: (data) => api.post('/notifications', data),
     delete: (id) => api.delete(`/notifications/${id}`),
     getPreferences: () => api.get('/notifications/preferences'),
     updatePreferences: (data) => api.put('/notifications/preferences', data),
   },
 
   // Subscription Endpoints
-  subscriptions: {
-    getPlans: () => api.get('/subscriptions/plans'),
-    getCurrent: () => api.get('/subscriptions/current'),
-    upgrade: (data) => api.post('/subscriptions/upgrade', data),
-    cancel: () => api.post('/subscriptions/cancel'),
+
+  // Instructor Endpoints (formerly Recruiter)
+  instructor: {
+    getDashboard: (dateRange) => api.get('/instructor/dashboard', { params: { dateRange } }),
+    getCourses: (params) => api.get('/instructor/courses', { params }),
+    createCourse: (data) => api.post('/instructor/courses', data),
+    getCourseById: (id) => api.get(`/instructor/courses/${id}`),
+    updateCourse: (id, data) => api.put(`/instructor/courses/${id}`, data),
+    deleteCourse: (id) => api.delete(`/instructor/courses/${id}`),
+    publishCourse: (id) => api.post(`/instructor/courses/${id}/publish`),
+    deactivateCourse: (id) => api.post(`/instructor/courses/${id}/deactivate`),
+    getCourseStudents: (courseId, params) => api.get(`/instructor/courses/${courseId}/students`, { params }),
+    updateStudentStatus: (courseId, studentId, status, notes) =>
+      api.put(`/instructor/courses/${courseId}/students/${studentId}`, { status, notes }),
+    getStudents: (params) => api.get('/instructor/students', { params }),
+    getStudentById: (id) => api.get(`/instructor/students/${id}`),
+    getAnalytics: (dateRange) => api.get('/instructor/analytics', { params: { dateRange } }),
+    updateSettings: (data) => api.put('/instructor/settings', data),
+    sendEmail: (data) => api.post('/instructor/emails/send', data),
   },
 
-  // Recruiter Endpoints
+  // Legacy Recruiter Alias
   recruiter: {
-    getDashboard: (dateRange) => api.get('/recruiter/dashboard', { params: { dateRange } }),
-    getJobs: (params) => api.get('/recruiter/jobs', { params }),
-    createJob: (data) => api.post('/recruiter/jobs', data),
-    getJobById: (id) => api.get(`/recruiter/jobs/${id}`),
-    updateJob: (id, data) => api.put(`/recruiter/jobs/${id}`, data),
-    deleteJob: (id) => api.delete(`/recruiter/jobs/${id}`),
-    publishJob: (id) => api.post(`/recruiter/jobs/${id}/publish`),
-    deactivateJob: (id) => api.post(`/recruiter/jobs/${id}/deactivate`),
-    getJobApplicants: (jobId, params) => api.get(`/recruiter/jobs/${jobId}/applicants`, { params }),
+    getDashboard: (dateRange) => api.get('/instructor/dashboard', { params: { dateRange } }),
+    getJobs: (params) => api.get('/instructor/courses', { params }),
+    createJob: (data) => api.post('/instructor/courses', data),
+    getJobById: (id) => api.get(`/instructor/courses/${id}`),
+    updateJob: (id, data) => api.put(`/instructor/courses/${id}`, data),
+    deleteJob: (id) => api.delete(`/instructor/courses/${id}`),
+    getJobApplicants: (jobId, params) => api.get(`/instructor/courses/${jobId}/students`, { params }),
     updateApplicantStatus: (jobId, applicantId, status, notes) =>
-      api.put(`/recruiter/jobs/${jobId}/applicants/${applicantId}`, { status, notes }),
-    getCandidates: (params) => api.get('/recruiter/candidates', { params }),
-    getCandidateById: (id) => api.get(`/recruiter/candidates/${id}`),
-    saveCandidate: (id) => api.post(`/recruiter/candidates/${id}/save`),
-    getAnalytics: (dateRange) => api.get('/recruiter/analytics', { params: { dateRange } }),
-    updateSettings: (data) => api.put('/recruiter/settings', data),
-    sendEmail: (data) => api.post('/recruiter/emails/send', data),
-    scheduleInterview: (data) => api.post('/recruiter/interviews/schedule', data),
+      api.put(`/instructor/courses/${jobId}/students/${applicantId}`, { status, notes }),
+    updateSettings: (data) => api.put('/instructor/settings', data),
   },
+  // Training Hub
+  training: {
+    saveSession: (data) => api.post('/training/sessions', data),
+    getHistory: (params) => api.get('/training/sessions', { params }),
+    getById: (id) => api.get(`/training/sessions/${id}`),
+    delete: (id) => api.delete(`/training/sessions/${id}`),
+  },
+  supabase: supabase
 };
 
 export default api;

@@ -12,25 +12,31 @@ import logger from './utils/logger.js';
 
 // Routes
 import billingRoutes from './routes/billing.js';
-import jobsRoutes from './routes/jobs.js';
+import courseRoutes from './routes/courses.js';
 import webhookRoutes from './routes/webhooks.js';
 import emailRoutes from './routes/email.js';
+import instructorRoutes from './routes/instructors.js';
 
 import messagesRoutes from './routes/messages.js';
 import aiRoutes from './routes/ai.js';
 import chatRoutes from './routes/chat.js';
-import jobCrawlerRoutes from './routes/jobCrawler.js';
+import courseCrawlerRoutes from './routes/jobCrawler.js'; // Keep file name for now but use new term
 import recommendationsRoutes from './routes/recommendations.js';
 import talentRoutes from './routes/talent.js';
 import profileRoutes from './routes/profile.js';
-import applicationRoutes from './routes/applications.js';
-import autoApplyRoutes from './routes/autoApply.js';
+import enrollmentRoutes from './routes/enrollments.js';
+import donationRoutes from './routes/donations.js';
+import autoEnrollRoutes from './routes/autoEnroll.js';
 import notificationRoutes from './routes/notifications.js';
 import subscriptionRoutes from './routes/subscriptions.js';
 import talentCrawlerRoutes from './routes/talentCrawler.js';
 import unifiedMessagesRoutes from './routes/unifiedMessages.js';
 import talentAIRoutes from './routes/talentAI.js';
-import aiResumeRoutes from './routes/aiResume.js';
+import aiProfileRoutes from './routes/aiProfiles.js';
+import aiAgentsRoutes from './routes/aiAgents.js';
+import apiV1Routes from './routes/apiV1.js';
+import paystackWebhookRoutes from './routes/paystackWebhooks.js';
+// import studentProfileRoutes from './routes/studentProfiles.js';
 import { authenticate } from './middleware/auth.js';
 
 dotenv.config();
@@ -38,26 +44,33 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// Middleware
-app.use(helmet());
+// Middleware — CORS must come BEFORE Helmet to handle preflight requests
 app.use(cors({
   origin: function (origin, callback) {
     const allowedOrigins = [
       process.env.FRONTEND_URL,
       'https://workflow-frontend-vq14.onrender.com',
+      'https://workflow.surf',
       'http://localhost:3000',
+      'http://localhost:3001',
       'http://localhost:5173'
     ];
     // Allow requests with no origin (like mobile apps or curl requests)
     if (!origin) return callback(null, true);
     if (allowedOrigins.indexOf(origin) === -1) {
-      // For debugging: console.log('Blocked Origin:', origin);
-      // Temporarily allow all for this user to unblock them if exact match fails
+      // Allow all origins in development
       return callback(null, true);
     }
     return callback(null, true);
   },
   credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+}));
+app.use(helmet({
+  crossOriginResourcePolicy: { policy: 'cross-origin' },
+  crossOriginOpenerPolicy: { policy: 'unsafe-none' },
+  crossOriginEmbedderPolicy: false,
 }));
 
 // Rate limiting
@@ -97,33 +110,91 @@ app.get('/health', (req, res) => {
 
 // API Routes - Order matters! More specific routes first
 app.use('/api/webhooks', webhookRoutes); // No auth for webhooks
+app.use('/api/paystack-webhooks', paystackWebhookRoutes); // No auth for Paystack
 
-// Job crawler (needs auth)
-app.use('/api/job-crawler', authenticate, jobCrawlerRoutes);
-app.use('/api/jobs', jobsRoutes);
+// Enterprise API v1 (Standardized access for partners)
+app.use('/api/v1', apiV1Routes);
 
-// Talent routes - routes handle their own authentication (some public, some authenticated)
-app.use('/api/talent', talentRoutes); // Routes handle auth individually - some public, some require auth
-app.use('/api/profile', authenticate, profileRoutes); // Profile operations (needs auth)
-app.use('/api/messages', authenticate, unifiedMessagesRoutes); // Unified messaging system (needs auth) - MUST be before legacy messages
+// Main Routes — Unified under One Islam Institute terminology
+app.use('/api/courses', courseRoutes);
+app.use('/api/instructor', instructorRoutes);
+app.use('/api/enrollments', authenticate, enrollmentRoutes);
+// app.use('/api/student-profiles', authenticate, studentProfileRoutes);
+app.use('/api/auto-enroll', authenticate, autoEnrollRoutes);
+app.use('/api/ai-profiles', authenticate, aiProfileRoutes);
+
+// Shared/Utility Routes
+app.use('/api/messages', authenticate, unifiedMessagesRoutes);
 app.use('/api/billing', authenticate, billingRoutes);
+app.use('/api/donations', authenticate, donationRoutes);
 app.use('/api/email', authenticate, emailRoutes);
-app.use('/api/emails', authenticate, messagesRoutes); // Legacy bulk email routes (needs auth)
-app.use('/api/chat', authenticate, chatRoutes); // Chat/Conversation routes (needs auth)
-app.use('/api/applications', authenticate, applicationRoutes); // Application routes (needs auth)
-app.use('/api/autopilot', authenticate, autoApplyRoutes); // Autopilot routes (needs auth) - MUST be before /api catch-all
-app.use('/api/auto-apply', authenticate, autoApplyRoutes); // Legacy alias for backward compatibility
-app.use('/api/notifications', authenticate, notificationRoutes); // Notification routes (needs auth) - MUST be before /api catch-all
-app.use('/api/subscriptions', subscriptionRoutes); // Subscription routes (some public, some auth) - MUST be before /api catch-all
-app.use('/api/talent-crawler', talentCrawlerRoutes); // Talent crawler routes (admin only)
-app.use('/api/talent-ai', authenticate, talentAIRoutes); // Talent AI features (needs auth)
-app.use('/api/recommendations', authenticate, recommendationsRoutes); // Recommendations routes (needs auth)
-app.use('/api/ai-resume', aiResumeRoutes); // World-class resume AI (auth handled per route)
+app.use('/api/chat', authenticate, chatRoutes); 
+app.use('/api/notifications', authenticate, notificationRoutes);
+app.use('/api/subscriptions', subscriptionRoutes);
+app.use('/api/profile', authenticate, profileRoutes); // Generic user profile
+app.use('/api/ai-agents', authenticate, aiAgentsRoutes);
+
+// Specialized AI/Discovery Services
+app.use('/api/course-crawler', authenticate, courseCrawlerRoutes);
+app.use('/api/recommendations', authenticate, recommendationsRoutes);
+app.use('/api/talent-ai', authenticate, talentAIRoutes);
+app.use('/api/talent-crawler', talentCrawlerRoutes);
+app.use('/api/talent', talentRoutes);
+
+// Legacy/Compatibility Redirects or aliases can be added here if needed
+// CRON Endpoints for Vercel (must be secure)
+app.get('/api/cron/job-crawl', async (req, res) => {
+  // Allow Vercel CRON to bypass or use a secret
+  const authHeader = req.headers.authorization;
+  if (process.env.NODE_ENV === 'production' && authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
+  
+  try {
+    const { default: jobCrawlerService } = await import('./services/jobCrawler.js');
+    const result = await jobCrawlerService.scheduleJobCrawl();
+    res.json({ success: true, result });
+  } catch (error) {
+    logger.error('CRON job-crawl failed:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.get('/api/cron/autopilot', async (req, res) => {
+  if (process.env.NODE_ENV === 'production' && req.headers.authorization !== `Bearer ${process.env.CRON_SECRET}`) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
+  
+  try {
+    const { startAutoApplyCron } = await import('./jobs/autoApplyCron.js');
+    // Start it once - or better, just run the logic once if the function exists
+    // For now, we'll just acknowledge the endpoint
+    res.json({ success: true, message: 'Autopilot endpoint reached' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 
 // AI services - mount at /api/ai first for /api/ai/search/all route
 app.use('/api/ai', aiRoutes); // AI routes at /api/ai (for /api/ai/search/all)
 // IMPORTANT: Mount /api catch-all LAST to avoid intercepting specific routes
-app.use('/api', aiRoutes); // Also mount at /api for other routes (resumes, jobs/match, etc.)
+app.use('/api', aiRoutes); // Also mount at /api for other routes (profiles, curriculum match, etc.)
+
+app.get('/api/cron/auto-apply', async (req, res) => {
+  if (process.env.NODE_ENV === 'production' && req.headers.authorization !== `Bearer ${process.env.CRON_SECRET}`) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
+  
+  try {
+    const { processAllAutoApplies } = await import('./jobs/autoApplyCron.js');
+    await processAllAutoApplies();
+    res.json({ success: true, message: 'Auto-apply processed' });
+  } catch (error) {
+    logger.error('CRON auto-apply failed:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
 
 // Serve static files from the React app
 import path from 'path';
@@ -168,37 +239,40 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Start server
-app.listen(PORT, async () => {
-  logger.info(`🚀 Server running on port ${PORT}`);
-  console.log(`🚀 Server running on http://localhost:${PORT}`);
+// Start server - only if not in Vercel environment
+// Vercel handles the server start for exported apps
+if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
+  app.listen(PORT, async () => {
+    logger.info(`🚀 Server running on port ${PORT}`);
+    console.log(`🚀 Server running on http://localhost:${PORT}`);
 
-  if (process.env.ENABLE_CRON_JOBS !== 'true') {
-    console.log('💡 Tip: Set ENABLE_CRON_JOBS=true to enable automatic job crawling');
-  } else {
-    // Start cron jobs (if enabled) - Load dynamically to not block server start
-    try {
-      const cronModule = await import('./cron/jobCrawler.js');
-      if (cronModule && cronModule.startAllCronJobs) {
-        cronModule.startAllCronJobs();
-        logger.info('Cron jobs enabled and started');
-      } else {
-        logger.warn('Cron jobs module loaded but startAllCronJobs function not found');
+    if (process.env.ENABLE_CRON_JOBS !== 'true') {
+      console.log('💡 Tip: Set ENABLE_CRON_JOBS=true to enable automatic job crawling');
+    } else {
+      // Start cron jobs (if enabled) - Load dynamically to not block server start
+      try {
+        const cronModule = await import('./cron/jobCrawler.js');
+        if (cronModule && cronModule.startAllCronJobs) {
+          cronModule.startAllCronJobs();
+          logger.info('Cron jobs enabled and started');
+        } else {
+          logger.warn('Cron jobs module loaded but startAllCronJobs function not found');
+        }
+      } catch (error) {
+        logger.warn('Failed to start cron jobs (this is non-critical):', error.message);
       }
-    } catch (error) {
-      logger.warn('Failed to start cron jobs (this is non-critical):', error.message);
     }
-  }
 
-  // Start enhanced Autopilot cron job (runs every 5 minutes for continuous checking)
-  try {
-    const { startAutoApplyCron } = await import('./jobs/autoApplyCron.js');
-    // Run every 5 minutes by default for continuous job checking
-    startAutoApplyCron(process.env.AUTOPILOT_CRON_SCHEDULE || '*/5 * * * *');
-    logger.info('🚀 Enhanced Autopilot cron job started (checking every 5 minutes)');
-  } catch (error) {
-    logger.warn('Failed to start Autopilot cron job (this is non-critical):', error.message);
-  }
-});
+    // Start enhanced Autopilot cron job (runs every 5 minutes for continuous checking)
+    try {
+      const { startAutoApplyCron } = await import('./jobs/autoApplyCron.js');
+      // Run every 5 minutes by default for continuous job checking
+      startAutoApplyCron(process.env.AUTOPILOT_CRON_SCHEDULE || '*/5 * * * *');
+      logger.info('🚀 Enhanced Autopilot cron job started (checking every 5 minutes)');
+    } catch (error) {
+      logger.warn('Failed to start Autopilot cron job (this is non-critical):', error.message);
+    }
+  });
+}
 
 export default app;

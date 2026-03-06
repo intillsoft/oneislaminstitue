@@ -47,7 +47,7 @@ export const recruiterService = {
         const { data: apps } = await supabase
           .from('applications')
           .select('*')
-          .in('job_id', jobIds)
+          .in('course_id', jobIds)
           .limit(10000);
         applications = apps || [];
       }
@@ -135,12 +135,13 @@ export const recruiterService = {
       if (jobIds.length > 0) {
         const { data: apps } = await supabase
           .from('applications')
-          .select('job_id')
-          .in('job_id', jobIds);
+          .select('course_id')
+          .in('course_id', jobIds);
 
         if (apps) {
           apps.forEach(app => {
-            applicationCounts[app.job_id] = (applicationCounts[app.job_id] || 0) + 1;
+            const id = app.course_id || app.job_id;
+            applicationCounts[id] = (applicationCounts[id] || 0) + 1;
           });
         }
       }
@@ -274,7 +275,7 @@ export const recruiterService = {
       let query = supabase
         .from('applications')
         .select('*', { count: 'exact' })
-        .eq('job_id', jobId);
+        .eq('course_id', jobId);
 
       // Apply filters
       if (filters.status) {
@@ -354,7 +355,7 @@ export const recruiterService = {
           updated_at: new Date().toISOString(),
         })
         .eq('id', applicantId)
-        .eq('job_id', jobId)
+        .eq('course_id', jobId)
         .select()
         .single();
 
@@ -466,8 +467,9 @@ export const recruiterService = {
     });
 
     applications.forEach(app => {
-      if (jobStats[app.job_id]) {
-        jobStats[app.job_id].applications++;
+      const id = app.course_id || app.job_id;
+      if (jobStats[id]) {
+        jobStats[id].applications++;
       }
     });
 

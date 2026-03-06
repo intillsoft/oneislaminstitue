@@ -60,12 +60,12 @@ const ResumeBuilderPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white dark:bg-[#0A0E27]">
+    <div className="min-h-screen bg-bg">
       {/* Save Indicator */}
       {lastSaved && (
-        <div className="fixed bottom-4 right-4 z-50 flex items-center gap-2 px-4 py-2 bg-[#F8FAFC] dark:bg-[#1A2139] border border-[#E2E8F0] dark:border-[#1E2640] rounded-lg shadow-lg">
-          <Save className="w-4 h-4 text-success" />
-          <span className="text-xs text-[#64748B] dark:text-[#8B92A3]">
+        <div className="fixed bottom-4 right-4 z-50 flex items-center gap-2 px-4 py-2 bg-surface border border-border rounded-xl shadow-lg backdrop-blur-md">
+          <Save className="w-4 h-4 text-emerald-500" />
+          <span className="text-[10px] font-black uppercase tracking-widest text-text-muted">
             Saved {lastSaved.toLocaleTimeString()}
           </span>
         </div>

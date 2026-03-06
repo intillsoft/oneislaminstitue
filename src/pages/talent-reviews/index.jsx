@@ -57,19 +57,19 @@ const TalentReviews = () => {
         key={i}
         name="Star"
         size={16}
-        className={i < Math.floor(rating) ? 'text-yellow-500 fill-current' : 'text-gray-300 dark:text-gray-600'}
+        className={i < Math.floor(rating) ? 'text-amber-400 fill-current' : 'text-bg dark:text-gray-600'}
       />
     ));
   };
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-white dark:bg-[#0A0E27]">
+      <div className="min-h-screen bg-bg">
         <UnifiedSidebar />
         <div className="ml-0 lg:ml-64 min-h-screen flex items-center justify-center">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-workflow-primary mx-auto mb-4"></div>
-            <p className="text-[#64748B] dark:text-[#8B92A3]">Loading reviews...</p>
+            <p className="text-text-muted font-black uppercase tracking-widest text-[10px]">Loading reviews...</p>
           </div>
         </div>
       </div>
@@ -84,23 +84,23 @@ const TalentReviews = () => {
           <Breadcrumb />
 
           <div className="mb-6">
-            <h1 className="text-2xl sm:text-3xl font-bold text-[#0F172A] dark:text-[#E8EAED] mb-2">
+            <h1 className="text-2xl sm:text-3xl font-black text-text-primary dark:text-white mb-2 uppercase tracking-tight">
               Reviews
             </h1>
-            <p className="text-[#64748B] dark:text-[#8B92A3]">
-              Manage and respond to reviews from buyers
+            <p className="text-text-muted dark:text-slate-400 font-medium">
+              Manage and respond to feedback from buyer entities
             </p>
           </div>
 
           {/* Filters */}
-          <div className="bg-white dark:bg-[#13182E] border border-[#E2E8F0] dark:border-[#1E2640] rounded-lg p-4 mb-6">
-            <div className="flex items-center gap-4 flex-wrap">
+          <div className="bg-bg-elevated border border-border dark:border-white/5 rounded-2xl p-6 mb-8 shadow-xl">
+            <div className="flex items-center gap-6 flex-wrap">
               <div>
-                <label className="block text-sm font-medium text-[#0F172A] dark:text-[#E8EAED] mb-2">Filter by Rating</label>
+                <label className="block text-[10px] font-black text-text-muted uppercase tracking-widest mb-3">Filter by Rating</label>
                 <select
                   value={filter}
                   onChange={(e) => setFilter(e.target.value)}
-                  className="px-4 py-2 border border-[#E2E8F0] dark:border-[#1E2640] rounded-lg bg-white dark:bg-[#13182E] text-[#0F172A] dark:text-[#E8EAED]"
+                  className="px-4 py-2.5 border border-border dark:border-white/10 rounded-xl bg-bg text-text-primary dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-workflow-primary/40 appearance-none font-bold"
                 >
                   <option value="all">All Ratings</option>
                   <option value="5">5 Stars</option>
@@ -111,11 +111,11 @@ const TalentReviews = () => {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-[#0F172A] dark:text-[#E8EAED] mb-2">Sort By</label>
+                <label className="block text-[10px] font-black text-text-muted uppercase tracking-widest mb-3">Protocol Order</label>
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
-                  className="px-4 py-2 border border-[#E2E8F0] dark:border-[#1E2640] rounded-lg bg-white dark:bg-[#13182E] text-[#0F172A] dark:text-[#E8EAED]"
+                  className="px-4 py-2.5 border border-border dark:border-white/10 rounded-xl bg-bg text-text-primary dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-workflow-primary/40 appearance-none font-bold"
                 >
                   <option value="recent">Most Recent</option>
                   <option value="oldest">Oldest First</option>
@@ -132,45 +132,45 @@ const TalentReviews = () => {
               reviews.map((review) => (
                 <div
                   key={review.id}
-                  className="bg-white dark:bg-[#13182E] border border-[#E2E8F0] dark:border-[#1E2640] rounded-lg p-6"
+                  className="bg-bg-elevated border border-border dark:border-white/5 rounded-3xl p-8 shadow-xl hover:border-workflow-primary/20 transition-all duration-300"
                 >
                   <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-full bg-workflow-primary/10 flex items-center justify-center flex-shrink-0">
+                    <div className="w-14 h-14 rounded-2xl bg-workflow-primary/10 flex items-center justify-center flex-shrink-0 border border-workflow-primary/20">
                       {review.reviewer?.avatar_url ? (
                         <img
                           src={review.reviewer.avatar_url}
                           alt={review.reviewer.name}
-                          className="w-full h-full rounded-full object-cover"
+                          className="w-full h-full rounded-2xl object-cover"
                         />
                       ) : (
-                        <Icon name="User" className="w-6 h-6 text-workflow-primary" />
+                        <Icon name="User" className="w-8 h-8 text-workflow-primary" />
                       )}
                     </div>
                     <div className="flex-1">
                       <div className="flex items-center justify-between mb-2">
                         <div>
-                          <p className="font-semibold text-[#0F172A] dark:text-[#E8EAED]">
-                            {review.reviewer?.name || 'Anonymous'}
+                          <p className="font-black text-text-primary dark:text-white uppercase tracking-tight">
+                            {review.reviewer?.name || 'Anonymous Entity'}
                           </p>
                           <div className="flex items-center gap-1 mt-1">
                             {renderStars(review.rating)}
                           </div>
                         </div>
-                        <span className="text-sm text-[#64748B] dark:text-[#8B92A3]">
+                        <span className="text-[10px] font-black uppercase tracking-widest text-text-muted">
                           {formatDistanceToNow(new Date(review.created_at), { addSuffix: true })}
                         </span>
                       </div>
                       {review.review && (
-                        <p className="text-[#64748B] dark:text-[#8B92A3] mt-2">{review.review}</p>
+                        <p className="text-text-muted dark:text-slate-400 mt-4 leading-relaxed font-medium">{review.review}</p>
                       )}
                     </div>
                   </div>
                 </div>
               ))
             ) : (
-              <div className="text-center py-12 bg-white dark:bg-[#13182E] border border-[#E2E8F0] dark:border-[#1E2640] rounded-lg">
-                <Icon name="Star" className="w-16 h-16 text-[#64748B] dark:text-[#8B92A3] mx-auto mb-4" />
-                <p className="text-[#64748B] dark:text-[#8B92A3]">No reviews yet</p>
+              <div className="text-center py-20 bg-bg-elevated border border-border dark:border-white/5 rounded-[3rem] shadow-xl">
+                <Icon name="Star" className="w-16 h-16 text-bg mx-auto mb-6" />
+                <p className="text-text-muted font-black uppercase tracking-widest text-[10px]">No Feedback Sequences Detected</p>
               </div>
             )}
           </div>

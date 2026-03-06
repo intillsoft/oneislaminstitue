@@ -8,6 +8,7 @@ import logger from '../utils/logger.js';
 import { notificationService } from './notificationService.js';
 import subscriptionService from './subscriptionService.js';
 import aiAutoApplyService from './aiAutoApplyService.js';
+import { tasks } from "@trigger.dev/sdk/v3";
 
 export const autoApplyService = {
   /**
@@ -44,7 +45,7 @@ export const autoApplyService = {
         skills_required: settings.skills_required || [],
         salary_min: settings.salary_min || null,
         salary_max: settings.salary_max || null,
-        location: settings.location || null,
+        location: settings.location || [], // Enhanced to support array of locations
         remote_only: settings.remote_only ?? false,
         job_type: settings.job_type || [],
         experience_level: settings.experience_level || [],
@@ -63,7 +64,9 @@ export const autoApplyService = {
         check_interval_minutes: settings.check_interval_minutes || 15,
         use_ai_matching: settings.use_ai_matching ?? true,
         generate_cover_letter: settings.generate_cover_letter ?? true,
-        min_match_score: settings.min_match_score || 60,
+        min_match_score: typeof settings.min_match_score === 'number' ? settings.min_match_score : 50,
+        allowed_platforms: settings.allowed_platforms || ['internal', 'linkedin', 'glassdoor', 'indeed'],
+        best_resume_matching: settings.best_resume_matching ?? true,
       };
 
       // Check if settings exist for this user
@@ -114,7 +117,11 @@ export const autoApplyService = {
             company,
             location,
             salary_min,
-            salary_max
+            salary_max,
+            url,
+            application_url,
+            description,
+            source
           )
         `)
         .eq('user_id', userId)
@@ -239,7 +246,12 @@ export const autoApplyService = {
         .eq('user_id', userId);
 
       // Update subscription usage
-      await subscriptionService.incrementAutoApplyCount(userId);
+      // Update subscription usage for each successful application
+      if (applied > 0) {
+        for (let i = 0; i < applied; i++) {
+          await subscriptionService.incrementAutoApplyCount(userId);
+        }
+      }
 
       return {
         applied,
@@ -311,6 +323,7 @@ export const autoApplyService = {
       // Exclude already applied jobs
       if (appliedJobIds.size > 0) {
         const appliedIdsArray = Array.from(appliedJobIds);
+        logger.info(`🔍 [AutoApply] Excluding ${appliedIdsArray.length} already applied jobs`);
         // Supabase doesn't support NOT IN with large arrays, so we'll filter client-side
         // But we can still use it for small arrays
         if (appliedIdsArray.length < 100) {
@@ -318,28 +331,56 @@ export const autoApplyService = {
         }
       }
 
+      // DEBUG: Log query parameters
+      logger.info(`🔍 [AutoApply] Searching for jobs with criteria:`, {
+        keywords: settings.job_title_keywords,
+        location: settings.location,
+        salary_min: settings.salary_min,
+        job_type: settings.job_type,
+        remote: settings.remote_only
+      });
+
       // Build job search query with proper escaping
-      if (settings.job_title && settings.job_title.length > 0) {
-        const jobTitleKeywords = settings.job_title
-          .split(/[,;]/)
-          .map(k => k.trim())
+      if (settings.job_title_keywords && settings.job_title_keywords.length > 0) {
+        const jobTitleKeywords = settings.job_title_keywords
+          .map(k => {
+            const str = typeof k === 'string' ? k : String(k);
+            return str.trim();
+          })
           .filter(k => k.length > 0)
           .map(keyword => {
-            // Escape special characters for PostgREST
-            const escaped = keyword.replace(/[&()]/g, '');
-            return `title.ilike.%${escaped}%`;
+            // Remove commas (separator in OR clause) and other special chars that break PostgREST
+            // Also escape double quotes since we wrap the value in them
+            const sanitized = keyword.replace(/[,()]/g, '').replace(/"/g, '');
+            // Wrap in quotes to handle spaces and special chars like % correctly
+            return `title.ilike."%${sanitized}%"`;
           })
           .join(',');
+
         if (jobTitleKeywords.length > 0) {
           query = query.or(jobTitleKeywords);
         }
       }
 
-      // Filter by location
+      // Filter by location (Enhanced for multi-location)
       if (settings.remote_only) {
         query = query.or('location.ilike.%remote%,location.ilike.%anywhere%');
       } else if (settings.location) {
-        query = query.ilike('location', `%${settings.location}%`);
+        // Handle both array (new schema) and string (legacy)
+        let locations = [];
+        if (Array.isArray(settings.location)) {
+          locations = settings.location.filter(l => l && l.trim().length > 0);
+        } else if (typeof settings.location === 'string' && settings.location.trim().length > 0) {
+          locations = [settings.location];
+        }
+
+        if (locations.length > 0) {
+          // Construct OR query for multiple locations: location.ilike.%NY%,location.ilike.%London%
+          const locationQuery = locations
+            .map(loc => `location.ilike."%${loc.trim()}%"`)
+            .join(',');
+          query = query.or(locationQuery);
+        }
       }
 
       // Filter by salary range
@@ -371,7 +412,12 @@ export const autoApplyService = {
 
       const { data, error } = await query;
 
-      if (error) throw error;
+      if (error) {
+        logger.error('❌ [AutoApply] Job search query failed:', error);
+        throw error;
+      }
+
+      logger.info(`Found ${data?.length || 0} candidate jobs from DB before filtering`);
 
       // Filter by skills and exclude already applied jobs (client-side for large sets)
       let matchingJobs = data || [];
@@ -416,6 +462,7 @@ export const autoApplyService = {
                     job.title || '',
                     job.company || ''
                   );
+                  logger.info(`🧠 [AutoApply] Job ${job.id} (${job.title}): AI Match Score = ${analysis.matchScore}%`);
                   return { ...job, aiMatchScore: analysis.matchScore || 0 };
                 } catch (error) {
                   logger.warn(`AI matching failed for job ${job.id}:`, error);
@@ -425,6 +472,7 @@ export const autoApplyService = {
             );
 
             // Filter by minimum match score and sort by score
+            logger.info(`🔍 [AutoApply] Filtering ${jobsWithScores.length} jobs with minMatchScore=${minMatchScore}`);
             matchingJobs = jobsWithScores
               .filter(job => job.aiMatchScore >= minMatchScore)
               .sort((a, b) => {
@@ -463,26 +511,49 @@ export const autoApplyService = {
   },
 
   /**
+   * Select the best resume for a specific job
+   */
+  async pickBestResume(userId, job) {
+    try {
+      const { data: resumes } = await supabase
+        .from('resumes')
+        .select('*')
+        .eq('user_id', userId);
+
+      if (!resumes || resumes.length === 0) return null;
+      if (resumes.length === 1) return resumes[0];
+
+      // Score each resume
+      const scoredResumes = await Promise.all(
+        resumes.map(async (resume) => {
+          try {
+            const analysis = await aiAutoApplyService.analyzeJobMatch(
+              JSON.stringify(resume.content_json || {}),
+              job.description || '',
+              job.title || '',
+              job.company || ''
+            );
+            return { ...resume, matchScore: analysis.matchScore };
+          } catch (e) {
+            return { ...resume, matchScore: 0 };
+          }
+        })
+      );
+
+      // Return the one with the highest score
+      return scoredResumes.sort((a, b) => b.matchScore - a.matchScore)[0];
+    } catch (error) {
+      logger.error('Error picking best resume:', error);
+      return null;
+    }
+  },
+
+  /**
    * Apply to a job on behalf of user
    */
   async applyToJob(userId, jobId, settings) {
     try {
-      // Get user's default resume
-      const { data: resumes } = await supabase
-        .from('resumes')
-        .select('*')
-        .eq('user_id', userId)
-        .eq('is_default', true)
-        .limit(1);
-
-      const resume = resumes?.[0];
-
-      if (!resume) {
-        await this.logAutoApply(userId, jobId, 'failed', 'No resume found');
-        throw new Error('No resume found');
-      }
-
-      // Get job details
+      // Get job details first to determine source
       const { data: job } = await supabase
         .from('jobs')
         .select('*')
@@ -494,83 +565,84 @@ export const autoApplyService = {
         throw new Error('Job not found');
       }
 
-      // Use AI to analyze job match
-      let aiAnalysis = null;
-      let coverLetter = null;
-      try {
-        const resumeText = JSON.stringify(resume.content_json || {});
-        aiAnalysis = await aiAutoApplyService.analyzeJobMatch(
-          resumeText,
-          job.description || '',
-          job.title || '',
-          job.company || ''
-        );
+      // Check if platform is allowed
+      const platform = job.source || 'internal';
+      const allowedPlatforms = settings.allowed_platforms || ['internal'];
+      if (!allowedPlatforms.includes(platform)) {
+        await this.logAutoApply(userId, jobId, 'skipped', `Platform ${platform} not allowed`);
+        return null;
+      }
 
-        // Only apply if match score is above threshold (configurable, default 60)
-        const minMatchScore = settings.min_match_score || 60;
-        if (aiAnalysis.matchScore < minMatchScore) {
-          await this.logAutoApply(
-            userId,
-            jobId,
-            'skipped',
-            `Match score too low: ${aiAnalysis.matchScore} < ${minMatchScore}`
-          );
-          return null;
-        }
+      // Get user's resume (best match or default)
+      let resume = null;
+      if (settings.best_resume_matching) {
+        resume = await this.pickBestResume(userId, job);
+      } else {
+        const { data: resumes } = await supabase
+          .from('resumes')
+          .select('*')
+          .eq('user_id', userId)
+          .eq('is_default', true)
+          .limit(1);
+        resume = resumes?.[0];
+      }
 
-        // Generate AI-powered cover letter if enabled
-        if (settings.generate_cover_letter !== false) {
-          coverLetter = await aiAutoApplyService.generateCoverLetter(
+      if (!resume) {
+        await this.logAutoApply(userId, jobId, 'failed', 'No suitable resume found');
+        throw new Error('No resume found');
+      }
+
+      // Process based on source
+      if (platform === 'internal' || platform === 'WorkFlow') {
+        return await this.applyInternally(userId, job, resume, settings);
+      } else {
+        // STRATEGY: External Jobs move to Trigger.dev background task to prevent timeouts
+        logger.info(`🛰️ [AutoApply] External job detected (${platform}). Offloading to Trigger.dev Agent.`);
+
+        // 0. Calculate AI Match Score before offloading (for UI visibility)
+        let matchScore = null;
+        try {
+          const resumeText = JSON.stringify(resume.content_json || {});
+          const aiAnalysis = await aiAutoApplyService.analyzeJobMatch(
             resumeText,
             job.description || '',
             job.title || '',
             job.company || ''
           );
+          matchScore = aiAnalysis?.matchScore || 0;
+          logger.info(`🧠 [AutoApply] Pre-calculated match score: ${matchScore}%`);
+        } catch (error) {
+          logger.warn('Failed to calculate match score for external job:', error);
         }
-      } catch (aiError) {
-        logger.warn('AI analysis failed, proceeding with application:', aiError);
-        // Continue with application even if AI fails
-      }
 
-      // Create application directly in database
-      const applicationData = {
-        user_id: userId,
-        job_id: jobId,
-        resume_id: resume.id,
-        status: 'applied',
-        notes: `Auto-applied via Workflow Auto-Apply${aiAnalysis ? ` (AI Match Score: ${aiAnalysis.matchScore}%)` : ''}`,
-        cover_letter: coverLetter || null,
-      };
+        // 1. Log the initiation as 'processing'
+        const { data: log, error: logError } = await supabase
+          .from('auto_apply_logs')
+          .insert({
+            user_id: userId,
+            job_id: job.id,
+            status: 'processing',
+            platform: platform,
+            resume_id: resume.id,
+            match_score: matchScore, // Now included!
+            applied_at: new Date().toISOString()
+          })
+          .select()
+          .single();
 
-      // Add AI analysis as JSON if available
-      if (aiAnalysis) {
-        applicationData.ai_analysis = JSON.stringify(aiAnalysis);
-      }
+        if (logError) throw logError;
 
-      const { data: application, error: appError } = await supabase
-        .from('applications')
-        .insert(applicationData)
-        .select()
-        .single();
-
-      if (appError) {
-        throw appError;
-      }
-
-      // Log auto-apply
-      await this.logAutoApply(userId, jobId, 'success');
-
-      // Send notifications (job already fetched above)
-
-      if (job) {
-        await notificationService.sendAutoAppliedNotification(userId, job, {
-          platform: settings.notification_platform,
-          email: settings.notification_email,
-          sms: settings.notification_sms,
+        // 2. Trigger the background task
+        await tasks.trigger("autopilot-agent", {
+          jobUrl: job.url, // Corrected column
+          resumeData: resume.content_json,
+          userId: userId,
+          jobId: job.id,
+          logId: log.id
         });
-      }
 
-      return application;
+        return { success: true, queued: true };
+      }
     } catch (error) {
       logger.error('Error applying to job:', error);
       await this.logAutoApply(userId, jobId, 'failed', error.message);
@@ -578,6 +650,145 @@ export const autoApplyService = {
     }
   },
 
+  /**
+   * Retry external application using AI Agent
+   */
+  async retryAutoApply(userId, logId) {
+    try {
+      // Fetch Log + Job Details
+      const { data: log, error: logError } = await supabase
+        .from('auto_apply_logs')
+        .select(`
+          *,
+          jobs ( id, url, title, description, company )
+        `)
+        .eq('id', logId)
+        .eq('user_id', userId)
+        .single();
+
+      if (logError || !log) throw new Error('Log not found or access denied');
+      if (!log.jobs) throw new Error('Associated job not found');
+
+      // Fetch User's Resume
+      const { data: resumes } = await supabase
+        .from('resumes')
+        .select('*')
+        .eq('user_id', userId)
+        .eq('id', log.resume_id) // Prefer mapped resume
+        .limit(1);
+
+      let resume = resumes?.[0];
+
+      // Fallback if original resume deleted
+      if (!resume) {
+        const { data: defaultResumes } = await supabase
+          .from('resumes')
+          .select('*')
+          .eq('user_id', userId)
+          .eq('is_default', true)
+          .limit(1);
+        resume = defaultResumes?.[0];
+      }
+
+      if (!resume) throw new Error('No resume found for application');
+
+      // Update Log Status to processing
+      await supabase
+        .from('auto_apply_logs')
+        .update({ status: 'processing', reason: 'Manual Retry' })
+        .eq('id', logId);
+
+      // Trigger Background Task
+      await tasks.trigger("autopilot-agent", {
+        jobUrl: log.jobs.url,
+        resumeData: resume.content_json,
+        userId: userId,
+        jobId: log.jobs.id,
+        logId: logId
+      });
+
+      return { success: true, queued: true };
+
+    } catch (error) {
+      logger.error('Error retrying auto-apply:', error);
+      throw error;
+    }
+  },
+
+  /**
+   * Handle internal application
+   */
+  async applyInternally(userId, job, resume, settings) {
+    // Use AI to analyze job match
+    let aiAnalysis = null;
+    let coverLetter = null;
+    try {
+      const resumeText = JSON.stringify(resume.content_json || {});
+      aiAnalysis = await aiAutoApplyService.analyzeJobMatch(
+        resumeText,
+        job.description || '',
+        job.title || '',
+        job.company || ''
+      );
+
+      const minMatchScore = settings.min_match_score || 60;
+      if (aiAnalysis.matchScore < minMatchScore) {
+        await this.logAutoApply(
+          userId,
+          job.id,
+          'skipped',
+          `Match score too low: ${aiAnalysis.matchScore} < ${minMatchScore}`,
+          'internal',
+          resume.id,
+          aiAnalysis.matchScore
+        );
+        return null;
+      }
+
+      if (settings.generate_cover_letter !== false) {
+        coverLetter = await aiAutoApplyService.generateCoverLetter(
+          resumeText,
+          job.description || '',
+          job.title || '',
+          job.company || ''
+        );
+      }
+    } catch (aiError) {
+      logger.warn('AI analysis failed, proceeding:', aiError);
+    }
+
+    const applicationData = {
+      user_id: userId,
+      job_id: job.id,
+      resume_id: resume.id,
+      status: 'applied',
+      notes: `Autopilot applied (AI Match: ${aiAnalysis?.matchScore || 'N/A'}%)`,
+      cover_letter: coverLetter || null,
+      ai_analysis: aiAnalysis ? JSON.stringify(aiAnalysis) : null,
+    };
+
+    const { data: application, error: appError } = await supabase
+      .from('applications')
+      .insert(applicationData)
+      .select()
+      .single();
+
+    if (appError) throw appError;
+
+    await this.logAutoApply(userId, job.id, 'success', null, 'internal', resume.id, aiAnalysis?.matchScore);
+
+    await notificationService.sendAutoAppliedNotification(userId, job, {
+      platform: settings.notification_platform,
+      email: settings.notification_email,
+      sms: settings.notification_sms,
+    });
+
+    return application;
+  },
+
+  /**
+   * Handle third-party application via browser automation simulation
+   */
   /**
    * Get auto-apply statistics for dashboard
    */
@@ -607,32 +818,35 @@ export const autoApplyService = {
         .from('auto_apply_logs')
         .select('*')
         .eq('user_id', userId)
-        .gte('created_at', startDate.toISOString());
+        .gte('applied_at', startDate.toISOString());
 
       if (error) throw error;
 
       // Calculate totals
       const total = logs.length;
-      const successful = logs.filter(l => l.status === 'success').length;
+      const internalApplied = logs.filter(l => l.status === 'success').length;
+      const externalApplied = logs.filter(l => l.status === 'manual_applied').length;
+      const pendingMatches = logs.filter(l => l.status === 'manual_apply').length;
       const failed = logs.filter(l => l.status === 'failed').length;
 
       // Calculate today's count
       const todayStart = new Date();
       todayStart.setHours(0, 0, 0, 0);
-      const todayCount = logs.filter(l => new Date(l.created_at) >= todayStart).length;
+      const todayCount = logs.filter(l => new Date(l.applied_at) >= todayStart).length;
 
       // Group by date for trends
       const trendsMap = {};
       // Initialize all dates in range with 0
       for (let d = new Date(startDate); d <= now; d.setDate(d.getDate() + 1)) {
         const dateStr = d.toISOString().split('T')[0];
-        trendsMap[dateStr] = { date: dateStr, successful: 0, failed: 0 };
+        trendsMap[dateStr] = { date: dateStr, internal: 0, external: 0, failed: 0 };
       }
 
       logs.forEach(log => {
-        const dateStr = new Date(log.created_at).toISOString().split('T')[0];
+        const dateStr = new Date(log.applied_at).toISOString().split('T')[0];
         if (trendsMap[dateStr]) {
-          if (log.status === 'success') trendsMap[dateStr].successful++;
+          if (log.status === 'success') trendsMap[dateStr].internal++;
+          if (log.status === 'manual_applied') trendsMap[dateStr].external++;
           if (log.status === 'failed') trendsMap[dateStr].failed++;
         }
       });
@@ -670,7 +884,9 @@ export const autoApplyService = {
 
       return {
         total,
-        successful,
+        internalApplied,
+        externalApplied,
+        pendingMatches,
         failed,
         pending: pending || 0,
         todayCount,
@@ -684,9 +900,37 @@ export const autoApplyService = {
   },
 
   /**
+   * Confirm manual application of a job
+   */
+  async confirmManualApply(userId, logId) {
+    try {
+      const { data, error } = await supabase
+        .from('auto_apply_logs')
+        .update({
+          status: 'manual_applied',
+          applied_at: new Date().toISOString()
+        })
+        .eq('id', logId)
+        .eq('user_id', userId)
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      // Also increment subscription usage for manual applied
+      await subscriptionService.incrementAutoApplyCount(userId);
+
+      return data;
+    } catch (error) {
+      logger.error('Error confirming manual apply:', error);
+      throw error;
+    }
+  },
+
+  /**
    * Log auto-apply activity
    */
-  async logAutoApply(userId, jobId, status, reason = null) {
+  async logAutoApply(userId, jobId, status, reason = null, platform = 'internal', resumeId = null, matchScore = null) {
     try {
       const { error } = await supabase
         .from('auto_apply_logs')
@@ -695,6 +939,9 @@ export const autoApplyService = {
           job_id: jobId,
           status,
           reason,
+          platform,
+          resume_id: resumeId,
+          match_score: matchScore,
           notification_sent: status === 'success',
         });
 

@@ -19,7 +19,8 @@ const supabase = createClient(
 /**
  * Calculate job match score
  */
-export async function calculateJobMatch(resumeId, jobId) {
+export async function calculateJobMatch(resumeId, jobId, options = {}) {
+  const { aiProvider = null, skipRecommendations = false } = options;
   try {
     // Fetch resume and job data
     const { data: resume } = await supabase
@@ -72,14 +73,17 @@ export async function calculateJobMatch(resumeId, jobId) {
     // Identify missing skills
     const missingSkills = identifyMissingSkills(resume.content_json, job);
 
-    // Generate recommendations
-    const recommendations = await generateRecommendations(
-      resume.content_json,
-      job,
-      missingSkills,
-      overallScore,
-      aiProvider // Pass AI provider preference
-    );
+    // Generate recommendations (unless skipped)
+    let recommendations = [];
+    if (!skipRecommendations) {
+      recommendations = await generateRecommendations(
+        resume.content_json,
+        job,
+        missingSkills,
+        overallScore,
+        aiProvider // Pass AI provider preference
+      );
+    }
 
     // Identify strengths
     const strengths = identifyStrengths(resume.content_json, job, skillsAnalysis);
@@ -112,7 +116,7 @@ export async function calculateJobMatch(resumeId, jobId) {
  */
 function extractResumeText(resumeJson) {
   const sections = [];
-  
+
   if (resumeJson.summary) sections.push(resumeJson.summary);
   if (resumeJson.experience) {
     resumeJson.experience.forEach(exp => {
@@ -141,7 +145,7 @@ function extractResumeText(resumeJson) {
  */
 async function getOrCreateEmbedding(type, id, text) {
   // Check cache first
-  const cacheKey = `${type}_${id}`;
+  const cacheKey = `${type}_${id}_v1`; // Added versioning to force regeneration
   const { data: cached } = await supabase
     .from('embeddings_cache')
     .select('embedding')
@@ -149,18 +153,36 @@ async function getOrCreateEmbedding(type, id, text) {
     .single();
 
   if (cached?.embedding) {
-    return cached.embedding;
+    // If it's stored as JSONB, Supabase might return it as an object/array directly
+    // Ensure it's a valid numeric array
+    if (Array.isArray(cached.embedding) && cached.embedding.length > 0 && typeof cached.embedding[0] === 'number') {
+      return cached.embedding;
+    }
+    // If it was stored as a vector string (unlikely after migration), parse it
+    if (typeof cached.embedding === 'string' && cached.embedding.startsWith('[')) {
+      try {
+        const parsed = JSON.parse(cached.embedding);
+        if (Array.isArray(parsed)) return parsed;
+      } catch (e) {
+        logger.warn('Failed to parse cached vector string');
+      }
+    }
   }
 
   // Generate new embedding
-  const embedding = await generateEmbedding(text);
+  const embedding = await aiProviderService.generateEmbedding(text);
 
-  // Cache it
+  // Validate embedding before caching
+  if (!Array.isArray(embedding) || embedding.length === 0) {
+    throw new Error('Failed to generate valid numeric embedding');
+  }
+
+  // Cache it - uses JSONB column now
   await supabase
     .from('embeddings_cache')
     .upsert({
       cache_key: cacheKey,
-      embedding,
+      embedding: embedding, // Supabase handles array -> jsonb conversion
       text_preview: text.substring(0, 200),
       created_at: new Date().toISOString(),
     }, {
@@ -228,10 +250,10 @@ function analyzeExperienceLevel(resumeJson, job) {
   }
 
   // Check if resume indicates appropriate experience
-  const hasSeniorIndicators = resumeText.includes('lead') || resumeText.includes('managed') || 
-                              resumeText.includes('directed') || resumeText.includes('architected');
+  const hasSeniorIndicators = resumeText.includes('lead') || resumeText.includes('managed') ||
+    resumeText.includes('directed') || resumeText.includes('architected');
   const hasJuniorIndicators = resumeText.includes('intern') || resumeText.includes('entry') ||
-                              resumeText.includes('assisted') || resumeText.includes('learned');
+    resumeText.includes('assisted') || resumeText.includes('learned');
 
   if (experienceLevel === 'senior' && hasSeniorIndicators) return 100;
   if (experienceLevel === 'junior' && hasJuniorIndicators) return 100;
@@ -275,7 +297,7 @@ function calculateOverallScore(scores) {
     location: 0.1,
   };
 
-  const weightedSum = 
+  const weightedSum =
     scores.semantic * weights.semantic +
     scores.skills * weights.skills +
     scores.experience * weights.experience +

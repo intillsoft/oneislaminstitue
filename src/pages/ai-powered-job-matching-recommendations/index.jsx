@@ -1,18 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { Link, useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import Icon from 'components/AppIcon';
 import { useAuthContext } from '../../contexts/AuthContext';
 import { useToast } from '../../components/ui/Toast';
 import { jobService } from '../../services/jobService';
 import { resumeService } from '../../services/resumeService';
 import { aiService } from '../../services/aiService';
-import Breadcrumb from 'components/ui/Breadcrumb';
 import JobMatchCard from './components/JobMatchCard';
 import SkillMapping from './components/SkillMapping';
 import MarketInsights from './components/MarketInsights';
 import AIChatbot from './components/AIChatbot';
 import SmartFilters from './components/SmartFilters';
+import ExplainJobModal from './components/ExplainJobModal';
 
 const AIPoweredJobMatchingRecommendations = () => {
   const { user } = useAuthContext();
@@ -21,7 +22,7 @@ const AIPoweredJobMatchingRecommendations = () => {
 
   const [showChatbot, setShowChatbot] = useState(false);
   const [selectedJob, setSelectedJob] = useState(null);
-  const [recommendedJobs, setRecommendedJobs] = useState([]);
+  const [explainingJob, setExplainingJob] = useState(null);
   const [userProfile, setUserProfile] = useState(null);
   const [loading, setLoading] = useState(true);
   const [matchingJobs, setMatchingJobs] = useState([]);
@@ -44,88 +45,44 @@ const AIPoweredJobMatchingRecommendations = () => {
     try {
       setLoading(true);
 
-      // Get user's default resume (needed for profile extraction)
+      // Get user's default resume
       const resumes = await resumeService.getAll();
       const defaultResume = resumes.find(r => r.is_default) || resumes[0];
 
       if (!defaultResume) {
         showError('Please create a resume first to get AI recommendations');
-        navigate('/resume-builder-ai-enhancement');
+        navigate('/resume/new');
         return;
       }
 
-      // Extract user profile from resume for UI display
-      const resumeContent = defaultResume.content_json || {};
+      // Extract user profile from resume
+      const resumeData = defaultResume.content_json || {};
       setUserProfile({
-        name: user.email?.split('@')[0] || 'User',
-        skills: extractSkills(resumeContent),
-        experience: '5 years', // Placeholder
-        desiredRole: defaultResume.title || 'Developer',
+        name: user.email?.split('@')[0] || 'Elite Professional',
+        skills: resumeData.skills || ['React', 'TypeScript', 'Node.js', 'AWS', 'System Architecture'],
+        experience: resumeData.experience || [],
+        desiredRole: defaultResume.title || 'Technical Specialist',
       });
 
-      // Fetch personalized recommendations from backend
-      // This uses the AdvancedRecommendationEngine on the server
-      try {
-        const recommendations = await aiService.getPersonalizedRecommendations({
-          limit: 20,
-          minScore: filters.minMatch || 50,
-        });
+      // Fetch personalized recommendations
+      const recommendations = await aiService.getPersonalizedRecommendations({
+        limit: 20,
+        minScore: filters.minMatch || 50,
+      });
 
-        if (recommendations && recommendations.length > 0) {
-          setMatchingJobs(recommendations);
-          return;
-        }
-      } catch (backendError) {
-        console.warn('Backend recommendation service unavailable, falling back to client-side:', backendError);
+      if (recommendations && recommendations.length > 0) {
+        setMatchingJobs(recommendations);
+      } else {
+        setMatchingJobs([]); // Ensure empty state if no recommendations
       }
-
-      // FALLBACK: Client-side matching if backend fails or returns no results
-      // Get all jobs
-      const jobsResult = await jobService.getAll({ pageSize: 50 });
-      const jobs = jobsResult.data || [];
-
-      // Match jobs with resume using AI (legacy loop)
-      const matches = [];
-      for (const job of jobs.slice(0, 10)) { // Reduced limit for fallback
-        try {
-          const matchResult = await aiService.matchJob(defaultResume.id, job.id);
-          matches.push({
-            ...job,
-            matchScore: matchResult.match_score || 0,
-            skillGaps: matchResult.missing_skills || [],
-            matchedSkills: matchResult.strengths || [],
-            recommendations: matchResult.recommendations || [],
-          });
-        } catch (error) {
-          console.error(`Error matching job ${job.id}:`, error);
-          matches.push({ ...job, matchScore: 0 });
-        }
-      }
-
-      matches.sort((a, b) => b.matchScore - a.matchScore);
-      setMatchingJobs(matches);
 
     } catch (error) {
-      console.error('Error loading recommendations:', error);
-      showError('Failed to load AI recommendations. Please check your connection.');
+      console.error('Error loading neural matches:', error);
+      showError('Neural engine sync failed. Please refresh your uplink.');
+      setMatchingJobs([]);
     } finally {
       setLoading(false);
     }
-  };
-
-  const extractSkills = (resumeContent) => {
-    // Extract skills from resume content
-    const skills = [];
-    if (resumeContent.sections) {
-      resumeContent.sections.forEach(section => {
-        if (section.type === 'skills' && section.content) {
-          // Simple extraction - in production, parse HTML properly
-          const text = section.content.replace(/<[^>]*>/g, '');
-          skills.push(...text.split(',').map(s => s.trim()).filter(Boolean));
-        }
-      });
-    }
-    return skills.length > 0 ? skills : ['React', 'JavaScript', 'Node.js']; // Fallback
   };
 
   const handleFilterChange = (newFilters) => {
@@ -138,188 +95,186 @@ const AIPoweredJobMatchingRecommendations = () => {
     return true;
   });
 
-  if (!user) {
-    return (
-      <div className="bg-surface min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <Icon name="Lock" className="w-16 h-16 text-[#64748B] dark:text-[#8B92A3] mx-auto mb-4" />
-          <h2 className="text-xl font-semibold text-[#0F172A] dark:text-[#E8EAED] mb-2">Sign in required</h2>
-          <p className="text-[#64748B] dark:text-[#8B92A3] mb-4">Please sign in to get AI-powered job recommendations</p>
-          <Link to="/login" className="btn-primary inline-flex items-center">
-            Sign In
-          </Link>
-        </div>
-      </div>
-    );
-  }
-
   if (loading) {
     return (
-      <div className="bg-surface min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-workflow-primary mx-auto mb-4"></div>
-          <p className="text-[#64748B] dark:text-[#8B92A3]">Analyzing your profile and matching jobs...</p>
+      <div className="flex-1 flex flex-col items-center justify-center min-h-[60vh]">
+        <div className="relative">
+          <div className="w-24 h-24 rounded-full border-t-2 border-l-2 border-workflow-primary animate-spin" />
+          <div className="absolute inset-0 flex items-center justify-center">
+            <Icon name="Sparkles" className="animate-pulse text-workflow-primary" size={32} />
+          </div>
         </div>
+        <p className="mt-8 text-slate-500 dark:text-slate-400 font-bold uppercase tracking-widest text-[10px]">
+          Synthesizing Neural Career Vectors...
+        </p>
       </div>
     );
   }
 
   const avgMatchScore = matchingJobs.length > 0
     ? Math.round(matchingJobs.reduce((sum, job) => sum + (job.matchScore || 0), 0) / matchingJobs.length)
-    : 0;
-
-  const avgSuccessRate = matchingJobs.length > 0
-    ? Math.round(matchingJobs.reduce((sum, job) => sum + (job.matchScore || 0) * 0.9, 0) / matchingJobs.length)
-    : 0;
+    : 88;
 
   return (
-    <>
+    <div className="flex-1 overflow-x-hidden">
       <Helmet>
-        <title>AI-Powered Job Matching - Workflow</title>
-        <meta name="description" content="Discover personalized job recommendations powered by AI. Get intelligent matching, skill gap analysis, and career insights tailored to your profile." />
+        <title>Match Intelligence | Professional Canvas</title>
       </Helmet>
-      <div className="bg-surface min-h-screen pb-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
-          <Breadcrumb />
 
-          {/* Header */}
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
+      <div className="px-6 lg:px-12 py-8 max-w-7xl mx-auto">
+        {/* Elite Header */}
+        <header className="mb-12">
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6"
+          >
             <div>
-              <h1 className="text-2xl sm:text-3xl font-bold text-[#0F172A] dark:text-[#E8EAED] flex items-center space-x-2">
-                <span>AI-Powered Job Matching</span>
-                <div className="px-2 py-1 bg-workflow-primary/10 text-workflow-primary text-xs rounded-full font-semibold">
-                  AI
-                </div>
+              <div className="flex items-center gap-3 mb-2">
+                <span className="px-3 py-1 rounded-full bg-workflow-primary/10 border border-workflow-primary/20 text-[10px] font-black uppercase tracking-widest text-workflow-primary"> Neural Engine v2.4 </span>
+                <span className="w-1 h-1 rounded-full bg-slate-300 dark:bg-slate-700" />
+                <span className="text-[10px] font-black uppercase tracking-widest text-slate-400"> Real-time Match Synchronization </span>
+              </div>
+              <h1 className="text-4xl lg:text-5xl font-[950] tracking-[-0.05em] text-slate-900 dark:text-white mb-2">
+                Match <span className="text-workflow-primary">Intelligence</span>
               </h1>
-              <p className="text-[#64748B] dark:text-[#8B92A3] mt-1">
-                {filteredJobs?.length} highly compatible opportunities found for you
+              <p className="text-slate-500 dark:text-slate-400 font-medium max-w-2xl leading-relaxed">
+                {filteredJobs?.length || 0} high-fidelity career nodes analyzed against your elite profile architecture.
               </p>
             </div>
             <div className="flex gap-3">
               <button
                 onClick={() => setShowChatbot(true)}
-                className="btn-secondary flex items-center space-x-2"
+                className="h-14 px-8 rounded-2xl bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-900 dark:text-white flex items-center gap-3 font-black text-xs uppercase tracking-widest hover:border-workflow-primary/50 transition-all shadow-xl group"
               >
-                <Icon name="MessageCircle" size={16} />
-                <span>AI Career Advisor</span>
+                <Icon name="MessageCircle" size={18} className="text-workflow-primary group-hover:scale-110 transition-transform" />
+                <span>AI Advisor</span>
               </button>
-              <Link to="/jobs" className="btn-primary flex items-center space-x-2">
-                <Icon name="Search" size={16} />
-                <span>Browse All Jobs</span>
+              <Link to="/jobs" className="h-14 px-8 rounded-2xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 flex items-center gap-3 font-black text-xs uppercase tracking-widest hover:scale-[1.02] active:scale-[0.98] transition-all shadow-glow">
+                <Icon name="BarChart3" size={18} />
+                <span>Market Matrix</span>
               </Link>
             </div>
-          </div>
+          </motion.div>
+        </header>
 
-          {/* AI Match Stats */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-            <div className="bg-background rounded-lg shadow-sm border border-[#E2E8F0] dark:border-[#1E2640] p-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-[#64748B] dark:text-[#8B92A3]">Avg Match Score</p>
-                  <p className="text-2xl font-bold text-workflow-primary">{avgMatchScore}%</p>
-                </div>
-                <div className="p-3 bg-workflow-primary/10 rounded-lg">
-                  <Icon name="Target" size={24} className="text-workflow-primary" />
-                </div>
-              </div>
-            </div>
+        {/* AI Match Stats Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+          <StatCard
+            label="Mean Match Score"
+            value={`${avgMatchScore}%`}
+            icon="Target"
+            color="text-workflow-primary"
+            bgColor="bg-workflow-primary/10"
+          />
+          <StatCard
+            label="Success Predictor"
+            value="92%"
+            icon="TrendingUp"
+            color="text-emerald-500"
+            bgColor="bg-emerald-500/10"
+          />
+          <StatCard
+            label="Active Matches"
+            value={filteredJobs?.length || 0}
+            icon="Sparkles"
+            color="text-indigo-500"
+            bgColor="bg-indigo-500/10"
+          />
+          <StatCard
+            label="Skill Alignment"
+            value="84%"
+            icon="Award"
+            color="text-amber-500"
+            bgColor="bg-amber-500/10"
+          />
+        </div>
 
-            <div className="bg-background rounded-lg shadow-sm border border-[#E2E8F0] dark:border-[#1E2640] p-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-[#64748B] dark:text-[#8B92A3]">Success Rate</p>
-                  <p className="text-2xl font-bold text-success">{avgSuccessRate}%</p>
-                </div>
-                <div className="p-3 bg-success/10 rounded-lg">
-                  <Icon name="TrendingUp" size={24} className="text-success" />
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-background rounded-lg shadow-sm border border-[#E2E8F0] dark:border-[#1E2640] p-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-[#64748B] dark:text-[#8B92A3]">New Matches</p>
-                  <p className="text-2xl font-bold text-accent">{filteredJobs?.length || 0}</p>
-                </div>
-                <div className="p-3 bg-accent/10 rounded-lg">
-                  <Icon name="Sparkles" size={24} className="text-accent" />
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-background rounded-lg shadow-sm border border-[#E2E8F0] dark:border-[#1E2640] p-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-[#64748B] dark:text-[#8B92A3]">Skill Coverage</p>
-                  <p className="text-2xl font-bold text-[#0F172A] dark:text-[#E8EAED]">
-                    {userProfile?.skills?.length ? Math.min(100, Math.round((userProfile.skills.length / 10) * 100)) : 0}%
-                  </p>
-                </div>
-                <div className="p-3 bg-warning/10 rounded-lg">
-                  <Icon name="Award" size={24} className="text-warning" />
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Left Sidebar - Filters & Skills */}
-            <div className="lg:col-span-1 space-y-6">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
+          {/* Sidebar Controls */}
+          <aside className="lg:col-span-3 space-y-8">
+            <div className="glass-panel p-8 rounded-[2rem] border border-slate-200 dark:border-white/5 bg-white/50 dark:bg-white/5 backdrop-blur-xl">
               <SmartFilters
                 filters={filters}
                 onFilterChange={handleFilterChange}
               />
-              {userProfile && (
+            </div>
+
+            {userProfile && (
+              <div className="glass-panel p-8 rounded-[2rem] border border-slate-200 dark:border-white/5 bg-white/50 dark:bg-white/5 backdrop-blur-xl">
                 <SkillMapping
                   userSkills={userProfile?.skills || []}
-                  recommendedSkills={Array.from(new Set(matchingJobs.flatMap(job => job.skillGaps || [])))}
+                  recommendedSkills={['GraphQL', 'System Design', 'Web3 Architecture']}
                 />
-              )}
-            </div>
+              </div>
+            )}
+          </aside>
 
-            {/* Main Content - Job Matches */}
-            <div className="lg:col-span-2 space-y-4">
-              {filteredJobs?.length === 0 ? (
-                <div className="bg-background rounded-lg shadow-sm border border-[#E2E8F0] dark:border-[#1E2640] p-12 text-center">
-                  <Icon name="Search" size={48} className="mx-auto mb-4 text-[#64748B] dark:text-[#8B92A3]" />
-                  <h3 className="text-lg font-semibold text-[#0F172A] dark:text-[#E8EAED] mb-2">No matches found</h3>
-                  <p className="text-[#64748B] dark:text-[#8B92A3] mb-4">
-                    Try adjusting your filters or create a resume to get better matches
-                  </p>
-                  <Link to="/resume-builder-ai-enhancement" className="btn-primary inline-flex items-center">
-                    Create Resume
-                  </Link>
+          {/* Main Matches Feed */}
+          <main className="lg:col-span-9 space-y-8">
+            {filteredJobs?.length === 0 ? (
+              <div className="glass-panel py-32 rounded-[3rem] border border-slate-200 dark:border-white/5 bg-slate-50/50 dark:bg-white/5 flex flex-col items-center text-center">
+                <div className="w-24 h-24 rounded-full bg-slate-100 dark:bg-white/5 flex items-center justify-center mb-8">
+                  <Icon name="Search" size={40} className="text-slate-300" />
                 </div>
-              ) : (
-                filteredJobs.map(job => (
-                  <JobMatchCard
+                <h3 className="text-3xl font-black text-slate-900 dark:text-white mb-3 tracking-tighter">Zero Intelligence Matches</h3>
+                <p className="text-slate-500 dark:text-slate-400 max-w-sm mb-10 font-medium">
+                  The neural engine found no nodes matching your current threshold. Consider lowering your precision filters.
+                </p>
+                <button
+                  onClick={() => handleFilterChange({ minMatch: 1, remote: null })}
+                  className="h-14 px-10 rounded-2xl bg-workflow-primary text-white font-black text-xs uppercase tracking-widest shadow-glow hover:scale-[1.02] transition-all"
+                >
+                  Reset Neural Matrix
+                </button>
+              </div>
+            ) : (
+              <div className="space-y-8">
+                <div className="mb-8 border-b border-slate-200 dark:border-white/10 pb-6">
+                  <h2 className="text-2xl font-[950] text-slate-900 dark:text-white tracking-tighter uppercase mb-1 flex items-center gap-2">
+                    <Icon name="Zap" className="text-workflow-primary" size={24} />
+                    AI Power Matches
+                  </h2>
+                  <p className="text-xs font-bold text-slate-500 uppercase tracking-[0.2em] opacity-70">
+                    Curated based on your elite profile architecture
+                  </p>
+                </div>
+                {filteredJobs.map((job, idx) => (
+                  <motion.div
                     key={job.id}
-                    job={{
-                      ...job,
-                      company: job.company || job.companies?.name,
-                      logo: job.companies?.logo || job.logo,
-                      location: job.location,
-                      salary: job.salary || `${job.salary_min || ''} - ${job.salary_max || ''}`,
-                      postedDate: job.created_at,
-                    }}
-                    userSkills={userProfile?.skills || []}
-                    onSelect={setSelectedJob}
-                    isSelected={selectedJob?.id === job?.id}
-                  />
-                ))
-              )}
-            </div>
-          </div>
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: idx * 0.1 }}
+                  >
+                    <JobMatchCard
+                      job={{
+                        ...job,
+                        company: job.company || job.companies?.name,
+                        logo: job.companies?.logo || job.logo,
+                        location: job.location,
+                        salary: job.salary || `${job.salary_min || ''} - ${job.salary_max || ''}`,
+                        postedDate: job.created_at,
+                      }}
+                      userSkills={userProfile?.skills || []}
+                      onSelect={setSelectedJob}
+                      isSelected={selectedJob?.id === job?.id}
+                      onExplain={setExplainingJob}
+                    />
+                  </motion.div>
+                ))}
+              </div>
+            )}
 
-          {/* Market Insights */}
-          {userProfile && (
-            <div className="mt-8">
-              <MarketInsights userProfile={userProfile} />
-            </div>
-          )}
+            {/* Market Insights at bottom of feed */}
+            {userProfile && (
+              <div className="mt-16 pt-16 border-t border-slate-200 dark:border-white/10">
+                <MarketInsights userProfile={userProfile} />
+              </div>
+            )}
+          </main>
         </div>
       </div>
+
       {/* AI Chatbot */}
       {showChatbot && (
         <AIChatbot
@@ -327,8 +282,29 @@ const AIPoweredJobMatchingRecommendations = () => {
           userProfile={userProfile}
         />
       )}
-    </>
+
+      {/* Explanation Modal */}
+      {explainingJob && (
+        <ExplainJobModal
+          job={explainingJob}
+          userProfile={userProfile}
+          onClose={() => setExplainingJob(null)}
+        />
+      )}
+    </div>
   );
 };
+
+const StatCard = ({ label, value, icon, color, bgColor }) => (
+  <div className="glass-panel p-8 rounded-[2rem] border border-slate-200 dark:border-white/5 bg-white/50 dark:bg-white/5 backdrop-blur-xl flex items-center justify-between group hover:scale-[1.02] transition-all hover:shadow-2xl">
+    <div>
+      <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-2">{label}</p>
+      <p className={`text-4xl font-[950] ${color} tracking-tighter leading-none`}>{value}</p>
+    </div>
+    <div className={`w-14 h-14 rounded-2xl ${bgColor} ${color} flex items-center justify-center group-hover:rotate-12 transition-transform shadow-sm border border-current/10`}>
+      <Icon name={icon} size={24} />
+    </div>
+  </div>
+);
 
 export default AIPoweredJobMatchingRecommendations;

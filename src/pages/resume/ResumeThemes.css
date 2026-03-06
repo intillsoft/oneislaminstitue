@@ -1,0 +1,97 @@
+/* Resume Themes for Workflow Premium Resume System */
+
+/* --- OPENAI MODERN --- */
+.resume-theme-openai {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    color: #1a1a1a;
+    line-height: 1.6;
+}
+
+.resume-theme-openai h1 {
+    font-size: 32pt;
+    font-weight: 800;
+    letter-spacing: -0.05em;
+    line-height: 1.1;
+    margin-bottom: 8pt;
+    color: #000;
+}
+
+.resume-theme-openai .section-title {
+    font-size: 10pt;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #4f46e5;
+    border-bottom: 1px solid #e5e7eb;
+    margin-bottom: 12pt;
+    padding-bottom: 4pt;
+}
+
+.resume-theme-openai .item-title {
+    font-size: 12pt;
+    font-weight: 700;
+    color: #111;
+}
+
+.resume-theme-openai .item-subtitle {
+    font-size: 10pt;
+    font-weight: 600;
+    color: #4b5563;
+}
+
+/* --- GOOGLE PROFESSIONAL --- */
+.resume-theme-google {
+    font-family: 'Roboto', 'Arial', sans-serif;
+    color: #3c4043;
+    line-height: 1.5;
+}
+
+.resume-theme-google h1 {
+    font-size: 24pt;
+    font-weight: 400;
+    text-align: center;
+    margin-bottom: 4pt;
+    color: #202124;
+}
+
+.resume-theme-google .contact-bar {
+    text-align: center;
+    font-size: 9pt;
+    color: #70757a;
+    margin-bottom: 24pt;
+}
+
+.resume-theme-google .section-title {
+    font-size: 11pt;
+    font-weight: 500;
+    text-transform: uppercase;
+    color: #1a73e8;
+    border-bottom: 1px solid #dadce0;
+    margin-top: 16pt;
+    margin-bottom: 8pt;
+}
+
+.resume-theme-google .item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 2pt;
+}
+
+.resume-theme-google .item-title {
+    font-size: 11pt;
+    font-weight: 700;
+    color: #202124;
+}
+
+/* Print Specifics */
+@media print {
+
+    .resume-theme-openai,
+    .resume-theme-google {
+        width: 210mm;
+        height: 297mm;
+        padding: 20mm;
+        background: white !important;
+    }
+}

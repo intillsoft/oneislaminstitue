@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Clock, MapPin, DollarSign, Building, ExternalLink, Calendar, MessageSquare, CheckCircle, XCircle, AlertCircle, FileText, Search, Download, Trash2, Edit } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { jobService } from '../../../services/jobService';
-import { applicationService } from '../../../services/applicationService';
+import { courseService } from '../../../services/jobService';
+import { enrollmentService } from '../../../services/applicationService';
 import { useToast } from '../../../components/ui/Toast';
 import { format } from 'date-fns';
 import Button from '../../../components/ui/Button';
@@ -42,6 +42,25 @@ const ApplicationPipeline = ({ filterStatus, applications = [] }) => {
       console.error('Error loading job details:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const getNextAction = (status, appliedAt) => {
+    const date = appliedAt ? new Date(appliedAt) : new Date();
+    const followUpDate = new Date(date);
+    followUpDate.setDate(followUpDate.getDate() + 7);
+
+    switch (status) {
+      case 'interview':
+        return `Follow up on interview status`;
+      case 'screening':
+        return `Prepare for screening call`;
+      case 'applied':
+        return `Follow up on ${format(followUpDate, 'MMM d, yyyy')}`;
+      case 'accepted':
+        return `Respond to offer`;
+      default:
+        return `Review application status`;
     }
   };
 
@@ -88,25 +107,6 @@ const ApplicationPipeline = ({ filterStatus, applications = [] }) => {
       job_id: app.job_id
     };
   });
-
-  const getNextAction = (status, appliedAt) => {
-    const date = appliedAt ? new Date(appliedAt) : new Date();
-    const followUpDate = new Date(date);
-    followUpDate.setDate(followUpDate.getDate() + 7);
-
-    switch (status) {
-      case 'interview':
-        return `Follow up on interview status`;
-      case 'screening':
-        return `Prepare for screening call`;
-      case 'applied':
-        return `Follow up on ${format(followUpDate, 'MMM d, yyyy')}`;
-      case 'accepted':
-        return `Respond to offer`;
-      default:
-        return `Review application status`;
-    }
-  };
 
 
   // Search and filter

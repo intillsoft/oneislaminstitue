@@ -4,10 +4,11 @@
  */
 
 import express from 'express';
-import { authenticate } from '../middleware/auth.js';
+import { authenticate, optionalAuth } from '../middleware/auth.js';
 import logger from '../utils/logger.js';
 import { createClient } from '@supabase/supabase-js';
 import dotenv from 'dotenv';
+import { generateEmbedding } from '../services/aiProviderService.js';
 
 dotenv.config();
 
@@ -32,7 +33,7 @@ const supabase = createClient(
  * GET /api/talent/profile/:id
  * Get talent profile by ID or user_id
  */
-router.get('/profile/:id', authenticate, async (req, res) => {
+router.get('/profile/:id', optionalAuth, async (req, res) => {
   try {
     const { id } = req.params;
 
@@ -196,6 +197,23 @@ router.post('/profile', authenticate, async (req, res) => {
       result = data;
     }
 
+    // Update the USER record with the embedding for semantic search
+    try {
+      const textToEmbed = `${result.title || 'Freelancer'} - ${result.skills?.join(', ') || ''} - ${result.bio || ''}`;
+      const embeddingArr = await generateEmbedding(textToEmbed);
+
+      const { error: userUpdateError } = await supabase
+        .from('users')
+        .update({ embedding: embeddingArr })
+        .eq('id', req.user.id);
+
+      if (userUpdateError) throw userUpdateError;
+      logger.info(`Updated user embedding for talent: ${req.user.id}`);
+    } catch (embError) {
+      logger.error('Failed to update user embedding for talent:', embError);
+      // Non-blocking
+    }
+
     res.json({
       success: true,
       data: result,
@@ -214,7 +232,7 @@ router.post('/profile', authenticate, async (req, res) => {
  * GET /api/talent/gigs
  * Get all gigs (with filters)
  */
-router.get('/gigs', authenticate, async (req, res) => {
+router.get('/gigs', optionalAuth, async (req, res) => {
   try {
     const {
       talent_id,
@@ -229,7 +247,7 @@ router.get('/gigs', authenticate, async (req, res) => {
 
     // If no talent_id specified, check if user wants their own gigs
     let effectiveTalentId = talent_id;
-    if (!talent_id) {
+    if (!talent_id && req.user) {
       // Check if user is a talent and wants their own gigs
       const { data: talent } = await supabase
         .from('talents')
@@ -312,7 +330,7 @@ router.get('/gigs', authenticate, async (req, res) => {
  * GET /api/talent/gigs/:id
  * Get gig by ID
  */
-router.get('/gigs/:id', authenticate, async (req, res) => {
+router.get('/gigs/:id', optionalAuth, async (req, res) => {
   try {
     const { id } = req.params;
 
@@ -774,7 +792,7 @@ router.post('/messages', authenticate, async (req, res) => {
  * GET /api/talent/discover
  * Discover talents (search and filter)
  */
-router.get('/discover', authenticate, async (req, res) => {
+router.get('/discover', optionalAuth, async (req, res) => {
   try {
     const {
       search,

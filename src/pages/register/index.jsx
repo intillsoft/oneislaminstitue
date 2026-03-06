@@ -24,27 +24,27 @@ const Register = () => {
   const roles = [
     {
       id: 'job-seeker',
-      title: 'Job Seeker',
-      description: 'Find your dream job and advance your career',
+      title: 'Student',
+      description: 'Discover academic courses and advance your learning',
       icon: Briefcase,
       color: 'from-blue-500 to-cyan-500',
-      features: ['Browse thousands of jobs', 'AI-powered job matching', 'Resume builder', 'Application tracking']
+      features: ['Browse academic catalog', 'AI-powered course matching', 'Transcript builder', 'Enrollment tracking']
     },
     {
       id: 'recruiter',
-      title: 'Recruiter',
-      description: 'Post jobs and find the best talent',
+      title: 'Instructor',
+      description: 'Deploy curriculums and guide the next generation',
       icon: Users,
       color: 'from-purple-500 to-pink-500',
-      features: ['Post unlimited jobs', 'Access candidate pool', 'Analytics dashboard', 'Company profile']
+      features: ['Create unlimited courses', 'Manage student roster', 'Academic analytics', 'Curator Team profile']
     },
     {
       id: 'talent',
-      title: 'Talent / Freelancer',
-      description: 'Offer your services and grow your freelance business',
+      title: 'Scholar',
+      description: 'Share expert knowledge and grow your academic achievements',
       icon: UserCheck,
       color: 'from-green-500 to-emerald-500',
-      features: ['Create and sell gigs', 'Manage orders', 'Earn money', 'Build your portfolio']
+      features: ['Host specialized seminars', 'Manage academic projects', 'Contribute research', 'Build your academic profile']
     }
   ];
 
@@ -85,7 +85,7 @@ const Register = () => {
 
     setIsLoading(true);
     try {
-      await signUp(formData.email, formData.password, {
+      const signUpResult = await signUp(formData.email, formData.password, {
         full_name: formData.fullName,
         name: formData.fullName,
         role: selectedRole, // Set role immediately in metadata
@@ -93,14 +93,27 @@ const Register = () => {
       
       success(`Account created successfully! Welcome as a ${roles.find(r => r.id === selectedRole)?.title}.`);
       
+      // Send registration welcome notification
+      try {
+        const { sendRegistrationWelcomeNotification } = await import('../../services/notificationTriggers');
+        const userId = signUpResult?.user?.id || formData.email;
+        await sendRegistrationWelcomeNotification(
+          userId,
+          formData.email,
+          formData.fullName
+        );
+      } catch (notifError) {
+        console.log('Registration notification sent or skipped');
+      }
+      
       // Navigate based on role
       setTimeout(() => {
         switch (selectedRole) {
           case 'job-seeker':
-            navigate('/job-seeker-dashboard');
+            navigate('/dashboard/student');
             break;
           case 'recruiter':
-            navigate('/recruiter-dashboard-analytics');
+            navigate('/instructor/dashboard');
             break;
           case 'talent':
             navigate('/talent/dashboard');
@@ -147,7 +160,7 @@ const Register = () => {
               Create Your Account
             </h1>
             <p className="text-lg text-text-secondary dark:text-dark-text-secondary">
-              Choose your role and start your journey with Workflow
+              Choose your role and start your journey with One Islam Institute
             </p>
           </div>
 

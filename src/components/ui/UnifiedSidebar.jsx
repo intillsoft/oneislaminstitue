@@ -1,9 +1,9 @@
 /**
- * Unified Sidebar Component - DeepSeek Style
- * Beautiful, intuitive, standard sidebar for all roles
+ * Unified Sidebar Component - Academic Metamorphosis
+ * Adapted for One Islam Institute
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { DndProvider } from 'react-dnd';
@@ -11,30 +11,39 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import Icon from '../AppIcon';
 import Image from '../AppImage';
 import { useAuthContext } from '../../contexts/AuthContext';
+import { useSidebar } from '../../contexts/SidebarContext';
 import DarkModeToggle from './DarkModeToggle';
 import SidebarCustomizationModal from './SidebarCustomizationModal';
+import Logo from '../Logo';
 
-const UnifiedSidebar = ({ isCollapsed: externalCollapsed = null, onCollapseChange = null }) => {
+const UnifiedSidebar = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { user, profile, loadingProfile, signOut } = useAuthContext();
-  const userRole = profile?.role;
-  const [isCollapsed, setIsCollapsed] = useState(() => {
-    if (externalCollapsed !== null) return externalCollapsed;
-    const saved = localStorage.getItem('sidebarCollapsed');
-    return saved === 'true';
-  });
-  const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const { user, profile, loadingProfile, signOut, userRole, baseRole, switchActiveRole } = useAuthContext();
+  const { isCollapsed, toggleSidebar, isMobileOpen, setIsMobileOpen } = useSidebar();
+  
   const [isMobile, setIsMobile] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showCustomizationModal, setShowCustomizationModal] = useState(false);
   const [customizedItems, setCustomizedItems] = useState(null);
-
+  
   useEffect(() => {
     const checkMobile = () => {
       const isMobileNow = window.innerWidth < 1024;
       setIsMobile(isMobileNow);
-      // Don't auto-open sidebar when resizing - only close if going to mobile
+      if (isMobileNow && !isMobile) {
+        setIsMobileOpen(false);
+      }
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+  
+  useEffect(() => {
+    const checkMobile = () => {
+      const isMobileNow = window.innerWidth < 1024;
+      setIsMobile(isMobileNow);
       if (isMobileNow && !isMobile) {
         setIsMobileOpen(false);
       }
@@ -44,116 +53,87 @@ const UnifiedSidebar = ({ isCollapsed: externalCollapsed = null, onCollapseChang
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  useEffect(() => {
-    if (externalCollapsed !== null && onCollapseChange) {
-      setIsCollapsed(externalCollapsed);
-    }
-  }, [externalCollapsed, onCollapseChange]);
-
-  useEffect(() => {
-    localStorage.setItem('sidebarCollapsed', isCollapsed.toString());
-    if (onCollapseChange) {
-      onCollapseChange(isCollapsed);
-    }
-  }, [isCollapsed, onCollapseChange]);
-
   const handleToggle = () => {
-    setIsCollapsed(!isCollapsed);
+    toggleSidebar();
   };
 
-  // Main Menu Items (formerly Job Seeker)
   const mainItems = [
-    { icon: 'LayoutDashboard', label: 'Dashboard', path: '/dashboard', section: 'Main' },
-    { icon: 'Search', label: 'Browse Jobs', path: '/jobs', section: 'Main' },
-    { icon: 'Zap', label: 'Recommended', path: '/dashboard/recommended', section: 'Main' },
-    { icon: 'FileText', label: 'Applications', path: '/dashboard/applications', section: 'Main' },
-    { icon: 'MessageSquare', label: 'Messages', path: '/dashboard/messages', section: 'Main' },
-    { icon: 'User', label: 'Profile', path: '/dashboard/profile', section: 'Main' },
-
-    // Tools Sub-section
-    { icon: 'FileEdit', label: 'Resume Builder', path: '/dashboard/resume-builder', section: 'Main' },
-    { icon: 'MessageSquare', label: 'Interview Coach', path: '/dashboard/interview-prep', section: 'Main' },
-    { icon: 'DollarSign', label: 'Salary Intel', path: '/dashboard/salary-intel', section: 'Main' },
-    { icon: 'Zap', label: 'Autopilot', path: '/dashboard/autopilot', section: 'Main' },
+    { icon: 'LayoutDashboard', label: 'Overview', path: '/dashboard', section: 'Academic' },
+    { icon: 'BookOpen', label: 'Enrollments', path: '/dashboard/enrollments', section: 'Academic' },
+    { icon: 'Bookmark', label: 'Bookmarks', path: '/dashboard/saved', section: 'Academic' },
+    { icon: 'Calendar', label: 'Schedule', path: '/dashboard/schedule', section: 'Academic' },
+    { icon: 'Award', label: 'Certificates', path: '/dashboard/certificates', section: 'Academic' },
+    { icon: 'Zap', label: 'Milestones', path: '/dashboard/achievements', section: 'Academic' },
+    { icon: 'BarChart3', label: 'Progress', path: '/dashboard/progress', section: 'Academic' },
   ];
 
-  // Talent Menu Items (talents see this)
-  const talentItems = [
-    { icon: 'LayoutDashboard', label: 'Dashboard', path: '/talent/dashboard', section: 'Talent' },
-    { icon: 'Briefcase', label: 'My Gigs', path: '/talent/gigs', section: 'Talent' },
-    { icon: 'ShoppingCart', label: 'Orders', path: '/talent/orders', section: 'Talent' },
-    { icon: 'Star', label: 'Reviews', path: '/talent/reviews', section: 'Talent' },
-    { icon: 'DollarSign', label: 'Earnings', path: '/talent/earnings', section: 'Talent' },
-    { icon: 'User', label: 'Profile', path: '/talent/profile', section: 'Talent' },
-    { icon: 'Sparkles', label: 'Freelance Suite', path: '/talent/marketplace', section: 'Talent' },
+  const studentItems = [
+    { icon: 'Bell', label: 'Notifications', path: '/notifications', section: 'Account' },
+    { icon: 'User', label: 'Profile', path: '/profile', section: 'Account' },
+    { icon: 'Heart', label: 'Donations', path: '/billing', section: 'Account' },
   ];
 
-  // Recruiter Menu Items (recruiters + admins see this)
-  const recruiterItems = [
-    { icon: 'BarChart3', label: 'Dashboard', path: '/recruiter/dashboard', section: 'Recruiter' },
-    { icon: 'Plus', label: 'Post Job', path: '/recruiter/jobs', section: 'Recruiter' },
-    { icon: 'Briefcase', label: 'My Jobs', path: '/recruiter/dashboard?tab=jobs', section: 'Recruiter' },
-    { icon: 'Users', label: 'Candidates', path: '/recruiter/dashboard?tab=candidates', section: 'Recruiter' },
-    { icon: 'Building2', label: 'Company', path: '/recruiter/company', section: 'Recruiter' },
+  const instructorItems = [
+    { icon: 'LayoutDashboard', label: 'Dashboard', path: '/instructor/dashboard/overview', section: 'Management' },
+    { icon: 'Plus', label: 'New Course', path: '/instructor/courses/new', section: 'Management' },
+    { icon: 'BookOpen', label: 'Manage Courses', path: '/instructor/dashboard/jobs', section: 'Management' },
+    { icon: 'Users', label: 'Students', path: '/instructor/dashboard/candidates', section: 'Management' },
+    { icon: 'Bell', label: 'Notifications', path: '/notifications/instructor', section: 'Management' },
   ];
 
-  // Admin Menu Items (admins only)
   const adminItems = [
-    { icon: 'Shield', label: 'Dashboard', path: '/admin/dashboard', section: 'Admin' },
-    { icon: 'Users', label: 'Users', path: '/admin/dashboard?tab=users', section: 'Admin' },
-    { icon: 'Briefcase', label: 'Jobs', path: '/admin/dashboard?tab=jobs', section: 'Admin' },
-    { icon: 'FileText', label: 'Applications', path: '/admin/dashboard?tab=applications', section: 'Admin' },
-    { icon: 'Settings', label: 'Settings', path: '/admin/dashboard?tab=settings', section: 'Admin' },
+    { icon: 'Shield', label: 'Admin Panel', path: '/admin/dashboard/moderation', section: 'System' },
+    { icon: 'Users', label: 'User Directory', path: '/admin/dashboard/users', section: 'System' },
+    { icon: 'BookOpen', label: 'Global Courses', path: '/admin/dashboard/jobs', section: 'System' },
+    { icon: 'FileText', label: 'Enrollments', path: '/admin/dashboard/applications', section: 'System' },
+    { icon: 'Settings', label: 'Settings', path: '/admin/dashboard/config', section: 'System' },
+    { icon: 'Activity', label: 'Audit Trail', path: '/admin/dashboard/audit', section: 'System' },
+    { icon: 'Bell', label: 'Notification Control', path: '/notifications/admin', section: 'System' },
   ];
 
-  // Build navigation items based on role
   const allNavigationItems = [];
-  allNavigationItems.push(...mainItems);
-
-  // Add talent items if user is a talent or admin
-  if (userRole === 'talent' || userRole === 'admin') {
-    allNavigationItems.push(...talentItems);
+  
+  /* Role-based Navigation Logic (Active Role Based) */
+  if (!loadingProfile) {
+    if (userRole === 'admin') {
+      allNavigationItems.push(...adminItems);
+    } else if (userRole === 'instructor') {
+      allNavigationItems.push(...instructorItems);
+    } else {
+      // Default to student items
+      allNavigationItems.push(...mainItems);
+      allNavigationItems.push(...studentItems);
+    }
   }
 
-  // Add recruiter items
-  if (userRole === 'recruiter' || userRole === 'admin') {
-    allNavigationItems.push(...recruiterItems);
-  }
-
-  // Add admin items
-  if (userRole === 'admin') {
-    allNavigationItems.push(...adminItems);
-  }
-
-  // Apply customization if available
   useEffect(() => {
     if (user && allNavigationItems.length > 0) {
       const savedPreferences = JSON.parse(
         localStorage.getItem(`sidebar_preferences_${user.id}`) || '{}'
       );
-
+      
+      // Only use customized items if they belong to the current role's navigation
       if (Object.keys(savedPreferences).length > 0) {
         const customized = allNavigationItems
           .map(item => ({
             ...item,
-            visible: savedPreferences[item.path]?.visible !== undefined
-              ? savedPreferences[item.path].visible
-              : true,
-            order: savedPreferences[item.path]?.order !== undefined
-              ? savedPreferences[item.path].order
-              : allNavigationItems.indexOf(item),
+            visible: savedPreferences[item.path]?.visible !== undefined ? savedPreferences[item.path].visible : true,
+            order: savedPreferences[item.path]?.order !== undefined ? savedPreferences[item.path].order : allNavigationItems.indexOf(item),
           }))
           .filter(item => item.visible)
           .sort((a, b) => a.order - b.order);
-
-        setCustomizedItems(customized);
+        
+        // Safety check: if customized results in nothing while allNavigationItems has items, fallback
+        if (customized.length > 0) {
+          setCustomizedItems(customized);
+        } else {
+          setCustomizedItems(null);
+        }
       } else {
         setCustomizedItems(null);
       }
-    } else {
-      setCustomizedItems(null);
     }
-  }, [user, userRole]);
+  }, [user, userRole, JSON.stringify(allNavigationItems)]);
 
   const navigationItems = customizedItems || allNavigationItems;
 
@@ -180,9 +160,7 @@ const UnifiedSidebar = ({ isCollapsed: externalCollapsed = null, onCollapseChang
   const getSections = () => {
     const sections = {};
     navigationItems.forEach(item => {
-      if (!sections[item.section]) {
-        sections[item.section] = [];
-      }
+      if (!sections[item.section]) sections[item.section] = [];
       sections[item.section].push(item);
     });
     return sections;
@@ -191,101 +169,84 @@ const UnifiedSidebar = ({ isCollapsed: externalCollapsed = null, onCollapseChang
   const sections = getSections();
 
   const sidebarContent = (
-    <div className="h-full flex flex-col bg-white dark:bg-[#0F172A] border-r border-gray-200/50 dark:border-gray-800/50 pt-12 lg:pt-16">
-      {/* Minimal Header - Just Logo (Mobile Only) */}
+    <div className="h-full flex flex-col bg-bg/80 backdrop-blur-xl border-r border-emerald-500/10 relative overflow-hidden transition-all duration-500 ease-in-out">
+      {/* Decorative Gradient Backgrounds */}
+      <div className="absolute top-0 left-0 w-full h-64 bg-gradient-to-b from-emerald-500/5 to-transparent pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-emerald-500/5 to-transparent pointer-events-none" />
+
       {isMobile && (
-        <div className="flex items-center justify-between p-3 border-b border-gray-200/50 dark:border-gray-800/50 relative z-50 lg:hidden">
-          {!isCollapsed ? (
-            <Link to="/" className="flex items-center space-x-2 group">
-              <div className="relative">
-                <div className="absolute inset-0 bg-workflow-primary rounded-lg blur-md opacity-20 group-hover:opacity-30 transition-opacity"></div>
-                <div className="relative w-8 h-8 bg-gradient-to-br from-workflow-primary to-workflow-primary-600 rounded-lg flex items-center justify-center shadow-sm">
-                  <span className="text-white font-bold text-sm">W</span>
-                </div>
-              </div>
-            </Link>
-          ) : (
-            <div className="w-8 h-8 bg-gradient-to-br from-workflow-primary to-workflow-primary-600 rounded-lg flex items-center justify-center mx-auto shadow-sm">
-              <span className="text-white font-bold text-sm">W</span>
-            </div>
-          )}
-          <button
-            onClick={() => setIsMobileOpen(false)}
-            className="p-1.5 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-500 dark:text-gray-400"
-            aria-label="Close sidebar"
-          >
-            <Icon name="X" size={16} />
+        <div className="flex items-center justify-between p-5 border-b border-emerald-500/10 relative z-50">
+          <Logo size="sm" className="z-50" />
+          <button onClick={() => setIsMobileOpen(false)} className="p-2 rounded-xl hover:bg-emerald-500/10 transition-all text-text-muted">
+            <Icon name="X" size={18} />
           </button>
         </div>
       )}
 
-      {/* Desktop Toggle Button - Standard Sidebar Style */}
       {!isMobile && (
-        <button
-          onClick={handleToggle}
-          className="absolute -right-3 top-20 p-1.5 rounded-full bg-white dark:bg-[#13182E] border border-gray-200 dark:border-gray-700 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 shadow-sm z-50 cursor-pointer flex items-center justify-center transition-transform hover:scale-105"
-          aria-label={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-        >
-          <Icon
-            name="ChevronLeft"
-            size={14}
-            className={`transition-transform duration-300 ${isCollapsed ? 'rotate-180' : ''}`}
-          />
-        </button>
+        <div className={`flex items-center ${isCollapsed ? 'justify-center' : 'justify-between px-6'} border-b border-emerald-500/10 relative z-50 h-[var(--header-height)] transition-all duration-300`}>
+          {!isCollapsed && (
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-xl bg-emerald-600 flex items-center justify-center shadow-lg shadow-emerald-600/20">
+                <Icon name="GraduationCap" size={16} className="text-white" />
+              </div>
+              <span className="text-[11px] font-black uppercase tracking-[0.2em] text-text-primary">Institute</span>
+            </div>
+          )}
+          <button
+            onClick={handleToggle}
+            className={`p-2 rounded-xl text-text-muted hover:text-emerald-600 hover:bg-emerald-600/10 transition-all border border-emerald-500/10 shadow-sm bg-surface-elevated/50 hover:scale-105 active:scale-95 group ${isCollapsed ? 'mx-auto' : ''}`}
+            title={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+          >
+            <Icon name={isCollapsed ? "PanelLeft" : "PanelLeftClose"} size={18} className="transition-transform group-hover:scale-110" />
+          </button>
+        </div>
       )}
 
-      {/* Navigation */}
-      <nav className="flex-1 overflow-y-auto p-2 space-y-1">
+      <nav className={`flex-1 overflow-y-auto px-3 py-6 space-y-8 relative z-10 custom-scrollbar`}>
         {Object.entries(sections).map(([section, items]) => {
           if (items.length === 0) return null;
           return (
-            <div key={section} className="mb-4">
-              {!isCollapsed && items.length > 0 && (
-                <div className="px-3 py-2 mb-1">
-                  <span className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider">
-                    {section}
-                  </span>
+            <div key={section} className="space-y-4">
+              {!isCollapsed && (
+                <div className="px-4 mb-2">
+                  <span className="text-[9px] font-black text-emerald-600/60 uppercase tracking-[0.4em]">{section}</span>
                 </div>
               )}
-              <div className="space-y-0.5">
+              <div className="space-y-1.5">
                 {items.map((item) => {
                   const active = isActive(item.path);
                   return (
                     <motion.button
                       key={item.path}
                       onClick={() => handleNavClick(item.path)}
-                      className={`w-full flex items-center ${isCollapsed ? 'justify-center' : 'justify-start'} px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 relative group ${active
-                        ? 'bg-workflow-primary/10 dark:bg-workflow-primary/20 text-workflow-primary dark:text-workflow-primary-400'
-                        : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800/50 hover:text-gray-900 dark:hover:text-gray-100'
+                      className={`w-full flex items-center ${isCollapsed ? 'justify-center px-0' : 'justify-start px-4'} py-3.5 rounded-2xl text-[11px] font-bold transition-all relative group ${active
+                        ? 'bg-emerald-600/10 text-emerald-600 shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)] border border-emerald-600/20'
+                        : 'text-text-muted hover:text-text-primary hover:bg-emerald-500/5'
                         }`}
-                      whileHover={{ x: isCollapsed ? 0 : 2 }}
-                      whileTap={{ scale: 0.98 }}
+                      whileHover={{ x: isCollapsed ? 0 : 4 }}
                     >
-                      <Icon
-                        name={item.icon}
-                        size={18}
-                        className={`flex-shrink-0 ${active ? 'text-workflow-primary dark:text-workflow-primary-400' : ''}`}
-                      />
-                      {!isCollapsed && (
-                        <>
-                          <span className="ml-3 flex-1 text-left">{item.label}</span>
-                          {active && (
-                            <motion.div
-                              initial={{ scale: 0 }}
-                              animate={{ scale: 1 }}
-                              className="w-1.5 h-1.5 bg-workflow-primary dark:bg-workflow-primary-400 rounded-full"
-                            />
-                          )}
-                        </>
+                      {active && (
+                        <motion.div 
+                          layoutId="activeNav"
+                          className="absolute left-0 w-1 h-5 bg-emerald-600 rounded-full"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                        />
                       )}
+                      <Icon 
+                        name={item.icon} 
+                        size={isCollapsed ? 22 : 20} 
+                        className={`${active 
+                          ? 'text-emerald-500 animate-pulse-elite' 
+                          : `${isCollapsed ? 'text-slate-300 dark:text-slate-200' : 'text-slate-400 dark:text-slate-400'} group-hover:text-emerald-500 transition-colors`
+                        }`} 
+                      />
+                      {!isCollapsed && <span className="ml-4 truncate tracking-wide font-medium">{item.label}</span>}
                       {isCollapsed && (
-                        <motion.div
-                          initial={{ opacity: 0, x: -10 }}
-                          animate={{ opacity: showUserMenu ? 0 : 1, x: 0 }}
-                          className="absolute left-full ml-2 px-2 py-1 bg-gray-900 dark:bg-gray-800 text-white text-xs rounded whitespace-nowrap pointer-events-none z-50 opacity-0 group-hover:opacity-100 transition-opacity"
-                        >
+                        <div className="absolute left-full ml-4 px-3 py-2 bg-text-primary text-bg text-[10px] font-black uppercase tracking-widest rounded-xl opacity-0 group-hover:opacity-100 transition-all scale-95 group-hover:scale-100 whitespace-nowrap z-[100] pointer-events-none shadow-2xl">
                           {item.label}
-                        </motion.div>
+                        </div>
                       )}
                     </motion.button>
                   );
@@ -296,97 +257,84 @@ const UnifiedSidebar = ({ isCollapsed: externalCollapsed = null, onCollapseChang
         })}
       </nav>
 
-      {/* Bottom Section - User Menu Toggle & Theme Toggle */}
-      <div className="p-3 border-t border-gray-200/50 dark:border-gray-800/50 space-y-2">
-        {/* Enhanced Theme Toggle */}
-        <div className={`flex items-center ${isCollapsed ? 'justify-center' : 'justify-between'} gap-2`}>
-          {!isCollapsed && (
-            <span className="text-xs text-gray-500 dark:text-gray-400">Theme</span>
-          )}
-          <div className="flex-shrink-0">
-            <DarkModeToggle />
-          </div>
+      <div className="p-4 border-t border-emerald-500/10 space-y-4 relative z-10 bg-bg/40 backdrop-blur-md">
+        <div className={`flex items-center ${isCollapsed ? 'justify-center' : 'justify-between'} gap-2 px-1`}>
+          {!isCollapsed && <span className="text-[10px] font-black text-text-muted uppercase tracking-[0.2em]">Appearance</span>}
+          <DarkModeToggle />
         </div>
 
-        {/* Customize Sidebar Button */}
-        {!isCollapsed && (
-          <button
-            onClick={() => setShowCustomizationModal(true)}
-            className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800/50 hover:text-gray-900 dark:hover:text-gray-100 transition-all duration-200"
-          >
-            <Icon name="Settings" size={16} />
-            <span>Customize</span>
-          </button>
-        )}
-
-        {/* User Menu Toggle - DeepSeek Style */}
         {user && (
-          <div className="relative">
+          <div className="relative group">
             <button
               onClick={() => setShowUserMenu(!showUserMenu)}
-              className={`w-full flex items-center ${isCollapsed ? 'justify-center' : 'justify-between'} px-3 py-2.5 rounded-lg bg-gray-50 dark:bg-gray-800/50 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-200 group`}
+              className={`w-full flex items-center ${isCollapsed ? 'justify-center' : 'justify-between'} p-1.5 rounded-2xl bg-surface/50 hover:bg-surface border border-emerald-500/10 transition-all`}
             >
-              <div className="flex items-center space-x-3 min-w-0 flex-1">
-                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-workflow-primary to-workflow-primary-600 flex items-center justify-center flex-shrink-0 shadow-sm">
+              <div className="flex items-center space-x-3 min-w-0">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-emerald-700 flex items-center justify-center flex-shrink-0 shadow-lg relative overflow-hidden">
                   {profile?.avatar_url ? (
-                    <Image
-                      src={profile.avatar_url}
-                      alt={profile?.name || user?.email || 'User'}
-                      className="w-full h-full rounded-lg object-cover"
-                    />
+                    <Image src={profile.avatar_url} className="w-full h-full rounded-xl object-cover" />
                   ) : (
-                    <span className="text-white font-semibold text-xs">
-                      {(profile?.name || user?.email || 'U').charAt(0).toUpperCase()}
-                    </span>
+                    <div className="w-full h-full flex items-center justify-center bg-emerald-600">
+                      <span className="text-white font-black text-xs">
+                        {profile?.name ? profile.name.charAt(0).toUpperCase() : 'WF'}
+                      </span>
+                    </div>
                   )}
+                  <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
                 </div>
                 {!isCollapsed && (
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
-                      {profile?.name || user?.email?.split('@')[0] || 'User'}
-                    </p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400 truncate capitalize">
-                      {userRole || 'User'}
-                    </p>
+                  <div className="flex-1 min-w-0 text-left">
+                    <p className="text-[11px] font-black text-text-primary truncate uppercase tracking-tight">{profile?.name || user?.email?.split('@')[0] || 'Scholar'}</p>
+                    <div className="flex items-center gap-1.5">
+                      <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                      <p className="text-[9px] text-emerald-600 font-black uppercase tracking-[0.1em] truncate">{userRole || 'Scholar'}</p>
+                    </div>
                   </div>
                 )}
               </div>
-              {!isCollapsed && (
-                <Icon
-                  name={showUserMenu ? "ChevronUp" : "ChevronDown"}
-                  size={16}
-                  className="text-gray-400 dark:text-gray-500 flex-shrink-0"
-                />
-              )}
+              {!isCollapsed && <Icon name="ChevronUp" size={14} className={`text-text-muted transition-transform duration-300 ${showUserMenu ? 'rotate-180' : ''}`} />}
             </button>
 
-            {/* User Menu Dropdown */}
             <AnimatePresence>
               {showUserMenu && (
                 <motion.div
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  className={`absolute ${isCollapsed ? 'left-full ml-2' : 'bottom-full mb-2 left-0 right-0'} bg-white dark:bg-[#1E293B] rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden z-50 min-w-[200px]`}
+                  initial={{ opacity: 0, scale: 0.95, y: 10 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.95, y: 10 }}
+                  className={`absolute ${isCollapsed ? 'left-full bottom-0 ml-4' : 'bottom-full mb-3 left-0 right-0'} bg-bg-elevated/95 backdrop-blur-2xl rounded-2xl shadow-2xl border border-emerald-500/20 overflow-hidden z-[100] min-w-[220px] p-2`}
                 >
                   <Link
-                    to="/user-profile?tab=settings"
+                    to="/profile"
                     onClick={() => setShowUserMenu(false)}
-                    className="flex items-center space-x-3 px-4 py-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                    className="flex items-center space-x-3 px-4 py-3 text-[11px] font-bold text-text-primary rounded-xl hover:bg-emerald-500/10 transition-all border border-transparent hover:border-emerald-500/10"
                   >
-                    <Icon name="Settings" size={16} className="text-gray-500 dark:text-gray-400" />
-                    <span>Settings</span>
+                    <div className="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-600">
+                      <Icon name="User" size={16} />
+                    </div>
+                    <span>Scholar Profile</span>
                   </Link>
+                  <Link
+                    to="/billing"
+                    onClick={() => setShowUserMenu(false)}
+                    className="flex items-center space-x-3 px-4 py-3 text-[11px] font-bold text-text-primary rounded-xl hover:bg-emerald-500/10 transition-all border border-transparent hover:border-emerald-500/10"
+                  >
+                    <div className="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-600">
+                      <Icon name="Heart" size={16} />
+                    </div>
+                    <span>Impact & Support</span>
+                  </Link>
+                  <div className="h-px bg-emerald-500/10 my-2 mx-2" />
                   <button
                     onClick={async () => {
                       setShowUserMenu(false);
                       await signOut();
-                      navigate('/');
-                      if (isMobile) setIsMobileOpen(false);
+                      navigate('/login');
                     }}
-                    className="w-full flex items-center space-x-3 px-4 py-3 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
+                    className="w-full flex items-center space-x-3 px-4 py-3 text-[11px] font-bold text-rose-500 rounded-xl hover:bg-rose-500/10 transition-all"
                   >
-                    <Icon name="LogOut" size={16} />
+                    <div className="w-8 h-8 rounded-lg bg-rose-500/10 flex items-center justify-center">
+                      <Icon name="LogOut" size={16} />
+                    </div>
                     <span>Sign Out</span>
                   </button>
                 </motion.div>
@@ -398,65 +346,34 @@ const UnifiedSidebar = ({ isCollapsed: externalCollapsed = null, onCollapseChang
     </div>
   );
 
-  // Mobile: Slide-in overlay
-  if (isMobile) {
-    return (
-      <>
-        {/* Hamburger Button */}
-        <button
-          onClick={() => setIsMobileOpen(true)}
-          className="fixed top-20 left-4 z-50 lg:hidden p-2.5 rounded-lg bg-white dark:bg-[#13182E] border border-gray-200 dark:border-gray-800 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-all duration-200 shadow-lg"
-          aria-label="Open sidebar"
-        >
-          <Icon name="Menu" size={20} />
-        </button>
-
-        <AnimatePresence>
-          {isMobileOpen && (
-            <>
-              {/* Overlay */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                onClick={() => setIsMobileOpen(false)}
-                className="fixed inset-0 bg-black/60 dark:bg-black/80 backdrop-blur-sm z-40 lg:hidden"
-              />
-              {/* Sidebar */}
-              <motion.div
-                initial={{ x: -260 }}
-                animate={{ x: 0 }}
-                exit={{ x: -260 }}
-                transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-                className="fixed left-0 top-0 bottom-0 w-[260px] z-50 lg:hidden"
-              >
-                {sidebarContent}
-              </motion.div>
-            </>
-          )}
-        </AnimatePresence>
-      </>
-    );
+  // Don't render sidebar until profile role is resolved to avoid showing student-only nav
+  if (user && loadingProfile) {
+    return null;
   }
 
-  // Desktop: Fixed sidebar
   return (
     <DndProvider backend={HTML5Backend}>
-      <motion.aside
-        initial={false}
-        animate={{ width: isCollapsed ? 64 : 260 }}
-        transition={{ duration: 0.2, ease: 'easeInOut' }}
-        className="fixed left-0 top-0 bottom-0 z-30 hidden lg:block"
-      >
-        {sidebarContent}
-      </motion.aside>
+      {isMobile ? (
+        <>
+          {/* Hide hamburger button on mobile - use dashboard mobile nav instead */}
+        </>
+      ) : (
+        <>
+          <motion.aside
+            initial={false}
+            animate={{ width: isCollapsed ? 64 : 260 }}
+            transition={{ duration: 0.2 }}
+            className="fixed left-0 top-[var(--header-height)] bottom-0 z-[90] hidden lg:block border-r border-emerald-500/20 bg-bg"
+          >
+            {sidebarContent}
+          </motion.aside>
+        </>
+      )}
       <SidebarCustomizationModal
         isOpen={showCustomizationModal}
         onClose={() => setShowCustomizationModal(false)}
         menuItems={allNavigationItems}
-        onSave={(items) => {
-          setCustomizedItems(items.filter(item => item.visible).sort((a, b) => a.order - b.order));
-        }}
+        onSave={(items) => setCustomizedItems(items.filter(item => item.visible).sort((a, b) => a.order - b.order))}
       />
     </DndProvider>
   );

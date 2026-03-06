@@ -1,155 +1,210 @@
-/**
- * Authentication Context
- * Global auth state management
- */
-
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useAuth } from '../hooks/useSupabase';
-import { useToast } from '../components/ui/Toast';
 import { supabase } from '../lib/supabase';
+import { useToast } from '../components/ui/Toast';
 
-const AuthContext = createContext(null);
+const AuthContext = createContext();
+
+export const useAuthContext = () => {
+  const context = useContext(AuthContext);
+  if (!context) throw new Error('useAuthContext must be used within an AuthProvider');
+  return context;
+};
+
+/**
+ * Standardizes role names across the application.
+ * Normalizes legacy roles ('job-seeker', 'recruiter') to canonical ones ('student', 'instructor').
+ */
+export const normalizeRole = (role) => {
+  if (!role) return 'student';
+  const r = role.toLowerCase().trim();
+  // Final normalization check
+  if (r.includes('admin') || r === 'owner' || r === 'superadmin') return 'admin';
+  
+  // GOD MODE FAIL-SAFE: Hardcode admin role for the owner's email
+  // Only applies if the user object is available (checked during resolution)
+  
+  if (r === 'instructor' || r === 'recruiter' || r === 'curator team' || r === 'teacher' || r === 'mentor') return 'instructor';
+  if (r === 'student' || r === 'job-seeker' || r === 'jobseeker' || r === 'scholar' || r === 'user') return 'student';
+  return r;
+};
 
 export const AuthProvider = ({ children }) => {
   const auth = useAuth();
   const { success, error: showError } = useToast();
   const [profile, setProfile] = useState(null);
   const [loadingProfile, setLoadingProfile] = useState(true);
+  const [activeRole, setActiveRoleState] = useState(null);
 
-  // Fetch user profile when user changes - Memoize to prevent unnecessary re-renders
-  useEffect(() => {
-    const fetchProfile = async () => {
-      if (!auth.user) {
-        setProfile(null);
-        setLoadingProfile(false);
-        return;
-      }
+  // Hierarchy validation
+  const isRoleAllowed = (base, target) => {
+    const normalizedBase = normalizeRole(base);
+    const normalizedTarget = normalizeRole(target);
+    
+    if (normalizedBase === 'admin') return ['admin', 'instructor', 'student'].includes(normalizedTarget);
+    if (normalizedBase === 'instructor') return ['instructor', 'student'].includes(normalizedTarget);
+    return normalizedTarget === 'student';
+  };
 
-      // Prevent refetch if profile already exists and user hasn't changed
-      if (profile && profile.id === auth.user.id) {
-        setLoadingProfile(false);
-        return;
-      }
+  const switchActiveRole = (newRole) => {
+    if (!profile) return false;
+    const normalizedNewRole = normalizeRole(newRole);
+    if (isRoleAllowed(profile.role, normalizedNewRole)) {
+      setActiveRoleState(normalizedNewRole);
+      localStorage.setItem(`activeRole_${auth.user.id}`, normalizedNewRole);
+      success(`Switched to ${normalizedNewRole.charAt(0).toUpperCase() + normalizedNewRole.slice(1)} view`);
+      return true;
+    }
+    showError('Unauthorized role switch');
+    return false;
+  };
 
-      try {
-        setLoadingProfile(true);
-        let { data, error } = await supabase
-          .from('users')
-          .select('*')
-          .eq('id', auth.user.id)
-          .single();
+  const fetchProfile = async () => {
+    if (!auth.user) {
+      setProfile(null);
+      setActiveRoleState(null);
+      setLoadingProfile(false);
+      return;
+    }
 
-        // If profile doesn't exist, create it
-        if (error && error.code === 'PGRST116') {
-          // Profile doesn't exist, create it
-          // Get role from user metadata (set during registration)
-          const userRole = auth.user.user_metadata?.role || 'job-seeker';
-          const { data: newProfile, error: createError } = await supabase
+    try {
+      setLoadingProfile(true);
+      
+      const ownerEmail = 'yussifabduljalil602@gmail.com';
+      const userEmail = auth.user?.email?.toLowerCase();
+      const isOwner = userEmail === ownerEmail.toLowerCase();
+
+      // 1. Try to fetch the profile from the database
+      const { data, error } = await supabase
+        .from('users')
+        .select('*')
+        .eq('id', auth.user.id)
+        .single();
+
+      let resolvedProfile = null;
+
+      if (error) {
+        // 2. If profile is missing (PGRST116), it means the DB trigger failed or hasn't run yet.
+        if (error.code === 'PGRST116') {
+          console.warn('🛡️ Profile missing in DB. Attempting recovery...');
+          
+          const metadataRole = isOwner ? 'admin' : (auth.user.user_metadata?.role || 'student');
+          const recoveryData = {
+            id: auth.user.id,
+            email: auth.user.email,
+            name: auth.user.user_metadata?.name || auth.user.user_metadata?.full_name || auth.user.email?.split('@')[0] || 'User',
+            role: normalizeRole(metadataRole),
+            avatar_url: auth.user.user_metadata?.avatar_url || null,
+          };
+
+          const { data: recovered, error: upsertError } = await supabase
             .from('users')
-            .insert({
-              id: auth.user.id,
-              email: auth.user.email,
-              name: auth.user.user_metadata?.name || auth.user.user_metadata?.full_name || auth.user.email?.split('@')[0] || 'User',
-              avatar_url: auth.user.user_metadata?.avatar_url,
-              role: userRole, // Set role immediately
-            })
+            .upsert(recoveryData)
             .select()
             .single();
 
-          if (createError) {
-            console.error('Error creating profile:', createError);
-            setProfile(null);
+          if (upsertError) {
+            console.error('❌ Recovery Failed (RLS?):', upsertError);
+            resolvedProfile = { ...recoveryData, role: normalizeRole(metadataRole) };
           } else {
-            setProfile(newProfile);
+            console.log('✅ Recovery Successful');
+            resolvedProfile = { ...recovered, role: normalizeRole(recovered.role) };
           }
-        } else if (error) {
-          console.error('Error fetching profile:', error);
-          // Don't throw - just log and set profile to null
-          // This allows the app to continue working even if profile fetch fails
-          setProfile(null);
         } else {
-          setProfile(data);
+          console.error('⚠️ DB Error:', error.message);
+          resolvedProfile = { id: auth.user.id, role: isOwner ? 'admin' : normalizeRole(auth.user.user_metadata?.role), name: 'User' };
         }
-      } catch (err) {
-        console.error('Error fetching profile:', err);
-        // Set a default profile with job-seeker role if fetch fails
-        // This ensures the app doesn't break if profile fetch fails
-        setProfile({
-          id: auth.user.id,
-          email: auth.user.email,
-          role: 'job-seeker', // Default role
-          name: auth.user.user_metadata?.name || auth.user.email?.split('@')[0] || 'User',
-        });
-      } finally {
-        setLoadingProfile(false);
+      } else {
+        // Force Admin for Owner even if DB says otherwise
+        const finalRole = isOwner ? 'admin' : normalizeRole(data.role);
+        resolvedProfile = { ...data, role: finalRole };
       }
-    };
 
+      setProfile(resolvedProfile);
+
+      // Initialize Active Role from LocalStorage or Profile
+      const savedActiveRole = localStorage.getItem(`activeRole_${auth.user.id}`);
+      if (savedActiveRole && isRoleAllowed(resolvedProfile.role, savedActiveRole)) {
+        setActiveRoleState(normalizeRole(savedActiveRole));
+      } else {
+        setActiveRoleState(resolvedProfile.role);
+      }
+
+    } catch (err) {
+      console.error('Auth Fatal:', err);
+      const fallbackRole = 'student';
+      setProfile({ id: auth.user.id, role: fallbackRole, name: 'User' });
+      setActiveRoleState(fallbackRole);
+    } finally {
+      setLoadingProfile(false);
+    }
+  };
+
+  useEffect(() => {
+    console.log('🔐 Auth State Changed:', {
+      userId: auth.user?.id,
+      email: auth.user?.email,
+      metadataRole: auth.user?.user_metadata?.role
+    });
     fetchProfile();
-  }, [auth.user?.id]); // Only depend on user ID, not entire user object
+    
+    if (auth.user) {
+      const channel = supabase
+        .channel(`profile-updates-${auth.user.id}`)
+        .on('postgres_changes', 
+          { event: 'UPDATE', schema: 'public', table: 'users', filter: `id=eq.${auth.user.id}` },
+          (payload) => {
+            console.log('🔄 PROFILE SYNC: Database update detected', payload.new.role);
+            const normalizedNewRole = normalizeRole(payload.new.role);
+            setProfile(prev => ({ ...prev, ...payload.new, role: normalizedNewRole }));
+            
+            // If base role changed and active role is no longer allowed, reset it
+            setActiveRoleState(prevActive => {
+              if (!isRoleAllowed(normalizedNewRole, prevActive)) {
+                localStorage.setItem(`activeRole_${auth.user.id}`, normalizedNewRole);
+                return normalizedNewRole;
+              }
+              return prevActive;
+            });
+          }
+        )
+        .subscribe();
+      return () => supabase.removeChannel(channel);
+    }
+  }, [auth.user?.id]);
+
+  const updateProfile = async (updates) => {
+    if (!auth.user) throw new Error('No user logged in');
+    try {
+      const { data, error } = await supabase
+        .from('users')
+        .update(updates)
+        .eq('id', auth.user.id)
+        .select()
+        .single();
+
+      if (error) throw error;
+      const normalizedRole = normalizeRole(data.role);
+      setProfile(prev => ({ ...prev, ...data, role: normalizedRole }));
+      return { data, error: null };
+    } catch (error) {
+      console.error('Error updating profile:', error);
+      throw error;
+    }
+  };
 
   const value = {
     ...auth,
     profile,
     loadingProfile,
-    updateProfile: async (updates) => {
-      try {
-        if (!auth.user) {
-          throw new Error('User not authenticated');
-        }
-
-        // Remove undefined values to avoid update errors
-        const cleanUpdates = Object.fromEntries(
-          Object.entries(updates).filter(([_, v]) => v !== undefined)
-        );
-
-        if (Object.keys(cleanUpdates).length === 0) {
-          console.warn('No valid updates provided');
-          return profile;
-        }
-
-        const { data, error } = await supabase
-          .from('users')
-          .update(cleanUpdates)
-          .eq('id', auth.user.id)
-          .select()
-          .single();
-
-        if (error) {
-          console.error('Profile update error:', error);
-          throw new Error(error.message || 'Failed to update profile');
-        }
-
-        if (!data) {
-          throw new Error('No data returned from update');
-        }
-
-        setProfile(data);
-        success('Profile updated successfully');
-        return data;
-      } catch (err) {
-        console.error('Profile update failed:', err);
-        const errorMessage = err.message || 'Failed to update profile';
-        showError(errorMessage);
-        throw err;
-      }
-    },
+    userRole: activeRole || profile?.role || normalizeRole(auth.user?.user_metadata?.role),
+    baseRole: profile?.role || normalizeRole(auth.user?.user_metadata?.role),
+    activeRole,
+    switchActiveRole,
+    fetchProfile,
+    updateProfile,
+    normalizeRole
   };
 
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
-
-export const useAuthContext = () => {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error('useAuthContext must be used within AuthProvider');
-  }
-  return context;
-};
-
-export default AuthProvider;
-

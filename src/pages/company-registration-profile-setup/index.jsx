@@ -395,7 +395,7 @@ const CompanyRegistrationProfileSetup = () => {
   };
   
   return (
-    <div className="min-h-screen bg-surface dark:bg-[#0A0E27] pb-16 overflow-x-hidden">
+    <div className="min-h-screen bg-bg pb-16 overflow-x-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
         <Breadcrumb />
         
@@ -414,7 +414,7 @@ const CompanyRegistrationProfileSetup = () => {
                 {steps?.map((step, stepIdx) => (
                   <li key={step?.name} className={`relative ${stepIdx === steps?.length - 1 ? '' : 'pr-8 sm:pr-20'} flex-1`}>
                     <div className="absolute inset-0 flex items-center" aria-hidden="true">
-                      <div className={`h-0.5 w-full ${stepIdx < currentStep - 1 ? 'bg-primary' : 'bg-secondary-200'}`}></div>
+                      <div className={`h-0.5 w-full ${stepIdx < currentStep - 1 ? 'bg-primary' : 'bg-border'}`}></div>
                     </div>
                     <button
                       type="button"
@@ -447,7 +447,7 @@ const CompanyRegistrationProfileSetup = () => {
             <p className="text-sm font-medium text-text-secondary">
               Step {currentStep} of {steps?.length}: {steps?.[currentStep - 1]?.name}
             </p>
-            <div className="mt-2 bg-secondary-200 rounded-full overflow-hidden">
+            <div className="mt-2 bg-border rounded-full overflow-hidden">
               <div 
                 className="h-2 bg-primary rounded-full" 
                 style={{ width: `${(currentStep / steps?.length) * 100}%` }}
@@ -457,12 +457,12 @@ const CompanyRegistrationProfileSetup = () => {
         </div>
         
         {/* Form Container */}
-        <div className="bg-background dark:bg-[#13182E] rounded-lg shadow-sm border border-border dark:border-gray-700 p-4 sm:p-6 mb-8 overflow-x-hidden">
+        <div className="bg-bg-elevated rounded-[2.5rem] shadow-2xl border border-border dark:border-white/5 p-6 sm:p-10 mb-8 overflow-x-hidden">
           <form onSubmit={handleSubmit}>
             {renderStepContent()}
             
             {/* Form Actions */}
-            <div className="mt-8 pt-6 border-t border-border dark:border-gray-700 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="mt-8 pt-10 border-t border-border dark:border-white/5 flex flex-col sm:flex-row items-center justify-between gap-6">
               <div>
                 {currentStep > 1 && (
                   <button
@@ -529,7 +529,7 @@ const CompanyRegistrationProfileSetup = () => {
         </div>
         
         {/* Help Section */}
-        <div className="bg-surface-100 dark:bg-surface-800 rounded-lg p-6 border border-border dark:border-gray-700">
+        <div className="bg-bg p-10 rounded-[2.5rem] border border-border dark:border-white/5 shadow-2xl">
           <h3 className="text-lg font-semibold text-text-primary dark:text-white mb-4 flex items-center">
             <Icon name="HelpCircle" size={20} className="mr-2 text-primary dark:text-primary-400" />
             Need Help?

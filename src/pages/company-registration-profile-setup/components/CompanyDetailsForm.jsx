@@ -30,16 +30,16 @@ const CompanyDetailsForm = ({ formData, handleChange, errors }) => {
   
   return (
     <div>
-      <div className="mb-6">
-        <h2 className="text-xl font-semibold text-text-primary mb-2">Company Details</h2>
-        <p className="text-text-secondary">
+      <div className="mb-8">
+        <h2 className="text-xl font-black text-text-primary uppercase tracking-tight mb-2">Company Details</h2>
+        <p className="text-xs font-medium text-text-muted leading-relaxed">
           Tell us about your company to help candidates learn more about your organization.
         </p>
       </div>
       <div className="space-y-6">
         {/* Company Name */}
         <div>
-          <label htmlFor="name" className="block text-sm font-medium text-text-primary mb-1">
+          <label htmlFor="name" className="block text-[10px] font-black text-text-muted uppercase tracking-widest ml-1 mb-2">
             Company Name <span className="text-error">*</span>
           </label>
           <input
@@ -63,7 +63,7 @@ const CompanyDetailsForm = ({ formData, handleChange, errors }) => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Industry */}
           <div>
-            <label htmlFor="industry" className="block text-sm font-medium text-text-primary mb-1">
+            <label htmlFor="industry" className="block text-[10px] font-black text-text-muted uppercase tracking-widest ml-1 mb-2">
               Industry <span className="text-error">*</span>
             </label>
             <select
@@ -90,7 +90,7 @@ const CompanyDetailsForm = ({ formData, handleChange, errors }) => {
           
           {/* Company Size */}
           <div>
-            <label htmlFor="size" className="block text-sm font-medium text-text-primary mb-1">
+            <label htmlFor="size" className="block text-[10px] font-black text-text-muted uppercase tracking-widest ml-1 mb-2">
               Company Size
             </label>
             <select
@@ -112,12 +112,12 @@ const CompanyDetailsForm = ({ formData, handleChange, errors }) => {
         
         {/* Website */}
         <div>
-          <label htmlFor="website" className="block text-sm font-medium text-text-primary mb-1">
+          <label htmlFor="website" className="block text-[10px] font-black text-text-muted uppercase tracking-widest ml-1 mb-2">
             Company Website
           </label>
           <div className="relative">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <Icon name="Globe" size={16} color="var(--color-secondary-500)" />
+              <Icon name="Globe" size={16} className="text-workflow-primary/50" />
             </div>
             <input
               type="text"
@@ -139,7 +139,7 @@ const CompanyDetailsForm = ({ formData, handleChange, errors }) => {
         
         {/* Company Description */}
         <div>
-          <label htmlFor="description" className="block text-sm font-medium text-text-primary mb-1">
+          <label htmlFor="description" className="block text-[10px] font-black text-text-muted uppercase tracking-widest ml-1 mb-2">
             Company Description <span className="text-error">*</span>
           </label>
           <textarea
@@ -167,12 +167,12 @@ const CompanyDetailsForm = ({ formData, handleChange, errors }) => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Headquarters */}
           <div>
-            <label htmlFor="headquarters" className="block text-sm font-medium text-text-primary mb-1">
+            <label htmlFor="headquarters" className="block text-[10px] font-black text-text-muted uppercase tracking-widest ml-1 mb-2">
               Headquarters Location
             </label>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Icon name="MapPin" size={16} color="var(--color-secondary-500)" />
+                <Icon name="MapPin" size={16} className="text-workflow-primary/50" />
               </div>
               <input
                 type="text"
@@ -188,7 +188,7 @@ const CompanyDetailsForm = ({ formData, handleChange, errors }) => {
           
           {/* Founding Year */}
           <div>
-            <label htmlFor="foundingYear" className="block text-sm font-medium text-text-primary mb-1">
+            <label htmlFor="foundingYear" className="block text-[10px] font-black text-text-muted uppercase tracking-widest ml-1 mb-2">
               Year Founded
             </label>
             <select

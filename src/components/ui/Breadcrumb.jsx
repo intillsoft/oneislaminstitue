@@ -9,12 +9,12 @@ const Breadcrumb = ({ customItems = null, showBackButton = false }) => {
 
   const pathMappings = {
     '/': 'Home',
-    '/jobs': 'Browse Jobs',
-    '/jobs/detail': 'Job Details',
+    '/jobs': 'Course Catalog',
+    '/jobs/detail': 'Course Details',
     '/dashboard': 'Dashboard',
     '/login': 'Sign In',
-    '/company-registration-profile-setup': 'Company Setup',
-    '/job-posting-creation-management': 'Post Job',
+    '/company-registration-profile-setup': 'Curator Team Setup',
+    '/job-posting-creation-management': 'Create Course',
     '/recruiter-dashboard-analytics': 'Dashboard',
     '/admin-moderation-management': 'Admin Panel'
   };

@@ -15,15 +15,15 @@ const Button = ({
   ...props
 }) => {
   const variants = {
-    primary: 'btn-primary',
-    secondary: 'btn-secondary',
+    primary: 'elite-button-primary',
+    secondary: 'elite-button-secondary',
     ghost: 'btn-ghost',
   };
 
   const sizes = {
-    sm: 'px-4 py-2 text-sm',
-    md: 'px-6 py-3 text-base',
-    lg: 'px-8 py-4 text-lg',
+    sm: 'px-6 py-2.5 text-[9px]',
+    md: 'px-8 py-3.5 text-[10px]',
+    lg: 'px-12 py-5 text-[11px]',
   };
 
   return (
@@ -34,11 +34,12 @@ const Button = ({
       className={cn(
         variants[variant],
         sizes[size],
+        'flex items-center justify-center font-black uppercase tracking-widest transition-all duration-300',
         className
       )}
-      whileHover={{ scale: disabled || isLoading ? 1 : 1.02 }}
-      whileTap={{ scale: disabled || isLoading ? 1 : 0.98 }}
-      transition={{ duration: 0.2 }}
+      whileHover={{ scale: disabled || isLoading ? 1 : 1.05, y: -2 }}
+      whileTap={{ scale: disabled || isLoading ? 1 : 0.95 }}
+      transition={{ type: "spring", stiffness: 400, damping: 10 }}
       {...props}
     >
       {isLoading ? (

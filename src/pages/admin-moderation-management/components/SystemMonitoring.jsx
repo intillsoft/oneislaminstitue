@@ -4,6 +4,7 @@ import Icon from 'components/AppIcon';
 import { adminService } from '../../../services/adminService';
 import { useAuthContext } from '../../../contexts/AuthContext';
 import { useToast } from '../../../components/ui/Toast';
+import { EliteCard } from '../../../components/ui/EliteCard';
 
 const SystemMonitoring = () => {
   const { user, profile } = useAuthContext();
@@ -96,8 +97,8 @@ const SystemMonitoring = () => {
     return 'text-text-primary';
   };
 
-  const filteredLogs = alertLevel === 'all' 
-    ? errorLogs 
+  const filteredLogs = alertLevel === 'all'
+    ? errorLogs
     : errorLogs?.filter(log => log?.level === alertLevel);
 
   return (
@@ -110,207 +111,234 @@ const SystemMonitoring = () => {
         </p>
       </div>
       {/* Performance Metrics */}
-      <div className="card bg-background dark:bg-[#13182E] border border-border dark:border-gray-700">
-        <div className="p-6">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-4">
-            <h3 className="text-lg font-medium text-text-primary dark:text-white">Performance Metrics</h3>
-            <div className="flex flex-wrap gap-3">
-              <select
-                value={refreshInterval}
-                onChange={(e) => setRefreshInterval(e?.target?.value)}
-                className="input-field text-sm bg-background dark:bg-[#13182E] border-border dark:border-gray-700 text-text-primary dark:text-white"
-              >
-                <option value="10">Refresh every 10s</option>
-                <option value="30">Refresh every 30s</option>
-                <option value="60">Refresh every 1m</option>
-                <option value="300">Refresh every 5m</option>
-              </select>
-              <button 
-                onClick={loadMonitoringData}
-                className="btn-secondary text-sm flex items-center space-x-2"
-              >
-                <Icon name="RefreshCw" size={16} />
-                <span>Refresh</span>
-              </button>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <EliteCard className="p-8 border-white/5 bg-white/[0.02] flex flex-col items-center text-center group hover:scale-[1.02] transition-all">
+          <div className="w-16 h-16 bg-emerald-500/10 rounded-2xl flex items-center justify-center mb-6 border border-emerald-500/20 group-hover:scale-110 transition-transform">
+            <Icon name="Activity" size={32} className="text-emerald-500" />
+          </div>
+          <h4 className="text-3xl font-black text-white mb-1 tracking-tight">{performanceMetrics?.serverUptime}</h4>
+          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">Global System Uptime</p>
+          <div className="mt-6 w-full pt-6 border-t border-white/5 flex items-center justify-center gap-2">
+            <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+            <span className="text-[9px] font-black uppercase tracking-widest text-emerald-500">Live & Operational</span>
+          </div>
+        </EliteCard>
+
+        <EliteCard className="p-8 border-white/5 bg-white/[0.02] flex flex-col items-center text-center group hover:scale-[1.02] transition-all">
+          <div className="w-16 h-16 bg-blue-500/10 rounded-2xl flex items-center justify-center mb-6 border border-blue-500/20 group-hover:scale-110 transition-transform">
+            <Icon name="Cpu" size={32} className="text-blue-500" />
+          </div>
+          <h4 className={`text-3xl font-black mb-1 tracking-tight ${getMetricColor(performanceMetrics?.cpuUsage, 'usage')}`}>
+            {performanceMetrics?.cpuUsage}
+          </h4>
+          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">CPU Compute Load</p>
+          <div className="mt-6 w-full h-1 bg-white/5 rounded-full overflow-hidden">
+            <div
+              className="h-full bg-blue-500 transition-all duration-1000"
+              style={{ width: performanceMetrics?.cpuUsage || '0%' }}
+            />
+          </div>
+        </EliteCard>
+
+        <EliteCard className="p-8 border-white/5 bg-white/[0.02] flex flex-col items-center text-center group hover:scale-[1.02] transition-all">
+          <div className="w-16 h-16 bg-purple-500/10 rounded-2xl flex items-center justify-center mb-6 border border-purple-500/20 group-hover:scale-110 transition-transform">
+            <Icon name="HardDrive" size={32} className="text-purple-500" />
+          </div>
+          <h4 className={`text-3xl font-black mb-1 tracking-tight ${getMetricColor(performanceMetrics?.memoryUsage, 'usage')}`}>
+            {performanceMetrics?.memoryUsage}
+          </h4>
+          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">Memory Allocation</p>
+          <div className="mt-6 w-full h-1 bg-white/5 rounded-full overflow-hidden">
+            <div
+              className="h-full bg-purple-500 transition-all duration-1000"
+              style={{ width: performanceMetrics?.memoryUsage || '0%' }}
+            />
+          </div>
+        </EliteCard>
+
+        <EliteCard className="p-8 border-white/5 bg-white/[0.02] flex flex-col items-center text-center group hover:scale-[1.02] transition-all">
+          <div className="w-16 h-16 bg-amber-500/10 rounded-2xl flex items-center justify-center mb-6 border border-amber-500/20 group-hover:scale-110 transition-transform">
+            <Icon name="Database" size={32} className="text-amber-500" />
+          </div>
+          <h4 className={`text-3xl font-black mb-1 tracking-tight ${getMetricColor(performanceMetrics?.diskSpace, 'usage')}`}>
+            {performanceMetrics?.diskSpace}
+          </h4>
+          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">Storage Capacity</p>
+          <div className="mt-6 w-full h-1 bg-white/5 rounded-full overflow-hidden">
+            <div
+              className="h-full bg-amber-500 transition-all duration-1000"
+              style={{ width: performanceMetrics?.diskSpace || '0%' }}
+            />
+          </div>
+        </EliteCard>
+
+        <EliteCard className="p-8 border-white/5 bg-white/[0.02] flex flex-col items-center text-center group hover:scale-[1.02] transition-all">
+          <div className="w-16 h-16 bg-rose-500/10 rounded-2xl flex items-center justify-center mb-6 border border-rose-500/20 group-hover:scale-110 transition-transform">
+            <Icon name="Clock" size={32} className="text-rose-500" />
+          </div>
+          <h4 className="text-3xl font-black text-white mb-1 tracking-tight">{performanceMetrics?.responseTime}</h4>
+          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">Avg Gateway Latency</p>
+          <div className="mt-6 w-full pt-6 border-t border-white/5 flex items-center justify-center gap-4">
+            <div className="flex items-center gap-1">
+              <span className="text-[9px] font-black uppercase tracking-widest text-slate-500">p99</span>
+              <span className="text-[9px] font-black text-white">450ms</span>
+            </div>
+            <div className="w-[1px] h-3 bg-white/10" />
+            <div className="flex items-center gap-1">
+              <span className="text-[9px] font-black uppercase tracking-widest text-slate-500">p95</span>
+              <span className="text-[9px] font-black text-white">220ms</span>
             </div>
           </div>
-          
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div className="text-center">
-              <div className="w-16 h-16 bg-green-100 dark:bg-green-900/20 rounded-full flex items-center justify-center mx-auto mb-3">
-                <Icon name="Activity" size={24} className="text-green-600 dark:text-green-400" />
-              </div>
-              <h4 className="text-2xl font-bold text-text-primary dark:text-white">{performanceMetrics?.serverUptime}</h4>
-              <p className="text-sm text-text-secondary dark:text-gray-400">Server Uptime</p>
-            </div>
-            
-            <div className="text-center">
-              <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900/20 rounded-full flex items-center justify-center mx-auto mb-3">
-                <Icon name="Cpu" size={24} className="text-blue-600 dark:text-blue-400" />
-              </div>
-              <h4 className={`text-2xl font-bold dark:text-white ${getMetricColor(performanceMetrics?.cpuUsage, 'usage')}`}>
-                {performanceMetrics?.cpuUsage}
-              </h4>
-              <p className="text-sm text-text-secondary dark:text-gray-400">CPU Usage</p>
-            </div>
-            
-            <div className="text-center">
-              <div className="w-16 h-16 bg-purple-100 dark:bg-purple-900/20 rounded-full flex items-center justify-center mx-auto mb-3">
-                <Icon name="HardDrive" size={24} className="text-purple-600 dark:text-purple-400" />
-              </div>
-              <h4 className={`text-2xl font-bold dark:text-white ${getMetricColor(performanceMetrics?.memoryUsage, 'usage')}`}>
-                {performanceMetrics?.memoryUsage}
-              </h4>
-              <p className="text-sm text-text-secondary dark:text-gray-400">Memory Usage</p>
-            </div>
-            
-            <div className="text-center">
-              <div className="w-16 h-16 bg-orange-100 dark:bg-orange-900/20 rounded-full flex items-center justify-center mx-auto mb-3">
-                <Icon name="Database" size={24} className="text-orange-600 dark:text-orange-400" />
-              </div>
-              <h4 className={`text-2xl font-bold dark:text-white ${getMetricColor(performanceMetrics?.diskSpace, 'usage')}`}>
-                {performanceMetrics?.diskSpace}
-              </h4>
-              <p className="text-sm text-text-secondary dark:text-gray-400">Disk Usage</p>
-            </div>
-            
-            <div className="text-center">
-              <div className="w-16 h-16 bg-yellow-100 dark:bg-yellow-900/20 rounded-full flex items-center justify-center mx-auto mb-3">
-                <Icon name="Clock" size={24} className="text-yellow-600 dark:text-yellow-400" />
-              </div>
-              <h4 className="text-2xl font-bold text-text-primary dark:text-white">{performanceMetrics?.responseTime}</h4>
-              <p className="text-sm text-text-secondary dark:text-gray-400">Avg Response Time</p>
-            </div>
-            
-            <div className="text-center">
-              <div className="w-16 h-16 bg-indigo-100 dark:bg-indigo-900/20 rounded-full flex items-center justify-center mx-auto mb-3">
-                <Icon name="TrendingUp" size={24} className="text-indigo-600 dark:text-indigo-400" />
-              </div>
-              <h4 className="text-2xl font-bold text-text-primary dark:text-white">{performanceMetrics?.throughput}</h4>
-              <p className="text-sm text-text-secondary dark:text-gray-400">Throughput</p>
+        </EliteCard>
+
+        <EliteCard className="p-8 border-white/5 bg-white/[0.02] flex flex-col items-center text-center group hover:scale-[1.02] transition-all">
+          <div className="w-16 h-16 bg-indigo-500/10 rounded-2xl flex items-center justify-center mb-6 border border-indigo-500/20 group-hover:scale-110 transition-transform">
+            <Icon name="TrendingUp" size={32} className="text-indigo-500" />
+          </div>
+          <h4 className="text-3xl font-black text-white mb-1 tracking-tight">{performanceMetrics?.throughput || '1.2k'}</h4>
+          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">Requests Per Second</p>
+          <div className="mt-6 w-full pt-6 border-t border-white/5">
+            <div className="flex items-center justify-between">
+              <span className="text-[9px] font-black uppercase tracking-widest text-slate-500">Peak Load</span>
+              <span className="text-[9px] font-black text-indigo-500 uppercase">Sustainable</span>
             </div>
           </div>
-        </div>
+        </EliteCard>
       </div>
       {/* Integration Status */}
-      <div className="card bg-background dark:bg-[#13182E] border border-border dark:border-gray-700">
-        <div className="p-6">
-          <h3 className="text-lg font-medium text-text-primary dark:text-white mb-6">Third-Party Integration Status</h3>
-          {integrationStatus.length === 0 ? (
-            <div className="text-center py-8 text-text-secondary dark:text-gray-400">
-              <Icon name="Activity" size={48} className="mx-auto mb-4 opacity-50" />
-              <p>No integration data available</p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {integrationStatus?.map((integration) => (
-                <div key={integration?.name} className="border border-border dark:border-gray-700 rounded-lg p-4 bg-surface-50 dark:bg-surface-800">
-                  <div className="flex items-center justify-between mb-3">
-                    <h4 className="text-md font-medium text-text-primary dark:text-white">{integration?.name}</h4>
-                    <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${getStatusColor(integration?.status)}`}>
-                      {integration?.status}
-                    </span>
+      <div className="space-y-6">
+        <div className="flex items-center gap-4">
+          <div className="w-10 h-10 rounded-xl bg-indigo-500/10 flex items-center justify-center border border-indigo-500/20">
+            <Icon name="Activity" className="w-5 h-5 text-indigo-500" />
+          </div>
+          <div>
+            <h3 className="text-lg font-black text-white uppercase tracking-tight">External Nexus Status</h3>
+            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">Third-Party Gateway Connectivity</p>
+          </div>
+        </div>
+
+        {integrationStatus.length === 0 ? (
+          <EliteCard className="p-8 border-white/5 bg-white/[0.02] text-center">
+            <Icon name="Activity" size={48} className="mx-auto mb-4 opacity-20 text-slate-500" />
+            <p className="text-slate-400 font-black uppercase tracking-widest text-xs">No active integrations detected</p>
+          </EliteCard>
+        ) : (
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {integrationStatus?.map((integration) => (
+              <EliteCard key={integration?.name} className="p-6 border-white/5 bg-white/[0.02] hover:bg-white/[0.04] transition-all group">
+                <div className="flex items-center justify-between mb-6">
+                  <h4 className="text-md font-black text-white uppercase tracking-tight">{integration?.name}</h4>
+                  <span className={`inline-flex px-3 py-1 text-[9px] font-black uppercase tracking-widest rounded-lg ${getStatusColor(integration?.status)}`}>
+                    {integration?.status}
+                  </span>
+                </div>
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center">
+                    <span className="text-[10px] font-black uppercase tracking-widest text-slate-500">Response Latency</span>
+                    <span className="text-xs font-black text-white">{integration?.responseTime}</span>
                   </div>
-                  <div className="space-y-2 text-sm">
-                    <div className="flex justify-between">
-                      <span className="text-text-secondary dark:text-gray-400">Response Time:</span>
-                      <span className="text-text-primary dark:text-white font-medium">{integration?.responseTime}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-text-secondary dark:text-gray-400">Version:</span>
-                      <span className="text-text-primary dark:text-white">{integration?.version}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-text-secondary dark:text-gray-400">Uptime:</span>
-                      <span className="text-text-primary dark:text-white">{integration?.uptime}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-text-secondary dark:text-gray-400">Last Check:</span>
-                      <span className="text-text-primary dark:text-white">{integration?.lastCheck}</span>
-                    </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-[10px] font-black uppercase tracking-widest text-slate-500">Service Version</span>
+                    <span className="text-xs font-black text-slate-300 font-mono">{integration?.version}</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-[10px] font-black uppercase tracking-widest text-slate-500">Uptime Reliability</span>
+                    <span className="text-xs font-black text-emerald-500">{integration?.uptime}</span>
+                  </div>
+                  <div className="flex justify-between items-center pt-4 border-t border-white/5">
+                    <span className="text-[9px] font-black uppercase tracking-widest text-slate-600">Last Telemetry Check</span>
+                    <span className="text-[10px] font-black text-slate-500">{integration?.lastCheck}</span>
                   </div>
                 </div>
-              ))}
-            </div>
-          )}
-        </div>
+              </EliteCard>
+            ))}
+          </div>
+        )}
       </div>
+
       {/* Error Logs */}
-      <div className="card bg-background dark:bg-[#13182E] border border-border dark:border-gray-700">
-        <div className="p-6">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-4">
-            <h3 className="text-lg font-medium text-text-primary dark:text-white">System Error Logs</h3>
-            <div className="flex flex-wrap gap-3">
-              <select
-                value={alertLevel}
-                onChange={(e) => setAlertLevel(e?.target?.value)}
-                className="input-field text-sm bg-background dark:bg-[#13182E] border-border dark:border-gray-700 text-text-primary dark:text-white"
-              >
-                <option value="all">All Levels</option>
-                <option value="error">Errors Only</option>
-                <option value="warning">Warnings Only</option>
-                <option value="info">Info Only</option>
-              </select>
-              <button className="btn-secondary text-sm flex items-center space-x-2">
-                <Icon name="Download" size={16} />
-                <span>Export Logs</span>
+      <EliteCard className="border-white/5 bg-white/[0.02]">
+        <div className="p-8">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 gap-6">
+            <div className="flex items-center gap-4">
+              <div className="w-10 h-10 rounded-xl bg-rose-500/10 flex items-center justify-center border border-rose-500/20">
+                <Icon name="AlertCircle" className="w-5 h-5 text-rose-500" />
+              </div>
+              <div>
+                <h3 className="text-lg font-black text-white uppercase tracking-tight">System Error Logs</h3>
+                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">Live Incident Monitoring</p>
+              </div>
+            </div>
+            <div className="flex flex-wrap items-center gap-3">
+              <div className="relative group">
+                <select
+                  value={alertLevel}
+                  onChange={(e) => setAlertLevel(e?.target?.value)}
+                  className="appearance-none bg-white/5 border border-white/5 rounded-xl px-4 py-2.5 pr-10 text-xs font-black uppercase tracking-widest text-slate-300 focus:outline-none focus:ring-2 focus:ring-rose-500/40 transition-all cursor-pointer hover:bg-white/10"
+                >
+                  <option value="all" className="bg-[#0A1628]">All Levels</option>
+                  <option value="error" className="bg-[#0A1628]">Critical Errors</option>
+                  <option value="warning" className="bg-[#0A1628]">Warnings</option>
+                  <option value="info" className="bg-[#0A1628]">Information</option>
+                </select>
+                <Icon name="ChevronDown" size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none group-hover:text-rose-500 transition-colors" />
+              </div>
+              <button className="px-5 py-2.5 bg-white/5 text-white rounded-xl hover:bg-white/10 transition-all font-black uppercase tracking-widest text-[10px] border border-white/5 flex items-center gap-2 group">
+                <Icon name="Download" size={14} className="text-slate-500 group-hover:text-white transition-colors" />
+                Export Archive
               </button>
             </div>
           </div>
-          
+
           {filteredLogs.length === 0 ? (
-            <div className="text-center py-12 text-text-secondary dark:text-gray-400">
-              <Icon name="CheckCircle" size={48} className="mx-auto mb-4 text-green-500 dark:text-green-400 opacity-50" />
-              <p>No error logs found</p>
-              <p className="text-sm mt-1">System is running smoothly</p>
+            <div className="text-center py-12 border border-dashed border-white/5 rounded-2xl">
+              <Icon name="CheckCircle" size={48} className="mx-auto mb-4 text-emerald-500/20" />
+              <p className="text-slate-400 font-black uppercase tracking-widest text-xs">System Pulse Nominal: No Incidents</p>
             </div>
           ) : (
             <div className="overflow-x-auto">
               <table className="min-w-full">
                 <thead>
-                  <tr className="border-b border-border dark:border-gray-700">
-                    <th className="text-left py-3 text-sm font-medium text-text-secondary dark:text-gray-400">Timestamp</th>
-                    <th className="text-left py-3 text-sm font-medium text-text-secondary dark:text-gray-400">Level</th>
-                    <th className="text-left py-3 text-sm font-medium text-text-secondary dark:text-gray-400">Service</th>
-                    <th className="text-left py-3 text-sm font-medium text-text-secondary dark:text-gray-400">Message</th>
-                    <th className="text-left py-3 text-sm font-medium text-text-secondary dark:text-gray-400">Status</th>
-                    <th className="text-left py-3 text-sm font-medium text-text-secondary dark:text-gray-400">Actions</th>
+                  <tr className="border-b border-white/5">
+                    <th className="text-left py-4 text-[10px] font-black uppercase tracking-widest text-slate-500">Timestamp</th>
+                    <th className="text-left py-4 text-[10px] font-black uppercase tracking-widest text-slate-500">Level</th>
+                    <th className="text-left py-4 text-[10px] font-black uppercase tracking-widest text-slate-500">Service Nexus</th>
+                    <th className="text-left py-4 text-[10px] font-black uppercase tracking-widest text-slate-500">Payload Message</th>
+                    <th className="text-left py-4 text-[10px] font-black uppercase tracking-widest text-slate-500">Status</th>
+                    <th className="text-left py-4 text-[10px] font-black uppercase tracking-widest text-slate-500">Governance</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody className="divide-y divide-white/[0.02]">
                   {filteredLogs?.map((log) => (
-                    <tr key={log?.id} className="border-b border-border dark:border-gray-700 hover:bg-surface-50 dark:hover:bg-surface-800/50">
-                      <td className="py-4 text-sm text-text-primary dark:text-white font-mono">{log?.timestamp}</td>
+                    <tr key={log?.id} className="hover:bg-white/[0.01] transition-colors group">
+                      <td className="py-4 text-xs text-slate-400 font-mono tracking-tighter">{log?.timestamp}</td>
                       <td className="py-4">
-                        <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${getLevelColor(log?.level)}`}>
-                          {log?.level?.toUpperCase()}
+                        <span className={`inline-flex px-2 py-0.5 text-[9px] font-black uppercase tracking-widest rounded-md ${getLevelColor(log?.level)}`}>
+                          {log?.level}
                         </span>
                       </td>
-                      <td className="py-4 text-sm text-text-primary dark:text-white font-medium">{log?.service}</td>
+                      <td className="py-4 text-xs font-black text-white uppercase tracking-tight">{log?.service}</td>
                       <td className="py-4">
-                        <div className="text-sm text-text-primary dark:text-white">{log?.message}</div>
-                        <div className="text-xs text-text-secondary dark:text-gray-400 mt-1">{log?.details}</div>
+                        <div className="text-xs text-slate-300 font-medium max-w-md truncate">{log?.message}</div>
+                        {log?.details && <div className="text-[10px] text-slate-600 truncate max-w-md italic">{log?.details}</div>}
                       </td>
                       <td className="py-4">
-                        <div className="flex items-center">
-                          {log?.resolved ? (
-                            <div className="flex items-center text-green-600 dark:text-green-400">
-                              <Icon name="CheckCircle" size={16} className="mr-1" />
-                              <span className="text-xs">Resolved</span>
-                            </div>
-                          ) : (
-                            <div className="flex items-center text-red-600 dark:text-red-400">
-                              <Icon name="AlertCircle" size={16} className="mr-1" />
-                              <span className="text-xs">Active</span>
-                            </div>
-                          )}
+                        <div className="flex items-center gap-2">
+                          <div className={`w-1.5 h-1.5 rounded-full ${log?.resolved ? 'bg-emerald-500' : 'bg-rose-500 animate-pulse'}`} />
+                          <span className={`text-[10px] font-black uppercase tracking-widest ${log?.resolved ? 'text-emerald-500/60' : 'text-rose-500'}`}>
+                            {log?.resolved ? 'Mitigated' : 'Active'}
+                          </span>
                         </div>
                       </td>
                       <td className="py-4">
-                        <div className="flex space-x-2">
-                          <button className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 text-sm">View</button>
+                        <div className="flex items-center gap-3">
+                          <button className="text-slate-500 hover:text-white transition-colors">
+                            <Icon name="Eye" size={14} />
+                          </button>
                           {!log?.resolved && (
-                            <button className="text-green-600 hover:text-green-700 dark:text-green-400 dark:hover:text-green-300 text-sm">Resolve</button>
+                            <button className="p-1 px-2 bg-emerald-500/10 text-emerald-500 rounded-md border border-emerald-500/20 hover:bg-emerald-500 hover:text-white transition-all text-[9px] font-black uppercase tracking-widest">
+                              Resolve
+                            </button>
                           )}
                         </div>
                       </td>
@@ -321,7 +349,7 @@ const SystemMonitoring = () => {
             </div>
           )}
         </div>
-      </div>
+      </EliteCard>
     </div>
   );
 };

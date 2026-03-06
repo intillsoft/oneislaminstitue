@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { DollarSign, TrendingUp, MapPin, Briefcase, Award, Loader2, BarChart2, PieChart } from 'lucide-react';
+import { DollarSign, TrendingUp, MapPin, Briefcase, Award, Loader2, BarChart2, PieChart, Target, Info, Sparkles, Activity } from 'lucide-react';
 import {
     BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
     ReferenceLine, Cell
 } from 'recharts';
 import { aiService } from '../../services/aiService';
 import { useToast } from '../../components/ui/Toast';
+import { EliteCard } from '../../components/ui/EliteCard';
+import DojoLayout from '../../components/layout/DojoLayout';
 
 const SalaryIntelligence = () => {
     const [formData, setFormData] = useState({
@@ -18,7 +20,7 @@ const SalaryIntelligence = () => {
     });
     const [prediction, setPrediction] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
-    const { error: showError } = useToast();
+    const { error: showError, success } = useToast();
 
     const handlePredict = async () => {
         if (!formData.jobTitle || !formData.location) {
@@ -40,10 +42,7 @@ const SalaryIntelligence = () => {
                 skillsArray
             );
 
-            // Sanitize and format data for chart if needed
-            // Ensure result.salary_range.percentiles exists
             if (result && !result.salary_range.percentiles) {
-                // Fallback if API response structure varies
                 result.salary_range.percentiles = {
                     p25: result.salary_range.min + (result.salary_range.median - result.salary_range.min) * 0.5,
                     p75: result.salary_range.median + (result.salary_range.max - result.salary_range.median) * 0.5,
@@ -52,25 +51,24 @@ const SalaryIntelligence = () => {
             }
 
             setPrediction(result);
+            success("Intelligence report generated.");
         } catch (err) {
-            console.error('Salary prediction error:', err);
             showError('Failed to predict salary. Please try again.');
         } finally {
             setIsLoading(false);
         }
     };
 
-    // Chart Data Preparation
     const getChartData = () => {
         if (!prediction) return [];
         const { min, median, max, percentiles } = prediction.salary_range;
         return [
-            { name: 'Min', value: min, fill: '#94a3b8' },
-            { name: '25th', value: percentiles.p25, fill: '#60a5fa' },
-            { name: 'Median', value: median, fill: '#2563eb' },
-            { name: '75th', value: percentiles.p75, fill: '#60a5fa' },
-            { name: '90th', value: percentiles.p90, fill: '#3b82f6' },
-            { name: 'Max', value: max, fill: '#94a3b8' },
+            { name: 'Min', value: min, fill: '#312e81' },
+            { name: '25th', value: percentiles.p25, fill: '#4338ca' },
+            { name: 'Median', value: median, fill: '#6366f1' },
+            { name: '75th', value: percentiles.p75, fill: '#818cf8' },
+            { name: '90th', value: percentiles.p90, fill: '#a5b4fc' },
+            { name: 'Max', value: max, fill: '#c7d2fe' },
         ];
     };
 
@@ -78,219 +76,239 @@ const SalaryIntelligence = () => {
         return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(val);
     };
 
-    return (
-        <div className="max-w-7xl mx-auto p-8 space-y-8">
-            {/* Header */}
-            <div className="text-center space-y-4 mb-12">
-                <motion.div
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    className="inline-flex p-4 rounded-3xl bg-gradient-to-br from-green-400 to-emerald-600 shadow-xl shadow-green-500/30 mb-4"
+    const sidebar = (
+        <div className="space-y-6">
+            <EliteCard className="p-6 bg-[#0A0E27]/80 border-indigo-500/30 shadow-[0_0_30px_rgba(79,70,229,0.1)] relative overflow-hidden group">
+                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-indigo-500 to-transparent opacity-50" />
+
+                <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-indigo-400 mb-8 flex items-center gap-3">
+                    <Activity className="w-4 h-4 text-indigo-500 animate-pulse" />
+                    Target Parameter
+                </h3>
+
+                <div className="space-y-5">
+                    <div className="group/field">
+                        <label className="block text-[10px] font-black uppercase tracking-widest text-slate-600 mb-2 group-focus-within/field:text-indigo-400 transition-colors">Job Designation</label>
+                        <input
+                            type="text"
+                            value={formData.jobTitle}
+                            onChange={(e) => setFormData({ ...formData, jobTitle: e.target.value })}
+                            placeholder="e.g. Lead System Architect"
+                            className="w-full px-4 py-3 rounded-xl border border-white/5 bg-black/40 text-white focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/20 outline-none transition-all placeholder:text-slate-800 text-sm font-medium"
+                        />
+                    </div>
+
+                    <div className="group/field">
+                        <label className="block text-[10px] font-black uppercase tracking-widest text-slate-600 mb-2 group-focus-within/field:text-indigo-400 transition-colors">Geographic Zone</label>
+                        <input
+                            type="text"
+                            value={formData.location}
+                            onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+                            placeholder="e.g. Zurich, Switzerland"
+                            className="w-full px-4 py-3 rounded-xl border border-white/5 bg-black/40 text-white focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/20 outline-none transition-all placeholder:text-slate-800 text-sm font-medium"
+                        />
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
+                        <div className="group/field">
+                            <label className="block text-[10px] font-black uppercase tracking-widest text-slate-600 mb-2 group-focus-within/field:text-indigo-400 transition-colors">Seniority</label>
+                            <select
+                                value={formData.experienceLevel}
+                                onChange={(e) => setFormData({ ...formData, experienceLevel: e.target.value })}
+                                className="w-full px-3 py-3 rounded-xl border border-white/5 bg-black/40 text-white focus:border-indigo-500/50 outline-none transition-all text-xs font-bold appearance-none cursor-pointer hover:bg-black/60"
+                            >
+                                <option>Entry Level</option>
+                                <option>Mid-Level</option>
+                                <option>Senior</option>
+                                <option>Lead/Manager</option>
+                                <option>Executive</option>
+                            </select>
+                        </div>
+
+                        <div className="group/field">
+                            <label className="block text-[10px] font-black uppercase tracking-widest text-slate-600 mb-2 group-focus-within/field:text-indigo-400 transition-colors">Industry</label>
+                            <select
+                                value={formData.industry}
+                                onChange={(e) => setFormData({ ...formData, industry: e.target.value })}
+                                className="w-full px-3 py-3 rounded-xl border border-white/5 bg-black/40 text-white focus:border-indigo-500/50 outline-none transition-all text-xs font-bold appearance-none cursor-pointer hover:bg-black/60"
+                            >
+                                <option>Technology</option>
+                                <option>Finance</option>
+                                <option>Healthcare</option>
+                                <option>Manufacturing</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <button
+                    onClick={handlePredict}
+                    disabled={isLoading}
+                    className="w-full mt-10 py-5 bg-indigo-600 text-white rounded-xl font-black text-[10px] uppercase tracking-[0.3em] hover:bg-indigo-500 hover:shadow-[0_0_25px_rgba(79,70,229,0.4)] transition-all disabled:opacity-50 flex items-center justify-center gap-3 active:scale-95"
                 >
-                    <DollarSign className="w-10 h-10 text-white" />
-                </motion.div>
-                <h1 className="text-4xl md:text-5xl font-black text-slate-900 dark:text-white tracking-tight">
-                    Salary <span className="text-emerald-500">Intelligence</span>
-                </h1>
-                <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto font-medium">
-                    Unlock your earning potential with AI-powered compensation analysis.
+                    {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <>Scan Market Pulse</>}
+                </button>
+            </EliteCard>
+
+            <div className="p-6 rounded-2xl bg-indigo-500/5 border border-indigo-500/10 backdrop-blur-sm">
+                <div className="flex items-center gap-3 mb-3">
+                    <Sparkles className="w-3 h-3 text-indigo-400" />
+                    <p className="text-[9px] font-black text-indigo-400 uppercase tracking-widest">Neural Tip</p>
+                </div>
+                <p className="text-slate-500 text-[10px] leading-relaxed font-medium">
+                    The electric blue bars represent the core volatility zones. Aim for the "90th" percentile by mastering Niche Skills.
                 </p>
             </div>
+        </div>
+    );
 
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                {/* Input Panel */}
-                <div className="lg:col-span-4 space-y-6">
-                    <motion.div
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        className="bg-white/80 dark:bg-[#13182E]/80 backdrop-blur-xl rounded-3xl shadow-2xl p-8 border border-white/20 dark:border-white/5 space-y-6"
-                    >
-                        <h3 className="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                            <Briefcase className="w-5 h-5 text-emerald-500" /> Career Profile
-                        </h3>
+    const main = (
+        <AnimatePresence mode="wait">
+            {prediction ? (
+                <motion.div
+                    key="result"
+                    initial={{ opacity: 0, scale: 0.98 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="space-y-8 pb-12"
+                >
+                    {/* Main Intel Card */}
+                    <div className="relative overflow-hidden rounded-3xl bg-[#0A0E27] border border-white/5 p-10 shadow-2xl">
+                        <div className="absolute top-0 right-0 p-10 opacity-[0.03] pointer-events-none">
+                            <DollarSign size={200} className="text-indigo-500" />
+                        </div>
 
-                        <div className="space-y-4">
+                        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-8 relative z-10">
                             <div>
-                                <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Job Title</label>
-                                <input
-                                    type="text"
-                                    value={formData.jobTitle}
-                                    onChange={(e) => setFormData({ ...formData, jobTitle: e.target.value })}
-                                    placeholder="e.g. Senior Product Designer"
-                                    className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#0A0E27] text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500 outline-none transition-all font-medium"
-                                />
+                                <p className="text-[10px] font-black uppercase tracking-[0.4em] text-indigo-500 mb-3 ml-1 flex items-center gap-2">
+                                    <span className="w-2 h-2 rounded-full bg-indigo-500 animate-pulse" />
+                                    Median Projection
+                                </p>
+                                <h2 className="text-7xl font-black text-white tracking-tighter">
+                                    {formatCurrency(prediction.salary_range.median)}
+                                </h2>
                             </div>
-
-                            <div>
-                                <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Location</label>
-                                <input
-                                    type="text"
-                                    value={formData.location}
-                                    onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-                                    placeholder="e.g. San Francisco, CA"
-                                    className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#0A0E27] text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500 outline-none transition-all font-medium"
-                                />
-                            </div>
-
-                            <div>
-                                <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Experience</label>
-                                <select
-                                    value={formData.experienceLevel}
-                                    onChange={(e) => setFormData({ ...formData, experienceLevel: e.target.value })}
-                                    className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#0A0E27] text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500 outline-none transition-all font-medium"
-                                >
-                                    <option>Entry Level</option>
-                                    <option>Mid-Level</option>
-                                    <option>Senior</option>
-                                    <option>Lead/Manager</option>
-                                    <option>Executive</option>
-                                </select>
-                            </div>
-
-                            <div>
-                                <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Skills (Optional)</label>
-                                <input
-                                    type="text"
-                                    value={formData.skills}
-                                    onChange={(e) => setFormData({ ...formData, skills: e.target.value })}
-                                    placeholder="React, Node.js..."
-                                    className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#0A0E27] text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500 outline-none transition-all font-medium"
-                                />
+                            <div className="flex flex-col items-end gap-3">
+                                <div className="px-6 py-2 bg-indigo-500/10 rounded-full text-indigo-400 font-black text-[10px] uppercase tracking-widest border border-indigo-500/20 shadow-inner">
+                                    Mapping Fidelity: {Math.round(prediction.confidence_score)}%
+                                </div>
+                                <div className="px-6 py-2 bg-emerald-500/10 rounded-full text-emerald-400 font-black text-[10px] uppercase tracking-widest border border-emerald-500/20 flex items-center gap-2">
+                                    <TrendingUp size={12} /> Positive Trend
+                                </div>
                             </div>
                         </div>
 
-                        <button
-                            onClick={handlePredict}
-                            disabled={isLoading}
-                            className="w-full py-4 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white rounded-xl font-bold hover:shadow-lg transition-all disabled:opacity-50 flex items-center justify-center gap-2 shadow-emerald-500/25"
-                        >
-                            {isLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : "Run Analysis"}
-                        </button>
-                    </motion.div>
-                </div>
+                        {/* Chart Area */}
+                        <div className="h-[400px] w-full mb-10 relative group">
+                            <div className="absolute inset-0 bg-indigo-500/5 rounded-3xl blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
+                            <ResponsiveContainer width="100%" height="100%">
+                                <BarChart data={getChartData()} margin={{ top: 20, right: 10, left: 10, bottom: 0 }}>
+                                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255, 255, 255, 0.03)" />
+                                    <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#334155', fontSize: 10, fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.1em' }} />
+                                    <YAxis hide />
+                                    <Tooltip
+                                        cursor={{ fill: 'rgba(255, 255, 255, 0.02)' }}
+                                        contentStyle={{ backgroundColor: '#050714', borderColor: 'rgba(99, 102, 241, 0.2)', color: '#fff', borderRadius: '12px', padding: '12px', fontSize: '12px', fontWeight: 'bold', border: '1px solid rgba(255,255,255,0.05)' }}
+                                        formatter={(value) => [formatCurrency(value), '']}
+                                    />
+                                    <Bar dataKey="value" radius={[4, 4, 0, 0]} barSize={50}>
+                                        {getChartData().map((entry, index) => (
+                                            <Cell key={`cell-${index}`} fill={entry.fill} className="transition-all duration-500 hover:opacity-80" />
+                                        ))}
+                                    </Bar>
+                                </BarChart>
+                            </ResponsiveContainer>
+                        </div>
 
-                {/* Results Panel */}
-                <div className="lg:col-span-8">
-                    <AnimatePresence mode="wait">
-                        {prediction ? (
-                            <motion.div
-                                key="result"
-                                initial={{ opacity: 0, scale: 0.95 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                className="space-y-6"
-                            >
-                                {/* Main Salary Card */}
-                                <div className="bg-white dark:bg-[#13182E] rounded-3xl shadow-xl border border-slate-100 dark:border-slate-800 overflow-hidden relative">
-                                    <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
+                        {/* Technical Breakdown */}
+                        <div className="grid grid-cols-3 border-t border-white/5 divide-x divide-white/5 -mx-10 -mb-10 bg-black/40">
+                            <div className="p-8 text-center hover:bg-white/5 transition-colors group">
+                                <p className="text-[9px] font-black uppercase tracking-[0.2em] text-slate-600 mb-2 group-hover:text-slate-400 transition-colors">Floor Intel</p>
+                                <p className="text-2xl font-black text-slate-400">{formatCurrency(prediction.salary_range.min)}</p>
+                            </div>
+                            <div className="p-8 text-center bg-indigo-500/[0.02] group">
+                                <p className="text-[9px] font-black uppercase tracking-[0.2em] text-indigo-500/50 mb-2 group-hover:text-indigo-400 transition-colors">Neural Sync</p>
+                                <p className="text-2xl font-black text-white">{formatCurrency(prediction.salary_range.median)}</p>
+                            </div>
+                            <div className="p-8 text-center hover:bg-white/5 transition-colors group">
+                                <p className="text-[9px] font-black uppercase tracking-[0.2em] text-slate-600 mb-2 group-hover:text-slate-400 transition-colors">Ceiling Limit</p>
+                                <p className="text-2xl font-black text-slate-400">{formatCurrency(prediction.salary_range.max)}</p>
+                            </div>
+                        </div>
+                    </div>
 
-                                    <div className="p-8 pb-0">
-                                        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
-                                            <div>
-                                                <h2 className="text-3xl font-black text-slate-900 dark:text-white mb-1">
-                                                    {formatCurrency(prediction.salary_range.median)}
-                                                </h2>
-                                                <p className="text-slate-500 dark:text-slate-400 font-medium">Estimated Median Base Salary</p>
-                                            </div>
-                                            <div className="flex gap-4">
-                                                <div className="px-4 py-2 bg-emerald-100 dark:bg-emerald-900/30 rounded-xl text-emerald-700 dark:text-emerald-300 font-bold text-sm flex items-center gap-2">
-                                                    <TrendingUp className="w-4 h-4" /> High Demand
-                                                </div>
-                                                <div className="px-4 py-2 bg-blue-100 dark:bg-blue-900/30 rounded-xl text-blue-700 dark:text-blue-300 font-bold text-sm">
-                                                    {Math.round(prediction.confidence_score)}% Confidence
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        {/* Chart */}
-                                        <div className="h-[300px] w-full">
-                                            <ResponsiveContainer width="100%" height="100%">
-                                                <BarChart data={getChartData()} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
-                                                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(148, 163, 184, 0.1)" />
-                                                    <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#94a3b8', fontSize: 12 }} />
-                                                    <YAxis axisLine={false} tickLine={false} tick={{ fill: '#94a3b8', fontSize: 12 }} tickFormatter={(Val) => `$${Val / 1000}k`} />
-                                                    <Tooltip
-                                                        cursor={{ fill: 'rgba(148, 163, 184, 0.05)' }}
-                                                        contentStyle={{ backgroundColor: '#1e293b', borderColor: '#334155', color: '#fff', borderRadius: '12px' }}
-                                                        formatter={(value) => [formatCurrency(value), 'Salary']}
-                                                    />
-                                                    <Bar dataKey="value" radius={[6, 6, 0, 0]}>
-                                                        {getChartData().map((entry, index) => (
-                                                            <Cell key={`cell-${index}`} fill={entry.fill} />
-                                                        ))}
-                                                    </Bar>
-                                                </BarChart>
-                                            </ResponsiveContainer>
-                                        </div>
+                    {/* Secondary Intel */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <EliteCard className="p-8 bg-transparent border-white/5 relative overflow-hidden">
+                            <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-500 mb-8 flex items-center gap-3">
+                                <Target className="w-4 h-4 text-indigo-500" />
+                                Strategic Offense
+                            </h3>
+                            <div className="space-y-5">
+                                {prediction.negotiation_tips?.slice(0, 3).map((tip, idx) => (
+                                    <div key={idx} className="flex gap-5 group">
+                                        <span className="text-indigo-500 font-black text-xs pt-1 opacity-50">0{idx + 1}</span>
+                                        <p className="text-xs text-slate-400 font-medium leading-relaxed group-hover:text-slate-200 transition-colors">
+                                            {tip}
+                                        </p>
                                     </div>
+                                ))}
+                            </div>
+                        </EliteCard>
 
-                                    {/* Stats Grid */}
-                                    <div className="grid grid-cols-3 border-t border-slate-100 dark:border-slate-800 divide-x divide-slate-100 dark:divide-slate-800 bg-slate-50/50 dark:bg-[#0A0E27]/30">
-                                        <div className="p-6 text-center">
-                                            <p className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Bottom 10%</p>
-                                            <p className="text-lg font-bold text-slate-700 dark:text-slate-300">{formatCurrency(prediction.salary_range.min)}</p>
-                                        </div>
-                                        <div className="p-6 text-center">
-                                            <p className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Median</p>
-                                            <p className="text-lg font-bold text-slate-900 dark:text-white">{formatCurrency(prediction.salary_range.median)}</p>
-                                        </div>
-                                        <div className="p-6 text-center">
-                                            <p className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Top 10%</p>
-                                            <p className="text-lg font-bold text-slate-700 dark:text-slate-300">{formatCurrency(prediction.salary_range.max)}</p>
-                                        </div>
-                                    </div>
+                        <div className="bg-gradient-to-br from-[#0A0E27] to-[#1e1b4b] p-8 rounded-3xl border border-indigo-500/20 flex flex-col justify-center relative group overflow-hidden">
+                            <div className="absolute inset-0 bg-indigo-500/5 opacity-0 group-hover:opacity-100 transition-opacity" />
+                            <h3 className="text-[9px] font-black uppercase tracking-[0.4em] text-indigo-400 mb-6 flex items-center gap-2">
+                                <Activity size={14} /> Global Outlook
+                            </h3>
+                            <p className="text-xl font-bold text-white leading-tight mb-8">
+                                {prediction.market_trends?.outlook || "The market for this role is currently stable with positive growth indicators."}
+                            </p>
+                            <div className="flex gap-3">
+                                <div className="px-4 py-2 bg-black/40 rounded-full text-[9px] font-black text-indigo-300 uppercase tracking-widest border border-white/5">
+                                    Volatility: Low
                                 </div>
-
-                                {/* Negotiation Tips */}
-                                {prediction.negotiation_tips && (
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                        <div className="bg-white dark:bg-[#13182E] p-8 rounded-3xl shadow-lg border border-slate-100 dark:border-slate-800">
-                                            <h3 className="font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
-                                                <Award className="w-5 h-5 text-purple-500" /> Negotiation Strategy
-                                            </h3>
-                                            <ul className="space-y-3">
-                                                {prediction.negotiation_tips.slice(0, 4).map((tip, idx) => (
-                                                    <li key={idx} className="flex gap-3 text-sm text-slate-600 dark:text-slate-300">
-                                                        <span className="w-1.5 h-1.5 rounded-full bg-purple-500 mt-2 flex-shrink-0" />
-                                                        {tip}
-                                                    </li>
-                                                ))}
-                                            </ul>
-                                        </div>
-                                        <div className="bg-gradient-to-br from-indigo-600 to-purple-700 p-8 rounded-3xl shadow-lg text-white relative overflow-hidden">
-                                            <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl translate-x-1/2 -translate-y-1/2" />
-                                            <h3 className="font-bold text-white mb-2 text-lg">Market Insight</h3>
-                                            <p className="text-indigo-100 leading-relaxed mb-6">
-                                                {prediction.market_trends?.outlook || "The market for this role is currently stable with positive growth indicators."}
-                                            </p>
-                                            <div className="flex gap-3">
-                                                <div className="px-3 py-1 bg-white/20 rounded-lg text-xs font-semibold backdrop-blur-sm">
-                                                    YoY Growth: {prediction.market_trends?.yoy_growth || "+5%"}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                )}
-                            </motion.div>
-                        ) : (
-                            <motion.div
-                                key="empty"
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                className="h-full min-h-[500px] flex flex-col justify-center items-center text-center p-8 border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-3xl bg-slate-50/50 dark:bg-[#0A0E27]/30"
-                            >
-                                <div className="w-24 h-24 bg-white dark:bg-[#13182E] rounded-full shadow-xl flex items-center justify-center mb-6">
-                                    <TrendingUp className="w-10 h-10 text-slate-300 dark:text-slate-600" />
+                                <div className="px-4 py-2 bg-black/40 rounded-full text-[9px] font-black text-emerald-400 uppercase tracking-widest border border-white/5">
+                                    Growth: {prediction.market_trends?.yoy_growth || "+4.8%"}
                                 </div>
-                                <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">Ready to Analyze</h3>
-                                <p className="text-slate-500 dark:text-slate-400 max-w-sm">
-                                    Enter your job details to unlock comprehensive salary data, market trends, and negotiation power.
-                                </p>
-                            </motion.div>
-                        )}
-                    </AnimatePresence>
+                            </div>
+                        </div>
+                    </div>
+                </motion.div>
+            ) : (
+                <div className="h-full flex flex-col justify-center items-center text-center p-12 space-y-8">
+                    <div className="relative">
+                        <div className="absolute inset-0 bg-indigo-500/20 rounded-full blur-[80px]" />
+                        <div className="w-24 h-24 bg-indigo-950/40 rounded-full flex items-center justify-center relative border border-indigo-500/20 animate-pulse">
+                            <TrendingUp className="w-8 h-8 text-indigo-500" />
+                        </div>
+                    </div>
+                    <div className="max-w-xs space-y-2">
+                        <h3 className="text-sm font-black text-white uppercase tracking-[0.4em]">Engine Standby</h3>
+                        <p className="text-[10px] text-slate-600 font-black uppercase tracking-[0.2em] leading-relaxed">
+                            Awaiting market parameters to initialize neural mapping
+                        </p>
+                    </div>
                 </div>
-            </div>
-        </div>
+            )}
+        </AnimatePresence>
+    );
+
+    return (
+        <DojoLayout
+            title="Compensation Intel"
+            subtitle="Electric market intelligence"
+            headerActions={
+                <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-2">
+                        <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_#10b981]" />
+                        <span className="text-[9px] font-black text-emerald-500 uppercase tracking-widest">Neural Link Active</span>
+                    </div>
+                </div>
+            }
+            backPath="/career-training"
+            sidebarContent={sidebar}
+            mainContent={main}
+        />
     );
 };
 

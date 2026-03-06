@@ -1,0 +1,562 @@
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
+import Icon from 'components/AppIcon';
+import { supabase } from '../../../lib/supabase';
+import { useToast } from '../../../components/ui/Toast';
+import { EliteCard } from '../../../components/ui/EliteCard';
+import LessonBlockBuilder from './LessonBlockBuilder';
+import CertificateDesigner from './CertificateDesigner';
+
+const CurriculumBuilder = ({ courseId, courseTitle }) => {
+    const navigate = useNavigate();
+    const { success, error: showError } = useToast();
+    const [modules, setModules] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [activeModuleId, setActiveModuleId] = useState(null);
+    const [isSaving, setIsSaving] = useState(false);
+    const [collapsedLessons, setCollapsedLessons] = useState({});
+    const [focusedLessonId, setFocusedLessonId] = useState(null);
+    const [lessonEditorTab, setLessonEditorTab] = useState('content'); // content, certificate
+    const [showJumpMenu, setShowJumpMenu] = useState(false);
+
+    const toggleLessonCollapse = (lessonId) => {
+        setCollapsedLessons(prev => ({
+            ...prev,
+            [lessonId]: !prev[lessonId]
+        }));
+    };
+
+    useEffect(() => {
+        if (courseId) {
+            loadCurriculum();
+        }
+    }, [courseId]);
+
+    const loadCurriculum = async () => {
+        try {
+            setLoading(true);
+            const { data, error } = await supabase
+                .from('lessons')
+                .select('*')
+                .eq('course_id', courseId)
+                .order('order_index', { ascending: true });
+
+            if (error) throw error;
+
+            // Group by module_name into virtual modules
+            const modMap = new Map();
+            (data || []).forEach(lesson => {
+                const mName = lesson.module_name || 'General';
+                if (!modMap.has(mName)) {
+                    modMap.set(mName, {
+                        id: mName,
+                        title: mName,
+                        unlock_week: 1,
+                        lessons: [],
+                    });
+                }
+                modMap.get(mName).lessons.push(lesson);
+            });
+            const sortedData = Array.from(modMap.values());
+            
+            setModules(sortedData);
+            if (sortedData.length > 0 && !activeModuleId) {
+                setActiveModuleId(sortedData[0].id);
+            }
+        } catch (error) {
+            console.error('Load curriculum error:', error);
+            showError('Failed to load module list');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const addModule = async () => {
+        try {
+            const newModName = `Module ${modules.length + 1}`;
+            // Insert a placeholder lesson to create the module
+            const { data, error } = await supabase
+                .from('lessons')
+                .insert([{
+                    course_id: courseId,
+                    module_name: newModName,
+                    title: 'New Lesson',
+                    order_index: (modules.flatMap(m => m.lessons).length),
+                    is_published: true,
+                }])
+                .select()
+                .single();
+
+            if (error) throw error;
+            const newMod = { id: newModName, title: newModName, unlock_week: 1, lessons: [data] };
+            setModules([...modules, newMod]);
+            setActiveModuleId(newModName);
+            success('Module created');
+        } catch (error) {
+            showError('Failed to create module');
+        }
+    };
+
+    const addLesson = async (moduleId) => {
+        try {
+            const module = modules.find(m => m.id === moduleId);
+            const nextOrder = modules.flatMap(m => m.lessons).length;
+            const { data, error } = await supabase
+                .from('lessons')
+                .insert([{
+                    course_id: courseId,
+                    module_name: moduleId, // moduleId is the module_name string
+                    title: 'New Lesson',
+                    order_index: nextOrder,
+                    is_published: true,
+                }])
+                .select()
+                .single();
+
+            if (error) throw error;
+            
+            setModules(prev => prev.map(m => 
+                m.id === moduleId 
+                ? { ...m, lessons: [...m.lessons, data] }
+                : m
+            ));
+            success('Lesson added');
+        } catch (error) {
+            showError('Failed to create lesson');
+        }
+    };
+
+    const updateModuleTitle = async (moduleId, title) => {
+        // Rename module_name on all lessons in this module
+        setModules(prev => prev.map(m => m.id === moduleId ? { ...m, title } : m));
+        await supabase.from('lessons').update({ module_name: title }).eq('module_name', moduleId).eq('course_id', courseId);
+    };
+
+    const updateModuleWeek = async (moduleId, unlock_week) => {
+        const week = parseInt(unlock_week) || 1;
+        setModules(prev => prev.map(m => m.id === moduleId ? { ...m, unlock_week: week } : m));
+        // No direct column for unlock_week in lessons table - store in local state only
+    };
+
+    const updateLesson = async (lessonId, updates) => {
+        setModules(prev => prev.map(m => ({
+            ...m,
+            lessons: m.lessons.map(l => l.id === lessonId ? { ...l, ...updates } : l)
+        })));
+        await supabase.from('lessons').update(updates).eq('id', lessonId);
+    };
+
+    const deleteModule = async (moduleId) => {
+        if (!confirm('Are you sure? This will delete all lessons in this module.')) return;
+        try {
+            await supabase.from('lessons').delete().eq('module_name', moduleId).eq('course_id', courseId);
+            const newModules = modules.filter(m => m.id !== moduleId);
+            setModules(newModules);
+            if (activeModuleId === moduleId) {
+                setActiveModuleId(newModules.length > 0 ? newModules[0].id : null);
+            }
+            success('Module removed');
+        } catch (error) {
+            showError('Failed to delete module');
+        }
+    };
+
+    const deleteLesson = async (moduleId, lessonId) => {
+        try {
+            await supabase.from('lessons').delete().eq('id', lessonId);
+            setModules(prev => prev.map(m => 
+                m.id === moduleId 
+                ? { ...m, lessons: m.lessons.filter(l => l.id !== lessonId) }
+                : m
+            ));
+            success('Lesson removed');
+        } catch (error) {
+            showError('Failed to delete lesson');
+        }
+    };
+
+    const duplicateModule = async (moduleId) => {
+        try {
+            const moduleToDuplicate = modules.find(m => m.id === moduleId);
+            if (!moduleToDuplicate) return;
+
+            const nextOrder = modules.length;
+            const { data: newModuleData, error: modErr } = await supabase
+                .from('course_modules')
+                .insert([{
+                    course_id: courseId,
+                    title: `${moduleToDuplicate.title} (Copy)`,
+                    sort_order: nextOrder
+                }])
+                .select()
+                .single();
+
+            if (modErr) throw modErr;
+
+            let newLessons = [];
+            if (moduleToDuplicate.lessons && moduleToDuplicate.lessons.length > 0) {
+                const lessonsToInsert = moduleToDuplicate.lessons.map(lesson => ({
+                    module_id: newModuleData.id,
+                    course_id: courseId,
+                    title: lesson.title,
+                    content_type: lesson.content_type,
+                    duration_minutes: lesson.duration_minutes,
+                    xp_reward: lesson.xp_reward,
+                    coin_reward: lesson.coin_reward,
+                    content_blocks: lesson.content_blocks,
+                    sort_order: lesson.sort_order
+                }));
+
+                const { data: duplicatedLessonsData, error: lessErr } = await supabase
+                    .from('course_lessons')
+                    .insert(lessonsToInsert)
+                    .select();
+
+                if (lessErr) throw lessErr;
+                newLessons = duplicatedLessonsData;
+            }
+
+            const newMod = { ...newModuleData, lessons: newLessons.sort((a,b) => a.sort_order - b.sort_order) };
+            setModules([...modules, newMod]);
+            setActiveModuleId(newMod.id);
+            success('Module duplicated');
+        } catch (error) {
+            showError('Failed to duplicate module');
+        }
+    };
+
+    const activeModuleIndex = modules.findIndex(m => m.id === activeModuleId);
+    const activeModule = modules.find(m => m.id === activeModuleId);
+
+    const handleNextModule = () => {
+        if (activeModuleIndex < modules.length - 1) {
+            setActiveModuleId(modules[activeModuleIndex + 1].id);
+        }
+    };
+
+    const handlePrevModule = () => {
+        if (activeModuleIndex > 0) {
+            setActiveModuleId(modules[activeModuleIndex - 1].id);
+        }
+    };
+
+    if (loading) return <div className="p-20 text-center animate-pulse text-slate-500 font-bold uppercase tracking-widest text-[9px]">Loading Lessons...</div>;
+
+    return (
+        <div className="w-full flex flex-col h-full bg-[#06091F]/30 min-h-screen">
+            {/* Minimalist Top Navigation */}
+            <div className="sticky top-0 z-50 px-8 py-4 bg-[#0A0E27]/60 backdrop-blur-xl border-b border-white/5 flex items-center justify-between gap-6">
+                <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-1">
+                        <button 
+                            onClick={handlePrevModule}
+                            disabled={activeModuleIndex <= 0}
+                            className="p-2 text-slate-500 hover:text-white disabled:opacity-10 transition-all"
+                        >
+                            <Icon name="ChevronLeft" size={16} />
+                        </button>
+                        <div className="text-center min-w-[120px] cursor-pointer group px-2" onClick={() => setShowJumpMenu(!showJumpMenu)}>
+                            <p className="text-[6px] font-black text-emerald-500/30 uppercase tracking-[0.5em] mb-0.5">MOD {activeModuleIndex + 1}</p>
+                            <h2 className="text-[10px] font-black text-white uppercase tracking-widest truncate max-w-[160px]">{activeModule?.title || 'Module'}</h2>
+                        </div>
+                        <button 
+                            onClick={handleNextModule}
+                            disabled={activeModuleIndex >= modules.length - 1}
+                            className="p-2 text-slate-500 hover:text-white disabled:opacity-10 transition-all"
+                        >
+                            <Icon name="ChevronRight" size={16} />
+                        </button>
+                    </div>
+
+                    <div className="h-6 w-px bg-white/5" />
+
+                    <button 
+                        onClick={() => setShowJumpMenu(!showJumpMenu)}
+                        className={`px-4 py-1.5 rounded-lg border transition-all flex items-center gap-2 active:scale-95 ${
+                            showJumpMenu 
+                            ? 'bg-emerald-600 border-emerald-500 text-white' 
+                            : 'bg-white/5 border-white/5 text-slate-400 hover:border-white/10'
+                        }`}
+                    >
+                        <span className="text-[9px] font-black uppercase tracking-widest text-white">Full List</span>
+                        <Icon name="Grid" size={12} />
+                    </button>
+                </div>
+
+                <div className="flex items-center gap-2">
+                    <button 
+                        onClick={() => navigate(`/courses/detail/${courseId}`)}
+                        className="hidden md:flex items-center gap-2 px-4 py-1.5 bg-white/5 text-slate-500 rounded-lg border border-white/5 text-[9px] font-black uppercase tracking-widest hover:bg-white/10 transition-all"
+                    >
+                        <Icon name="Eye" size={12} /> Preview
+                    </button>
+                    <button 
+                        onClick={addModule}
+                        className="px-5 py-1.5 bg-emerald-600/90 text-white rounded-lg text-[9px] font-black uppercase tracking-widest hover:bg-emerald-600 transition-all flex items-center gap-2"
+                    >
+                        <Icon name="Plus" size={12} /> Module
+                    </button>
+                </div>
+
+                {/* Jump Menu Overlay */}
+                <AnimatePresence>
+                    {showJumpMenu && (
+                        <motion.div 
+                            initial={{ opacity: 0, y: 5 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: 5 }}
+                            className="absolute top-full mt-2 left-1/2 -translate-x-1/2 min-w-[280px] bg-[#0A0E27] rounded-3xl border border-white/10 shadow-2xl p-5 z-[200] backdrop-blur-2xl"
+                        >
+                            <div className="flex items-center justify-between mb-4">
+                                <h3 className="text-[9px] font-black uppercase tracking-[0.3em] text-emerald-500">Module List</h3>
+                                <button onClick={() => setShowJumpMenu(false)} className="p-1.5 text-slate-600 hover:text-white transition-colors">
+                                    <Icon name="X" size={14} />
+                                </button>
+                            </div>
+                            <div className="grid grid-cols-5 gap-2 max-h-[250px] overflow-y-auto custom-scrollbar pr-2">
+                                {modules.map((m, idx) => (
+                                    <button
+                                        key={m.id}
+                                        onClick={() => {
+                                            setActiveModuleId(m.id);
+                                            setShowJumpMenu(false);
+                                        }}
+                                        className={`aspect-square rounded-xl flex flex-col items-center justify-center transition-all border ${
+                                            activeModuleId === m.id
+                                            ? 'bg-emerald-600 border-emerald-500 text-white shadow-md'
+                                            : 'bg-white/5 border-white/5 text-slate-500 hover:border-white/10'
+                                        }`}
+                                    >
+                                        <span className="text-xs font-black">{idx + 1}</span>
+                                    </button>
+                                ))}
+                                <button 
+                                    onClick={() => {
+                                        addModule();
+                                        setShowJumpMenu(false);
+                                    }}
+                                    className="aspect-square rounded-xl border border-dashed border-emerald-500/20 text-emerald-500 hover:bg-emerald-500/5 transition-all flex items-center justify-center"
+                                >
+                                    <Icon name="Plus" size={16} />
+                                </button>
+                            </div>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+            </div>
+
+            <div className="flex-1 p-8 overflow-y-auto custom-scrollbar relative">
+                <AnimatePresence mode="wait">
+                    {activeModule ? (
+                        <motion.div
+                            key={activeModuleId}
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -10 }}
+                            className="max-w-5xl mx-auto space-y-8 pb-32"
+                        >
+                            {/* Module Header Card */}
+                            <div className="bg-white/5 backdrop-blur-sm rounded-[2.5rem] p-8 border border-white/5 relative group">
+                                <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
+                                    <div className="flex-1 space-y-2 w-full">
+                                        <input 
+                                            value={activeModule.title}
+                                            onChange={(e) => updateModuleTitle(activeModuleId, e.target.value)}
+                                            className="bg-transparent text-2xl font-black text-white uppercase tracking-tight w-full focus:outline-none focus:text-emerald-500 transition-colors hover:text-emerald-500/80"
+                                            placeholder="Module Title"
+                                        />
+                                        <p className="text-slate-500 text-[9px] font-black uppercase tracking-[0.2em]">Module • Week {activeModule.unlock_week || 1}</p>
+                                    </div>
+
+                                    <div className="flex items-center gap-3 shrink-0">
+                                        <div className="flex items-center gap-3 p-3 bg-black/20 rounded-2xl border border-white/5">
+                                            <span className="text-[8px] font-black text-slate-500 uppercase tracking-widest">Unlock Week</span>
+                                            <input 
+                                                type="number"
+                                                min="1"
+                                                value={activeModule.unlock_week || 1}
+                                                onChange={(e) => updateModuleWeek(activeModuleId, e.target.value)}
+                                                className="w-12 bg-transparent text-sm font-black text-emerald-500 text-center focus:outline-none"
+                                            />
+                                        </div>
+                                        
+                                        <div className="flex gap-2">
+                                            <button 
+                                                onClick={() => duplicateModule(activeModuleId)}
+                                                className="p-3 bg-white/5 text-slate-400 hover:text-white rounded-xl border border-white/5 transition-all"
+                                            >
+                                                <Icon name="Copy" size={16} />
+                                            </button>
+                                            <button 
+                                                onClick={() => deleteModule(activeModuleId)}
+                                                className="p-3 bg-white/5 text-rose-500/60 hover:text-rose-500 rounded-xl border border-white/5 transition-all"
+                                            >
+                                                <Icon name="Trash2" size={16} />
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Lessons List - Minimalist Row Layout */}
+                            <div className="flex flex-col gap-3">
+                                {activeModule.lessons?.map((lesson, idx) => (
+                                    <motion.div 
+                                        key={lesson.id}
+                                        layoutId={`lesson-card-${lesson.id}`}
+                                        className="bg-white/2 border border-white/5 rounded-2xl p-4 hover:bg-white/5 transition-all group/card relative flex flex-col md:flex-row items-center justify-between gap-6"
+                                    >
+                                        <div className="flex items-center gap-6 flex-1 min-w-0">
+                                            <div className="w-10 h-10 rounded-xl bg-white/5 text-slate-500 flex items-center justify-center text-[10px] font-black border border-white/5 group-hover/card:bg-emerald-600 group-hover/card:text-white transition-all">
+                                                {(idx + 1).toString().padStart(2, '0')}
+                                            </div>
+                                            
+                                            <div className="flex-1 min-w-0 group/input relative">
+                                                <input 
+                                                    value={lesson.title}
+                                                    onChange={(e) => updateLesson(lesson.id, { title: e.target.value })}
+                                                    className="bg-transparent text-[13px] font-black text-white uppercase tracking-widest focus:outline-none w-full border-b border-transparent focus:border-emerald-500/20 pb-1 mb-1 transition-all hover:text-emerald-500"
+                                                    placeholder="Lesson Title"
+                                                />
+                                                <div className="absolute right-0 top-1/2 -translate-y-1/2 opacity-0 group-hover/input:opacity-50 transition-opacity pointer-events-none">
+                                                    <Icon name="Edit2" size={10} className="text-emerald-500" />
+                                                </div>
+                                                <div className="flex gap-4">
+                                                    <div className="flex items-center gap-1.5 text-[8px] font-black text-slate-500 uppercase tracking-[0.2em]">
+                                                        <Icon name="Clock" size={10} className="text-emerald-500/50" />
+                                                        {lesson.duration_minutes || 0}m
+                                                    </div>
+                                                    <div className="flex items-center gap-1.5 text-[8px] font-black text-slate-500 uppercase tracking-[0.2em]">
+                                                        <Icon name="Layers" size={10} className="text-blue-500/50" />
+                                                        {lesson.content_blocks?.length || 0} Blocks
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="flex items-center gap-3">
+                                            <button 
+                                                onClick={() => setFocusedLessonId(lesson.id)}
+                                                className="px-6 py-2 bg-emerald-600/10 text-emerald-500 rounded-xl text-[9px] font-black uppercase tracking-widest border border-emerald-500/10 hover:bg-emerald-600 hover:text-white transition-all active:scale-95"
+                                            >
+                                                Edit Content
+                                            </button>
+                                            <button 
+                                                onClick={() => deleteLesson(activeModuleId, lesson.id)} 
+                                                className="p-2 text-slate-700 hover:text-rose-500 transition-colors opacity-0 group-hover/card:opacity-100"
+                                            >
+                                                <Icon name="X" size={16} />
+                                            </button>
+                                        </div>
+                                    </motion.div>
+                                ))}
+
+                                <button 
+                                    onClick={() => addLesson(activeModuleId)}
+                                    className="border border-dashed border-white/5 rounded-2xl p-4 flex items-center gap-4 hover:bg-emerald-600/[0.02] hover:border-emerald-500/20 transition-all group"
+                                >
+                                    <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-slate-700 group-hover:bg-emerald-600 group-hover:text-white transition-all">
+                                        <Icon name="Plus" size={18} />
+                                    </div>
+                                    <span className="text-[9px] font-black uppercase tracking-widest text-slate-700 group-hover:text-emerald-500">Add New Lesson</span>
+                                </button>
+                            </div>
+                        </motion.div>
+                    ) : (
+                        <div className="h-[40vh] flex items-center justify-center">
+                            <button onClick={addModule} className="px-10 py-4 bg-emerald-600 text-white rounded-[1.5rem] text-[10px] font-black uppercase tracking-widest shadow-xl shadow-emerald-600/20 active:scale-95 transition-all">Create Module</button>
+                        </div>
+                    )}
+                </AnimatePresence>
+            </div>
+
+            {/* Content Editor Overlay */}
+            <AnimatePresence>
+                {focusedLessonId && (
+                    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+                        <motion.div 
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            onClick={() => setFocusedLessonId(null)}
+                            className="absolute inset-0 bg-[#06091F]/90 backdrop-blur-md"
+                        />
+                        <motion.div 
+                            layoutId={`lesson-card-${focusedLessonId}`}
+                            className="relative w-full max-w-5xl h-[85vh] bg-[#0A0E27] rounded-[2.5rem] border border-white/10 shadow-3xl overflow-hidden flex flex-col"
+                        >
+                            <div className="p-6 border-b border-white/5 flex items-center justify-between">
+                                <div className="flex items-center gap-4">
+                                    <button onClick={() => setFocusedLessonId(null)} className="p-2.5 bg-white/5 rounded-xl text-slate-400 hover:text-white transition-all"><Icon name="ChevronLeft" size={18} /></button>
+                                    <div className="flex-1">
+                                        <p className="text-[8px] font-black text-emerald-500 uppercase tracking-widest mb-0.5">Lesson Name</p>
+                                        <input 
+                                            value={activeModule?.lessons.find(l => l.id === focusedLessonId)?.title || ''}
+                                            onChange={(e) => updateLesson(focusedLessonId, { title: e.target.value })}
+                                            className="bg-transparent text-lg font-black text-white uppercase tracking-tight focus:outline-none focus:text-emerald-500 transition-colors w-full"
+                                            placeholder="Enter Lesson Name"
+                                        />
+                                    </div>
+                                </div>
+                                    <div className="flex items-center gap-4">
+                                        <button 
+                                            onClick={() => setFocusedLessonId(null)}
+                                            className="px-8 py-3 bg-emerald-600 text-white rounded-xl text-[9px] font-black uppercase tracking-widest"
+                                        >
+                                            Back to Builder
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div className="flex-1 overflow-y-auto p-8 custom-scrollbar">
+                                    <div className="max-w-4xl mx-auto">
+                                        <div className="space-y-12">
+                                            <div className="grid grid-cols-2 gap-8">
+                                                <div className="p-6 bg-white/5 rounded-2xl border border-white/5 space-y-4">
+                                                    <span className="text-[8px] font-black text-slate-500 uppercase tracking-widest block">Duration (Min)</span>
+                                                    <input 
+                                                        type="number"
+                                                        value={activeModule?.lessons.find(l => l.id === focusedLessonId)?.duration_minutes || ''}
+                                                        onChange={(e) => updateLesson(focusedLessonId, { duration_minutes: parseInt(e.target.value) || 0 })}
+                                                        className="w-full bg-black/40 border border-white/5 rounded-xl px-4 py-3 text-lg font-black text-white focus:outline-none"
+                                                    />
+                                                </div>
+                                                <div className="p-6 bg-white/5 rounded-2xl border border-white/5 grid grid-cols-2 gap-4">
+                                                    <div className="space-y-2">
+                                                        <span className="text-[8px] font-black text-blue-400 uppercase tracking-widest block">XP</span>
+                                                        <input 
+                                                            type="number"
+                                                            value={activeModule?.lessons.find(l => l.id === focusedLessonId)?.xp_reward || 0}
+                                                            onChange={(e) => updateLesson(focusedLessonId, { xp_reward: parseInt(e.target.value) || 0 })}
+                                                            className="w-full bg-black/40 border border-white/5 rounded-xl px-4 py-2 text-sm font-black text-white focus:outline-none"
+                                                        />
+                                                    </div>
+                                                    <div className="space-y-2">
+                                                        <span className="text-[8px] font-black text-emerald-400 uppercase tracking-widest block">Coins</span>
+                                                        <input 
+                                                            type="number"
+                                                            value={activeModule?.lessons.find(l => l.id === focusedLessonId)?.coin_reward || 0}
+                                                            onChange={(e) => updateLesson(focusedLessonId, { coin_reward: parseInt(e.target.value) || 0 })}
+                                                            className="w-full bg-black/40 border border-white/5 rounded-xl px-4 py-2 text-sm font-black text-white focus:outline-none"
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <LessonBlockBuilder 
+                                                blocks={activeModule?.lessons.find(l => l.id === focusedLessonId)?.content_blocks || []} 
+                                                onChange={(newBlocks) => updateLesson(focusedLessonId, { content_blocks: newBlocks })} 
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                        </motion.div>
+                    </div>
+                )}
+            </AnimatePresence>
+        </div>
+    );
+};
+
+export default CurriculumBuilder;

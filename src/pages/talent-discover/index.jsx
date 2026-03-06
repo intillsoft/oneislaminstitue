@@ -1,18 +1,36 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import Icon from 'components/AppIcon';
+import React, { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Link, useNavigate } from 'react-router-dom';
+import {
+  Search, Filter, Star, MessageSquare, User, ArrowRight,
+  ChevronLeft, ChevronRight, Sliders, MapPin, DollarSign,
+  Briefcase, CheckCircle2, Sparkles, X, LayoutGrid, List, Clock
+} from 'lucide-react';
 import { useAuthContext } from '../../contexts/AuthContext';
 import { useToast } from '../../components/ui/Toast';
 import { talentService } from '../../services/talentService';
-import Breadcrumb from 'components/ui/Breadcrumb';
 import { apiService } from '../../lib/api';
+import Image from 'components/AppImage';
+import Breadcrumb from 'components/ui/Breadcrumb';
+import { formatDistanceToNow } from 'date-fns';
+
+const formatTimeAgo = (date) => {
+  if (!date) return 'recently';
+  try {
+    return formatDistanceToNow(new Date(date), { addSuffix: true });
+  } catch {
+    return 'recently';
+  }
+};
 
 const TalentDiscover = () => {
   const { user } = useAuthContext();
   const { success, error: showError } = useToast();
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [talents, setTalents] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
+  const [showMobileFilters, setShowMobileFilters] = useState(false);
   const [filters, setFilters] = useState({
     hourlyRateMin: '',
     hourlyRateMax: '',
@@ -45,31 +63,15 @@ const TalentDiscover = () => {
     }
   };
 
-  const handleSearch = (e) => {
-    e.preventDefault();
-    loadTalents();
-  };
-
-  const renderStars = (rating) => {
-    return [...Array(5)].map((_, i) => (
-      <Icon
-        key={i}
-        name="Star"
-        size={14}
-        className={i < Math.floor(rating) ? 'text-yellow-400 fill-current' : 'text-gray-300 dark:text-gray-600'}
-      />
-    ));
-  };
-
   const handleMessageTalent = async (talentUserId) => {
     try {
-      const response = await apiService.messages.getConversation(talentUserId);
-      if (response.data?.code === 'TABLE_NOT_FOUND') {
-        showError('Messaging system is not initialized. Please contact support.');
+      if (!user) {
+        navigate('/login?redirect=/talent/discover');
         return;
       }
+      const response = await apiService.messages.getConversation(talentUserId);
       if (response.data?.success) {
-        window.location.href = `/messages?conversation=${response.data.data.id}`;
+        navigate(`/messages?conversation=${response.data.data.id}`);
       }
     } catch (error) {
       console.error('Error starting conversation:', error);
@@ -77,240 +79,347 @@ const TalentDiscover = () => {
     }
   };
 
-  return (
-    <div className="min-h-screen bg-surface-50 dark:bg-dark-bg font-sans text-text-primary dark:text-dark-text transition-colors duration-300">
-      {/* Hero Section with Glassmorphism */}
-      <div className="relative overflow-hidden bg-workflow-primary-600 pb-32">
-        <div className="absolute inset-0 bg-gradient-to-br from-workflow-primary-500 to-workflow-primary-700 opacity-90"></div>
-        <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-20"></div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <Breadcrumb className="text-white/80 mb-6" />
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 animate-fade-in tracking-tight">
-            Discover Top Talent
-          </h1>
-          <p className="text-xl text-workflow-primary-100 max-w-2xl animate-slide-up animation-delay-100">
-            Connect with world-class freelancers and experts ready to bring your vision to life.
-          </p>
+  const renderStars = (rating) => {
+    return (
+      <div className="flex gap-0.5">
+        {[...Array(5)].map((_, i) => (
+          <Star
+            key={i}
+            size={12}
+            className={`${i < Math.floor(rating) ? 'text-amber-400 fill-amber-400' : 'text-slate-600'}`}
+          />
+        ))}
+      </div>
+    );
+  };
 
-          {/* Search Bar - Floating Glass Card */}
-          <div className="mt-8 max-w-3xl animate-slide-up animation-delay-200">
-            <form onSubmit={handleSearch} className="relative group">
-              <div className="absolute -inset-1 bg-gradient-to-r from-blue-400 to-purple-400 rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
-              <div className="relative flex items-center bg-white dark:bg-surface-800 rounded-xl p-2 shadow-xl">
-                <Icon name="Search" className="ml-4 w-6 h-6 text-workflow-primary-500" />
+  return (
+    <div className="min-h-screen bg-bg text-text-primary dark:text-white font-sans selection:bg-workflow-primary/30">
+      {/* Cinematic Hero */}
+      <section className="relative pt-32 pb-20 overflow-hidden">
+        {/* Background Effects */}
+        <div className="absolute inset-0 z-0">
+          <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-workflow-primary/10 rounded-full blur-[120px] animate-pulse"></div>
+          <div className="absolute bottom-[0%] right-[-10%] w-[40%] h-[40%] bg-workflow-accent/5 rounded-full blur-[100px]"></div>
+          <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay"></div>
+        </div>
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          >
+
+            {/* Premium Search Box */}
+            <div className="max-w-2xl">
+              <div className="glass-panel p-2 rounded-2xl flex items-center gap-2 group focus-within:border-workflow-primary/50 transition-all duration-500 shadow-2xl bg-bg-elevated border border-border dark:border-white/10">
+                <div className="pl-4 text-slate-500 group-focus-within:text-workflow-primary transition-colors">
+                  <Search className="w-5 h-5" />
+                </div>
                 <input
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search by name, skills, or category..."
-                  className="w-full px-4 py-3 bg-transparent border-none text-text-primary dark:text-dark-text focus:ring-0 placeholder-gray-400 text-lg"
+                  placeholder="Search by skill, name, or role..."
+                  className="flex-1 bg-transparent border-none focus:ring-0 text-text-primary dark:text-white placeholder-text-muted/50 py-3 font-medium"
                 />
-                <button type="submit" className="bg-workflow-primary-600 hover:bg-workflow-primary-700 text-white px-8 py-3 rounded-lg font-medium transition-all shadow-lg hover:shadow-workflow-primary/30">
-                  Search
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-20 relative z-10 pb-16">
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-
-          {/* Filters Sidebar - Modern Card */}
-          <div className="lg:col-span-1 space-y-6 animate-slide-right delay-200">
-            <div className="bg-white/80 dark:bg-surface-800/80 backdrop-blur-xl border border-white/20 dark:border-white/10 rounded-2xl p-6 shadow-glass sticky top-24">
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-lg font-semibold flex items-center gap-2">
-                  <Icon name="Filter" className="w-5 h-5 text-workflow-primary-500" />
-                  Filters
-                </h2>
                 <button
-                  onClick={() => {
-                    setFilters({ hourlyRateMin: '', hourlyRateMax: '', rating: '', availability: '', experienceLevel: '', language: '', skills: '' });
-                    setSearchQuery('');
-                  }}
-                  className="text-xs font-medium text-workflow-primary-500 hover:text-workflow-primary-600 transition-colors"
+                  onClick={loadTalents}
+                  className="bg-workflow-primary text-white px-6 py-2.5 rounded-xl font-bold hover:brightness-110 active:scale-95 transition-all shadow-glow"
                 >
-                  Clear All
+                  Find Talent
+                </button>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-32">
+        <div className="flex flex-col lg:flex-row gap-10">
+
+          {/* Filters Sidebar - Desktop Only */}
+          <aside className="hidden lg:block lg:w-72 flex-shrink-0">
+            <div className="sticky top-24 space-y-8">
+              <div className="flex items-center justify-between pb-4 border-b border-white/10">
+                <div className="flex items-center gap-2">
+                  <Sliders className="w-4 h-4 text-workflow-primary" />
+                  <h3 className="font-black text-[10px] uppercase tracking-[0.2em] text-text-muted">Refine Search</h3>
+                </div>
+                <button
+                  onClick={() => setFilters({ hourlyRateMin: '', hourlyRateMax: '', rating: '', availability: '', experienceLevel: '', language: '', skills: '' })}
+                  className="text-[10px] font-black uppercase tracking-widest text-text-muted hover:text-workflow-primary transition-colors"
+                >
+                  Reset
                 </button>
               </div>
 
-              {/* Minimalist Filter Groups */}
-              <div className="space-y-6">
+              {/* ... filters content ... */}
+              <div className="space-y-8">
                 {/* Hourly Rate */}
-                <div>
-                  <label className="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-3 block">Hourly Rate</label>
-                  <div className="flex gap-2">
+                <div className="space-y-3">
+                  <label className="text-[10px] font-black text-text-muted uppercase tracking-widest">Hourly Protocol (USD)</label>
+                  <div className="grid grid-cols-2 gap-3">
                     <input
                       type="number"
                       placeholder="Min"
                       value={filters.hourlyRateMin}
                       onChange={(e) => setFilters(prev => ({ ...prev, hourlyRateMin: e.target.value }))}
-                      className="w-1/2 px-3 py-2 bg-surface-50 dark:bg-surface-900 border border-border dark:border-dark-border rounded-lg text-sm focus:ring-2 focus:ring-workflow-primary-500/20 outline-none transition-all"
+                      className="bg-bg border border-border dark:border-white/10 rounded-xl px-4 py-3 text-xs focus:border-workflow-primary/50 outline-none transition-all placeholder:text-text-muted/30 font-bold"
                     />
                     <input
                       type="number"
                       placeholder="Max"
                       value={filters.hourlyRateMax}
                       onChange={(e) => setFilters(prev => ({ ...prev, hourlyRateMax: e.target.value }))}
-                      className="w-1/2 px-3 py-2 bg-surface-50 dark:bg-surface-900 border border-border dark:border-dark-border rounded-lg text-sm focus:ring-2 focus:ring-workflow-primary-500/20 outline-none transition-all"
+                      className="bg-bg border border-border dark:border-white/10 rounded-xl px-4 py-3 text-xs focus:border-workflow-primary/50 outline-none transition-all placeholder:text-text-muted/30 font-bold"
                     />
                   </div>
                 </div>
 
-                {/* Rating */}
-                <div>
-                  <label className="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-3 block">Rating</label>
-                  <select
-                    value={filters.rating}
-                    onChange={(e) => setFilters(prev => ({ ...prev, rating: e.target.value }))}
-                    className="w-full px-3 py-2 bg-surface-50 dark:bg-surface-900 border border-border dark:border-dark-border rounded-lg text-sm focus:ring-2 focus:ring-workflow-primary-500/20 outline-none transition-all"
-                  >
-                    <option value="">Any Rating</option>
-                    <option value="4.5">4.5+ Stars</option>
-                    <option value="4">4+ Stars</option>
-                  </select>
-                </div>
-
-                {/* Skills */}
-                <div>
-                  <label className="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-3 block">Skills</label>
-                  <div className="relative">
-                    <Icon name="Codesandbox" className="absolute left-3 top-2.5 w-4 h-4 text-gray-400" />
-                    <input
-                      type="text"
-                      placeholder="e.g. React"
-                      value={filters.skills}
-                      onChange={(e) => setFilters(prev => ({ ...prev, skills: e.target.value }))}
-                      className="w-full pl-9 pr-3 py-2 bg-surface-50 dark:bg-surface-900 border border-border dark:border-dark-border rounded-lg text-sm focus:ring-2 focus:ring-workflow-primary-500/20 outline-none transition-all"
-                    />
+                {/* Rating Filter */}
+                <div className="space-y-3">
+                  <label className="text-[10px] font-black text-text-muted uppercase tracking-widest">Quality Assurance</label>
+                  <div className="flex flex-col gap-2">
+                    {[4.5, 4.0, 3.5].map((rating) => (
+                      <button
+                        key={rating}
+                        onClick={() => setFilters(prev => ({ ...prev, rating: filters.rating === rating.toString() ? '' : rating.toString() }))}
+                        className={`flex items-center gap-2 px-4 py-2.5 rounded-xl border text-[10px] font-black uppercase tracking-widest transition-all ${filters.rating === rating.toString() ? 'bg-workflow-primary/10 border-workflow-primary text-workflow-primary' : 'bg-bg/50 border-border dark:border-white/10 text-text-muted hover:bg-bg-elevated'}`}
+                      >
+                        <div className="flex gap-0.5">
+                          {[...Array(5)].map((_, i) => (
+                            <Star key={i} size={10} className={i < Math.floor(rating) ? 'text-amber-400 fill-amber-400' : 'text-slate-800'} />
+                          ))}
+                        </div>
+                        {rating}+ Stars
+                      </button>
+                    ))}
                   </div>
                 </div>
 
+                {/* Skills Tags */}
+                <div className="space-y-3">
+                  <label className="text-[10px] font-black text-text-muted uppercase tracking-widest">Technical Arsenal</label>
+                  <input
+                    type="text"
+                    placeholder="e.g. React, UX Design"
+                    value={filters.skills}
+                    onChange={(e) => setFilters(prev => ({ ...prev, skills: e.target.value }))}
+                    className="w-full bg-bg border border-border dark:border-white/10 rounded-xl px-4 py-3 text-xs focus:border-workflow-primary/50 outline-none transition-all placeholder:text-text-muted/30 font-bold"
+                  />
+                </div>
               </div>
             </div>
-          </div>
+          </aside>
 
-          {/* Talents Grid */}
-          <div className="lg:col-span-3">
-            <div className="flex items-center justify-between mb-6 animate-fade-in delay-300">
-              <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
-                Showing <span className="text-text-primary dark:text-dark-text font-bold">{talents.length}</span> professionals
-              </p>
-              <div className="flex items-center gap-2">
-                <Icon name="ListFilter" className="w-4 h-4 text-gray-400" />
+          {/* Results Area */}
+          <div className="flex-1 space-y-8">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+              <h2 className="text-lg font-bold">
+                {loading ? 'Scanning talent pool...' : `${talents.length} Elite Nodes Detected`}
+              </h2>
+
+              {/* Mobile Filter Toggle & Sort */}
+              <div className="flex items-center gap-3 w-full sm:w-auto">
+                  <button
+                    onClick={() => setShowMobileFilters(!showMobileFilters)}
+                    className="lg:hidden flex-1 sm:flex-none flex items-center justify-center gap-2 bg-bg-elevated border border-border dark:border-white/10 rounded-xl px-4 py-2.5 text-[10px] font-black uppercase tracking-widest text-text-muted"
+                  >
+                    <Filter size={14} /> Filter Nodes
+                  </button>
+
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
-                  className="bg-transparent border-none text-sm font-medium focus:ring-0 text-text-primary dark:text-dark-text cursor-pointer"
+                  className="bg-bg-elevated border border-border dark:border-white/10 rounded-xl px-4 py-2.5 text-[10px] font-black uppercase tracking-widest text-text-muted outline-none focus:border-workflow-primary/50 cursor-pointer flex-1 sm:flex-none appearance-none"
                 >
-                  <option value="relevance">Relevance</option>
-                  <option value="rating">Top Rated</option>
-                  <option value="price_low">Price: Low to High</option>
+                  <option value="relevance">Priority: Relevance</option>
+                  <option value="rating">Priority: Rating</option>
+                  <option value="price_low">Value: Low to High</option>
                 </select>
               </div>
             </div>
 
+            {/* Mobile Filters Collapsible */}
+            <AnimatePresence>
+              {showMobileFilters && (
+                <motion.div
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: 'auto', opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  className="lg:hidden overflow-hidden"
+                >
+                  <div className="glass-panel p-4 rounded-xl space-y-4 border border-white/10 bg-white/5">
+                    {/* Simplified Mobile Filters Content */}
+                    <div className="grid grid-cols-2 gap-3">
+                      <input
+                        type="number"
+                        placeholder="Min Rate"
+                        value={filters.hourlyRateMin}
+                        onChange={(e) => setFilters(prev => ({ ...prev, hourlyRateMin: e.target.value }))}
+                        className="bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-xs text-white"
+                      />
+                      <input
+                        type="number"
+                        placeholder="Max Rate"
+                        value={filters.hourlyRateMax}
+                        onChange={(e) => setFilters(prev => ({ ...prev, hourlyRateMax: e.target.value }))}
+                        className="bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-xs text-white"
+                      />
+                    </div>
+                    <input
+                      type="text"
+                      placeholder="Filter by Skill..."
+                      value={filters.skills}
+                      onChange={(e) => setFilters(prev => ({ ...prev, skills: e.target.value }))}
+                      className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-xs text-white"
+                    />
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
             {loading ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {[1, 2, 3, 4, 5, 6].map(i => (
-                  <div key={i} className="bg-white dark:bg-surface-800 rounded-2xl h-80 animate-pulse"></div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {[1, 2, 3, 4].map(i => (
+                  <div key={i} className="bg-bg-elevated border border-border dark:border-white/5 h-64 rounded-[2.5rem] animate-pulse shadow-xl" />
                 ))}
               </div>
             ) : talents.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {talents.map((talent, index) => (
-                  <div
+              <motion.div
+                className="grid grid-cols-1 md:grid-cols-2 gap-6"
+                initial="hidden"
+                animate="visible"
+                variants={{
+                  visible: { transition: { staggerChildren: 0.1 } }
+                }}
+              >
+                {talents.map((talent) => (
+                  <motion.div
                     key={talent.id}
-                    className="bg-white dark:bg-surface-800 rounded-2xl border border-border dark:border-dark-border overflow-hidden hover:shadow-card-hover hover:-translate-y-1 transition-all duration-300 group flex flex-col animate-scale-in"
-                    style={{ animationDelay: `${index * 50}ms` }}
+                    variants={{
+                      hidden: { opacity: 0, y: 20 },
+                      visible: { opacity: 1, y: 0 }
+                    }}
+                    className="bg-bg-elevated border border-border dark:border-white/5 p-8 rounded-[2.5rem] hover:border-workflow-primary/30 transition-all duration-500 group relative overflow-hidden flex flex-col h-full shadow-xl"
                   >
-                    {/* Card Header */}
-                    <div className="p-6 pb-2 flex-grow">
-                      <div className="flex items-start justify-between mb-4">
-                        <Link to={`/talent/profile/${talent.user_id || talent.id}`} className="relative">
+                    {/* Background Subtle Glow */}
+                    <div className="absolute top-0 right-0 w-48 h-48 bg-workflow-primary/5 rounded-full blur-[80px] opacity-0 group-hover:opacity-100 transition-all duration-700" />
+
+                    {/* Badge */}
+                    <div className="absolute top-6 right-6 z-20">
+                      <span className="flex items-center gap-1.5 px-3 py-1.5 bg-workflow-primary/10 border border-workflow-primary/20 text-workflow-primary text-[10px] font-black uppercase tracking-[0.2em] rounded-xl backdrop-blur-md">
+                        <Sparkles className="w-3 h-3 fill-workflow-primary" />
+                        {(talent.matchScore || 95)}% Success
+                      </span>
+                    </div>
+
+                    <div className="flex flex-col sm:flex-row items-start gap-6 relative z-10 flex-1">
+                      {/* Avatar */}
+                      <Link to={`/talent/profile/${talent.user_id || talent.id}`} className="relative flex-shrink-0 group/avatar">
+                        <div className="w-20 h-20 rounded-[1.25rem] bg-bg border border-border dark:border-white/10 overflow-hidden group-hover:border-workflow-primary/50 transition-all duration-500 shadow-2xl">
                           {talent.profile_picture_url ? (
-                            <img
-                              src={talent.profile_picture_url}
-                              alt={talent.user?.name}
-                              className="w-16 h-16 rounded-2xl object-cover shadow-sm group-hover:scale-105 transition-transform duration-500"
-                            />
+                            <img src={talent.profile_picture_url} className="w-full h-full object-cover group-hover/avatar:scale-110 transition-transform duration-700" alt="" />
                           ) : (
-                            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-100 to-indigo-100 dark:from-blue-900/30 dark:to-indigo-900/30 flex items-center justify-center text-workflow-primary-600 dark:text-workflow-primary-400 font-bold text-xl shadow-inner">
-                              {talent.user?.name?.charAt(0) || 'T'}
+                            <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-workflow-primary/10 to-workflow-accent/10">
+                              <User className="w-8 h-8 text-workflow-primary/30" />
                             </div>
                           )}
-                          <div className={`absolute -bottom-1 -right-1 w-4 h-4 border-2 border-white dark:border-surface-800 rounded-full ${talent.availability === 'available' ? 'bg-green-500' : 'bg-gray-400'}`}></div>
-                        </Link>
-                        <div className="bg-workflow-primary-50 dark:bg-workflow-primary-900/20 px-3 py-1 rounded-full">
-                          <p className="text-workflow-primary-700 dark:text-workflow-primary-300 font-bold text-sm">
-                            ${talent.hourly_rate}<span className="text-xs font-normal opacity-70">/hr</span>
-                          </p>
                         </div>
-                      </div>
-
-                      <Link to={`/talent/profile/${talent.user_id || talent.id}`} className="block mb-1">
-                        <h3 className="text-lg font-bold text-text-primary dark:text-dark-text group-hover:text-workflow-primary-600 transition-colors">
-                          {talent.user?.name || 'Talent'}
-                        </h3>
+                        <div className={`absolute -bottom-1 -right-1 w-5 h-5 rounded-full border-[3px] border-bg-elevated ${talent.availability === 'available' ? 'bg-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.5)]' : 'bg-slate-700'}`} />
                       </Link>
-                      <p className="text-sm font-medium text-workflow-primary-500 dark:text-workflow-primary-400 mb-3 truncate">
-                        {talent.title || 'Freelancer'}
-                      </p>
 
-                      <div className="flex items-center gap-2 mb-4">
-                        <div className="flex text-yellow-400 text-xs">
-                          {renderStars(talent.rating || 0)}
+                      <div className="flex-1 min-w-0 w-full">
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-2">
+                          <Link to={`/talent/profile/${talent.user_id || talent.id}`} className="block min-w-0">
+                            <h3 className="text-xl font-black text-white group-hover:text-workflow-primary transition-colors truncate tracking-tight">
+                              {talent.user?.name || 'Elite Talent'}
+                            </h3>
+                          </Link>
+                          <div className="flex items-center gap-1.5 text-xs font-black text-emerald-500 bg-emerald-500/10 px-3 py-1.5 rounded-xl border border-emerald-500/20 w-fit">
+                            <DollarSign className="w-3.5 h-3.5" />
+                            {talent.hourly_rate}/hr
+                          </div>
                         </div>
-                        <span className="text-xs font-medium text-gray-500">({talent.total_reviews || 0} reviews)</span>
-                      </div>
 
-                      <div className="flex flex-wrap gap-1.5 mb-4">
-                        {talent.skills?.slice(0, 3).map((skill, i) => (
-                          <span key={i} className="px-2.5 py-1 bg-surface-100 dark:bg-surface-700 text-text-secondary dark:text-gray-300 text-xs rounded-md font-medium">
-                            {skill}
+                        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mb-4 text-xs font-bold text-slate-500 uppercase tracking-widest">
+                          <span className="flex items-center gap-1.5 text-slate-300">
+                            <Briefcase className="w-3.5 h-3.5 text-workflow-primary" />
+                            {talent.title || 'Specialist'}
                           </span>
-                        ))}
-                        {talent.skills?.length > 3 && (
-                          <span className="px-2.5 py-1 bg-surface-50 dark:bg-surface-900 text-text-muted text-xs rounded-md font-medium">
-                            +{talent.skills.length - 3}
+                          <span className="w-1 h-1 bg-slate-800 rounded-full hidden sm:block" />
+                          <span className="flex items-center gap-1.5">
+                            <MapPin className="w-3.5 h-3.5 text-text-muted" />
+                            {talent.location || 'Remote Node'}
                           </span>
-                        )}
+                        </div>
+
+                        <div className="flex items-center gap-3 mb-6">
+                          <div className="bg-amber-500/10 px-2 py-1 rounded-lg flex items-center gap-1.5">
+                            {renderStars(talent.rating || 5)}
+                          </div>
+                          <span className="text-[10px] font-black text-slate-600 uppercase tracking-widest">({talent.total_reviews || 0} Reviews)</span>
+                        </div>
+
+                        <div className="flex flex-wrap gap-2 items-center">
+                           {talent.skills?.slice(0, 4).map((skill, i) => (
+                            <span key={i} className="text-[9px] uppercase tracking-[0.15em] font-black text-text-muted bg-bg border border-border dark:border-white/5 px-3 py-2 rounded-xl">
+                              {skill}
+                            </span>
+                          ))}
+                          {talent.skills?.length > 4 && (
+                            <span className="text-[9px] font-black text-slate-600">+{talent.skills.length - 4}</span>
+                          )}
+                        </div>
                       </div>
                     </div>
 
-                    {/* Card Footer Actions */}
-                    <div className="p-4 bg-surface-50 dark:bg-surface-900/50 border-t border-border dark:border-dark-border grid grid-cols-2 gap-3">
-                      <button
-                        onClick={() => handleMessageTalent(talent.user_id || talent.id)}
-                        className="flex items-center justify-center gap-2 py-2.5 rounded-xl border border-border dark:border-dark-border bg-white dark:bg-surface-800 hover:bg-gray-50 dark:hover:bg-surface-700 text-sm font-medium transition-colors"
-                      >
-                        <Icon name="MessageSquare" size={16} />
-                        Chat
+                    <div className="mt-8 pt-6 border-t border-white/5 flex flex-col sm:flex-row gap-3 opacity-100 lg:opacity-0 lg:group-hover:opacity-100 translate-y-0 lg:translate-y-4 lg:group-hover:translate-y-0 transition-all duration-500">
+                        <button
+                          onClick={() => handleMessageTalent(talent.user_id || talent.id)}
+                          className="flex-1 flex items-center justify-center gap-2 bg-bg border border-border dark:border-white/10 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-bg-elevated transition-all"
+                        >
+                        <MessageSquare className="w-4 h-4" />
+                        Message
                       </button>
-                      <Link
-                        to={`/talent/profile/${talent.user_id || talent.id}`}
-                        className="flex items-center justify-center gap-2 py-2.5 rounded-xl bg-workflow-primary-600 hover:bg-workflow-primary-700 text-white text-sm font-medium transition-all shadow-md hover:shadow-lg hover:shadow-workflow-primary/20"
-                      >
+                        <Link
+                          to={`/talent/profile/${talent.user_id || talent.id}`}
+                          className="flex-1 flex items-center justify-center gap-2 bg-workflow-primary py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:brightness-110 active:scale-95 transition-all shadow-xl shadow-workflow-primary/20 text-white"
+                        >
                         Profile
+                        <ArrowRight className="w-4 h-4" />
                       </Link>
                     </div>
-                  </div>
+
+                    <div className="absolute bottom-4 right-8 text-[9px] font-black text-text-muted/40 uppercase tracking-widest flex items-center gap-1.5 pointer-events-none group-hover:opacity-0 transition-opacity">
+                      <Clock className="w-3 h-3" />
+                      {formatTimeAgo(talent.created_at)}
+                    </div>
+                  </motion.div>
                 ))}
-              </div>
+              </motion.div>
             ) : (
-              <div className="flex flex-col items-center justify-center py-20 bg-white/50 dark:bg-surface-800/50 rounded-3xl border border-dashed border-gray-300 dark:border-gray-700">
-                <div className="w-16 h-16 bg-gray-100 dark:bg-surface-700 rounded-full flex items-center justify-center mb-4">
-                  <Icon name="Search" className="w-8 h-8 text-gray-400" />
+              <div className="bg-bg-elevated p-20 text-center rounded-[3rem] border-2 border-dashed border-border dark:border-white/5 shadow-2xl">
+                <div className="w-24 h-24 mx-auto bg-bg rounded-[2rem] flex items-center justify-center mb-8 border border-border">
+                  <Search className="w-10 h-10 text-text-muted" />
                 </div>
-                <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-1">No talents found</h3>
-                <p className="text-gray-500 dark:text-gray-400">Try adjusting your filters or search terms</p>
+                <h3 className="text-3xl font-black mb-3 uppercase tracking-tight">No Elite Nodes Detected</h3>
+                <p className="text-text-muted max-w-sm mx-auto font-medium">
+                  We couldn't find any professionals matching your exact criteria. Expand your search horizons or reset filter protocols.
+                </p>
+                <button
+                  onClick={() => setFilters({ hourlyRateMin: '', hourlyRateMax: '', rating: '', availability: '', experienceLevel: '', language: '', skills: '' })}
+                  className="mt-8 text-workflow-primary font-bold hover:underline"
+                >
+                  Clear all filters
+                </button>
               </div>
             )}
           </div>
         </div>
-      </div>
+      </main>
     </div>
   );
 };

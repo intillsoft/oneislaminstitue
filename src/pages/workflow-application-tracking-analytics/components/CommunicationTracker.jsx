@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Mail, Phone, Video, MessageSquare, FileText, Plus, Filter, Search } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
-import { jobService } from '../../../services/jobService';
+import { courseService } from '../../../services/jobService';
 
 const CommunicationTracker = ({ applications = [] }) => {
   const [jobsData, setJobsData] = useState({});

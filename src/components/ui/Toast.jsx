@@ -22,7 +22,7 @@ const ToastProvider = ({ children }) => {
   const [toasts, setToasts] = useState([]);
 
   const addToast = useCallback((message, type = 'info', duration = 5000) => {
-    const id = Date.now();
+    const id = `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
     const toast = { id, message, type, duration };
     
     setToasts((prev) => [...prev, toast]);
@@ -55,8 +55,8 @@ const ToastProvider = ({ children }) => {
 
 const ToastContainer = ({ toasts, removeToast }) => {
   return (
-    <div className="fixed top-4 right-4 z-50 space-y-2 pointer-events-none">
-      <AnimatePresence>
+    <div className="fixed top-8 right-8 z-[9999] space-y-4 pointer-events-none min-w-[320px] max-w-md">
+      <AnimatePresence mode='popLayout'>
         {toasts.map((toast) => (
           <Toast key={toast.id} toast={toast} onRemove={removeToast} />
         ))}
@@ -65,7 +65,7 @@ const ToastContainer = ({ toasts, removeToast }) => {
   );
 };
 
-const Toast = ({ toast, onRemove }) => {
+const Toast = React.forwardRef(({ toast, onRemove }, ref) => {
   const icons = {
     success: CheckCircle,
     error: AlertCircle,
@@ -73,39 +73,76 @@ const Toast = ({ toast, onRemove }) => {
     info: Info,
   };
 
-  const colors = {
-    success: 'bg-success-50 dark:bg-success-900/20 text-success-700 dark:text-success-400 border-success-200 dark:border-success-800',
-    error: 'bg-error-50 dark:bg-error-900/20 text-error-700 dark:text-error-400 border-error-200 dark:border-error-800',
-    warning: 'bg-warning-50 dark:bg-warning-900/20 text-warning-700 dark:text-warning-400 border-warning-200 dark:border-warning-800',
-    info: 'bg-workflow-primary-50 dark:bg-workflow-primary-900/20 text-workflow-primary-700 dark:text-workflow-primary-400 border-workflow-primary-200 dark:border-workflow-primary-800',
+  const getStyle = () => {
+    switch (toast.type) {
+      case 'success':
+        return {
+          bg: 'bg-white/90 dark:bg-emerald-950/40',
+          border: 'border-emerald-500/30',
+          icon: 'text-emerald-500',
+          shadow: 'shadow-emerald-500/10'
+        };
+      case 'error':
+        return {
+          bg: 'bg-white/90 dark:bg-rose-950/40',
+          border: 'border-rose-500/30',
+          icon: 'text-rose-500',
+          shadow: 'shadow-rose-500/10'
+        };
+      case 'warning':
+        return {
+          bg: 'bg-white/90 dark:bg-amber-950/40',
+          border: 'border-amber-500/30',
+          icon: 'text-amber-500',
+          shadow: 'shadow-amber-500/10'
+        };
+      default: // info
+        return {
+          bg: 'bg-white/90 dark:bg-slate-900/60',
+          border: 'border-slate-500/20',
+          icon: 'text-workflow-primary',
+          shadow: 'shadow-workflow-primary/10'
+        };
+    }
   };
 
+  const style = getStyle();
   const Icon = icons[toast.type] || Info;
 
   return (
     <motion.div
-      initial={{ opacity: 0, x: 100, scale: 0.9 }}
+      ref={ref}
+      layout
+      initial={{ opacity: 0, x: 50, scale: 0.95 }}
       animate={{ opacity: 1, x: 0, scale: 1 }}
-      exit={{ opacity: 0, x: 100, scale: 0.9 }}
-      transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-      className={`toast pointer-events-auto border ${colors[toast.type]} max-w-sm`}
+      exit={{ opacity: 0, scale: 0.95, transition: { duration: 0.2 } }}
+      className={`pointer-events-auto backdrop-blur-xl border ${style.bg} ${style.border} ${style.shadow} p-4 rounded-2xl shadow-2xl flex items-center gap-4 relative overflow-hidden group`}
     >
-      <div className="flex items-start gap-3">
-        <Icon className="w-5 h-5 flex-shrink-0 mt-0.5" />
-        <div className="flex-1 min-w-0">
-          <p className="text-sm font-medium">{toast.message}</p>
-        </div>
-        <button
-          onClick={() => onRemove(toast.id)}
-          className="flex-shrink-0 text-current opacity-60 hover:opacity-100 transition-opacity"
-          aria-label="Close"
-        >
-          <X className="w-4 h-4" />
-        </button>
+      {/* Progress Bar Background */}
+      <div className="absolute bottom-0 left-0 h-[2px] w-full bg-slate-200 dark:bg-white/5" />
+      
+      {/* Dynamic Icon with Glow */}
+      <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${style.bg} border ${style.border}`}>
+         <Icon className={`w-5 h-5 ${style.icon}`} />
       </div>
+
+      <div className="flex-1 pr-6">
+        <p className="text-xs font-black uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-0.5">{toast.type}</p>
+        <p className="text-sm font-bold text-slate-900 dark:text-white leading-relaxed">{toast.message}</p>
+      </div>
+
+      <button
+        onClick={() => onRemove(toast.id)}
+        className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:hover:text-white transition-colors"
+      >
+        <X size={16} />
+      </button>
+
+      {/* Glass Glimmer Effect */}
+      <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-transparent pointer-events-none translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
     </motion.div>
   );
-};
+});
 
 export default ToastProvider;
 

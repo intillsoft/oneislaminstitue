@@ -1,12 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, Menu, X, User, Settings, LogOut, Bell, Sparkles, Users, Briefcase, Shield, BarChart3, LayoutDashboard, CreditCard } from 'lucide-react';
+import { Search, Menu, X, User, Settings, LogOut, Bell, Sparkles, Users, Briefcase, Shield, BarChart3, LayoutDashboard, CreditCard, Heart, ChevronDown, ChevronRight } from 'lucide-react';
 import Icon from '../AppIcon';
 import DarkModeToggle from './DarkModeToggle';
 import { useToast } from './Toast';
 import { useAuthContext } from '../../contexts/AuthContext';
+import { useAIPanel } from '../../contexts/AIPanelContext';
 import NotificationBell from './NotificationBell';
+import Logo from '../Logo';
 
 // Fallback if ToastProvider not available
 const useToastSafe = () => {
@@ -21,58 +23,20 @@ const Header = () => {
   const [isSearchExpanded, setIsSearchExpanded] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const [isAboutMenuOpen, setIsAboutMenuOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const searchRef = useRef(null);
   const userMenuRef = useRef(null);
+  const aboutMenuRef = useRef(null);
+  const mobileMenuRef = useRef(null);
   const location = useLocation();
   const navigate = useNavigate();
   const { success } = useToastSafe();
   const { user, profile, loadingProfile, signOut } = useAuthContext();
+  const { openPanel } = useAIPanel();
   const isAuthenticated = !!user;
-  // Wait for profile to load before determining role
-  const userRole = (!loadingProfile && profile?.role) ? profile.role : (isAuthenticated ? 'job-seeker' : null);
-
-  const navigationItems = {
-    'job-seeker': [
-      { label: 'Browse Jobs', path: '/jobs', icon: Search },
-      { label: 'Discover Talent', path: '/talent/discover', icon: Users },
-      { label: 'Pricing', path: '/pricing', icon: CreditCard },
-      { label: 'Dashboard', path: '/dashboard', icon: LayoutDashboard },
-      { label: 'Applications', path: '/dashboard/applications', icon: 'FileText' },
-    ],
-    'recruiter': [
-      { label: 'Browse Jobs', path: '/jobs', icon: Search },
-      { label: 'Discover Talent', path: '/talent/discover', icon: Users },
-      { label: 'Pricing', path: '/pricing', icon: CreditCard },
-      { label: 'Dashboard', path: '/recruiter/dashboard', icon: BarChart3 },
-      { label: 'Post Job', path: '/recruiter/jobs', icon: 'Plus' },
-      { label: 'Company', path: '/recruiter/company', icon: 'Building2' },
-    ],
-    'talent': [
-      { label: 'Browse Jobs', path: '/jobs', icon: Search },
-      { label: 'Discover Talent', path: '/talent/discover', icon: Users },
-      { label: 'Pricing', path: '/pricing', icon: CreditCard },
-      { label: 'Dashboard', path: '/talent/dashboard', icon: LayoutDashboard },
-      { label: 'My Gigs', path: '/talent/gigs', icon: Briefcase },
-    ],
-    'admin': [
-      { label: 'Browse Jobs', path: '/jobs', icon: Search },
-      { label: 'Discover Talent', path: '/talent/discover', icon: Users },
-      { label: 'Pricing', path: '/pricing', icon: CreditCard },
-      { label: 'Admin Panel', path: '/admin/dashboard', icon: Shield },
-    ],
-    'anonymous': [
-      { label: 'Browse Jobs', path: '/jobs', icon: Search },
-      { label: 'Discover Talent', path: '/talent/discover', icon: Users },
-      { label: 'Pricing', path: '/pricing', icon: CreditCard },
-    ]
-  };
-
-  // Get navigation items based on role, fallback to anonymous if not loaded yet
-  const currentNavItems = isAuthenticated
-    ? (userRole ? navigationItems?.[userRole] : navigationItems?.['job-seeker'])
-    : navigationItems?.['anonymous'];
+  const userRole = (!loadingProfile && profile?.role) ? profile.role : (isAuthenticated ? 'student' : null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -84,28 +48,23 @@ const Header = () => {
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (searchRef?.current && !searchRef?.current?.contains(event?.target)) {
-        setIsSearchExpanded(false);
-      }
-      if (userMenuRef?.current && !userMenuRef?.current?.contains(event?.target)) {
-        setIsUserMenuOpen(false);
-      }
+      if (searchRef?.current && !searchRef?.current?.contains(event?.target)) setIsSearchExpanded(false);
+      if (userMenuRef?.current && !userMenuRef?.current?.contains(event?.target)) setIsUserMenuOpen(false);
+      if (aboutMenuRef?.current && !aboutMenuRef?.current?.contains(event?.target)) setIsAboutMenuOpen(false);
     };
 
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const handleSearchSubmit = (e) => {
-    e?.preventDefault();
-    if (searchQuery?.trim()) {
-      navigate(`/jobs?q=${encodeURIComponent(searchQuery)}`);
-      success('Searching for jobs...');
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+      navigate(`/courses`);
+      success('Signed out successfully');
+    } catch (error) {
+      console.error('Sign out error:', error);
     }
-  };
-
-  const isActivePath = (path) => {
-    return location?.pathname === path;
   };
 
   const getUserDisplayName = () => {
@@ -114,185 +73,222 @@ const Header = () => {
     return 'User';
   };
 
-  const handleSignOut = async () => {
-    try {
-      await signOut();
-      navigate(`/jobs`);
-      success('Signed out successfully');
-    } catch (error) {
-      console.error('Sign out error:', error);
-    }
-  };
-
   return (
     <motion.header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled
-        ? 'bg-white/95 dark:bg-[#13182E]/95 backdrop-blur-xl border-b border-[#E2E8F0] dark:border-[#1E2640] shadow-lg'
-        : 'bg-white dark:bg-[#0A0E27] border-b border-transparent'
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 h-[72px] flex items-center ${isScrolled
+        ? 'bg-white/95 dark:bg-[#0A1120]/95 backdrop-blur-md border-b border-slate-200/50 dark:border-slate-800/50 shadow-sm'
+        : 'bg-transparent'
         }`}
       initial={{ y: -100 }}
       animate={{ y: 0 }}
-      transition={{ duration: 0.3 }}
+      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo - Beautiful Text Only */}
-          <motion.div
-            className="flex-shrink-0"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <Link to="/" className="flex items-center">
-              <span className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-workflow-primary via-workflow-primary-500 to-workflow-primary-600 bg-clip-text text-transparent tracking-tight">
-                Workflow
-              </span>
-            </Link>
-          </motion.div>
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-[72px]">
+          
+          {/* LOGO */}
+          <Logo size="sm" horizontal={true} className="mr-8" />
 
-          {/* Desktop & Tablet Navigation */}
-          <nav className="hidden md:flex items-center space-x-1">
-            {currentNavItems?.map((item) => {
-              const IconComponent = typeof item.icon === 'string' ? (Icon[item.icon] || Search) : item.icon;
-              const isActive = isActivePath(item.path);
-              return (
-                <Link
-                  key={item.path}
-                  to={item.path}
-                  className={`
-                    px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200
-                    ${isActive
-                      ? 'bg-workflow-primary/10 text-workflow-primary dark:bg-workflow-primary/20 dark:text-workflow-primary'
-                      : 'text-text-secondary dark:text-dark-text-secondary hover:bg-secondary-100 dark:hover:bg-dark-surface hover:text-text-primary dark:hover:text-dark-text'
-                    }
-                  `}
+          {/* MAIN NAV */}
+          <nav className="hidden md:flex items-center gap-6">
+             <Link to="/courses" className="text-[11px] font-black text-slate-600 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors uppercase tracking-[0.15em] relative group">
+                Courses
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-emerald-500 transition-all duration-300 group-hover:w-full"></span>
+             </Link>
+
+             {/* About Dropdown */}
+             <div className="relative" ref={aboutMenuRef}>
+                <button 
+                  onClick={() => setIsAboutMenuOpen(!isAboutMenuOpen)}
+                  className="flex items-center gap-1 text-[11px] font-black text-slate-600 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors uppercase tracking-[0.15em] group"
                 >
-                  <span className="flex items-center gap-2">
-                    <IconComponent className="w-4 h-4" />
-                    {item.label}
-                  </span>
-                </Link>
-              );
-            })}
-          </nav>
-
-          {/* Search Bar - Desktop */}
-          <div className="hidden md:flex flex-1 max-w-md mx-8">
-            <div className="relative w-full">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Search className="h-5 w-5 text-gray-400" />
-              </div>
-              <form onSubmit={handleSearchSubmit}>
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="block w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-[#1E2640] rounded-lg leading-5 bg-gray-50 dark:bg-[#13182E] text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:bg-white focus:ring-1 focus:ring-workflow-primary focus:border-workflow-primary sm:text-sm transition-colors duration-200"
-                  placeholder="Search jobs, companies, or talent..."
-                />
-              </form>
-            </div>
-          </div>
-
-          {/* Right Side Actions */}
-          <div className="flex items-center gap-3">
-            {/* Dark Mode Toggle - Visible on tablet and desktop */}
-            <div className="hidden md:block">
-              <DarkModeToggle />
-            </div>
-
-            {/* Notifications - Only for authenticated users - Visible on tablet and desktop */}
-            {isAuthenticated && (
-              <div className="hidden md:block">
-                <NotificationBell />
-              </div>
-            )}
-
-            {/* User Menu - Desktop */}
-            {isAuthenticated ? (
-              <div className="relative" ref={userMenuRef}>
-                <button
-                  onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                  className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-secondary-100 dark:hover:bg-dark-surface transition-colors"
-                >
-                  {profile?.avatar_url ? (
-                    <img
-                      src={profile.avatar_url}
-                      alt={getUserDisplayName()}
-                      className="w-8 h-8 rounded-full object-cover"
-                    />
-                  ) : (
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-workflow-primary to-workflow-primary-600 flex items-center justify-center">
-                      <span className="text-white text-sm font-semibold">
-                        {getUserDisplayName().charAt(0).toUpperCase()}
-                      </span>
-                    </div>
-                  )}
-                  <span className="hidden md:block text-sm font-medium text-text-primary dark:text-dark-text">
-                    {getUserDisplayName()}
-                  </span>
+                  About <ChevronDown size={12} className={`transition-transform duration-300 ${isAboutMenuOpen ? 'rotate-180' : ''}`} />
                 </button>
-
                 <AnimatePresence>
-                  {isUserMenuOpen && (
+                  {isAboutMenuOpen && (
                     <motion.div
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -10 }}
-                      className="absolute right-0 mt-2 w-48 bg-white dark:bg-[#13182E] rounded-xl shadow-modal border border-[#E2E8F0] dark:border-[#1E2640] overflow-hidden z-50"
+                       initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                       animate={{ opacity: 1, y: 0, scale: 1 }}
+                       exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                       className="absolute top-full left-0 mt-3 w-52 bg-white dark:bg-slate-900 rounded-2xl p-1.5 shadow-2xl border border-slate-100 dark:border-slate-800"
                     >
-                      <Link
-                        to="/profile"
-                        className="flex items-center gap-3 px-4 py-3 hover:bg-secondary-100 dark:hover:bg-dark-surface transition-colors"
-                        onClick={() => setIsUserMenuOpen(false)}
-                      >
-                        <User className="w-4 h-4 text-text-secondary dark:text-dark-text-secondary" />
-                        <span className="text-sm text-text-primary dark:text-dark-text">Profile</span>
-                      </Link>
-                      <Link
-                        to="/talent/settings"
-                        className="flex items-center gap-3 px-4 py-3 hover:bg-secondary-100 dark:hover:bg-dark-surface transition-colors"
-                        onClick={() => setIsUserMenuOpen(false)}
-                      >
-                        <Settings className="w-4 h-4 text-text-secondary dark:text-dark-text-secondary" />
-                        <span className="text-sm text-text-primary dark:text-dark-text">Settings</span>
-                      </Link>
-                      <button
-                        onClick={() => {
-                          handleSignOut();
-                          setIsUserMenuOpen(false);
-                        }}
-                        className="flex items-center gap-3 px-4 py-3 hover:bg-secondary-100 dark:hover:bg-dark-surface transition-colors w-full text-left"
-                      >
-                        <LogOut className="w-4 h-4 text-text-secondary dark:text-dark-text-secondary" />
-                        <span className="text-sm text-text-primary dark:text-dark-text">Sign Out</span>
-                      </button>
+                       {[
+                         { label: 'Mission', path: '/mission', icon: Shield },
+                         { label: 'Methodology', path: '/methodology', icon: Sparkles },
+                         { label: 'Curation', path: '/team', icon: Briefcase }
+                       ].map((item, idx) => (
+                         <Link 
+                           key={idx}
+                           to={item.path}
+                           onClick={() => setIsAboutMenuOpen(false)}
+                           className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors group"
+                         >
+                           <item.icon size={14} className="text-slate-400 group-hover:text-emerald-500" />
+                           <span className="text-[11px] font-bold text-slate-600 dark:text-slate-300 uppercase tracking-wider">{item.label}</span>
+                         </Link>
+                       ))}
                     </motion.div>
                   )}
                 </AnimatePresence>
-              </div>
-            ) : (
-              <div className="flex items-center gap-3">
-                <Link
-                  to="/login"
-                  className="px-4 py-2 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-300 text-sm font-medium"
-                >
-                  Sign In
-                </Link>
-                <Link
-                  to="/login"
-                  className="px-4 py-2 bg-workflow-primary text-white rounded-lg hover:bg-workflow-primary-600 transition-all duration-300 shadow-soft hover:shadow-card-hover hover:scale-105 active:scale-95 text-sm font-medium"
-                >
-                  Sign Up
-                </Link>
-              </div>
-            )}
+             </div>
 
-            {/* Mobile Menu Toggle - Hidden, use bottom tabs instead */}
+             {/* Role Specific Links */}
+             {isAuthenticated && (
+                <Link 
+                  to={profile?.role === 'admin' ? '/admin/dashboard' : (profile?.role === 'instructor' ? '/instructor/dashboard' : '/dashboard')} 
+                  className="text-[11px] font-black text-slate-600 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors uppercase tracking-[0.15em] relative group"
+                >
+                  Dashboard
+                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-emerald-500 transition-all duration-300 group-hover:w-full"></span>
+                </Link>
+             )}
+          </nav>
+
+          {/* ACTIONS */}
+          <div className="flex items-center gap-4 ml-auto">
+             <div className="hidden sm:block">
+               <DarkModeToggle />
+             </div>
+
+             {isAuthenticated ? (
+               <div className="flex items-center gap-3">
+                  <NotificationBell />
+                  
+                  {/* User Profile */}
+                  <div className="relative" ref={userMenuRef}>
+                    <button onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}>
+                       {profile?.avatar_url ? (
+                          <img src={profile.avatar_url} alt="" className="w-8 h-8 rounded-full object-cover border border-slate-200 dark:border-slate-700 hover:border-emerald-500" />
+                       ) : (
+                          <div className="w-8 h-8 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center text-emerald-700 dark:text-emerald-400 font-black text-[10px] border border-transparent hover:border-emerald-500">
+                              {getUserDisplayName().charAt(0).toUpperCase()}
+                          </div>
+                       )}
+                    </button>
+                    <AnimatePresence>
+                      {isUserMenuOpen && (
+                        <motion.div
+                          initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                          animate={{ opacity: 1, y: 0, scale: 1 }}
+                          exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                          className="absolute right-0 mt-3 w-56 bg-white dark:bg-slate-900 rounded-2xl p-1.5 shadow-2xl border border-slate-100 dark:border-slate-800"
+                        >
+                           <div className="px-4 py-3 border-b border-slate-100 dark:border-slate-800 mb-1">
+                              <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Scholar</p>
+                              <p className="text-sm font-bold text-slate-900 dark:text-white truncate">{getUserDisplayName()}</p>
+                           </div>
+                           <Link to="/profile" className="flex items-center gap-3 px-4 py-2.5 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800">
+                              <User size={14} className="text-slate-400" /> <span className="text-xs font-bold">Profile</span>
+                           </Link>
+                           <Link to="/settings" className="flex items-center gap-3 px-4 py-2.5 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800">
+                              <Settings size={14} className="text-slate-400" /> <span className="text-xs font-bold">Settings</span>
+                           </Link>
+                           <button onClick={handleSignOut} className="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl hover:bg-red-50 text-red-600 mt-1">
+                              <LogOut size={14} /> <span className="text-xs font-bold">Sign Out</span>
+                           </button>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+               </div>
+             ) : (
+                <Link to="/login" className="hidden md:block text-[11px] font-black text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors uppercase tracking-[0.2em]">
+                  Login
+                </Link>
+             )}
+
+             {/* HERO CTA + AI PANEL TRIGGER */}
+             <div className="flex items-center gap-2">
+               <button
+                 onClick={() => openPanel()}
+                 className="hidden md:flex px-3.5 py-1.5 bg-slate-50 hover:bg-slate-100 dark:bg-slate-800/50 dark:hover:bg-slate-700 text-slate-700 dark:text-white rounded-lg text-xs font-bold border border-slate-200 dark:border-slate-700 transition-all items-center gap-2 group"
+               >
+                 <Sparkles size={14} className="text-emerald-500" />
+                 <span>AI</span>
+               </button>
+               
+               <Link 
+                 to="/donate"
+                 className="hidden sm:flex px-4 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-bold shadow-md shadow-emerald-600/10 transition-all items-center gap-2"
+               >
+                 <Heart size={14} className="fill-white" />
+                 <span>Donate</span>
+               </Link>
+
+               {/* Mobile Action Buttons (No Hamburger) */}
+               <div className="flex md:hidden items-center justify-center ml-2">
+                 <button
+                   onClick={() => openPanel()}
+                   className="flex items-center justify-center w-9 h-9 rounded-full bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-900/30 hover:border-emerald-500/30 transition-all shadow-sm"
+                   aria-label="Open AI Assistant"
+                 >
+                   <Sparkles size={16} className="fill-current" />
+                 </button>
+               </div>
+             </div>
           </div>
         </div>
-
-        {/* Mobile Menu - Removed, using bottom tabs instead */}
       </div>
+
+      {/* Mobile Menu */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            className="md:hidden bg-white dark:bg-[#0A1120] border-b border-slate-200 dark:border-slate-800 overflow-hidden shadow-xl"
+            ref={mobileMenuRef}
+          >
+            <div className="px-6 py-6 space-y-6">
+              {!isAuthenticated && (
+                <Link to="/login" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center justify-between w-full p-4 rounded-xl bg-slate-100 dark:bg-slate-800/50 text-base font-bold text-slate-900 dark:text-white uppercase tracking-widest border border-slate-200 dark:border-slate-700">
+                  <span>Sign In</span>
+                  <ChevronRight size={16} className="text-emerald-500" />
+                </Link>
+              )}
+
+              <div className="space-y-4">
+                <Link to="/courses" onClick={() => setIsMobileMenuOpen(false)} className="block py-2 text-base font-bold text-slate-900 dark:text-white uppercase tracking-widest">
+                  <span className="flex items-center gap-3"><Icon name="BookOpen" size={18} className="text-emerald-500" /> Courses</span>
+                </Link>
+                
+                {isAuthenticated && (
+                  <Link 
+                    to={profile?.role === 'admin' ? '/admin/dashboard' : (profile?.role === 'instructor' ? '/instructor/dashboard' : '/dashboard')} 
+                    onClick={() => setIsMobileMenuOpen(false)} 
+                    className="block py-2 text-base font-bold text-slate-900 dark:text-white uppercase tracking-widest"
+                  >
+                    <span className="flex items-center gap-3"><Icon name="LayoutDashboard" size={18} className="text-emerald-500" /> My Dashboard</span>
+                  </Link>
+                )}
+
+                <Link 
+                  to="/donate"
+                  onClick={() => setIsMobileMenuOpen(false)} 
+                  className="sm:hidden block py-2 text-base font-bold text-slate-900 dark:text-white uppercase tracking-widest"
+                >
+                  <span className="flex items-center gap-3"><Heart size={18} className="text-red-500 fill-red-500" /> Donate</span>
+                </Link>
+
+                <div className="pt-4 border-t border-slate-200 dark:border-slate-800">
+                  <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">About Us</p>
+                  <div className="space-y-4 pl-4 border-l-2 border-emerald-500/20">
+                    <Link to="/mission" onClick={() => setIsMobileMenuOpen(false)} className="block text-sm font-bold text-slate-600 dark:text-slate-300 hover:text-emerald-500 transition-colors">Our Mission</Link>
+                    <Link to="/methodology" onClick={() => setIsMobileMenuOpen(false)} className="block text-sm font-bold text-slate-600 dark:text-slate-300 hover:text-emerald-500 transition-colors">Methodology</Link>
+                    <Link to="/team" onClick={() => setIsMobileMenuOpen(false)} className="block text-sm font-bold text-slate-600 dark:text-slate-300 hover:text-emerald-500 transition-colors">Curation Team</Link>
+                  </div>
+                </div>
+
+                <div className="pt-4 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between">
+                  <span className="text-sm font-bold text-slate-600 dark:text-slate-300">Theme Preference</span>
+                  <DarkModeToggle />
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.header>
   );
 };

@@ -6,6 +6,7 @@ import { useToast } from '../../components/ui/Toast';
 import { talentService } from '../../services/talentService';
 import Breadcrumb from 'components/ui/Breadcrumb';
 import UnifiedSidebar from '../../components/ui/UnifiedSidebar';
+import { EliteCard, ElitePageHeader } from '../../components/ui/EliteCard';
 
 const TalentGigsList = () => {
   const { user } = useAuthContext();
@@ -13,6 +14,7 @@ const TalentGigsList = () => {
   const [loading, setLoading] = useState(true);
   const [gigs, setGigs] = useState([]);
   const [filter, setFilter] = useState('all');
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
   useEffect(() => {
     loadGigs();
@@ -46,12 +48,12 @@ const TalentGigsList = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-white dark:bg-[#0A0E27]">
-        <UnifiedSidebar />
-        <div className="ml-0 lg:ml-64 min-h-screen flex items-center justify-center">
+      <div className="min-h-screen bg-bg">
+        <UnifiedSidebar isCollapsed={isSidebarCollapsed} onCollapseChange={setIsSidebarCollapsed} />
+        <div className={`transition-all duration-300 ${isSidebarCollapsed ? 'lg:ml-16' : 'lg:ml-[260px]'} min-h-screen flex items-center justify-center`}>
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-workflow-primary mx-auto mb-4"></div>
-            <p className="text-[#64748B] dark:text-[#8B92A3]">Loading gigs...</p>
+            <p className="text-text-muted font-black uppercase tracking-widest text-[10px]">Loading Nodes...</p>
           </div>
         </div>
       </div>
@@ -59,131 +61,147 @@ const TalentGigsList = () => {
   }
 
   return (
-    <div className="min-h-screen bg-white dark:bg-[#0A0E27]">
-      <UnifiedSidebar />
-      <div className="ml-0 lg:ml-64 min-h-screen">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="min-h-screen bg-bg transition-all duration-300">
+      <UnifiedSidebar isCollapsed={isSidebarCollapsed} onCollapseChange={setIsSidebarCollapsed} />
+      <div className={`transition-all duration-300 ${isSidebarCollapsed ? 'lg:ml-16' : 'lg:ml-[260px]'}`}>
+        <div className="max-w-7xl mx-auto px-6 py-8">
           <Breadcrumb />
 
-          <div className="flex items-center justify-between mb-6">
-            <div>
-              <h1 className="text-2xl sm:text-3xl font-bold text-[#0F172A] dark:text-[#E8EAED] mb-2">
-                My Gigs
-              </h1>
-              <p className="text-[#64748B] dark:text-[#8B92A3]">
-                Manage your service offerings
-              </p>
-            </div>
+          <ElitePageHeader
+            title="My Gigs"
+            description="Manage your high-impact service offerings"
+            className="mb-12"
+          >
             <Link
               to="/talent/gigs/create"
-              className="btn-primary flex items-center gap-2"
+              className="flex items-center gap-2 px-6 py-3 bg-workflow-primary text-white rounded-xl hover:bg-workflow-primary/80 transition-all font-black uppercase tracking-widest text-[10px] shadow-lg shadow-workflow-primary/20"
             >
-              <Icon name="Plus" size={18} />
+              <Icon name="Plus" size={16} />
               Create New Gig
             </Link>
-          </div>
+          </ElitePageHeader>
 
           {/* Filters */}
-          <div className="bg-white dark:bg-[#13182E] border border-[#E2E8F0] dark:border-[#1E2640] rounded-lg p-4 mb-6">
-            <div className="flex items-center gap-2">
-              {['all', 'active', 'inactive'].map((status) => (
-                <button
-                  key={status}
-                  onClick={() => setFilter(status)}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                    filter === status
-                      ? 'bg-workflow-primary text-white'
-                      : 'bg-gray-100 dark:bg-[#1A2139] text-[#0F172A] dark:text-[#E8EAED] hover:bg-gray-200 dark:hover:bg-[#1E2640]'
+          <div className="flex items-center gap-2 px-2 py-1 bg-white/5 rounded-xl border border-white/5 w-fit mb-8">
+            {['all', 'active', 'inactive'].map((status) => (
+              <button
+                key={status}
+                onClick={() => setFilter(status)}
+                className={`px-4 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ${filter === status
+                    ? 'bg-workflow-primary text-white shadow-lg shadow-workflow-primary/10'
+                    : 'text-text-muted hover:text-text-primary hover:bg-white/5'
                   }`}
-                >
-                  {status.charAt(0).toUpperCase() + status.slice(1)}
-                </button>
-              ))}
-            </div>
+              >
+                {status}
+              </button>
+            ))}
           </div>
 
           {/* Gigs Grid */}
           {gigs.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {gigs.map((gig) => (
-                <div
+                <EliteCard
                   key={gig.id}
-                  className="bg-white dark:bg-[#13182E] border border-[#E2E8F0] dark:border-[#1E2640] rounded-lg overflow-hidden hover:shadow-lg transition-shadow"
+                  className="group relative overflow-hidden flex flex-col h-full"
                 >
-                  {gig.images && gig.images.length > 0 && (
-                    <img
-                      src={gig.images[0]}
-                      alt={gig.title}
-                      className="w-full h-48 object-cover"
-                    />
-                  )}
-                  <div className="p-6">
-                    <div className="flex items-start justify-between mb-3">
-                      <h3 className="text-lg font-semibold text-[#0F172A] dark:text-[#E8EAED] line-clamp-2">
-                        {gig.title}
-                      </h3>
-                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                        gig.is_active
-                          ? 'bg-green-100 dark:bg-green-900/20 text-green-700 dark:text-green-300'
-                          : 'bg-gray-100 dark:bg-[#1A2139] text-gray-700 dark:text-gray-300'
-                      }`}>
-                        {gig.is_active ? 'Active' : 'Inactive'}
-                      </span>
+                  {gig.images && gig.images.length > 0 ? (
+                    <div className="aspect-video w-full overflow-hidden rounded-xl border border-white/5 mb-6 relative">
+                      <img
+                        src={gig.images[0]}
+                        alt={gig.title}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                      />
+                      <div className="absolute top-3 right-3">
+                        <span className={`px-2 py-1 rounded-lg text-[8px] font-black uppercase tracking-widest border ${gig.is_active
+                            ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20 shadow-lg'
+                            : 'bg-slate-900/80 text-slate-500 border-white/10'
+                          }`}>
+                          {gig.is_active ? 'Active' : 'Inactive'}
+                        </span>
+                      </div>
                     </div>
-                    <p className="text-sm text-[#64748B] dark:text-[#8B92A3] line-clamp-2 mb-4">
+                  ) : (
+                    <div className="aspect-video w-full bg-slate-900 rounded-xl border border-white/5 mb-6 flex items-center justify-center relative">
+                      <Icon name="Briefcase" className="w-10 h-10 text-slate-800" />
+                      <div className="absolute top-3 right-3">
+                        <span className={`px-2 py-1 rounded-lg text-[8px] font-black uppercase tracking-widest border ${gig.is_active
+                            ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
+                            : 'bg-slate-900/80 text-slate-500 border-white/10'
+                          }`}>
+                          {gig.is_active ? 'Active' : 'Inactive'}
+                        </span>
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="flex-1 flex flex-col">
+                    <h3 className="text-lg font-black text-white leading-tight mb-3 group-hover:text-workflow-primary transition-colors line-clamp-2 uppercase tracking-tight">
+                      {gig.title}
+                    </h3>
+                    <p className="text-xs text-text-muted dark:text-slate-400 font-medium line-clamp-2 mb-6 leading-relaxed">
                       {gig.description}
                     </p>
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="flex items-center gap-4 text-sm text-[#64748B] dark:text-[#8B92A3]">
-                        <span className="flex items-center gap-1">
-                          <Icon name="Clock" size={14} />
-                          {gig.delivery_time} days
-                        </span>
+
+                    <div className="mt-auto flex items-center justify-between mb-6">
+                      <div className="flex items-center gap-4">
+                        <div className="flex items-center gap-1.5 px-2 py-1 bg-white/5 rounded-lg border border-white/5">
+                          <Icon name="Clock" size={12} className="text-workflow-primary" />
+                          <span className="text-[10px] font-black text-text-muted">{gig.delivery_time}d</span>
+                        </div>
                         {gig.rating > 0 && (
-                          <span className="flex items-center gap-1">
-                            <Icon name="Star" size={14} className="text-yellow-500 fill-current" />
-                            {gig.rating.toFixed(1)}
-                          </span>
+                          <div className="flex items-center gap-1.5 px-2 py-1 bg-amber-500/5 rounded-lg border border-amber-500/10">
+                            <Icon name="Star" size={12} className="text-amber-500 fill-current" />
+                            <span className="text-[10px] font-black text-amber-500">{gig.rating.toFixed(1)}</span>
+                          </div>
                         )}
                       </div>
-                      <span className="text-xl font-bold text-[#0F172A] dark:text-[#E8EAED]">
-                        ${gig.price}
-                      </span>
+                      <div className="text-right">
+                        <span className="text-2xl font-black text-white tracking-tighter">
+                          ${gig.price}
+                        </span>
+                      </div>
                     </div>
+
                     <div className="flex items-center gap-2">
                       <Link
                         to={`/talent/gigs/${gig.id}/edit`}
-                        className="flex-1 btn-secondary text-center text-sm"
+                        className="flex-1 p-3 bg-bg-elevated text-text-muted hover:text-text-primary hover:bg-white/5 rounded-xl font-black uppercase tracking-widest text-[9px] transition-all border border-border dark:border-white/5 text-center"
                       >
                         Edit
                       </Link>
                       <Link
                         to={`/talent/gigs/${gig.id}`}
-                        className="flex-1 btn-primary text-center text-sm"
+                        className="flex-1 p-3 bg-workflow-primary text-white hover:bg-workflow-primary/80 rounded-xl font-black uppercase tracking-widest text-[9px] transition-all shadow-lg shadow-workflow-primary/10 text-center"
                       >
                         View
                       </Link>
                       <button
                         onClick={() => handleDeleteGig(gig.id)}
-                        className="px-4 py-2 bg-red-100 dark:bg-red-900/20 text-red-700 dark:text-red-300 rounded-lg hover:bg-red-200 dark:hover:bg-red-900/30 text-sm"
+                        className="p-3 bg-red-500/5 text-red-500 hover:bg-red-500/20 rounded-xl transition-all border border-transparent hover:border-red-500/20"
                       >
                         <Icon name="Trash" size={16} />
                       </button>
                     </div>
                   </div>
-                </div>
+                </EliteCard>
               ))}
             </div>
           ) : (
-            <div className="text-center py-12 bg-white dark:bg-[#13182E] border border-[#E2E8F0] dark:border-[#1E2640] rounded-lg">
-              <Icon name="Briefcase" className="w-16 h-16 text-[#64748B] dark:text-[#8B92A3] mx-auto mb-4" />
-              <h3 className="text-xl font-bold text-[#0F172A] dark:text-[#E8EAED] mb-2">No gigs yet</h3>
-              <p className="text-[#64748B] dark:text-[#8B92A3] mb-4">Create your first gig to start earning</p>
-              <Link to="/talent/gigs/create" className="btn-primary inline-flex items-center gap-2">
-                <Icon name="Plus" size={18} />
+            <EliteCard className="text-center py-24">
+              <div className="w-20 h-20 rounded-3xl bg-white/5 flex items-center justify-center mx-auto mb-6 border border-white/5">
+                <Icon name="Briefcase" className="w-10 h-10 text-slate-800" />
+              </div>
+              <h3 className="text-xl font-black text-white mb-2 tracking-tight">Zero Gigs Detected</h3>
+              <p className="text-slate-500 mb-8 font-medium">Initialize your first gig node to start earning.</p>
+              <Link
+                to="/talent/gigs/create"
+                className="inline-flex items-center gap-2 px-8 py-4 bg-workflow-primary text-white rounded-2xl hover:bg-workflow-primary/80 transition-all font-black uppercase tracking-widest text-xs shadow-xl shadow-workflow-primary/20"
+              >
+                <Icon name="Plus" size={20} />
                 Create Your First Gig
               </Link>
-            </div>
+            </EliteCard>
           )}
         </div>
       </div>
@@ -192,6 +210,7 @@ const TalentGigsList = () => {
 };
 
 export default TalentGigsList;
+
 
 
 

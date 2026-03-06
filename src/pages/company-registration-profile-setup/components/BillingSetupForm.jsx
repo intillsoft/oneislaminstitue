@@ -65,14 +65,14 @@ const BillingSetupForm = ({ formData, handleChange, errors }) => {
     <div>
       <div className="mb-6">
         <h2 className="text-xl font-semibold text-text-primary mb-2">Billing Setup</h2>
-        <p className="text-text-secondary">
+        <p className="text-text-muted font-medium">
           Choose a plan that fits your hiring needs. You can upgrade or downgrade at any time.
         </p>
       </div>
       <div className="space-y-8">
         {/* Billing Plans */}
         <div>
-          <label className="block text-sm font-medium text-text-primary mb-3">
+          <label className="block text-[10px] font-black text-text-muted uppercase tracking-widest ml-1 mb-4">
             Select a Plan <span className="text-error">*</span>
           </label>
           
@@ -80,10 +80,10 @@ const BillingSetupForm = ({ formData, handleChange, errors }) => {
             {billingPlans?.map((plan) => (
               <div 
                 key={plan?.id}
-                className={`relative rounded-lg border ${
+                className={`relative rounded-[2rem] border transition-all duration-300 p-6 cursor-pointer shadow-xl ${
                   formData?.billingPlan === plan?.id 
-                    ? 'border-primary bg-primary-50' :'border-border hover:border-primary-100 hover:bg-surface-100'
-                } p-5 cursor-pointer transition-smooth`}
+                    ? 'border-workflow-primary bg-bg-elevated' :'border-border dark:border-white/5 bg-bg hover:border-workflow-primary/30'
+                }`}
                 onClick={() => handleChange({ target: { name: 'billingPlan', value: plan?.id } })}
               >
                 {plan?.recommended && (
@@ -115,19 +115,19 @@ const BillingSetupForm = ({ formData, handleChange, errors }) => {
                 
                 <div className="mt-4">
                   <div className="flex items-baseline">
-                    <span className="text-2xl font-bold text-text-primary">{plan?.price}</span>
+                    <span className="text-2xl font-black text-text-primary tracking-tight">{plan?.price}</span>
                     {plan?.period && (
                       <span className="ml-1 text-sm text-text-secondary">{plan?.period}</span>
                     )}
                   </div>
-                  <p className="mt-2 text-sm text-text-secondary">{plan?.description}</p>
+                  <p className="mt-2 text-xs text-text-muted font-medium leading-relaxed">{plan?.description}</p>
                 </div>
                 
                 <ul className="mt-4 space-y-2">
                   {plan?.features?.map((feature, index) => (
                     <li key={index} className="flex items-start">
                       <Icon name="Check" size={16} className="mt-0.5 mr-2 text-accent" />
-                      <span className="text-sm text-text-secondary">{feature}</span>
+                      <span className="text-xs text-text-muted font-black uppercase tracking-widest">{feature}</span>
                     </li>
                   ))}
                 </ul>
@@ -146,7 +146,7 @@ const BillingSetupForm = ({ formData, handleChange, errors }) => {
         {/* Payment Method */}
         {formData?.billingPlan !== 'basic' && (
           <div>
-            <label className="block text-sm font-medium text-text-primary mb-3">
+            <label className="block text-[10px] font-black text-text-muted uppercase tracking-widest ml-1 mb-4">
               Payment Method
             </label>
             
@@ -155,33 +155,28 @@ const BillingSetupForm = ({ formData, handleChange, errors }) => {
                 <button
                   type="button"
                   onClick={() => setShowCardForm(true)}
-                  className={`flex items-center justify-center px-4 py-2 border rounded-md ${
-                    showCardForm ? 'border-primary bg-primary-50' : 'border-border'
+                  className={`flex items-center justify-center px-6 py-4 border rounded-2xl transition-all duration-300 font-black uppercase tracking-widest text-[10px] ${
+                    showCardForm ? 'border-workflow-primary bg-bg-elevated text-workflow-primary' : 'border-border dark:border-white/10 bg-bg text-text-muted hover:text-text-primary'
                   }`}
                 >
-                  <Icon name="CreditCard" size={20} className="mr-2 text-secondary-500" />
+                  <Icon name="CreditCard" size={16} className="mr-3" />
                   <span>Credit Card</span>
                 </button>
                 
                 <button
                   type="button"
-                  className="flex items-center justify-center px-4 py-2 border border-border rounded-md"
+                  className="flex items-center justify-center px-6 py-4 border border-border dark:border-white/10 rounded-2xl bg-bg text-text-muted hover:text-text-primary transition-all font-black uppercase tracking-widest text-[10px]"
                 >
-                  <svg className="h-5 w-5 mr-2" viewBox="0 0 24 24" fill="none">
-                    <rect width="24" height="24" fill="#F6F9FC" />
-                    <path d="M7.5 15.5C7.5 14.6716 8.17157 14 9 14H15C15.8284 14 16.5 14.6716 16.5 15.5C16.5 16.3284 15.8284 17 15 17H9C8.17157 17 7.5 16.3284 7.5 15.5Z" fill="#80B9F9" />
-                    <path d="M7.5 11C7.5 10.1716 8.17157 9.5 9 9.5H15C15.8284 9.5 16.5 10.1716 16.5 11C16.5 11.8284 15.8284 12.5 15 12.5H9C8.17157 12.5 7.5 11.8284 7.5 11Z" fill="#80B9F9" />
-                    <path d="M7.5 6.5C7.5 5.67157 8.17157 5 9 5H15C15.8284 5 16.5 5.67157 16.5 6.5C16.5 7.32843 15.8284 8 15 8H9C8.17157 8 7.5 7.32843 7.5 6.5Z" fill="#80B9F9" />
-                  </svg>
+                  <Icon name="Shield" size={16} className="mr-3" />
                   <span>PayPal</span>
                 </button>
               </div>
               
               {showCardForm && (
-                <div className="mt-4 p-4 border border-border rounded-lg bg-surface">
+                <div className="mt-8 p-8 border border-border dark:border-white/5 rounded-[2.5rem] bg-bg shadow-2xl">
                   <div className="space-y-4">
                     <div>
-                      <label htmlFor="card-number" className="block text-sm font-medium text-text-primary mb-1">
+                      <label htmlFor="card-number" className="block text-[10px] font-black text-text-muted uppercase tracking-widest ml-1 mb-2">
                         Card Number
                       </label>
                       <input
@@ -194,7 +189,7 @@ const BillingSetupForm = ({ formData, handleChange, errors }) => {
                     
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <label htmlFor="expiration" className="block text-sm font-medium text-text-primary mb-1">
+                        <label htmlFor="expiration" className="block text-[10px] font-black text-text-muted uppercase tracking-widest ml-1 mb-2">
                           Expiration Date
                         </label>
                         <input
@@ -205,7 +200,7 @@ const BillingSetupForm = ({ formData, handleChange, errors }) => {
                         />
                       </div>
                       <div>
-                        <label htmlFor="cvc" className="block text-sm font-medium text-text-primary mb-1">
+                        <label htmlFor="cvc" className="block text-[10px] font-black text-text-muted uppercase tracking-widest ml-1 mb-2">
                           CVC
                         </label>
                         <input
@@ -218,7 +213,7 @@ const BillingSetupForm = ({ formData, handleChange, errors }) => {
                     </div>
                     
                     <div>
-                      <label htmlFor="card-name" className="block text-sm font-medium text-text-primary mb-1">
+                      <label htmlFor="card-name" className="block text-[10px] font-black text-text-muted uppercase tracking-widest ml-1 mb-2">
                         Name on Card
                       </label>
                       <input
@@ -231,7 +226,7 @@ const BillingSetupForm = ({ formData, handleChange, errors }) => {
                   </div>
                   
                   <div className="mt-4 flex items-center">
-                    <Icon name="Lock" size={16} className="text-secondary-500 mr-2" />
+                    <Icon name="Lock" size={16} className="text-workflow-primary/50 mr-2" />
                     <span className="text-xs text-text-secondary">
                       Your payment information is secured with 256-bit encryption
                     </span>
@@ -245,11 +240,11 @@ const BillingSetupForm = ({ formData, handleChange, errors }) => {
         {/* Billing Address */}
         {formData?.billingPlan !== 'basic' && (
           <div>
-            <h3 className="text-lg font-medium text-text-primary mb-4">Billing Address</h3>
+            <h3 className="text-xs font-black text-text-muted uppercase tracking-[0.2em] mb-4">Billing Address</h3>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label htmlFor="billingAddress" className="block text-sm font-medium text-text-primary mb-1">
+                <label htmlFor="billingAddress" className="block text-[10px] font-black text-text-muted uppercase tracking-widest ml-1 mb-2">
                   Street Address
                 </label>
                 <input
@@ -264,7 +259,7 @@ const BillingSetupForm = ({ formData, handleChange, errors }) => {
               </div>
               
               <div>
-                <label htmlFor="billingCity" className="block text-sm font-medium text-text-primary mb-1">
+                <label htmlFor="billingCity" className="block text-[10px] font-black text-text-muted uppercase tracking-widest ml-1 mb-2">
                   City
                 </label>
                 <input
@@ -279,7 +274,7 @@ const BillingSetupForm = ({ formData, handleChange, errors }) => {
               </div>
               
               <div>
-                <label htmlFor="billingState" className="block text-sm font-medium text-text-primary mb-1">
+                <label htmlFor="billingState" className="block text-[10px] font-black text-text-muted uppercase tracking-widest ml-1 mb-2">
                   State / Province
                 </label>
                 <input
@@ -294,7 +289,7 @@ const BillingSetupForm = ({ formData, handleChange, errors }) => {
               </div>
               
               <div>
-                <label htmlFor="billingZip" className="block text-sm font-medium text-text-primary mb-1">
+                <label htmlFor="billingZip" className="block text-[10px] font-black text-text-muted uppercase tracking-widest ml-1 mb-2">
                   ZIP / Postal Code
                 </label>
                 <input
@@ -309,7 +304,7 @@ const BillingSetupForm = ({ formData, handleChange, errors }) => {
               </div>
               
               <div className="md:col-span-2">
-                <label htmlFor="billingCountry" className="block text-sm font-medium text-text-primary mb-1">
+                <label htmlFor="billingCountry" className="block text-[10px] font-black text-text-muted uppercase tracking-widest ml-1 mb-2">
                   Country
                 </label>
                 <select
@@ -334,7 +329,7 @@ const BillingSetupForm = ({ formData, handleChange, errors }) => {
         {/* Coupon Code */}
         {formData?.billingPlan !== 'basic' && (
           <div>
-            <label htmlFor="couponCode" className="block text-sm font-medium text-text-primary mb-1">
+            <label htmlFor="couponCode" className="block text-[10px] font-black text-text-muted uppercase tracking-widest ml-1 mb-2">
               Coupon Code (Optional)
             </label>
             <div className="flex">
@@ -346,7 +341,7 @@ const BillingSetupForm = ({ formData, handleChange, errors }) => {
               />
               <button
                 type="button"
-                className="px-4 py-2 bg-secondary-100 text-text-primary border border-border border-l-0 rounded-r-md hover:bg-secondary-200 transition-smooth"
+                className="px-4 py-2 bg-surface-elevated text-text-primary border border-border border-l-0 rounded-r-md hover:bg-workflow-primary hover:text-white transition-all duration-300 font-black uppercase tracking-widest text-[10px]"
               >
                 Apply
               </button>
@@ -355,7 +350,7 @@ const BillingSetupForm = ({ formData, handleChange, errors }) => {
         )}
         
         {/* Billing Terms */}
-        <div className="bg-surface-100 rounded-lg p-4 border border-border-light">
+        <div className="bg-surface/50 rounded-3xl p-6 border border-border">
           <div className="flex items-start">
             <div className="flex items-center h-5">
               <input

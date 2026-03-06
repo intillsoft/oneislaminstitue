@@ -13,7 +13,7 @@ import logger from '../utils/logger.js';
  * Process autopilot for all enabled users
  * Enhanced to check continuously and apply immediately when matches are found
  */
-async function processAllAutoApplies() {
+export async function processAllAutoApplies() {
   try {
     logger.info('🚀 Starting Autopilot check...');
 

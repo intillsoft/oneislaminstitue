@@ -77,7 +77,7 @@ const TalentMarketplace = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-white dark:bg-[#0A0E27]">
+    <div className="min-h-screen bg-bg transition-smooth">
       <UnifiedSidebar />
       <div className="ml-0 lg:ml-64 min-h-screen">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -86,16 +86,16 @@ const TalentMarketplace = () => {
           {/* Header */}
           <div className="flex justify-between items-start">
             <div>
-              <h1 className="text-2xl sm:text-3xl font-bold text-[#0F172A] dark:text-[#E8EAED] mb-2">
+              <h1 className="text-2xl sm:text-3xl font-black text-text-primary dark:text-white mb-2 uppercase tracking-tight">
                 Talent Marketplace
               </h1>
-              <p className="text-[#64748B] dark:text-[#8B92A3]">
+              <p className="text-text-muted dark:text-slate-400 font-medium">
                 Discover freelance services and hire talented professionals
               </p>
             </div>
             <button
               onClick={() => setShowAIHub(true)}
-              className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white rounded-lg shadow-lg hover:shadow-xl transition-all font-medium"
+              className="flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-workflow-primary to-workflow-accent text-white rounded-xl shadow-lg hover:shadow-workflow-primary/20 transition-all font-black uppercase tracking-widest text-[10px]"
             >
               <Sparkles className="w-4 h-4" />
               <span>Freelance Suite</span>
@@ -108,7 +108,7 @@ const TalentMarketplace = () => {
           <div className="mb-6 space-y-4">
             {/* Search Bar */}
             <div className="relative">
-              <Icon name="Search" className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-[#64748B] dark:text-[#8B92A3]" />
+              <Icon name="Search" className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-text-muted" />
               <input
                 type="text"
                 value={searchQuery}
@@ -117,7 +117,7 @@ const TalentMarketplace = () => {
                   setCurrentPage(1);
                 }}
                 placeholder="Search for services, skills, or talents..."
-                className="w-full pl-12 pr-4 py-3 rounded-lg border border-[#E2E8F0] dark:border-[#1E2640] bg-white dark:bg-[#13182E] text-[#0F172A] dark:text-[#E8EAED] focus:outline-none focus:ring-2 focus:ring-workflow-primary"
+                className="w-full pl-12 pr-4 py-3.5 rounded-2xl border border-border dark:border-white/5 bg-bg-elevated text-text-primary dark:text-white focus:outline-none focus:ring-2 focus:ring-workflow-primary/40 transition-all text-sm font-medium"
               />
             </div>
 
@@ -129,7 +129,7 @@ const TalentMarketplace = () => {
                   setFilters(prev => ({ ...prev, category: e.target.value }));
                   setCurrentPage(1);
                 }}
-                className="px-3 py-2 border border-[#E2E8F0] dark:border-[#1E2640] rounded-lg bg-white dark:bg-[#13182E] text-[#0F172A] dark:text-[#E8EAED]"
+                className="px-4 py-2.5 border border-border dark:border-white/5 rounded-xl bg-bg-elevated text-text-primary dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-workflow-primary/40 transition-all font-medium"
               >
                 <option value="">All Categories</option>
                 {categories.map(cat => (
@@ -145,7 +145,7 @@ const TalentMarketplace = () => {
                   setFilters(prev => ({ ...prev, minPrice: e.target.value }));
                   setCurrentPage(1);
                 }}
-                className="px-3 py-2 border border-[#E2E8F0] dark:border-[#1E2640] rounded-lg bg-white dark:bg-[#13182E] text-[#0F172A] dark:text-[#E8EAED]"
+                className="px-4 py-2.5 border border-border dark:border-white/5 rounded-xl bg-bg-elevated text-text-primary dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-workflow-primary/40 transition-all font-medium"
               />
 
               <input
@@ -156,7 +156,7 @@ const TalentMarketplace = () => {
                   setFilters(prev => ({ ...prev, maxPrice: e.target.value }));
                   setCurrentPage(1);
                 }}
-                className="px-3 py-2 border border-[#E2E8F0] dark:border-[#1E2640] rounded-lg bg-white dark:bg-[#13182E] text-[#0F172A] dark:text-[#E8EAED]"
+                className="px-4 py-2.5 border border-border dark:border-white/5 rounded-xl bg-bg-elevated text-text-primary dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-workflow-primary/40 transition-all font-medium"
               />
 
               <select
@@ -165,7 +165,7 @@ const TalentMarketplace = () => {
                   setSortBy(e.target.value);
                   setCurrentPage(1);
                 }}
-                className="px-3 py-2 border border-[#E2E8F0] dark:border-[#1E2640] rounded-lg bg-white dark:bg-[#13182E] text-[#0F172A] dark:text-[#E8EAED]"
+                className="px-4 py-2.5 border border-border dark:border-white/5 rounded-xl bg-bg-elevated text-text-primary dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-workflow-primary/40 transition-all font-medium"
               >
                 <option value="relevance">Relevance</option>
                 <option value="price_low">Price: Low to High</option>
@@ -178,8 +178,8 @@ const TalentMarketplace = () => {
 
           {/* Results Count */}
           <div className="mb-4">
-            <p className="text-sm text-[#64748B] dark:text-[#8B92A3]">
-              {totalGigs} gigs found
+            <p className="text-xs font-black uppercase tracking-widest text-text-muted">
+              {totalGigs} Nodes Discovered
             </p>
           </div>
 
@@ -200,7 +200,7 @@ const TalentMarketplace = () => {
                 <Link
                   key={gig.id}
                   to={`/talent/gigs/${gig.id}`}
-                  className="bg-white dark:bg-[#13182E] border border-[#E2E8F0] dark:border-[#1E2640] rounded-lg overflow-hidden hover:shadow-lg transition-all"
+                  className="bg-bg-elevated border border-border dark:border-white/5 rounded-[2rem] overflow-hidden hover:shadow-2xl transition-all group"
                 >
                   {/* Gig Image */}
                   <div className="w-full h-48 bg-gray-200 dark:bg-[#1A2139] relative overflow-hidden">
@@ -215,16 +215,16 @@ const TalentMarketplace = () => {
                         <Icon name="Image" className="w-12 h-12 text-[#64748B] dark:text-[#8B92A3]" />
                       </div>
                     )}
-                    <div className="absolute top-2 right-2">
+                    <div className="absolute top-4 right-4 translate-x-12 translate-y-[-12px] group-hover:translate-x-0 group-hover:translate-y-0 transition-all duration-500">
                       <button
                         onClick={(e) => {
                           e.preventDefault();
                           e.stopPropagation();
                           // TODO: Implement save gig
                         }}
-                        className="p-2 bg-white dark:bg-[#13182E] rounded-full shadow-lg hover:bg-gray-100 dark:hover:bg-[#1A2139]"
+                        className="p-3 bg-bg/80 backdrop-blur-md text-text-primary rounded-full shadow-lg border border-white/10 hover:bg-workflow-primary hover:text-white transition-all"
                       >
-                        <Icon name="Bookmark" size={16} />
+                        <Icon name="Bookmark" size={18} />
                       </button>
                     </div>
                   </div>
@@ -232,7 +232,7 @@ const TalentMarketplace = () => {
                   {/* Gig Info */}
                   <div className="p-4">
                     <div className="flex items-start justify-between mb-2">
-                      <h3 className="font-semibold text-[#0F172A] dark:text-[#E8EAED] line-clamp-2 flex-1">
+                      <h3 className="text-lg font-black text-text-primary dark:text-white line-clamp-2 flex-1 group-hover:text-workflow-primary transition-colors uppercase tracking-tight">
                         {gig.title}
                       </h3>
                     </div>
@@ -278,14 +278,14 @@ const TalentMarketplace = () => {
                     </div>
 
                     {/* Price */}
-                    <div className="flex items-center justify-between pt-3 border-t border-[#E2E8F0] dark:border-[#1E2640]">
+                    <div className="flex items-center justify-between pt-4 border-t border-border dark:border-white/5">
                       <div>
                         <span className="text-xs text-[#64748B] dark:text-[#8B92A3]">Starting at</span>
                         <p className="text-lg font-bold text-[#0F172A] dark:text-[#E8EAED]">
                           ${gig.price}
                         </p>
                       </div>
-                      <button className="px-4 py-2 bg-workflow-primary text-white rounded-lg hover:bg-workflow-primary-600 transition-colors text-sm font-medium">
+                      <button className="px-5 py-2.5 bg-workflow-primary text-white rounded-xl hover:bg-workflow-primary/80 transition-all text-[10px] font-black uppercase tracking-widest shadow-lg shadow-workflow-primary/20">
                         View Details
                       </button>
                     </div>
@@ -301,17 +301,17 @@ const TalentMarketplace = () => {
               <button
                 onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
                 disabled={currentPage === 1}
-                className="px-4 py-2 border border-[#E2E8F0] dark:border-[#1E2640] rounded-lg bg-white dark:bg-[#13182E] text-[#0F172A] dark:text-[#E8EAED] disabled:opacity-50"
+                className="px-6 py-2.5 border border-border dark:border-white/5 rounded-xl bg-bg-elevated text-text-primary font-black uppercase tracking-widest text-[10px] disabled:opacity-30 transition-all hover:bg-workflow-primary hover:text-white"
               >
                 Previous
               </button>
-              <span className="text-sm text-[#64748B] dark:text-[#8B92A3]">
-                Page {currentPage} of {Math.ceil(totalGigs / 20)}
+              <span className="text-xs font-black uppercase tracking-[0.2em] text-text-muted">
+                Page {currentPage} / {Math.ceil(totalGigs / 20)}
               </span>
               <button
                 onClick={() => setCurrentPage(prev => prev + 1)}
                 disabled={currentPage >= Math.ceil(totalGigs / 20)}
-                className="px-4 py-2 border border-[#E2E8F0] dark:border-[#1E2640] rounded-lg bg-white dark:bg-[#13182E] text-[#0F172A] dark:text-[#E8EAED] disabled:opacity-50"
+                className="px-6 py-2.5 border border-border dark:border-white/5 rounded-xl bg-bg-elevated text-text-primary font-black uppercase tracking-widest text-[10px] disabled:opacity-30 transition-all hover:bg-workflow-primary hover:text-white"
               >
                 Next
               </button>

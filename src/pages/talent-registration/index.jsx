@@ -57,7 +57,7 @@ const TalentRegistration = () => {
         },
       });
       success('Registration request submitted! An admin will review your request soon.');
-      navigate('/job-seeker-dashboard');
+      navigate('/dashboard/student');
     } catch (error) {
       console.error('Error submitting registration:', error);
       showError('Failed to submit registration. Please try again.');
@@ -84,57 +84,62 @@ const TalentRegistration = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#0046FF] via-blue-600 to-purple-700 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-bg flex items-center justify-center p-4 relative overflow-hidden">
+      {/* Cinematic Background Elements */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-workflow-primary/10 rounded-full blur-[120px] animate-pulse"></div>
+        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-workflow-accent/10 rounded-full blur-[100px]"></div>
+      </div>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="w-full max-w-2xl bg-white dark:bg-[#13182E] rounded-2xl shadow-2xl p-8"
+        className="w-full max-w-2xl bg-bg-elevated border border-border dark:border-white/5 rounded-[2.5rem] shadow-2xl p-10 relative z-10"
       >
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-[#0046FF] to-purple-600 mb-4">
-            <Icon name="User" className="w-8 h-8 text-white" />
+        <div className="text-center mb-10">
+          <div className="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-workflow-primary/10 border border-workflow-primary/20 mb-6 shadow-xl shadow-workflow-primary/10">
+            <Icon name="User" className="w-10 h-10 text-workflow-primary" />
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-            Become a Talent
+          <h1 className="text-4xl font-black text-text-primary dark:text-white mb-3 uppercase tracking-tight">
+            Become a Scholar
           </h1>
-          <p className="text-gray-600 dark:text-gray-400">
-            Join our marketplace and start offering your services
+          <p className="text-text-muted dark:text-slate-400 font-medium">
+            Join our elite academic circle and start contributing to sacred knowledge
           </p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label className="block text-sm font-medium text-gray-900 dark:text-white mb-2">
-              Professional Title <span className="text-red-500">*</span>
+            <label className="block text-[10px] font-black text-text-muted uppercase tracking-[0.2em] mb-3 px-1">
+              Academic Title <span className="text-red-500">*</span>
             </label>
             <input
               type="text"
               value={formData.title}
               onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
-              placeholder="e.g., Full Stack Developer, UI/UX Designer"
-              className="w-full px-4 py-3 border border-gray-300 dark:border-[#1E2640] rounded-lg bg-white dark:bg-[#13182E] text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#0046FF]"
+              placeholder="e.g., Scholar of Tafsir, Researcher in Islamic History"
+              className="w-full px-6 py-4 border border-border dark:border-white/10 rounded-2xl bg-bg text-text-primary dark:text-white focus:outline-none focus:ring-2 focus:ring-workflow-primary/40 transition-all font-bold tracking-tight shadow-sm"
               required
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-900 dark:text-white mb-2">
-              Bio <span className="text-red-500">*</span>
+            <label className="block text-[10px] font-black text-text-muted uppercase tracking-[0.2em] mb-3 px-1">
+              Intellectual Bio <span className="text-red-500">*</span>
             </label>
             <textarea
               value={formData.bio}
               onChange={(e) => setFormData(prev => ({ ...prev, bio: e.target.value }))}
               rows={4}
-              placeholder="Tell us about your skills and experience..."
-              className="w-full px-4 py-3 border border-gray-300 dark:border-[#1E2640] rounded-lg bg-white dark:bg-[#13182E] text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#0046FF]"
+              placeholder="Outline your scholarly background and areas of expertise..."
+              className="w-full px-6 py-4 border border-border dark:border-white/10 rounded-2xl bg-bg text-text-primary dark:text-white focus:outline-none focus:ring-2 focus:ring-workflow-primary/40 transition-all font-bold tracking-tight shadow-sm resize-none"
               required
             />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-900 dark:text-white mb-2">
-                Hourly Rate ($)
+              <label className="block text-[10px] font-black text-text-muted uppercase tracking-[0.2em] mb-3 px-1">
+                Consultation Rate ($)
               </label>
               <input
                 type="number"
@@ -142,60 +147,60 @@ const TalentRegistration = () => {
                 step="0.01"
                 value={formData.hourly_rate}
                 onChange={(e) => setFormData(prev => ({ ...prev, hourly_rate: e.target.value }))}
-                placeholder="e.g., 50"
-                className="w-full px-4 py-3 border border-gray-300 dark:border-[#1E2640] rounded-lg bg-white dark:bg-[#13182E] text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#0046FF]"
+                placeholder="e.g., 50 (if applicable)"
+                className="w-full px-6 py-4 border border-border dark:border-white/10 rounded-2xl bg-bg text-text-primary dark:text-white focus:outline-none focus:ring-2 focus:ring-workflow-primary/40 transition-all font-bold tracking-tight shadow-sm"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-900 dark:text-white mb-2">
-                Experience Level
+              <label className="block text-[10px] font-black text-text-muted uppercase tracking-[0.2em] mb-3 px-1">
+                Experience Tier
               </label>
               <select
                 value={formData.experience_level}
                 onChange={(e) => setFormData(prev => ({ ...prev, experience_level: e.target.value }))}
-                className="w-full px-4 py-3 border border-gray-300 dark:border-[#1E2640] rounded-lg bg-white dark:bg-[#13182E] text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#0046FF]"
+                className="w-full px-6 py-4 border border-border dark:border-white/10 rounded-2xl bg-bg text-text-primary dark:text-white focus:outline-none focus:ring-2 focus:ring-workflow-primary/40 transition-all font-bold tracking-tight shadow-sm appearance-none"
               >
-                <option value="beginner">Beginner</option>
+                <option value="beginner">Foundational</option>
                 <option value="intermediate">Intermediate</option>
-                <option value="expert">Expert</option>
+                <option value="expert">Senior Scholar</option>
               </select>
             </div>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-900 dark:text-white mb-2">
-              Skills
+            <label className="block text-[10px] font-black text-text-muted uppercase tracking-[0.2em] mb-3 px-1">
+              Scholarly Toolkit (Competencies)
             </label>
-            <div className="flex gap-2 mb-3">
+            <div className="flex gap-3 mb-4">
               <input
                 type="text"
                 value={skillInput}
                 onChange={(e) => setSkillInput(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddSkill())}
-                placeholder="Add a skill and press Enter"
-                className="flex-1 px-4 py-2 border border-gray-300 dark:border-[#1E2640] rounded-lg bg-white dark:bg-[#13182E] text-gray-900 dark:text-white"
+                placeholder="Add a competence and press Enter"
+                className="flex-1 px-6 py-4 border border-border dark:border-white/10 rounded-2xl bg-bg text-text-primary dark:text-white focus:outline-none focus:ring-2 focus:ring-workflow-primary/40 transition-all font-bold tracking-tight shadow-sm"
               />
               <button
                 type="button"
                 onClick={handleAddSkill}
-                className="px-4 py-2 bg-[#0046FF] text-white rounded-lg hover:bg-blue-700"
+                className="px-8 py-4 bg-workflow-primary text-white rounded-2xl font-black uppercase tracking-widest text-[11px] hover:bg-workflow-primary/80 transition-all shadow-lg shadow-workflow-primary/20"
               >
-                Add
+                Append
               </button>
             </div>
             {formData.skills.length > 0 && (
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-2 p-4 bg-bg rounded-2xl border border-border dark:border-white/5">
                 {formData.skills.map((skill, index) => (
                   <span
                     key={index}
-                    className="px-3 py-1.5 bg-[#0046FF]/10 dark:bg-purple-500/20 text-[#0046FF] dark:text-purple-400 rounded-full text-sm font-medium flex items-center gap-2"
+                    className="px-3 py-1.5 bg-workflow-primary/10 border border-workflow-primary/20 text-workflow-primary rounded-xl text-[10px] font-black uppercase tracking-widest flex items-center gap-2"
                   >
                     {skill}
                     <button
                       type="button"
                       onClick={() => handleRemoveSkill(skill)}
-                      className="hover:text-red-500"
+                      className="hover:text-red-500 transition-colors"
                     >
                       <Icon name="X" size={12} />
                     </button>
@@ -207,19 +212,19 @@ const TalentRegistration = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-900 dark:text-white mb-2">
-                Portfolio URL
+              <label className="block text-[10px] font-black text-text-muted uppercase tracking-[0.2em] mb-3 px-1">
+                Academic Profile
               </label>
               <input
                 type="url"
                 value={formData.portfolio_url}
                 onChange={(e) => setFormData(prev => ({ ...prev, portfolio_url: e.target.value }))}
-                placeholder="https://yourportfolio.com"
-                className="w-full px-4 py-3 border border-gray-300 dark:border-[#1E2640] rounded-lg bg-white dark:bg-[#13182E] text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#0046FF]"
+                placeholder="https://yourprofile.com"
+                className="w-full px-4 py-3 border border-border dark:border-white/10 rounded-xl bg-bg text-text-primary dark:text-white focus:outline-none focus:ring-2 focus:ring-workflow-primary/40 transition-all font-bold tracking-tight text-sm"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-900 dark:text-white mb-2">
+              <label className="block text-[10px] font-black text-text-muted uppercase tracking-[0.2em] mb-3 px-1">
                 LinkedIn URL
               </label>
               <input
@@ -227,54 +232,54 @@ const TalentRegistration = () => {
                 value={formData.linkedin_url}
                 onChange={(e) => setFormData(prev => ({ ...prev, linkedin_url: e.target.value }))}
                 placeholder="https://linkedin.com/in/you"
-                className="w-full px-4 py-3 border border-gray-300 dark:border-[#1E2640] rounded-lg bg-white dark:bg-[#13182E] text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#0046FF]"
+                className="w-full px-4 py-3 border border-border dark:border-white/10 rounded-xl bg-bg text-text-primary dark:text-white focus:outline-none focus:ring-2 focus:ring-workflow-primary/40 transition-all font-bold tracking-tight text-sm"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-900 dark:text-white mb-2">
-                GitHub URL
+              <label className="block text-[10px] font-black text-text-muted uppercase tracking-[0.2em] mb-3 px-1">
+                Research URL
               </label>
               <input
                 type="url"
                 value={formData.github_url}
                 onChange={(e) => setFormData(prev => ({ ...prev, github_url: e.target.value }))}
-                placeholder="https://github.com/you"
-                className="w-full px-4 py-3 border border-gray-300 dark:border-[#1E2640] rounded-lg bg-white dark:bg-[#13182E] text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#0046FF]"
+                placeholder="https://researchgate.net/you"
+                className="w-full px-4 py-3 border border-border dark:border-white/10 rounded-xl bg-bg text-text-primary dark:text-white focus:outline-none focus:ring-2 focus:ring-workflow-primary/40 transition-all font-bold tracking-tight text-sm"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-900 dark:text-white mb-2">
-              Why do you want to become a Talent? <span className="text-red-500">*</span>
+            <label className="block text-[10px] font-black text-text-muted uppercase tracking-[0.2em] mb-3 px-1">
+              Purpose Statement <span className="text-red-500">*</span>
             </label>
             <textarea
               value={formData.reason}
               onChange={(e) => setFormData(prev => ({ ...prev, reason: e.target.value }))}
               rows={3}
-              placeholder="Tell us why you want to join as a talent..."
-              className="w-full px-4 py-3 border border-gray-300 dark:border-[#1E2640] rounded-lg bg-white dark:bg-[#13182E] text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#0046FF]"
+              placeholder="Why do you wish to contribute to our academic circle?"
+              className="w-full px-6 py-4 border border-border dark:border-white/10 rounded-2xl bg-bg text-text-primary dark:text-white focus:outline-none focus:ring-2 focus:ring-workflow-primary/40 transition-all font-bold tracking-tight shadow-sm resize-none"
               required
             />
-            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-              This will be reviewed by our admin team
+            <p className="text-[10px] font-black text-text-muted uppercase tracking-widest mt-2 px-1">
+              This proposal will be reviewed by the board of trustees
             </p>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-4 pt-4">
             <button
               type="button"
               onClick={() => navigate(-1)}
-              className="flex-1 px-6 py-3 border border-gray-300 dark:border-[#1E2640] rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-[#1A2139]"
+              className="flex-1 px-8 py-4 border border-border dark:border-white/10 rounded-2xl text-text-muted dark:text-slate-400 font-black uppercase tracking-widest text-[11px] hover:bg-bg/50 transition-all"
             >
-              Cancel
+              Abort
             </button>
             <button
               type="submit"
               disabled={loading}
-              className="flex-1 px-6 py-3 bg-gradient-to-r from-[#0046FF] to-purple-600 text-white rounded-lg hover:shadow-lg transition-all disabled:opacity-50"
+              className="flex-[2] px-8 py-4 bg-workflow-primary text-white rounded-2xl font-black uppercase tracking-widest text-[11px] hover:brightness-110 transition-all shadow-xl shadow-workflow-primary/20 disabled:opacity-50 active:scale-[0.98]"
             >
-              {loading ? 'Submitting...' : 'Submit Request'}
+              {loading ? 'Transmitting Proposal...' : 'Submit Request'}
             </button>
           </div>
         </form>
@@ -284,4 +289,3 @@ const TalentRegistration = () => {
 };
 
 export default TalentRegistration;
-

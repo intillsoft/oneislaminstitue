@@ -51,14 +51,23 @@ export async function getOrCreateCustomer(userId, email, name) {
     });
 
     // Update subscription record
-    await supabase
+    logger.info(`Updating subscription record for user ${userId} with customer ${customer.id}`);
+    const { error: upsertError } = await supabase
       .from('subscriptions')
       .upsert({
         user_id: userId,
         stripe_customer_id: customer.id,
+        plan: 'free',
+        status: 'active',
+        updated_at: new Date().toISOString()
       }, {
         onConflict: 'user_id',
       });
+
+    if (upsertError) {
+      logger.error('Database error in getOrCreateCustomer upsert:', upsertError);
+      throw new Error(`Database error: ${upsertError.message}`);
+    }
 
     return customer;
   } catch (error) {
@@ -85,8 +94,11 @@ export async function createCheckoutSession(userId, tier) {
     const customer = await getOrCreateCustomer(userId, user.email, user.name);
     const tierConfig = getTierConfig(tier);
 
+    logger.info(`Initializing checkout for user ${userId}, tier ${tier}, priceId ${tierConfig.priceId}`);
+
     if (!tierConfig.priceId) {
-      throw new Error('Invalid tier or tier is free');
+      logger.error(`No priceId found for tier ${tier}. Current config: ${JSON.stringify(tierConfig)}`);
+      throw new Error(`Invalid tier or tier is free: ${tier}`);
     }
 
     const session = await stripe.checkout.sessions.create({

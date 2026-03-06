@@ -1,0 +1,5 @@
+﻿# Supabase (REQUIRED)
+VITE_SUPABASE_URL=https://xvokwyntwdetsyzyeofr.supabase.co
+VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh2b2t3eW50d2RldHN5enllb2ZyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ1NjA0MTMsImV4cCI6MjA4MDEzNjQxM30.QOUjA6gL71YuxyYf2COxfqxiy36RyZpTCovoBahR91E
+VITE_API_URL=https://workflow.surf
+

@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import Icon from 'components/AppIcon';
 import { apiService } from '../../../lib/api';
+import { motion } from 'framer-motion';
 
 const AIMessageSuggestions = ({ conversationId, context, onSelect }) => {
     const [suggestions, setSuggestions] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [show, setShow] = useState(false);
 
     useEffect(() => {
         if (conversationId) {
@@ -19,7 +19,6 @@ const AIMessageSuggestions = ({ conversationId, context, onSelect }) => {
             const response = await apiService.messages.getAISuggestions(conversationId, context);
             if (response.data && response.data.suggestions) {
                 setSuggestions(response.data.suggestions);
-                setShow(true);
             }
         } catch (error) {
             console.error('Failed to fetch AI suggestions:', error);
@@ -30,42 +29,42 @@ const AIMessageSuggestions = ({ conversationId, context, onSelect }) => {
 
     if (loading) {
         return (
-            <div className="flex gap-2 mt-2 animate-pulse">
+            <div className="flex gap-3 px-2">
                 {[1, 2, 3].map(i => (
-                    <div key={i} className="h-8 w-24 bg-surface-200 dark:bg-surface-700 rounded-full opacity-50"></div>
+                    <div key={i} className="h-8 w-32 bg-white/5 rounded-full animate-pulse border border-white/5" />
                 ))}
             </div>
         );
     }
 
-    if (!show || suggestions.length === 0) return null;
+    if (!suggestions || suggestions.length === 0) return null;
 
     return (
-        <div className="flex flex-col gap-2 mt-2">
-            <div className="flex items-center justify-between text-xs text-text-muted px-1">
-                <span className="flex items-center gap-1">
-                    <Icon name="Sparkles" className="w-3 h-3 text-workflow-primary-500" />
-                    AI Suggestions
-                </span>
-                <button
-                    onClick={fetchSuggestions}
-                    className="hover:text-workflow-primary-500 transition-colors flex items-center gap-1"
-                >
-                    <Icon name="RefreshCw" className="w-3 h-3" />
-                    Regenerate
-                </button>
+        <div className="flex items-center gap-4 px-2">
+            <div className="flex items-center gap-2 pr-4 border-r border-white/5 h-6">
+                <Icon name="Sparkles" className="w-3.5 h-3.5 text-blue-400" />
+                <span className="text-[10px] font-black uppercase tracking-widest text-slate-500 whitespace-nowrap">Neural Suggests</span>
             </div>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex gap-3 overflow-x-auto no-scrollbar py-1">
                 {suggestions.map((suggestion, index) => (
-                    <button
+                    <motion.button
                         key={index}
+                        initial={{ opacity: 0, x: 10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: index * 0.1 }}
                         onClick={() => onSelect(suggestion)}
-                        className="text-xs px-3 py-1.5 bg-white/50 dark:bg-surface-800/50 backdrop-blur-md border border-workflow-primary-100 dark:border-workflow-primary-900/30 rounded-full hover:bg-workflow-primary-50 dark:hover:bg-workflow-primary-900/50 hover:border-workflow-primary-200 dark:hover:border-workflow-primary-800 transition-all duration-300 shadow-sm hover:shadow-glow hover:-translate-y-0.5 text-left animate-slide-up"
-                        style={{ animationDelay: `${index * 100}ms` }}
+                        className="text-[11px] font-bold px-5 py-2 white-space-nowrap bg-white/5 border border-white/5 rounded-2xl hover:bg-blue-600/20 hover:border-blue-500/50 hover:text-white text-slate-400 transition-all duration-300 shadow-sm hover:shadow-glow whitespace-nowrap"
                     >
                         {suggestion}
-                    </button>
+                    </motion.button>
                 ))}
+                <button
+                    onClick={fetchSuggestions}
+                    className="p-2 text-slate-600 hover:text-blue-400 transition-colors"
+                    title="Regenerate"
+                >
+                    <Icon name="RefreshCw" size={14} />
+                </button>
             </div>
         </div>
     );

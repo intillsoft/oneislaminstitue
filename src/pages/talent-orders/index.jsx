@@ -7,6 +7,7 @@ import { talentService } from '../../services/talentService';
 import Breadcrumb from 'components/ui/Breadcrumb';
 import UnifiedSidebar from '../../components/ui/UnifiedSidebar';
 import { formatDistanceToNow } from 'date-fns';
+import { EliteCard, ElitePageHeader } from '../../components/ui/EliteCard';
 
 const TalentOrders = () => {
   const { user } = useAuthContext();
@@ -16,6 +17,7 @@ const TalentOrders = () => {
   const [filter, setFilter] = useState('all');
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [deliveryFiles, setDeliveryFiles] = useState([]);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
   useEffect(() => {
     loadOrders();
@@ -25,7 +27,7 @@ const TalentOrders = () => {
     try {
       setLoading(true);
       const data = await talentService.getOrders(filter === 'all' ? null : filter);
-      setOrders(data);
+      setOrders(data || []);
     } catch (error) {
       console.error('Error loading orders:', error);
       showError('Failed to load orders');
@@ -57,23 +59,23 @@ const TalentOrders = () => {
 
   const getStatusColor = (status) => {
     const colors = {
-      pending: 'bg-yellow-100 dark:bg-yellow-900/20 text-yellow-700 dark:text-yellow-300',
-      in_progress: 'bg-blue-100 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300',
-      completed: 'bg-green-100 dark:bg-green-900/20 text-green-700 dark:text-green-300',
-      cancelled: 'bg-red-100 dark:bg-red-900/20 text-red-700 dark:text-red-300',
-      disputed: 'bg-orange-100 dark:bg-orange-900/20 text-orange-700 dark:text-orange-300',
+      pending: 'bg-amber-500/10 text-amber-500 border-amber-500/20',
+      in_progress: 'bg-blue-500/10 text-blue-500 border-blue-500/20',
+      completed: 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20',
+      cancelled: 'bg-rose-500/10 text-rose-500 border-rose-500/20',
+      disputed: 'bg-orange-500/10 text-orange-500 border-orange-500/20',
     };
-    return colors[status] || 'bg-gray-100 dark:bg-gray-900/20 text-gray-700 dark:text-gray-300';
+    return colors[status] || 'bg-slate-500/10 text-slate-500 border-white/10';
   };
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-white dark:bg-[#0A0E27]">
-        <UnifiedSidebar />
-        <div className="ml-0 lg:ml-64 min-h-screen flex items-center justify-center">
+      <div className="min-h-screen bg-bg">
+        <UnifiedSidebar isCollapsed={isSidebarCollapsed} onCollapseChange={setIsSidebarCollapsed} />
+        <div className={`transition-all duration-300 ${isSidebarCollapsed ? 'lg:ml-16' : 'lg:ml-[260px]'} min-h-screen flex items-center justify-center`}>
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-workflow-primary mx-auto mb-4"></div>
-            <p className="text-[#64748B] dark:text-[#8B92A3]">Loading orders...</p>
+            <p className="text-text-muted font-black uppercase tracking-widest text-[10px]">Accessing Orders...</p>
           </div>
         </div>
       </div>
@@ -81,246 +83,244 @@ const TalentOrders = () => {
   }
 
   return (
-    <div className="min-h-screen bg-white dark:bg-[#0A0E27]">
-      <UnifiedSidebar />
-      <div className="ml-0 lg:ml-64 min-h-screen">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="min-h-screen bg-[#0A1628]">
+      <UnifiedSidebar isCollapsed={isSidebarCollapsed} onCollapseChange={setIsSidebarCollapsed} />
+      <div className={`transition-all duration-300 ${isSidebarCollapsed ? 'lg:ml-16' : 'lg:ml-[260px]'} min-h-screen`}>
+        <div className="max-w-7xl mx-auto px-6 py-8">
           <Breadcrumb />
 
-          <div className="mb-6">
-            <h1 className="text-2xl sm:text-3xl font-bold text-[#0F172A] dark:text-[#E8EAED] mb-2">
-              Orders Management
-            </h1>
-            <p className="text-[#64748B] dark:text-[#8B92A3]">
-              Manage all your freelance orders
-            </p>
-          </div>
+          <ElitePageHeader
+            title="Order Protocol"
+            description="Manage your high-value freelance transactions"
+            className="mb-12"
+          />
 
           {/* Filters */}
-          <div className="bg-white dark:bg-[#13182E] border border-[#E2E8F0] dark:border-[#1E2640] rounded-lg p-4 mb-6">
-            <div className="flex items-center gap-2 flex-wrap">
-              {['all', 'pending', 'in_progress', 'completed', 'cancelled', 'disputed'].map((status) => (
-                <button
-                  key={status}
-                  onClick={() => setFilter(status)}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                    filter === status
-                      ? 'bg-workflow-primary text-white'
-                      : 'bg-gray-100 dark:bg-[#1A2139] text-[#0F172A] dark:text-[#E8EAED] hover:bg-gray-200 dark:hover:bg-[#1E2640]'
+          <div className="flex items-center gap-2 px-2 py-1 bg-white/5 rounded-xl border border-white/5 w-fit mb-8 overflow-x-auto no-scrollbar max-w-full">
+            {['all', 'pending', 'in_progress', 'completed', 'cancelled', 'disputed'].map((status) => (
+              <button
+                key={status}
+                onClick={() => setFilter(status)}
+                className={`px-4 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap ${filter === status
+                    ? 'bg-workflow-primary text-white shadow-lg shadow-workflow-primary/10'
+                    : 'text-text-muted hover:text-text-primary hover:bg-white/5'
                   }`}
-                >
-                  {status.charAt(0).toUpperCase() + status.slice(1).replace('_', ' ')}
-                </button>
-              ))}
-            </div>
+              >
+                {status.replace('_', ' ')}
+              </button>
+            ))}
           </div>
 
           {/* Orders Table */}
-          <div className="bg-white dark:bg-[#13182E] border border-[#E2E8F0] dark:border-[#1E2640] rounded-lg overflow-hidden">
+          <EliteCard className="overflow-hidden !p-0 border border-border dark:border-white/5 shadow-2xl">
             <div className="overflow-x-auto">
               <table className="w-full">
-                <thead className="bg-gray-50 dark:bg-[#1A2139]">
-                  <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-[#64748B] dark:text-[#8B92A3] uppercase tracking-wider">
-                      Order ID
+                <thead>
+                  <tr className="border-b border-white/5">
+                    <th className="px-6 py-5 text-left text-[10px] font-black text-text-muted uppercase tracking-widest">
+                      Node ID
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-[#64748B] dark:text-[#8B92A3] uppercase tracking-wider">
-                      Buyer
+                    <th className="px-6 py-5 text-left text-[10px] font-black text-text-muted uppercase tracking-widest">
+                      Buyer Entity
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-[#64748B] dark:text-[#8B92A3] uppercase tracking-wider">
-                      Gig
+                    <th className="px-6 py-5 text-left text-[10px] font-black text-text-muted uppercase tracking-widest">
+                      Target Gig
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-[#64748B] dark:text-[#8B92A3] uppercase tracking-wider">
-                      Price
+                    <th className="px-6 py-5 text-left text-[10px] font-black text-text-muted uppercase tracking-widest text-right">
+                      Value
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-[#64748B] dark:text-[#8B92A3] uppercase tracking-wider">
+                    <th className="px-6 py-5 text-left text-[10px] font-black text-text-muted uppercase tracking-widest">
                       Status
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-[#64748B] dark:text-[#8B92A3] uppercase tracking-wider">
-                      Date
+                    <th className="px-6 py-5 text-left text-[10px] font-black text-text-muted uppercase tracking-widest">
+                      Initialized
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-[#64748B] dark:text-[#8B92A3] uppercase tracking-wider">
-                      Actions
+                    <th className="px-6 py-5 text-left text-[10px] font-black text-text-muted uppercase tracking-widest text-right">
+                      Operations
                     </th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#E2E8F0] dark:divide-[#1E2640]">
+                <tbody className="divide-y divide-border dark:divide-white/[0.02]">
                   {orders.length > 0 ? (
                     orders.map((order) => (
-                      <tr key={order.id} className="hover:bg-gray-50 dark:hover:bg-[#1A2139]">
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <span className="text-sm font-medium text-[#0F172A] dark:text-[#E8EAED]">
-                            #{order.id.slice(0, 8)}
+                      <tr key={order.id} className="hover:bg-white/[0.02] transition-colors group">
+                        <td className="px-6 py-6 whitespace-nowrap">
+                          <span className="text-xs font-black text-text-primary dark:text-white font-mono opacity-60 group-hover:opacity-100 transition-opacity">
+                            #{order.id.slice(0, 8).toUpperCase()}
                           </span>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
+                        <td className="px-6 py-6 whitespace-nowrap">
                           <div className="flex items-center gap-3">
-                            {order.buyer?.avatar_url ? (
-                              <img
-                                src={order.buyer.avatar_url}
-                                alt={order.buyer.name}
-                                className="w-8 h-8 rounded-full"
-                              />
-                            ) : (
-                              <div className="w-8 h-8 rounded-full bg-workflow-primary/10 flex items-center justify-center">
-                                <Icon name="User" size={16} className="text-workflow-primary" />
-                              </div>
-                            )}
-                            <span className="text-sm text-[#0F172A] dark:text-[#E8EAED]">
-                              {order.buyer?.name || 'Unknown'}
+                            <div className="relative">
+                              {order.buyer?.avatar_url ? (
+                                <img
+                                  src={order.buyer.avatar_url}
+                                  alt={order.buyer.name}
+                                  className="w-8 h-8 rounded-xl object-cover ring-2 ring-white/5"
+                                />
+                              ) : (
+                                <div className="w-8 h-8 rounded-xl bg-workflow-primary/10 flex items-center justify-center border border-workflow-primary/20">
+                                  <Icon name="User" size={14} className="text-workflow-primary" />
+                                </div>
+                              )}
+                              <div className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-emerald-500 border-2 border-[#0A1628] rounded-full"></div>
+                            </div>
+                            <span className="text-sm font-bold text-text-primary dark:text-white group-hover:text-workflow-primary transition-colors">
+                              {order.buyer?.name || 'Unknown Entity'}
                             </span>
                           </div>
                         </td>
-                        <td className="px-6 py-4">
-                          <span className="text-sm text-[#0F172A] dark:text-[#E8EAED] line-clamp-1">
+                        <td className="px-6 py-6">
+                          <span className="text-xs font-bold text-text-muted dark:text-slate-400 line-clamp-1 max-w-[200px]">
                             {order.gig?.title || order.title || 'N/A'}
                           </span>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <span className="text-sm font-medium text-[#0F172A] dark:text-[#E8EAED]">
+                        <td className="px-6 py-6 whitespace-nowrap text-right">
+                          <span className="text-sm font-black text-text-primary dark:text-white tracking-tight">
                             ${order.price}
                           </span>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(order.status)}`}>
+                        <td className="px-6 py-6 whitespace-nowrap">
+                          <span className={`px-2 py-1 rounded-lg text-[8px] font-black uppercase tracking-widest border ${getStatusColor(order.status)} animate-pulse`}>
                             {order.status.replace('_', ' ')}
                           </span>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-[#64748B] dark:text-[#8B92A3]">
+                        <td className="px-6 py-6 whitespace-nowrap text-[10px] font-black uppercase tracking-widest text-text-muted">
                           {formatDistanceToNow(new Date(order.created_at), { addSuffix: true })}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
+                        <td className="px-6 py-6 whitespace-nowrap text-right">
                           <button
                             onClick={() => setSelectedOrder(order)}
-                            className="text-workflow-primary hover:text-workflow-primary-600 text-sm font-medium"
+                            className="px-4 py-2 bg-white/5 text-text-muted hover:text-white hover:bg-workflow-primary/80 rounded-lg text-[9px] font-black uppercase tracking-widest transition-all border border-transparent hover:border-workflow-primary/50 shadow-lg hover:shadow-workflow-primary/20"
                           >
-                            View Details
+                            Details
                           </button>
                         </td>
                       </tr>
                     ))
                   ) : (
                     <tr>
-                      <td colSpan="7" className="px-6 py-12 text-center">
-                        <Icon name="Inbox" className="w-16 h-16 text-[#64748B] dark:text-[#8B92A3] mx-auto mb-4" />
-                        <p className="text-[#64748B] dark:text-[#8B92A3]">No orders found</p>
+                      <td colSpan="7" className="px-6 py-24 text-center">
+                        <div className="w-16 h-16 bg-bg/50 rounded-3xl flex items-center justify-center mx-auto mb-6 border border-border dark:border-white/5">
+                          <Icon name="Inbox" className="w-8 h-8 text-bg-elevated" />
+                        </div>
+                        <p className="text-text-muted font-black uppercase tracking-widest text-[10px]">No Active Transactions Detected</p>
                       </td>
                     </tr>
                   )}
                 </tbody>
               </table>
             </div>
-          </div>
+          </EliteCard>
         </div>
       </div>
 
       {/* Order Details Modal */}
       {selectedOrder && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white dark:bg-[#13182E] rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="p-6 border-b border-[#E2E8F0] dark:border-[#1E2640]">
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-xl font-semibold text-[#0F172A] dark:text-[#E8EAED]">
-                  Order Details
-                </h2>
-                <button
-                  onClick={() => {
-                    setSelectedOrder(null);
-                    setDeliveryFiles([]);
-                  }}
-                  className="text-[#64748B] dark:text-[#8B92A3] hover:text-[#0F172A] dark:hover:text-[#E8EAED]"
-                >
-                  <Icon name="X" size={24} />
-                </button>
+        <div className="fixed inset-0 bg-bg/90 backdrop-blur-md flex items-center justify-center z-50 p-4">
+          <EliteCard className="max-w-xl w-full max-h-[90vh] overflow-y-auto relative animate-in zoom-in-95 duration-200">
+            <button
+              onClick={() => {
+                setSelectedOrder(null);
+                setDeliveryFiles([]);
+              }}
+              className="absolute top-6 right-6 p-2 bg-white/5 text-slate-500 hover:text-white hover:bg-white/10 rounded-xl transition-all"
+            >
+              <Icon name="X" size={18} />
+            </button>
+
+            <div className="mb-8">
+              <span className="text-[10px] font-black text-workflow-primary uppercase tracking-[0.2em] mb-3 block">Transaction Interface</span>
+              <h2 className="text-2xl font-black text-text-primary dark:text-white tracking-tight uppercase">
+                Order Protocol #{selectedOrder.id.slice(0, 8).toUpperCase()}
+              </h2>
+            </div>
+
+            <div className="space-y-8">
+              <div className="p-6 bg-white/5 rounded-2xl border border-white/5">
+                <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-4">Buyer Entity</p>
+                <div className="flex items-center gap-4">
+                  {selectedOrder.buyer?.avatar_url ? (
+                    <img
+                      src={selectedOrder.buyer.avatar_url}
+                      alt={selectedOrder.buyer.name}
+                      className="w-12 h-12 rounded-2xl ring-2 ring-white/5"
+                    />
+                  ) : (
+                    <div className="w-12 h-12 rounded-2xl bg-workflow-primary/10 flex items-center justify-center border border-workflow-primary/20">
+                      <Icon name="User" size={24} className="text-workflow-primary" />
+                    </div>
+                  )}
+                  <div>
+                    <p className="text-base font-black text-text-primary dark:text-white uppercase tracking-tight">
+                      {selectedOrder.buyer?.name || 'Unknown Entity'}
+                    </p>
+                    <Link
+                      to={`/talent/messages?user=${selectedOrder.buyer_id}`}
+                      className="text-[10px] font-black text-workflow-primary hover:text-workflow-primary/80 uppercase tracking-widest mt-1 inline-block"
+                    >
+                      Establish Connection
+                    </Link>
+                  </div>
+                </div>
               </div>
 
-              <div className="space-y-4">
-                <div>
-                  <p className="text-sm text-[#64748B] dark:text-[#8B92A3] mb-1">Order ID</p>
-                  <p className="text-sm font-medium text-[#0F172A] dark:text-[#E8EAED]">
-                    #{selectedOrder.id.slice(0, 8)}
+              <div>
+                <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2 px-1">Active Gig</p>
+                <div className="p-4 bg-bg-elevated rounded-2xl border border-border dark:border-white/5 text-sm font-bold text-text-primary dark:text-white">
+                  {selectedOrder.gig?.title || selectedOrder.title || 'N/A'}
+                </div>
+              </div>
+
+              <div>
+                <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2 px-1">Protocol Objectives</p>
+                <div className="p-4 bg-bg-elevated rounded-2xl border border-border dark:border-white/5 text-xs text-text-muted dark:text-slate-400 leading-relaxed font-medium">
+                  {selectedOrder.description || 'No objectives specified.'}
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="p-4 bg-bg-elevated rounded-2xl border border-border dark:border-white/5 text-right">
+                  <p className="text-[10px] font-black text-text-muted uppercase tracking-widest mb-1">Contract Value</p>
+                  <p className="text-2xl font-black text-text-primary dark:text-white tracking-tighter">
+                    ${selectedOrder.price}
                   </p>
                 </div>
-
-                <div>
-                  <p className="text-sm text-[#64748B] dark:text-[#8B92A3] mb-1">Buyer</p>
-                  <div className="flex items-center gap-3">
-                    {selectedOrder.buyer?.avatar_url ? (
-                      <img
-                        src={selectedOrder.buyer.avatar_url}
-                        alt={selectedOrder.buyer.name}
-                        className="w-10 h-10 rounded-full"
-                      />
-                    ) : (
-                      <div className="w-10 h-10 rounded-full bg-workflow-primary/10 flex items-center justify-center">
-                        <Icon name="User" size={20} className="text-workflow-primary" />
-                      </div>
-                    )}
-                    <div>
-                      <p className="text-sm font-medium text-[#0F172A] dark:text-[#E8EAED]">
-                        {selectedOrder.buyer?.name || 'Unknown'}
-                      </p>
-                      <Link
-                        to={`/talent/messages?user=${selectedOrder.buyer_id}`}
-                        className="text-xs text-workflow-primary hover:underline"
-                      >
-                        Send Message
-                      </Link>
-                    </div>
-                  </div>
+                <div className="p-4 bg-bg-elevated rounded-2xl border border-border dark:border-white/5">
+                  <p className="text-[10px] font-black text-text-muted uppercase tracking-widest mb-2">Protocol Status</p>
+                  <span className={`px-2 py-1 rounded-lg text-[8px] font-black uppercase tracking-widest border ${getStatusColor(selectedOrder.status)} inline-block`}>
+                    {selectedOrder.status.replace('_', ' ')}
+                  </span>
                 </div>
+              </div>
 
-                <div>
-                  <p className="text-sm text-[#64748B] dark:text-[#8B92A3] mb-1">Gig</p>
-                  <p className="text-sm font-medium text-[#0F172A] dark:text-[#E8EAED]">
-                    {selectedOrder.gig?.title || selectedOrder.title || 'N/A'}
-                  </p>
-                </div>
-
-                <div>
-                  <p className="text-sm text-[#64748B] dark:text-[#8B92A3] mb-1">Description</p>
-                  <p className="text-sm text-[#0F172A] dark:text-[#E8EAED]">
-                    {selectedOrder.description || 'No description'}
-                  </p>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <p className="text-sm text-[#64748B] dark:text-[#8B92A3] mb-1">Price</p>
-                    <p className="text-lg font-bold text-[#0F172A] dark:text-[#E8EAED]">
-                      ${selectedOrder.price}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-[#64748B] dark:text-[#8B92A3] mb-1">Status</p>
-                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(selectedOrder.status)}`}>
-                      {selectedOrder.status.replace('_', ' ')}
-                    </span>
-                  </div>
-                </div>
-
-                {selectedOrder.status === 'in_progress' && (
-                  <div className="pt-4 border-t border-[#E2E8F0] dark:border-[#1E2640]">
-                    <p className="text-sm font-medium text-[#0F172A] dark:text-[#E8EAED] mb-3">
-                      Deliver Order
-                    </p>
+              {selectedOrder.status === 'in_progress' && (
+                <div className="pt-8 border-t border-border dark:border-white/5">
+                  <p className="text-[10px] font-black text-text-primary dark:text-white uppercase tracking-[0.2em] mb-4">Delivery Protocol</p>
+                  <div className="group relative">
                     <input
                       type="file"
                       multiple
                       onChange={(e) => setDeliveryFiles(Array.from(e.target.files))}
-                      className="w-full px-4 py-2 border border-[#E2E8F0] dark:border-[#1E2640] rounded-lg bg-white dark:bg-[#13182E] text-[#0F172A] dark:text-[#E8EAED] mb-3"
+                      className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
                     />
-                    <button
-                      onClick={() => handleDeliverOrder(selectedOrder.id)}
-                      className="w-full btn-primary"
-                    >
-                      Deliver Order
-                    </button>
+                    <div className="w-full px-6 py-8 border-2 border-dashed border-border dark:border-white/10 group-hover:border-workflow-primary/50 rounded-2xl bg-bg-elevated transition-all text-center">
+                      <Icon name="Upload" className="w-8 h-8 text-bg mx-auto mb-3 transition-colors group-hover:text-workflow-primary" />
+                      <p className="text-[10px] font-black text-text-muted group-hover:text-text-primary uppercase tracking-widest">
+                        {deliveryFiles.length > 0 ? `${deliveryFiles.length} Nodes Detected` : 'Inject Delivery Nodes'}
+                      </p>
+                    </div>
                   </div>
-                )}
-              </div>
+                  <button
+                    onClick={() => handleDeliverOrder(selectedOrder.id)}
+                    className="w-full mt-4 py-4 bg-workflow-primary text-white hover:bg-workflow-primary/80 rounded-2xl font-black uppercase tracking-widest text-[11px] transition-all shadow-xl shadow-workflow-primary/20 active:scale-[0.98]"
+                  >
+                    Execute Final Delivery
+                  </button>
+                </div>
+              )}
             </div>
-          </div>
+          </EliteCard>
         </div>
       )}
     </div>
@@ -328,6 +328,7 @@ const TalentOrders = () => {
 };
 
 export default TalentOrders;
+
 
 
 

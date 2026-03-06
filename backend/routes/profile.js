@@ -7,11 +7,14 @@ import express from 'express';
 import { authenticate } from '../middleware/auth.js';
 import logger from '../utils/logger.js';
 import { createClient } from '@supabase/supabase-js';
+import { auditService } from '../services/auditService.js';
+import crypto from 'crypto';
 import dotenv from 'dotenv';
 
 dotenv.config();
 
 const router = express.Router();
+
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY;
 
@@ -254,6 +257,81 @@ router.put('/role-change-requests/:id/reject', authenticate, async (req, res) =>
   } catch (error) {
     logger.error('Error rejecting role change request:', error);
     res.status(500).json({ error: 'Failed to reject role change request', message: error.message });
+  }
+});
+
+/**
+ * GET /api/profile/api-keys
+ * Get all API keys for the current user
+ */
+router.get('/api-keys', authenticate, async (req, res) => {
+  try {
+    const { data, error } = await supabase
+      .from('api_keys')
+      .select('id, name, last_four, scopes, is_active, last_used_at, created_at')
+      .eq('user_id', req.user.id)
+      .order('created_at', { ascending: false });
+
+    if (error) throw error;
+    res.json({ success: true, data });
+  } catch (error) {
+    logger.error('Error fetching API keys:', error);
+    res.status(500).json({ error: 'Failed to fetch API keys' });
+  }
+});
+
+/**
+ * POST /api/profile/api-keys
+ * Generate a new API key
+ */
+router.post('/api-keys', authenticate, async (req, res) => {
+  try {
+    const { name, scopes } = req.body;
+
+    if (!name) return res.status(400).json({ error: 'Name is required for the integration' });
+
+    // Generate a secure API key
+    const rawKey = `wf_${crypto.randomBytes(32).toString('hex')}`;
+    const hashedKey = crypto.createHash('sha256').update(rawKey).digest('hex');
+    const lastFour = rawKey.slice(-4);
+
+    const { data: keyRecord, error } = await supabase
+      .from('api_keys')
+      .insert({
+        user_id: req.user.id,
+        name,
+        key_hash: hashedKey,
+        last_four: lastFour,
+        scopes: scopes || ['jobs:read'],
+        is_active: true
+      })
+      .select()
+      .single();
+
+    if (error) throw error;
+
+    // Return the RAW KEY only once
+    // Log the event for enterprise audit trail
+    await auditService.log({
+      userId: req.user.id,
+      action: 'API_KEY_GENERATED',
+      resourceType: 'API_KEY',
+      resourceId: keyRecord.id,
+      payload: { name: keyRecord.name, lastFour },
+      req
+    });
+
+    res.status(201).json({
+      success: true,
+      data: {
+        ...keyRecord,
+        api_key: rawKey // ONLY time this is shown
+      },
+      message: 'API Key generated. Save it now, it will not be shown again.'
+    });
+  } catch (error) {
+    logger.error('Error generating API key:', error);
+    res.status(500).json({ error: 'Failed to generate API key' });
   }
 });
 

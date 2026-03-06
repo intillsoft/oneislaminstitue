@@ -52,7 +52,7 @@ const ResumeSectionEditor = ({
     <div className="space-y-4">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <h3 className="text-lg font-semibold text-[#0F172A] dark:text-[#E8EAED]">
+        <h3 className="text-sm font-black text-text-primary uppercase tracking-tight">
           {sectionTitle}
         </h3>
         <div className="flex items-center gap-2">
@@ -60,17 +60,19 @@ const ResumeSectionEditor = ({
             variant="ghost"
             size="sm"
             onClick={() => setShowCustomComponents(!showCustomComponents)}
+            className="text-[10px] font-black uppercase tracking-widest"
           >
             <Code className="w-4 h-4 mr-2" />
-            Components
+            Add Elements
           </Button>
           {onCancel && (
             <Button
               variant="ghost"
               size="sm"
               onClick={onCancel}
+              className="p-2 rounded-xl"
             >
-              <X className="w-4 h-4" />
+              <X className="w-4 h-4 text-text-muted" />
             </Button>
           )}
         </div>
@@ -85,34 +87,37 @@ const ResumeSectionEditor = ({
             exit={{ height: 0, opacity: 0 }}
             className="overflow-hidden"
           >
-            <div className="p-4 bg-[#F8FAFC] dark:bg-[#1A2139] rounded-lg border border-[#E2E8F0] dark:border-[#1E2640]">
-              <p className="text-sm font-medium text-[#0F172A] dark:text-[#E8EAED] mb-3">
-                Insert Custom Components
+            <div className="p-4 bg-surface rounded-2xl border border-border shadow-sm">
+              <p className="text-[10px] font-black text-text-muted uppercase tracking-widest mb-4">
+                Global Components Injection
               </p>
               <div className="flex flex-wrap gap-2">
                 <Button
                   variant="secondary"
                   size="sm"
                   onClick={insertDate}
+                  className="rounded-xl text-[10px] font-black uppercase tracking-widest"
                 >
                   <Calendar className="w-4 h-4 mr-2" />
-                  Date Range
+                  Temporal Unit
                 </Button>
                 <Button
                   variant="secondary"
                   size="sm"
                   onClick={insertSkill}
+                  className="rounded-xl text-[10px] font-black uppercase tracking-widest"
                 >
                   <Code className="w-4 h-4 mr-2" />
-                  Skill
+                  Competency
                 </Button>
                 <Button
                   variant="secondary"
                   size="sm"
                   onClick={insertAchievement}
+                  className="rounded-xl text-[10px] font-black uppercase tracking-widest"
                 >
                   <Award className="w-4 h-4 mr-2" />
-                  Achievement
+                  Milestone
                 </Button>
               </div>
             </div>
@@ -135,12 +140,12 @@ const ResumeSectionEditor = ({
       {/* Action Buttons */}
       <div className="flex justify-end gap-2">
         {onCancel && (
-          <Button variant="secondary" onClick={onCancel}>
-            Cancel
+          <Button variant="secondary" onClick={onCancel} className="h-11 rounded-xl text-[10px] font-black uppercase tracking-widest">
+            Abort
           </Button>
         )}
-        <Button variant="primary" onClick={handleSave}>
-          Save Section
+        <Button variant="primary" onClick={handleSave} className="h-11 rounded-xl text-[10px] font-black uppercase tracking-widest min-w-[140px]">
+          Commit Section
         </Button>
       </div>
     </div>

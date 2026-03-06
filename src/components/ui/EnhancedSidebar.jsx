@@ -160,13 +160,17 @@ const EnhancedSidebar = ({
                 }
                 if (isMobile) setIsMobileOpen(false);
               }}
-              className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 min-h-[44px] ${
+              className={`flex items-center ${isCollapsed ? 'justify-center px-0' : 'space-x-3 px-4'} py-3 rounded-lg transition-all duration-200 min-h-[44px] ${
                 active
                   ? 'bg-workflow-primary-50 dark:bg-workflow-primary-900/20 text-workflow-primary dark:text-workflow-primary-400 font-semibold'
                   : 'text-[#64748B] dark:text-[#8B92A3] hover:bg-[#F8FAFC] dark:hover:bg-[#1A2139] hover:text-[#0F172A] dark:hover:text-[#E8EAED]'
-              } ${isCollapsed ? 'justify-center' : ''}`}
+              }`}
             >
-              <Icon name={item.icon} size={20} />
+              <Icon 
+                name={item.icon} 
+                size={isCollapsed ? 22 : 20} 
+                className={active ? 'text-workflow-primary' : 'text-slate-400 dark:text-slate-300 group-hover:text-workflow-primary transition-colors'}
+              />
               {!isCollapsed && (
                 <>
                   <span className="text-sm font-medium flex-1">{item.label}</span>

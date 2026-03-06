@@ -1,12 +1,11 @@
-/**
- * Email Service
- * Handles email sending via SendGrid, Mailgun, or AWS SES
- */
-
+import { Resend } from 'resend';
 import logger from '../utils/logger.js';
+import dotenv from 'dotenv';
 
-// TODO: Integrate with email service (SendGrid, Mailgun, or AWS SES)
-// For now, this is a placeholder that logs emails
+dotenv.config();
+
+const resend = new Resend(process.env.RESEND_API_KEY);
+const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'Workflow <noreply@workflow.surf>';
 
 export const emailService = {
   /**
@@ -14,18 +13,28 @@ export const emailService = {
    */
   async send({ to, subject, html, text }) {
     try {
-      // TODO: Implement actual email sending
-      // Example with SendGrid:
-      // const sgMail = require('@sendgrid/mail');
-      // sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-      // await sgMail.send({ to, from: process.env.FROM_EMAIL, subject, html, text });
+      if (!process.env.RESEND_API_KEY) {
+        logger.warn('RESEND_API_KEY not found, skipping email send');
+        return { success: false, error: 'API Key missing' };
+      }
 
-      // For now, just log
-      logger.info('Email sent:', { to, subject });
-      
-      return { success: true, messageId: `mock-${Date.now()}` };
+      const { data, error } = await resend.emails.send({
+        from: FROM_EMAIL,
+        to: Array.isArray(to) ? to : [to],
+        subject: subject,
+        html: html,
+        text: text
+      });
+
+      if (error) {
+        logger.error('Resend error:', error);
+        throw error;
+      }
+
+      logger.info('Email sent successfully via Resend:', { to, subject, id: data.id });
+      return { success: true, messageId: data.id };
     } catch (error) {
-      logger.error('Error sending email:', error);
+      logger.error('Error sending email via Resend:', error);
       throw error;
     }
   },

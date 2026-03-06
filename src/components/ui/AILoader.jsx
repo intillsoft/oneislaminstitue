@@ -1,4 +1,5 @@
 import React from 'react';
+import { BookOpen } from 'lucide-react';
 
 /**
  * Unique AI-themed loader with cutting-edge effects
@@ -25,8 +26,12 @@ const AILoader = ({ size = 'default', text = 'Loading...', variant = 'pulse' }) 
           {/* Middle pulsing ring */}
           <div className={`${sizeClasses[size]} rounded-full border-4 border-workflow-primary/40 absolute animate-pulse`} style={{ animationDelay: '0.2s' }}></div>
           {/* Inner core with gradient */}
-          <div className={`${sizeClasses[size]} rounded-full bg-gradient-to-br from-workflow-primary via-workflow-primary-600 to-workflow-primary-800 relative flex items-center justify-center`}>
-            <div className="w-1/2 h-1/2 rounded-full bg-white/30 animate-pulse"></div>
+          <div className={`${sizeClasses[size]} rounded-full bg-gradient-to-br from-emerald-600 via-emerald-500 to-teal-400 relative flex items-center justify-center shadow-lg shadow-emerald-500/20`}>
+            <BookOpen 
+              size={size === 'small' ? 12 : size === 'large' ? 24 : 18} 
+              className="text-white drop-shadow-sm" 
+              strokeWidth={2.5}
+            />
           </div>
         </div>
         {text && (
@@ -58,8 +63,12 @@ const AILoader = ({ size = 'default', text = 'Loading...', variant = 'pulse' }) 
               ></div>
             ))}
             {/* Center core */}
-            <div className={`${sizeClasses[size]} rounded-full bg-gradient-to-br from-workflow-primary to-workflow-primary-600 absolute top-0 left-0 animate-spin`} style={{ animationDuration: '2s' }}>
-              <div className="w-full h-full rounded-full bg-workflow-primary-900/50"></div>
+            <div className={`${sizeClasses[size]} rounded-full bg-gradient-to-br from-emerald-600 to-teal-500 absolute top-0 left-0 animate-spin flex items-center justify-center`} style={{ animationDuration: '2s' }}>
+              <BookOpen 
+                size={size === 'small' ? 12 : size === 'large' ? 24 : 18} 
+                className="text-white" 
+                strokeWidth={2.5}
+              />
             </div>
           </div>
         </div>
@@ -132,8 +141,12 @@ const AILoader = ({ size = 'default', text = 'Loading...', variant = 'pulse' }) 
               ></div>
             ))}
             {/* Center core */}
-            <div className={`${sizeClasses[size]} rounded-full bg-gradient-to-br from-workflow-primary via-workflow-primary-600 to-workflow-primary-800 absolute top-0 left-0 flex items-center justify-center`}>
-              <div className="w-1/3 h-1/3 rounded-full bg-white/40"></div>
+            <div className={`${sizeClasses[size]} rounded-full bg-gradient-to-br from-emerald-600 via-emerald-500 to-teal-400 absolute top-0 left-0 flex items-center justify-center shadow-lg shadow-emerald-500/20`}>
+              <BookOpen 
+                size={size === 'small' ? 12 : size === 'large' ? 24 : 18} 
+                className="text-white drop-shadow-sm" 
+                strokeWidth={2.5}
+              />
             </div>
           </div>
         </div>

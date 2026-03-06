@@ -1,0 +1,16 @@
+{
+  "data": [
+    {
+      "id": "dceced26-a07f-46aa-8fc6-8bf0541ce20f",
+      "lesson_id": "de5ccd87-86c1-474d-b016-b9f602ffd55e",
+      "type": "text",
+      "content": {
+        "text": "Welcome to Lesson 1. This module explores the deep connection between theory and practice in Islamic scholarship."
+      },
+      "order_index": 1,
+      "created_at": "2026-02-14T22:55:14.988759+00:00",
+      "updated_at": "2026-02-14T22:55:14.988759+00:00"
+    }
+  ],
+  "error": null
+}

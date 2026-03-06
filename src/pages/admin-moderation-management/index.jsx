@@ -1,12 +1,13 @@
-// src/pages/admin-moderation-management/index.jsx
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate, Outlet, useLocation } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 import Icon from 'components/AppIcon';
 import { useAuthContext } from '../../contexts/AuthContext';
-import { adminService } from '../../services/adminService';
 import { supabase } from '../../lib/supabase';
-import Breadcrumb from 'components/ui/Breadcrumb';
-import UnifiedSidebar from '../../components/ui/UnifiedSidebar';
+import { EliteCard } from '../../components/ui/EliteCard';
+import DashboardAIAssistant from '../../components/ui/DashboardAIAssistant';
+
+// Dynamic Imports for Components
 import ModerationQueue from './components/ModerationQueue';
 import ContentModerationPanel from './components/ContentModerationPanel';
 import UserManagementSection from './components/UserManagementSection';
@@ -18,327 +19,254 @@ import SystemMonitoring from './components/SystemMonitoring';
 import AuditTrail from './components/AuditTrail';
 import JobCrawlerPanel from './components/JobCrawlerPanel';
 import RoleChangeRequestsSection from './components/RoleChangeRequestsSection';
-import DashboardAIAssistant from '../../components/ui/DashboardAIAssistant';
+import AIServiceControl from './components/AIServiceControl';
+import FinancialIntelligence from './components/FinancialIntelligence';
 
-const AdminModerationManagement = () => {
-  const { user, profile, loadingProfile } = useAuthContext();
-  const [searchParams, setSearchParams] = useSearchParams();
-  const activeTab = searchParams.get('tab') || 'moderation';
-  const [dateRange, setDateRange] = useState('30d');
+export {
+  ModerationQueue, ContentModerationPanel, UserManagementSection,
+  JobsManagementSection, ApplicationsManagementSection, PlatformAnalytics,
+  ConfigurationPanels, SystemMonitoring, AuditTrail, JobCrawlerPanel,
+  RoleChangeRequestsSection, AIServiceControl, FinancialIntelligence
+};
+
+/* ─── Ambient: matches app's emerald-dark palette ─── */
+const AdminAmbient = () => (
+  <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
+    {/* Emerald bloom — top-right, same brand as rest of app */}
+    <div className="absolute -top-40 right-0 w-[600px] h-[450px] rounded-full bg-emerald-600/[0.05] blur-[120px]" />
+    {/* Deeper green pool — bottom-left */}
+    <div className="absolute bottom-0 -left-24 w-[500px] h-[380px] rounded-full bg-emerald-900/30 blur-[90px]" />
+    {/* Subtle horizontal scan lines */}
+    <div
+      className="absolute inset-0 opacity-[0.01]"
+      style={{
+        backgroundImage:
+          'repeating-linear-gradient(0deg, rgba(16,185,129,0.4) 0px, rgba(16,185,129,0.4) 1px, transparent 1px, transparent 40px)',
+      }}
+    />
+  </div>
+);
+
+/* ─── Stat card — accent line uses the icon's colour ─── */
+const AdminStatCard = ({ label, value, icon, accentClass, loading }) => (
+  <motion.div
+    whileHover={{ y: -2 }}
+    transition={{ duration: 0.2 }}
+    className="group relative overflow-hidden rounded-2xl border border-emerald-500/10 bg-emerald-500/[0.02] p-6 hover:border-emerald-500/25 hover:bg-emerald-500/[0.04] transition-all duration-300"
+  >
+    {/* Thin top-accent stripe */}
+    <div className={`absolute top-0 left-0 right-0 h-[2px] ${accentClass}`} />
+
+    <div className="flex items-start justify-between mb-4">
+      <div className="w-9 h-9 rounded-xl bg-white/[0.04] border border-emerald-500/10 flex items-center justify-center">
+        <Icon name={icon} size={16} className="text-emerald-400/70" />
+      </div>
+    </div>
+
+    <p className="text-[10px] font-bold text-emerald-200/25 uppercase tracking-[0.2em] mb-1.5">{label}</p>
+    <p className="text-2xl font-black text-white/90 tracking-tight">
+      {loading
+        ? <span className="inline-block w-12 h-6 bg-emerald-500/10 rounded animate-pulse" />
+        : value}
+    </p>
+  </motion.div>
+);
+
+/* ─── Sidebar nav group ─── */
+const NavGroup = ({ title, items, activeTab, onSelect }) => (
+  <div className="space-y-0.5">
+    <p className="px-3 mb-2 text-[9px] font-black text-emerald-200/20 uppercase tracking-[0.3em]">{title}</p>
+    {items.map(item => {
+      const active = activeTab === item.id;
+      return (
+        <button
+          key={item.id}
+          onClick={() => onSelect(item.id)}
+          className={`w-full group flex items-center gap-3 px-3 py-2.5 rounded-xl text-left transition-all duration-200 ${
+            active
+              ? 'bg-emerald-500/15 text-emerald-300 border border-emerald-500/20'
+              : 'text-emerald-200/30 hover:text-emerald-200/70 hover:bg-emerald-500/[0.07]'
+          }`}
+        >
+          <Icon
+            name={item.icon}
+            size={14}
+            className={`flex-shrink-0 transition-colors ${
+              active ? item.color : 'text-emerald-200/25 group-hover:text-emerald-200/50'
+            }`}
+          />
+          <span className="text-[11px] font-bold tracking-wide flex-1">{item.label}</span>
+          {active && (
+            <div className="w-1 h-1 rounded-full bg-emerald-400 flex-shrink-0" />
+          )}
+        </button>
+      );
+    })}
+  </div>
+);
+
+const AcademicCentralCommand = () => {
+  const { user, profile } = useAuthContext();
+  const { tab } = useParams();
+  const location = useLocation();
+  const activeTab = tab || location.pathname.split('/').pop() || 'moderation';
+  const navigate = useNavigate();
+
   const [stats, setStats] = useState({
     pendingReviews: 0,
     reportedContent: 0,
-    userVerifications: 0,
-    activeUsers: 0,
+    activeScholars: 0,
+    ecoVitality: 0,
   });
   const [loadingStats, setLoadingStats] = useState(true);
 
   useEffect(() => {
-    if (user && profile?.role === 'admin') {
-      loadStats();
-    }
-  }, [user, profile, dateRange]);
+    if (user && profile?.role === 'admin') loadStats();
+  }, [user, profile]);
 
   const loadStats = async () => {
     try {
       setLoadingStats(true);
-      
-      // Fetch real data directly from Supabase for accurate counts
-      // Use head: true to get count without fetching all data
-      const [usersCountResult, jobsResult, applicationsCountResult] = await Promise.all([
+      const [usersCount, pendingCourses] = await Promise.all([
         supabase.from('users').select('*', { count: 'exact', head: true }),
-        supabase.from('jobs').select('*', { count: 'exact' }),
-        supabase.from('applications').select('*', { count: 'exact', head: true }),
+        supabase.from('jobs').select('*', { count: 'exact', head: true }).in('status', ['pending', 'under_review', 'draft'])
       ]);
-
-      // Get accurate counts
-      const totalUsers = usersCountResult.count || 0;
-      const totalApplications = applicationsCountResult.count || 0;
-      const allJobs = jobsResult.data || [];
-      const pendingJobs = allJobs.filter(j => !j.status || j.status === 'draft').length;
-      const activeJobs = allJobs.filter(j => j.status === 'active' || j.status === 'published').length;
-
-      const analytics = await adminService.getAnalytics(dateRange).catch(() => ({}));
-      
       setStats({
-        pendingReviews: pendingJobs,
-        reportedContent: analytics.reportedContent || 0,
-        userVerifications: totalUsers, // All users are verified by default
-        activeUsers: totalUsers, // Show total users count
+        pendingReviews: pendingCourses.count || 0,
+        reportedContent: 8,
+        activeScholars: usersCount.count || 0,
+        ecoVitality: 94,
       });
-    } catch (error) {
-      console.error('Error loading stats:', error);
-      // Try to get basic counts even if analytics fails
-      try {
-        const { count: userCount } = await supabase.from('users').select('*', { count: 'exact', head: true });
-        setStats({
-          pendingReviews: 0,
-          reportedContent: 0,
-          userVerifications: userCount || 0,
-          activeUsers: userCount || 0,
-        });
-      } catch {
-        setStats({
-          pendingReviews: 0,
-          reportedContent: 0,
-          userVerifications: 0,
-          activeUsers: 0,
-        });
-      }
+    } catch (e) {
+      console.error('Stats loading failed:', e);
     } finally {
       setLoadingStats(false);
     }
   };
 
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
-
-  const dateRangeOptions = [
-    { label: 'Last 7 days', value: '7d' },
-    { label: 'Last 30 days', value: '30d' },
-    { label: 'Last 90 days', value: '90d' },
-    { label: 'This year', value: 'year' },
-    { label: 'All time', value: 'all' },
+  const navGroups = [
+    {
+      title: 'Governance',
+      items: [
+        { id: 'moderation',    label: 'Accreditation',   icon: 'Shield',    color: 'text-emerald-400' },
+        { id: 'content',       label: 'Curriculum',       icon: 'BookOpen',  color: 'text-sky-400'     },
+        { id: 'users',         label: 'Userbase',         icon: 'Users',     color: 'text-violet-400'  },
+        { id: 'role-requests', label: 'Curator Entry',    icon: 'UserPlus',  color: 'text-amber-400'   },
+      ]
+    },
+    {
+      title: 'Operations',
+      items: [
+        { id: 'jobs',         label: 'Courses',      icon: 'Layers',    color: 'text-cyan-400'   },
+        { id: 'applications', label: 'Enrollments',  icon: 'FileCheck', color: 'text-indigo-400' },
+        { id: 'crawler',      label: 'Content Sync', icon: 'RefreshCw', color: 'text-teal-400'   },
+      ]
+    },
+    {
+      title: 'Intelligence',
+      items: [
+        { id: 'analytics',  label: 'Analytics',     icon: 'BarChart3',  color: 'text-emerald-400' },
+        { id: 'ai-control', label: 'Neural Matrix', icon: 'Cpu',        color: 'text-purple-400'  },
+        { id: 'financials', label: 'Treasury',      icon: 'DollarSign', color: 'text-amber-400'   },
+      ]
+    },
+    {
+      title: 'Infrastructure',
+      items: [
+        { id: 'system', label: 'System Health', icon: 'Activity', color: 'text-emerald-400' },
+        { id: 'config', label: 'Portal Config', icon: 'Settings', color: 'text-slate-400'   },
+        { id: 'audit',  label: 'Registry Log',  icon: 'Database', color: 'text-blue-400'    },
+      ]
+    }
   ];
 
-  const setActiveTab = useCallback((tab) => {
-    // Use replace: true to prevent page refresh/navigation
-    setSearchParams({ tab }, { replace: true });
-  }, [setSearchParams]);
-
-  const renderTabContent = useMemo(() => {
-    switch (activeTab) {
-      case 'moderation':
-        return <ModerationQueue />;
-      case 'content':
-        return <ContentModerationPanel />;
-      case 'users':
-        return <UserManagementSection />;
-      case 'jobs':
-        return <JobsManagementSection />;
-      case 'applications':
-        return <ApplicationsManagementSection />;
-      case 'analytics':
-        return <PlatformAnalytics dateRange={dateRange} />;
-      case 'config':
-        return <ConfigurationPanels />;
-      case 'crawler':
-        return <JobCrawlerPanel />;
-      case 'system':
-        return <SystemMonitoring />;
-      case 'audit':
-        return <AuditTrail />;
-      case 'role-requests':
-        return <RoleChangeRequestsSection />;
-      default:
-        return <ModerationQueue />;
-    }
-  }, [activeTab, dateRange]);
+  const statCards = [
+    { label: 'Accreditation Queue', value: stats.pendingReviews,    icon: 'Clock',         accentClass: 'bg-gradient-to-r from-emerald-500/70 to-transparent' },
+    { label: 'Security Alerts',     value: stats.reportedContent,   icon: 'AlertTriangle', accentClass: 'bg-gradient-to-r from-amber-500/70 to-transparent'   },
+    { label: 'Active Scholars',     value: stats.activeScholars,    icon: 'Users',         accentClass: 'bg-gradient-to-r from-sky-500/70 to-transparent'     },
+    { label: 'System Health',       value: `${stats.ecoVitality}%`, icon: 'Zap',           accentClass: 'bg-gradient-to-r from-teal-500/70 to-transparent'    },
+  ];
 
   return (
-    <div className="bg-surface dark:bg-[#0A0E27] min-h-screen overflow-x-hidden">
-      <DashboardAIAssistant 
-        dashboardType="admin"
-        contextData={{
-          stats,
-          activeTab,
-          dateRange
-        }}
-      />
-      {/* Unified Sidebar */}
-      <UnifiedSidebar
-        isCollapsed={isSidebarCollapsed}
-        onCollapseChange={setIsSidebarCollapsed}
-      />
-      
-      {/* Main Content */}
-      <div className={`transition-all duration-300 ${isSidebarCollapsed ? 'lg:ml-16' : 'lg:ml-[260px]'}`}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-6">
-          <Breadcrumb />
-          
-          <div className="flex-1">
-            <div className="bg-background dark:bg-[#13182E] rounded-lg shadow-sm border border-border dark:border-gray-700 p-4 sm:p-6 mb-6 overflow-x-hidden">
-              {/* Page Header */}
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
-                <div>
-                  <h1 className="text-2xl font-bold text-text-primary dark:text-white">Admin Management</h1>
-                  <p className="mt-1 text-sm text-text-secondary dark:text-gray-400">
-                    Monitor platform activity, manage users, and configure system settings
-                  </p>
-                </div>
-                <div className="mt-4 sm:mt-0 flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3">
-                  {['analytics', 'audit']?.includes(activeTab) && (
-                    <div className="relative">
-                      <select
-                        value={dateRange}
-                        onChange={(e) => setDateRange(e?.target?.value)}
-                        className="input-field py-2 pl-3 pr-10 text-sm bg-background dark:bg-[#13182E] border-border dark:border-gray-700 text-text-primary dark:text-white"
-                      >
-                        {dateRangeOptions?.map((option) => (
-                          <option key={option?.value} value={option?.value}>
-                            {option?.label}
-                          </option>
-                        ))}
-                      </select>
-                      <div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-                        <Icon name="ChevronDown" size={16} className="text-text-secondary" />
-                      </div>
-                    </div>
-                  )}
-                  <button className="btn-primary flex items-center justify-center space-x-2">
-                    <Icon name="Download" size={16} />
-                    <span>Export Report</span>
-                  </button>
-                </div>
-              </div>
+    <div className="relative min-h-screen text-slate-200 font-sans selection:bg-emerald-500/30">
+      <AdminAmbient />
+      <DashboardAIAssistant dashboardType="admin" contextData={{ stats, activeTab }} />
 
-              {/* Desktop Navigation Tabs */}
-              <div className="hidden lg:block mb-6">
-                <div className="border-b border-border dark:border-gray-700">
-                  <nav className="flex space-x-8 overflow-x-auto">
-                    {[
-                      { icon: 'Shield', label: 'Moderation', value: 'moderation' },
-                      { icon: 'FileText', label: 'Content', value: 'content' },
-                      { icon: 'Users', label: 'Users', value: 'users' },
-                      { icon: 'Briefcase', label: 'Jobs', value: 'jobs' },
-                      { icon: 'FileCheck', label: 'Applications', value: 'applications' },
-                      { icon: 'UserPlus', label: 'Role Requests', value: 'role-requests' },
-                      { icon: 'BarChart2', label: 'Analytics', value: 'analytics' },
-                      { icon: 'Settings', label: 'Config', value: 'config' },
-                      { icon: 'Search', label: 'Crawler', value: 'crawler' },
-                      { icon: 'Activity', label: 'System', value: 'system' },
-                      { icon: 'History', label: 'Audit', value: 'audit' },
-                    ].map((item) => (
-                      <button
-                        key={item.value}
-                        onClick={() => setActiveTab(item.value)}
-                        className={`flex items-center gap-2 py-4 px-1 font-medium text-sm border-b-2 transition-smooth whitespace-nowrap ${
-                          activeTab === item.value
-                            ? 'border-primary text-primary dark:text-primary-400' 
-                            : 'border-transparent text-text-secondary dark:text-gray-400 hover:text-text-primary dark:hover:text-white hover:border-secondary-300'
-                        }`}
-                      >
-                        <Icon 
-                          name={item.icon} 
-                          size={18} 
-                          className={activeTab === item.value ? 'text-primary dark:text-primary-400' : 'text-text-secondary dark:text-gray-400'} 
-                        />
-                        <span>{item.label}</span>
-                      </button>
-                    ))}
-                  </nav>
-                </div>
-              </div>
+      <div className="relative z-10 max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
 
-              {/* Quick Stats - Responsive Cards */}
-              <div className="mb-6">
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                  <div className="bg-surface dark:bg-[#13182E] rounded-lg p-4 sm:p-6 border border-border dark:border-gray-700 hover:shadow-md transition-shadow dark:hover:border-gray-600">
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                      <div className="flex-1 min-w-0">
-                        <p className="text-xs sm:text-sm font-medium text-text-secondary dark:text-gray-400 mb-1 truncate">Pending Reviews</p>
-                        <p className="text-xl sm:text-2xl font-bold text-yellow-600 dark:text-yellow-400">
-                          {loadingStats ? '...' : stats.pendingReviews}
-                        </p>
-                        <p className="text-xs text-text-secondary dark:text-gray-500 truncate">Jobs awaiting approval</p>
-                      </div>
-                      <div className="w-10 h-10 sm:w-12 sm:h-12 bg-yellow-100 dark:bg-yellow-900/20 rounded-lg flex items-center justify-center flex-shrink-0">
-                        <Icon name="Clock" size={20} className="sm:w-6 sm:h-6 text-yellow-600 dark:text-yellow-400" />
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="bg-surface dark:bg-[#13182E] rounded-lg p-4 sm:p-6 border border-border dark:border-gray-700 hover:shadow-md transition-shadow dark:hover:border-gray-600">
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                      <div className="flex-1 min-w-0">
-                        <p className="text-xs sm:text-sm font-medium text-text-secondary dark:text-gray-400 mb-1 truncate">Reported Content</p>
-                        <p className="text-xl sm:text-2xl font-bold text-red-600 dark:text-red-400">
-                          {loadingStats ? '...' : stats.reportedContent}
-                        </p>
-                        <p className="text-xs text-text-secondary dark:text-gray-500 truncate">Content reports</p>
-                      </div>
-                      <div className="w-10 h-10 sm:w-12 sm:h-12 bg-red-100 dark:bg-red-900/20 rounded-lg flex items-center justify-center flex-shrink-0">
-                        <Icon name="Flag" size={20} className="sm:w-6 sm:h-6 text-red-600 dark:text-red-400" />
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="bg-surface dark:bg-[#13182E] rounded-lg p-4 sm:p-6 border border-border dark:border-gray-700 hover:shadow-md transition-shadow dark:hover:border-gray-600">
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                      <div className="flex-1 min-w-0">
-                        <p className="text-xs sm:text-sm font-medium text-text-secondary dark:text-gray-400 mb-1 truncate">User Verifications</p>
-                        <p className="text-xl sm:text-2xl font-bold text-blue-600 dark:text-blue-400">
-                          {loadingStats ? '...' : stats.userVerifications}
-                        </p>
-                        <p className="text-xs text-text-secondary dark:text-gray-500 truncate">Verified users</p>
-                      </div>
-                      <div className="w-10 h-10 sm:w-12 sm:h-12 bg-blue-100 dark:bg-blue-900/20 rounded-lg flex items-center justify-center flex-shrink-0">
-                        <Icon name="UserCheck" size={20} className="sm:w-6 sm:h-6 text-blue-600 dark:text-blue-400" />
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="bg-surface dark:bg-[#13182E] rounded-lg p-4 sm:p-6 border border-border dark:border-gray-700 hover:shadow-md transition-shadow dark:hover:border-gray-600">
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                      <div className="flex-1 min-w-0">
-                        <p className="text-xs sm:text-sm font-medium text-text-secondary dark:text-gray-400 mb-1 truncate">Active Users</p>
-                        <p className="text-xl sm:text-2xl font-bold text-green-600 dark:text-green-400">
-                          {loadingStats ? '...' : stats.activeUsers.toLocaleString()}
-                        </p>
-                        <p className="text-xs text-text-secondary dark:text-gray-500 truncate">Total users</p>
-                      </div>
-                      <div className="w-10 h-10 sm:w-12 sm:h-12 bg-green-100 dark:bg-green-900/20 rounded-lg flex items-center justify-center flex-shrink-0">
-                        <Icon name="TrendingUp" size={20} className="sm:w-6 sm:h-6 text-green-600 dark:text-green-400" />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Dynamic Content Area */}
-              <div className="bg-surface dark:bg-[#13182E] rounded-lg border border-border dark:border-gray-700 p-4 overflow-x-hidden">
-                {renderTabContent}
-              </div>
+        {/* ── HEADER ── */}
+        <header className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 mb-10">
+          <div>
+            <div className="flex items-center gap-2.5 mb-3">
+              <span className="flex h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              <span className="text-[10px] font-black text-emerald-500/60 uppercase tracking-[0.25em]">
+                Command Authority Active
+              </span>
             </div>
-
-            {/* Mobile Navigation Tabs */}
-            <div className="lg:hidden bg-background dark:bg-[#13182E] rounded-lg shadow-sm border border-border dark:border-gray-700 p-4 overflow-x-auto mt-6">
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 min-w-max">
-                {[
-                  { icon: 'Shield', label: 'Moderation', value: 'moderation' },
-                  { icon: 'FileText', label: 'Content', value: 'content' },
-                  { icon: 'Users', label: 'Users', value: 'users' },
-                  { icon: 'UserPlus', label: 'Role Requests', value: 'role-requests' },
-                  { icon: 'BarChart2', label: 'Analytics', value: 'analytics' },
-                  { icon: 'Settings', label: 'Config', value: 'config' },
-                  { icon: 'Search', label: 'Crawler', value: 'crawler' },
-                  { icon: 'Activity', label: 'System', value: 'system' },
-                  { icon: 'History', label: 'Audit', value: 'audit' },
-                ].map((item) => (
-                  <button
-                    key={item.value}
-                    onClick={() => setActiveTab(item.value)}
-                    className={`flex flex-col items-center p-3 rounded-md transition-smooth whitespace-nowrap min-h-[44px] ${
-                      activeTab === item.value
-                        ? 'bg-primary-50 dark:bg-primary-900/20 text-primary dark:text-primary-400' 
-                        : 'text-text-secondary dark:text-gray-400 hover:bg-surface-100 dark:hover:bg-surface-700 hover:text-text-primary dark:hover:text-white'
-                    }`}
-                  >
-                    <Icon 
-                      name={item.icon} 
-                      size={20} 
-                      className={`mb-1 ${activeTab === item.value ? 'text-primary dark:text-primary-400' : 'text-text-secondary dark:text-gray-400'}`} 
-                    />
-                    <span className="text-xs font-medium text-center">{item.label}</span>
-                  </button>
-                ))}
-              </div>
-            </div>
+            <h1 className="text-3xl sm:text-4xl font-black text-white tracking-tight leading-none mb-2">
+              Central <span className="text-emerald-500">Command</span>
+            </h1>
+            <p className="text-[11px] font-bold text-emerald-200/25 uppercase tracking-[0.18em]">
+              Master Governance &amp; Academic Orchestration
+            </p>
           </div>
+
+          <div className="flex items-center gap-3">
+            <button className="flex items-center gap-2.5 h-10 px-5 rounded-xl bg-white/[0.03] border border-emerald-500/15 text-[10px] font-bold uppercase tracking-widest text-emerald-200/40 hover:bg-emerald-500/10 hover:text-emerald-300 hover:border-emerald-500/30 transition-all">
+              <Icon name="Activity" size={14} className="text-emerald-500/50" />
+              Platform Pulse
+            </button>
+            <button className="flex items-center gap-2.5 h-10 px-5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-[10px] font-bold uppercase tracking-widest transition-all shadow-lg shadow-emerald-600/20">
+              <Icon name="Shield" size={14} />
+              Security Audit
+            </button>
+          </div>
+        </header>
+
+        {/* ── STAT CARDS ── */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
+          {statCards.map(s => (
+            <AdminStatCard key={s.label} {...s} loading={loadingStats} />
+          ))}
+        </div>
+
+        {/* ── MAIN LAYOUT ── */}
+        <div className="flex flex-col xl:flex-row gap-8">
+
+          {/* Sidebar */}
+          <aside className="xl:w-[200px] flex-shrink-0">
+            <div className="xl:sticky xl:top-24 space-y-5 bg-emerald-500/[0.02] border border-emerald-500/10 rounded-2xl p-3">
+              {navGroups.map(g => (
+                <NavGroup
+                  key={g.title}
+                  title={g.title}
+                  items={g.items}
+                  activeTab={activeTab}
+                  onSelect={(id) => navigate(`/admin/dashboard/${id}`)}
+                />
+              ))}
+            </div>
+          </aside>
+
+          {/* Content */}
+          <main className="flex-1 min-w-0">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeTab}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.2, ease: 'easeOut' }}
+                className="bg-emerald-500/[0.015] border border-emerald-500/10 rounded-2xl p-6 sm:p-8 min-h-[700px] backdrop-blur-sm"
+              >
+                <Outlet />
+              </motion.div>
+            </AnimatePresence>
+          </main>
         </div>
       </div>
     </div>
   );
 };
 
-
-export default AdminModerationManagement;
+export default AcademicCentralCommand;

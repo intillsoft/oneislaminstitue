@@ -22,99 +22,87 @@ const Pricing = () => {
   const tiers = [
     {
       id: 'free',
-      name: 'Free',
+      name: 'Foundational',
       icon: Rocket,
-      gradient: 'from-gray-500 to-gray-600',
+      gradient: 'from-slate-500 to-slate-600',
       price: 0,
       priceAnnual: 0,
-      description: 'Perfect for getting started',
+      description: 'Start your journey with essential knowledge',
       features: [
-        { text: '1 Resume', included: true },
-        { text: '10 Applications/month', included: true },
-        { text: '20 Saved Jobs', included: true },
-        { text: 'Basic Application Tracking', included: true },
-        { text: 'AI Job Matching', included: false },
-        { text: 'Advanced Search', included: false },
-        { text: 'Email Alerts', included: false },
-        { text: 'Priority Support', included: false },
-        { text: 'API Access', included: false },
-        { text: 'Unlimited Resumes', included: false },
+        { text: 'Access to Public Lectures', included: true },
+        { text: 'Foundational E-books', included: true },
+        { text: 'Student Community Access', included: true },
+        { text: 'Basic Progress Tracking', included: true },
+        { text: 'AI Study Assistant', included: false },
+        { text: 'Certification of Completion', included: false },
+        { text: '1-on-1 Scholar Support', included: false },
       ],
-      cta: 'Get Started',
+      cta: 'Begin Learning',
       popular: false,
       badge: null,
     },
     {
-      id: 'basic',
-      name: 'Basic',
+      id: 'professional',
+      name: 'Intensive',
       icon: Zap,
-      gradient: 'from-blue-500 to-blue-600',
-      price: 4.99,
-      priceAnnual: 49.99,
-      description: 'For serious job seekers',
+      gradient: 'from-emerald-500 to-emerald-600',
+      price: 19.99,
+      priceAnnual: 199.99,
+      description: 'Deep dive into specialized subjects',
       features: [
-        { text: '3 Resumes', included: true },
-        { text: '50 Applications/month', included: true },
-        { text: '100 Saved Jobs', included: true },
-        { text: 'Application Tracking', included: true },
-        { text: 'AI Job Matching', included: true },
-        { text: 'Advanced Search', included: true },
-        { text: 'Email Alerts', included: true },
-        { text: 'Priority Support', included: false },
-        { text: 'API Access', included: false },
-        { text: 'Unlimited Resumes', included: false },
+        { text: 'All Foundational Content', included: true },
+        { text: 'Live Weekly Seminars', included: true },
+        { text: 'Advanced Course Materials', included: true },
+        { text: 'Graded Assignments', included: true },
+        { text: 'AI Study Assistant', included: true },
+        { text: 'Verified Certifications', included: true },
+        { text: 'Group Mentorship', included: true },
       ],
-      cta: 'Start Free Trial',
+      cta: 'Enroll Now',
       popular: true,
       badge: 'Most Popular',
     },
     {
       id: 'premium',
-      name: 'Premium',
+      name: 'Elite',
       icon: Sparkles,
-      gradient: 'from-purple-500 to-pink-500',
-      price: 9.99,
-      priceAnnual: 99.99,
-      description: 'For power users',
+      gradient: 'from-emerald-600 to-emerald-700',
+      price: 39.99,
+      priceAnnual: 399.99,
+      description: 'The complete academic experience',
       features: [
-        { text: '10 Resumes', included: true },
-        { text: '200 Applications/month', included: true },
-        { text: '500 Saved Jobs', included: true },
-        { text: 'Application Tracking', included: true },
-        { text: 'AI Job Matching', included: true },
-        { text: 'Advanced Search', included: true },
-        { text: 'Email Alerts', included: true },
-        { text: 'Priority Support', included: true },
-        { text: 'API Access', included: false },
-        { text: 'Unlimited Resumes', included: false },
+        { text: 'All Intensive Content', included: true },
+        { text: 'Priority Seminar Seating', included: true },
+        { text: 'Archived Course Access', included: true },
+        { text: 'Research Paper Guidance', included: true },
+        { text: 'Advanced Research Assistant', included: true },
+        { text: '1-on-1 Mentorship Sessions', included: true },
+        { text: 'Lifetime Access to Alumni', included: true },
       ],
-      cta: 'Start Free Trial',
+      cta: 'Go Intensive',
       popular: false,
-      badge: 'Best Value',
+      badge: 'Elite',
     },
     {
-      id: 'pro',
-      name: 'Pro',
+      id: 'recruiter',
+      name: 'Instructor',
       icon: Crown,
-      gradient: 'from-yellow-500 via-orange-500 to-red-500',
-      price: 19.99,
-      priceAnnual: 199.99,
-      description: 'For professionals and teams',
+      gradient: 'from-slate-800 to-slate-900',
+      price: 89.99,
+      priceAnnual: 899.99,
+      description: 'Tools for educators and researchers',
       features: [
-        { text: 'Unlimited Resumes', included: true },
-        { text: 'Unlimited Applications', included: true },
-        { text: 'Unlimited Saved Jobs', included: true },
-        { text: 'Application Tracking', included: true },
-        { text: 'AI Job Matching', included: true },
-        { text: 'Advanced Search', included: true },
-        { text: 'Email Alerts', included: true },
-        { text: 'Priority Support', included: true },
-        { text: 'API Access', included: true },
-        { text: 'All Features', included: true },
+        { text: 'Course Creation Tools', included: true },
+        { text: 'Student Analytics Dashboard', included: true },
+        { text: 'Institutional Branding', included: true },
+        { text: 'Broadcast Capabilities', included: true },
+        { text: 'Revenue Management', included: true },
+        { text: 'Advanced Moderation', included: true },
+        { text: 'Dedicated Success Manager', included: true },
       ],
-      cta: 'Start Free Trial',
+      cta: 'Join Curator Team',
       popular: false,
-      badge: 'Enterprise',
+      badge: 'Curator Team',
     },
   ];
 
@@ -135,9 +123,9 @@ const Pricing = () => {
 
     setLoading(true);
     try {
-      const response = await apiService.subscriptions.createCheckout(tierId);
-      if (response.url) {
-        window.location.href = response.url;
+      const { data } = await apiService.subscriptions.createCheckout(tierId);
+      if (data?.url) {
+        window.location.href = data.url;
       } else {
         showError('Failed to create checkout session');
       }
@@ -157,10 +145,10 @@ const Pricing = () => {
   return (
     <>
       <Helmet>
-        <title>Pricing - Workflow</title>
-        <meta name="description" content="Choose the perfect plan for your job search journey" />
+        <title>Academic Plans - One Islam Institute</title>
+        <meta name="description" content="Choose the perfect study plan for your Islamic learning journey" />
       </Helmet>
-      <div className="min-h-screen bg-gradient-to-b from-background via-surface-50 to-background dark:from-[#0A0E27] dark:via-[#13182E] dark:to-[#0A0E27] pt-16">
+      <div className="min-h-screen bg-slate-50 dark:bg-[#0A1120] pt-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <Breadcrumb customItems={breadcrumbItems} />
 
@@ -176,16 +164,16 @@ const Pricing = () => {
               transition={{ delay: 0.2 }}
               className="inline-block mb-3"
             >
-              <span className="inline-flex items-center gap-2 px-4 py-2 bg-workflow-primary/10 dark:bg-workflow-primary/20 text-workflow-primary rounded-full text-sm font-medium">
+              <span className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-500/10 text-emerald-600 rounded-full text-sm font-medium">
                 <Star className="w-4 h-4" />
-                Trusted by thousands of job seekers
+                Trusted by 10,000+ students worldwide
               </span>
             </motion.div>
-            <h1 className="text-4xl md:text-5xl font-bold text-workflow-primary mb-4">
-              Simple, Transparent Pricing
+            <h1 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-4">
+              Flexible Study Plans
             </h1>
-            <p className="text-lg md:text-xl text-text-secondary dark:text-[#8B92A3] mb-6 max-w-2xl mx-auto">
-              Choose the plan that's right for you. All plans include a <span className="font-semibold text-workflow-primary">14-day free trial</span>.
+            <p className="text-lg md:text-xl text-slate-600 dark:text-slate-400 mb-6 max-w-2xl mx-auto">
+              Choose the depth of study that fits your schedule. All plans support our <span className="font-semibold text-emerald-600">Global Scholarship Fund</span>.
             </p>
 
             {/* Enhanced Billing Toggle */}
@@ -195,12 +183,12 @@ const Pricing = () => {
               transition={{ delay: 0.3 }}
               className="flex items-center justify-center gap-4 mb-8"
             >
-              <span className={`text-base font-semibold transition-colors ${billingCycle === 'monthly' ? 'text-text-primary dark:text-[#E8EAED]' : 'text-text-secondary dark:text-[#8B92A3]'}`}>
+              <span className={`text-base font-semibold transition-colors ${billingCycle === 'monthly' ? 'text-text-primary dark:text-white' : 'text-text-secondary dark:text-slate-500'}`}>
                 Monthly
               </span>
               <button
                 onClick={() => setBillingCycle(billingCycle === 'monthly' ? 'annual' : 'monthly')}
-                className="relative inline-flex h-7 w-14 items-center rounded-full bg-workflow-primary transition-colors focus:outline-none focus:ring-2 focus:ring-workflow-primary focus:ring-offset-2 shadow-lg"
+                className="relative inline-flex h-7 w-14 items-center rounded-full bg-emerald-600 transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 shadow-lg"
               >
                 <motion.span
                   layout
@@ -211,14 +199,14 @@ const Pricing = () => {
                   transition={{ type: 'spring', stiffness: 500, damping: 30 }}
                 />
               </button>
-              <span className={`text-base font-semibold transition-colors ${billingCycle === 'annual' ? 'text-text-primary dark:text-[#E8EAED]' : 'text-text-secondary dark:text-[#8B92A3]'}`}>
+              <span className={`text-base font-semibold transition-colors ${billingCycle === 'annual' ? 'text-text-primary dark:text-white' : 'text-text-secondary dark:text-slate-500'}`}>
                 Annual
                 <motion.span
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
-                  className="ml-2 inline-block px-2 py-0.5 bg-workflow-primary text-white rounded-full text-xs font-bold"
+                  className="ml-2 inline-block px-2 py-0.5 bg-emerald-600 text-white rounded-full text-xs font-bold"
                 >
-                  Save 17%
+                  Save 15%
                 </motion.span>
               </span>
             </motion.div>
@@ -229,7 +217,7 @@ const Pricing = () => {
             {tiers.map((tier, index) => {
               const IconComponent = tier.icon;
               const price = billingCycle === 'annual' ? tier.priceAnnual : tier.price;
-              const savings = billingCycle === 'annual' && tier.price > 0 
+              const savings = billingCycle === 'annual' && tier.price > 0
                 ? Math.round(((tier.price * 12 - tier.priceAnnual) / (tier.price * 12)) * 100)
                 : 0;
 
@@ -241,68 +229,66 @@ const Pricing = () => {
                   transition={{ delay: index * 0.1 }}
                   onHoverStart={() => setHoveredTier(tier.id)}
                   onHoverEnd={() => setHoveredTier(null)}
-                  className={`relative group ${
-                    tier.popular
-                      ? 'md:scale-105 lg:scale-110'
-                      : ''
-                  }`}
-                >
-                  {/* Badge - Positioned outside card to prevent clipping */}
-                  {tier.badge && (
-                    <motion.div
-                      initial={{ scale: 0, rotate: -180 }}
-                      animate={{ scale: 1, rotate: 0 }}
-                      transition={{ delay: 0.2 + index * 0.1 }}
-                      className="absolute -top-5 left-1/2 transform -translate-x-1/2 z-20"
-                    >
-                      <span className="inline-flex items-center gap-1 px-4 py-1.5 rounded-full text-sm font-bold text-white shadow-lg bg-workflow-primary">
-                        {tier.badge === 'Most Popular' && <TrendingUp className="w-4 h-4" />}
-                        {tier.badge === 'Best Value' && <Star className="w-4 h-4" />}
-                        {tier.badge === 'Enterprise' && <Shield className="w-4 h-4" />}
-                        {tier.badge}
-                      </span>
-                    </motion.div>
-                  )}
-
-                  <motion.div
-                    whileHover={{ y: -8, scale: 1.02 }}
-                    className={`relative bg-white dark:bg-[#13182E] rounded-2xl shadow-xl border-2 overflow-visible transition-all duration-300 pt-6 ${
-                      tier.popular
-                        ? 'border-workflow-primary shadow-2xl shadow-workflow-primary/20'
-                        : hoveredTier === tier.id
-                        ? 'border-workflow-primary/50 shadow-2xl'
-                        : 'border-[#E2E8F0] dark:border-[#1E2640]'
+                    className={`relative group ${tier.popular
+                    ? 'md:scale-105 lg:scale-110'
+                    : ''
                     }`}
                   >
-                    {/* Gradient Background - Only blue */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-workflow-primary/5 to-workflow-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl"></div>
+                    {/* Badge - Positioned outside card to prevent clipping */}
+                    {tier.badge && (
+                      <motion.div
+                        initial={{ scale: 0, rotate: -180 }}
+                        animate={{ scale: 1, rotate: 0 }}
+                        transition={{ delay: 0.2 + index * 0.1 }}
+                        className="absolute -top-5 left-1/2 transform -translate-x-1/2 z-20"
+                      >
+                        <span className="inline-flex items-center gap-1 px-4 py-1.5 rounded-full text-sm font-bold text-white shadow-lg bg-emerald-600">
+                          {tier.popular && <TrendingUp className="w-4 h-4" />}
+                          {tier.id === 'premium' && <Star className="w-4 h-4" />}
+                          {tier.id === 'pro' && <Shield className="w-4 h-4" />}
+                          {tier.badge}
+                        </span>
+                      </motion.div>
+                    )}
+
+                    <motion.div
+                      whileHover={{ y: -8, scale: 1.02 }}
+                      className={`relative bg-white dark:bg-slate-900 rounded-2xl shadow-xl border-2 overflow-visible transition-all duration-300 pt-6 ${tier.popular
+                        ? 'border-emerald-600 shadow-2xl shadow-emerald-600/20'
+                        : hoveredTier === tier.id
+                          ? 'border-emerald-500/50 shadow-2xl'
+                          : 'border-slate-200 dark:border-slate-800'
+                        }`}
+                    >
+                    {/* Gradient Background - Only emerald */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-emerald-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl"></div>
 
                     <div className="p-8 relative z-10">
-                      {/* Icon - Blue only */}
+                      {/* Icon - Emerald only */}
                       <motion.div
                         whileHover={{ rotate: 360, scale: 1.1 }}
                         transition={{ duration: 0.5 }}
-                        className="w-16 h-16 rounded-2xl bg-gradient-to-br from-workflow-primary to-workflow-primary-600 flex items-center justify-center mb-6 shadow-lg"
+                        className="w-16 h-16 rounded-2xl bg-emerald-600 flex items-center justify-center mb-6 shadow-lg shadow-emerald-600/20"
                       >
                         <IconComponent className="w-8 h-8 text-white" />
                       </motion.div>
 
                       {/* Tier Name & Description */}
-                      <h3 className="text-2xl font-bold text-text-primary dark:text-[#E8EAED] mb-2">
+                      <h3 className="text-2xl font-bold text-text-primary dark:text-white mb-2">
                         {tier.name}
                       </h3>
-                      <p className="text-sm text-text-secondary dark:text-[#8B92A3] mb-6">
+                      <p className="text-sm text-text-secondary dark:text-text-muted mb-6">
                         {tier.description}
                       </p>
 
                       {/* Price */}
                       <div className="mb-6">
                         <div className="flex items-baseline">
-                          <span className="text-5xl font-bold text-text-primary dark:text-[#E8EAED]">
+                          <span className="text-5xl font-bold text-text-primary dark:text-white">
                             ${price}
                           </span>
                           {tier.price > 0 && (
-                            <span className="text-text-secondary dark:text-[#8B92A3] ml-2 text-lg">
+                            <span className="text-text-secondary dark:text-slate-400 ml-2 text-lg">
                               /{billingCycle === 'annual' ? 'year' : 'month'}
                             </span>
                           )}
@@ -325,11 +311,10 @@ const Pricing = () => {
                           onClick={() => handleSelectPlan(tier.id)}
                           disabled={loading}
                           variant={tier.popular ? 'primary' : 'outline'}
-                          className={`w-full mb-6 font-semibold ${
-                            tier.popular
-                              ? 'bg-gradient-to-r from-workflow-primary to-workflow-primary-600 shadow-lg shadow-workflow-primary/30'
-                              : ''
-                          }`}
+                          className={`w-full mb-6 font-semibold ${tier.popular
+                            ? 'bg-workflow-primary text-white shadow-primary-glow'
+                            : ''
+                            }`}
                         >
                           {loading ? (
                             <span className="flex items-center gap-2">
@@ -367,14 +352,13 @@ const Pricing = () => {
                                 <Check className="w-5 h-5 text-green-500 dark:text-green-400 mr-3 flex-shrink-0 mt-0.5" />
                               </motion.div>
                             ) : (
-                              <X className="w-5 h-5 text-[#CBD5E1] dark:text-[#475569] mr-3 flex-shrink-0 mt-0.5" />
+                              <X className="w-5 h-5 text-text-muted dark:text-slate-600 mr-3 flex-shrink-0 mt-0.5" />
                             )}
                             <span
-                              className={`text-sm ${
-                                feature.included
-                                  ? 'text-text-primary dark:text-[#E8EAED] font-medium'
-                                  : 'text-[#94A3B8] dark:text-[#64748B] line-through'
-                              }`}
+                              className={`text-sm ${feature.included
+                                ? 'text-text-primary dark:text-white font-medium'
+                                : 'text-text-muted dark:text-slate-500 line-through'
+                                }`}
                             >
                               {feature.text}
                             </span>
@@ -393,72 +377,72 @@ const Pricing = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
-            className="bg-white dark:bg-[#13182E] rounded-2xl shadow-xl border border-[#E2E8F0] dark:border-[#1E2640] p-8 mb-16 overflow-hidden"
+            className="bg-surface rounded-2xl shadow-xl border border-border dark:border-white/10 p-8 mb-16 overflow-hidden"
           >
             <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold text-text-primary dark:text-[#E8EAED] mb-2">
+              <h2 className="text-3xl font-bold text-text-primary dark:text-white mb-2">
                 Feature Comparison
               </h2>
-              <p className="text-text-secondary dark:text-[#8B92A3]">
+              <p className="text-text-secondary dark:text-slate-400">
                 Compare all features across our plans
               </p>
             </div>
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="border-b-2 border-[#E2E8F0] dark:border-[#1E2640]">
-                    <th className="text-left py-4 px-6 font-bold text-text-primary dark:text-[#E8EAED]">Feature</th>
-                    <th className="text-center py-4 px-6 font-bold text-text-primary dark:text-[#E8EAED]">Free</th>
-                    <th className="text-center py-4 px-6 font-bold text-workflow-primary">Basic</th>
-                    <th className="text-center py-4 px-6 font-bold text-workflow-primary">Premium</th>
-                    <th className="text-center py-4 px-6 font-bold text-workflow-primary">Pro</th>
+                  <tr className="border-b-2 border-border dark:border-white/10">
+                    <th className="text-left py-4 px-6 font-bold text-text-primary dark:text-white">Academic Feature</th>
+                    <th className="text-center py-4 px-6 font-bold text-text-primary dark:text-white">Foundational</th>
+                    <th className="text-center py-4 px-6 font-bold text-emerald-600">Intensive</th>
+                    <th className="text-center py-4 px-6 font-bold text-emerald-600">Scholar</th>
+                    <th className="text-center py-4 px-6 font-bold text-emerald-600">Instructor</th>
                   </tr>
                 </thead>
                 <tbody>
                   {[
-                    { feature: 'Resumes', free: '1', basic: '3', premium: '10', pro: 'Unlimited' },
-                    { feature: 'Applications/month', free: '10', basic: '50', premium: '200', pro: 'Unlimited' },
-                    { feature: 'Saved Jobs', free: '20', basic: '100', premium: '500', pro: 'Unlimited' },
-                    { feature: 'AI Job Matching', free: false, basic: true, premium: true, pro: true },
-                    { feature: 'Advanced Search', free: false, basic: true, premium: true, pro: true },
-                    { feature: 'Email Alerts', free: false, basic: true, premium: true, pro: true },
-                    { feature: 'Priority Support', free: false, basic: false, premium: true, pro: true },
-                    { feature: 'API Access', free: false, basic: false, premium: false, pro: true },
+                    { feature: 'Course Access', free: 'Public Only', basic: 'Advanced', premium: 'Full Library', pro: 'Curator Team Access' },
+                    { feature: 'AI Study Assistant', free: false, basic: 'Standard', premium: 'Research Grade', pro: 'Full Access' },
+                    { feature: 'Certifications', free: 'Digital', basic: 'Verified', premium: 'Accredited', pro: 'Issuer Status' },
+                    { feature: 'Live Seminars', free: false, basic: true, premium: true, pro: true },
+                    { feature: 'Mentorship Sessions', free: false, basic: false, premium: true, pro: true },
+                    { feature: 'Research Tools', free: false, basic: false, premium: true, pro: true },
+                    { feature: 'Course Creation', free: false, basic: false, premium: false, pro: true },
+                    { feature: 'Priority Support', free: false, basic: true, premium: true, pro: true },
                   ].map((row, index) => (
                     <motion.tr
                       key={index}
                       initial={{ opacity: 0, x: -10 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: 0.6 + index * 0.05 }}
-                      className="border-b border-[#E2E8F0] dark:border-[#1E2640] hover:bg-surface-50 dark:hover:bg-[#1A2139] transition-colors"
+                      className="border-b border-border dark:border-white/5 hover:bg-slate-50 dark:hover:bg-white/[0.02] transition-colors"
                     >
-                      <td className="py-4 px-6 text-text-primary dark:text-[#E8EAED] font-semibold">{row.feature}</td>
+                      <td className="py-4 px-6 text-text-primary dark:text-white font-semibold">{row.feature}</td>
                       <td className="py-4 px-6 text-center">
                         {typeof row.free === 'boolean' ? (
-                          row.free ? <Check className="w-5 h-5 text-workflow-primary mx-auto" /> : <X className="w-5 h-5 text-[#CBD5E1] dark:text-[#475569] mx-auto" />
+                          row.free ? <Check className="w-5 h-5 text-emerald-600 mx-auto" /> : <X className="w-5 h-5 text-text-muted dark:text-slate-600 mx-auto" />
                         ) : (
-                          <span className="text-text-primary dark:text-[#E8EAED] font-medium">{row.free}</span>
+                          <span className="text-text-primary dark:text-white font-medium">{row.free}</span>
                         )}
                       </td>
                       <td className="py-4 px-6 text-center">
                         {typeof row.basic === 'boolean' ? (
-                          row.basic ? <Check className="w-5 h-5 text-workflow-primary mx-auto" /> : <X className="w-5 h-5 text-[#CBD5E1] dark:text-[#475569] mx-auto" />
+                          row.basic ? <Check className="w-5 h-5 text-emerald-600 mx-auto" /> : <X className="w-5 h-5 text-text-muted dark:text-slate-600 mx-auto" />
                         ) : (
-                          <span className="text-workflow-primary font-semibold">{row.basic}</span>
+                          <span className="text-emerald-600 font-semibold">{row.basic}</span>
                         )}
                       </td>
                       <td className="py-4 px-6 text-center">
                         {typeof row.premium === 'boolean' ? (
-                          row.premium ? <Check className="w-5 h-5 text-workflow-primary mx-auto" /> : <X className="w-5 h-5 text-[#CBD5E1] dark:text-[#475569] mx-auto" />
+                          row.premium ? <Check className="w-5 h-5 text-emerald-600 mx-auto" /> : <X className="w-5 h-5 text-text-muted dark:text-slate-600 mx-auto" />
                         ) : (
-                          <span className="text-workflow-primary font-semibold">{row.premium}</span>
+                          <span className="text-emerald-600 font-semibold">{row.premium}</span>
                         )}
                       </td>
                       <td className="py-4 px-6 text-center">
                         {typeof row.pro === 'boolean' ? (
-                          row.pro ? <Check className="w-5 h-5 text-workflow-primary mx-auto" /> : <X className="w-5 h-5 text-[#CBD5E1] dark:text-[#475569] mx-auto" />
+                          row.pro ? <Check className="w-5 h-5 text-emerald-600 mx-auto" /> : <X className="w-5 h-5 text-text-muted dark:text-slate-600 mx-auto" />
                         ) : (
-                          <span className="text-workflow-primary font-semibold">{row.pro}</span>
+                          <span className="text-emerald-600 font-semibold">{row.pro}</span>
                         )}
                       </td>
                     </motion.tr>
@@ -476,38 +460,38 @@ const Pricing = () => {
             className="mb-12"
           >
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold text-text-primary dark:text-[#E8EAED] mb-2">
+              <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-2">
                 Frequently Asked Questions
               </h2>
-              <p className="text-text-secondary dark:text-[#8B92A3]">
-                Everything you need to know about our pricing
+              <p className="text-slate-600 dark:text-slate-400">
+                Everything you need to know about our academic plans
               </p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {[
                 {
-                  q: 'Can I change plans later?',
-                  a: 'Yes! You can upgrade or downgrade your plan at any time. Changes take effect immediately.',
+                  q: 'Can I change plans mid-semester?',
+                  a: 'Yes! You can upgrade your plan at any time to access more advanced courses. Your current balance will be prorated.',
                 },
                 {
-                  q: 'What payment methods do you accept?',
-                  a: 'We accept all major credit cards, debit cards, and PayPal through our secure Stripe payment processor.',
+                  q: 'Are the certifications accredited?',
+                  a: 'Our certifications are verified by the One Islam Institute curation panel and are recognized for their academic rigour.',
                 },
                 {
-                  q: 'Is there a free trial?',
-                  a: 'Yes! All paid plans include a 14-day free trial. No credit card required to start.',
+                  q: 'Is there a trial period?',
+                  a: 'Yes! All plans start with a 14-day discovery period. You can explore our foundational content before committing.',
                 },
                 {
                   q: 'Can I cancel anytime?',
-                  a: 'Absolutely. You can cancel your subscription at any time. You\'ll continue to have access until the end of your billing period.',
+                  a: 'Absolutely. We believe in voluntary learning. You can cancel your subscription at the end of any billing cycle.',
                 },
                 {
-                  q: 'What happens if I exceed my limits?',
-                  a: 'You\'ll receive a notification when you\'re approaching your limits. You can upgrade your plan or wait until the next billing cycle.',
+                  q: 'How does the Elite plan work?',
+                  a: 'The Elite plan provides direct access to our mentorship network, including 1-on-1 sessions and research guidance.',
                 },
                 {
-                  q: 'Do you offer refunds?',
-                  a: 'We offer a 30-day money-back guarantee. If you\'re not satisfied, contact us for a full refund.',
+                  q: 'Do you offer group discounts?',
+                  a: 'Yes, we have specialized plans for families and religious institutions. Contact our help desk for more information.',
                 },
               ].map((faq, index) => (
                 <motion.div
@@ -516,13 +500,13 @@ const Pricing = () => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.8 + index * 0.1 }}
                   whileHover={{ y: -4, scale: 1.02 }}
-                  className="bg-white dark:bg-[#13182E] rounded-xl border border-[#E2E8F0] dark:border-[#1E2640] p-6 shadow-lg hover:shadow-xl transition-all"
+                  className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-6 shadow-lg hover:shadow-xl transition-all"
                 >
-                  <h3 className="font-bold text-lg text-text-primary dark:text-[#E8EAED] mb-3 flex items-center gap-2">
-                    <Sparkles className="w-5 h-5 text-workflow-primary" />
+                  <h3 className="font-bold text-lg text-slate-900 dark:text-white mb-3 flex items-center gap-2">
+                    <Sparkles className="w-5 h-5 text-emerald-600" />
                     {faq.q}
                   </h3>
-                  <p className="text-sm text-text-secondary dark:text-[#8B92A3] leading-relaxed mb-3">{faq.a}</p>
+                  <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-3">{faq.a}</p>
                   <FAQAIAssistant question={faq.q} answer={faq.a} />
                 </motion.div>
               ))}

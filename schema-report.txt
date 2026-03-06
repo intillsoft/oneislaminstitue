@@ -1,0 +1,32 @@
+Error fetching tables via info_schema: Could not find the table 'public.information_schema.tables' in the schema cache
+
+=== TABLE: users ===
+[users] Columns: id, name, email, avatar_url, role, location, bio, created_at, updated_at, phone, academic_field, enrolled_courses_count, certification_count, total_study_minutes, last_login_at, coin_balance, total_xp
+[users] Count: 3
+
+=== TABLE: applications ===
+[applications] Table exists but is empty.
+
+=== TABLE: jobs ===
+[jobs] Columns: id, instructor_id, department_id, title, description, curriculum, requirements, learning_outcomes, study_mode, academic_level, study_plan_tier, location, status, is_featured, created_at, updated_at, faculty_id, syllabus, course_level, subject_area, total_modules, total_lessons, credit_hours, enrollment_limit, enrollment_count, featured, prerequisite_ids, price, created_by, thumbnail_url, preview_video_url, instructor_bio, target_audience, estimated_duration_hours, difficulty_rating, language, company, salary_min, job_type, experience_level, industry
+[jobs] Count: 12
+
+=== TABLE: notifications ===
+[notifications] Table exists but is empty.
+
+=== TABLE: study_progress ===
+[study_progress] Error: Could not find the table 'public.study_progress' in the schema cache (Code: PGRST205)
+
+=== TABLE: lesson_progress ===
+[lesson_progress] Error: Could not find the table 'public.lesson_progress' in the schema cache (Code: PGRST205)
+
+=== TABLE: study_streaks ===
+[study_streaks] Error: Could not find the table 'public.study_streaks' in the schema cache (Code: PGRST205)
+
+=== TABLE: course_modules ===
+[course_modules] Columns: id, course_id, title, description, sort_order, is_published, created_at, updated_at
+[course_modules] Count: 17
+
+=== TABLE: course_lessons ===
+[course_lessons] Columns: id, module_id, course_id, title, description, content_type, content_data, duration_minutes, sort_order, is_free_preview, is_published, created_at, updated_at, video_url, markdown_content, infographic_urls, pdf_attachment_urls, coin_reward, xp_reward, content_blocks
+[course_lessons] Count: 22

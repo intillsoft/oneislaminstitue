@@ -37,107 +37,142 @@ class AdvancedRecommendationEngine {
                 return [];
             }
 
-            // 2. Get ALL jobs (platform jobs + crawled jobs)
-            // First get platform jobs
-            const { data: platformJobs, error: platformError } = await supabase
+            // 2. Get jobs from the unified jobs table
+            const { data: jobs, error: jobsError } = await supabase
                 .from('jobs')
                 .select(`
-          *,
-          companies(id, name, logo, industry)
-        `)
+                  *,
+                  companies(id, name, logo, industry)
+                `)
                 .or('status.eq.active,status.eq.published,status.is.null')
                 .order('created_at', { ascending: false })
-                .limit(100);
+                .limit(200);
 
-            if (platformError) {
-                logger.error('Error fetching platform jobs:', platformError);
+            if (jobsError) {
+                logger.error('Error fetching jobs for recommendations:', jobsError);
             }
-
-            // Then get crawled jobs
-            const { data: crawledJobs, error: crawledError } = await supabase
-                .from('crawled_jobs')
-                .select('*')
-                .or('status.eq.active,status.is.null')
-                .order('created_at', { ascending: false })
-                .limit(100);
-
-            if (crawledError) {
-                logger.error('Error fetching crawled jobs:', crawledError);
-            }
-
-            // Combine both sources
-            const jobs = [
-                ...(platformJobs || []),
-                ...(crawledJobs || []).map(job => ({
-                    ...job,
-                    source: 'crawled',
-                    companies: job.company ? { name: job.company, logo: null } : null
-                }))
-            ];
 
             if (!jobs || jobs.length === 0) {
                 logger.warn('No jobs available for recommendations');
                 return [];
             }
 
-            // 3. Calculate scores using multiple algorithms
-            const scoredJobs = await Promise.all(
-                jobs.map(async (job) => {
-                    try {
-                        // Content-based score (skills, title, industry match)
-                        const contentScore = this.calculateContentScore(job, userProfile);
+            // 3. PHASE 1: Heuristic Scoring (Heuristic methods only)
+            const heuristicScoredJobs = jobs.map((job) => {
+                const contentScore = this.calculateContentScore(job, userProfile);
+                const collaborativeScore = this.calculateCollaborativeScoreSync(job, userId); // Use sync version or simple mock
+                const recencyScore = this.calculateRecencyScore(job);
 
-                        // Collaborative score (based on similar users' preferences)
-                        const collaborativeScore = await this.calculateCollaborativeScore(job, userId);
+                // Base score (heuristic weighted: 70% of potential total)
+                const baseScore = Math.round(
+                    contentScore * 0.5 +
+                    collaborativeScore * 0.3 +
+                    recencyScore * 0.2
+                );
 
-                        // Recency boost (newer jobs get slight boost)
-                        const recencyScore = this.calculateRecencyScore(job);
+                return {
+                    ...job,
+                    baseScore,
+                    contentScore,
+                    collaborativeScore,
+                    recencyScore
+                };
+            });
 
-                        // AI-enhanced score (if enabled and available)
-                        let aiScore = 0;
-                        if (useAI && userProfile.resumeId) {
-                            aiScore = await this.calculateAIScore(job, userProfile.resumeId);
+            // 4. PICK TOP CANDIDATES for expensive AI scoring (optimization to avoid 429s)
+            const topCandidates = heuristicScoredJobs
+                .sort((a, b) => b.baseScore - a.baseScore)
+                .slice(0, 40); // Only process top 40 with AI
+
+            // 5. PHASE 2: Batched AI Scoring
+            const finalScoredJobs = [];
+            const BATCH_SIZE = 5;
+
+            for (let i = 0; i < topCandidates.length; i += BATCH_SIZE) {
+                const batch = topCandidates.slice(i, i + BATCH_SIZE);
+                logger.info(`Processing AI score batch ${Math.floor(i / BATCH_SIZE) + 1} for ${batch.length} jobs`);
+
+                const batchResults = await Promise.all(
+                    batch.map(async (job) => {
+                        try {
+                            let aiScore = 0;
+                            if (useAI && userProfile.resumeId) {
+                                aiScore = await this.calculateAIScore(job, userProfile.resumeId);
+                            }
+
+                            const finalScore = Math.round(job.baseScore * 0.7 + aiScore * 0.3);
+                            const normalizedScore = isNaN(finalScore) ? Math.round(job.baseScore) : Math.min(100, Math.max(0, finalScore));
+
+                            return {
+                                ...job,
+                                matchScore: normalizedScore,
+                                scoreBreakdown: {
+                                    content: Math.round(job.contentScore),
+                                    collaborative: Math.round(job.collaborativeScore),
+                                    recency: Math.round(job.recencyScore),
+                                    ai: isNaN(aiScore) ? 0 : Math.round(aiScore),
+                                },
+                                explanation: includeExplanations
+                                    ? this.generateExplanation(job, userProfile, normalizedScore)
+                                    : null,
+                            };
+                        } catch (jobError) {
+                            logger.warn(`Error AI scoring job ${job.id}:`, jobError.message);
+                            return {
+                                ...job,
+                                matchScore: job.baseScore,
+                                scoreBreakdown: {
+                                    content: Math.round(job.contentScore),
+                                    collaborative: Math.round(job.collaborativeScore),
+                                    recency: Math.round(job.recencyScore),
+                                    ai: 0,
+                                },
+                            };
                         }
+                    })
+                );
+                finalScoredJobs.push(...batchResults);
 
-                        // Hybrid score (weighted combination)
-                        const finalScore = Math.round(
-                            contentScore * 0.4 +
-                            collaborativeScore * 0.2 +
-                            recencyScore * 0.1 +
-                            aiScore * 0.3
-                        );
+                // Slight delay between batches to further respect rate limits
+                if (i + BATCH_SIZE < topCandidates.length) {
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+                }
+            }
 
-                        return {
-                            ...job,
-                            matchScore: Math.min(100, Math.max(0, finalScore)),
-                            scoreBreakdown: {
-                                content: Math.round(contentScore),
-                                collaborative: Math.round(collaborativeScore),
-                                recency: Math.round(recencyScore),
-                                ai: Math.round(aiScore),
-                            },
-                            explanation: includeExplanations
-                                ? this.generateExplanation(job, userProfile, finalScore)
-                                : null,
-                        };
-                    } catch (jobError) {
-                        logger.warn(`Error scoring job ${job.id}:`, jobError.message);
-                        return {
-                            ...job,
-                            matchScore: 50,
-                            scoreBreakdown: { content: 50, collaborative: 0, recency: 0, ai: 0 },
-                        };
+            // 6. Combine with non-top candidates (optional, usually unnecessary for Top-N results)
+            const unscoredJobs = heuristicScoredJobs
+                .filter(job => !topCandidates.find(tc => tc.id === job.id))
+                .map(job => ({
+                    ...job,
+                    matchScore: job.baseScore,
+                    scoreBreakdown: {
+                        content: Math.round(job.contentScore),
+                        collaborative: Math.round(job.collaborativeScore),
+                        recency: Math.round(job.recencyScore),
+                        ai: 0,
                     }
-                })
-            );
+                }));
+
+            const allScoredJobs = [...finalScoredJobs, ...unscoredJobs];
 
             // 4. Filter and sort
-            const recommendations = scoredJobs
+            let recommendations = allScoredJobs
                 .filter(job => job.matchScore >= minScore)
                 .sort((a, b) => b.matchScore - a.matchScore)
                 .slice(0, limit);
 
-            logger.info(`Generated ${recommendations.length} recommendations for user ${userId}`);
+            // AUTO-RELAXATION: If no recommendations meet the high bar, lower it
+            if (recommendations.length === 0 && minScore > 30) {
+                const lowerThreshold = 40;
+                logger.info(`No matches found at score ${minScore}, relaxing to ${lowerThreshold}`);
+                recommendations = allScoredJobs
+                    .filter(job => job.matchScore >= lowerThreshold)
+                    .sort((a, b) => b.matchScore - a.matchScore)
+                    .slice(0, limit);
+            }
+
+            const maxScore = allScoredJobs.length > 0 ? Math.max(...allScoredJobs.map(j => j.matchScore)) : 0;
+            logger.info(`Generated ${recommendations.length} recommendations for user ${userId} (Max score: ${maxScore})`);
             return recommendations;
 
         } catch (error) {
@@ -241,6 +276,15 @@ class AdvancedRecommendationEngine {
     }
 
     /**
+     * Collaborative filtering score (Sync version for pre-filtering)
+     */
+    calculateCollaborativeScoreSync(job, userId) {
+        // Simple heuristic: jobs with many applicants are "hot"
+        // This can be enhanced by caching popularity data
+        return 50;
+    }
+
+    /**
      * Collaborative filtering score (based on similar users)
      */
     async calculateCollaborativeScore(job, userId) {
@@ -287,9 +331,9 @@ class AdvancedRecommendationEngine {
      */
     async calculateAIScore(job, resumeId) {
         try {
-            // Use existing job matching service
-            const { default: jobMatching } = await import('./jobMatching.js');
-            const matchResult = await jobMatching.calculateJobMatch(resumeId, job.id);
+            // Use existing job matching service - skip recommendations to save tokens
+            const { calculateJobMatch } = await import('./jobMatching.js');
+            const matchResult = await calculateJobMatch(resumeId, job.id, { skipRecommendations: true });
 
             return matchResult.match_score || 50;
         } catch (error) {

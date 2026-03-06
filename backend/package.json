@@ -24,8 +24,10 @@
   "license": "MIT",
   "dependencies": {
     "@anthropic-ai/sdk": "^0.20.0",
+    "@browserbasehq/stagehand": "^1.10.0",
     "@google/generative-ai": "^0.2.1",
     "@supabase/supabase-js": "^2.38.5",
+    "@trigger.dev/sdk": "^3.3.17",
     "axios": "^1.13.2",
     "bcryptjs": "^2.4.3",
     "cohere-ai": "^7.7.0",
@@ -42,9 +44,12 @@
     "node-cron": "^3.0.3",
     "openai": "^4.20.1",
     "pdf-parse": "^2.4.5",
+    "playwright": "^1.40.1",
     "resend": "^2.1.0",
     "stripe": "^14.7.0",
-    "winston": "^3.11.0"
+    "twilio": "^5.12.2",
+    "winston": "^3.11.0",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@types/node": "^20.10.5",

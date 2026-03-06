@@ -90,7 +90,7 @@ const CompanyProfileView = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-white dark:bg-[#0A0E27] flex items-center justify-center">
+      <div className="min-h-screen bg-bg flex items-center justify-center">
         <div className="text-center">
           <Icon name="Loader2" className="animate-spin mx-auto mb-4" size={48} />
           <p className="text-text-secondary dark:text-gray-400">Loading company profile...</p>
@@ -101,7 +101,7 @@ const CompanyProfileView = () => {
 
   if (!company) {
     return (
-      <div className="min-h-screen bg-white dark:bg-[#0A0E27]">
+      <div className="min-h-screen bg-bg">
         <UnifiedSidebar
           isCollapsed={isSidebarCollapsed}
           onCollapseChange={setIsSidebarCollapsed}
@@ -129,7 +129,7 @@ const CompanyProfileView = () => {
   const isOwner = user && (profile?.role === 'admin' || profile?.role === 'recruiter');
 
   return (
-    <div className="min-h-screen bg-white dark:bg-[#0A0E27]">
+    <div className="min-h-screen bg-bg">
       <UnifiedSidebar
         isCollapsed={isSidebarCollapsed}
         onCollapseChange={setIsSidebarCollapsed}
@@ -142,7 +142,7 @@ const CompanyProfileView = () => {
             {/* Header */}
             <div className="bg-background dark:bg-[#13182E] rounded-lg shadow-sm border border-border dark:border-gray-700 p-6 mb-6">
               <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
-                <div className="w-24 h-24 rounded-lg overflow-hidden bg-white dark:bg-gray-800 border border-border dark:border-gray-700 flex items-center justify-center flex-shrink-0">
+                <div className="w-24 h-24 rounded-2xl overflow-hidden bg-bg border border-border dark:border-white/5 flex items-center justify-center flex-shrink-0">
                   {company.logo ? (
                     <Image
                       src={company.logo}
@@ -160,7 +160,7 @@ const CompanyProfileView = () => {
                       <h1 className="text-3xl font-bold text-text-primary dark:text-white mb-2">
                         {company.name}
                       </h1>
-                      <div className="flex flex-wrap items-center gap-4 text-text-secondary dark:text-gray-400 text-sm">
+                      <div className="flex flex-wrap items-center gap-4 text-text-muted text-sm">
                         {company.industry && (
                           <span className="flex items-center">
                             <Icon name="Briefcase" size={14} className="mr-1" />
@@ -197,7 +197,7 @@ const CompanyProfileView = () => {
 
             {/* Company Description */}
             {company.description && (
-              <div className="bg-background dark:bg-[#13182E] rounded-lg shadow-sm border border-border dark:border-gray-700 p-6 mb-6">
+              <div className="bg-bg-elevated rounded-3xl shadow-xl border border-border dark:border-white/5 p-8 mb-6">
                 <h2 className="text-xl font-semibold text-text-primary dark:text-white mb-4">About {company.name}</h2>
                 <p className="text-text-secondary dark:text-gray-400 leading-relaxed whitespace-pre-line">
                   {company.description}

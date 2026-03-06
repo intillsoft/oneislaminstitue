@@ -1,0 +1,37 @@
+Found courses: 12
+Course: Introduction to Aqidah (ID: 4d6a7350-fd8e-40c6-8b0a-4f8c33e3a514), Status: published, Is Published: undefined
+  Modules count: 0
+  Lessons count: 0
+Course: Advanced Fiqh: Transactions (ID: deda8a7b-3581-40b1-9e42-a478d2c540cd), Status: published, Is Published: undefined
+  Modules count: 0
+  Lessons count: 0
+Course: The Seerah: Prophetic Wisdom (ID: 93017424-f003-4dc4-88e9-6559b70d06fa), Status: published, Is Published: undefined
+  Modules count: 0
+  Lessons count: 0
+Course: Arabic Language: Level 1 (ID: fdf6ab03-186d-4ac4-8f43-f0999ea2aa19), Status: published, Is Published: undefined
+  Modules count: 0
+  Lessons count: 0
+Course: Sciences of the Quran (ID: 969e7d22-6bac-4c16-9659-2bde7e8c9545), Status: published, Is Published: undefined
+  Modules count: 0
+  Lessons count: 0
+Course: Islamic Ethics in the Digital Age (ID: 355152fd-0414-4337-9ec6-0028a1e4b0b0), Status: published, Is Published: undefined
+  Modules count: 0
+  Lessons count: 0
+Course: Hadith Methodology (Mustalah) (ID: 62b9b02f-0d0b-4d6b-8b15-350d8935c5ac), Status: published, Is Published: undefined
+  Modules count: 0
+  Lessons count: 0
+Course: Spiritual Excellence (Ihsan) (ID: 57dd062e-8436-44cd-acfb-ef3370d9b27b), Status: published, Is Published: undefined
+  Modules count: 0
+  Lessons count: 0
+Course: Logic and Philosophy in Islam (ID: b6e6d2ea-b871-4e44-ad26-455231330673), Status: published, Is Published: undefined
+  Modules count: 0
+  Lessons count: 0
+Course: Islamic Leadership Principles (ID: dcfc21a0-101c-4986-b00a-601513dd8ec8), Status: published, Is Published: undefined
+  Modules count: 0
+  Lessons count: 0
+Course: Rational Foundations of Belief (ID: d41e5382-8059-4edb-9a0d-1ee69b69a1e8), Status: published, Is Published: undefined
+  Modules count: 0
+  Lessons count: 0
+Course: Spiritual Development & Purification of the Heart (ID: dd6c3390-ce79-45b0-a7ee-123b481bac72), Status: published, Is Published: undefined
+  Modules count: 0
+  Lessons count: 0

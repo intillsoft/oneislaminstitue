@@ -71,12 +71,12 @@ const TalentEarnings = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-white dark:bg-[#0A0E27]">
+      <div className="min-h-screen bg-bg">
         <UnifiedSidebar />
         <div className="ml-0 lg:ml-64 min-h-screen flex items-center justify-center">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-workflow-primary mx-auto mb-4"></div>
-            <p className="text-[#64748B] dark:text-[#8B92A3]">Loading earnings...</p>
+            <p className="text-text-muted font-medium">Loading earnings...</p>
           </div>
         </div>
       </div>
@@ -91,50 +91,50 @@ const TalentEarnings = () => {
           <Breadcrumb />
 
           <div className="mb-6">
-            <h1 className="text-2xl sm:text-3xl font-bold text-[#0F172A] dark:text-[#E8EAED] mb-2">
+            <h1 className="text-2xl sm:text-3xl font-black text-text-primary dark:text-white mb-2 uppercase tracking-tight">
               Earnings
             </h1>
-            <p className="text-[#64748B] dark:text-[#8B92A3]">
+            <p className="text-text-muted dark:text-slate-400 font-medium">
               Track your earnings and financial performance
             </p>
           </div>
 
           {/* Stats Cards */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
-            <div className="bg-white dark:bg-[#13182E] border border-[#E2E8F0] dark:border-[#1E2640] rounded-lg p-6">
-              <p className="text-sm text-[#64748B] dark:text-[#8B92A3] mb-1">Total Earnings</p>
-              <p className="text-3xl font-bold text-[#0F172A] dark:text-[#E8EAED]">
+            <div className="bg-bg-elevated border border-border dark:border-white/5 rounded-[2rem] p-6 shadow-xl">
+              <p className="text-[10px] font-black uppercase tracking-widest text-text-muted mb-2">Total Earnings</p>
+              <p className="text-3xl font-black text-text-primary dark:text-white tracking-tighter">
                 ${stats.totalEarnings.toLocaleString()}
               </p>
             </div>
-            <div className="bg-white dark:bg-[#13182E] border border-[#E2E8F0] dark:border-[#1E2640] rounded-lg p-6">
-              <p className="text-sm text-[#64748B] dark:text-[#8B92A3] mb-1">This Month</p>
-              <p className="text-3xl font-bold text-[#0F172A] dark:text-[#E8EAED]">
+            <div className="bg-bg-elevated border border-border dark:border-white/5 rounded-[2rem] p-6 shadow-xl">
+              <p className="text-[10px] font-black uppercase tracking-widest text-text-muted mb-2">This Month</p>
+              <p className="text-3xl font-black text-text-primary dark:text-white tracking-tighter">
                 ${stats.thisMonth.toLocaleString()}
               </p>
             </div>
-            <div className="bg-white dark:bg-[#13182E] border border-[#E2E8F0] dark:border-[#1E2640] rounded-lg p-6">
-              <p className="text-sm text-[#64748B] dark:text-[#8B92A3] mb-1">This Year</p>
-              <p className="text-3xl font-bold text-[#0F172A] dark:text-[#E8EAED]">
+            <div className="bg-bg-elevated border border-border dark:border-white/5 rounded-[2rem] p-6 shadow-xl">
+              <p className="text-[10px] font-black uppercase tracking-widest text-text-muted mb-2">This Year</p>
+              <p className="text-3xl font-black text-text-primary dark:text-white tracking-tighter">
                 ${stats.thisYear.toLocaleString()}
               </p>
             </div>
-            <div className="bg-white dark:bg-[#13182E] border border-[#E2E8F0] dark:border-[#1E2640] rounded-lg p-6">
-              <p className="text-sm text-[#64748B] dark:text-[#8B92A3] mb-1">Pending</p>
-              <p className="text-3xl font-bold text-[#0F172A] dark:text-[#E8EAED]">
+            <div className="bg-bg-elevated border border-border dark:border-white/5 rounded-[2rem] p-6 shadow-xl">
+              <p className="text-[10px] font-black uppercase tracking-widest text-text-muted mb-2">Pending</p>
+              <p className="text-3xl font-black text-text-primary dark:text-white tracking-tighter">
                 ${stats.pending.toLocaleString()}
               </p>
             </div>
           </div>
 
           {/* Date Range Filter */}
-          <div className="bg-white dark:bg-[#13182E] border border-[#E2E8F0] dark:border-[#1E2640] rounded-lg p-4 mb-6">
-            <div className="flex items-center gap-2">
-              <label className="text-sm font-medium text-[#0F172A] dark:text-[#E8EAED]">Filter:</label>
+          <div className="bg-bg-elevated border border-border dark:border-white/5 rounded-2xl p-4 mb-8 shadow-lg">
+            <div className="flex items-center gap-4">
+              <label className="text-[10px] font-black uppercase tracking-widest text-text-muted ml-2">Temporal Filter:</label>
               <select
                 value={dateRange}
                 onChange={(e) => setDateRange(e.target.value)}
-                className="px-4 py-2 border border-[#E2E8F0] dark:border-[#1E2640] rounded-lg bg-white dark:bg-[#13182E] text-[#0F172A] dark:text-[#E8EAED]"
+                className="px-6 py-2 border border-border dark:border-white/10 rounded-xl bg-bg text-text-primary dark:text-white text-xs font-black uppercase tracking-widest focus:outline-none focus:ring-2 focus:ring-workflow-primary/40 transition-all cursor-pointer"
               >
                 <option value="all">All Time</option>
                 <option value="month">This Month</option>
@@ -147,32 +147,32 @@ const TalentEarnings = () => {
           <div className="bg-white dark:bg-[#13182E] border border-[#E2E8F0] dark:border-[#1E2640] rounded-lg overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full">
-                <thead className="bg-gray-50 dark:bg-[#1A2139]">
+                <thead className="bg-bg-elevated/50 dark:bg-white/5">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-[#64748B] dark:text-[#8B92A3] uppercase">Order ID</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-[#64748B] dark:text-[#8B92A3] uppercase">Gig</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-[#64748B] dark:text-[#8B92A3] uppercase">Buyer</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-[#64748B] dark:text-[#8B92A3] uppercase">Amount</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-[#64748B] dark:text-[#8B92A3] uppercase">Date</th>
+                    <th className="px-6 py-4 text-left text-[10px] font-black text-text-muted uppercase tracking-widest">Order ID</th>
+                    <th className="px-6 py-4 text-left text-[10px] font-black text-text-muted uppercase tracking-widest">Gig</th>
+                    <th className="px-6 py-4 text-left text-[10px] font-black text-text-muted uppercase tracking-widest">Buyer</th>
+                    <th className="px-6 py-4 text-left text-[10px] font-black text-text-muted uppercase tracking-widest">Amount</th>
+                    <th className="px-6 py-4 text-left text-[10px] font-black text-text-muted uppercase tracking-widest">Date</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#E2E8F0] dark:divide-[#1E2640]">
+                <tbody className="divide-y divide-border dark:divide-white/5">
                   {earnings.length > 0 ? (
                     earnings.map((earning) => (
-                      <tr key={earning.id} className="hover:bg-gray-50 dark:hover:bg-[#1A2139]">
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-[#0F172A] dark:text-[#E8EAED]">
+                      <tr key={earning.id} className="hover:bg-workflow-primary/5 transition-colors group">
+                        <td className="px-6 py-4 whitespace-nowrap text-xs font-black text-text-primary dark:text-white uppercase tracking-tighter">
                           #{earning.id.slice(0, 8)}
                         </td>
-                        <td className="px-6 py-4 text-sm text-[#0F172A] dark:text-[#E8EAED]">
+                        <td className="px-6 py-4 text-sm font-bold text-text-primary dark:text-white group-hover:text-workflow-primary transition-colors">
                           {earning.gig?.title || earning.title || 'N/A'}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-[#0F172A] dark:text-[#E8EAED]">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-text-secondary dark:text-slate-400">
                           {earning.buyer?.name || 'Unknown'}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-green-600 dark:text-green-400">
-                          ${parseFloat(earning.price || 0).toLocaleString()}
+                        <td className="px-6 py-4 whitespace-nowrap text-base font-black text-emerald-500">
+                          +${parseFloat(earning.price || 0).toLocaleString()}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-[#64748B] dark:text-[#8B92A3]">
+                        <td className="px-6 py-4 whitespace-nowrap text-[10px] font-black uppercase tracking-widest text-text-muted">
                           {earning.completed_date
                             ? formatDistanceToNow(new Date(earning.completed_date), { addSuffix: true })
                             : 'N/A'}

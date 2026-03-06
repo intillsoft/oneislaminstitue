@@ -1,15 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 import Icon from 'components/AppIcon';
 import { useAuthContext } from '../../contexts/AuthContext';
 import { useToast } from '../../components/ui/Toast';
 import { apiService } from '../../lib/api';
-import Breadcrumb from 'components/ui/Breadcrumb';
-import UnifiedSidebar from '../../components/ui/UnifiedSidebar';
+import { supabase } from '../../lib/supabase';
 import { formatDistanceToNow } from 'date-fns';
 import AIMessageSuggestions from './components/AIMessageSuggestions';
 import MessageImprovement from './components/MessageImprovement';
 import { useTalentAI } from '../../hooks/useTalentAI';
+import { EliteCard, ElitePageHeader } from '../../components/ui/EliteCard';
 
 const Messages = () => {
   const [searchParams] = useSearchParams();
@@ -28,6 +29,11 @@ const Messages = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [isTyping, setIsTyping] = useState(false);
 
+  // AI TALENT FEATURES
+  const { analyzeClientVibe, suggestUpsell, loading: talentAiLoading } = useTalentAI();
+  const [vibeAnalysis, setVibeAnalysis] = useState(null);
+  const [upsellSuggestion, setUpsellSuggestion] = useState(null);
+
   useEffect(() => {
     loadConversations();
     const userId = searchParams.get('user');
@@ -39,12 +45,45 @@ const Messages = () => {
     }
   }, []);
 
+  // REAL-TIME SUBSCRIPTION
+  useEffect(() => {
+    if (!user) return;
+
+    // Subscribe to new messages
+    const channel = supabase
+      .channel('public:messages')
+      .on(
+        'postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'messages',
+          filter: `receiver_id=eq.${user.id}`,
+        },
+        (payload) => {
+          const newMessage = payload.new;
+
+          // If message belongs to current conversation, add it
+          if (newMessage.conversation_id === selectedConversation) {
+            setMessages(prev => [...prev, newMessage]);
+            // Mark as read
+            apiService.messages.markAsRead(newMessage.id).catch(console.error);
+          }
+
+          // Always refresh conversations list to show new last message/unread count
+          loadConversations();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [user, selectedConversation]);
+
   useEffect(() => {
     if (selectedConversation) {
       loadMessages();
-      // Poll for new messages every 3 seconds
-      const interval = setInterval(loadMessages, 3000);
-      return () => clearInterval(interval);
     }
   }, [selectedConversation]);
 
@@ -52,36 +91,19 @@ const Messages = () => {
     scrollToBottom();
   }, [messages]);
 
-  useEffect(() => {
-    // Load AI suggestions when conversation changes or new message is typed
-    if (selectedConversation && newMessage.length > 10) {
-      const debounceTimer = setTimeout(() => {
-        loadAISuggestions();
-      }, 1000);
-      return () => clearTimeout(debounceTimer);
-    } else {
-      setAiSuggestions([]);
-    }
-  }, [selectedConversation, newMessage]);
-
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
   const loadConversations = async () => {
     try {
-      setLoading(true);
+      if (!conversations.length) setLoading(true);
       const response = await apiService.messages.getConversations();
       if (response.data?.success) {
         setConversations(response.data.data || []);
-        // Auto-select first conversation if none selected
-        if (response.data.data?.length > 0 && !selectedConversation) {
-          setSelectedConversation(response.data.data[0].id);
-        }
       }
     } catch (error) {
       console.error('Error loading conversations:', error);
-      showError('Failed to load conversations');
     } finally {
       setLoading(false);
     }
@@ -89,7 +111,6 @@ const Messages = () => {
 
   const loadMessages = async () => {
     if (!selectedConversation) return;
-
     try {
       const response = await apiService.messages.getMessages(selectedConversation);
       if (response.data?.success) {
@@ -103,16 +124,9 @@ const Messages = () => {
   const handleStartConversation = async (userId) => {
     try {
       const response = await apiService.messages.getConversation(userId);
-
-      // Handle table not found error
-      if (response.data?.code === 'TABLE_NOT_FOUND') {
-        console.error('Messaging system not initialized');
-        return;
-      }
       if (response.data?.success) {
         const conversation = response.data.data;
         setSelectedConversation(conversation.id);
-        await loadMessages();
         await loadConversations();
       }
     } catch (error) {
@@ -124,87 +138,44 @@ const Messages = () => {
   const handleSelectConversation = (conversationId) => {
     setSelectedConversation(conversationId);
     setNewMessage('');
-    setAiSuggestions([]);
+    setVibeAnalysis(null);
+    setUpsellSuggestion(null);
   };
 
   const handleSendMessage = async (e) => {
-    e.preventDefault();
+    if (e) e.preventDefault();
     if (!newMessage.trim() || !selectedConversation) return;
 
     const messageText = newMessage.trim();
     setNewMessage('');
-    setIsTyping(true);
-    setAiSuggestions([]);
+
+    // Optimistic UI
+    const tempId = Date.now();
+    const tempMsg = {
+      id: tempId,
+      sender_id: user.id,
+      message: messageText,
+      created_at: new Date().toISOString(),
+      is_read: false
+    };
+    setMessages(prev => [...prev, tempMsg]);
 
     try {
       await apiService.messages.sendMessage(selectedConversation, {
         message: messageText,
         message_type: 'text',
       });
-
-      // Reload messages and conversations
-      await loadMessages();
-      await loadConversations();
-      success('Message sent!');
+      loadConversations(); // Refresh last message preview
     } catch (error) {
       console.error('Error sending message:', error);
       showError('Failed to send message');
-      setNewMessage(messageText); // Restore message on error
-    } finally {
-      setIsTyping(false);
+      setMessages(prev => prev.filter(m => m.id !== tempId));
+      setNewMessage(messageText);
     }
   };
-
-  const loadAISuggestions = async () => {
-    if (!selectedConversation || !newMessage.trim()) return;
-
-    try {
-      setLoadingSuggestions(true);
-      const response = await apiService.messages.getAISuggestions(
-        selectedConversation,
-        newMessage
-      );
-      if (response.data?.success) {
-        setAiSuggestions(response.data.data?.suggestions || []);
-      }
-    } catch (error) {
-      console.error('Error loading AI suggestions:', error);
-    } finally {
-      setLoadingSuggestions(false);
-    }
-  };
-
-  const handleUseSuggestion = (suggestion) => {
-    setNewMessage(suggestion);
-    setAiSuggestions([]);
-  };
-
-  const handleImproveMessage = () => {
-    if (!newMessage.trim()) return;
-    setMessageToImprove(newMessage);
-    setShowImproveMessage(true);
-  };
-
-  const handleMessageImproved = (improvedMessage) => {
-    setNewMessage(improvedMessage);
-    setShowImproveMessage(false);
-    setMessageToImprove('');
-  };
-
-  const filteredConversations = conversations.filter(conv =>
-    conv.other_user_name?.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
-  const currentConversation = conversations.find(conv => conv.id === selectedConversation);
-
-  /* AI TALENT FEATURES */
-  const { analyzeClientVibe, suggestUpsell, loading: talentAiLoading } = useTalentAI();
-  const [vibeAnalysis, setVibeAnalysis] = useState(null);
-  const [upsellSuggestion, setUpsellSuggestion] = useState(null);
 
   const handleVibeCheck = async () => {
     if (!messages.length) return;
-    // Extract last 10 messages for context
     const recentMessages = messages.slice(-10).map(m => ({
       sender: m.sender_id === user.id ? 'me' : 'client',
       text: m.message
@@ -219,337 +190,334 @@ const Messages = () => {
   };
 
   const handleSmartUpsell = async () => {
-    // Helper to get upsell suggestions
     const recentContext = messages.slice(-5).map(m => m.message).join('\n');
     const result = await suggestUpsell(recentContext, [
       'Express Delivery',
       'Source Files',
-      'Commercial Rights',
-      'Additional Revision',
-      'SEO Optimization'
-    ]); // In real app, fetch actual services
-
+      'Priority Support',
+      'Strategic Consulting'
+    ]);
     if (result) setUpsellSuggestion(result);
   };
 
-  // ... (existing helper functions)
+  const currentConversation = conversations.find(conv => conv.id === selectedConversation);
+  const filteredConversations = conversations.filter(conv =>
+    conv.other_user_name?.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  if (loading && !conversations.length) {
+    return (
+      <div className="min-h-screen bg-[#0A1628] flex items-center justify-center">
+        <div className="w-12 h-12 border-2 border-blue-500/30 border-t-blue-500 rounded-full animate-spin" />
+      </div>
+    );
+  }
 
   return (
-    <div className="min-h-screen bg-white dark:bg-[#0A0E27]">
-      <UnifiedSidebar />
-      <div className="ml-0 lg:ml-64 min-h-screen">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <Breadcrumb />
+    <div className="min-h-screen bg-[#0A1628] text-white">
+      <div className="max-w-[1800px] mx-auto min-h-screen flex flex-col px-4 sm:px-6 lg:px-8 py-8">
+        <ElitePageHeader
+          title="Neural Gateway"
+          description="Advanced cryptographic messaging & stakeholder coordination"
+          badge="High Privacy Level"
+        />
 
-          <div className="mb-6">
-            <h1 className="text-2xl sm:text-3xl font-bold text-[#0F172A] dark:text-[#E8EAED] mb-2">
-              Messages
-            </h1>
-            <p className="text-[#64748B] dark:text-[#8B92A3]">
-              Communicate with job seekers, recruiters, talents, and team members
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-[calc(100vh-250px)]">
-            {/* Conversations List */}
-            <div className="bg-white dark:bg-[#13182E] border border-[#E2E8F0] dark:border-[#1E2640] rounded-lg flex flex-col">
-              <div className="p-4 border-b border-[#E2E8F0] dark:border-[#1E2640]">
-                <div className="relative">
-                  <Icon name="Search" className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-[#64748B] dark:text-[#8B92A3]" />
-                  <input
-                    type="text"
-                    placeholder="Search conversations..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full pl-10 pr-4 py-2 border border-[#E2E8F0] dark:border-[#1E2640] rounded-lg bg-white dark:bg-[#13182E] text-[#0F172A] dark:text-[#E8EAED] focus:outline-none focus:ring-2 focus:ring-workflow-primary"
-                  />
-                </div>
-              </div>
-
-              <div className="flex-1 overflow-y-auto">
-                {filteredConversations.length > 0 ? (
-                  filteredConversations.map((conversation) => (
-                    <button
-                      key={conversation.id}
-                      onClick={() => handleSelectConversation(conversation.id)}
-                      className={`w-full p-4 border-b border-[#E2E8F0] dark:border-[#1E2640] hover:bg-gray-50 dark:hover:bg-[#1A2139] transition-colors text-left ${selectedConversation === conversation.id
-                        ? 'bg-workflow-primary/5 dark:bg-workflow-primary/10'
-                        : ''
-                        }`}
-                    >
-                      <div className="flex items-center gap-3">
-                        {conversation.other_user_avatar ? (
-                          <img
-                            src={conversation.other_user_avatar}
-                            alt={conversation.other_user_name}
-                            className="w-12 h-12 rounded-full"
-                          />
-                        ) : (
-                          <div className="w-12 h-12 rounded-full bg-workflow-primary/10 flex items-center justify-center">
-                            <Icon name="User" size={24} className="text-workflow-primary" />
-                          </div>
-                        )}
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center justify-between mb-1">
-                            <p className="font-medium text-[#0F172A] dark:text-[#E8EAED] truncate">
-                              {conversation.other_user_name || 'Unknown User'}
-                            </p>
-                            {conversation.unread_count > 0 && (
-                              <span className="px-2 py-1 bg-workflow-primary text-white text-xs font-medium rounded-full flex-shrink-0">
-                                {conversation.unread_count}
-                              </span>
-                            )}
-                          </div>
-                          <p className="text-sm text-[#64748B] dark:text-[#8B92A3] truncate">
-                            {conversation.last_message || 'No messages yet'}
-                          </p>
-                          {conversation.last_message_at && (
-                            <p className="text-xs text-[#64748B] dark:text-[#8B92A3] mt-1">
-                              {formatDistanceToNow(new Date(conversation.last_message_at), { addSuffix: true })}
-                            </p>
-                          )}
-                        </div>
-                      </div>
-                    </button>
-                  ))
-                ) : (
-                  <div className="p-8 text-center">
-                    <Icon name="MessageSquare" className="w-16 h-16 text-[#64748B] dark:text-[#8B92A3] mx-auto mb-4" />
-                    <p className="text-[#64748B] dark:text-[#8B92A3]">No conversations found</p>
-                    <p className="text-sm text-[#64748B] dark:text-[#8B92A3] mt-2">
-                      Start a conversation from a job application or talent profile
-                    </p>
-                  </div>
-                )}
+        <div className="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-6 mt-8 h-[calc(100vh-280px)]">
+          {/* Sidebar - Conversations List */}
+          <div className="lg:col-span-4 xl:col-span-3 flex flex-col bg-white/5 backdrop-blur-3xl rounded-[3rem] border border-white/5 overflow-hidden">
+            <div className="p-8 border-b border-white/5">
+              <div className="relative group">
+                <Icon name="Search" className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-blue-500 transition-colors" size={18} />
+                <input
+                  type="text"
+                  placeholder="SEARCH PROTOCOLS..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full pl-14 pr-6 py-4 bg-white/5 border border-white/5 rounded-2xl text-xs font-black uppercase tracking-[0.2em] outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition-all placeholder:text-slate-600"
+                />
               </div>
             </div>
 
-            {/* Chat Area */}
-            <div className="lg:col-span-2 bg-white dark:bg-[#13182E] border border-[#E2E8F0] dark:border-[#1E2640] rounded-lg flex flex-col">
-              {selectedConversation && currentConversation ? (
-                <>
-                  {/* Chat Header */}
-                  <div className="p-4 border-b border-[#E2E8F0] dark:border-[#1E2640] flex justify-between items-center bg-gray-50/50 dark:bg-gray-800/10">
-                    <div className="flex items-center gap-3">
-                      {currentConversation.other_user_avatar ? (
-                        <img
-                          src={currentConversation.other_user_avatar}
-                          alt={currentConversation.other_user_name}
-                          className="w-10 h-10 rounded-full"
-                        />
-                      ) : (
-                        <div className="w-10 h-10 rounded-full bg-workflow-primary/10 flex items-center justify-center">
-                          <Icon name="User" size={20} className="text-workflow-primary" />
-                        </div>
-                      )}
-                      <div>
-                        <p className="font-medium text-[#0F172A] dark:text-[#E8EAED]">
-                          {currentConversation.other_user_name || 'Unknown User'}
-                        </p>
-                        <div className="flex items-center gap-2">
-                          <p className="text-xs text-[#64748B] dark:text-[#8B92A3] capitalize">
-                            {currentConversation.other_user_role || 'User'}
-                          </p>
-                          <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
-                        </div>
-                      </div>
+            <div className="flex-1 overflow-y-auto px-4 py-4 space-y-2 custom-scrollbar">
+              {filteredConversations.map((conv) => (
+                <button
+                  key={conv.id}
+                  onClick={() => handleSelectConversation(conv.id)}
+                  className={`w-full group p-6 rounded-[2rem] transition-all duration-500 flex items-center gap-5 border ${selectedConversation === conv.id
+                      ? 'bg-blue-600 border-blue-500 shadow-2xl shadow-blue-500/20'
+                      : 'bg-white/5 border-transparent hover:border-white/10 hover:bg-white/[0.07]'
+                    }`}
+                >
+                  <div className="relative">
+                    <div className="w-14 h-14 rounded-2xl overflow-hidden border border-white/10 p-1 bg-white/5">
+                      <img
+                        src={conv.other_user_avatar || `https://api.dicebear.com/7.x/bottts/svg?seed=${conv.other_user_id}`}
+                        className="w-full h-full object-cover rounded-xl"
+                        alt=""
+                      />
                     </div>
+                    {conv.unread_count > 0 && (
+                      <div className="absolute -top-1 -right-1 w-6 h-6 bg-red-500 rounded-lg flex items-center justify-center border-2 border-[#0D1929] animate-pulse">
+                        <span className="text-[10px] font-black">{conv.unread_count}</span>
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex-1 min-w-0 text-left">
+                    <div className="flex justify-between items-start">
+                      <h4 className={`text-sm font-black uppercase tracking-tight truncate ${selectedConversation === conv.id ? 'text-white' : 'text-slate-200 group-hover:text-white'}`}>
+                        {conv.other_user_name}
+                      </h4>
+                      <span className={`text-[10px] font-black uppercase opacity-50 ${selectedConversation === conv.id ? 'text-white' : 'text-slate-400'}`}>
+                        {conv.last_message_at ? formatDistanceToNow(new Date(conv.last_message_at), { addSuffix: false }).replace('about ', '') : ''}
+                      </span>
+                    </div>
+                    <p className={`text-xs mt-1 truncate ${selectedConversation === conv.id ? 'text-blue-100' : 'text-slate-500'}`}>
+                      {conv.last_message || 'SECURE CONNECTION ACTIVE'}
+                    </p>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
 
-                    {/* Vibe Check Button */}
-                    <div className="flex items-center gap-2">
-                      <button
-                        onClick={handleVibeCheck}
-                        disabled={talentAiLoading}
-                        className="text-xs flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-purple-100 text-purple-700 hover:bg-purple-200 dark:bg-purple-900/30 dark:text-purple-300 transition-colors"
-                        title="Analyze Client Sentiment"
-                      >
-                        <Icon name="Activity" size={14} />
-                        {talentAiLoading ? 'Analyzing...' : 'Vibe Check'}
-                      </button>
+          {/* Chat Window */}
+          <div className="lg:col-span-8 xl:col-span-9 flex flex-col bg-white/5 backdrop-blur-3xl rounded-[3rem] border border-white/5 overflow-hidden relative">
+            {selectedConversation ? (
+              <>
+                {/* Header */}
+                <div className="p-8 border-b border-white/5 flex items-center justify-between bg-white/[0.02]">
+                  <div className="flex items-center gap-6">
+                    <div className="w-12 h-12 rounded-2xl overflow-hidden border border-white/10 p-0.5 bg-white/5">
+                      <img
+                        src={currentConversation?.other_user_avatar || `https://api.dicebear.com/7.x/bottts/svg?seed=${currentConversation?.other_user_id}`}
+                        className="w-full h-full object-cover rounded-xl"
+                        alt=""
+                      />
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-black uppercase tracking-tight text-white flex items-center gap-3">
+                        {currentConversation?.other_user_name}
+                        <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse shadow-lg shadow-green-500/50" />
+                      </h3>
+                      <p className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] mt-0.5">
+                        {currentConversation?.other_user_role} registry // verified status
+                      </p>
                     </div>
                   </div>
 
-                  {/* Vibe Analysis Result - Collapsible */}
-                  {vibeAnalysis && (
-                    <div className="p-3 bg-purple-50 dark:bg-purple-900/20 border-b border-purple-100 dark:border-purple-800/50 flex items-start gap-3 relative animate-in fade-in slide-in-from-top-2">
-                      <div className={`p-2 rounded-full ${vibeAnalysis.risk_score > 70 ? 'bg-red-100 text-red-600' : vibeAnalysis.risk_score > 40 ? 'bg-yellow-100 text-yellow-600' : 'bg-green-100 text-green-600'}`}>
-                        <Icon name={vibeAnalysis.risk_score > 70 ? 'AlertTriangle' : 'CheckCircle'} size={18} />
-                      </div>
-                      <div className="flex-1">
-                        <div className="flex justify-between items-start">
-                          <h4 className="text-sm font-semibold text-purple-900 dark:text-purple-100">Sentiment Analysis</h4>
-                          <button onClick={() => setVibeAnalysis(null)} className="text-purple-400 hover:text-purple-600"><Icon name="X" size={14} /></button>
-                        </div>
-                        <p className="text-xs text-purple-800 dark:text-purple-200 mt-1">{vibeAnalysis.analysis}</p>
-                        {vibeAnalysis.recommendation && (
-                          <div className="mt-2 text-xs font-medium bg-white/50 dark:bg-black/20 p-2 rounded">
-                            💡 Tip: {vibeAnalysis.recommendation}
+                  <div className="flex items-center gap-3">
+                    <button
+                      onClick={handleVibeCheck}
+                      disabled={talentAiLoading}
+                      className="px-6 py-3 bg-purple-500/10 hover:bg-purple-500/20 text-purple-400 rounded-xl border border-purple-500/20 text-[10px] font-black uppercase tracking-widest flex items-center gap-2 transition-all active:scale-95"
+                    >
+                      <Icon name="Activity" size={14} />
+                      Neural Vibe Check
+                    </button>
+                    <button className="p-3 bg-white/5 hover:bg-white/10 text-slate-400 rounded-xl border border-white/5 transition-all">
+                      <Icon name="MoreVertical" size={18} />
+                    </button>
+                  </div>
+                </div>
+
+                {/* Messages Body */}
+                <div className="flex-1 overflow-y-auto p-10 space-y-8 custom-scrollbar relative">
+                  <AnimatePresence>
+                    {messages.map((msg, i) => {
+                      const isOwn = msg.sender_id === user.id;
+                      return (
+                        <motion.div
+                          initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                          animate={{ opacity: 1, y: 0, scale: 1 }}
+                          key={msg.id || i}
+                          className={`flex ${isOwn ? 'justify-end' : 'justify-start'}`}
+                        >
+                          <div className={`max-w-[75%] lg:max-w-[60%] flex flex-col ${isOwn ? 'items-end' : 'items-start'}`}>
+                            <div className={`px-8 py-5 rounded-[2rem] text-sm leading-relaxed ${isOwn
+                                ? 'bg-blue-600 text-white rounded-tr-none shadow-xl shadow-blue-500/20'
+                                : 'bg-white/5 text-slate-200 rounded-tl-none border border-white/5 backdrop-blur-md'
+                              }`}>
+                              {msg.message}
+                            </div>
+                            <span className="text-[9px] font-black text-slate-600 uppercase mt-2 tracking-widest px-2">
+                              {formatDistanceToNow(new Date(msg.created_at), { addSuffix: true })}
+                              {isOwn && msg.is_read && <span className="ml-2 text-blue-500">✓ DELIVERED</span>}
+                            </span>
                           </div>
-                        )}
-                      </div>
-                    </div>
+                        </motion.div>
+                      );
+                    })}
+                  </AnimatePresence>
+                  <div ref={messagesEndRef} />
+                </div>
+
+                {/* Overlays */}
+                <AnimatePresence>
+                  {vibeAnalysis && (
+                    <motion.div
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: 20 }}
+                      className="absolute top-32 right-8 w-80 z-20"
+                    >
+                      <EliteCard className="p-6 border-purple-500/30 bg-purple-950/20 backdrop-blur-3xl shadow-2xl shadow-purple-500/10">
+                        <div className="flex justify-between items-start mb-4">
+                          <div className="flex items-center gap-3">
+                            <div className="p-2 bg-purple-500/20 rounded-lg text-purple-400">
+                              <Icon name="Cpu" size={16} />
+                            </div>
+                            <h4 className="text-[10px] font-black uppercase tracking-widest text-purple-300">Sentience Report</h4>
+                          </div>
+                          <button onClick={() => setVibeAnalysis(null)} className="text-slate-500 hover:text-white"><Icon name="X" size={14} /></button>
+                        </div>
+                        <p className="text-xs text-slate-300 leading-relaxed italic border-l-2 border-purple-500/50 pl-4 mb-4">
+                          "{vibeAnalysis.analysis}"
+                        </p>
+                        <div className="bg-white/5 rounded-xl p-4 border border-white/5">
+                          <p className="text-[10px] font-black text-purple-400 uppercase tracking-widest mb-1">Strategic Advice</p>
+                          <p className="text-[11px] text-slate-400 leading-relaxed">{vibeAnalysis.recommendation}</p>
+                        </div>
+                      </EliteCard>
+                    </motion.div>
                   )}
 
-                  {/* Messages */}
-                  <div className="flex-1 overflow-y-auto p-4 space-y-4">
-                    {messages.length > 0 ? (
-                      messages.map((message) => {
-                        const isOwn = message.sender_id === user?.id;
-                        return (
-                          <div
-                            key={message.id}
-                            className={`flex ${isOwn ? 'justify-end' : 'justify-start'}`}
-                          >
-                            <div
-                              className={`max-w-[70%] rounded-lg p-3 ${isOwn
-                                ? 'bg-workflow-primary text-white'
-                                : 'bg-gray-100 dark:bg-[#1A2139] text-[#0F172A] dark:text-[#E8EAED]'
-                                }`}
-                            >
-                              <p className="text-sm whitespace-pre-wrap">{message.message}</p>
-                              <p
-                                className={`text-xs mt-1 ${isOwn ? 'text-white/70' : 'text-[#64748B] dark:text-[#8B92A3]'
-                                  }`}
-                              >
-                                {formatDistanceToNow(new Date(message.created_at), { addSuffix: true })}
-                                {isOwn && message.is_read && (
-                                  <span className="ml-2">✓✓</span>
-                                )}
-                              </p>
-                            </div>
+                  {upsellSuggestion && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 20 }}
+                      className="absolute bottom-36 left-8 right-8 z-20"
+                    >
+                      <EliteCard className="p-6 border-emerald-500/30 bg-emerald-950/20 backdrop-blur-3xl flex items-center justify-between gap-6">
+                        <div className="flex items-center gap-4">
+                          <div className="p-3 bg-emerald-500/20 rounded-2xl text-emerald-400">
+                            <Icon name="TrendingUp" size={24} />
                           </div>
-                        );
-                      })
-                    ) : (
-                      <div className="text-center py-12">
-                        <Icon name="MessageSquare" className="w-16 h-16 text-[#64748B] dark:text-[#8B92A3] mx-auto mb-4" />
-                        <p className="text-[#64748B] dark:text-[#8B92A3]">No messages yet. Start the conversation!</p>
-                      </div>
-                    )}
-                    {isTyping && (
-                      <div className="flex justify-start">
-                        <div className="bg-gray-100 dark:bg-[#1A2139] rounded-lg p-3">
-                          <div className="flex space-x-2">
-                            <div className="w-2 h-2 bg-[#64748B] dark:bg-[#8B92A3] rounded-full animate-bounce" />
-                            <div className="w-2 h-2 bg-[#64748B] dark:bg-[#8B92A3] rounded-full animate-bounce" style={{ animationDelay: '0.2s' }} />
-                            <div className="w-2 h-2 bg-[#64748B] dark:bg-[#8B92A3] rounded-full animate-bounce" style={{ animationDelay: '0.4s' }} />
+                          <div>
+                            <h4 className="text-xs font-black uppercase tracking-widest text-emerald-300">Revenue Opportunity Detected</h4>
+                            <p className="text-[11px] text-slate-400 mt-1">{upsellSuggestion.reason}</p>
                           </div>
                         </div>
-                      </div>
-                    )}
-                    <div ref={messagesEndRef} />
-                  </div>
+                        <div className="flex gap-3">
+                          <button
+                            onClick={() => {
+                              setNewMessage(upsellSuggestion.suggestion);
+                              setUpsellSuggestion(null);
+                            }}
+                            className="px-6 py-3 bg-emerald-600 text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-emerald-700 transition-all shadow-lg shadow-emerald-500/20"
+                          >
+                            Use Suggestion: {upsellSuggestion.service_name}
+                          </button>
+                          <button onClick={() => setUpsellSuggestion(null)} className="p-3 text-slate-500 hover:text-white"><Icon name="X" size={18} /></button>
+                        </div>
+                      </EliteCard>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
 
-                  {/* AI Upsell Suggestions */}
-                  {upsellSuggestion && (
-                    <div className="px-4 py-2 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/10 dark:to-indigo-900/10 border-t border-indigo-100 dark:border-indigo-800/30">
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="text-xs font-semibold text-indigo-700 dark:text-indigo-300 flex items-center gap-1">
-                          <Icon name="TrendingUp" size={12} /> Opportunity Detected
-                        </span>
-                        <button onClick={() => setUpsellSuggestion(null)} className="text-indigo-400 hover:text-indigo-600"><Icon name="X" size={12} /></button>
-                      </div>
-                      <p className="text-xs text-indigo-800 dark:text-indigo-200 mb-2">
-                        {upsellSuggestion.reason}
-                      </p>
-                      <div className="flex gap-2">
+                {/* Input Area */}
+                <div className="p-8 border-t border-white/5 bg-white/[0.02]">
+                  <div className="flex gap-4">
+                    <div className="flex-1 relative">
+                      <textarea
+                        value={newMessage}
+                        onChange={(e) => setNewMessage(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' && !e.shiftKey) {
+                            e.preventDefault();
+                            handleSendMessage();
+                          }
+                        }}
+                        placeholder="ENTER NEURAL COMMAND..."
+                        rows={2}
+                        className="w-full pl-6 pr-32 py-5 bg-white/5 border border-white/5 rounded-3xl text-sm outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition-all resize-none custom-scrollbar placeholder:text-slate-600"
+                      />
+                      <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-2">
+                        <button
+                          onClick={handleSmartUpsell}
+                          className="p-3 bg-white/5 hover:bg-white/10 text-emerald-500 rounded-xl transition-all"
+                          title="Strategic Upsell"
+                        >
+                          <Icon name="DollarSign" size={18} />
+                        </button>
                         <button
                           onClick={() => {
-                            setNewMessage(upsellSuggestion.suggestion);
-                            setUpsellSuggestion(null);
+                            setMessageToImprove(newMessage);
+                            setShowImproveMessage(true);
                           }}
-                          className="text-xs bg-indigo-600 text-white px-3 py-1.5 rounded-full hover:bg-indigo-700 transition-colors"
+                          disabled={!newMessage.trim()}
+                          className="p-3 bg-white/5 hover:bg-white/10 text-blue-400 rounded-xl transition-all disabled:opacity-30"
+                          title="Neural Enhancement"
                         >
-                          Suggest: "{upsellSuggestion.service_name}"
+                          <Icon name="Sparkles" size={18} />
                         </button>
                       </div>
                     </div>
-                  )}
+                    <button
+                      onClick={handleSendMessage}
+                      disabled={!newMessage.trim()}
+                      className="px-10 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 disabled:scale-100 active:scale-95 text-white rounded-[2rem] transition-all shadow-xl shadow-blue-500/20 flex items-center gap-3"
+                    >
+                      <span className="font-black uppercase tracking-widest text-xs hidden sm:inline">Transmit</span>
+                      <Icon name="Send" size={18} />
+                    </button>
+                  </div>
 
-                  {/* AI Message Suggestions */}
-                  {aiSuggestions.length > 0 && !upsellSuggestion && (
+                  {/* AI Suggestions Row */}
+                  <div className="mt-4 overflow-x-auto h-12 flex items-center">
                     <AIMessageSuggestions
-                      suggestions={aiSuggestions}
-                      onUseSuggestion={handleUseSuggestion}
-                      loading={loadingSuggestions}
+                      conversationId={selectedConversation}
+                      onSelect={(val) => setNewMessage(val)}
                     />
-                  )}
-
-                  {/* Message Input */}
-                  <form onSubmit={handleSendMessage} className="p-4 border-t border-[#E2E8F0] dark:border-[#1E2640]">
-                    <div className="flex items-end gap-2 mb-2">
-                      <div className="flex-1 relative">
-                        <textarea
-                          value={newMessage}
-                          onChange={(e) => setNewMessage(e.target.value)}
-                          placeholder="Type a message..."
-                          rows={3}
-                          className="w-full px-4 py-2 border border-[#E2E8F0] dark:border-[#1E2640] rounded-lg bg-white dark:bg-[#13182E] text-[#0F172A] dark:text-[#E8EAED] focus:outline-none focus:ring-2 focus:ring-workflow-primary resize-none"
-                        />
-                        <div className="absolute bottom-2 right-2 flex gap-1">
-                          {/* Smart Upsell Trigger */}
-                          <button
-                            type="button"
-                            onClick={handleSmartUpsell}
-                            className="p-1.5 bg-green-50 hover:bg-green-100 text-green-600 rounded transition-colors"
-                            title="Check for Upsell Opportunities"
-                          >
-                            <Icon name="DollarSign" size={16} />
-                          </button>
-
-                          {newMessage.trim() && (
-                            <button
-                              type="button"
-                              onClick={handleImproveMessage}
-                              className="p-1.5 bg-workflow-primary/10 hover:bg-workflow-primary/20 rounded text-workflow-primary transition-colors"
-                              title="Improve message with AI"
-                            >
-                              <Icon name="Sparkles" size={16} />
-                            </button>
-                          )}
-                        </div>
-                      </div>
-                      <button
-                        type="submit"
-                        disabled={!newMessage.trim() || isTyping}
-                        className="px-4 py-2 bg-workflow-primary text-white rounded-lg hover:bg-workflow-primary-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                      >
-                        <Icon name="Send" size={20} />
-                      </button>
-                    </div>
-                    <div className="flex items-center justify-between text-xs text-[#64748B] dark:text-[#8B92A3]">
-                      <div className="flex items-center gap-2">
-                        <Icon name="Sparkles" size={12} />
-                        <span>AI-powered suggestions available</span>
-                      </div>
-                      <span>Press Enter to send, Shift+Enter for new line</span>
-                    </div>
-                  </form>
-                </>
-              ) : (
-                <div className="flex-1 flex items-center justify-center">
-                  <div className="text-center">
-                    <Icon name="MessageSquare" className="w-16 h-16 text-[#64748B] dark:text-[#8B92A3] mx-auto mb-4" />
-                    <p className="text-[#64748B] dark:text-[#8B92A3]">Select a conversation to start messaging</p>
                   </div>
                 </div>
-              )}
-            </div>
+              </>
+            ) : (
+              <div className="flex-1 flex items-center justify-center p-20 text-center">
+                <div className="max-w-md">
+                  <div className="w-32 h-32 bg-white/5 rounded-[3rem] border border-white/10 flex items-center justify-center mx-auto mb-10 group hover:border-blue-500/50 transition-all duration-700">
+                    <Icon name="MessageSquare" size={48} className="text-slate-700 group-hover:text-blue-500 transition-colors duration-700" />
+                  </div>
+                  <h2 className="text-3xl font-black uppercase tracking-tight text-white mb-4">Awaiting Signal</h2>
+                  <p className="text-sm text-slate-500 uppercase tracking-widest leading-relaxed">
+                    Select a neural frequency from the lateral registry to initiate secure stakeholder communication.
+                  </p>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
 
-      {/* Message Improvement Modal */}
-      {showImproveMessage && (
-        <MessageImprovement
-          originalMessage={messageToImprove}
-          onImproved={handleMessageImproved}
-          onClose={() => {
-            setShowImproveMessage(false);
-            setMessageToImprove('');
-          }}
-        />
-      )}
+      {/* Modals */}
+      <AnimatePresence>
+        {showImproveMessage && (
+          <MessageImprovement
+            originalMessage={messageToImprove}
+            onImproved={(val) => {
+              setNewMessage(val);
+              setShowImproveMessage(false);
+            }}
+            onClose={() => setShowImproveMessage(false)}
+          />
+        )}
+      </AnimatePresence>
+
+      <style jsx>{`
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 5px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: #059669;
+          border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: #047857;
+        }
+      `}</style>
     </div>
   );
 };

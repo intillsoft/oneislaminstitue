@@ -30,6 +30,14 @@ export function requireFeature(feature) {
       }
 
       const tier = user.subscription_tier || 'free';
+      const isAdmin = user.role === 'admin';
+
+      // Admin bypass
+      if (isAdmin) {
+        req.userTier = 'pro'; // Treat as pro for feature access
+        req.isAdmin = true;
+        return next();
+      }
 
       // Check feature access
       if (!hasFeatureAccess(tier, feature)) {
@@ -69,6 +77,14 @@ export function checkUsageLimit(feature) {
         .single();
 
       const tier = user?.subscription_tier || 'free';
+      const isAdmin = user?.role === 'admin';
+
+      // Admin bypass
+      if (isAdmin) {
+        req.userTier = 'pro';
+        req.isAdmin = true;
+        return next();
+      }
 
       // Get current usage
       const currentUsage = await getUsageCount(req.supabase, userId, feature);
@@ -106,13 +122,13 @@ export function requireFeatureWithLimit(feature) {
  */
 function getRequiredTierForFeature(feature) {
   const tiers = ['free', 'basic', 'premium', 'pro'];
-  
+
   for (const tier of tiers) {
     if (hasFeatureAccess(tier, feature)) {
       return tier;
     }
   }
-  
+
   return 'pro';
 }
 
@@ -121,7 +137,7 @@ function getRequiredTierForFeature(feature) {
  */
 export function requireTier(minTier) {
   const tierOrder = { free: 0, basic: 1, premium: 2, pro: 3 };
-  
+
   return async (req, res, next) => {
     try {
       const userId = req.user?.id;
@@ -136,6 +152,15 @@ export function requireTier(minTier) {
         .single();
 
       const currentTier = user?.subscription_tier || 'free';
+      const isAdmin = user?.role === 'admin';
+
+      // Admin bypass
+      if (isAdmin) {
+        req.userTier = 'pro';
+        req.isAdmin = true;
+        return next();
+      }
+
       const currentTierLevel = tierOrder[currentTier] || 0;
       const requiredTierLevel = tierOrder[minTier] || 0;
 

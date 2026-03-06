@@ -6,6 +6,8 @@ import { adminService } from '../../../services/adminService';
 import { useAuthContext } from '../../../contexts/AuthContext';
 import { useToast } from '../../../components/ui/Toast';
 
+import { EliteCard } from '../../../components/ui/EliteCard';
+
 const AuditTrail = () => {
   const { user, profile } = useAuthContext();
   const { error: showError } = useToast();
@@ -17,356 +19,162 @@ const AuditTrail = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (user && profile?.role === 'admin') {
-      loadAuditActivities();
-    } else {
-      setLoading(false);
-    }
+    if (user && profile?.role === 'admin') loadAuditActivities();
+    else setLoading(false);
   }, [user, profile, filterUser, filterAction, dateRange, searchTerm]);
 
   const loadAuditActivities = async () => {
     try {
       setLoading(true);
-      const filters = {
-        userRole: filterUser === 'all' ? undefined : filterUser,
-        actionType: filterAction === 'all' ? undefined : filterAction,
-        dateRange,
-        searchTerm,
-      };
-      const activities = await adminService.getAuditTrail(filters);
+      const activities = await adminService.getAuditTrail({ userRole: filterUser === 'all' ? undefined : filterUser, actionType: filterAction === 'all' ? undefined : filterAction, dateRange, searchTerm });
       setAuditActivities(activities || []);
     } catch (error) {
-      console.error('Error loading audit activities:', error);
-      showError('Failed to load audit trail');
-      setAuditActivities([]);
+      showError('Failed to sync audit logs');
     } finally {
       setLoading(false);
     }
   };
 
-  const getActionColor = (action) => {
-    switch (action) {
-      case 'user_suspended': return 'text-red-700 bg-red-100';
-      case 'job_approved': return 'text-green-700 bg-green-100';
-      case 'content_rejected': return 'text-red-700 bg-red-100';
-      case 'coupon_created': return 'text-blue-700 bg-blue-100';
-      case 'settings_updated': return 'text-purple-700 bg-purple-100';
-      case 'user_verified': return 'text-green-700 bg-green-100';
-      default: return 'text-gray-700 bg-gray-100';
-    }
-  };
-
-  const getActionIcon = (action) => {
-    switch (action) {
-      case 'user_suspended': return 'UserX';
-      case 'job_approved': return 'CheckCircle';
-      case 'content_rejected': return 'XCircle';
-      case 'coupon_created': return 'Tag';
-      case 'settings_updated': return 'Settings';
-      case 'user_verified': return 'UserCheck';
-      default: return 'Activity';
-    }
-  };
-
-  const getRoleColor = (role) => {
-    switch (role) {
-      case 'admin': return 'text-red-700 bg-red-100';
-      case 'moderator': return 'text-purple-700 bg-purple-100';
-      case 'user': return 'text-blue-700 bg-blue-100';
-      default: return 'text-gray-700 bg-gray-100';
-    }
-  };
-
-  const filteredActivities = auditActivities?.filter(activity => {
-    const matchesUser = filterUser === 'all' || activity?.user?.role === filterUser;
-    const matchesAction = filterAction === 'all' || activity?.action === filterAction;
-    const matchesSearch = searchTerm === '' || 
-      activity?.target?.toLowerCase()?.includes(searchTerm?.toLowerCase()) ||
-      activity?.details?.toLowerCase()?.includes(searchTerm?.toLowerCase()) ||
-      activity?.user?.name?.toLowerCase()?.includes(searchTerm?.toLowerCase());
-    
-    return matchesUser && matchesAction && matchesSearch;
-  });
-
-  if (loading) {
-    return (
-      <div className="space-y-6">
-        <div className="card bg-background dark:bg-[#13182E] border border-border dark:border-gray-700 p-6">
-          <div className="animate-pulse space-y-4">
-            <div className="h-6 bg-surface-200 dark:bg-surface-700 rounded w-1/4"></div>
-            <div className="h-32 bg-surface-200 dark:bg-surface-700 rounded"></div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  const exportAuditTrail = () => {
-    console.log('Exporting audit trail for date range:', dateRange);
-    // Implement export functionality
+  const getActionConfig = (action) => {
+    const config = {
+      user_suspended: { color: 'text-rose-500', icon: 'UserX' },
+      job_approved: { color: 'text-emerald-500', icon: 'CheckCircle' },
+      content_rejected: { color: 'text-rose-500', icon: 'XCircle' },
+      settings_updated: { color: 'text-blue-500', icon: 'Settings' },
+    };
+    return config[action] || { color: 'text-slate-500', icon: 'Activity' };
   };
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div>
-        <h2 className="text-xl font-semibold text-text-primary dark:text-white">Audit Trail</h2>
-        <p className="text-sm text-text-secondary dark:text-gray-400 mt-1">
-          Comprehensive activity logging with user attribution and timestamp tracking
-        </p>
-      </div>
-      {/* Filters */}
-      <div className="card bg-background dark:bg-[#13182E] border border-border dark:border-gray-700">
-        <div className="p-6">
-          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
-            <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-3">
-              {/* Search */}
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Icon name="Search" size={16} className="text-text-secondary" />
-                </div>
-                <input
-                  type="text"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e?.target?.value)}
-                  placeholder="Search activities..."
-                  className="input-field pl-10 w-full sm:w-64"
-                />
-              </div>
-              
-              {/* User Filter */}
-              <select
-                value={filterUser}
-                onChange={(e) => setFilterUser(e?.target?.value)}
-                className="input-field"
-              >
-                <option value="all">All Users</option>
-                <option value="admin">Admins</option>
-                <option value="moderator">Moderators</option>
-                <option value="user">Users</option>
-              </select>
-              
-              {/* Action Filter */}
-              <select
-                value={filterAction}
-                onChange={(e) => setFilterAction(e?.target?.value)}
-                className="input-field"
-              >
-                <option value="all">All Actions</option>
-                <option value="user_suspended">User Suspensions</option>
-                <option value="job_approved">Job Approvals</option>
-                <option value="content_rejected">Content Rejections</option>
-                <option value="coupon_created">Coupon Creation</option>
-                <option value="settings_updated">Settings Updates</option>
-                <option value="user_verified">User Verifications</option>
-              </select>
-              
-              {/* Date Range */}
-              <select
-                value={dateRange}
-                onChange={(e) => setDateRange(e?.target?.value)}
-                className="input-field"
-              >
-                <option value="1d">Last 24 hours</option>
-                <option value="7d">Last 7 days</option>
-                <option value="30d">Last 30 days</option>
-                <option value="90d">Last 90 days</option>
-                <option value="all">All time</option>
-              </select>
-            </div>
-            
-            <div className="flex space-x-2">
-              <button 
-                onClick={exportAuditTrail}
-                className="btn-secondary flex items-center space-x-2"
-              >
-                <Icon name="Download" size={16} />
-                <span>Export</span>
-              </button>
-              <button className="btn-primary flex items-center space-x-2">
-                <Icon name="RefreshCw" size={16} />
-                <span>Refresh</span>
-              </button>
-            </div>
+    <div className="space-y-10">
+      <div className="flex flex-col xl:flex-row items-start xl:items-center justify-between gap-8 px-4">
+        <div>
+          <h2 className="text-2xl font-black text-white uppercase tracking-tight">System Audit Registry</h2>
+          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 mt-1">Platform Activity & Forensic Governance</p>
+        </div>
+
+        <div className="flex flex-wrap items-center gap-3">
+          <div className="relative group">
+            <Icon name="Search" size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-600 group-hover:text-blue-500 transition-colors" />
+            <input
+              type="text"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="SEARCH LOGS..."
+              className="bg-white/5 border border-white/5 rounded-xl pl-10 pr-6 py-2.5 text-[10px] font-black uppercase tracking-widest text-white focus:outline-none focus:bg-white/10 transition-all w-64"
+            />
           </div>
+          <select value={dateRange} onChange={(e) => setDateRange(e.target.value)} className="appearance-none bg-white/5 border border-white/5 rounded-xl px-6 py-2.5 text-[10px] font-black uppercase tracking-widest text-slate-300 focus:outline-none hover:bg-white/10 transition-all">
+            <option value="1d">LAST 24H</option>
+            <option value="7d">LAST 7D</option>
+            <option value="30d">LAST 30D</option>
+          </select>
+          <button className="px-6 py-2.5 bg-blue-600 rounded-xl text-[10px] font-black uppercase tracking-widest text-white hover:bg-blue-700 transition-all shadow-lg shadow-blue-500/20 flex items-center gap-3">
+            <Icon name="Download" size={14} />
+            EXPORT LOGS
+          </button>
         </div>
       </div>
-      {/* Activity Timeline */}
-      <div className="card bg-background dark:bg-[#13182E] border border-border dark:border-gray-700">
-        <div className="p-6">
-          <h3 className="text-lg font-medium text-text-primary dark:text-white mb-6">Activity Timeline</h3>
-          {filteredActivities.length === 0 ? (
-            <div className="text-center py-12 text-text-secondary dark:text-gray-400">
-              <Icon name="Activity" size={48} className="mx-auto mb-4 opacity-50" />
-              <p>No audit activities found</p>
-              <p className="text-sm mt-1">Activity logs will appear here</p>
-            </div>
-          ) : (
-            <div className="space-y-6">
-              {filteredActivities?.map((activity, index) => (
-                <div key={activity?.id} className="relative">
-                  {/* Timeline Line */}
-                  {index < filteredActivities?.length - 1 && (
-                    <div className="absolute left-6 top-12 bottom-0 w-0.5 bg-border dark:bg-gray-700"></div>
-                  )}
-                  
-                  <div className="flex items-start space-x-4">
-                    {/* Action Icon */}
-                    <div className="w-12 h-12 bg-surface-100 dark:bg-surface-800 rounded-full flex items-center justify-center flex-shrink-0">
-                      <Icon name={getActionIcon(activity?.action)} size={20} className="text-text-secondary dark:text-gray-400" />
-                    </div>
-                    
-                    {/* Activity Content */}
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-start justify-between">
-                        <div className="flex-1">
-                          {/* Activity Header */}
-                          <div className="flex flex-wrap items-center gap-3 mb-2">
-                            <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${getActionColor(activity?.action)}`}>
-                              {activity?.action?.replace('_', ' ')?.toUpperCase()}
+
+      <div className="grid grid-cols-1 xl:grid-cols-12 gap-10">
+        <div className="xl:col-span-8 space-y-6">
+          <EliteCard className="p-10 border-white/5 bg-white/[0.01]">
+            <h3 className="text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] mb-12">Forensic Timeline</h3>
+
+            {loading ? (
+              <div className="space-y-8 animate-pulse">
+                {[...Array(3)].map((_, i) => <div key={i} className="h-24 bg-white/5 rounded-2xl w-full" />)}
+              </div>
+            ) : auditActivities.length === 0 ? (
+              <div className="text-center py-20">
+                <Icon name="Inbox" size={48} className="text-slate-800 mx-auto mb-6" />
+                <p className="text-[10px] font-black text-slate-600 uppercase tracking-widest">No activities detected in current scope</p>
+              </div>
+            ) : (
+              <div className="space-y-12">
+                {auditActivities.map((activity, index) => {
+                  const config = getActionConfig(activity.action);
+                  return (
+                    <div key={activity.id} className="relative pl-16">
+                      {index < auditActivities.length - 1 && (
+                        <div className="absolute left-[31px] top-12 bottom-[-48px] w-[1px] bg-white/[0.03]" />
+                      )}
+
+                      <div className="absolute left-0 top-0 w-16 h-16 rounded-2xl bg-white/[0.02] border border-white/5 flex items-center justify-center group-hover:border-blue-500/50 transition-colors">
+                        <Icon name={config.icon} size={20} className={config.color} />
+                      </div>
+
+                      <div className="group relative">
+                        <div className="flex items-center justify-between mb-2">
+                          <div className="flex items-center gap-4">
+                            <span className={`text-[10px] font-black uppercase tracking-[0.2em] ${config.color}`}>
+                              {activity.action.replace('_', ' ')}
                             </span>
-                            <span className="text-sm text-text-secondary dark:text-gray-400">{activity?.timestamp}</span>
+                            <div className="w-1 h-1 rounded-full bg-slate-800" />
+                            <span className="text-[10px] font-black text-slate-600 uppercase tracking-widest font-mono">{activity.timestamp}</span>
                           </div>
-                          
-                          {/* User Info */}
-                          {activity?.user && (
-                            <div className="flex items-center space-x-3 mb-3">
-                              <Image 
-                                src={activity?.user?.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(activity?.user?.name || 'User')}`} 
-                                alt={activity?.user?.name}
-                                className="w-8 h-8 rounded-full object-cover"
-                              />
-                              <div>
-                                <span className="text-sm font-medium text-text-primary dark:text-white">{activity?.user?.name}</span>
-                                {activity?.user?.role && (
-                                  <span className={`ml-2 inline-flex px-2 py-0.5 text-xs font-medium rounded-full ${getRoleColor(activity?.user?.role)}`}>
-                                    {activity?.user?.role}
-                                  </span>
-                                )}
-                              </div>
-                            </div>
-                          )}
-                          
-                          {/* Activity Details */}
-                          <div className="space-y-2">
-                            {activity?.target && (
-                              <div>
-                                <span className="text-sm font-medium text-text-primary dark:text-white">Target: </span>
-                                <span className="text-sm text-text-secondary dark:text-gray-400">{activity?.target}</span>
-                              </div>
-                            )}
-                            {activity?.details && (
-                              <div>
-                                <span className="text-sm font-medium text-text-primary dark:text-white">Action: </span>
-                                <span className="text-sm text-text-secondary dark:text-gray-400">{activity?.details}</span>
-                              </div>
-                            )}
-                            
-                            {/* Changes */}
-                            {activity?.changes && (
-                              <div className="mt-3 p-3 bg-surface-50 dark:bg-surface-800 rounded-lg">
-                                <h4 className="text-sm font-medium text-text-primary dark:text-white mb-2">Changes Made:</h4>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                                  {activity?.changes?.before && (
-                                    <div>
-                                      <span className="text-xs font-medium text-red-600 dark:text-red-400">Before:</span>
-                                      <pre className="text-xs text-text-secondary dark:text-gray-400 mt-1 font-mono bg-red-50 dark:bg-red-900/20 p-2 rounded">
-                                        {JSON.stringify(activity?.changes?.before, null, 2)}
-                                      </pre>
-                                    </div>
-                                  )}
-                                  <div>
-                                    <span className="text-xs font-medium text-green-600 dark:text-green-400">After:</span>
-                                    <pre className="text-xs text-text-secondary dark:text-gray-400 mt-1 font-mono bg-green-50 dark:bg-green-900/20 p-2 rounded">
-                                      {JSON.stringify(activity?.changes?.after, null, 2)}
-                                    </pre>
-                                  </div>
-                                </div>
-                              </div>
-                            )}
-                            
-                            {/* Technical Details */}
-                            {(activity?.ipAddress || activity?.userAgent) && (
-                              <div className="mt-3 text-xs text-text-secondary dark:text-gray-400 space-y-1">
-                                {activity?.ipAddress && <div>IP Address: {activity?.ipAddress}</div>}
-                                {activity?.userAgent && <div>User Agent: {activity?.userAgent?.substring(0, 60)}...</div>}
-                              </div>
-                            )}
+                          <button className="text-[9px] font-black text-slate-500 uppercase tracking-widest hover:text-white transition-colors">Trace ID: {activity.id.slice(0, 8)}</button>
+                        </div>
+
+                        <div className="flex items-center gap-4 mb-4">
+                          <div className="w-8 h-8 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center font-black text-[10px] text-white">
+                            {activity.user?.name?.charAt(0)}
+                          </div>
+                          <div>
+                            <p className="text-[11px] font-black text-white uppercase tracking-tight">{activity.user?.name}</p>
+                            <p className="text-[9px] font-bold text-slate-600 uppercase tracking-widest">Access Level: {activity.user?.role}</p>
                           </div>
                         </div>
-                        
-                        {/* Action Menu */}
-                        <div className="flex space-x-2">
-                          <button className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 text-sm font-medium">
-                            View Details
-                          </button>
-                          <button className="text-gray-600 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 text-sm font-medium">
-                            Export
-                          </button>
+
+                        <div className="p-6 rounded-2xl bg-white/[0.02] border border-white/5 space-y-3">
+                          {activity.target && <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Target Asset: <span className="text-white">{activity.target}</span></p>}
+                          <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider leading-relaxed">{activity.details}</p>
                         </div>
                       </div>
                     </div>
+                  );
+                })}
+              </div>
+            )}
+          </EliteCard>
+        </div>
+
+        <div className="xl:col-span-4 space-y-6">
+          <EliteCard className="p-8 border-white/5 bg-blue-600 shadow-[0_0_50px_rgba(37,99,235,0.2)]">
+            <Icon name="Activity" size={24} className="text-white mb-6" />
+            <h3 className="text-[10px] font-black text-white/60 uppercase tracking-[0.2em] mb-1">Session Integrity</h3>
+            <p className="text-2xl font-black text-white uppercase tracking-tight">Verified Profile</p>
+            <div className="mt-8 pt-8 border-t border-white/20">
+              <div className="flex items-center justify-between text-[10px] font-black text-white uppercase tracking-widest">
+                <span>Telemetry Score</span>
+                <span>99.9%</span>
+              </div>
+              <div className="w-full h-1 bg-white/20 rounded-full mt-3 overflow-hidden">
+                <div className="w-full h-full bg-white shadow-[0_0_10px_#fff]" />
+              </div>
+            </div>
+          </EliteCard>
+
+          <EliteCard className="p-8 border-white/5 bg-white/[0.01]">
+            <h3 className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] mb-8">Governance Matrix</h3>
+            <div className="space-y-8">
+              {[
+                { label: 'Security Protocols', value: 45, color: 'bg-rose-500' },
+                { label: 'Asset Sync', value: 30, color: 'bg-blue-500' },
+                { label: 'Registry Update', value: 25, color: 'bg-emerald-500' },
+              ].map((item) => (
+                <div key={item.label} className="space-y-3">
+                  <div className="flex items-center justify-between text-[10px] font-black uppercase tracking-widest">
+                    <span className="text-slate-500">{item.label}</span>
+                    <span className="text-white">{item.value}%</span>
+                  </div>
+                  <div className="w-full h-1.5 bg-white/5 rounded-full overflow-hidden">
+                    <div className={`h-full ${item.color} shadow-[0_0_10px_rgba(0,0,0,0.5)]`} style={{ width: `${item.value}%` }} />
                   </div>
                 </div>
               ))}
             </div>
-          )}
-        </div>
-      </div>
-      {/* Summary Stats */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="card p-4 bg-background dark:bg-[#13182E] border border-border dark:border-gray-700">
-          <div className="flex items-center">
-            <div className="w-8 h-8 bg-blue-100 dark:bg-blue-900/20 rounded-lg flex items-center justify-center">
-              <Icon name="Activity" size={16} className="text-blue-600 dark:text-blue-400" />
-            </div>
-            <div className="ml-3">
-              <p className="text-sm font-medium text-text-primary dark:text-white">Total Activities</p>
-              <p className="text-lg font-bold text-blue-600 dark:text-blue-400">{filteredActivities?.length}</p>
-            </div>
-          </div>
-        </div>
-        
-        <div className="card p-4 bg-background dark:bg-[#13182E] border border-border dark:border-gray-700">
-          <div className="flex items-center">
-            <div className="w-8 h-8 bg-green-100 dark:bg-green-900/20 rounded-lg flex items-center justify-center">
-              <Icon name="CheckCircle" size={16} className="text-green-600 dark:text-green-400" />
-            </div>
-            <div className="ml-3">
-              <p className="text-sm font-medium text-text-primary dark:text-white">Approvals</p>
-              <p className="text-lg font-bold text-green-600 dark:text-green-400">
-                {filteredActivities?.filter(a => a?.action?.includes('approved'))?.length}
-              </p>
-            </div>
-          </div>
-        </div>
-        
-        <div className="card p-4 bg-background dark:bg-[#13182E] border border-border dark:border-gray-700">
-          <div className="flex items-center">
-            <div className="w-8 h-8 bg-red-100 dark:bg-red-900/20 rounded-lg flex items-center justify-center">
-              <Icon name="XCircle" size={16} className="text-red-600 dark:text-red-400" />
-            </div>
-            <div className="ml-3">
-              <p className="text-sm font-medium text-text-primary dark:text-white">Rejections</p>
-              <p className="text-lg font-bold text-red-600 dark:text-red-400">
-                {filteredActivities?.filter(a => a?.action?.includes('rejected') || a?.action?.includes('suspended'))?.length}
-              </p>
-            </div>
-          </div>
-        </div>
-        
-        <div className="card p-4 bg-background dark:bg-[#13182E] border border-border dark:border-gray-700">
-          <div className="flex items-center">
-            <div className="w-8 h-8 bg-purple-100 dark:bg-purple-900/20 rounded-lg flex items-center justify-center">
-              <Icon name="Settings" size={16} className="text-purple-600 dark:text-purple-400" />
-            </div>
-            <div className="ml-3">
-              <p className="text-sm font-medium text-text-primary dark:text-white">Config Changes</p>
-              <p className="text-lg font-bold text-purple-600 dark:text-purple-400">
-                {filteredActivities?.filter(a => a?.action?.includes('settings') || a?.action?.includes('created'))?.length}
-              </p>
-            </div>
-          </div>
+          </EliteCard>
         </div>
       </div>
     </div>

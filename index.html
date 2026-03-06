@@ -2,32 +2,78 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>Workflow - AI Job Search & Resume Platform</title>
+    <title>One Islam Institute | Structured Islamic Knowledge & Research</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#0046FF" />
-    <meta name="description" content="Workflow - Premium AI-powered job search and resume platform. Find your dream job with intelligent matching and professional tools." />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" type="image/png" href="/favicon.ico" />
-    <link rel="manifest" href="/manifest.json" />
-  
-  <script type="module" async src="https://static.rocket.new/rocket-web.js?_cfg=https%3A%2F%2Fjobboard8483back.builtwithrocket.new&_be=https%3A%2F%2Fapplication.rocket.new&_v=0.1.10"></script>
-  <script type="module" defer src="https://static.rocket.new/rocket-shot.js?v=0.0.1"></script>
-  <script>
-    // Initialize theme before React loads to prevent flash
-    (function() {
-      const theme = localStorage.getItem('theme');
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      const shouldBeDark = theme === 'dark' || (!theme && prefersDark);
-      if (shouldBeDark) {
-        document.documentElement.classList.add('dark');
+    <meta name="theme-color" content="#059669" />
+    <meta
+      name="description"
+      content="One Islam Institute is a premium academic platform offering a structured Islamic curriculum. Access verified research and courses on Fiqh, Seerah, and theology curated by learned Muslims."
+    />
+    <meta name="keywords" content="One Islam Institute, Islamic Education, Islamic Research, Quran Studies, Hadith, Fiqh, Seerah, Islamic Theology, Muslim Education, Structured Islamic Knowledge, Yaqeen Institute, Towards Eternity, Islamic Courses" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://oneislam.institute/" />
+    <meta property="og:title" content="One Islam Institute | Structured Islamic Knowledge & Research" />
+    <meta property="og:description" content="Master the sacred sciences through a cohesive, institutional approach. Curation of verified Islamic research and curriculum." />
+    <meta property="og:image" content="/logo.png" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://oneislam.institute/" />
+    <meta property="twitter:title" content="One Islam Institute | Structured Islamic Knowledge & Research" />
+    <meta property="twitter:description" content="Discover a structured gateway to authentic Islamic knowledge. Verified sources, learned curation, and modern design." />
+    <meta property="twitter:image" content="/logo.png" />
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "EducationalOrganization",
+        "name": "One Islam Institute",
+        "url": "https://oneislam.institute/",
+        "logo": "https://oneislam.institute/logo.png",
+        "description": "Premium academic platform for structured Islamic learning and research curation.",
+        "sameAs": [
+          "https://facebook.com/oneislaminstitute",
+          "https://twitter.com/oneislaminstitute",
+          "https://instagram.com/oneislaminstitute"
+        ]
       }
-    })();
-  </script>
+    </script>
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=3" />
+    <link rel="apple-touch-icon" href="/favicon.svg?v=3" />
+    <link rel="manifest" href="/manifest.json" />
+
+    <script
+      type="module"
+      async
+      src="https://static.rocket.new/rocket-web.js?_cfg=https%3A%2F%2Fjobboard8483back.builtwithrocket.new&_be=https%3A%2F%2Fapplication.rocket.new&_v=0.1.10"
+    ></script>
+    <script
+      type="module"
+      defer
+      src="https://static.rocket.new/rocket-shot.js?v=0.0.1"
+    ></script>
+    <script>
+      // Initialize theme before React loads to prevent flash
+      (function () {
+        const theme = localStorage.getItem("theme");
+        const prefersDark = window.matchMedia(
+          "(prefers-color-scheme: dark)",
+        ).matches;
+        const shouldBeDark = theme === "dark" || (!theme && prefersDark);
+        if (shouldBeDark) {
+          document.documentElement.classList.add("dark");
+        }
+      })();
+    </script>
   </head>
+
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div class="dhiwise-code" id="root"></div>
     <script type="module" src="/src/index.jsx"></script>
-  
-</body>
+  </body>
 </html>

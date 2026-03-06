@@ -15,16 +15,16 @@ const ContactInformationForm = ({ formData, handleChange, errors }) => {
   
   return (
     <div>
-      <div className="mb-6">
-        <h2 className="text-xl font-semibold text-text-primary mb-2">Contact Information</h2>
-        <p className="text-text-secondary">
+      <div className="mb-8">
+        <h2 className="text-xl font-black text-text-primary uppercase tracking-tight mb-2">Contact Information</h2>
+        <p className="text-xs font-medium text-text-muted leading-relaxed">
           Provide contact details for your company. This information will be used for account verification and communication.
         </p>
       </div>
       <div className="space-y-6">
         {/* Contact Name */}
         <div>
-          <label htmlFor="contactName" className="block text-sm font-medium text-text-primary mb-1">
+          <label htmlFor="contactName" className="block text-[10px] font-black text-text-muted uppercase tracking-widest ml-1 mb-2">
             Contact Name <span className="text-error">*</span>
           </label>
           <input
@@ -48,12 +48,12 @@ const ContactInformationForm = ({ formData, handleChange, errors }) => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Contact Email */}
           <div>
-            <label htmlFor="contactEmail" className="block text-sm font-medium text-text-primary mb-1">
+            <label htmlFor="contactEmail" className="block text-[10px] font-black text-text-muted uppercase tracking-widest ml-1 mb-2">
               Contact Email <span className="text-error">*</span>
             </label>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Icon name="Mail" size={16} color="var(--color-secondary-500)" />
+                <Icon name="Mail" size={16} className="text-workflow-primary/50" />
               </div>
               <input
                 type="email"
@@ -78,12 +78,12 @@ const ContactInformationForm = ({ formData, handleChange, errors }) => {
           
           {/* Contact Phone */}
           <div>
-            <label htmlFor="contactPhone" className="block text-sm font-medium text-text-primary mb-1">
+            <label htmlFor="contactPhone" className="block text-[10px] font-black text-text-muted uppercase tracking-widest ml-1 mb-2">
               Contact Phone
             </label>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Icon name="Phone" size={16} color="var(--color-secondary-500)" />
+                <Icon name="Phone" size={16} className="text-workflow-primary/50" />
               </div>
               <input
                 type="tel"
@@ -106,7 +106,7 @@ const ContactInformationForm = ({ formData, handleChange, errors }) => {
         
         {/* Position */}
         <div>
-          <label htmlFor="contactPosition" className="block text-sm font-medium text-text-primary mb-1">
+          <label htmlFor="contactPosition" className="block text-[10px] font-black text-text-muted uppercase tracking-widest ml-1 mb-2">
             Position at Company
           </label>
           <select
@@ -126,9 +126,12 @@ const ContactInformationForm = ({ formData, handleChange, errors }) => {
         </div>
         
         {/* Verification Notice */}
-        <div className="bg-surface-100 rounded-lg p-4 border border-border-light">
-          <h3 className="text-sm font-medium text-text-primary mb-2 flex items-center">
-            <Icon name="Shield" size={16} className="mr-2 text-primary" />
+        <div className="bg-surface/50 p-8 rounded-[2.5rem] border border-border shadow-2xl relative overflow-hidden group">
+          <div className="absolute top-0 right-0 p-6 opacity-5">
+            <Icon name="Shield" size={80} />
+          </div>
+          <h3 className="text-[10px] font-black text-text-muted uppercase tracking-[0.2em] mb-4 flex items-center">
+            <Icon name="Shield" size={14} className="mr-2 text-workflow-primary" />
             Verification Process
           </h3>
           <p className="text-sm text-text-secondary">
@@ -155,12 +158,12 @@ const ContactInformationForm = ({ formData, handleChange, errors }) => {
         
         {/* Optional Document Upload */}
         <div>
-          <label className="block text-sm font-medium text-text-primary mb-1">
+          <label className="block text-[10px] font-black text-text-muted uppercase tracking-widest ml-1 mb-4">
             Business Verification (Optional)
           </label>
-          <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-dashed border-border rounded-md">
-            <div className="space-y-1 text-center">
-              <Icon name="FileText" size={24} className="mx-auto text-secondary-400" />
+          <div className="mt-1 flex justify-center px-6 pt-12 pb-12 border-2 border-dashed border-border hover:border-workflow-primary/30 transition-all rounded-[2.5rem] bg-surface/50 shadow-inner group">
+            <div className="space-y-4 text-center">
+              <Icon name="FileText" size={32} className="mx-auto text-workflow-primary/20 group-hover:text-workflow-primary/40 transition-colors" />
               <div className="flex text-sm text-text-secondary">
                 <label
                   htmlFor="business-document"

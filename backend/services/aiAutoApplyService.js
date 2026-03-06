@@ -35,8 +35,7 @@ const aiAutoApplyService = {
             Response must be valid JSON only.
             `;
 
-            const result = await aiProviderService.generateCompletion({
-                prompt,
+            const result = await aiProviderService.generateCompletion(prompt, {
                 response_format: { type: "json_object" }, // Ensure JSON mode if supported, or rely on prompt
                 temperature: 0.3
             });
@@ -53,7 +52,7 @@ const aiAutoApplyService = {
             }
 
             return {
-                matchScore: analysis.matchScore || 50,
+                matchScore: typeof analysis.matchScore === 'number' ? analysis.matchScore : 50,
                 reasoning: analysis.summary || "Analysis completed.",
                 pros: analysis.pros || [],
                 cons: analysis.cons || []
@@ -93,8 +92,7 @@ const aiAutoApplyService = {
             - Do not include placeholders like "[Your Name]".
             `;
 
-            const coverLetter = await aiProviderService.generateCompletion({
-                prompt,
+            const coverLetter = await aiProviderService.generateCompletion(prompt, {
                 temperature: 0.7
             });
 

@@ -1,8 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Brain, Sparkles, MessageSquare, CheckCircle, ChevronDown, ChevronUp, Loader2, Video, Mic, StopCircle, User, Volume2, MicOff, Camera } from 'lucide-react';
+import { Brain, Sparkles, MessageSquare, CheckCircle, ChevronDown, ChevronUp, Loader2, Video, Mic, StopCircle, User, Volume2, MicOff, Camera, History, Trash2, X, Command, Activity, Zap, ShieldAlert } from 'lucide-react';
 import { aiService } from '../../services/aiService';
 import { useToast } from '../../components/ui/Toast';
+import { EliteCard } from '../../components/ui/EliteCard';
+import DojoLayout from '../../components/layout/DojoLayout';
 
 const InterviewPrep = () => {
     const [jobDescription, setJobDescription] = useState('');
@@ -13,8 +15,7 @@ const InterviewPrep = () => {
     const [analysis, setAnalysis] = useState(null);
     const [isAnalyzing, setIsAnalyzing] = useState(false);
 
-    // Video & Speech State
-    const [mode, setMode] = useState('text'); // 'text' or 'video'
+    const [mode, setMode] = useState('video'); // Changed default to video for cockpit feel
     const [isRecording, setIsRecording] = useState(false);
     const [transcript, setTranscript] = useState('');
     const [stream, setStream] = useState(null);
@@ -23,7 +24,6 @@ const InterviewPrep = () => {
 
     const { success, error: showError } = useToast();
 
-    // Initialize Speech Recognition
     useEffect(() => {
         if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -44,18 +44,9 @@ const InterviewPrep = () => {
                     setUserAnswer(prev => prev + ' ' + finalTranscript);
                 }
             };
-
-            recognitionRef.current.onerror = (event) => {
-                console.error('Speech recognition error', event.error);
-                if (isRecording) { // If supposed to be recording but errored, try restarting or notify
-                    if (event.error === 'no-speech') return;
-                    showError('Speech recognition error: ' + event.error);
-                }
-            };
         }
-    }, [isRecording]); // Re-init if needed, but mostly static ref
+    }, []);
 
-    // Handle Video Stream
     useEffect(() => {
         if (mode === 'video' && activeQuestion !== null) {
             startCamera();
@@ -75,8 +66,7 @@ const InterviewPrep = () => {
                 }
             }
         } catch (err) {
-            console.error("Camera access error:", err);
-            showError("Could not access camera/microphone. Please check permissions.");
+            showError("Could not access camera/microphone.");
         }
     };
 
@@ -97,14 +87,12 @@ const InterviewPrep = () => {
 
     const startRecording = () => {
         setTranscript('');
-        setUserAnswer(''); // Clear previous for new attempt
+        setUserAnswer('');
         setIsRecording(true);
         if (recognitionRef.current) {
             try {
                 recognitionRef.current.start();
-            } catch (e) {
-                console.error("Recognition start error:", e);
-            }
+            } catch (e) { }
         }
     };
 
@@ -130,13 +118,10 @@ const InterviewPrep = () => {
             const response = await aiService.generateInterviewQuestions(jobDescription);
             if (response && response.questions) {
                 setQuestions(response.questions);
-                success(`Generated ${response.questions.length} interview questions!`);
-            } else {
-                throw new Error('Invalid response format');
+                success(`Simulator Loaded: ${response.questions.length} Challenges.`);
             }
         } catch (err) {
-            console.error('Error generating questions:', err);
-            showError('Failed to generate questions. Please try again.');
+            showError('Failed to generate questions.');
         } finally {
             setIsLoading(false);
         }
@@ -144,9 +129,8 @@ const InterviewPrep = () => {
 
     const handleAnalyzeAnswer = async (question) => {
         const answerToAnalyze = mode === 'video' ? transcript || userAnswer : userAnswer;
-
         if (!answerToAnalyze.trim()) {
-            showError('Please write or record an answer first');
+            showError('Please provide an answer first');
             return;
         }
 
@@ -155,308 +139,263 @@ const InterviewPrep = () => {
             const result = await aiService.analyzeAnswer(question, answerToAnalyze, jobDescription);
             setAnalysis(result.analysis);
         } catch (err) {
-            console.error('Error analyzing answer:', err);
             showError('Failed to analyze answer.');
         } finally {
             setIsAnalyzing(false);
         }
     };
 
-    return (
-        <div className="max-w-5xl mx-auto space-y-8 relative z-10">
-            {/* Header */}
-            <div className="text-center space-y-6">
-                <motion.div
-                    initial={{ scale: 0, rotate: -20 }}
-                    animate={{ scale: 1, rotate: 0 }}
-                    className="inline-block p-4 rounded-3xl bg-gradient-to-br from-blue-500/20 to-purple-500/20 backdrop-blur-sm border border-white/10 relative shadow-xl"
-                >
-                    <Brain className="w-14 h-14 text-blue-600 dark:text-blue-400" />
-                    <div className="absolute -top-1 -right-1 flex gap-1">
-                        <span className="flex h-3 w-3">
-                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                            <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
-                        </span>
-                    </div>
-                </motion.div>
+    const [history, setHistory] = useState([]);
+    useEffect(() => {
+        loadHistory();
+    }, []);
 
-                <div className="space-y-2">
-                    <div className="flex items-center justify-center gap-3">
-                        <h1 className="text-4xl font-extrabold text-gray-900 dark:text-white tracking-tight">
-                            AI Interview Coach
-                        </h1>
-                        <span className="px-3 py-1 text-xs font-bold text-white bg-gradient-to-r from-pink-500 to-purple-600 rounded-full shadow-lg shadow-purple-500/30">
-                            PRO
-                        </span>
-                    </div>
-                    <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto font-medium">
-                        Master your interview skills with real-time AI feedback.
-                        Switch to <span className="text-blue-600 dark:text-blue-400 font-bold">Video Mode</span> for body language analysis.
-                    </p>
-                </div>
+    const loadHistory = async () => {
+        try {
+            const res = await aiService.training.getHistory({ tool_type: 'interview' });
+            if (res.data) setHistory(res.data);
+        } catch (err) { }
+    };
 
-                {/* Premium Mode Switcher */}
-                <div className="flex justify-center mt-6">
-                    <div className="flex bg-white/50 dark:bg-gray-800/50 p-1.5 rounded-2xl backdrop-blur-md border border-gray-200 dark:border-gray-700 shadow-sm">
-                        <button
-                            onClick={() => setMode('text')}
-                            className={`px-8 py-3 rounded-xl text-sm font-bold transition-all duration-300 ${mode === 'text'
-                                ? 'bg-white dark:bg-[#1E2640] text-blue-600 dark:text-blue-400 shadow-lg scale-105'
-                                : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
-                                }`}
-                        >
-                            Text Practice
-                        </button>
-                        <button
-                            onClick={() => setMode('video')}
-                            className={`px-8 py-3 rounded-xl text-sm font-bold transition-all duration-300 flex items-center gap-2 ${mode === 'video'
-                                ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg scale-105'
-                                : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
-                                }`}
-                        >
-                            <Video className="w-4 h-4" />
-                            Video Simulation
-                        </button>
-                    </div>
-                </div>
-            </div>
+    const cockpitMain = (
+        <div className="h-full flex flex-col p-6 space-y-6">
+            {!questions.length ? (
+                <div className="flex-1 flex flex-col items-center justify-center max-w-2xl mx-auto w-full">
+                    <div className="w-full relative group">
+                        <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-cyan-400 rounded-3xl opacity-20 blur group-hover:opacity-40 transition" />
+                        <div className="relative p-10 bg-[#0A0E27]/90 rounded-3xl border border-blue-500/20 shadow-2xl space-y-8">
+                            <div className="flex items-center gap-4 mb-2">
+                                <div className="p-3 bg-blue-500/10 rounded-2xl border border-blue-500/20">
+                                    <Brain className="w-8 h-8 text-blue-400" />
+                                </div>
+                                <div>
+                                    <h2 className="text-xl font-black text-white uppercase tracking-tighter">Initialize Cockpit</h2>
+                                    <p className="text-[10px] font-bold text-blue-500 uppercase tracking-widest">Awaiting Simulation Parameters</p>
+                                </div>
+                            </div>
 
-            {/* Input Section */}
-            {!questions.length && (
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="bg-white/80 dark:bg-[#13182E]/80 backdrop-blur-xl rounded-3xl shadow-2xl p-8 border border-white/20 dark:border-gray-700/50"
-                >
-                    <label className="block text-lg font-semibold text-gray-900 dark:text-white mb-4">
-                        Paste Job Description
-                    </label>
-                    <div className="relative group">
-                        <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl opacity-20 group-hover:opacity-40 transition duration-500"></div>
-                        <textarea
-                            value={jobDescription}
-                            onChange={(e) => setJobDescription(e.target.value)}
-                            placeholder="Paste the job requirements here to generate tailored questions..."
-                            className="relative w-full h-64 p-6 rounded-xl border border-gray-200 dark:border-[#1E2640] bg-white dark:bg-[#0A0E27] text-gray-900 dark:text-white focus:ring-0 focus:outline-none focus:border-blue-500 transition-all text-lg resize-none shadow-inner"
-                        />
-                    </div>
-                    <div className="mt-8 flex justify-end">
-                        <button
-                            onClick={handleGenerateQuestions}
-                            disabled={isLoading || !jobDescription.trim()}
-                            className="group relative px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl font-bold text-white shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 transition-all hover:-translate-y-1 disabled:opacity-50 disabled:hover:translate-y-0 disabled:cursor-not-allowed overflow-hidden"
-                        >
-                            <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
-                            <span className="relative flex items-center gap-3">
-                                {isLoading ? (
-                                    <>
-                                        <Loader2 className="w-5 h-5 animate-spin" />
-                                        Analyzing Role...
-                                    </>
-                                ) : (
-                                    <>
-                                        <Sparkles className="w-5 h-5" />
-                                        Generate Interview Session
-                                    </>
-                                )}
-                            </span>
-                        </button>
-                    </div>
-                </motion.div>
-            )}
+                            <div className="space-y-4">
+                                <label className="block text-[10px] font-black uppercase tracking-widest text-slate-500">Target Objectives (Job Description)</label>
+                                <textarea
+                                    value={jobDescription}
+                                    onChange={(e) => setJobDescription(e.target.value)}
+                                    placeholder="Paste job requirements to calibrate the neural simulator..."
+                                    className="w-full h-48 p-6 rounded-2xl border border-white/5 bg-black/40 text-white focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/20 outline-none transition-all placeholder:text-slate-800 text-sm font-medium resize-none"
+                                />
+                            </div>
 
-            {/* Questions Interface */}
-            <AnimatePresence>
-                {questions.length > 0 && (
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        className="space-y-6"
-                    >
-                        <div className="flex items-center justify-between px-4">
-                            <h2 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-3">
-                                <MessageSquare className="w-6 h-6 text-blue-500" />
-                                Your Personalized Interview
-                            </h2>
                             <button
-                                onClick={() => setQuestions([])}
-                                className="px-4 py-2 text-sm font-medium text-gray-500 hover:text-red-500 dark:text-gray-400 dark:hover:text-red-400 transition-colors bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700"
+                                onClick={handleGenerateQuestions}
+                                disabled={isLoading || !jobDescription.trim()}
+                                className="w-full py-5 bg-blue-600 text-white rounded-2xl font-black text-[12px] uppercase tracking-[0.4em] hover:bg-blue-500 hover:shadow-[0_0_30px_rgba(37,99,235,0.4)] transition-all disabled:opacity-50 flex items-center justify-center gap-4"
                             >
-                                End Session
+                                {isLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : <><Activity size={18} /> Sync Neural Core</>}
                             </button>
                         </div>
-
-                        {questions.map((q, idx) => (
-                            <motion.div
-                                key={idx}
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: idx * 0.1 }}
-                                className={`group rounded-2xl overflow-hidden transition-all duration-300 ${activeQuestion === idx
-                                    ? 'bg-white dark:bg-[#13182E] shadow-2xl ring-2 ring-blue-500/50 scale-[1.02]'
-                                    : 'bg-white/60 dark:bg-[#13182E]/60 hover:bg-white dark:hover:bg-[#13182E] border border-transparent hover:border-gray-200 dark:hover:border-gray-700'
-                                    }`}
-                            >
-                                <button
-                                    onClick={() => {
-                                        if (activeQuestion === idx) {
-                                            setActiveQuestion(null);
-                                            stopRecording();
-                                            stopCamera();
-                                        } else {
-                                            setActiveQuestion(idx);
-                                            setUserAnswer('');
-                                            setAnalysis(null);
-                                            setTranscript('');
-                                            setIsRecording(false);
-                                        }
-                                    }}
-                                    className="w-full text-left p-6 flex items-start justify-between"
-                                >
-                                    <div className="flex gap-5">
-                                        <div className={`flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center font-extrabold text-lg transition-colors ${activeQuestion === idx
-                                            ? 'bg-gradient-to-br from-blue-600 to-purple-600 text-white shadow-lg'
-                                            : 'bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 group-hover:text-blue-500'
-                                            }`}>
-                                            {idx + 1}
-                                        </div>
-                                        <span className={`text-lg font-semibold pt-1 transition-colors ${activeQuestion === idx ? 'text-blue-900 dark:text-blue-100' : 'text-gray-700 dark:text-gray-300'
-                                            }`}>
-                                            {q}
-                                        </span>
+                    </div>
+                </div>
+            ) : (
+                <div className="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-6 overflow-hidden">
+                    {/* Left: Cockpit Controls & HUD */}
+                    <div className="lg:col-span-8 flex flex-col space-y-6 overflow-hidden">
+                        {/* Immersive HUD Area */}
+                        <div className="relative flex-1 bg-[#050714] rounded-[2rem] border border-blue-500/20 overflow-hidden shadow-2xl">
+                            {/* HUD Overlays */}
+                            <div className="absolute inset-x-8 top-8 flex justify-between items-start pointer-events-none z-10">
+                                <div className="flex flex-col gap-2">
+                                    <div className="text-[10px] font-black text-blue-500 uppercase tracking-[0.3em] flex items-center gap-2">
+                                        <div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
+                                        Simulator Active
                                     </div>
-                                    {activeQuestion === idx ? (
-                                        <ChevronUp className="w-6 h-6 text-blue-500" />
-                                    ) : (
-                                        <ChevronDown className="w-6 h-6 text-gray-400 group-hover:text-gray-600" />
-                                    )}
-                                </button>
+                                    <div className="text-[8px] font-bold text-slate-600 uppercase tracking-widest">Neural Link: 100% stable</div>
+                                </div>
+                                <div className="flex gap-4">
+                                    <div className="px-4 py-2 bg-black/40 border border-white/10 rounded-full flex items-center gap-3 backdrop-blur-xl">
+                                        <div className="flex gap-1">
+                                            {[1, 2, 3, 4, 5].map(i => (
+                                                <div key={i} className={`w-1 h-3 rounded-full ${i <= 4 ? 'bg-blue-500' : 'bg-slate-800'}`} />
+                                            ))}
+                                        </div>
+                                        <span className="text-[9px] font-black text-white uppercase">Audio Input</span>
+                                    </div>
+                                    <div className="px-4 py-2 bg-red-500/10 border border-red-500/20 rounded-full text-[9px] font-black text-red-500 uppercase tracking-widest backdrop-blur-xl">
+                                        {isRecording ? 'Rec ON' : 'Standby'}
+                                    </div>
+                                </div>
+                            </div>
 
-                                <AnimatePresence>
-                                    {activeQuestion === idx && (
-                                        <motion.div
-                                            initial={{ height: 0, opacity: 0 }}
-                                            animate={{ height: 'auto', opacity: 1 }}
-                                            exit={{ height: 0, opacity: 0 }}
-                                            className="border-t border-gray-100 dark:border-[#1E2640] bg-gray-50/50 dark:bg-[#0A0E27]/30"
-                                        >
-                                            <div className="p-8 space-y-8">
-                                                {mode === 'video' ? (
-                                                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                                                        <div className="relative aspect-video bg-black rounded-2xl overflow-hidden shadow-2xl border border-gray-800 group/video">
-                                                            <video
-                                                                ref={videoRef}
-                                                                autoPlay
-                                                                muted
-                                                                className="w-full h-full object-cover transform scale-x-[-1]"
-                                                            />
-                                                            <div className="absolute inset-x-0 bottom-0 p-6 bg-gradient-to-t from-black/80 to-transparent flex justify-center gap-6">
-                                                                <button
-                                                                    onClick={toggleRecording}
-                                                                    className={`p-4 rounded-full transition-all duration-300 hover:scale-110 active:scale-95 shadow-xl ${isRecording
-                                                                        ? 'bg-red-500 hover:bg-red-600 ring-4 ring-red-500/30 animate-pulse'
-                                                                        : 'bg-white hover:bg-gray-100 text-gray-900'
-                                                                        }`}
-                                                                >
-                                                                    {isRecording ? <StopCircle className="w-8 h-8 text-white" /> : <Mic className="w-8 h-8" />}
-                                                                </button>
-                                                            </div>
-                                                            {isRecording && (
-                                                                <div className="absolute top-4 right-4 px-3 py-1.5 bg-red-600 text-white text-xs font-bold rounded-full animate-pulse shadow-lg flex items-center gap-2">
-                                                                    <span className="w-2 h-2 rounded-full bg-white"></span>
-                                                                    LIVE REC
-                                                                </div>
-                                                            )}
-                                                        </div>
-                                                        <div className="flex flex-col h-full bg-white dark:bg-[#13182E] rounded-2xl border border-gray-200 dark:border-[#1E2640] shadow-sm overflow-hidden">
-                                                            <div className="p-4 border-b border-gray-100 dark:border-[#1E2640] bg-gray-50 dark:bg-[#1A2139] flex justify-between items-center">
-                                                                <h4 className="font-semibold text-gray-900 dark:text-white flex items-center gap-2">
-                                                                    <MessageSquare className="w-4 h-4 text-purple-500" />
-                                                                    Live Transcript
-                                                                </h4>
-                                                                {transcript && <span className="text-xs text-green-500 font-medium">Active</span>}
-                                                            </div>
-                                                            <div className="flex-1 p-6 overflow-y-auto text-gray-600 dark:text-gray-300 space-y-2 text-sm leading-relaxed">
-                                                                {transcript || userAnswer ? (
-                                                                    <p>{transcript || userAnswer}</p>
-                                                                ) : (
-                                                                    <div className="h-full flex flex-col items-center justify-center text-gray-400 space-y-2 opacity-60">
-                                                                        <MicOff className="w-8 h-8" />
-                                                                        <p>Start recording to begin transcript...</p>
-                                                                    </div>
-                                                                )}
-                                                            </div>
-                                                            <div className="p-4 bg-gray-50 dark:bg-[#1A2139] border-t border-gray-100 dark:border-[#1E2640]">
-                                                                <button
-                                                                    onClick={() => handleAnalyzeAnswer(q)}
-                                                                    disabled={isAnalyzing || (!transcript && !userAnswer)}
-                                                                    className="w-full py-3 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white rounded-xl font-bold transition-all shadow-lg shadow-purple-500/25 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
-                                                                >
-                                                                    {isAnalyzing ? <Loader2 className="w-5 h-5 animate-spin" /> : <Sparkles className="w-5 h-5" />}
-                                                                    Analyze My Answer
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                ) : (
-                                                    <div className="space-y-6">
-                                                        <div className="relative">
-                                                            <div className="absolute top-0 right-0 p-2">
-                                                                <span className="text-xs font-medium text-gray-400 bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded-md">
-                                                                    Markdown Supported
-                                                                </span>
-                                                            </div>
-                                                            <textarea
-                                                                value={userAnswer}
-                                                                onChange={(e) => setUserAnswer(e.target.value)}
-                                                                placeholder="Type your structured answer here. Use the STAR method..."
-                                                                className="w-full h-56 p-6 rounded-2xl border border-gray-200 dark:border-[#1E2640] bg-white dark:bg-[#13182E] text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none transition-shadow shadow-inner text-base leading-relaxed resize-none"
-                                                            />
-                                                        </div>
-                                                        <div className="flex justify-end">
-                                                            <button
-                                                                onClick={() => handleAnalyzeAnswer(q)}
-                                                                disabled={isAnalyzing || !userAnswer.trim()}
-                                                                className="px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-bold shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transition-all flex items-center gap-2 disabled:opacity-50"
-                                                            >
-                                                                {isAnalyzing ? <Loader2 className="w-5 h-5 animate-spin" /> : <Sparkles className="w-5 h-5" />}
-                                                                Analyze Answer
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                )}
-
-                                                {/* Analysis Report Card */}
-                                                {analysis && (
-                                                    <motion.div
-                                                        initial={{ opacity: 0, y: 20 }}
-                                                        animate={{ opacity: 1, y: 0 }}
-                                                        className="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/10 dark:to-emerald-900/10 rounded-2xl border border-green-100 dark:border-green-800/30 overflow-hidden shadow-lg"
-                                                    >
-                                                        <div className="p-6 border-b border-green-100 dark:border-green-800/30 flex items-center gap-4 bg-green-100/50 dark:bg-green-900/20">
-                                                            <div className="p-3 bg-green-500 text-white rounded-xl shadow-md">
-                                                                <CheckCircle className="w-6 h-6" />
-                                                            </div>
-                                                            <div>
-                                                                <h4 className="font-bold text-green-900 dark:text-green-100 text-lg">AI Feedback Report</h4>
-                                                                <p className="text-xs text-green-700 dark:text-green-300 font-medium opacity-80">Generated by Coach AI</p>
-                                                            </div>
-                                                        </div>
-                                                        <div className="p-8 prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200 leading-7">
-                                                            {analysis}
-                                                        </div>
-                                                    </motion.div>
-                                                )}
+                            {activeQuestion !== null ? (
+                                <div className="absolute inset-0 flex flex-col">
+                                    <div className="flex-1 relative">
+                                        {mode === 'video' ? (
+                                            <video ref={videoRef} autoPlay muted className="w-full h-full object-cover grayscale opacity-60 mix-blend-screen" />
+                                        ) : (
+                                            <div className="w-full h-full flex items-center justify-center bg-gradient-to-t from-blue-900/10 to-transparent">
+                                                <Brain size={120} className="text-blue-500/10" />
                                             </div>
-                                        </motion.div>
-                                    )}
-                                </AnimatePresence>
+                                        )}
+
+                                        {/* Question Plate */}
+                                        <div className="absolute inset-x-12 bottom-32 flex flex-col items-center">
+                                            <motion.div
+                                                initial={{ y: 20, opacity: 0 }}
+                                                animate={{ y: 0, opacity: 1 }}
+                                                className="bg-black/60 backdrop-blur-3xl border border-white/10 p-8 rounded-3xl text-center max-w-3xl"
+                                            >
+                                                <p className="text-[10px] font-black text-blue-500 uppercase tracking-[0.4em] mb-4">Challenge Alpha</p>
+                                                <h3 className="text-2xl font-black text-white leading-tight tracking-tight italic">
+                                                    "{questions[activeQuestion]}"
+                                                </h3>
+                                            </motion.div>
+                                        </div>
+                                    </div>
+
+                                    {/* Control Bar */}
+                                    <div className="h-24 px-12 bg-[#0A0E27]/90 backdrop-blur-xl border-t border-white/10 flex items-center justify-between">
+                                        <div className="flex items-center gap-6">
+                                            <button
+                                                onClick={() => setMode(mode === 'video' ? 'text' : 'video')}
+                                                className="p-3 rounded-2xl bg-white/5 border border-white/10 text-slate-400 hover:text-white transition-all"
+                                            >
+                                                {mode === 'video' ? <MessageSquare size={18} /> : <Video size={18} />}
+                                            </button>
+                                            <div className="w-px h-8 bg-white/10" />
+                                            <div className="flex items-center gap-3">
+                                                <button
+                                                    onClick={toggleRecording}
+                                                    className={`w-14 h-14 rounded-full flex items-center justify-center transition-all ${isRecording ? 'bg-red-600 shadow-[0_0_25px_rgba(220,38,38,0.5)]' : 'bg-white text-black hover:scale-105'}`}
+                                                >
+                                                    {isRecording ? <StopCircle size={24} /> : <Mic size={24} />}
+                                                </button>
+                                                <div className="flex flex-col">
+                                                    <span className="text-[10px] font-black text-white uppercase tracking-widest">{isRecording ? 'Recording Output' : 'Audio Input Off'}</span>
+                                                    <span className="text-[8px] font-bold text-slate-500 uppercase">{isRecording ? 'Capturing Neural Response' : 'Click to begin transmission'}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <button
+                                            onClick={() => handleAnalyzeAnswer(questions[activeQuestion])}
+                                            disabled={isAnalyzing || (!transcript && !userAnswer)}
+                                            className="px-10 py-4 bg-blue-600 text-white rounded-2xl font-black text-[10px] uppercase tracking-[0.3em] hover:bg-blue-500 transition-all disabled:opacity-30 disabled:grayscale flex items-center gap-3"
+                                        >
+                                            {isAnalyzing ? <Loader2 className="w-4 h-4 animate-spin" /> : <><ShieldAlert size={14} /> Commit Response</>}
+                                        </button>
+                                    </div>
+                                </div>
+                            ) : (
+                                <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-12 space-y-6">
+                                    <div className="w-20 h-20 rounded-full border-2 border-dashed border-blue-500/30 flex items-center justify-center">
+                                        <Zap className="text-blue-500/30" size={32} />
+                                    </div>
+                                    <div>
+                                        <h3 className="text-lg font-black text-slate-500 uppercase tracking-widest">Challenge Pending</h3>
+                                        <p className="text-[10px] font-bold text-slate-700 uppercase tracking-widest mt-2">Select a neural node on the right to begin</p>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Transcript Panel (Only if active) */}
+                        {isRecording || transcript ? (
+                            <motion.div
+                                initial={{ y: 20, opacity: 0 }}
+                                animate={{ y: 0, opacity: 1 }}
+                                className="h-40 bg-[#0A0E27]/50 rounded-3xl border border-white/5 p-6 relative group overflow-hidden"
+                            >
+                                <div className="absolute top-0 left-0 w-1 h-full bg-blue-500/20" />
+                                <p className="text-[9px] font-black text-blue-400 uppercase tracking-widest mb-4 flex items-center gap-2">
+                                    <Activity size={10} /> Live Neural Reconstruction
+                                </p>
+                                <div className="text-sm text-slate-400 font-medium leading-relaxed overflow-y-auto h-20 custom-scrollbar pr-4 italic">
+                                    "{transcript || userAnswer || '...'}"
+                                </div>
                             </motion.div>
-                        ))}
-                    </motion.div>
-                )}
-            </AnimatePresence>
+                        ) : null}
+                    </div>
+
+                    {/* Right: Neural Nodes (Questions) */}
+                    <div className="lg:col-span-4 flex flex-col space-y-6 overflow-hidden">
+                        <div className="flex-1 bg-[#0A0E27]/50 rounded-[2rem] border border-white/5 flex flex-col overflow-hidden">
+                            <div className="p-6 border-b border-white/5 flex items-center justify-between">
+                                <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] flex items-center gap-3">
+                                    <Command size={14} /> Node Manifest
+                                </h4>
+                                <button onClick={() => setQuestions([])} className="p-2 hover:bg-red-500/10 text-slate-700 hover:text-red-500 transition-colors rounded-lg">
+                                    <Trash2 size={14} />
+                                </button>
+                            </div>
+                            <div className="flex-1 overflow-y-auto p-4 space-y-3 custom-scrollbar">
+                                {questions.map((q, idx) => (
+                                    <button
+                                        key={idx}
+                                        onClick={() => setActiveQuestion(idx)}
+                                        className={`w-full p-5 rounded-2xl border text-left transition-all group ${activeQuestion === idx ? 'bg-blue-600/10 border-blue-500/40' : 'bg-[#050714] border-white/5 hover:border-white/10'}`}
+                                    >
+                                        <div className="flex items-center gap-4">
+                                            <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-[10px] font-black ${activeQuestion === idx ? 'bg-blue-500 text-white' : 'bg-white/5 text-slate-600'}`}>
+                                                0{idx + 1}
+                                            </div>
+                                            <p className={`text-[11px] font-bold leading-tight ${activeQuestion === idx ? 'text-white' : 'text-slate-500 group-hover:text-slate-400'}`}>
+                                                {q.substring(0, 60)}...
+                                            </p>
+                                        </div>
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Analysis Feedback HUD */}
+                        <AnimatePresence>
+                            {analysis && (
+                                <motion.div
+                                    initial={{ x: 20, opacity: 0 }}
+                                    animate={{ x: 0, opacity: 1 }}
+                                    exit={{ x: 20, opacity: 0 }}
+                                    className="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-3xl p-8 shadow-2xl relative overflow-hidden group"
+                                >
+                                    <div className="absolute top-0 right-0 p-6 opacity-10">
+                                        <Brain size={100} />
+                                    </div>
+                                    <div className="relative z-10">
+                                        <h4 className="text-[10px] font-black text-blue-200 uppercase tracking-[0.4em] mb-4 flex items-center gap-2">
+                                            <ShieldAlert size={14} /> Analysis Output
+                                        </h4>
+                                        <div className="text-xs text-white leading-relaxed font-bold italic prose prose-invert opacity-90 max-h-48 overflow-y-auto custom-scrollbar pr-4">
+                                            {analysis}
+                                        </div>
+                                        <button
+                                            onClick={() => setAnalysis(null)}
+                                            className="mt-6 w-full py-3 bg-white/10 hover:bg-white/20 border border-white/10 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all"
+                                        >
+                                            Dismiss Log
+                                        </button>
+                                    </div>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+                    </div>
+                </div>
+            )}
         </div>
+    );
+
+    return (
+        <DojoLayout
+            title="Interview Simulator"
+            subtitle="Cockpit Omega • Neural Training"
+            headerActions={
+                <div className="flex items-center gap-4">
+                    <div className="px-4 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-[10px] font-black uppercase flex items-center gap-2">
+                        <Activity size={12} className="animate-pulse" />
+                        Live Sim Mode
+                    </div>
+                </div>
+            }
+            backPath="/career-training"
+        >
+            {cockpitMain}
+        </DojoLayout>
     );
 };
 

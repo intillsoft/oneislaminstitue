@@ -21,7 +21,7 @@ router.get('/subscription', async (req, res) => {
     }
 
     const subscription = await stripeService.getSubscriptionDetails(userId);
-    
+
     if (!subscription) {
       return res.json({
         tier: 'free',
@@ -32,7 +32,7 @@ router.get('/subscription', async (req, res) => {
     res.json(subscription);
   } catch (error) {
     logger.error('Error getting subscription:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: error.message || 'Internal server error' });
   }
 });
 
@@ -56,7 +56,7 @@ router.post('/checkout', async (req, res) => {
     res.json({ url: session.url });
   } catch (error) {
     logger.error('Error creating checkout session:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: error.message || 'Internal server error' });
   }
 });
 
@@ -100,7 +100,7 @@ router.post('/subscription/update', async (req, res) => {
     res.json({ success: true, subscription: result });
   } catch (error) {
     logger.error('Error updating subscription:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: error.message || 'Internal server error' });
   }
 });
 

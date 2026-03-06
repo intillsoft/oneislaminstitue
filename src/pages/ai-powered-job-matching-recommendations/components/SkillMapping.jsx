@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Icon from 'components/AppIcon';
 import { aiService } from '../../../services/aiService';
+import { motion } from 'framer-motion';
 
 const SkillMapping = ({ userSkills, recommendedSkills }) => {
   const [skillAnalysis, setSkillAnalysis] = useState(null);
@@ -16,15 +17,14 @@ const SkillMapping = ({ userSkills, recommendedSkills }) => {
     try {
       setLoading(true);
       const data = await aiService.getSkillAnalysis();
-      
+
       if (data) {
         setSkillAnalysis(data);
         if (data.current_skills && Array.isArray(data.current_skills)) {
           setCurrentSkills(data.current_skills);
         }
         if (data.recommended_skills && Array.isArray(data.recommended_skills)) {
-          // Extract skill names from recommended skills objects
-          const skillNames = data.recommended_skills.map(skill => 
+          const skillNames = data.recommended_skills.map(skill =>
             typeof skill === 'string' ? skill : skill.skill
           );
           setRecommended(skillNames);
@@ -32,104 +32,116 @@ const SkillMapping = ({ userSkills, recommendedSkills }) => {
       }
     } catch (error) {
       console.error('Failed to load skill analysis:', error);
-      // Keep default values on error
     } finally {
       setLoading(false);
     }
   };
+
   return (
-    <div className="bg-background dark:bg-[#13182E] rounded-lg shadow-sm border border-border dark:border-[#1E2640] p-6">
-      <h3 className="text-lg font-semibold text-text-primary dark:text-[#E8EAED] mb-4 flex items-center space-x-2">
-        <Icon name="Award" size={20} />
+    <div className="space-y-8">
+      <h3 className="text-xl font-black text-slate-900 dark:text-white flex items-center gap-3">
+        <div className="p-2 rounded-lg bg-workflow-primary/10 text-workflow-primary">
+          <Icon name="Award" size={20} />
+        </div>
         <span>Skill Analysis</span>
       </h3>
 
       {/* Current Skills */}
-      <div className="mb-6">
-        <h4 className="text-sm font-medium text-text-primary dark:text-[#E8EAED] mb-3 flex items-center space-x-1">
-          <Icon name="CheckCircle" size={14} className="text-success" />
+      <div className="space-y-4">
+        <h4 className="text-xs font-black uppercase tracking-widest text-slate-500 flex items-center gap-2">
+          <Icon name="CheckCircle" size={14} className="text-emerald-500" />
           <span>Your Skills</span>
         </h4>
         {loading ? (
-          <p className="text-sm text-text-secondary dark:text-[#8B92A3]">Loading skill analysis...</p>
+          <div className="space-y-4">
+            <div className="h-4 bg-slate-100 dark:bg-white/5 animate-pulse rounded w-3/4" />
+            <div className="h-4 bg-slate-100 dark:bg-white/5 animate-pulse rounded w-1/2" />
+          </div>
         ) : (
           <div className="flex flex-wrap gap-2">
             {currentSkills?.length > 0 ? currentSkills.map((skill, index) => (
               <span
                 key={index}
-                className="px-3 py-1.5 bg-success/10 text-success rounded-full text-xs font-medium"
+                className="px-3 py-1.5 bg-emerald-500/5 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 rounded-xl text-xs font-bold border border-emerald-500/10 transition-all hover:bg-emerald-500/20"
               >
                 {typeof skill === 'string' ? skill : skill.skill || skill}
               </span>
             )) : (
-              <p className="text-sm text-text-secondary dark:text-[#8B92A3]">No skills found. Please update your resume.</p>
+              <p className="text-sm text-slate-500 font-medium italic">No skills cataloged. Update your architecture.</p>
             )}
           </div>
         )}
       </div>
 
       {/* Recommended Skills to Learn */}
-      <div className="mb-6">
-        <h4 className="text-sm font-medium text-text-primary dark:text-[#E8EAED] mb-3 flex items-center space-x-1">
-          <Icon name="Target" size={14} className="text-primary" />
-          <span>Skills to Learn</span>
+      <div className="space-y-4">
+        <h4 className="text-xs font-black uppercase tracking-widest text-slate-500 flex items-center gap-2">
+          <Icon name="Target" size={14} className="text-workflow-primary" />
+          <span>Expansion Path</span>
         </h4>
         {loading ? (
-          <p className="text-sm text-text-secondary dark:text-[#8B92A3]">Loading recommendations...</p>
+          <div className="space-y-4">
+            <div className="h-12 bg-slate-100 dark:bg-white/5 animate-pulse rounded-2xl" />
+            <div className="h-12 bg-slate-100 dark:bg-white/5 animate-pulse rounded-2xl" />
+          </div>
         ) : (
-          <div className="space-y-2">
+          <div className="space-y-3">
             {recommended?.length > 0 ? recommended.map((skill, index) => {
               const skillObj = skillAnalysis?.recommended_skills?.[index] || {};
               const skillName = typeof skill === 'string' ? skill : skill.skill || skill;
               const importance = skillObj.importance || 'medium';
               const reason = skillObj.reason || '';
-              
+
               return (
                 <div
                   key={index}
-                  className="flex items-center justify-between p-3 bg-surface dark:bg-[#1A2139] rounded-lg hover:bg-primary/5 dark:hover:bg-primary/10 transition-colors border border-border dark:border-[#1E2640]"
+                  className="group flex items-center justify-between p-4 bg-white/50 dark:bg-white/5 rounded-2xl border border-slate-200/50 dark:border-white/5 hover:border-workflow-primary/30 transition-all hover:scale-[1.02]"
                 >
-                  <div className="flex-1">
-                    <div className="flex items-center space-x-2 mb-1">
-                      <span className="text-sm font-medium text-text-primary dark:text-[#E8EAED]">{skillName}</span>
-                      <span className={`text-xs px-2 py-0.5 rounded-full ${
-                        importance === 'critical' ? 'bg-error/10 text-error' :
-                        importance === 'high' ? 'bg-warning/10 text-warning' :
-                        'bg-primary/10 text-primary'
-                      }`}>
+                  <div className="flex-1 min-w-0 pr-3">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="text-sm font-black text-slate-900 dark:text-white truncate">{skillName}</span>
+                      <span className={`text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full ${importance === 'critical' ? 'bg-rose-500/10 text-rose-500' :
+                          importance === 'high' ? 'bg-amber-500/10 text-amber-500' :
+                            'bg-indigo-500/10 text-indigo-500'
+                        }`}>
                         {importance}
                       </span>
                     </div>
                     {reason && (
-                      <p className="text-xs text-text-secondary dark:text-[#8B92A3]">{reason}</p>
+                      <p className="text-[10px] text-slate-500 font-medium line-clamp-1">{reason}</p>
                     )}
                   </div>
-                  <button className="text-xs text-primary hover:text-primary-700 font-medium ml-2">
-                    Learn
+                  <button className="text-[10px] font-black uppercase tracking-tighter text-workflow-primary hover:text-workflow-accent transition-colors">
+                    Enroll
                   </button>
                 </div>
               );
             }) : (
-              <p className="text-sm text-text-secondary dark:text-[#8B92A3]">No skill recommendations available.</p>
+              <p className="text-sm text-slate-500 font-medium italic">No expansion paths identified.</p>
             )}
           </div>
         )}
       </div>
 
       {/* Skill Coverage Progress */}
-      <div className="pt-4 border-t border-border dark:border-[#1E2640]">
-        <div className="flex items-center justify-between mb-2">
-          <span className="text-sm font-medium text-text-primary dark:text-[#E8EAED]">Market Demand Coverage</span>
-          <span className="text-sm font-semibold text-primary">78%</span>
+      <div className="pt-6 border-t border-slate-200 dark:border-white/10">
+        <div className="flex items-center justify-between mb-3">
+          <span className="text-xs font-black uppercase tracking-widest text-slate-500">Market Coverage</span>
+          <span className="text-lg font-black text-workflow-primary">78%</span>
         </div>
-        <div className="w-full h-2 bg-surface dark:bg-[#1A2139] rounded-full overflow-hidden">
-          <div className="h-full bg-primary transition-all duration-300" style={{ width: '78%' }} />
+        <div className="w-full h-3 bg-slate-100 dark:bg-white/5 rounded-full overflow-hidden shadow-inner">
+          <motion.div
+            initial={{ width: 0 }}
+            animate={{ width: '78%' }}
+            className="h-full bg-gradient-to-r from-workflow-primary to-workflow-accent rounded-full"
+          />
         </div>
-        <p className="text-xs text-text-secondary dark:text-[#8B92A3] mt-2">
-          Learning recommended skills will boost your coverage to 95%
+        <p className="text-[10px] text-slate-500 font-bold mt-3 leading-relaxed">
+          Mastering expansion path skills will achieve <span className="text-workflow-primary">95% Market Visibility</span>.
         </p>
       </div>
     </div>
   );
 };
+
 export default SkillMapping;

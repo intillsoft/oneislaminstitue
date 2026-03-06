@@ -167,15 +167,15 @@ const ResumeBuilder = ({ initialData = null, onSave, onExport }) => {
 
   return (
     <DndProvider backend={backend}>
-      <div className="min-h-screen bg-white dark:bg-[#0A0E27] p-4 sm:p-6 lg:p-8">
+      <div className="min-h-screen bg-bg p-4 sm:p-6 lg:p-8">
         <div className="max-w-7xl mx-auto">
           {/* Header */}
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
             <div>
-              <h1 className="text-2xl font-bold text-[#0F172A] dark:text-[#E8EAED]">
+              <h1 className="text-2xl font-black text-text-primary uppercase tracking-tight">
                 Resume Builder
               </h1>
-              <p className="text-sm text-[#64748B] dark:text-[#8B92A3] mt-1">
+              <p className="text-xs font-black text-text-muted uppercase tracking-widest mt-1">
                 Drag sections to reorder • Click to edit
               </p>
             </div>
@@ -221,8 +221,8 @@ const ResumeBuilder = ({ initialData = null, onSave, onExport }) => {
             {/* Sidebar - Template & Sections */}
             <div className="lg:col-span-1 space-y-4">
               {/* Template Selector */}
-              <div className="card">
-                <h3 className="text-sm font-semibold text-[#0F172A] dark:text-[#E8EAED] mb-3">
+              <div className="glass-panel p-6 rounded-3xl">
+                <h3 className="text-[10px] font-black text-text-muted uppercase tracking-widest mb-4">
                   Template
                 </h3>
                 <div className="grid grid-cols-2 gap-2">
@@ -236,7 +236,7 @@ const ResumeBuilder = ({ initialData = null, onSave, onExport }) => {
                           : 'border-[#E2E8F0] dark:border-[#1E2640] hover:border-workflow-primary-300'
                       }`}
                     >
-                      <div className="text-xs font-medium text-[#0F172A] dark:text-[#E8EAED]">
+                      <div className="text-[10px] font-black uppercase tracking-widest text-text-primary">
                         {tpl.name}
                       </div>
                     </button>
@@ -245,8 +245,8 @@ const ResumeBuilder = ({ initialData = null, onSave, onExport }) => {
               </div>
 
               {/* Add Sections */}
-              <div className="card">
-                <h3 className="text-sm font-semibold text-[#0F172A] dark:text-[#E8EAED] mb-3">
+              <div className="glass-panel p-6 rounded-3xl">
+                <h3 className="text-[10px] font-black text-text-muted uppercase tracking-widest mb-4">
                   Add Section
                 </h3>
                 <div className="space-y-2">
@@ -259,14 +259,16 @@ const ResumeBuilder = ({ initialData = null, onSave, onExport }) => {
                         key={key}
                         onClick={() => addSection(key)}
                         disabled={exists}
-                        className="w-full flex items-center gap-3 p-3 rounded-lg border border-[#E2E8F0] dark:border-[#1E2640] hover:bg-[#F8FAFC] dark:hover:bg-[#1A2139] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="w-full flex items-center justify-between p-3 rounded-xl border border-border hover:bg-surface-elevated transition-colors disabled:opacity-50 disabled:cursor-not-allowed group"
                       >
-                        <Icon className="w-4 h-4 text-workflow-primary" />
-                        <span className="text-sm text-[#0F172A] dark:text-[#E8EAED]">
-                          {section.label}
-                        </span>
+                        <div className="flex items-center gap-3">
+                          <Icon className="w-4 h-4 text-workflow-primary group-hover:scale-110 transition-transform" />
+                          <span className="text-[10px] font-black uppercase tracking-widest text-text-secondary">
+                            {section.label}
+                          </span>
+                        </div>
                         {exists && (
-                          <span className="ml-auto text-xs text-[#64748B] dark:text-[#8B92A3]">
+                          <span className="text-[9px] font-black text-emerald-500 uppercase tracking-widest bg-emerald-500/10 px-2 py-0.5 rounded">
                             Added
                           </span>
                         )}
@@ -393,20 +395,20 @@ const DraggableSection = ({
       >
         <div className="flex items-start gap-4">
           {/* Drag Handle */}
-          <div className="cursor-move touch-none">
-            <GripVertical className="w-5 h-5 text-[#64748B] dark:text-[#8B92A3]" />
+          <div className="cursor-move touch-none p-1 rounded-lg hover:bg-surface-elevated transition-colors">
+            <GripVertical className="w-5 h-5 text-text-muted" />
           </div>
 
           {/* Section Content */}
           <div className="flex-1">
             <div className="flex items-center gap-3 mb-2">
               <Icon className="w-5 h-5 text-workflow-primary" />
-              <h3 className="font-semibold text-[#0F172A] dark:text-[#E8EAED]">
+              <h3 className="text-sm font-black text-text-primary uppercase tracking-tight">
                 {SECTION_TYPES[section.type]?.label || section.type}
               </h3>
             </div>
             <div 
-              className="prose prose-sm max-w-none text-[#475569] dark:text-[#B4B9C4]"
+              className="prose prose-sm max-w-none text-text-secondary font-medium"
               dangerouslySetInnerHTML={{ __html: section.content }}
             />
           </div>
@@ -415,11 +417,11 @@ const DraggableSection = ({
           <div className="flex items-center gap-2">
             <button
               onClick={onEdit}
-              className="p-2 rounded-lg hover:bg-[#F8FAFC] dark:hover:bg-[#1A2139] transition-colors"
+              className="p-2.5 rounded-xl hover:bg-surface-elevated transition-colors"
               aria-label="Edit"
               title="Edit manually"
             >
-              <FileText className="w-4 h-4 text-[#64748B] dark:text-[#8B92A3]" />
+              <FileText className="w-4 h-4 text-text-muted" />
             </button>
             {onEditAI && (
               <button
@@ -452,7 +454,7 @@ const ResumePreview = ({ sections, template }) => {
     : 'space-y-6';
 
   return (
-    <div className="card">
+    <div className="glass-panel p-8 rounded-3xl">
       <div className={`resume-preview ${templateClass}`}>
         {sections.map((section) => {
           const Icon = SECTION_TYPES[section.type]?.icon || FileText;
@@ -460,7 +462,7 @@ const ResumePreview = ({ sections, template }) => {
             <div key={section.id} className="resume-section">
               <div className="flex items-center gap-2 mb-3">
                 <Icon className="w-5 h-5 text-workflow-primary" />
-                <h3 className="text-lg font-semibold text-[#0F172A] dark:text-[#E8EAED]">
+                <h3 className="text-base font-black text-text-primary uppercase tracking-tight">
                   {SECTION_TYPES[section.type]?.label}
                 </h3>
               </div>
@@ -478,13 +480,13 @@ const ResumePreview = ({ sections, template }) => {
 
 // Empty State
 const EmptyState = ({ onAddSection }) => (
-  <div className="card text-center py-12">
-    <FileText className="w-12 h-12 text-[#64748B] dark:text-[#8B92A3] mx-auto mb-4" />
-    <h3 className="text-lg font-semibold text-[#0F172A] dark:text-[#E8EAED] mb-2">
-      Start Building Your Resume
+  <div className="glass-panel text-center py-20 rounded-[2.5rem]">
+    <FileText className="w-16 h-16 text-text-muted opacity-20 mx-auto mb-6" />
+    <h3 className="text-xl font-black text-text-primary uppercase tracking-tight mb-2">
+      Empty Matrix Detected
     </h3>
-    <p className="text-sm text-[#64748B] dark:text-[#8B92A3] mb-6">
-      Add sections to get started
+    <p className="text-xs font-black text-text-muted uppercase tracking-[0.2em] mb-8">
+      Initialize sections to begin synthesis
     </p>
     <Button
       variant="primary"

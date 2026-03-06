@@ -60,8 +60,8 @@ export const handleSupabaseError = (error) => {
 
 // Auth helpers
 export const auth = {
-  // Sign up
   signUp: async (email, password, metadata = {}) => {
+    console.log('📢 Starting Auth SignUp for:', email);
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
@@ -70,7 +70,12 @@ export const auth = {
       },
     });
     
-    if (error) throw error;
+    if (error) {
+      console.error('❌ Auth SignUp Error:', error);
+      throw error;
+    }
+
+    console.log('✅ Auth User Created:', data.user?.id);
     return data;
   },
   

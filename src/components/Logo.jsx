@@ -1,87 +1,83 @@
 import React from 'react';
-import { useTheme } from '../contexts/ThemeContext';
+import { Link } from 'react-router-dom';
 
 /**
- * Logo Component - Displays the Workflow AI logo
+ * Logo Component - Displays the One Islam Institute logo
  * 
- * @param {string} variant - Logo variant: 'full', 'icon', 'horizontal', 'text'
  * @param {string} size - Size: 'sm', 'md', 'lg', 'xl'
  * @param {string} className - Additional CSS classes
+ * @param {boolean} link - Whether to wrap in a Link to /
+ * @param {boolean} horizontal - Force horizontal layout for tight spaces
  */
 const Logo = ({ 
-  variant = 'full', 
   size = 'md',
   className = '',
-  darkMode = null // null = auto-detect, true/false = force
+  link = true,
+  horizontal = false
 }) => {
-  const { theme } = useTheme();
-  const isDark = darkMode !== null ? darkMode : theme === 'dark';
-  
-  const sizeClasses = {
+  const sizeMap = {
     sm: {
-      full: 'h-8',
-      icon: 'h-6 w-6',
-      horizontal: 'h-6',
-      text: 'text-lg'
+      top: 'text-lg',
+      bottom: 'text-lg',
+      spacing: 'tracking-tight',
+      bottomSpacing: 'tracking-tight',
+      hSize: 'text-base'
     },
     md: {
-      full: 'h-10',
-      icon: 'h-8 w-8',
-      horizontal: 'h-8',
-      text: 'text-xl'
+      top: 'text-xl',
+      bottom: 'text-xl',
+      spacing: 'tracking-tight',
+      bottomSpacing: 'tracking-tight',
+      hSize: 'text-lg'
     },
     lg: {
-      full: 'h-14',
-      icon: 'h-12 w-12',
-      horizontal: 'h-12',
-      text: 'text-2xl'
+      top: 'text-4xl',
+      bottom: 'text-4xl',
+      spacing: 'tracking-tight',
+      bottomSpacing: 'tracking-tight',
+      hSize: 'text-2xl'
     },
     xl: {
-      full: 'h-20',
-      icon: 'h-16 w-16',
-      horizontal: 'h-16',
-      text: 'text-4xl'
+      top: 'text-6xl',
+      bottom: 'text-6xl',
+      spacing: 'tracking-tight',
+      bottomSpacing: 'tracking-tight',
+      hSize: 'text-4xl'
     }
   };
 
-  const getLogoSrc = () => {
-    if (variant === 'icon') {
-      return isDark ? '/assets/images/logo-icon-dark.svg' : '/assets/images/logo-icon.svg';
-    }
-    if (variant === 'horizontal') {
-      return isDark ? '/assets/images/logo-dark.svg' : '/assets/images/logo-horizontal.svg';
-    }
-    if (variant === 'text') {
-      return null; // Text-only variant
-    }
-    // Default: full logo
-    return isDark ? '/assets/images/logo-dark.svg' : '/assets/images/logo.svg';
-  };
+  const currentSize = sizeMap[size] || sizeMap.md;
+  const donateGreen = '#059669'; // Official Brand Green
 
-  const logoSrc = getLogoSrc();
-
-  if (variant === 'text') {
-    return (
-      <div className={`flex items-center gap-2 ${className}`}>
-        <span className={`font-bold ${sizeClasses[size].text} text-workflow-primary dark:text-purple-400`}>
-          Workflow
-        </span>
-        <span className={`font-semibold ${sizeClasses[size].text === 'text-lg' ? 'text-xs' : sizeClasses[size].text === 'text-xl' ? 'text-sm' : 'text-base'} text-purple-600 dark:text-purple-400 opacity-80`}>
-          AI
-        </span>
+  const logoContent = horizontal ? (
+    <div className={`flex items-center gap-2 leading-none font-display ${className}`}>
+      <div className={`flex items-baseline font-black ${currentSize.hSize} tracking-tighter`}>
+        <span style={{ color: donateGreen }}>ONE</span>
+        <span className="text-white ml-1">ISLAM</span>
       </div>
-    );
-  }
+      <div className={`text-white font-black uppercase ${currentSize.hSize} tracking-tighter border-l border-white/20 pl-2 ml-1`}>
+        INSTITUTE
+      </div>
+    </div>
+  ) : (
+    <div className={`flex flex-col items-center leading-[0.9] font-display ${className}`}>
+      <div className={`flex items-baseline font-black ${currentSize.top} ${currentSize.spacing}`}>
+        <span style={{ color: donateGreen }}>ONE</span>
+        <span className="text-white ml-1.5">ISLAM</span>
+      </div>
+      <div className={`text-white font-black uppercase ${currentSize.bottom} ${currentSize.bottomSpacing} mt-1 text-center w-full`}>
+        INSTITUTE
+      </div>
+    </div>
+  );
+
+  if (!link) return <div className="inline-block">{logoContent}</div>;
 
   return (
-    <img
-      src={logoSrc}
-      alt="Workflow AI Logo"
-      className={`${sizeClasses[size][variant]} ${className}`}
-      style={{ objectFit: 'contain' }}
-    />
+    <Link to="/" className="inline-block hover:opacity-90 transition-opacity">
+      {logoContent}
+    </Link>
   );
 };
 
 export default Logo;
-

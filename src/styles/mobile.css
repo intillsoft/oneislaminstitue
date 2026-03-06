@@ -1,13 +1,59 @@
 /* Mobile Bottom Navigation Safe Area */
 .safe-area-bottom {
-  padding-bottom: env(safe-area-inset-bottom);
+  padding-bottom: calc(var(--bottom-nav-height) + var(--safe-area-bottom));
 }
 
-/* Mobile App-like styling */
+/* Native Mobile App Reset & Feel */
 @media (max-width: 768px) {
-  /* Add padding to content to account for bottom nav */
-  body {
-    padding-bottom: 80px;
+  /* Prevent scroll chaining on modals and drawers */
+  .overscroll-contain {
+    overscroll-behavior: contain;
+  }
+
+  /* Native-like bounce scroll effect */
+  .scroll-native {
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+  }
+
+  /* Content Padding for Mobile */
+  .container-mobile {
+    padding-left: var(--content-padding);
+    padding-right: var(--content-padding);
+  }
+
+  /* Native Mobile Buttons */
+  .btn-mobile-action {
+    @apply h-12 flex items-center justify-center rounded-2xl font-bold active:scale-[0.97] transition-all;
+  }
+
+  /* Native Card Stylings */
+  .card-native {
+    @apply bg-surface dark:bg-white/5 border border-border dark:border-white/10 rounded-[2rem] p-5 shadow-soft active:scale-[0.99] transition-all;
+  }
+
+  /* Native Headings */
+  h1 { @apply text-3xl font-black tracking-tight leading-tight; }
+  h2 { @apply text-2xl font-bold tracking-tight; }
+  h3 { @apply text-xl font-bold; }
+
+  /* Input fields specific for mobile */
+  input, select, textarea {
+    @apply text-[16px] !important; /* Prevents auto-zoom on iOS */
+  }
+
+  /* Navigation Bar Bottom Offset */
+  .has-bottom-nav {
+    padding-bottom: var(--bottom-nav-height);
+  }
+
+  /* Touch Optimizations */
+  .active-dim:active {
+    opacity: 0.7;
+  }
+
+  .active-bg:active {
+    @apply bg-slate-100 dark:bg-white/5;
   }
   
   /* Smooth scrolling */

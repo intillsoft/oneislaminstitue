@@ -369,65 +369,89 @@ const AISearchResults = () => {
                       {displayedJobs.map((job, index) => (
                         <motion.div
                           key={job.id}
-                          className="result-job-card"
+                          className="result-job-card group relative overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-emerald-500/40 transition-all shadow-sm hover:shadow-xl hover:-translate-y-1 cursor-pointer"
                           initial={{ opacity: 0, y: 20 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ duration: 0.3, delay: index * 0.05 }}
                           whileHover={{ y: -4 }}
                           onClick={() => navigate(`/jobs/detail?id=${job.id}`)}
                         >
-                          <div className="job-card-header">
-                            <div className="company-logo-wrapper">
+                          {/* Thumbnail Image */}
+                          <div className="relative w-full h-40 bg-gradient-to-br from-blue-500 to-blue-600 overflow-hidden">
+                            {job?.thumbnail || job?.image || job?.featured_image ? (
+                              <Image
+                                src={job?.thumbnail || job?.image || job?.featured_image}
+                                alt={job.title}
+                                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                              />
+                            ) : (
+                              <>
+                                <div className="w-full h-full bg-gradient-to-br from-blue-500 via-emerald-500 to-emerald-600 group-hover:scale-110 transition-transform duration-500" />
+                                <div className="absolute inset-0 flex items-center justify-center">
+                                  <Briefcase className="w-8 h-8 text-white/30" />
+                                </div>
+                              </>
+                            )}
+                            <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/30 to-transparent opacity-50" />
+
+                            {/* Match Score Badge */}
+                            {searchResults.matchScores[job.id] && (
+                              <div className="absolute top-3 right-3 px-2.5 py-1 bg-emerald-500 text-white text-[10px] font-bold uppercase tracking-widest rounded-md backdrop-blur-md border border-white/20">
+                                {searchResults.matchScores[job.id]}% Match
+                              </div>
+                            )}
+                          </div>
+
+                          {/* Content */}
+                          <div className="p-5 bg-white dark:bg-slate-900">
+                            <div className="flex items-start gap-3 mb-3">
                               <Image
                                 src={job.logo || `https://ui-avatars.com/api/?name=${encodeURIComponent(job.company || 'Company')}&background=0046FF&color=fff&size=128`}
                                 alt={`${job.company} logo`}
-                                className="company-logo-img"
+                                className="w-10 h-10 rounded-lg object-cover flex-shrink-0"
                               />
-                            </div>
-                            <div className="job-card-header-text">
-                              <h3 className="job-card-title">{job.title || 'Job Title'}</h3>
-                              <p className="job-card-company">{job.company || 'Company'}</p>
-                            </div>
-                          </div>
-                          <p className="job-card-description">
-                            {job.description ? job.description.substring(0, 120) + '...' : 'No description available'}
-                          </p>
-                          <div className="job-card-info">
-                            {job.location && (
-                              <div className="job-info-item">
-                                <MapPin size={14} />
-                                <span>{job.location}</span>
+                              <div className="flex-1 min-w-0">
+                                <h3 className="font-bold text-sm text-slate-900 dark:text-white group-hover:text-emerald-600 transition-colors line-clamp-1">
+                                  {job.title || 'Job Title'}
+                                </h3>
+                                <p className="text-xs text-slate-500 dark:text-slate-400 truncate">
+                                  {job.company || 'Company'}
+                                </p>
                               </div>
-                            )}
-                            {job.job_type && (
-                              <div className="job-info-item">
-                                <Clock size={14} />
-                                <span>{job.job_type}</span>
-                              </div>
-                            )}
-                            {job.salary_min && (
-                              <div className="job-info-item">
-                                <DollarSign size={14} />
-                                <span>
-                                  ${job.salary_min?.toLocaleString()}
-                                  {job.salary_max && ` - $${job.salary_max.toLocaleString()}`}
+                            </div>
+
+                            <p className="text-xs text-slate-600 dark:text-slate-300 mb-3 line-clamp-2">
+                              {job.description ? job.description.substring(0, 100) + '...' : 'No description available'}
+                            </p>
+
+                            <div className="flex flex-wrap gap-2 mb-3 text-[10px]">
+                              {job.location && (
+                                <span className="flex items-center gap-1 px-2 py-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 rounded-md border border-slate-200 dark:border-slate-700">
+                                  <MapPin size={12} className="flex-shrink-0" />
+                                  <span className="truncate">{job.location}</span>
                                 </span>
-                              </div>
-                            )}
-                          </div>
-                          <div className="job-card-footer">
-                            <span className="job-posted-time">
-                              Posted {formatTimeAgo(job.created_at || job.postedDate)}
-                            </span>
-                            <button className="view-job-button">
-                              View <ArrowRight className="w-4 h-4 ml-1" />
-                            </button>
-                          </div>
-                          {searchResults.matchScores[job.id] && (
-                            <div className="match-score-badge">
-                              {searchResults.matchScores[job.id]}% match
+                              )}
+                              {job.job_type && (
+                                <span className="flex items-center gap-1 px-2 py-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 rounded-md border border-slate-200 dark:border-slate-700">
+                                  <Clock size={12} className="flex-shrink-0" />
+                                  {job.job_type}
+                                </span>
+                              )}
+                              {job.salary_min && (
+                                <span className="flex items-center gap-1 px-2 py-1 bg-emerald-100 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 rounded-md border border-emerald-200 dark:border-emerald-500/20 font-bold">
+                                  <DollarSign size={12} className="flex-shrink-0" />
+                                  ${job.salary_min?.toLocaleString()}
+                                </span>
+                              )}
                             </div>
-                          )}
+
+                            <div className="flex items-center justify-between pt-3 border-t border-slate-100 dark:border-slate-800 text-xs text-slate-500">
+                              <span>Posted {formatTimeAgo(job.created_at || job.postedDate)}</span>
+                              <button className="text-emerald-600 dark:text-emerald-400 font-bold hover:gap-1.5 flex items-center gap-1 transition-all">
+                                View <ArrowRight className="w-3.5 h-3.5" />
+                              </button>
+                            </div>
+                          </div>
                         </motion.div>
                       ))}
                     </div>

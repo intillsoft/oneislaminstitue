@@ -61,37 +61,44 @@ const Sidebar = ({ isOpen, onClose, isCollapsed, onToggleCollapse }) => {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // Determine user role
-  const userRole = (!loadingProfile && profile?.role) ? profile.role : (user ? 'job-seeker' : null);
+  // Determine user role - normalize legacy roles
+  const getNormalizedRole = () => {
+    if (loadingProfile) return null;
+    const role = profile?.role || (user ? 'student' : null);
+    if (role === 'job-seeker' || role === 'scholar') return 'student';
+    if (role === 'recruiter' || role === 'faculty') return 'instructor';
+    return role;
+  };
+
+  const userRole = getNormalizedRole();
 
   // Navigation items based on role
   const navigationItems = {
-    'job-seeker': [
-      { label: 'Dashboard', path: '/dashboard', icon: 'LayoutDashboard' },
-      { label: 'Browse Jobs', path: '/jobs', icon: 'Search' },
-      { label: 'Applications', path: '/workflow-application-tracking-analytics', icon: 'FileText' },
+    'student': [
+      { label: 'Dashboard', path: '/dashboard/student', icon: 'LayoutDashboard' },
+      { label: 'Browse Courses', path: '/courses', icon: 'Search' },
+      { label: 'My Learning', path: '/dashboard/learning-path', icon: 'FileText' },
       { label: 'Resume Builder', path: '/resume-builder-ai-enhancement', icon: 'FileEdit' },
-      { label: 'Profile', path: '/user-profile', icon: 'User' },
+      { label: 'Career Training', path: '/career-training', icon: 'GraduationCap' },
     ],
-    'recruiter': [
-      { label: 'Dashboard', path: '/recruiter-dashboard-analytics', icon: 'BarChart3' },
-      { label: 'Post Job', path: '/job-posting-creation-management', icon: 'Plus' },
-      { label: 'Browse Jobs', path: '/job-search-browse', icon: 'Search' },
-      { label: 'Company', path: '/company-registration-profile-setup', icon: 'Building2' },
-      { label: 'Profile', path: '/user-profile', icon: 'User' },
+    'instructor': [
+      { label: 'Dashboard', path: '/instructor/dashboard', icon: 'BarChart3' },
+      { label: 'Create Course', path: '/instructor/courses/create', icon: 'Plus' },
+      { label: 'Browse', path: '/courses', icon: 'Search' },
+      { label: 'Faculty Team', path: '/instructor/company', icon: 'Building2' },
+      { label: 'Profile', path: '/profile', icon: 'User' },
     ],
     'admin': [
-      { label: 'Dashboard', path: '/admin-moderation-management', icon: 'Shield' },
-      { label: 'Browse Jobs', path: '/job-search-browse', icon: 'Search' },
-      { label: 'Users', path: '/admin-moderation-management?tab=users', icon: 'Users' },
-      { label: 'Jobs', path: '/admin-moderation-management?tab=jobs', icon: 'Briefcase' },
-      { label: 'Analytics', path: '/admin-moderation-management?tab=analytics', icon: 'BarChart3' },
-      { label: 'Settings', path: '/admin-moderation-management?tab=settings', icon: 'Settings' },
-      { label: 'Profile', path: '/user-profile', icon: 'User' },
+      { label: 'Dashboard', path: '/admin/dashboard', icon: 'Shield' },
+      { label: 'Browse Courses', path: '/courses', icon: 'Search' },
+      { label: 'User Registry', path: '/admin/users', icon: 'Users' },
+      { label: 'Course Catalog', path: '/admin/courses', icon: 'Briefcase' },
+      { label: 'System Analytics', path: '/admin/analytics', icon: 'BarChart3' },
+      { label: 'Settings', path: '/admin/settings', icon: 'Settings' },
     ],
   };
 
-  const items = navigationItems[userRole] || navigationItems['job-seeker'];
+  const items = navigationItems[userRole] || navigationItems['student'];
 
   const isActive = (path) => {
     if (path.includes('?')) {
@@ -151,12 +158,16 @@ const Sidebar = ({ isOpen, onClose, isCollapsed, onToggleCollapse }) => {
             key={item.path}
             to={item.path}
             onClick={handleNavClick}
-            className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 min-h-[44px] ${isActive(item.path)
-                ? 'bg-workflow-primary-50 dark:bg-workflow-primary-900/20 text-workflow-primary dark:text-workflow-primary-400 font-semibold'
-                : 'text-[#64748B] dark:text-[#8B92A3] hover:bg-[#F8FAFC] dark:hover:bg-[#1A2139] hover:text-[#0F172A] dark:hover:text-[#E8EAED]'
+            className={`flex items-center ${isCollapsed ? 'justify-center px-0' : 'space-x-3 px-4'} py-3 rounded-lg transition-all duration-200 min-h-[44px] ${isActive(item.path)
+              ? 'bg-workflow-primary-50 dark:bg-workflow-primary-900/20 text-workflow-primary dark:text-workflow-primary-400 font-semibold'
+              : 'text-[#64748B] dark:text-[#8B92A3] hover:bg-[#F8FAFC] dark:hover:bg-[#1A2139] hover:text-[#0F172A] dark:hover:text-[#E8EAED]'
               }`}
           >
-            <Icon name={item.icon} size={20} />
+            <Icon 
+              name={item.icon} 
+              size={isCollapsed ? 22 : 20} 
+              className={isActive(item.path) ? 'text-workflow-primary' : 'text-slate-400 dark:text-slate-300 group-hover:text-workflow-primary transition-colors'}
+            />
             {!isCollapsed && <span className="text-sm font-medium">{item.label}</span>}
           </Link>
         ))}

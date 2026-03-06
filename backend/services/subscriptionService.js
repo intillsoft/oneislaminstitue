@@ -17,6 +17,22 @@ const subscriptionService = {
 
             // For now, allow all users (free plan has limits but we'll implement later)
             // TODO: Implement actual subscription limits based on plan
+
+            // Check if user is admin
+            const { data: user } = await supabase
+                .from('users')
+                .select('role')
+                .eq('id', userId)
+                .single();
+
+            if (user?.role === 'admin') {
+                return {
+                    allowed: true,
+                    reason: null,
+                    remaining: -1, // Unlimited
+                };
+            }
+
             return {
                 allowed: true,
                 reason: null,
@@ -38,7 +54,7 @@ const subscriptionService = {
 
         const { data: subscription, error } = await supabase
             .from('subscriptions')
-            .select('*, plans(*)')
+            .select('*')
             .eq('user_id', userId)
             .eq('status', 'active')
             .single();
@@ -48,6 +64,18 @@ const subscriptionService = {
         }
 
         return subscription || { plan: 'free', limits: { job_applications: 5 } }; // Default to free if no sub
+    },
+
+    async incrementAutoApplyCount(userId) {
+        try {
+            // For now just log it, we'll implement usage tracking tables later
+            // or update a usage counter in a subscriptions_usage table
+            logger.info(`Incrementing auto-apply count for user ${userId}`);
+            return true;
+        } catch (error) {
+            logger.error(`Error incrementing auto-apply count for ${userId}:`, error);
+            return false;
+        }
     }
 };
 

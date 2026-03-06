@@ -12,7 +12,19 @@ const logger = winston.createLogger({
     winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
     winston.format.errors({ stack: true }),
     winston.format.splat(),
-    winston.format.json()
+    // Custom replacer to ensure Errors are not empty
+    winston.format.json({
+      replacer: (key, value) => {
+        if (value instanceof Error) {
+          return {
+            message: value.message,
+            stack: value.stack,
+            ...value
+          };
+        }
+        return value;
+      }
+    })
   ),
   defaultMeta: { service: 'workflows-backend' },
   transports: [

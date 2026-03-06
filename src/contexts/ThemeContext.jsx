@@ -14,8 +14,8 @@ export const ThemeProvider = ({ children }) => {
     if (savedTheme === 'dark' || savedTheme === 'light') {
       return savedTheme;
     }
-    // Default to light mode (ignoring system preference as per user request)
-    return 'light';
+    // Default to dark mode for a premium experience
+    return 'dark';
   });
 
   useEffect(() => {

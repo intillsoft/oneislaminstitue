@@ -40,7 +40,7 @@ Requirements: ${JSON.stringify(job?.requirements || [])}
 Benefits: ${JSON.stringify(job?.benefits || [])}
 `;
 
-      const prompt = `You are Workflow AI, a helpful assistant for the Workflow job platform. A user is viewing a job posting and has a question.
+      const prompt = `You are workflowAI, a helpful assistant for the One Islam Institute. A scholar is viewing a course and has a question.
 
 Job Context:
 ${jobContext}
@@ -50,7 +50,7 @@ User's Question: ${userQuestion}
 Provide a helpful, detailed answer about this job posting. Be friendly, professional, and mention Workflow when relevant.`;
 
       const response = await aiService.generateCompletion(prompt, {
-        systemMessage: 'You are Workflow AI, a helpful assistant for the Workflow job platform. Help users understand job postings, requirements, and provide career advice. Always mention Workflow when relevant.',
+        systemMessage: 'You are workflowAI, a helpful assistant for the One Islam Institute. Help scholars understand course materials, requirements, and provide academic advice. Always mention One Islam Institute when relevant.',
         max_tokens: 600,
         temperature: 0.7,
       });
@@ -78,10 +78,10 @@ Provide a helpful, detailed answer about this job posting. Be friendly, professi
   };
 
   const quickQuestions = [
-    'What skills are most important for this role?',
-    'What would make a candidate stand out?',
-    'What are the main responsibilities?',
-    'Is this a good fit for my experience level?',
+    'What topics are most important for this course?',
+    'What are the prerequisites?',
+    'What are the learning objectives?',
+    'Is this a good fit for my current knowledge level?',
   ];
 
   return (
@@ -91,7 +91,7 @@ Provide a helpful, detailed answer about this job posting. Be friendly, professi
         className="flex items-center gap-2 px-4 py-2 bg-workflow-primary text-white rounded-lg hover:bg-workflow-primary-600 transition-colors shadow-lg"
       >
         <Sparkles className="w-5 h-5" />
-        Ask Workflow AI
+        Ask Course Assistant
       </button>
 
       <AnimatePresence>
@@ -110,8 +110,8 @@ Provide a helpful, detailed answer about this job posting. Be friendly, professi
                     <Sparkles className="w-5 h-5 text-white" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold text-text-primary dark:text-[#E8EAED]">Workflow AI</h3>
-                    <p className="text-xs text-text-secondary dark:text-[#8B92A3]">Ask me anything about this job</p>
+                    <h3 className="text-lg font-bold text-text-primary dark:text-[#E8EAED]">workflowAI</h3>
+                    <p className="text-xs text-text-secondary dark:text-[#8B92A3]">Ask me anything about this course</p>
                   </div>
                 </div>
                 <button
@@ -151,7 +151,7 @@ Provide a helpful, detailed answer about this job posting. Be friendly, professi
                       Ask me anything about:
                     </p>
                     <p className="font-semibold text-text-primary dark:text-[#E8EAED] mb-4">
-                      {job?.title} at {job?.company || job?.companies?.name}
+                      {job?.title} at {job?.company || job?.companies?.name || 'Curator Team'}
                     </p>
                   </div>
                 )}
@@ -181,7 +181,7 @@ Location: ${job?.location || 'N/A'}
 Description: ${job?.description?.substring(0, 1000) || 'N/A'}
 `;
 
-                            const prompt = `You are Workflow AI, a helpful assistant for the Workflow job platform. A user is viewing a job posting and has a question.
+                            const prompt = `You are workflowAI, a helpful assistant for the One Islam Institute. A scholar is viewing a course and has a question.
 
 Job Context:
 ${jobContext}
@@ -233,7 +233,7 @@ Provide a helpful, detailed answer about this job posting. Be friendly, professi
                     value={userQuestion}
                     onChange={(e) => setUserQuestion(e.target.value)}
                     onKeyPress={(e) => e.key === 'Enter' && handleAskAI()}
-                    placeholder="Ask Workflow AI about this job..."
+                    placeholder="Ask guidance about this course..."
                     className="flex-1 px-4 py-2 bg-transparent text-text-primary dark:text-[#E8EAED] focus:outline-none"
                     disabled={isLoading}
                   />

@@ -3,6 +3,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
 import { useToast } from '../../components/ui/Toast';
 import Icon from 'components/AppIcon';
+import AILoader from '../../components/ui/AILoader';
 
 const AuthCallback = () => {
   const navigate = useNavigate();
@@ -55,7 +56,7 @@ const AuthCallback = () => {
 
           success('Successfully signed in!');
           setTimeout(() => {
-            navigate('/job-seeker-dashboard');
+            navigate('/dashboard/student');
           }, 1000);
         } else {
           // Check for error in query params (for password reset)
@@ -80,10 +81,7 @@ const AuthCallback = () => {
 
   return (
     <div className="min-h-screen bg-white dark:bg-[#0A0E27] flex items-center justify-center">
-      <div className="text-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-workflow-primary mx-auto mb-4"></div>
-        <p className="text-[#64748B] dark:text-[#8B92A3]">Completing authentication...</p>
-      </div>
+      <AILoader variant="pulse" text="Completing authentication..." />
     </div>
   );
 };

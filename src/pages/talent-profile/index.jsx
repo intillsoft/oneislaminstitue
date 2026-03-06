@@ -6,6 +6,8 @@ import { useToast } from '../../components/ui/Toast';
 import { talentService } from '../../services/talentService';
 import Breadcrumb from 'components/ui/Breadcrumb';
 import UnifiedSidebar from '../../components/ui/UnifiedSidebar';
+import { EliteCard } from '../../components/ui/EliteCard';
+import { ElitePageHeader } from '../../components/ui/EliteCard';
 import { formatDistanceToNow } from 'date-fns';
 
 const TalentProfile = () => {
@@ -17,6 +19,10 @@ const TalentProfile = () => {
   const [activeTab, setActiveTab] = useState('overview');
   const [isCreating, setIsCreating] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(() => {
+    const saved = localStorage.getItem('sidebarCollapsed');
+    return saved === 'true';
+  });
   const [formData, setFormData] = useState({
     title: '',
     bio: '',
@@ -186,12 +192,15 @@ const TalentProfile = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-white dark:bg-[#0A0E27]">
-        <UnifiedSidebar />
-        <div className="ml-0 lg:ml-64 min-h-screen flex items-center justify-center">
+      <div className="min-h-screen bg-bg">
+        <UnifiedSidebar isCollapsed={isSidebarCollapsed} onCollapseChange={setIsSidebarCollapsed} />
+        <div className={`transition-all duration-300 ${isSidebarCollapsed ? 'lg:ml-16' : 'lg:ml-[280px]'} min-h-screen flex items-center justify-center`}>
           <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-workflow-primary mx-auto mb-4"></div>
-            <p className="text-[#64748B] dark:text-[#8B92A3]">Loading profile...</p>
+            <div className="relative w-20 h-20 mx-auto mb-6">
+              <div className="absolute inset-0 border-4 border-workflow-primary/20 rounded-full"></div>
+              <div className="absolute inset-0 border-4 border-workflow-primary border-t-transparent rounded-full animate-spin"></div>
+            </div>
+            <p className="text-slate-400 font-medium tracking-widest uppercase text-xs animate-pulse">Initializing Profile Engine</p>
           </div>
         </div>
       </div>
@@ -201,94 +210,132 @@ const TalentProfile = () => {
   // Show create/edit form
   if (isCreating || isEditing || (!talent && !id)) {
     return (
-      <div className="min-h-screen bg-white dark:bg-[#0A0E27]">
-        <UnifiedSidebar />
-        <div className="ml-0 lg:ml-64 min-h-screen">
-          <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <Breadcrumb />
-            <div className="bg-white dark:bg-[#13182E] border border-[#E2E8F0] dark:border-[#1E2640] rounded-lg p-8">
-              <h1 className="text-2xl font-bold text-[#0F172A] dark:text-[#E8EAED] mb-6">
-                {isEditing ? 'Edit Your Talent Profile' : 'Create Your Talent Profile'}
-              </h1>
-              <form onSubmit={handleCreateProfile} className="space-y-6">
-                <div>
-                  <label className="block text-sm font-medium text-[#0F172A] dark:text-[#E8EAED] mb-2">
-                    Title <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    value={formData.title}
-                    onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                    placeholder="e.g., Full Stack Developer"
-                    className="w-full px-4 py-2 border border-[#E2E8F0] dark:border-[#1E2640] rounded-lg bg-white dark:bg-[#1A2139] text-[#0F172A] dark:text-[#E8EAED]"
-                    required
-                  />
+      <div className="min-h-screen bg-bg">
+        <UnifiedSidebar isCollapsed={isSidebarCollapsed} onCollapseChange={setIsSidebarCollapsed} />
+        <div className={`transition-all duration-300 ${isSidebarCollapsed ? 'lg:ml-16' : 'lg:ml-[280px]'} min-h-screen`}>
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <ElitePageHeader
+              title={isEditing ? 'Management Engine' : 'Creation Portal'}
+              description={isEditing ? 'Refining your professional identity' : 'Establishing your presence in the network'}
+            />
+
+            <EliteCard className="p-10 border-white/5 mt-8">
+              <div className="flex items-center gap-4 mb-10 pb-6 border-b border-white/5">
+                <div className="w-12 h-12 rounded-2xl bg-workflow-primary/10 flex items-center justify-center">
+                  <Icon name={isEditing ? 'ShieldCheck' : 'Target'} className="w-6 h-6 text-workflow-primary" />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[#0F172A] dark:text-[#E8EAED] mb-2">
-                    Bio <span className="text-red-500">*</span>
+                  <h2 className="text-xl font-black text-white uppercase tracking-tight">
+                    {isEditing ? 'Operational Parameters' : 'Initial Configuration'}
+                  </h2>
+                  <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">
+                    Required Data for Talent Indexing
+                  </p>
+                </div>
+              </div>
+
+              <form onSubmit={handleCreateProfile} className="space-y-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] ml-1">
+                      Professional Designation
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.title}
+                      onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                      placeholder="e.g., QUANTUM SYSTEMS ARCHITECT"
+                      className="w-full px-6 py-4 bg-bg-elevated border border-border dark:border-white/5 rounded-2xl text-text-primary dark:text-white placeholder:text-text-muted/50 focus:outline-none focus:ring-2 focus:ring-workflow-primary/40 transition-all font-bold tracking-tight"
+                      required
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] ml-1">
+                      Resource Rate ($/HR)
+                    </label>
+                    <div className="relative">
+                      <div className="absolute left-6 top-1/2 -translate-y-1/2 text-blue-500 font-black">$</div>
+                      <input
+                        type="number"
+                        value={formData.hourly_rate}
+                        onChange={(e) => setFormData({ ...formData, hourly_rate: e.target.value })}
+                        placeholder="120"
+                        min="0"
+                        step="0.01"
+                        className="w-full px-12 py-4 bg-bg-elevated border border-border dark:border-white/5 rounded-2xl text-text-primary dark:text-white placeholder:text-text-muted/50 focus:outline-none focus:ring-2 focus:ring-workflow-primary/40 transition-all font-bold tracking-tight"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] ml-1">
+                    Biographic Data Stream
                   </label>
                   <textarea
                     value={formData.bio}
                     onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
-                    placeholder="Tell us about yourself and your skills..."
+                    placeholder="Provide a comprehensive overview of your professional capabilities and historical impacts..."
                     rows={6}
-                    className="w-full px-4 py-2 border border-[#E2E8F0] dark:border-[#1E2640] rounded-lg bg-white dark:bg-[#1A2139] text-[#0F172A] dark:text-[#E8EAED]"
+                    className="w-full px-6 py-4 bg-bg-elevated border border-border dark:border-white/5 rounded-2xl text-text-primary dark:text-white placeholder:text-text-muted/50 focus:outline-none focus:ring-2 focus:ring-workflow-primary/40 transition-all font-medium leading-relaxed resize-none"
                     required
                   />
                 </div>
-                <div>
-                  <label className="block text-sm font-medium text-[#0F172A] dark:text-[#E8EAED] mb-2">
-                    Hourly Rate ($)
+
+                <div className="space-y-2">
+                  <label className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] ml-1">
+                    Expertise Classification
                   </label>
-                  <input
-                    type="number"
-                    value={formData.hourly_rate}
-                    onChange={(e) => setFormData({ ...formData, hourly_rate: e.target.value })}
-                    placeholder="50"
-                    min="0"
-                    step="0.01"
-                    className="w-full px-4 py-2 border border-[#E2E8F0] dark:border-[#1E2640] rounded-lg bg-white dark:bg-[#1A2139] text-[#0F172A] dark:text-[#E8EAED]"
-                  />
+                  <div className="grid grid-cols-3 gap-4">
+                    {['beginner', 'intermediate', 'expert'].map((level) => (
+                      <button
+                        key={level}
+                        type="button"
+                        onClick={() => setFormData({ ...formData, experience_level: level })}
+                        className={`py-4 rounded-xl font-black uppercase tracking-widest text-[10px] border transition-all ${formData.experience_level === level
+                          ? 'bg-workflow-primary border-workflow-primary text-white shadow-lg shadow-workflow-primary/20'
+                          : 'bg-bg-elevated border-border dark:border-white/5 text-text-muted hover:text-text-primary'
+                          }`}
+                      >
+                        {level}
+                      </button>
+                    ))}
+                  </div>
                 </div>
-                <div>
-                  <label className="block text-sm font-medium text-[#0F172A] dark:text-[#E8EAED] mb-2">
-                    Experience Level
-                  </label>
-                  <select
-                    value={formData.experience_level}
-                    onChange={(e) => setFormData({ ...formData, experience_level: e.target.value })}
-                    className="w-full px-4 py-2 border border-[#E2E8F0] dark:border-[#1E2640] rounded-lg bg-white dark:bg-[#1A2139] text-[#0F172A] dark:text-[#E8EAED]"
-                  >
-                    <option value="beginner">Beginner</option>
-                    <option value="intermediate">Intermediate</option>
-                    <option value="expert">Expert</option>
-                  </select>
-                </div>
-                <div className="flex gap-4">
+
+                <div className="flex flex-col sm:flex-row gap-4 pt-6">
                   <button
                     type="submit"
                     disabled={loading}
-                    className="btn-primary flex-1"
+                    className="flex-1 py-5 bg-workflow-primary text-white rounded-2xl hover:bg-workflow-primary/80 transition-all font-black uppercase tracking-[0.2em] text-xs shadow-xl shadow-workflow-primary/20 flex items-center justify-center gap-3 disabled:opacity-50"
                   >
-                    {loading ? (isEditing ? 'Updating...' : 'Creating...') : (isEditing ? 'Update Profile' : 'Create Profile')}
+                    {loading ? (
+                      <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    ) : (
+                      <Icon name="Save" size={18} />
+                    )}
+                    {isEditing ? 'Commit Profile Updates' : 'Initialize Profile'}
                   </button>
                   {isEditing ? (
                     <button
                       type="button"
                       onClick={handleCancelEdit}
-                      className="btn-secondary"
+                      className="px-10 py-5 bg-white/5 text-white rounded-2xl hover:bg-white/10 transition-all font-black uppercase tracking-[0.2em] text-xs border border-white/10"
                     >
-                      Cancel
+                      Abort
                     </button>
                   ) : (
-                    <Link to="/talent/dashboard" className="btn-secondary">
-                      Cancel
+                    <Link
+                      to="/talent/dashboard"
+                      className="px-10 py-5 bg-white/5 text-white rounded-2xl hover:bg-white/10 transition-all font-black uppercase tracking-[0.2em] text-xs border border-white/10 flex items-center justify-center"
+                    >
+                      Exit
                     </Link>
                   )}
                 </div>
               </form>
-            </div>
+            </EliteCard>
           </div>
         </div>
       </div>
@@ -297,26 +344,26 @@ const TalentProfile = () => {
 
   if (!talent && id) {
     return (
-      <div className="min-h-screen bg-white dark:bg-[#0A0E27]">
-        <UnifiedSidebar />
-        <div className="ml-0 lg:ml-64 min-h-screen flex items-center justify-center p-4">
-          <div className="text-center max-w-md">
-            <div className="w-20 h-20 bg-workflow-primary/10 dark:bg-workflow-primary/20 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Icon name="UserX" className="w-10 h-10 text-workflow-primary" />
+      <div className="min-h-screen bg-bg">
+        <UnifiedSidebar isCollapsed={isSidebarCollapsed} onCollapseChange={setIsSidebarCollapsed} />
+        <div className={`transition-all duration-300 ${isSidebarCollapsed ? 'lg:ml-16' : 'lg:ml-[280px]'} min-h-screen flex items-center justify-center p-4`}>
+          <EliteCard className="max-w-md w-full text-center">
+            <div className="w-20 h-20 bg-rose-500/10 rounded-2xl flex items-center justify-center mx-auto mb-6 border border-rose-500/20">
+              <Icon name="UserX" className="w-10 h-10 text-rose-500" />
             </div>
-            <h2 className="text-xl font-bold text-[#0F172A] dark:text-[#E8EAED] mb-2">Talent Not Found</h2>
-            <p className="text-sm text-[#64748B] dark:text-[#8B92A3] mb-6">
-              This talent profile doesn't exist or has been removed.
+            <h2 className="text-2xl font-black text-white mb-3 tracking-tight uppercase">Talent Not Found</h2>
+            <p className="text-slate-400 mb-8 max-w-xs mx-auto">
+              The profile you are looking for has either been moved or doesn't exist in our systems.
             </p>
-            <div className="flex gap-3 justify-center">
-              <Link to="/talent/discover" className="px-4 py-2 bg-workflow-primary text-white rounded-lg hover:bg-workflow-primary-600 transition-colors text-sm font-medium">
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <Link to="/talent/discover" className="px-6 py-3 bg-workflow-primary text-white rounded-xl hover:bg-workflow-primary/80 transition-all font-black uppercase tracking-widest text-xs shadow-lg shadow-workflow-primary/20">
                 Browse Talents
               </Link>
-              <Link to="/" className="px-4 py-2 bg-surface-100 dark:bg-[#1A2139] text-text-primary dark:text-[#E8EAED] rounded-lg hover:bg-surface-200 dark:hover:bg-[#1E2640] transition-colors text-sm font-medium">
+              <Link to="/" className="px-6 py-3 bg-white/5 text-white rounded-xl hover:bg-white/10 transition-all font-black uppercase tracking-widest text-xs border border-white/10">
                 Go Home
               </Link>
             </div>
-          </div>
+          </EliteCard>
         </div>
       </div>
     );
@@ -334,29 +381,33 @@ const TalentProfile = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white dark:bg-[#0A0E27]">
-      <UnifiedSidebar />
-      <div className="ml-0 lg:ml-64 min-h-screen">
+    <div className="min-h-screen bg-[#0A1628]">
+      <UnifiedSidebar isCollapsed={isSidebarCollapsed} onCollapseChange={setIsSidebarCollapsed} />
+      <div className={`transition-all duration-300 ${isSidebarCollapsed ? 'lg:ml-16' : 'lg:ml-[280px]'} min-h-screen`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <Breadcrumb />
+          <ElitePageHeader
+            title={talent.user?.name || 'Talent Profile'}
+            description={talent.title}
+          />
 
           {/* Cover Image */}
-          <div className="relative h-64 rounded-lg overflow-hidden mb-6">
+          <div className="relative h-72 rounded-3xl overflow-hidden mb-8 group">
             {talent.cover_image_url ? (
               <img
                 src={talent.cover_image_url}
                 alt="Cover"
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
               />
             ) : (
-              <div className="w-full h-full bg-gradient-to-r from-workflow-primary to-workflow-primary-600"></div>
+              <div className="w-full h-full bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-700 opacity-80"></div>
             )}
+            <div className="absolute inset-0 bg-gradient-to-t from-bg to-transparent opacity-60"></div>
           </div>
 
           {/* Profile Header */}
-          <div className="flex flex-col md:flex-row gap-6 mb-6">
+          <div className="flex flex-col md:flex-row gap-8 mb-10 -mt-20 relative z-10 px-6">
             <div className="flex-shrink-0">
-              <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-white dark:border-[#13182E] shadow-lg">
+              <div className="w-40 h-40 rounded-3xl overflow-hidden border-4 border-bg shadow-2xl bg-bg-elevated">
                 {talent.profile_picture_url ? (
                   <img
                     src={talent.profile_picture_url}
@@ -365,80 +416,78 @@ const TalentProfile = () => {
                   />
                 ) : (
                   <div className="w-full h-full bg-workflow-primary/10 flex items-center justify-center">
-                    <Icon name="User" className="w-16 h-16 text-workflow-primary" />
+                    <Icon name="User" className="w-20 h-20 text-workflow-primary/30" />
                   </div>
                 )}
               </div>
             </div>
 
-            <div className="flex-1">
-              <div className="flex items-start justify-between mb-4">
-                <div className="flex-1">
-                  <h1 className="text-3xl font-bold text-[#0F172A] dark:text-[#E8EAED] mb-2">
-                    {talent.user?.name || 'Talent'}
-                  </h1>
-                  <p className="text-xl text-[#64748B] dark:text-[#8B92A3] mb-4">{talent.title}</p>
-
-                  <div className="flex items-center gap-4 flex-wrap">
-                    <div className="flex items-center gap-2">
-                      {renderStars(talent.rating || 0)}
-                      <span className="text-sm font-medium text-[#0F172A] dark:text-[#E8EAED]">
-                        {talent.rating?.toFixed(1) || '0.0'} ({talent.total_reviews || 0} reviews)
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-2 text-sm text-[#64748B] dark:text-[#8B92A3]">
-                      <Icon name="Clock" size={16} />
-                      Responds in {talent.response_time || 24} hours
-                    </div>
-                    <div className="flex items-center gap-2 text-sm text-[#64748B] dark:text-[#8B92A3]">
-                      <Icon name="MapPin" size={16} />
-                      {talent.availability || 'Available'}
-                    </div>
+            <div className="flex-1 mt-6 md:mt-10">
+              <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-6">
+                <div>
+                  <div className="flex items-center gap-3 mb-2">
+                    <h1 className="text-4xl font-black text-white tracking-tight">
+                      {talent.user?.name || 'Talent'}
+                    </h1>
                     {talent.is_verified && (
-                      <span className="px-2 py-1 bg-green-100 dark:bg-green-900/20 text-green-700 dark:text-green-300 text-xs font-medium rounded-full flex items-center gap-1">
-                        <Icon name="CheckCircle" size={12} />
-                        Verified
+                      <span className="p-1.5 bg-emerald-500/10 text-emerald-500 rounded-lg border border-emerald-500/20 shadow-sm" title="Verified Expert">
+                        <Icon name="CheckCircle" size={16} />
                       </span>
                     )}
                   </div>
+                  <p className="text-lg text-slate-400 font-medium mb-4">{talent.title}</p>
+
+                  <div className="flex items-center gap-6 flex-wrap">
+                    <div className="flex items-center gap-2 px-3 py-1.5 bg-white/5 rounded-xl border border-white/5">
+                      <div className="flex items-center gap-1">
+                        {renderStars(talent.rating || 0)}
+                      </div>
+                      <span className="text-sm font-black text-white ml-1">
+                        {talent.rating?.toFixed(1) || '0.0'}
+                      </span>
+                      <span className="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-1">
+                        ({talent.total_reviews || 0} reviews)
+                      </span>
+                    </div>
+
+                    <div className="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-slate-400">
+                      <Icon name="Clock" size={14} className="text-blue-500" />
+                      <span>{talent.response_time || 24}H Response</span>
+                    </div>
+
+                    <div className="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-slate-400">
+                      <Icon name="MapPin" size={14} className="text-rose-500" />
+                      <span>{talent.availability || 'Available'}</span>
+                    </div>
+                  </div>
                 </div>
-                {/* Edit button for profile owner */}
-                {user?.id === talent.user_id && (
-                  <button
-                    onClick={handleEditProfile}
-                    className="btn-secondary flex items-center gap-2 ml-4"
-                  >
-                    <Icon name="Edit" size={18} />
-                    Edit Profile
-                  </button>
-                )}
 
                 <div className="flex items-center gap-3">
                   {user?.id === talent.user_id ? (
                     <button
                       onClick={handleEditProfile}
-                      className="btn-primary flex items-center gap-2"
+                      className="px-6 py-3 bg-workflow-primary text-white rounded-xl hover:bg-workflow-primary/80 transition-all font-black uppercase tracking-widest text-xs flex items-center gap-3 shadow-lg shadow-workflow-primary/20 group"
                     >
-                      <Icon name="Edit" size={18} />
+                      <Icon name="Edit" size={18} className="transition-transform group-hover:scale-110" />
                       Edit Profile
                     </button>
                   ) : (
-                    <>
+                    <div className="flex items-center gap-3">
                       <Link
                         to={`/talent/messages?user=${talent.user_id}`}
-                        className="btn-secondary flex items-center gap-2"
+                        className="px-6 py-3 bg-white/5 text-white rounded-xl hover:bg-white/10 transition-all font-black uppercase tracking-widest text-xs flex items-center gap-3 border border-white/10 group"
                       >
-                        <Icon name="MessageSquare" size={18} />
-                        Contact
+                        <Icon name="MessageSquare" size={18} className="transition-transform group-hover:scale-110 text-blue-500" />
+                        Message
                       </Link>
                       <Link
                         to={`/talent/gigs?talent=${id || talent.id}`}
-                        className="btn-primary flex items-center gap-2"
+                        className="px-6 py-3 bg-workflow-primary text-white rounded-xl hover:bg-workflow-primary/80 transition-all font-black uppercase tracking-widest text-xs flex items-center gap-3 shadow-lg shadow-workflow-primary/20 group"
                       >
-                        <Icon name="Briefcase" size={18} />
-                        View Gigs
+                        <Icon name="Briefcase" size={18} className="transition-transform group-hover:scale-110" />
+                        Explore Gigs
                       </Link>
-                    </>
+                    </div>
                   )}
                 </div>
               </div>
@@ -446,49 +495,34 @@ const TalentProfile = () => {
           </div>
 
           {/* Stats Cards */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-            <div className="bg-white dark:bg-[#13182E] border border-[#E2E8F0] dark:border-[#1E2640] rounded-lg p-4">
-              <p className="text-sm text-[#64748B] dark:text-[#8B92A3] mb-1">Total Hours</p>
-              <p className="text-2xl font-bold text-[#0F172A] dark:text-[#E8EAED]">
-                {talent.total_hours_worked || 0}
-              </p>
-            </div>
-            <div className="bg-white dark:bg-[#13182E] border border-[#E2E8F0] dark:border-[#1E2640] rounded-lg p-4">
-              <p className="text-sm text-[#64748B] dark:text-[#8B92A3] mb-1">Total Earnings</p>
-              <p className="text-2xl font-bold text-[#0F172A] dark:text-[#E8EAED]">
-                ${talent.total_earnings?.toLocaleString() || '0'}
-              </p>
-            </div>
-            <div className="bg-white dark:bg-[#13182E] border border-[#E2E8F0] dark:border-[#1E2640] rounded-lg p-4">
-              <p className="text-sm text-[#64748B] dark:text-[#8B92A3] mb-1">Hourly Rate</p>
-              <p className="text-2xl font-bold text-[#0F172A] dark:text-[#E8EAED]">
-                ${talent.hourly_rate || '0'}/hr
-              </p>
-            </div>
-            <div className="bg-white dark:bg-[#13182E] border border-[#E2E8F0] dark:border-[#1E2640] rounded-lg p-4">
-              <p className="text-sm text-[#64748B] dark:text-[#8B92A3] mb-1">Member Since</p>
-              <p className="text-sm font-medium text-[#0F172A] dark:text-[#E8EAED]">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
+            <EliteCard className="p-5 flex flex-col justify-between hover:scale-[1.02] transition-transform cursor-default bg-white/5 border-white/5">
+              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 mb-2">Total Hours</span>
+              <div className="flex items-end gap-2 text-white">
+                <span className="text-2xl font-black">{talent.total_hours_worked || 0}</span>
+                <span className="text-[10px] font-black uppercase tracking-widest text-emerald-500 mb-1">Hrs</span>
+              </div>
+            </EliteCard>
+            <EliteCard className="p-5 flex flex-col justify-between hover:scale-[1.02] transition-transform cursor-default bg-white/5 border-white/5">
+              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 mb-2">Earnings</span>
+              <div className="flex items-end gap-2 text-white">
+                <span className="text-2xl font-black">${talent.total_earnings?.toLocaleString() || '0'}</span>
+                {talent.total_earnings > 0 && <Icon name="TrendingUp" size={14} className="text-emerald-500 mb-1.5" />}
+              </div>
+            </EliteCard>
+            <EliteCard className="p-5 flex flex-col justify-between hover:scale-[1.02] transition-transform cursor-default bg-white/5 border-white/5">
+              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 mb-2">Hourly Rate</span>
+              <div className="flex items-end gap-2 text-white">
+                <span className="text-2xl font-black">${talent.hourly_rate || '0'}</span>
+                <span className="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-1">/ hr</span>
+              </div>
+            </EliteCard>
+            <EliteCard className="p-5 flex flex-col justify-between hover:scale-[1.02] transition-transform cursor-default bg-white/5 border-white/5">
+              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 mb-2">Member Since</span>
+              <div className="text-lg font-black text-white truncate">
                 {talent.created_at ? formatDistanceToNow(new Date(talent.created_at), { addSuffix: true }) : 'N/A'}
-              </p>
-            </div>
-          </div>
-
-          {/* Tabs */}
-          <div className="border-b border-[#E2E8F0] dark:border-[#1E2640] mb-6">
-            <nav className="flex space-x-8">
-              {['overview', 'gigs', 'reviews', 'portfolio'].map((tab) => (
-                <button
-                  key={tab}
-                  onClick={() => setActiveTab(tab)}
-                  className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors ${activeTab === tab
-                      ? 'border-workflow-primary text-workflow-primary'
-                      : 'border-transparent text-[#64748B] dark:text-[#8B92A3] hover:text-[#0F172A] dark:hover:text-[#E8EAED]'
-                    }`}
-                >
-                  {tab.charAt(0).toUpperCase() + tab.slice(1)}
-                </button>
-              ))}
-            </nav>
+              </div>
+            </EliteCard>
           </div>
 
           {/* Tab Content */}
@@ -497,206 +531,225 @@ const TalentProfile = () => {
               {activeTab === 'overview' && (
                 <div className="space-y-6">
                   {/* Bio */}
-                  <div className="bg-white dark:bg-[#13182E] border border-[#E2E8F0] dark:border-[#1E2640] rounded-lg p-6">
-                    <h2 className="text-xl font-semibold text-[#0F172A] dark:text-[#E8EAED] mb-4">About</h2>
-                    <p className="text-[#64748B] dark:text-[#8B92A3] leading-relaxed">
-                      {talent.bio || 'No bio available.'}
+                  <EliteCard className="p-8">
+                    <h2 className="text-sm font-black text-slate-500 uppercase tracking-[0.2em] mb-6 flex items-center gap-3">
+                      <div className="w-1.5 h-1.5 rounded-full bg-blue-500" />
+                      About
+                    </h2>
+                    <p className="text-slate-400 leading-relaxed text-lg">
+                      {talent.bio || 'No bio available at this time.'}
                     </p>
-                  </div>
+                  </EliteCard>
 
                   {/* Skills */}
-                  <div className="bg-white dark:bg-[#13182E] border border-[#E2E8F0] dark:border-[#1E2640] rounded-lg p-6">
-                    <h2 className="text-xl font-semibold text-[#0F172A] dark:text-[#E8EAED] mb-4">Skills</h2>
-                    <div className="flex flex-wrap gap-2">
+                  <EliteCard className="p-8">
+                    <h2 className="text-sm font-black text-slate-500 uppercase tracking-[0.2em] mb-6 flex items-center gap-3">
+                      <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                      Professional Skills
+                    </h2>
+                    <div className="flex flex-wrap gap-3">
                       {talent.skills && talent.skills.length > 0 ? (
                         talent.skills.map((skill, index) => (
-                          <div key={index} className="flex items-center gap-2">
-                            <span
-                              className="px-3 py-1.5 bg-workflow-primary/10 dark:bg-workflow-primary/20 text-workflow-primary rounded-full text-sm font-medium"
-                            >
+                          <div key={index} className="group relative">
+                            <div className="px-4 py-2 bg-white/5 border border-white/5 text-slate-300 rounded-xl text-xs font-black uppercase tracking-widest flex items-center gap-3 transition-all hover:border-blue-500/30 hover:bg-blue-500/5 cursor-default">
                               {skill}
-                            </span>
-                            {user?.id === talent.user_id && (
-                              <Link
-                                to={`/talent/verify-skill?skill=${encodeURIComponent(skill)}`}
-                                title="Verify this skill with AI"
-                                className="p-1 text-gray-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
-                              >
-                                <Icon name="Shield" size={14} />
-                              </Link>
-                            )}
+                              {user?.id === talent.user_id && (
+                                <Link
+                                  to={`/talent/verify-skill?skill=${encodeURIComponent(skill)}`}
+                                  title="Verify this skill with AI"
+                                  className="text-slate-600 hover:text-purple-500 transition-colors"
+                                >
+                                  <Icon name="Shield" size={12} />
+                                </Link>
+                              )}
+                            </div>
                           </div>
                         ))
                       ) : (
-                        <p className="text-[#64748B] dark:text-[#8B92A3]">No skills listed</p>
+                        <p className="text-slate-500 italic text-sm">No specific skills highlighted yet.</p>
                       )}
                     </div>
-                  </div>
+                  </EliteCard>
 
-                  {/* Experience Level */}
-                  <div className="bg-white dark:bg-[#13182E] border border-[#E2E8F0] dark:border-[#1E2640] rounded-lg p-6">
-                    <h2 className="text-xl font-semibold text-[#0F172A] dark:text-[#E8EAED] mb-4">Experience</h2>
-                    <span className="px-3 py-1.5 bg-blue-100 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 rounded-full text-sm font-medium capitalize">
-                      {talent.experience_level || 'intermediate'}
-                    </span>
-                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {/* Experience Level */}
+                    <EliteCard className="p-8">
+                      <h2 className="text-sm font-black text-slate-500 uppercase tracking-[0.2em] mb-4 flex items-center gap-3">
+                        <div className="w-1.5 h-1.5 rounded-full bg-rose-500" />
+                        Expertise
+                      </h2>
+                      <span className="inline-block px-4 py-2 bg-workflow-primary/10 text-workflow-primary border border-workflow-primary/20 rounded-xl text-xs font-black uppercase tracking-widest">
+                        {talent.experience_level || 'intermediate'}
+                      </span>
+                    </EliteCard>
 
-                  {/* Languages */}
-                  {talent.languages && talent.languages.length > 0 && (
-                    <div className="bg-white dark:bg-[#13182E] border border-[#E2E8F0] dark:border-[#1E2640] rounded-lg p-6">
-                      <h2 className="text-xl font-semibold text-[#0F172A] dark:text-[#E8EAED] mb-4">Languages</h2>
-                      <div className="flex flex-wrap gap-2">
-                        {talent.languages.map((lang, index) => (
-                          <span
-                            key={index}
-                            className="px-3 py-1.5 bg-gray-100 dark:bg-[#1A2139] text-[#0F172A] dark:text-[#E8EAED] rounded-full text-sm"
-                          >
-                            {lang}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  )}
+                    {/* Languages */}
+                    {talent.languages && talent.languages.length > 0 && (
+                      <EliteCard className="p-8">
+                        <h2 className="text-sm font-black text-slate-500 uppercase tracking-[0.2em] mb-4 flex items-center gap-3">
+                          <div className="w-1.5 h-1.5 rounded-full bg-amber-500" />
+                          Languages
+                        </h2>
+                        <div className="flex flex-wrap gap-2 text-white">
+                          <span className="text-slate-300 font-bold">{talent.languages.join(', ')}</span>
+                        </div>
+                      </EliteCard>
+                    )}
+                  </div>
 
                   {/* Certifications */}
                   {talent.certifications && talent.certifications.length > 0 && (
-                    <div className="bg-white dark:bg-[#13182E] border border-[#E2E8F0] dark:border-[#1E2640] rounded-lg p-6">
-                      <h2 className="text-xl font-semibold text-[#0F172A] dark:text-[#E8EAED] mb-4">Certifications</h2>
-                      <div className="space-y-3">
+                    <EliteCard className="p-8">
+                      <h2 className="text-sm font-black text-slate-500 uppercase tracking-[0.2em] mb-6 flex items-center gap-3">
+                        <div className="w-1.5 h-1.5 rounded-full bg-purple-500" />
+                        Certifications
+                      </h2>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         {talent.certifications.map((cert, index) => (
-                          <div key={index} className="flex items-center gap-3">
-                            <Icon name="Award" className="w-5 h-5 text-workflow-primary" />
+                          <div key={index} className="flex items-center gap-4 group">
+                            <div className="w-12 h-12 rounded-2xl bg-bg-elevated border border-border dark:border-white/5 flex items-center justify-center group-hover:bg-workflow-primary/10 transition-colors">
+                              <Icon name="Award" className="w-6 h-6 text-workflow-primary" />
+                            </div>
                             <div>
-                              <p className="font-medium text-[#0F172A] dark:text-[#E8EAED]">{cert.name || cert}</p>
+                              <p className="font-black text-sm text-white uppercase tracking-tight">{cert.name || cert}</p>
                               {cert.issuer && (
-                                <p className="text-sm text-[#64748B] dark:text-[#8B92A3]">{cert.issuer}</p>
+                                <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">{cert.issuer}</p>
                               )}
                             </div>
                           </div>
                         ))}
                       </div>
-                    </div>
+                    </EliteCard>
                   )}
                 </div>
               )}
 
               {activeTab === 'gigs' && (
-                <div className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {talent.gigs && talent.gigs.length > 0 ? (
                     talent.gigs.map((gig) => (
                       <Link
                         key={gig.id}
                         to={`/talent/gigs/${gig.id}`}
-                        className="block bg-white dark:bg-[#13182E] border border-[#E2E8F0] dark:border-[#1E2640] rounded-lg p-6 hover:shadow-lg transition-all"
+                        className="group"
                       >
-                        <div className="flex items-start justify-between">
-                          <div className="flex-1">
-                            <h3 className="text-lg font-semibold text-[#0F172A] dark:text-[#E8EAED] mb-2">
-                              {gig.title}
-                            </h3>
-                            <p className="text-sm text-[#64748B] dark:text-[#8B92A3] line-clamp-2 mb-3">
+                        <EliteCard className="p-6 h-full border-border dark:border-white/5 hover:border-workflow-primary/30 transition-all duration-300">
+                          <div className="flex flex-col h-full">
+                            <div className="flex justify-between items-start mb-4">
+                              <h3 className="text-lg font-black text-text-primary dark:text-white uppercase tracking-tight group-hover:text-workflow-primary transition-colors">
+                                {gig.title}
+                              </h3>
+                              <div className="text-xl font-black text-text-primary dark:text-white bg-workflow-primary/10 px-3 py-1 rounded-xl border border-workflow-primary/20">
+                                ${gig.price}
+                              </div>
+                            </div>
+                            <p className="text-slate-400 text-sm line-clamp-3 mb-6 flex-1">
                               {gig.description}
                             </p>
-                            <div className="flex items-center gap-4 text-sm text-[#64748B] dark:text-[#8B92A3]">
-                              <span className="flex items-center gap-1">
-                                <Icon name="Clock" size={14} />
-                                {gig.delivery_time} days
-                              </span>
-                              <span className="flex items-center gap-1">
-                                <Icon name="Star" size={14} className="text-yellow-500 fill-current" />
-                                {gig.rating?.toFixed(1) || '0.0'} ({gig.total_orders || 0})
-                              </span>
+                            <div className="flex items-center justify-between pt-6 border-t border-white/5">
+                              <div className="flex items-center gap-4 text-[10px] font-black uppercase tracking-widest text-slate-500">
+                                <span className="flex items-center gap-1.5">
+                                  <Icon name="Clock" size={14} className="text-workflow-primary" />
+                                  {gig.delivery_time} Days
+                                </span>
+                                <span className="flex items-center gap-1.5">
+                                  <Icon name="Star" size={14} className="text-yellow-500 fill-current" />
+                                  {gig.rating?.toFixed(1) || '0.0'} ({gig.total_orders || 0})
+                                </span>
+                              </div>
+                              <div className="w-8 h-8 rounded-full bg-bg-elevated flex items-center justify-center group-hover:bg-workflow-primary transition-all">
+                                <Icon name="ArrowRight" size={14} className="text-text-primary dark:text-white" />
+                              </div>
                             </div>
                           </div>
-                          <div className="text-right">
-                            <p className="text-2xl font-bold text-[#0F172A] dark:text-[#E8EAED]">
-                              ${gig.price}
-                            </p>
-                          </div>
-                        </div>
+                        </EliteCard>
                       </Link>
                     ))
                   ) : (
-                    <div className="text-center py-12 bg-white dark:bg-[#13182E] border border-[#E2E8F0] dark:border-[#1E2640] rounded-lg">
-                      <Icon name="Briefcase" className="w-16 h-16 text-[#64748B] dark:text-[#8B92A3] mx-auto mb-4" />
-                      <p className="text-[#64748B] dark:text-[#8B92A3]">No gigs available</p>
+                    <div className="md:col-span-2">
+                      <EliteCard className="text-center py-20 border-white/5">
+                        <Icon name="Briefcase" className="w-16 h-16 text-slate-700 mx-auto mb-6" />
+                        <p className="text-slate-500 font-black uppercase tracking-widest text-sm">No Active Gigs Found</p>
+                      </EliteCard>
                     </div>
                   )}
                 </div>
               )}
 
               {activeTab === 'reviews' && (
-                <div className="space-y-4">
+                <div className="space-y-6">
                   {talent.reviews && talent.reviews.length > 0 ? (
                     talent.reviews.map((review) => (
-                      <div
+                      <EliteCard
                         key={review.id}
-                        className="bg-white dark:bg-[#13182E] border border-[#E2E8F0] dark:border-[#1E2640] rounded-lg p-6"
+                        className="p-8 border-white/5"
                       >
-                        <div className="flex items-start gap-4">
-                          <div className="w-12 h-12 rounded-full bg-workflow-primary/10 flex items-center justify-center flex-shrink-0">
+                        <div className="flex items-start gap-6">
+                          <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/5 flex items-center justify-center flex-shrink-0 overflow-hidden shadow-xl">
                             {review.reviewer?.avatar_url ? (
                               <img
                                 src={review.reviewer.avatar_url}
                                 alt={review.reviewer.name}
-                                className="w-full h-full rounded-full object-cover"
+                                className="w-full h-full object-cover"
                               />
                             ) : (
-                              <Icon name="User" className="w-6 h-6 text-workflow-primary" />
+                              <Icon name="User" className="w-8 h-8 text-slate-700" />
                             )}
                           </div>
                           <div className="flex-1">
-                            <div className="flex items-center justify-between mb-2">
+                            <div className="flex items-center justify-between mb-4">
                               <div>
-                                <p className="font-semibold text-[#0F172A] dark:text-[#E8EAED]">
-                                  {review.reviewer?.name || 'Anonymous'}
+                                <p className="text-lg font-black text-white tracking-tight uppercase">
+                                  {review.reviewer?.name || 'Anonymous User'}
                                 </p>
-                                <div className="flex items-center gap-1 mt-1">
+                                <div className="flex items-center gap-1.5 mt-2">
                                   {renderStars(review.rating)}
                                 </div>
                               </div>
-                              <span className="text-sm text-[#64748B] dark:text-[#8B92A3]">
+                              <span className="text-[10px] font-black uppercase tracking-widest text-slate-500">
                                 {formatDistanceToNow(new Date(review.created_at), { addSuffix: true })}
                               </span>
                             </div>
                             {review.review && (
-                              <p className="text-[#64748B] dark:text-[#8B92A3] mt-2">{review.review}</p>
+                              <p className="text-slate-400 text-lg leading-relaxed">{review.review}</p>
                             )}
                           </div>
                         </div>
-                      </div>
+                      </EliteCard>
                     ))
                   ) : (
-                    <div className="text-center py-12 bg-white dark:bg-[#13182E] border border-[#E2E8F0] dark:border-[#1E2640] rounded-lg">
-                      <Icon name="Star" className="w-16 h-16 text-[#64748B] dark:text-[#8B92A3] mx-auto mb-4" />
-                      <p className="text-[#64748B] dark:text-[#8B92A3]">No reviews yet</p>
-                    </div>
+                    <EliteCard className="text-center py-20 border-white/5">
+                      <Icon name="Star" className="w-16 h-16 text-slate-700 mx-auto mb-6" />
+                      <p className="text-slate-500 font-black uppercase tracking-widest text-sm">No Client Testimonials Yet</p>
+                    </EliteCard>
                   )}
                 </div>
               )}
 
               {activeTab === 'portfolio' && (
-                <div className="space-y-4">
+                <div className="space-y-6">
                   {talent.portfolio_items && talent.portfolio_items.length > 0 ? (
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
                       {talent.portfolio_items.map((item, index) => (
-                        <div
+                        <EliteCard
                           key={index}
-                          className="bg-white dark:bg-[#13182E] border border-[#E2E8F0] dark:border-[#1E2640] rounded-lg overflow-hidden"
+                          className="overflow-hidden border-border dark:border-white/5 hover:border-workflow-primary/30 transition-all duration-500 group"
                         >
                           {item.image && (
-                            <img
-                              src={item.image}
-                              alt={item.title || 'Portfolio item'}
-                              className="w-full h-48 object-cover"
-                            />
+                            <div className="h-56 overflow-hidden">
+                              <img
+                                src={item.image}
+                                alt={item.title || 'Portfolio work'}
+                                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                              />
+                            </div>
                           )}
-                          <div className="p-4">
-                            <h3 className="font-semibold text-[#0F172A] dark:text-[#E8EAED] mb-1">
-                              {item.title || 'Portfolio Item'}
+                          <div className="p-6">
+                            <h3 className="text-lg font-black text-white uppercase tracking-tight mb-3">
+                              {item.title || 'Portfolio Masterpiece'}
                             </h3>
                             {item.description && (
-                              <p className="text-sm text-[#64748B] dark:text-[#8B92A3] mb-2">
+                              <p className="text-slate-400 text-sm line-clamp-2 mb-6">
                                 {item.description}
                               </p>
                             )}
@@ -705,20 +758,21 @@ const TalentProfile = () => {
                                 href={item.link}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="text-sm text-workflow-primary hover:text-workflow-primary-600"
+                                className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-workflow-primary hover:text-workflow-primary/80 transition-colors"
                               >
-                                View Project →
+                                Execute View Project
+                                <Icon name="ExternalLink" size={12} />
                               </a>
                             )}
                           </div>
-                        </div>
+                        </EliteCard>
                       ))}
                     </div>
                   ) : (
-                    <div className="text-center py-12 bg-white dark:bg-[#13182E] border border-[#E2E8F0] dark:border-[#1E2640] rounded-lg">
-                      <Icon name="Image" className="w-16 h-16 text-[#64748B] dark:text-[#8B92A3] mx-auto mb-4" />
-                      <p className="text-[#64748B] dark:text-[#8B92A3]">No portfolio items</p>
-                    </div>
+                    <EliteCard className="text-center py-20 border-white/5">
+                      <Icon name="Image" className="w-16 h-16 text-slate-700 mx-auto mb-6" />
+                      <p className="text-slate-500 font-black uppercase tracking-widest text-sm">No Portfolio Showcase Available</p>
+                    </EliteCard>
                   )}
                 </div>
               )}
@@ -727,48 +781,62 @@ const TalentProfile = () => {
             {/* Sidebar */}
             <div className="space-y-6">
               {/* Quick Contact */}
-              <div className="bg-white dark:bg-[#13182E] border border-[#E2E8F0] dark:border-[#1E2640] rounded-lg p-6">
-                <h3 className="text-lg font-semibold text-[#0F172A] dark:text-[#E8EAED] mb-4">Hire This Talent</h3>
+              <EliteCard className="p-8">
+                <h3 className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] mb-6">Expert Engagement</h3>
                 <div className="space-y-3">
                   <Link
                     to={`/talent/gigs?talent=${id}`}
-                    className="w-full btn-primary flex items-center justify-center gap-2"
+                    className="w-full py-4 bg-workflow-primary text-white rounded-xl hover:bg-workflow-primary/80 transition-all font-black uppercase tracking-widest text-[10px] flex items-center justify-center gap-3 shadow-lg shadow-workflow-primary/20"
                   >
-                    <Icon name="Briefcase" size={18} />
-                    View All Gigs
+                    <Icon name="Briefcase" size={16} />
+                    View Service Gigs
                   </Link>
                   <Link
                     to={`/talent/messages?user=${talent.user_id}`}
-                    className="w-full btn-secondary flex items-center justify-center gap-2"
+                    className="w-full py-4 bg-bg-elevated text-text-primary dark:text-white rounded-xl hover:bg-workflow-primary/10 transition-all font-black uppercase tracking-widest text-[10px] flex items-center justify-center gap-3 border border-border dark:border-white/10"
                   >
-                    <Icon name="MessageSquare" size={18} />
-                    Send Message
+                    <Icon name="MessageSquare" size={16} className="text-workflow-primary" />
+                    Initiate Contact
                   </Link>
                 </div>
-              </div>
+              </EliteCard>
 
               {/* Rating Breakdown */}
-              <div className="bg-white dark:bg-[#13182E] border border-[#E2E8F0] dark:border-[#1E2640] rounded-lg p-6">
-                <h3 className="text-lg font-semibold text-[#0F172A] dark:text-[#E8EAED] mb-4">Rating Breakdown</h3>
-                {[5, 4, 3, 2, 1].map((star) => {
-                  const count = talent.reviews?.filter(r => Math.floor(r.rating) === star).length || 0;
-                  const percentage = talent.reviews?.length > 0 ? (count / talent.reviews.length) * 100 : 0;
-                  return (
-                    <div key={star} className="flex items-center gap-3 mb-2">
-                      <span className="text-sm text-[#64748B] dark:text-[#8B92A3] w-12">{star} star</span>
-                      <div className="flex-1 h-2 bg-gray-200 dark:bg-[#1A2139] rounded-full overflow-hidden">
-                        <div
-                          className="h-full bg-yellow-500"
-                          style={{ width: `${percentage}%` }}
-                        />
+              <EliteCard className="p-8">
+                <h3 className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] mb-6">Reputation Analytics</h3>
+                <div className="space-y-5">
+                  {[5, 4, 3, 2, 1].map((star) => {
+                    const count = talent.reviews?.filter(r => Math.floor(r.rating) === star).length || 0;
+                    const percentage = talent.reviews?.length > 0 ? (count / talent.reviews.length) * 100 : 0;
+                    return (
+                      <div key={star} className="group">
+                        <div className="flex justify-between items-center mb-2">
+                          <div className="flex items-center gap-1.5">
+                            <span className="text-[10px] font-black text-slate-400">{star}</span>
+                            <Icon name="Star" size={10} className="text-yellow-500 fill-current" />
+                          </div>
+                          <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
+                            {count} Reviews
+                          </span>
+                        </div>
+                        <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
+                          <div
+                            className={`h-full transition-all duration-1000 ${star === 5 ? 'bg-emerald-500' :
+                              star === 4 ? 'bg-workflow-primary' :
+                                star === 3 ? 'bg-amber-500' : 'bg-rose-500'
+                              }`}
+                            style={{ width: `${percentage}%` }}
+                          />
+                        </div>
                       </div>
-                      <span className="text-sm text-[#64748B] dark:text-[#8B92A3] w-12 text-right">
-                        {count}
-                      </span>
-                    </div>
-                  );
-                })}
-              </div>
+                    );
+                  })}
+                </div>
+                <div className="mt-8 pt-6 border-t border-white/5 text-center">
+                  <span className="text-[10px] font-black uppercase tracking-[0.3em] text-text-muted block mb-1">Total Impact Score</span>
+                  <span className="text-3xl font-black text-text-primary dark:text-white">{talent.rating?.toFixed(1) || '0.0'}</span>
+                </div>
+              </EliteCard>
             </div>
           </div>
         </div>

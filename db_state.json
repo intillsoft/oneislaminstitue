@@ -1,0 +1,26 @@
+{
+  "modules": [
+    {
+      "id": "b5dd12b3-ceda-4678-86de-7bc954fa1940",
+      "title": "New Module",
+      "course_id": "ff5eb9d3-d441-4a54-8868-f45ccb7377b9"
+    }
+  ],
+  "lessons": [
+    {
+      "id": "0418dea8-9cf3-4113-9695-70ecc5ead4c8",
+      "title": "New Lesson",
+      "module_id": "b5dd12b3-ceda-4678-86de-7bc954fa1940"
+    },
+    {
+      "id": "ffc73afa-6144-4509-8705-32975a795245",
+      "title": "New Lesson",
+      "module_id": "b5dd12b3-ceda-4678-86de-7bc954fa1940"
+    },
+    {
+      "id": "3325a183-bc6a-498a-a1b9-384cd3285663",
+      "title": "New Lesson",
+      "module_id": "b5dd12b3-ceda-4678-86de-7bc954fa1940"
+    }
+  ]
+}

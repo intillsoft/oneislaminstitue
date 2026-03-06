@@ -6,19 +6,26 @@ import {
   Search, Mic, Send, ArrowRight, ChevronLeft, ChevronRight,
   Briefcase, Users, TrendingUp, Award, Sparkles,
   Star, CheckCircle2, ArrowUpRight, Clock, MapPin, DollarSign,
-  MessageCircle
+  MessageCircle, Zap, MessageSquare, FileText, List,
+  Plus, SquarePen, ChevronDown, ArrowUp, Copy, Check, Edit3, RotateCcw, Brain, BookOpen,
+  Shield, Globe, GraduationCap, Layers, ArrowRightCircle, PlayCircle
 } from 'lucide-react';
 import { useTheme } from '../contexts/ThemeContext';
 import { useAuthContext } from '../contexts/AuthContext';
-import { jobService } from '../services/jobService';
-import { talentService } from '../services/talentService';
+import { courseService } from '../services/jobService';
+import { enrollmentService } from '../services/applicationService';
 import { apiService } from '../lib/api';
+import AISearchBox from '../components/ui/AISearchBox';
 import VoiceSearch from '../components/ui/VoiceSearch';
 import Footer from '../components/ui/Footer';
 import Image from '../components/AppImage';
-import RecommendedJobsSections from './HomePage/components/RecommendedJobsSections';
+import FeaturedCourseCard from './HomePage/components/FeaturedCourseCard';
+import RecommendedCoursesSection from './HomePage/components/RecommendedCoursesSection';
+import RecommendedTalentSection from './HomePage/components/RecommendedTalentSection';
 import Header from '../components/ui/Header';
+import { useAIPanel } from '../contexts/AIPanelContext';
 import { renderMarkdown } from '../utils/markdownRenderer';
+import { Helmet } from 'react-helmet';
 import './HomePage.css';
 
 // Animated Counter Component
@@ -73,229 +80,118 @@ const HomePage = () => {
   const [searchMode, setSearchMode] = useState('search'); // 'search' or 'chat'
   const [chatMessages, setChatMessages] = useState([]);
   const [isChatLoading, setIsChatLoading] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const chatEndRef = useRef(null);
   const { user } = useAuthContext();
+  const { openPanel } = useAIPanel();
   const [featuredJobs, setFeaturedJobs] = useState([]);
   const [featuredTalents, setFeaturedTalents] = useState([]);
   const [stats] = useState([
-    { number: 50000, label: 'Successful Matches', suffix: '+' },
-    { number: 95, label: 'User Satisfaction', suffix: '%' },
-    { number: 1000, label: 'Companies Trust Us', suffix: '+' },
+    { number: 50000, label: 'Successful Graduates', suffix: '+' },
+    { number: 95, label: 'Academic Achievement', suffix: '%' },
+    { number: 1000, label: 'Institutions Trust Us', suffix: '+' },
     { number: 99, label: 'Platform Uptime', suffix: '%' },
   ]);
   const [testimonials] = useState([
     {
-      quote: "Workflow transformed how I find jobs. The AI matching is incredibly accurate and saves me hours of searching.",
+      quote: "One Islam Institute transformed how I study. The structured curriculum and access to verified research is world-class.",
       author: "Sarah Chen",
-      role: "Software Engineer",
+      role: "Theology Student",
       rating: 5,
       avatar: "SC"
     },
     {
-      quote: "As a recruiter, I've never found better talent faster. The platform's intelligent matching is a game-changer.",
+      quote: "The curation team has done a remarkable job structuring complex concepts. The 'Lesson Architect' makes navigation seamless.",
       author: "Michael Rodriguez",
-      role: "HR Director",
+      role: "Lead Researcher",
       rating: 5,
       avatar: "MR"
     },
     {
-      quote: "The talent marketplace helped me find the perfect freelancer for my project. Highly recommended!",
+      quote: "The modular lesson blocks helped me master complex subjects at my own pace. Highly recommended!",
       author: "Emily Johnson",
-      role: "Project Manager",
+      role: "Graduate Student",
       rating: 5,
       avatar: "EJ"
-    },
-    {
-      quote: "The AI resume generator created a professional resume that got me multiple interviews within a week!",
-      author: "David Kim",
-      role: "Frontend Developer",
-      rating: 5,
-      avatar: "DK"
-    },
-    {
-      quote: "Career advisor gave me insights I never considered. My job search strategy improved dramatically.",
-      author: "Lisa Anderson",
-      role: "Product Manager",
-      rating: 5,
-      avatar: "LA"
-    },
-    {
-      quote: "The skill analysis feature helped me identify exactly what I needed to learn to advance my career.",
-      author: "James Wilson",
-      role: "Data Scientist",
-      rating: 5,
-      avatar: "JW"
-    },
-    {
-      quote: "As a startup founder, finding the right talent was challenging until I discovered Workflow. Game changer!",
-      author: "Maria Garcia",
-      role: "Startup Founder",
-      rating: 5,
-      avatar: "MG"
-    },
-    {
-      quote: "The job recommendations are spot-on. Every suggestion matched my skills and career goals perfectly.",
-      author: "Robert Taylor",
-      role: "DevOps Engineer",
-      rating: 5,
-      avatar: "RT"
-    },
-    {
-      quote: "I love how the platform learns my preferences and shows me increasingly relevant opportunities.",
-      author: "Jennifer Martinez",
-      role: "UX Designer",
-      rating: 5,
-      avatar: "JM"
-    },
-    {
-      quote: "The application tracking feature keeps me organized and never miss a follow-up. Essential tool!",
-      author: "Christopher Lee",
-      role: "Backend Developer",
-      rating: 5,
-      avatar: "CL"
-    },
-    {
-      quote: "Workflow's AI understands context better than any other platform. It's like having a career coach!",
-      author: "Amanda White",
-      role: "Marketing Manager",
-      rating: 5,
-      avatar: "AW"
-    },
-    {
-      quote: "The salary predictions helped me negotiate a better offer. I got 20% more than I expected!",
-      author: "Daniel Brown",
-      role: "Senior Engineer",
-      rating: 5,
-      avatar: "DB"
     }
   ]);
   const [testimonialIndex, setTestimonialIndex] = useState(0);
-  const searchRef = useRef(null);
   const heroRef = useRef(null);
-  const { scrollYProgress } = useScroll();
-  const heroOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
 
-  // Auto-rotate testimonials
+  // Fetch featured courses for the homepage
   useEffect(() => {
-    const interval = setInterval(() => {
-      setTestimonialIndex((prev) => (prev + 1) % testimonials.length);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, [testimonials.length]);
-
-  // Load featured jobs and talents
-  useEffect(() => {
-    loadFeaturedJobs();
-    loadFeaturedTalents();
+    const fetchFeaturedCourses = async () => {
+      try {
+        const result = await courseService.getAll({ 
+          pageSize: 4,
+          sortBy: 'created_at',
+          sortOrder: 'desc'
+        });
+        if (result.data) {
+          setFeaturedJobs(result.data);
+        }
+      } catch (err) {
+        console.error('Failed to fetch featured courses:', err);
+      }
+    };
+    fetchFeaturedCourses();
   }, []);
 
-  // Load chat history when entering chat mode
+  // Fetch chat history on mount
   useEffect(() => {
-    if (searchMode === 'chat' && user) {
-      loadChatHistory();
-    }
-  }, [searchMode, user]);
-
-  // Save chat history when messages change
-  useEffect(() => {
-    if (searchMode === 'chat' && user && chatMessages.length > 0) {
-      const timeoutId = setTimeout(() => {
-        saveChatHistory();
-      }, 1000); // Debounce saves
-      return () => clearTimeout(timeoutId);
-    }
-  }, [chatMessages, searchMode, user]);
-
-  const loadChatHistory = async () => {
-    try {
-      const response = await apiService.ai.getChatHistory({ chat_type: 'homepage' });
-      if (response.data?.data?.messages && response.data.data.messages.length > 0) {
-        setChatMessages(response.data.data.messages);
-      }
-    } catch (error) {
-      console.log('No chat history found or error loading:', error);
-    }
-  };
-
-  const saveChatHistory = async () => {
-    try {
-      await apiService.ai.saveChatHistory({
-        chat_type: 'homepage',
-        messages: chatMessages,
-      });
-    } catch (error) {
-      console.error('Error saving chat history:', error);
-    }
-  };
-
-  const loadFeaturedJobs = async () => {
-    try {
-      const result = await jobService.getAll({
-        pageSize: 6,
-        sortBy: 'created_at',
-        sortOrder: 'desc'
-      });
-      setFeaturedJobs(result.data || []);
-    } catch (error) {
-      console.error('Error loading featured jobs:', error);
-    }
-  };
-
-  const loadFeaturedTalents = async () => {
-    try {
-      const gigs = await talentService.getGigs({ is_active: true });
-      if (Array.isArray(gigs)) {
-        setFeaturedTalents(gigs.slice(0, 6));
-      } else {
-        setFeaturedTalents([]);
-      }
-    } catch (error) {
-      console.error('Error loading featured talents:', error);
-    }
-  };
-
-  const handleSearch = async () => {
-    if (!searchQuery.trim()) return;
-
-    if (searchMode === 'chat') {
-      // Chat mode - respond in the interface
-      await handleChatMessage();
-    } else {
-      // Search mode - navigate to search results
-      setIsSearching(true);
+    const fetchHistory = async () => {
+      if (!user) return;
       try {
-        // Show AI processing state
-        // Navigate to AI search results page with enhanced query processing
-        const enhancedQuery = await enhanceSearchQuery(searchQuery);
-        navigate(`/jobs/search-results?q=${encodeURIComponent(enhancedQuery)}`);
-      } catch (error) {
-        console.error('Search error:', error);
-        // Fallback to direct navigation
-        navigate(`/jobs/search-results?q=${encodeURIComponent(searchQuery)}`);
-      } finally {
-        setIsSearching(false);
+        const response = await apiService.get('/chat/history');
+        if (response.data?.success && response.data.data?.messages) {
+          setChatMessages(response.data.data.messages);
+        }
+      } catch (err) {
+        console.error('Failed to fetch chat history:', err);
       }
+    };
+    fetchHistory();
+  }, [user?.id]);
+
+  const handleClearChat = async () => {
+    setChatMessages([]);
+    try {
+      await apiService.post('/chat/history', { messages: [] });
+    } catch (err) {
+      console.error('Failed to clear chat history:', err);
     }
   };
 
-  const handleChatMessage = async () => {
-    if (!searchQuery.trim()) return;
+  const handleCopy = (text) => {
+    navigator.clipboard.writeText(text);
+  };
+
+  const handleEditMessage = (id, newContent) => {
+    setChatMessages(prev => prev.map(msg =>
+      msg.id === id ? { ...msg, content: newContent } : msg
+    ));
+    // Optionally trigger a re-send here if desired, 
+    // but for now just update the UI
+  };
+
+  const handleChatMessage = async (overrideQuery = null) => {
+    const queryToUse = overrideQuery || searchQuery;
+    if (!queryToUse.trim()) return;
 
     const userMessage = {
+      id: Date.now(),
       role: 'user',
-      content: searchQuery,
+      content: queryToUse,
       timestamp: new Date(),
     };
 
     setChatMessages(prev => [...prev, userMessage]);
-    const currentQuery = searchQuery;
     setSearchQuery('');
     setIsChatLoading(true);
 
     try {
-      // Always use the career chat endpoint - it handles job searches internally
       const response = await apiService.post('/ai/career/chat', {
-        message: currentQuery,
+        message: queryToUse,
         conversation_history: chatMessages.map(msg => ({
           role: msg.role,
           content: msg.content,
@@ -305,15 +201,25 @@ const HomePage = () => {
       const responseData = response.data?.data || response.data;
       const jobsToShow = responseData.jobs || responseData.similarJobs || [];
 
+      // Simulated "Typing" or "Streaming" delay for Elite feel
       const aiResponse = {
+        id: Date.now() + 1,
         role: 'assistant',
         content: responseData.response || responseData.data?.response || 'I apologize, but I encountered an error. Please try again.',
         timestamp: new Date(),
-        jobs: jobsToShow, // Include jobs for display
+        jobs: jobsToShow,
         hasExactMatches: responseData.hasExactMatches || false,
       };
 
-      setChatMessages(prev => [...prev, aiResponse]);
+      // Add a slight delay for realism and auto-save
+      await new Promise(r => setTimeout(r, 600));
+
+      setChatMessages(prev => {
+        const updated = [...prev, aiResponse];
+        // Persistent save
+        apiService.post('/chat/history', { messages: updated.slice(-50) }).catch(console.error);
+        return updated;
+      });
     } catch (error) {
       console.error('Chat error:', error);
       const errorResponse = {
@@ -327,1011 +233,451 @@ const HomePage = () => {
     }
   };
 
-  const handleJobSearchInChat = async (query) => {
+  const handleSearch = async (overrideQuery = null) => {
+    // Determine the query, checking if overrideQuery is passed explicitly as a string
+    const queryToUse = typeof overrideQuery === 'string' ? overrideQuery : searchQuery;
+    if (!queryToUse.trim()) return;
+
+    // Navigate to AI Chat page with the query
+    navigate(`/aichat?q=${encodeURIComponent(queryToUse)}`);
+  };
+
+  const enhanceSearchQuery = async (query) => {
     try {
-      // Use AI to search for jobs
-      const response = await apiService.post('/ai/search/all', {
-        query: query,
-        filters: {}
-      });
-
-      const jobs = response.data?.data?.jobs || response.data?.jobs || [];
-      const explanation = response.data?.data?.explanation || response.data?.explanation || '';
-
-      if (jobs.length > 0) {
-        // Format jobs for display
-        const jobsList = jobs.slice(0, 5).map((job, index) => {
-          const locationText = job.location ? `📍 ${job.location}` : '';
-          const salaryText = job.salary_range ? ` | 💰 ${job.salary_range}` : '';
-          const descText = job.description ? job.description.substring(0, 150) + '...' : '';
-          return `${index + 1}. **${job.title}** at ${job.company || 'Company'}\n   ${locationText}${salaryText}\n   ${descText}`;
-        }).join('\n\n');
-
-        const jobCountText = jobs.length > 1 ? 's' : '';
-        const moreJobsText = jobs.length > 5 ? `\n*Showing top 5 results. There are ${jobs.length - 5} more jobs available.*` : '';
-        const defaultExplanation = `I found ${jobs.length} job${jobCountText} matching your search on Workflow:\n\n${jobsList}\n\n${moreJobsText}\n\nWould you like me to show more details about any of these positions, or refine your search?`;
-
-        const aiResponse = {
-          role: 'assistant',
-          content: explanation || defaultExplanation,
-          timestamp: new Date(),
-          jobs: jobs.slice(0, 5), // Store jobs for potential interaction
-        };
-
-        setChatMessages(prev => [...prev, aiResponse]);
-      } else {
-        const aiResponse = {
-          role: 'assistant',
-          content: `I searched our Workflow job database, but couldn't find any jobs matching "${query}".\n\nLet me help you:\n- Try different keywords (e.g., "React developer", "Python engineer")\n- Be more specific about location or job type\n- I can also help you improve your profile to match available positions\n\nWould you like me to search with different terms or help you in another way?`,
-          timestamp: new Date(),
-        };
-        setChatMessages(prev => [...prev, aiResponse]);
+      if (query.length > 20 && (query.includes('find') || query.includes('looking for'))) {
+        return query;
       }
+      const response = await apiService.post('/ai/enhance-search', {
+        query: query.trim(),
+        context: 'job_search'
+      });
+      return response.data?.enhancedQuery || query;
     } catch (error) {
-      console.error('Job search error:', error);
-      const aiResponse = {
-        role: 'assistant',
-        content: `I encountered an issue searching for jobs. Please try rephrasing your request or use the Search Mode to browse our job listings directly.`,
-        timestamp: new Date(),
-      };
-      setChatMessages(prev => [...prev, aiResponse]);
+      return query;
     }
   };
 
-  // Scroll chat to bottom when new messages arrive
   useEffect(() => {
     if (searchMode === 'chat' && chatEndRef.current) {
       chatEndRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   }, [chatMessages, searchMode]);
 
-  // Enhance search query with AI understanding
-  const enhanceSearchQuery = async (query) => {
-    try {
-      // If query is already a natural language prompt, use it directly
-      if (query.length > 20 && (query.includes('find') || query.includes('looking for') || query.includes('need') || query.includes('want'))) {
-        return query; // Already a prompt
-      }
-
-      // For shorter queries, enhance with context
-      const response = await apiService.post('/ai/enhance-search', {
-        query: query.trim(),
-        context: 'job_search'
-      });
-
-      if (response.data?.enhancedQuery) {
-        return response.data.enhancedQuery;
-      }
-
-      return query;
-    } catch (error) {
-      console.error('Error enhancing query:', error);
-      return query; // Return original if enhancement fails
-    }
-  };
-
-  // Generate AI suggestions as user types
-  useEffect(() => {
-    if (searchQuery.length > 3 && !isSearching) {
-      const timer = setTimeout(async () => {
-        try {
-          const response = await apiService.post('/ai/search-suggestions', {
-            query: searchQuery,
-            limit: 5
-          });
-
-          if (response.data?.suggestions) {
-            setSuggestions(response.data.suggestions);
-          }
-        } catch (error) {
-          // Silently fail - suggestions are optional
-          console.log('Suggestions not available');
-        }
-      }, 500);
-
-      return () => clearTimeout(timer);
-    } else {
-      setSuggestions([]);
-    }
-  }, [searchQuery, isSearching]);
-
-  const handleVoiceTranscript = (transcript) => {
-    setSearchQuery(transcript);
-    setTimeout(() => {
-      handleSearch();
-    }, 500);
-  };
-
   const quickFilters = [
-    'Remote Jobs',
-    'Full-time',
-    'Part-time',
-    'Contract',
-    'React Developer',
-    'Python Developer',
-    'Data Scientist',
-    'UI/UX Designer'
-  ];
-
-  const steps = [
-    {
-      number: 1,
-      icon: Search,
-      title: 'Search with AI',
-      description: 'Describe what you\'re looking for in natural language. Our AI understands your needs and finds the perfect matches.'
-    },
-    {
-      number: 2,
-      icon: Briefcase,
-      title: 'Browse Opportunities',
-      description: 'Explore thousands of jobs and talent profiles. Filter by skills, location, salary, and more.'
-    },
-    {
-      number: 3,
-      icon: Users,
-      title: 'Connect & Apply',
-      description: 'Connect with recruiters or talents. Apply to jobs or hire freelancers with one click.'
-    },
-    {
-      number: 4,
-      icon: Award,
-      title: 'Get Hired',
-      description: 'Land your dream job or find the perfect talent. Track applications and manage everything in one place.'
-    }
+    'Remote Jobs', 'Full-time', 'Part-time', 'Contract',
+    'React Developer', 'Python Developer', 'Data Scientist', 'UI/UX Designer'
   ];
 
   return (
     <div className="homepage-container">
-      {/* Full ChatGPT Interface - Chat Mode */}
-      {searchMode === 'chat' ? (
-        <div className="chatgpt-full-interface">
-          {/* Header - Always visible in chat mode */}
-          <Header />
+        <Helmet>
+          <title>One Islam Institute | Authentic Islamic Curriculum & Research Curation</title>
+          <meta name="description" content="Access a structured Islamic curriculum curated from verified sources. One Islam Institute offers a comprehensive gateway to master sacred sciences with academic excellence." />
+          <meta name="keywords" content="Islamic Courses, Authentic Islam, Quran, Hadith, Seerah, Fiqh, Islamic Research, Traditional Islamic Knowledge, Muslim Student Platform" />
+        </Helmet>
+        <div className="min-h-screen bg-slate-50 dark:bg-[#0A1120] selection:bg-emerald-500/30">
+          {/* Subtle Background - Professional Academic */}
+          <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-7xl">
+              <div className="absolute top-[-10%] right-[-5%] w-[40%] h-[40%] bg-emerald-500/5 rounded-full blur-[120px]" />
+              <div className="absolute top-[10%] left-[-5%] w-[30%] h-[30%] bg-blue-500/5 rounded-full blur-[100px]" />
+            </div>
+          </div>
 
-          {/* Floating Switch to Search Button */}
-          <motion.button
-            onClick={() => {
-              setSearchMode('search');
-              setChatMessages([]);
-            }}
-            className="chatgpt-floating-switch"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3 }}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <Search size={18} />
-            <span>Switch to Search</span>
-          </motion.button>
-
-          {/* Chat Messages Area */}
-          <div className="chatgpt-messages-container" ref={chatEndRef}>
-            {chatMessages.length === 0 ? (
-              <div className="chatgpt-welcome-screen">
+          <main className="relative z-10">
+            <section className="pt-32 pb-16 px-4">
+              <div className="max-w-4xl mx-auto text-center">
                 <motion.div
-                  className="chatgpt-welcome-content"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5 }}
+                  transition={{ duration: 0.8 }}
                 >
-                  <div className="chatgpt-welcome-icon-wrapper">
-                    <Sparkles size={64} className="chatgpt-welcome-icon" />
-                    <div className="chatgpt-welcome-glow"></div>
-                  </div>
-                  <h1 className="chatgpt-welcome-title">How can I help you today?</h1>
-                  <p className="chatgpt-welcome-subtitle">
-                    I'm Workflow AI, your intelligent assistant for finding jobs, improving your career,
-                    and navigating our platform. Ask me anything!
+                  <span className="inline-block px-4 py-1.5 rounded-full bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 text-[10px] font-bold uppercase tracking-widest mb-6 border border-emerald-100 dark:border-emerald-500/20">
+                    Trusted by 10,000+ Students Worldwide
+                  </span>
+                  
+                  <h1 className="text-3xl sm:text-4xl md:text-6xl font-black text-slate-900 dark:text-white mb-4 sm:mb-6 tracking-tight leading-[1.2] sm:leading-[1.1]">
+                    The Modern Gateway to <br className="hidden sm:block" />
+                    <span className="text-emerald-600 dark:text-emerald-500">Sacred Knowledge</span>
+                  </h1>
+
+                  <p className="text-base sm:text-lg text-slate-600 dark:text-slate-400 mb-8 sm:mb-10 max-w-2xl mx-auto leading-relaxed px-4">
+                    Access a structured curriculum curated by a team of learned Muslims from verified platforms like Yaqeen Institute and Towards Eternity. Master the sacred sciences through a cohesive, institutional approach.
                   </p>
-                  <div className="chatgpt-suggestions-grid">
-                    <motion.button
-                      className="chatgpt-suggestion-card"
-                      onClick={() => {
-                        setSearchQuery("Find software developer jobs for me");
-                        setTimeout(() => handleChatMessage(), 100);
-                      }}
-                      whileHover={{ scale: 1.02, y: -2 }}
-                      whileTap={{ scale: 0.98 }}
+
+                  <div className="flex flex-row items-center justify-center gap-2 sm:gap-4 w-full max-w-sm mx-auto sm:max-w-none">
+                    <button 
+                      onClick={() => navigate('/courses')}
+                      className="flex-1 sm:flex-none sm:w-auto px-2 sm:px-8 py-3.5 sm:py-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl sm:rounded-2xl font-black transition-all shadow-lg shadow-emerald-600/20 active:scale-[0.98] text-[10px] sm:text-sm uppercase tracking-wider sm:tracking-widest"
                     >
-                      <Search size={20} />
-                      <div>
-                        <h3>Find Jobs</h3>
-                        <p>Search for software developer positions</p>
-                      </div>
-                    </motion.button>
-                    <motion.button
-                      className="chatgpt-suggestion-card"
-                      onClick={() => {
-                        setSearchQuery("How do I improve my resume?");
-                        setTimeout(() => handleChatMessage(), 100);
-                      }}
-                      whileHover={{ scale: 1.02, y: -2 }}
-                      whileTap={{ scale: 0.98 }}
+                      Explore Courses
+                    </button>
+                    <button 
+                      onClick={() => navigate('/team')}
+                      className="flex-1 sm:flex-none sm:w-auto px-2 sm:px-8 py-3.5 sm:py-4 bg-white dark:bg-slate-800 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700 rounded-xl sm:rounded-2xl font-black hover:bg-slate-50 dark:hover:bg-slate-700 transition-all flex items-center justify-center gap-1.5 sm:gap-2 text-[10px] sm:text-sm uppercase tracking-wider sm:tracking-widest"
                     >
-                      <Sparkles size={20} />
-                      <div>
-                        <h3>Resume Help</h3>
-                        <p>Get AI-powered resume advice</p>
-                      </div>
-                    </motion.button>
-                    <motion.button
-                      className="chatgpt-suggestion-card"
-                      onClick={() => {
-                        setSearchQuery("What skills are in demand right now?");
-                        setTimeout(() => handleChatMessage(), 100);
-                      }}
-                      whileHover={{ scale: 1.02, y: -2 }}
-                      whileTap={{ scale: 0.98 }}
-                    >
-                      <TrendingUp size={20} />
-                      <div>
-                        <h3>Career Trends</h3>
-                        <p>Discover in-demand skills</p>
-                      </div>
-                    </motion.button>
-                    <motion.button
-                      className="chatgpt-suggestion-card"
-                      onClick={() => {
-                        setSearchQuery("Tell me about Workflow's features");
-                        setTimeout(() => handleChatMessage(), 100);
-                      }}
-                      whileHover={{ scale: 1.02, y: -2 }}
-                      whileTap={{ scale: 0.98 }}
-                    >
-                      <Award size={20} />
-                      <div>
-                        <h3>Platform Guide</h3>
-                        <p>Learn about Workflow features</p>
-                      </div>
-                    </motion.button>
+                      <Users className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-500" />
+                      Join Team
+                    </button>
                   </div>
                 </motion.div>
-              </div>
-            ) : (
-              <div className="chatgpt-messages-list">
-                {chatMessages.map((message, index) => (
-                  <motion.div
-                    key={index}
-                    className={`chatgpt-message ${message.role === 'user' ? 'user' : 'assistant'}`}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    {message.role === 'assistant' && (
-                      <div className="chatgpt-avatar">
-                        <Sparkles size={20} />
-                      </div>
-                    )}
-                    <div className="chatgpt-message-content">
-                      <div
-                        className="chatgpt-message-text"
-                        dangerouslySetInnerHTML={{
-                          __html: renderMarkdown(message.content)
-                        }}
-                        onClick={(e) => {
-                          // Handle internal link clicks
-                          const link = e.target.closest('.markdown-link-internal');
-                          if (link) {
-                            e.preventDefault();
-                            const href = link.getAttribute('href') || link.getAttribute('data-internal-link');
-                            if (href) {
-                              navigate(href);
-                            }
-                          }
-                        }}
-                      />
-                      {message.jobs && message.jobs.length > 0 && (
-                        <div className="chatgpt-job-cards">
-                          {message.jobs.map((job, idx) => (
-                            <motion.div
-                              key={job.id || idx}
-                              className="chatgpt-job-card"
-                              initial={{ opacity: 0, y: 10 }}
-                              animate={{ opacity: 1, y: 0 }}
-                              transition={{ delay: idx * 0.05 }}
-                              onClick={() => navigate(`/jobs/detail?id=${job.id}`)}
-                              whileHover={{ scale: 1.02, y: -2 }}
-                            >
-                              <div className="chatgpt-job-header">
-                                <h4>{job.title}</h4>
-                                <span className="chatgpt-job-company">{job.company || 'Company'}</span>
-                              </div>
-                              <div className="chatgpt-job-meta">
-                                {job.location && <span>📍 {job.location}</span>}
-                                {job.salary_range && <span>💰 {job.salary_range}</span>}
-                              </div>
-                              <button className="chatgpt-job-button">View Details →</button>
-                            </motion.div>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  </motion.div>
-                ))}
-                {isChatLoading && (
-                  <motion.div
-                    className="chatgpt-message assistant"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                  >
-                    <div className="chatgpt-avatar">
-                      <Sparkles size={20} />
-                    </div>
-                    <div className="chatgpt-message-content">
-                      <div className="chatgpt-typing-indicator">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                      </div>
-                    </div>
-                  </motion.div>
-                )}
-                <div ref={chatEndRef} />
-              </div>
-            )}
-          </div>
 
-          {/* Input Area */}
-          <div className="chatgpt-input-container">
-            <div className="chatgpt-input-wrapper">
-              <textarea
-                className="chatgpt-input"
-                placeholder="Message Workflow AI..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' && !e.shiftKey) {
-                    e.preventDefault();
-                    handleChatMessage();
-                  }
-                }}
-                rows={1}
-                style={{
-                  minHeight: '24px',
-                  maxHeight: '200px',
-                  resize: 'none',
-                  overflow: 'auto'
-                }}
-                onInput={(e) => {
-                  e.target.style.height = 'auto';
-                  e.target.style.height = e.target.scrollHeight + 'px';
-                }}
-              />
-              <motion.button
-                className="chatgpt-send-button"
-                onClick={handleChatMessage}
-                disabled={!searchQuery.trim() || isChatLoading}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Send size={20} />
-              </motion.button>
-            </div>
-            <p className="chatgpt-input-footer">
-              Workflow AI can make mistakes. Check important info.
-            </p>
-          </div>
-        </div>
-      ) : (
-        <>
-          {/* Hero Section */}
-          <section ref={heroRef} className="hero-section">
-            <motion.div
-              className="hero-background-decoration"
-              animate={{
-                scale: [1, 1.2, 1],
-                opacity: [0.03, 0.05, 0.03],
-              }}
-              transition={{
-                duration: 20,
-                repeat: Infinity,
-                ease: 'easeInOut'
-              }}
-            />
-
-            <motion.div
-              className="hero-content"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-            >
-              {/* Text Content - First */}
-              <motion.h1
-                className="hero-headline"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.1 }}
-              >
-                Find Your Dream Job or{' '}
-                <span className="hero-gradient">Perfect Talent</span>
-              </motion.h1>
-
-              <motion.p
-                className="hero-subheadline"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-              >
-                Powered by AI to match you with the best opportunities.
-                Search naturally, discover instantly.
-              </motion.p>
-
-              {/* AI Search Bar - Small, Below Text */}
-              <motion.div
-                className="search-container hero-search-container"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.3 }}
-              >
-                {/* Mode Toggle */}
+                {/* AI Search Box - The Elite Standard */}
                 <motion.div
-                  className="mode-toggle-container"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, delay: 0.4 }}
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.8, delay: 0.2 }}
+                  className="max-w-2xl mx-auto"
                 >
-                  <div className="mode-toggle">
-                    <button
-                      onClick={() => {
-                        setSearchMode('search');
-                        setChatMessages([]);
-                      }}
-                      className={`mode-toggle-btn ${searchMode === 'search' ? 'active' : ''}`}
-                    >
-                      <Search size={16} />
-                      <span>Search Mode</span>
-                    </button>
-                    <button
-                      onClick={() => setSearchMode('chat')}
-                      className={`mode-toggle-btn ${searchMode === 'chat' ? 'active' : ''}`}
-                    >
-                      <MessageCircle size={16} />
-                      <span>Chat Mode</span>
-                    </button>
-                  </div>
-                </motion.div>
-
-                <div
-                  className={`search-box-wrapper ai-powered-search-wrapper ${isSearchFocused ? 'focused' : ''}`}
-                  ref={searchRef}
-                >
-                  {/* AI Badge */}
-                  <motion.div
-                    className="ai-badge"
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.5, delay: 0.5 }}
-                    whileHover={{ scale: 1.1 }}
-                  >
-                    <Sparkles className="ai-badge-icon" />
-                    <span className="ai-badge-text">AI Powered</span>
-                  </motion.div>
-
-                  {/* Glowing Effect Container */}
-                  <div className="ai-glow-container">
-                    <div className="ai-glow ai-glow-1"></div>
-                    <div className="ai-glow ai-glow-2"></div>
-                    <div className="ai-glow ai-glow-3"></div>
-                  </div>
-
-                  <motion.div
-                    className={`inline-search-box hero-search-box ai-powered-search ${isSearchFocused ? 'focused' : ''}`}
-                    onClick={() => searchRef.current?.querySelector('input')?.focus()}
-                    whileHover={{ scale: 1.02, y: -2 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <motion.div
-                      animate={isSearchFocused ? { rotate: [0, -10, 10, -10, 0] } : {}}
-                      transition={{ duration: 0.5 }}
-                    >
-                      <Search className="search-icon" />
-                    </motion.div>
+                  <div className="relative mt-10 md:mt-16 group">
+                    <div className="absolute -inset-1 bg-emerald-500/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity rounded-3xl" />
+                    <div className="relative flex items-center bg-white dark:bg-slate-900/80 backdrop-blur-3xl border border-border dark:border-emerald-500/20 rounded-2xl md:rounded-3xl shadow-2xl transition-all p-1.5 sm:p-2">
+                    <div className="absolute left-4 sm:left-6 text-emerald-600">
+                      <Zap className="w-4 h-4 sm:w-6 sm:h-6 fill-current" />
+                    </div>
                     <input
                       type="text"
-                      className="search-input"
-                      placeholder={
-                        searchMode === 'chat'
-                          ? "Chat with AI: Ask anything about jobs, careers, or opportunities..."
-                          : "Ask AI anything: 'I'm looking for remote software engineering jobs in San Francisco with $150k+ salary...'"
-                      }
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
-                      onFocus={() => setIsSearchFocused(true)}
-                      onBlur={() => {
-                        // Delay to allow clicking on suggestions
-                        setTimeout(() => setIsSearchFocused(false), 200);
-                      }}
-                      onKeyPress={(e) => {
+                      onKeyDown={(e) => {
                         if (e.key === 'Enter') {
-                          handleSearch();
+                          const query = searchQuery;
+                          openPanel(query);
                         }
                       }}
+                      placeholder="Ask the Assistant anything..."
+                      className="w-full pl-12 sm:pl-16 pr-16 sm:pr-32 py-3.5 sm:py-5 bg-transparent border-none rounded-2xl focus:ring-0 text-sm sm:text-lg text-slate-900 dark:text-white placeholder-slate-400 font-medium"
                     />
-
-                    {/* AI Suggestions Dropdown - Only show in search mode */}
-                    {searchMode === 'search' && suggestions.length > 0 && isSearchFocused && (
-                      <motion.div
-                        className="ai-suggestions-dropdown"
-                        initial={{ opacity: 0, y: -10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -10 }}
-                      >
-                        {suggestions.map((suggestion, index) => (
-                          <motion.button
-                            key={index}
-                            className="ai-suggestion-item"
-                            onClick={() => {
-                              setSearchQuery(suggestion);
-                              setTimeout(() => handleSearch(), 100);
-                            }}
-                            whileHover={{ backgroundColor: 'rgba(0, 70, 255, 0.1)' }}
-                          >
-                            <Sparkles className="suggestion-icon" size={14} />
-                            <span>{suggestion}</span>
-                          </motion.button>
-                        ))}
-                      </motion.div>
-                    )}
-                    <VoiceSearch
-                      onTranscript={handleVoiceTranscript}
-                      disabled={isSearching}
-                    />
-                    <motion.button
-                      className="search-send-button ai-send-button"
-                      onClick={handleSearch}
-                      disabled={!searchQuery.trim() || (isSearching || isChatLoading)}
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.9 }}
+                    <button
+                      onClick={() => {
+                        const query = searchQuery;
+                        openPanel(query);
+                      }}
+                      className="absolute right-2 top-2 bottom-2 px-4 sm:px-6 flex items-center justify-center gap-2 bg-slate-900 dark:bg-emerald-600 text-white rounded-xl sm:rounded-2xl font-black text-[10px] sm:text-xs uppercase tracking-widest hover:bg-emerald-800 dark:hover:bg-emerald-500 transition-all active:scale-95 shadow-lg"
                     >
-                      {(isSearching || isChatLoading) ? (
-                        <motion.div
-                          animate={{ rotate: 360 }}
-                          transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
-                        >
-                          <Send className="send-icon" />
-                        </motion.div>
-                      ) : (
-                        <Send className="send-icon" />
-                      )}
-                    </motion.button>
-                  </motion.div>
-                </div>
-
-                {/* Chat Interface - Only show in chat mode */}
-                {searchMode === 'chat' && (
-                  <motion.div
-                    className="homepage-chat-interface"
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: 'auto' }}
-                    exit={{ opacity: 0, height: 0 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <div className="chat-messages-container">
-                      {chatMessages.length === 0 ? (
-                        <div className="chat-welcome-message">
-                          <div className="welcome-icon-wrapper">
-                            <Sparkles className="welcome-icon" size={56} />
-                            <div className="welcome-icon-glow"></div>
-                          </div>
-                          <h3>Hi! I'm Workflow AI</h3>
-                          <p className="welcome-description">
-                            I'm your intelligent assistant for finding jobs, improving your career, and navigating Workflow.
-                            I can search our job database, provide career advice, help with your resume, and guide you through our platform features.
-                          </p>
-                          <div className="chat-suggestions">
-                            <button onClick={() => setSearchQuery("Find software developer jobs for me")}>
-                              🔍 Find software developer jobs
-                            </button>
-                            <button onClick={() => setSearchQuery("Show me remote React developer positions")}>
-                              💼 Show remote React positions
-                            </button>
-                            <button onClick={() => setSearchQuery("How do I improve my resume?")}>
-                              ✍️ Improve my resume
-                            </button>
-                            <button onClick={() => setSearchQuery("What skills are in demand right now?")}>
-                              📈 In-demand skills
-                            </button>
-                          </div>
-                        </div>
-                      ) : (
-                        <div className="chat-messages">
-                          {chatMessages.map((message, index) => (
-                            <motion.div
-                              key={index}
-                              className={`chat-message ${message.role === 'user' ? 'user-message' : 'ai-message'}`}
-                              initial={{ opacity: 0, y: 10 }}
-                              animate={{ opacity: 1, y: 0 }}
-                              transition={{ duration: 0.3 }}
-                            >
-                              {message.role === 'assistant' && (
-                                <div className="ai-avatar">
-                                  <Bot size={20} />
-                                </div>
-                              )}
-                              <div className="message-content">
-                                <p className="message-text">{message.content}</p>
-                                {message.jobs && message.jobs.length > 0 && (
-                                  <div className="chat-job-results">
-                                    {message.jobs.map((job, idx) => (
-                                      <motion.div
-                                        key={job.id || idx}
-                                        className="chat-job-card"
-                                        initial={{ opacity: 0, y: 10 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        transition={{ delay: idx * 0.1 }}
-                                        onClick={() => navigate(`/jobs/detail?id=${job.id}`)}
-                                      >
-                                        <div className="chat-job-header">
-                                          <h4>{job.title}</h4>
-                                          <span className="chat-job-company">{job.company || 'Company'}</span>
-                                        </div>
-                                        <div className="chat-job-details">
-                                          {job.location && <span>📍 {job.location}</span>}
-                                          {job.salary_range && <span>💰 {job.salary_range}</span>}
-                                        </div>
-                                        <button className="chat-job-view-btn">View Details →</button>
-                                      </motion.div>
-                                    ))}
-                                  </div>
-                                )}
-                              </div>
-                            </motion.div>
-                          ))}
-                          {isChatLoading && (
-                            <motion.div
-                              className="chat-message ai-message"
-                              initial={{ opacity: 0 }}
-                              animate={{ opacity: 1 }}
-                            >
-                              <div className="ai-avatar">
-                                <Bot size={20} />
-                              </div>
-                              <div className="message-content">
-                                <div className="typing-indicator">
-                                  <span></span>
-                                  <span></span>
-                                  <span></span>
-                                </div>
-                              </div>
-                            </motion.div>
-                          )}
-                          <div ref={chatEndRef} />
-                        </div>
-                      )}
-                    </div>
-                  </motion.div>
-                )}
-
-                {/* Quick Filters - Only show in search mode */}
-                {searchMode === 'search' && (
-                  <div className="quick-filters">
-                    {quickFilters.map((filter, index) => (
-                      <motion.button
-                        key={filter}
-                        className="filter-chip"
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 0.3, delay: 0.4 + index * 0.05 }}
-                        whileHover={{ scale: 1.05, y: -2 }}
-                        whileTap={{ scale: 0.95 }}
-                        onClick={() => {
-                          setSearchQuery(filter);
-                          setTimeout(() => handleSearch(), 100);
+                      <ArrowRight className="w-4 h-4 md:w-5 md:h-5" />
+                    </button>
+                  </div>
+                </div>  
+                  <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+                    {[
+                      { icon: BookOpen, text: 'Explain the basics of Fiqh' },
+                      { icon: Layers, text: 'Recommend a learning path' },
+                      { icon: Sparkles, text: 'What is the Seerah?' }
+                    ].map((tag, idx) => (
+                      <button
+                        key={idx}
+                        onClick={() => { 
+                          openPanel(tag.text); 
                         }}
+                        className="flex items-center gap-2 px-4 py-2.5 bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 text-slate-600 dark:text-slate-300 rounded-xl text-xs font-semibold hover:bg-emerald-50 dark:hover:bg-emerald-500/10 hover:border-emerald-200 dark:hover:border-emerald-500/30 hover:text-emerald-700 dark:hover:text-emerald-400 transition-all hover:-translate-y-0.5 shadow-sm"
                       >
-                        {filter}
-                      </motion.button>
+                        <tag.icon className="w-4 h-4 opacity-70" />
+                        {tag.text}
+                      </button>
                     ))}
                   </div>
-                )}
-              </motion.div>
-            </motion.div>
-          </section>
-
-          {/* How It Works Section */}
-          <section className="how-it-works-section">
-            <div className="section-header">
-              <motion.h2
-                className="section-title"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6 }}
-              >
-                How It Works
-              </motion.h2>
-              <motion.p
-                className="section-subtitle"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.1 }}
-              >
-                Get started in minutes. Our AI-powered platform makes finding jobs or talent effortless.
-              </motion.p>
-            </div>
-
-            <div className="steps-container">
-              {steps.map((step, index) => {
-                const IconComponent = step.icon;
-                return (
-                  <motion.div
-                    key={step.number}
-                    className="step-card"
-                    initial={{ opacity: 0, y: 40 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.6, delay: index * 0.1 }}
-                    whileHover={{ y: -8 }}
-                  >
-                    <div className="step-number">{step.number}</div>
-                    <div className="step-icon-wrapper">
-                      <IconComponent className="step-icon" />
-                    </div>
-                    <h3 className="step-title">{step.title}</h3>
-                    <p className="step-description">{step.description}</p>
-                  </motion.div>
-                );
-              })}
-            </div>
-          </section>
-
-          {/* Recommended Jobs Sections */}
-          <RecommendedJobsSections />
-
-          {/* Featured Jobs Section */}
-          <section className="featured-jobs-section">
-            <div className="section-header-horizontal">
-              <motion.h2
-                className="section-title"
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6 }}
-              >
-                Featured Jobs
-              </motion.h2>
-              <motion.button
-                className="view-all-button"
-                initial={{ opacity: 0, x: 20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6 }}
-                onClick={() => navigate('/jobs')}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                View All <ArrowRight className="ml-2 w-4 h-4" />
-              </motion.button>
-            </div>
-
-            <div className="jobs-carousel">
-              {featuredJobs.length > 0 ? (
-                featuredJobs.map((job, index) => (
-                  <motion.div
-                    key={job.id}
-                    className="job-card"
-                    initial={{ opacity: 0, x: 40 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5, delay: index * 0.1 }}
-                    whileHover={{ y: -8 }}
-                    onClick={() => navigate(`/jobs/detail?id=${job.id}`)}
-                  >
-                    <div className="job-card-header">
-                      <div className="company-logo-wrapper">
-                        <Image
-                          src={job.logo || `https://ui-avatars.com/api/?name=${encodeURIComponent(job.company || 'Company')}&background=0046FF&color=fff&size=128`}
-                          alt={`${job.company} logo`}
-                          className="company-logo-img"
-                        />
-                      </div>
-                      <div className="job-card-header-text">
-                        <h3 className="job-card-title">{job.title || 'Job Title'}</h3>
-                        <p className="job-card-company">{job.company || 'Company'}</p>
-                      </div>
-                    </div>
-                    <p className="job-card-description">
-                      {job.description ? job.description.substring(0, 100) + '...' : 'No description available'}
-                    </p>
-                    <div className="job-card-info">
-                      {job.location && (
-                        <div className="job-info-item">
-                          <MapPin size={14} />
-                          <span>{job.location}</span>
-                        </div>
-                      )}
-                      {job.job_type && (
-                        <div className="job-info-item">
-                          <Clock size={14} />
-                          <span>{job.job_type}</span>
-                        </div>
-                      )}
-                      {job.salary_min && (
-                        <div className="job-info-item">
-                          <DollarSign size={14} />
-                          <span>
-                            ${job.salary_min?.toLocaleString()}
-                            {job.salary_max && ` - $${job.salary_max.toLocaleString()}`}
-                          </span>
-                        </div>
-                      )}
-                    </div>
-                    <div className="job-card-tags">
-                      {job.experience_level && (
-                        <span className="tag">{job.experience_level}</span>
-                      )}
-                      {job.remote && (
-                        <span className="tag">{job.remote}</span>
-                      )}
-                    </div>
-                    <div className="job-card-footer">
-                      <span className="job-posted-time">
-                        Posted {formatTimeAgo(job.created_at || job.postedDate)}
-                      </span>
-                      <button className="view-job-button">
-                        View <ArrowUpRight className="w-4 h-4 ml-1" />
-                      </button>
-                    </div>
-                  </motion.div>
-                ))
-              ) : (
-                <div className="empty-state">Loading featured jobs...</div>
-              )}
-            </div>
-          </section>
-
-          {/* Featured Talents Section */}
-          <section className="featured-talents-section">
-            <div className="section-header">
-              <motion.h2
-                className="section-title"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6 }}
-              >
-                Featured Talents
-              </motion.h2>
-            </div>
-
-            <div className="talents-grid">
-              {featuredTalents.length > 0 ? (
-                featuredTalents.map((talent, index) => (
-                  <motion.div
-                    key={talent.id}
-                    className="talent-card"
-                    initial={{ opacity: 0, y: 40 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5, delay: index * 0.1 }}
-                    whileHover={{ y: -8 }}
-                    onClick={() => navigate(`/talent/gigs/${talent.id}`)}
-                  >
-                    <div className="talent-cover" />
-                    <div className="talent-avatar">
-                      {talent.user_name ? talent.user_name.charAt(0).toUpperCase() : 'T'}
-                    </div>
-                    <div className="talent-content">
-                      <h3 className="talent-name">{talent.user_name || 'Talent'}</h3>
-                      <p className="talent-title">{talent.title || 'Professional'}</p>
-                      {talent.rating && (
-                        <div className="talent-rating">
-                          {[...Array(5)].map((_, i) => (
-                            <Star
-                              key={i}
-                              className={`star ${i < Math.floor(talent.rating) ? 'filled' : ''}`}
-                              size={14}
-                            />
-                          ))}
-                          <span className="rating-text">{talent.rating}</span>
-                        </div>
-                      )}
-                      {talent.price && (
-                        <p className="talent-rate">${talent.price}/hr</p>
-                      )}
-                      {talent.skills && talent.skills.length > 0 && (
-                        <div className="talent-skills">
-                          {talent.skills.slice(0, 3).map((skill, i) => (
-                            <span key={i} className="skill-tag">{skill}</span>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  </motion.div>
-                ))
-              ) : (
-                <div className="empty-state">Loading featured talents...</div>
-              )}
-            </div>
-          </section>
-
-          {/* Stats Section */}
-          <section className="stats-section">
-            <div className="stats-background-decoration" />
-            <div className="stats-grid">
-              {stats.map((stat, index) => (
-                <motion.div
-                  key={stat.label}
-                  className="stat-card"
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                >
-                  <motion.h3
-                    className="stat-number"
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    viewport={{ once: true }}
-                  >
-                    <AnimatedCounter value={stat.number} suffix={stat.suffix} duration={2} />
-                  </motion.h3>
-                  <p className="stat-label">{stat.label}</p>
                 </motion.div>
-              ))}
-            </div>
-          </section>
+              </div>
+            </section>
 
-          {/* Testimonials Section */}
-          <section className="testimonials-section">
-            <div className="section-header">
-              <motion.h2
-                className="section-title"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6 }}
-              >
-                What Our Users Say
-              </motion.h2>
-            </div>
+            {/* NEW SECTION 1: THE ELITE STANDARD */}
+            <section className="py-16 sm:py-24 bg-white dark:bg-slate-900 border-y border-slate-200 dark:border-slate-800 relative overflow-hidden">
+               <div className="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-emerald-500/5 to-transparent pointer-events-none" />
+               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                 <div className="text-center mb-16 max-w-3xl mx-auto">
+                   <h2 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-4 tracking-tight">
+                     The Standard of <span className="text-emerald-600 dark:text-emerald-500">Authentic Synthesis</span>
+                   </h2>
+                   <p className="text-lg text-slate-600 dark:text-slate-400 leading-relaxed">
+                     We aggregate the best of Islamic research and design it into a seamless learning experience.
+                   </p>
+                 </div>
+                 
+                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                   {[
+                     {
+                       icon: Shield,
+                       title: "Verified Sources",
+                       desc: "Our team sources content from authentic platforms including Yaqeen and Towards Eternity, ensuring every lesson is grounded in the Quran and Sunnah.",
+                       color: "emerald"
+                     },
+                     {
+                       icon: Users,
+                       title: "Learned Curation",
+                       desc: "Managed by a dedicated team of learned Muslims who structure complex topics into digestible modules.",
+                       color: "blue"
+                     },
+                     {
+                       icon: Zap,
+                       title: "Structured Navigation",
+                       desc: "A clear roadmap from foundations to mastery, with progress tracking.",
+                       color: "amber" // Changed to amber/gold for premium feel
+                     }
+                   ].map((item, idx) => (
+                     <motion.div
+                       key={idx}
+                       initial={{ opacity: 0, y: 20 }}
+                       whileInView={{ opacity: 1, y: 0 }}
+                       viewport={{ once: true }}
+                       transition={{ delay: idx * 0.2 }}
+                       className="group relative p-8 rounded-3xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-700/50 hover:bg-white dark:hover:bg-slate-800 hover:shadow-2xl hover:shadow-emerald-500/10 transition-all duration-500"
+                     >
+                       <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-6 bg-${item.color}-500/10 group-hover:scale-110 transition-transform duration-500`}>
+                         <item.icon className={`w-7 h-7 text-${item.color}-600 dark:text-${item.color}-400`} />
+                       </div>
+                       <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-3 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
+                         {item.title}
+                       </h3>
+                       <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
+                         {item.desc}
+                       </p>
+                     </motion.div>
+                   ))}
+                 </div>
+               </div>
+            </section>
 
-            <div className="testimonials-carousel">
+            <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+              <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
+                <div>
+                  <h2 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white mb-2 tracking-tight">Recommended Courses</h2>
+                  <p className="text-slate-500 dark:text-slate-400">Handpicked curriculum based on your academic interests</p>
+                </div>
+                <button 
+                  onClick={() => navigate('/courses')} 
+                  className="text-emerald-600 dark:text-emerald-500 font-bold flex items-center gap-2 group text-sm"
+                >
+                  Browse all modules <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </button>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 px-2 sm:px-0">
+                {featuredJobs.map((job, index) => (
+                  <FeaturedCourseCard key={job.id} job={job} index={index} />
+                ))}
+              </div>
+            </section>
+
+            {/* NEW SECTION 2: STRUCTURED KNOWLEDGE PATHS */}
+            <section className="py-16 sm:py-24 bg-slate-50 dark:bg-[#0B1221] relative">
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                 <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+                    <div className="max-w-2xl">
+                       <span className="text-emerald-600 dark:text-emerald-500 font-bold tracking-widest uppercase text-xs mb-2 block">Curriculum Roadmap</span>
+                       <h2 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-4">Structured Knowledge Paths</h2>
+                       <p className="text-slate-600 dark:text-slate-400 text-lg">
+                         Stop guessing where to start. Follow a clear, scholar-designed roadmap from basics to mastery.
+                       </p>
+                    </div>
+                    <button onClick={() => navigate('/courses')} className="px-6 py-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl font-bold text-slate-900 dark:text-white hover:bg-slate-50 dark:hover:bg-slate-700 transition-all shadow-sm">
+                      View All Paths
+                    </button>
+                 </div>
+
+                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative">
+                    {/* Connecting Line (Desktop) */}
+                    <div className="hidden md:block absolute top-1/2 left-0 w-full h-0.5 bg-gradient-to-r from-emerald-500/20 via-blue-500/20 to-amber-500/20 -translate-y-1/2 z-0" />
+                    
+                    {[
+                      {
+                        level: "Level 1",
+                        title: "The Foundations",
+                        subtitle: "Fard 'Ayn",
+                        desc: "Essential knowledge every believer must know. covering purity, prayer, and basic creed.",
+                        icon: BookOpen,
+                        color: "emerald",
+                        status: "Open"
+                      },
+                      {
+                        level: "Level 2",
+                        title: "The Seeker",
+                        subtitle: "Intermediate Studies",
+                        desc: "Deepen your understanding with Fiqh of transactions, Seerah analysis, and Quranic Arabic.",
+                        icon: Layers,
+                        color: "blue",
+                        status: "Requires Level 1"
+                      },
+                      {
+                        level: "Level 3",
+                        title: "The Scholar",
+                        subtitle: "Advanced Specialization",
+                        desc: "Mastery modules in Usul al-Fiqh, Hadith sciences, and advanced theology.",
+                        icon: GraduationCap,
+                        color: "amber",
+                        status: "Locked"
+                      }
+                    ].map((path, idx) => (
+                      <motion.div
+                        key={idx}
+                        className="relative z-10 bg-white dark:bg-slate-900 p-8 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xl shadow-slate-200/50 dark:shadow-none flex flex-col items-start h-full hover:-translate-y-2 transition-transform duration-300"
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: idx * 0.2 }}
+                      >
+                         <span className={`inline-block px-3 py-1 rounded-full bg-${path.color}-50 dark:bg-${path.color}-500/10 text-${path.color}-700 dark:text-${path.color}-400 text-[10px] font-bold uppercase tracking-widest mb-4 border border-${path.color}-100 dark:border-${path.color}-500/20`}>
+                           {path.level}
+                         </span>
+                         <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-1">{path.title}</h3>
+                         <p className={`text-sm font-bold text-${path.color}-600 dark:text-${path.color}-500 uppercase tracking-wider mb-4`}>{path.subtitle}</p>
+                         <p className="text-slate-500 dark:text-slate-400 mb-8 leading-relaxed flex-grow">
+                           {path.desc}
+                         </p>
+                         <div className="w-full mt-auto pt-6 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                            <path.icon className={`text-${path.color}-500`} size={20} />
+                            <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">{path.status}</span>
+                         </div>
+                      </motion.div>
+                    ))}
+                 </div>
+              </div>
+            </section>
+
+            <section className="py-12 sm:py-20 bg-white dark:bg-slate-900/50 border-y border-slate-200 dark:border-slate-800/50">
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 md:gap-12">
+                  {[
+                    { number: 50, suffix: "+", label: "Professional Courses" },
+                    { number: 12, suffix: "k", label: "Registered Students" },
+                    { number: 25, suffix: "+", label: "Curation Experts" },
+                    { number: 98, suffix: "%", label: "Course Completion" }
+                  ].map((stat, index) => (
+                    <div key={index} className="text-center">
+                      <div className="text-2xl sm:text-3xl md:text-4xl font-black text-slate-900 dark:text-white mb-1 sm:mb-2">
+                        <AnimatedCounter value={stat.number} suffix={stat.suffix} />
+                      </div>
+                      <p className="text-[10px] sm:text-sm text-slate-500 dark:text-slate-400 font-bold uppercase tracking-widest sm:tracking-wider">{stat.label}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </section>
+
+            <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 text-center">
+              <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-emerald-50 dark:bg-emerald-500/10 mb-8 border border-emerald-100 dark:border-emerald-500/20">
+                <Sparkles className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
+              </div>
               <AnimatePresence mode="wait">
                 <motion.div
                   key={testimonialIndex}
-                  className="testimonial-card"
-                  initial={{ opacity: 0, x: 40 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -40 }}
-                  transition={{ duration: 0.5 }}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  className="space-y-8"
                 >
-                  <p className="testimonial-quote">"{testimonials[testimonialIndex].quote}"</p>
-                  <div className="testimonial-author">
-                    <div className="author-avatar">
+                  <blockquote className="text-lg sm:text-xl md:text-3xl font-medium text-slate-900 dark:text-white leading-relaxed tracking-tight max-w-2xl mx-auto px-4 italic">
+                    "{testimonials[testimonialIndex].quote}"
+                  </blockquote>
+                  <div className="flex items-center justify-center gap-4">
+                    <div className="w-10 h-10 rounded-full bg-slate-200 dark:bg-slate-800 flex items-center justify-center font-bold text-slate-700 dark:text-slate-300">
                       {testimonials[testimonialIndex].avatar}
                     </div>
-                    <div className="author-info">
-                      <p className="author-name">{testimonials[testimonialIndex].author}</p>
-                      <p className="author-role">{testimonials[testimonialIndex].role}</p>
+                    <div className="text-left">
+                      <p className="text-slate-900 dark:text-white font-bold text-sm">{testimonials[testimonialIndex].author}</p>
+                      <p className="text-slate-500 dark:text-slate-400 text-xs">{testimonials[testimonialIndex].role}</p>
                     </div>
-                  </div>
-                  <div className="rating">
-                    {[...Array(testimonials[testimonialIndex].rating)].map((_, i) => (
-                      <Star key={i} className="star filled" size={16} />
-                    ))}
                   </div>
                 </motion.div>
               </AnimatePresence>
-            </div>
+            </section>
 
-            <div className="carousel-dots">
-              {testimonials.map((_, index) => (
-                <button
-                  key={index}
-                  className={`dot ${index === testimonialIndex ? 'active' : ''}`}
-                  onClick={() => setTestimonialIndex(index)}
-                />
-              ))}
-            </div>
-          </section>
+            {/* NEW SECTION 3: GLOBAL SCHOLARSHIP NETWORK */}
+            <section className="py-16 sm:py-24 bg-slate-900 text-white relative overflow-hidden">
+               {/* Decorative background elements */}
+               <div className="absolute inset-0 z-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] bg-fixed" />
+               <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-emerald-600/20 rounded-full blur-[128px] pointer-events-none" />
+               <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-blue-600/20 rounded-full blur-[128px] pointer-events-none" />
 
-          {/* Footer */}
+               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                     <div>
+                        <motion.div
+                           initial={{ opacity: 0, scale: 0.9 }}
+                           whileInView={{ opacity: 1, scale: 1 }}
+                           viewport={{ once: true }}
+                        >
+                           <h2 className="text-3xl md:text-5xl font-black mb-6 leading-tight tracking-tight">
+                              Join a Global <br className="hidden sm:block" />
+                              <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-emerald-200">Network of Seekers</span>
+                           </h2>
+                           <p className="text-slate-400 text-lg mb-8 leading-relaxed max-w-lg">
+                              Knowledge increases when shared. Connect with students from over 40 countries, participate in live colloquiums, and contribute to the revival of Islamic intellectual tradition.
+                           </p>
+                           
+                           <div className="flex flex-col sm:flex-row gap-4">
+                              <button 
+                                onClick={() => navigate('/register')}
+                                className="px-8 py-4 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-bold transition-all shadow-lg shadow-emerald-600/20 flex items-center justify-center gap-2"
+                              >
+                                Join the Institute <ArrowUpRight size={18} />
+                              </button>
+                              <button 
+                                onClick={() => navigate('/community')}
+                                className="px-8 py-4 bg-white/5 hover:bg-white/10 text-white border border-white/10 rounded-xl font-bold transition-all flex items-center justify-center gap-2 backdrop-blur-sm"
+                              >
+                                <Globe size={18} className="text-blue-400" /> Explore Impact
+                              </button>
+                           </div>
+
+                           <div className="mt-12 flex items-center gap-4 text-sm font-medium text-slate-400">
+                              <div className="flex -space-x-3">
+                                 {[1,2,3,4].map((i) => (
+                                    <div key={i} className="w-10 h-10 rounded-full bg-slate-800 border-2 border-slate-900 flex items-center justify-center text-xs text-white box-content">
+                                       <Users size={14} />
+                                    </div>
+                                 ))}
+                              </div>
+                              <span>Joined by 500+ scholars this week</span>
+                           </div>
+                        </motion.div>
+                     </div>
+
+                     <div className="relative">
+                        <div className="grid grid-cols-2 gap-4">
+                           <motion.div 
+                              className="space-y-4 translate-y-8"
+                              initial={{ opacity: 0, y: 40 }}
+                              whileInView={{ opacity: 1, y: 32 }} // keep translate-y-8 (approx 32px)
+                              viewport={{ once: true }}
+                              transition={{ duration: 0.7 }}
+                           >
+                              <div className="p-6 bg-white/5 backdrop-blur-md rounded-2xl border border-white/10">
+                                 <Globe className="w-8 h-8 text-blue-400 mb-4" />
+                                 <h3 className="text-xl font-bold mb-1">Global Reach</h3>
+                                 <p className="text-sm text-slate-400">Students accessing knowledge from 6 continents.</p>
+                              </div>
+                              <div className="p-6 bg-emerald-600/10 backdrop-blur-md rounded-2xl border border-emerald-500/20">
+                                 <Award className="w-8 h-8 text-emerald-400 mb-4" />
+                                 <h3 className="text-xl font-bold mb-1">Accredited</h3>
+                                 <p className="text-sm text-slate-400">Recognized certifications upon course completion.</p>
+                              </div>
+                           </motion.div>
+                           <motion.div 
+                              className="space-y-4"
+                              initial={{ opacity: 0, y: 40 }}
+                              whileInView={{ opacity: 1, y: 0 }}
+                              viewport={{ once: true }}
+                              transition={{ duration: 0.7, delay: 0.2 }}
+                           >
+                              <div className="p-6 bg-white/5 backdrop-blur-md rounded-2xl border border-white/10">
+                                 <MessageCircle className="w-8 h-8 text-amber-400 mb-4" />
+                                 <h3 className="text-xl font-bold mb-1">Community</h3>
+                                 <p className="text-sm text-slate-400">Vibrant discussion forums and study groups.</p>
+                              </div>
+                              <div className="p-6 bg-white/5 backdrop-blur-md rounded-2xl border border-white/10">
+                                 <PlayCircle className="w-8 h-8 text-rose-400 mb-4" />
+                                 <h3 className="text-xl font-bold mb-1">Live Events</h3>
+                                 <p className="text-sm text-slate-400">Weekly webinars with guest speakers.</p>
+                              </div>
+                           </motion.div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </section>
+          </main>
           <Footer />
-        </>
-      )}
+        </div>
     </div>
   );
 };

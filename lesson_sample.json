@@ -1,0 +1,17 @@
+{
+  "id": "de5ccd87-86c1-474d-b016-b9f602ffd55e",
+  "course_id": "07ef050d-ca9c-423b-9bfc-8b04ae9f2b0e",
+  "module_name": "Foundations",
+  "title": "Lesson 1: Sacred Wisdom and Practice",
+  "estimated_duration": "15 mins",
+  "order_index": 1,
+  "learning_objectives": [
+    "Core concepts",
+    "Practical application",
+    "Ethical considerations"
+  ],
+  "reflection_question": null,
+  "is_published": true,
+  "created_at": "2026-02-14T22:55:14.988759+00:00",
+  "updated_at": "2026-02-14T22:55:14.988759+00:00"
+}

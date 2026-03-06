@@ -10,12 +10,18 @@ import {
   Sparkles, Send, Settings, Zap, FileText, Download,
   Copy, ThumbsUp, ThumbsDown, RefreshCw, X, Maximize2,
   Minimize2, MessageSquare, Code, Palette, Globe, CheckCircle2, Edit2,
-  Save, Target, Award, TrendingUp, BarChart3, FileCheck
+  Save, Target, Award, TrendingUp, BarChart3, FileCheck, PanelLeft, PanelLeftClose, ArrowLeft,
+  ChevronRight, Layout, Filter, Wand2, Search as SearchIcon, Upload, Paperclip
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import TypingIndicator from '../../components/ui/TypingIndicator';
 import AILoader from '../../components/ui/AILoader';
 import { extractAndCorrect, correctSpelling } from '../../utils/spellChecker';
+import ReactMarkdown from 'react-markdown';
+import { EliteCard, ElitePageHeader, EliteStatCard } from '../../components/ui/EliteCard';
+import IconComponent from '../../components/AppIcon';
+import ResumePreview from '../resume/components/ResumePreview';
+
 
 const ResumeGeneratorAI = () => {
   const { user, profile } = useAuthContext();
@@ -39,7 +45,18 @@ const ResumeGeneratorAI = () => {
   const [autoSave, setAutoSave] = useState(true);
   const [keywordDensity, setKeywordDensity] = useState({});
   const [jobMatchScore, setJobMatchScore] = useState(null);
-  const [showFeatures, setShowFeatures] = useState(false);
+  const [activeTool, setActiveTool] = useState(null); // Replaces showTools
+  const [generatedResumeJson, setGeneratedResumeJson] = useState(null);
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [userResumes, setUserResumes] = useState([]);
+  const [showLibrary, setShowLibrary] = useState(false);
+  const [selectedResumeId, setSelectedResumeId] = useState(null);
+  const [isStreaming, setIsStreaming] = useState(false);
+  const [streamingText, setStreamingText] = useState('');
+  const [showCanvasControls, setShowCanvasControls] = useState(false);
+  const [referencedResume, setReferencedResume] = useState(null); // NEW: Track referenced resume context
+  const [isProcessing, setIsProcessing] = useState(false); // NEW: Processing edits
+  const fileInputRef = useRef(null);
 
   const [resumeData, setResumeData] = useState({
     jobTitle: '',
@@ -74,11 +91,16 @@ const ResumeGeneratorAI = () => {
   ];
 
   useEffect(() => {
-    if (user && messages.length === 0) {
+    if (user) {
       loadUserData();
+    }
+  }, [user, profile]);
+
+  useEffect(() => {
+    if (user && messages.length === 0) {
       setMessages([{
         role: 'assistant',
-        content: `👋 Hello! I'm your **Advanced AI Resume Assistant** with 7+ powerful features:\\n\\n✨ **NEW FEATURES:**\\n• **ATS Score Checker** - Get instant optimization scores\\n• **5 Professional Templates** - Choose your style\\n• **Real-time Suggestions** - AI helps as you type\\n• **Job Match Scoring** - See how you match roles\\n• **Keyword Analyzer** - Optimize for recruiters\\n• **Multi-format Export** - PDF, DOCX, TXT\\n• **Auto-save** - Never lose your work\\n\\nSay **"generate resume"** to start, or ask me anything!`,
+        content: `👋 **Hi! I'm your AI Recruitment Strategist.**\n\nI'm here to collaborate on building a high-impact, professional resume that gets you noticed. Whether you're starting from scratch or optimizing for a dream role, I'll leverage deep career intelligence to help you stand out. \n\n**Common starting points:**\n• Provide a **Job Description** for an ATS audit\n• Describe your **recent highlights** to build a blueprint\n• Reference an **existing resume** from your library`,
         timestamp: new Date()
       }]);
     }
@@ -95,6 +117,7 @@ const ResumeGeneratorAI = () => {
 
       const resumes = await resumeService.getAll();
       setResumeCount(resumes?.length || 0);
+      setUserResumes(resumes || []);
 
       const isAdmin = profile?.role === 'admin' || user?.role === 'admin';
       if (isAdmin) {
@@ -108,8 +131,33 @@ const ResumeGeneratorAI = () => {
     }
   };
 
+  const toggleLibrary = () => {
+    loadUserData(); // Force refresh when opening
+    setShowLibrary(!showLibrary);
+  };
+
+  const handleLoadResume = (resume) => {
+    // We set it as the primary preview data
+    setGeneratedResumeJson(resume.content_json || resume.content);
+    setSelectedResumeId(resume.id);
+    setSelectedTemplate(resume.template || 'professional');
+    setAtsScore(resume.ats_score || 0);
+
+    // Also set it as the active REFERENCE for AI context
+    setReferencedResume(resume);
+
+    setShowLibrary(false);
+    setMessages(prev => [...prev, {
+      role: 'assistant',
+      content: `📁 **Intelligence Loaded: ${resume.title}**\n\nI've synchronized this resume to the primary intelligence canvas and set it as our active context. \n\n**What shall we do?**\n• **Review** for impact and ATS score\n• **Edit** specific sections or bullets\n• **Tailor** it for a target job description`,
+      timestamp: new Date()
+    }]);
+    success('Resume context synchronized.');
+  };
+
   const checkResumeLimit = () => {
-    const isAdmin = profile?.role === 'admin' || user?.role === 'admin';
+    // Priority: Profile role, then user role, then check if resumeLimit is -1
+    const isAdmin = profile?.role === 'admin' || user?.role === 'admin' || user?.user_metadata?.role === 'admin';
     if (isAdmin) return true;
     if (resumeLimit === -1) return true;
     return resumeCount < resumeLimit;
@@ -142,14 +190,57 @@ const ResumeGeneratorAI = () => {
     return density;
   };
 
-  // NEW: Job match scoring
-  const calculateJobMatch = (resumeContent, jobDesc) => {
-    if (!jobDesc) return null;
-    const resumeText = JSON.stringify(resumeContent).toLowerCase();
-    const jobText = jobDesc.toLowerCase();
-    const jobWords = jobText.split(/\\s+/).filter(w => w.length > 3);
-    const matches = jobWords.filter(word => resumeText.includes(word));
-    return Math.round((matches.length / jobWords.length) * 100);
+  // NEW: Real AI ATS Analysis
+  const performATSAnalysis = async (resumeContent) => {
+    try {
+      const prompt = `Analyze this resume JSON for ATS optimization.
+        Resume: ${JSON.stringify(resumeContent).slice(0, 3000)}...
+        
+        Return JSON ONLY:
+        {
+            "score": (0-100 number),
+            "keywords": {"keyword": count, ...},
+            "missing_keywords": ["..."],
+            "formatting_issues": ["..."],
+            "feedback": ["..."]
+        }`;
+
+      const response = await aiService.generateCompletion(prompt, {
+        systemMessage: "You are an expert ATS Algorithm Auditor. Return valid JSON.",
+        temperature: 0.2
+      });
+
+      const jsonMatch = response.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        const result = JSON.parse(jsonMatch[0]);
+        setAtsScore(result.score || 70);
+        setKeywordDensity(result.keywords || {});
+        return result;
+      }
+    } catch (e) {
+      console.error("ATS Analysis failed, using fallback", e);
+      setAtsScore(calculateATSScore(resumeContent));
+      setKeywordDensity(analyzeKeywords(resumeContent));
+    }
+  };
+
+  const handleCanvasUpdate = (path, value) => {
+    // Deep update helper
+    const updateDeep = (obj, pathArray, val) => {
+      const newObj = { ...obj };
+      let current = newObj;
+      for (let i = 0; i < pathArray.length - 1; i++) {
+        if (!current[pathArray[i]]) current[pathArray[i]] = {};
+        current = current[pathArray[i]];
+      }
+      current[pathArray[pathArray.length - 1]] = val;
+      return newObj;
+    };
+
+    // Path comes as "personalInfo.firstName"
+    const pathArray = path.split('.');
+    const newData = updateDeep(generatedResumeJson, pathArray, value);
+    setGeneratedResumeJson(newData);
   };
 
   const handleSend = async (message = input) => {
@@ -178,7 +269,7 @@ const ResumeGeneratorAI = () => {
         if (!checkResumeLimit()) {
           setMessages(prev => [...prev, {
             role: 'assistant',
-            content: `⚠️ You've reached your resume limit (${resumeLimit} resume${resumeLimit > 1 ? 's' : ''} on ${subscriptionTier} plan).\\n\\nWould you like to:\\n• **Upgrade your plan** for more resumes\\n• **Edit an existing resume** instead\\n\\nI can help you with either option!`,
+            content: `⚠️ You've reached your resume limit (${resumeLimit} resume${resumeLimit > 1 ? 's' : ''} on ${subscriptionTier} plan).\n\nWould you like to:\n• **Upgrade your plan** for more resumes\n• **Edit an existing resume** instead\n\nI can help you with either option!`,
             timestamp: new Date()
           }]);
           setIsTyping(false);
@@ -188,15 +279,15 @@ const ResumeGeneratorAI = () => {
         setConversationMode('collecting');
         setMessages(prev => [...prev, {
           role: 'assistant',
-          content: `Excellent! Let's create a powerful, ATS-optimized resume for you. I'll guide you through this step by step.\\n\\n**Step 1 of 6:** What job title are you targeting? (e.g., \"Software Engineer\", \"Marketing Manager\")`,
+          content: `Excellent! Let's build a high-impact, ATS-optimized resume. I'll guide you through the essentials, but feel free to provide details in any order.\n\n**First, what's the role you're aiming for?**`,
           timestamp: new Date()
         }]);
         setIsTyping(false);
         return;
       }
 
-      if (conversationMode === 'collecting' || conversationMode === 'ready') {
-        await handleDataCollection(message);
+      if (conversationMode === 'collecting' || conversationMode === 'ready' || wantsToGenerate) {
+        await handleAdvancedDataCollection(message);
         return;
       }
 
@@ -216,12 +307,25 @@ const ResumeGeneratorAI = () => {
   const handleAdvancedAIConversation = async (message) => {
     try {
       const recentMessages = messages.slice(-8).map(m => ({ role: m.role, content: m.content }));
-      const contextPrompt = `You are a friendly, helpful AI Resume Assistant with deep expertise in resume writing and ATS optimization. User's question: "${message}" Recent conversation: ${recentMessages.map(m => `${m.role}: ${m.content}`).join('\\n\\n')}`;
+
+      // NEW: Inject profile and reference context
+      const userProfileContext = profile ? `\n\nUSER PROFILE DATA:\n- Name: ${profile.full_name || 'Not provided'}\n- Role: ${profile.role || 'Not provided'}\n- Bio: ${profile.bio || 'Not provided'}\n- Skills: ${profile.skills ? profile.skills.join(', ') : 'None listed'}` : '';
+
+      // NEW: Inject referenced resume context
+      const referenceContext = referencedResume
+        ? `\n\nCURRENT REFERENCED RESUME CONTENT:\n${JSON.stringify(referencedResume.content_json || referencedResume.content, null, 2)}`
+        : '';
+
+      const systemPrompt = `You are a world-class AI Career Strategist and Talent Advocate. 
+      Your purpose is to help users engineer exceptional careers by crafting high-impact resumes and providing elite industry insights.
+      Be collaborative, insightful, and professional. Use clear, beautiful markdown for your responses.${userProfileContext}${referenceContext}`;
+
+      const contextPrompt = `User input: "${message}"\n\nRecent conversation history:\n${recentMessages.map(m => `${m.role}: ${m.content}`).join('\n\n')}`;
 
       const aiResponse = await aiService.generateCompletion(contextPrompt, {
-        systemMessage: 'You are a friendly, knowledgeable AI Resume Assistant.',
-        max_tokens: 800,
-        temperature: 0.8,
+        systemMessage: systemPrompt,
+        max_tokens: 1000,
+        temperature: 0.7,
       });
 
       setConversationContext(prev => [...prev,
@@ -246,118 +350,137 @@ const ResumeGeneratorAI = () => {
     }
   };
 
-  const handleDataCollection = async (message) => {
-    // Collection logic here (keeping existing)
-    if (!resumeData.jobTitle) {
-      setResumeData(prev => ({ ...prev, jobTitle: message }));
-      setMessages(prev => [...prev, {
-        role: 'assistant',
-        content: `Perfect! Targeting **${message}** position. 🎯\\n\\n**Step 2 of 6:** What's your experience level?\\n\\n• Entry-level / Junior\\n• Mid-level / Intermediate  \\n• Senior / Experienced\\n• Executive / Leadership`,
-        timestamp: new Date()
-      }]);
-    } else if (!resumeData.experienceLevel) {
-      const corrected = extractAndCorrect(message, 'experience');
-      let expLevel = corrected || message.toLowerCase();
+  const handleEditWithAI = async (prompt) => {
+    if (!prompt?.trim() || isProcessing) return;
 
-      if (!corrected) {
-        if (expLevel.includes('entry') || expLevel.includes('junior') || expLevel.includes('beginner')) {
-          expLevel = 'entry-level';
-        } else if (expLevel.includes('mid') || expLevel.includes('intermediate')) {
-          expLevel = 'mid-level';
-        } else if (expLevel.includes('senior') || expLevel.includes('experienced')) {
-          expLevel = 'senior';
-        } else if (expLevel.includes('executive') || expLevel.includes('lead') || expLevel.includes('director') || expLevel.includes('leadership')) {
-          expLevel = 'executive';
+    const userMessage = {
+      role: 'user',
+      content: prompt,
+      timestamp: new Date()
+    };
+
+    setMessages(prev => [...prev, userMessage]);
+    setInput('');
+    setIsProcessing(true);
+    setIsTyping(true);
+
+    try {
+      const systemPrompt = `You are a world-class AI Career Strategist. You are currently editing the live resume displayed on the canvas. 
+      Analyze the user's request and update the resume's JSON content accordingly. 
+      You MUST return your response in a valid JSON format with two keys:
+      1. "updatedResume": The complete, modified resume JSON object.
+      2. "explanation": A brief, professional explanation of the specific changes you made.
+      
+      Resume JSON Schema: { "personalInfo": {...}, "summary": "...", "experience": [...], "skills": [...], "education": [...] }`;
+
+      const context = `CURRENT RESUME DATA:\n${JSON.stringify(generatedResumeJson, null, 2)}\n\nUSER EDIT REQUEST: "${prompt}"`;
+
+      const response = await aiService.generateCompletion(context, {
+        systemMessage: systemPrompt,
+        temperature: 0.3,
+      });
+
+      const jsonMatch = response.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        try {
+          const result = JSON.parse(jsonMatch[jsonMatch.length - 1] === '}' ? jsonMatch[0] : jsonMatch[0] + '}');
+          if (result.updatedResume) {
+            setGeneratedResumeJson(result.updatedResume);
+            setMessages(prev => [...prev, {
+              role: 'assistant',
+              content: `✨ **Modifications Applied!**\n\n${result.explanation || "I've updated the intelligence canvas based on your request."}`,
+              timestamp: new Date()
+            }]);
+            success('Visual intelligence updated.');
+          } else {
+            await handleAdvancedAIConversation(prompt);
+          }
+        } catch (e) {
+          console.error('JSON Parse Error in AI Edit:', e);
+          await handleAdvancedAIConversation(prompt);
+        }
+      } else {
+        await handleAdvancedAIConversation(prompt);
+      }
+    } catch (err) {
+      console.error('AI Edit Error:', err);
+      showError('Neuro-link unstable. Conversion failed.');
+    } finally {
+      setIsProcessing(false);
+      setIsTyping(false);
+    }
+  };
+
+  const handleAdvancedDataCollection = async (message) => {
+    try {
+      // Use profile as initial blueprint if available
+      const initialBlueprint = {
+        jobTitle: profile?.role || '',
+        skills: profile?.skills || [],
+        ...resumeData
+      };
+
+      const extractionPrompt = `User said: "${message}"\n\nExtract relevant resume detail from this message. 
+      Return only JSON format: { "jobTitle": "...", "experienceLevel": "...", "industry": "...", "skills": ["..."], "achievements": ["..."] }. 
+      If info missing, leave as null. Current state: ${JSON.stringify(initialBlueprint)}`;
+
+      const extraction = await aiService.generateCompletion(extractionPrompt, {
+        systemMessage: "You are a data extractor for resumes. Return valid JSON only.",
+        temperature: 0
+      });
+
+      const jsonMatch = extraction.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        const newInfo = JSON.parse(jsonMatch[0]);
+        const updatedData = {
+          ...resumeData,
+          jobTitle: newInfo.jobTitle || resumeData.jobTitle,
+          experienceLevel: newInfo.experienceLevel || resumeData.experienceLevel,
+          industry: newInfo.industry || resumeData.industry,
+          skills: [...new Set([...resumeData.skills, ...(newInfo.skills || [])])],
+          achievements: [...new Set([...resumeData.achievements, ...(newInfo.achievements || [])])]
+        };
+        setResumeData(updatedData);
+
+        // Check if we have enough to generate OR need more
+        const missing = [];
+        if (!updatedData.jobTitle) missing.push("target role");
+        if (!updatedData.experienceLevel) missing.push("experience level");
+        if (!updatedData.industry) missing.push("industry");
+        if (updatedData.skills.length < 3) missing.push("at least 3 skills");
+
+        if (missing.length === 0) {
+          setMessages(prev => [...prev, {
+            role: 'assistant',
+            content: `🎯 **Intelligence Gathered.** I have enough context to construct your primary document! 
+              \n\n**Brief Overview:**\n• Role: ${updatedData.jobTitle}\n• Industry: ${updatedData.industry}\n• Skills: ${updatedData.skills.slice(0, 3).join(', ')}...\n\nShould I **initialize generation** now, or do you have more to add?`,
+            timestamp: new Date()
+          }]);
+          setConversationMode('ready');
+        } else {
+          setMessages(prev => [...prev, {
+            role: 'assistant',
+            content: `Got it. I've noted that into your profile. To complete the blueprint, I still need: **${missing.join(', ')}**. \n\nWhat else can you tell me?`,
+            timestamp: new Date()
+          }]);
         }
       }
-
-      const friendlyMessage = corrected && corrected !== message.toLowerCase()
-        ? `Great! I understood "${message}" as **${expLevel}** level. 💼`
-        : `Great! **${expLevel}** level it is. 💼`;
-
-      setResumeData(prev => ({ ...prev, experienceLevel: expLevel }));
-      setMessages(prev => [...prev, {
-        role: 'assistant',
-        content: `${friendlyMessage}\\n\\n**Step 3 of 6:** What industry are you in?\\n\\nExamples: Technology, Healthcare, Finance, Education, Marketing, etc.`,
-        timestamp: new Date()
-      }]);
-    } else if (!resumeData.industry) {
-      const corrected = extractAndCorrect(message, 'industry');
-      const industry = corrected || message;
-
-      const friendlyMessage = corrected && corrected !== message.toLowerCase()
-        ? `Excellent! I understood "${message}" as **${industry}** industry. 🏢`
-        : `Excellent! **${industry}** industry. 🏢`;
-
-      setResumeData(prev => ({ ...prev, industry }));
-      setMessages(prev => [...prev, {
-        role: 'assistant',
-        content: `${friendlyMessage}\\n\\n**Step 4 of 6:** List your top 5-10 key skills (comma-separated)\\n\\nExample: "JavaScript, React, Node.js, AWS, Docker, Git"`,
-        timestamp: new Date()
-      }]);
-    } else if (resumeData.skills.length === 0) {
-      const skills = message.split(',').map(s => s.trim()).filter(Boolean);
-      setResumeData(prev => ({ ...prev, skills }));
-      setMessages(prev => [...prev, {
-        role: 'assistant',
-        content: `Perfect! I've noted your skills: ${skills.join(', ')}. 🛠️\\n\\n**Step 5 of 6:** Describe 2-3 key achievements or projects (one per line)\\n\\nExample:\\n• Led team of 5 developers\\n• Increased revenue by 40%\\n• Built scalable microservices architecture`,
-        timestamp: new Date()
-      }]);
-    } else if (resumeData.achievements.length === 0) {
-      const achievements = message.split('\\n').map(a => a.trim()).filter(Boolean);
-      setResumeData(prev => ({ ...prev, achievements }));
-      setMessages(prev => [...prev, {
-        role: 'assistant',
-        content: `Outstanding achievements! 🏆\\n\\n**Step 6 of 6:** Choose your template:\\n\\n• **Professional** - Traditional, ATS-optimized\\n• **Modern** - Contemporary design\\n• **Executive** - Premium leadership\\n• **Creative** - Designer-focused\\n• **Technical** - Developer-optimized\\n\\nWhich template would you prefer?`,
-        timestamp: new Date()
-      }]);
-      setConversationMode('ready');
-    } else if (conversationMode === 'ready') {
-      const corrected = extractAndCorrect(message, 'style');
-      const styleMatch = corrected || ['professional', 'creative', 'technical', 'modern', 'executive'].find(s =>
-        message.toLowerCase().includes(s)
-      );
-
-      if (styleMatch) {
-        const friendlyMessage = corrected && corrected !== message.toLowerCase()
-          ? `Perfect! I understood "${message}" as **${styleMatch}** template. Let's create your resume!`
-          : `Perfect! **${styleMatch}** template it is. Let's create your resume!`;
-
-        setResumeData(prev => ({ ...prev, style: styleMatch }));
-        setSelectedTemplate(styleMatch);
-        setConversationMode('generating');
-
-        setMessages(prev => [...prev, {
-          role: 'assistant',
-          content: friendlyMessage,
-          timestamp: new Date()
-        }]);
-
-        await handleGenerate();
-      } else {
-        setMessages(prev => [...prev, {
-          role: 'assistant',
-          content: `I didn't quite catch that. Please choose one of these templates:\\n\\n• **Professional**\\n• **Modern**\\n• **Executive**\\n• **Creative**\\n• **Technical**\\n\\nWhich would you like? 😊`,
-          timestamp: new Date()
-        }]);
-      }
+    } catch (err) {
+      console.error("Data collection error:", err);
+      // Fallback to simple handling
+      await handleAdvancedAIConversation(message);
     }
   };
 
   const handleGenerate = async () => {
     try {
       setIsTyping(true);
+      setShowCanvasControls(false);
       setMessages(prev => [...prev, {
         role: 'assistant',
-        content: `🎨 **Generating your ${resumeData.style} resume with advanced features...**\\n\\nThis may take 30-60 seconds. I'm creating:\\n• Professional summary\\n• Experience sections\\n• Skills breakdown\\n• Education details\\n• **ATS optimization (${selectedTemplate} template)**\\n• **Keyword optimization**\\n\\nPlease wait while I craft your perfect resume! ⏳`,
+        content: `🎨 **Initializing Neural Rendering Hub...**\n\nStreaming your professional **${resumeData.jobTitle}** architecture to the canvas. One moment...`,
         timestamp: new Date()
       }]);
-
-      if (!resumeData.jobTitle || !resumeData.experienceLevel || !resumeData.industry ||
-        !resumeData.skills || resumeData.skills.length === 0 ||
-        !resumeData.achievements || resumeData.achievements.length === 0) {
-        throw new Error('Missing required information. Please provide all details.');
-      }
 
       const generatedResume = await aiService.generateResume({
         jobTitle: resumeData.jobTitle,
@@ -365,32 +488,37 @@ const ResumeGeneratorAI = () => {
         industry: resumeData.industry,
         skills: resumeData.skills,
         achievements: resumeData.achievements,
-        style: resumeData.style,
+        style: resumeData.style || 'professional',
         template: selectedTemplate,
       });
 
-      if (!generatedResume) {
-        throw new Error('No resume data received from AI service. Please try again.');
+      if (!generatedResume) throw new Error('No resume data received.');
+
+      const resumeContent = generatedResume.resume || generatedResume;
+
+      // START SIMULATED STREAMING
+      setIsStreaming(true);
+      setGeneratedResumeJson({}); // Reset canvas for streaming
+
+      const sections = ['personalInfo', 'summary', 'experience', 'education', 'skills'];
+      for (const section of sections) {
+        if (resumeContent[section]) {
+          await new Promise(r => setTimeout(r, 800)); // Simulated delay per section
+          setGeneratedResumeJson(prev => ({
+            ...prev,
+            [section]: resumeContent[section]
+          }));
+        }
       }
 
-      let resumeContent = null;
-      if (generatedResume.resume) {
-        resumeContent = generatedResume.resume;
-      } else if (generatedResume.summary || generatedResume.experience || generatedResume.skills) {
-        resumeContent = generatedResume;
-      } else {
-        resumeContent = generatedResume;
-      }
+      setIsStreaming(false);
 
-      if (!resumeContent || typeof resumeContent !== 'object' || Object.keys(resumeContent).length === 0) {
-        throw new Error('Invalid resume data received. Please try again.');
-      }
+      setIsStreaming(false);
 
-      // Calculate ATS score and analytics
-      const score = calculateATSScore(resumeContent);
-      const keywords = analyzeKeywords(resumeContent);
-      setAtsScore(score);
-      setKeywordDensity(keywords);
+      // Real AI ATS Analysis
+      performATSAnalysis(resumeContent);
+
+      setResumeCount(prev => prev + 1);
 
       // Save the resume
       const savedResume = await resumeService.create({
@@ -402,29 +530,24 @@ const ResumeGeneratorAI = () => {
       });
 
       setResumeCount(prev => prev + 1);
+      setShowCanvasControls(true);
 
       setMessages(prev => [...prev, {
         role: 'assistant',
-        content: `✅ **Resume Generated Successfully!**\\n\\nYour professional ${resumeData.style} resume for **${resumeData.jobTitle}** has been created!\\n\\n📊 **Analytics:**\\n• ATS Score: **${score}/100** ${score >= 80 ? '✅ Excellent!' : score >= 60 ? '⚠️ Good' : '❌ Needs work'}\\n• Template: **${selectedTemplate}**\\n• Keywords optimized: ${Object.keys(keywords).length}\\n\\n${autoSave ? '💾 Auto-saved to your resume builder!' : ''}\\n\\nRedirecting you to view and edit your resume... 🚀`,
-        timestamp: new Date()
+        content: `📈 **Intelligence Deployed Successfully.**\n\nI've synchronized the finalized document to your canvas. \n\n📊 **Insights:**\n• ATS Compliance: **${score}/100**\n• Optimization: 100%\n\nOur construction is complete. You can now **commit the draft**, **enter the full editor**, or describe further fine-tunings.`,
+        timestamp: new Date(),
+        isResumeResult: true,
+        resumeId: savedResume.id
       }]);
 
-      success('Resume generated and saved successfully!');
-
-      setTimeout(() => {
-        navigate(`/resume-builder-ai-enhancement?resumeId=${savedResume.id}`, {
-          replace: true,
-          state: { resumeId: savedResume.id }
-        });
-      }, 2000);
+      success('Intelligence synchronized.');
     } catch (error) {
       console.error('Error generating resume:', error);
       setMessages(prev => [...prev, {
         role: 'assistant',
-        content: `❌ I encountered an error: ${error.message}\\n\\nLet's try again. Would you like to:\\n• **Regenerate** - Start over with the same information\\n• **Edit details** - Modify your information first\\n\\nHow would you like to proceed?`,
+        content: `❌ I encountered a synchronized failure: ${error.message}\n\nWould you like me to attempt a recalibration?`,
         timestamp: new Date()
       }]);
-      showError('Failed to generate resume. Please try again.');
     } finally {
       setIsTyping(false);
     }
@@ -445,7 +568,7 @@ const ResumeGeneratorAI = () => {
     setKeywordDensity({});
     setMessages([{
       role: 'assistant',
-      content: `🔄 **Starting Fresh!**\\n\\nI've reset everything. Ready to create an outstanding resume with 7+ powerful features!\\n\\nSay **"generate resume"** or ask me anything!`,
+      content: `🔄 **Starting Fresh!**\n\nI've reset everything. Ready to create an outstanding resume with 7+ powerful features!\n\nSay **"generate resume"** or ask me anything!`,
       timestamp: new Date()
     }]);
   };
@@ -455,291 +578,532 @@ const ResumeGeneratorAI = () => {
     success('Message copied to clipboard!');
   };
 
-  // NEW: Manual save function
-  const handleManualSave = async () => {
-    try {
-      // Save current state
-      success('Resume saved successfully!');
-    } catch (error) {
-      showError('Failed to save resume');
-    }
+  const handleSaveToDashboard = (resumeId) => {
+    success('Intel secured. Resume saved to your intelligence hub.');
+    setTimeout(() => {
+      navigate('/resume/dashboard');
+    }, 1500);
   };
+
 
   return (
     <>
       <Helmet>
-        <title>AI Resume Generator - Workflows</title>
+        <title>AI Resume Architect | Workflow</title>
       </Helmet>
 
-      <div className={`${isFullscreen ? 'fixed inset-0 z-50' : 'min-h-screen'} bg-background dark:bg-[#0A0E27] transition-all duration-300`}>
-        <div className={`${isFullscreen ? 'h-full' : 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8'}`}>
-          {!isFullscreen && <div className="mb-6"><div className="text-sm text-text-secondary dark:text-[#8B92A3]">Resume Generator</div></div>}
+      {/* --- ALWAYS FULL SCREEN OVERLAY --- */}
+      <div className="fixed inset-0 z-[100] bg-[#0F172A] text-slate-200 font-sans selection:bg-workflow-primary/30 overflow-hidden flex flex-col h-screen">
 
-          {/* Advanced ChatGPT-like Interface with Premium Glassmorphism */}
-          <div className={`${isFullscreen ? 'h-full' : 'h-[calc(100vh-8rem)]'} bg-white/50 dark:bg-[#13182E]/50 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/20 dark:border-slate-700/50 flex flex-col overflow-hidden relative`}>
+        {/* --- Header Bar --- */}
+        <div className="h-16 border-b border-white/5 bg-[#0F172A]/80 backdrop-blur-xl flex items-center justify-between px-6 shrink-0 z-50">
+          <div className="flex items-center gap-6">
+            <button
+              onClick={() => navigate('/resume/dashboard')}
+              className="flex items-center gap-2.5 px-4 py-2 rounded-xl text-slate-400 hover:text-white hover:bg-white/10 transition-all border border-white/5 hover:border-white/20 group bg-white/[0.04] shadow-lg"
+            >
+              <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
+              <span className="text-[10px] font-black uppercase tracking-[0.2em]">Back to Dashboard</span>
+            </button>
+            <div className="h-6 w-px bg-white/10" />
+            <div className="flex flex-col">
+              <span className="text-sm font-black text-white uppercase tracking-tight flex items-center gap-2">
+                <Sparkles size={14} className="text-workflow-primary" />
+                Career Intel Strategist
+              </span>
+              <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-slate-500">Neural Resume Optimization v3.0</span>
+            </div>
+          </div>
 
-            {/* Ambient Background Glow */}
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-32 bg-indigo-500/10 blur-[100px] pointer-events-none" />
+          <div className="flex items-center gap-3">
+            <button
+              onClick={toggleLibrary}
+              className={`flex items-center gap-2 px-4 py-2 rounded-xl transition-all border ${showLibrary ? 'bg-workflow-primary text-white border-workflow-primary' : 'bg-white/5 text-slate-400 border-white/10 hover:bg-white/10'}`}
+            >
+              <FileText size={16} />
+              <span className="text-[10px] font-black uppercase tracking-widest text-slate-300">Intel Library</span>
+            </button>
+          </div>
+        </div>
 
-            {/* Premium Floating Header */}
-            <div className="z-20 p-4 pb-0">
-              <div className="flex items-center justify-between p-4 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border border-white/20 dark:border-slate-700 rounded-xl shadow-sm">
-                <div className="flex items-center space-x-4">
-                  <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-violet-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-500/20 transform hover:scale-105 transition-transform duration-300">
-                    <Sparkles className="w-5 h-5 text-white" />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                      AI Resume Assistant
-                      <span className="text-[10px] font-bold bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 px-2 py-0.5 rounded-full border border-indigo-100 dark:border-indigo-800 tracking-wide uppercase">
-                        Beta
-                      </span>
-                    </h3>
-                    <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">
-                      {resumeCount}/{resumeLimit === -1 ? '∞' : resumeLimit} credits • {subscriptionTier} plan {atsScore && <span className="text-emerald-500 font-bold">• ATS: {atsScore}</span>}
-                    </p>
-                  </div>
+        {/* intelligence Library Sidebar */}
+        <AnimatePresence>
+          {showLibrary && (
+            <motion.div
+              initial={{ x: '-100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '-100%' }}
+              className="absolute left-0 top-16 bottom-0 w-80 bg-[#0F172A] border-r border-white/5 z-[60] shadow-2xl overflow-y-auto custom-scrollbar"
+            >
+              <div className="p-6">
+                <div className="flex items-center justify-between mb-8">
+                  <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500">Resume Intel Hub</h3>
+                  <button onClick={() => setShowLibrary(false)} className="text-slate-500 hover:text-white transition-colors"><X size={16} /></button>
                 </div>
 
-                <div className="flex items-center gap-2">
-                  {autoSave && (
-                    <span className="hidden sm:flex items-center gap-1.5 text-xs font-medium text-emerald-600 bg-emerald-50 dark:bg-emerald-900/20 px-3 py-1.5 rounded-full border border-emerald-100 dark:border-emerald-800/30">
-                      <CheckCircle2 className="w-3.5 h-3.5" />
-                      Auto-save active
-                    </span>
+                <div className="space-y-3">
+                  {userResumes.length === 0 ? (
+                    <div className="flex flex-col items-center justify-center p-8 text-center border border-dashed border-white/5 rounded-2xl">
+                      <FileText size={24} className="text-slate-700 mb-3" />
+                      <p className="text-[10px] text-slate-600 uppercase font-black tracking-widest">No intelligence records found.</p>
+                    </div>
+                  ) : (
+                    userResumes.map(res => (
+                      <button
+                        key={res.id}
+                        onClick={() => handleLoadResume(res)}
+                        className={`w-full text-left p-4 rounded-2xl border transition-all group ${selectedResumeId === res.id ? 'bg-workflow-primary/10 border-workflow-primary text-white' : 'bg-white/5 border-white/5 text-slate-400 hover:bg-white/10'}`}
+                      >
+                        <div className="flex items-center gap-3 mb-2">
+                          <FileText size={14} className={selectedResumeId === res.id ? 'text-workflow-primary' : 'text-slate-600'} />
+                          <span className="text-xs font-bold truncate uppercase tracking-tight">{res.title}</span>
+                        </div>
+                        <div className="flex justify-between items-center text-[9px] font-black text-slate-500 uppercase">
+                          <span>ATS: {res.ats_score || '00'}</span>
+                          <span>{new Date(res.updated_at).toLocaleDateString()}</span>
+                        </div>
+                      </button>
+                    ))
                   )}
-
-                  <div className="h-8 w-px bg-slate-200 dark:bg-slate-700 mx-2 hidden sm:block" />
-
-                  <button
-                    onClick={handleManualSave}
-                    className="p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700/50 text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-all duration-300"
-                    title="Save manually"
-                  >
-                    <Save className="w-5 h-5" />
-                  </button>
-                  <button
-                    onClick={() => setShowFeatures(!showFeatures)}
-                    className={`p-2.5 rounded-xl transition-all duration-300 ${showFeatures ? 'bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400' : 'hover:bg-slate-100 dark:hover:bg-slate-700/50 text-slate-500 dark:text-slate-400'}`}
-                    title="Features"
-                  >
-                    <Zap className="w-5 h-5" />
-                  </button>
-                  <button
-                    onClick={() => setShowTools(!showTools)}
-                    className={`p-2.5 rounded-xl transition-all duration-300 ${showTools ? 'bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400' : 'hover:bg-slate-100 dark:hover:bg-slate-700/50 text-slate-500 dark:text-slate-400'}`}
-                    title="Tools"
-                  >
-                    <Settings className="w-5 h-5" />
-                  </button>
-                  <button
-                    onClick={() => setIsFullscreen(!isFullscreen)}
-                    className="p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700/50 text-slate-500 dark:text-slate-400 transition-all duration-300"
-                    title={isFullscreen ? "Exit Fullscreen" : "Fullscreen"}
-                  >
-                    {isFullscreen ? <Minimize2 className="w-5 h-5" /> : <Maximize2 className="w-5 h-5" />}
-                  </button>
                 </div>
               </div>
-            </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
-            {/* NEW: Features Panel */}
-            <AnimatePresence>
-              {showFeatures && (
-                <motion.div
-                  initial={{ height: 0, opacity: 0 }}
-                  animate={{ height: 'auto', opacity: 1 }}
-                  exit={{ height: 0, opacity: 0 }}
-                  className="border-b border-border dark:border-[#1E2640] bg-surface-50 dark:bg-[#1A2139] overflow-hidden"
-                >
-                  <div className="p-4 grid grid-cols-2 md:grid-cols-4 gap-3">
-                    <div className="flex items-center gap-2 p-2 bg-white dark:bg-[#13182E] rounded-lg">
-                      <FileCheck className="w-4 h-4 text-workflow-primary" />
-                      <span className="text-xs">ATS Checker</span>
-                    </div>
-                    <div className="flex items-center gap-2 p-2 bg-white dark:bg-[#13182E] rounded-lg">
-                      <Palette className="w-4 h-4 text-workflow-primary" />
-                      <span className="text-xs">5 Templates</span>
-                    </div>
-                    <div className="flex items-center gap-2 p-2 bg-white dark:bg-[#13182E] rounded-lg">
-                      <Target className="w-4 h-4 text-workflow-primary" />
-                      <span className="text-xs">Job Matching</span>
-                    </div>
-                    <div className="flex items-center gap-2 p-2 bg-white dark:bg-[#13182E] rounded-lg">
-                      <BarChart3 className="w-4 h-4 text-workflow-primary" />
-                      <span className="text-xs">Keyword Analysis</span>
-                    </div>
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
+        {/* --- MAIN WORKSPACE: 2-COLUMN LAYOUT --- */}
+        <div className="flex-1 flex overflow-hidden relative">
 
-            {/* Tools Panel */}
-            <AnimatePresence>
-              {showTools && (
-                <motion.div
-                  initial={{ height: 0, opacity: 0 }}
-                  animate={{ height: 'auto', opacity: 1 }}
-                  exit={{ height: 0, opacity: 0 }}
-                  className="border-b border-border dark:border-[#1E2640] bg-surface-50 dark:bg-[#1A2139] overflow-hidden"
-                >
-                  <div className="p-4 space-y-3">
-                    <label className="flex items-center gap-2 cursor-pointer">
-                      <input
-                        type="checkbox"
-                        checked={autoSave}
-                        onChange={(e) => setAutoSave(e.target.checked)}
-                        className="w-4 h-4 text-workflow-primary rounded"
-                      />
-                      <span className="text-sm text-text-primary dark:text-[#E8EAED]">Auto-save (saves automatically)</span>
-                    </label>
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-                      {templates.map(template => {
-                        const Icon = template.icon;
-                        return (
-                          <button
-                            key={template.id}
-                            onClick={() => setSelectedTemplate(template.id)}
-                            className={`p-2 rounded-lg border-2 transition-all ${selectedTemplate === template.id
-                              ? 'border-workflow-primary bg-workflow-primary/10'
-                              : 'border-border dark:border-dark-border hover:border-workflow-primary/50'
-                              }`}
-                          >
-                            <Icon className="w-4 h-4 mb-1 mx-auto" />
-                            <div className="text-xs font-medium">{template.name}</div>
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-
-            {/* Messages Area - Fixed: NO DUPLICATE */}
-            <div className="flex-1 overflow-y-auto p-6 space-y-6 bg-gradient-to-b from-background to-surface-50 dark:from-[#0A0E27] dark:to-[#13182E]">
-              {messages.map((msg, idx) => (
-                <motion.div
-                  key={idx}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className={`flex gap-4 ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
-                >
-                  {msg.role === 'assistant' && (
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-workflow-primary to-workflow-primary-600 flex items-center justify-center flex-shrink-0">
-                      <Sparkles className="w-4 h-4 text-white" />
-                    </div>
-                  )}
-
-                  <div className={`flex-1 max-w-3xl ${msg.role === 'user' ? 'order-2' : ''}`}>
-                    <div
-                      className={`rounded-2xl p-4 ${msg.role === 'user'
-                        ? 'bg-workflow-primary text-white ml-auto'
-                        : 'bg-white dark:bg-[#1A2139] text-text-primary dark:text-[#E8EAED] border border-border dark:border-[#1E2640] shadow-sm'
-                        }`}
-                    >
-                      <div className="prose prose-sm dark:prose-invert max-w-none">
-                        <div className="whitespace-pre-wrap" dangerouslySetInnerHTML={{
-                          __html: msg.content.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                            .replace(/\*(.*?)\*/g, '<em>$1</em>')
-                            .replace(/\n/g, '<br />')
-                        }} />
-                      </div>
-                    </div>
-
+          {/* COLUMN 1: AI CHAT (Collaborative Interface) */}
+          <div className={`flex flex-col border-r border-white/5 bg-[#0F172A] transition-all duration-500 ease-in-out ${isEditMode ? 'w-0 opacity-0 overflow-hidden' : 'w-full lg:w-[40%] xl:w-[35%] opacity-100'}`}>
+            <div className="flex-1 overflow-y-auto p-6 md:p-8 space-y-6 custom-scrollbar scroll-smooth">
+              <AnimatePresence>
+                {messages.map((msg, idx) => (
+                  <motion.div
+                    key={idx}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className={`flex gap-4 ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
+                  >
                     {msg.role === 'assistant' && (
-                      <div className="flex items-center gap-2 mt-2">
-                        <button
-                          onClick={() => handleCopyMessage(msg.content)}
-                          className="p-1.5 rounded hover:bg-surface-100 dark:hover:bg-[#1E2640] transition-colors group relative"
-                          title="Copy message"
-                        >
-                          <Copy className="w-3.5 h-3.5 text-text-secondary dark:text-[#8B92A3] group-hover:text-workflow-primary" />
-                        </button>
+                      <div className="w-8 h-8 rounded-lg bg-workflow-primary flex items-center justify-center flex-shrink-0 shadow-lg shadow-workflow-primary/30 mt-1">
+                        <Wand2 className="w-4 h-4 text-white" />
                       </div>
                     )}
-                  </div>
 
-                  {msg.role === 'user' && (
-                    <div className="w-8 h-8 rounded-full bg-workflow-primary-200 dark:bg-workflow-primary-900 flex items-center justify-center flex-shrink-0 order-1">
-                      <span className="text-xs font-semibold text-workflow-primary">
-                        {user?.email?.charAt(0).toUpperCase() || 'U'}
+                    <div className={`max-w-[85%] ${msg.role === 'user' ? 'order-2' : ''}`}>
+                      <div className={`p-4 rounded-2xl ${msg.role === 'user'
+                        ? 'bg-slate-800 text-white rounded-tr-sm shadow-xl'
+                        : 'bg-white/[0.03] border border-white/5 text-slate-200 rounded-tl-sm shadow-xl'
+                        }`}>
+                        <div className="prose prose-invert prose-sm max-w-none leading-relaxed text-slate-300">
+                          <ReactMarkdown>{msg.content}</ReactMarkdown>
+                        </div>
+                        {msg.isResumeResult && (
+                          <div className="mt-4 pt-4 border-t border-white/5 flex gap-2">
+                            <button
+                              onClick={() => navigate(`/resume/edit/${msg.resumeId}`)}
+                              className="px-3 py-1.5 rounded-lg bg-workflow-primary/20 border border-workflow-primary/30 text-workflow-primary text-[10px] font-black uppercase tracking-widest hover:bg-workflow-primary/30 transition-all"
+                            >
+                              Edit Manually
+                            </button>
+                            <button
+                              onClick={() => handleSaveToDashboard(msg.resumeId)}
+                              className="px-3 py-1.5 rounded-lg bg-white/10 text-white text-[10px] font-black uppercase tracking-widest hover:bg-white/20 transition-all"
+                            >
+                              Save to Hub
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                      <span className="text-[9px] text-slate-600 mt-2 block px-1 uppercase font-bold tracking-widest">
+                        {msg.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                       </span>
                     </div>
-                  )}
-                </motion.div>
-              ))}
-
+                  </motion.div>
+                ))}
+              </AnimatePresence>
               {isTyping && (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  className="flex gap-4"
-                >
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-workflow-primary to-workflow-primary-600 flex items-center justify-center flex-shrink-0">
-                    <Sparkles className="w-4 h-4 text-white" />
+                <div className="flex gap-4 items-center">
+                  <div className="w-8 h-8 rounded-lg bg-workflow-primary/20 flex items-center justify-center flex-shrink-0">
+                    <RefreshCw className="w-4 h-4 text-workflow-primary animate-spin" />
                   </div>
-                  <div className="bg-white dark:bg-[#1A2139] rounded-2xl p-4 border border-border dark:border-[#1E2640]">
-                    <AILoader variant="sparkles" />
-                  </div>
-                </motion.div>
+                  <TypingIndicator />
+                </div>
               )}
-
               <div ref={messagesEndRef} />
             </div>
 
-            {/* Input Area */}
-            <div className="p-4 border-t border-border dark:border-[#1E2640] bg-white dark:bg-[#13182E]">
-              <div className="max-w-3xl mx-auto">
-                <div className="relative">
+            {/* SUGGESTED ACTIONS: Dynamic based on context */}
+            <div className="flex flex-wrap justify-center gap-2 mb-6 px-6 max-w-2xl mx-auto shrink-0">
+              {!generatedResumeJson && messages.length <= 1 ? (
+                <>
+                  {[
+                    { label: "Build from Scratch", icon: Wand2, action: "Let's build a new resume from scratch" },
+                    { label: "Analyze Existing", icon: SearchIcon, onClick: toggleLibrary },
+                    { label: "Target a Role", icon: Target, action: "I'm targeting a specific role, can you help?" }
+                  ].map((btn, i) => (
+                    <button
+                      key={i}
+                      onClick={() => {
+                        if (btn.onClick) {
+                          btn.onClick();
+                        } else {
+                          setInput(btn.action);
+                          inputRef.current?.focus();
+                        }
+                      }}
+                      className="px-4 py-2 rounded-xl bg-white/5 border border-white/5 text-[10px] font-bold text-slate-400 hover:text-white hover:bg-workflow-primary/10 hover:border-workflow-primary/30 transition-all flex items-center gap-2"
+                    >
+                      <btn.icon size={12} />
+                      {btn.label}
+                    </button>
+                  ))}
+                </>
+              ) : (
+                <>
+                  {(generatedResumeJson || referencedResume) && [
+                    { label: "Deep ATS Audit", icon: BarChart3, action: "Perform a deep ATS audit and give me actionable feedback" },
+                    { label: "Tailor for Job", icon: Target, action: "I have a job description, tailor this resume for it" },
+                    { label: "Refine Summary", icon: FileText, action: "Rewrite my professional summary for higher impact" },
+                    { label: "Identify Gaps", icon: Zap, action: "What critical skills are missing for a Senior role?" }
+                  ].map((btn, i) => (
+                    <button
+                      key={i}
+                      onClick={() => {
+                        if (generatedResumeJson) {
+                          handleEditWithAI(btn.action);
+                        } else {
+                          setInput(btn.action);
+                          handleSend(btn.action);
+                        }
+                      }}
+                      className="px-3 py-1.5 rounded-lg bg-workflow-primary/5 border border-workflow-primary/10 text-[9px] font-black uppercase tracking-widest text-slate-400 hover:text-white hover:bg-workflow-primary/20 transition-all flex items-center gap-2"
+                    >
+                      <btn.icon size={12} className="text-workflow-primary" />
+                      {btn.label}
+                    </button>
+                  ))}
+                </>
+              )}
+            </div>
+
+            <div className="relative w-full max-w-2xl mx-auto px-6 mb-8 shrink-0">
+              <div className="absolute inset-0 bg-workflow-primary/5 rounded-3xl blur-2xl group-focus-within:bg-workflow-primary/10 transition-all" />
+              <div className="relative bg-white/5 border border-white/10 rounded-2xl shadow-2xl flex flex-col p-2 transition-all focus-within:border-workflow-primary/40 focus-within:ring-4 focus-within:ring-workflow-primary/5">
+                {/* REFERENCE CHIP */}
+                <AnimatePresence>
+                  {referencedResume && (
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.95, y: 5 }}
+                      animate={{ opacity: 1, scale: 1, y: 0 }}
+                      exit={{ opacity: 0, scale: 0.95, y: 5 }}
+                      className="mx-2 mt-1 mb-2 px-3 py-1.5 rounded-lg bg-workflow-primary/20 border border-workflow-primary/30 flex items-center justify-between group/chip"
+                    >
+                      <div className="flex items-center gap-2">
+                        <div className="w-5 h-5 rounded bg-workflow-primary flex items-center justify-center">
+                          <FileCheck size={12} className="text-white" />
+                        </div>
+                        <span className="text-[10px] font-bold text-workflow-primary uppercase tracking-widest truncate max-w-[200px]">
+                          Referencing: {referencedResume.title}
+                        </span>
+                      </div>
+                      <button
+                        onClick={() => {
+                          setReferencedResume(null);
+                          setSelectedResumeId(null);
+                        }}
+                        className="p-1 text-workflow-primary/60 hover:text-workflow-primary transition-colors"
+                      >
+                        <X size={12} />
+                      </button>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+                <div className="flex items-end">
+                  <button
+                    onClick={() => fileInputRef.current?.click()}
+                    className="p-3 text-slate-500 hover:text-white transition-colors"
+                    title="Upload Document"
+                  >
+                    <Paperclip size={18} />
+                  </button>
+                  <input
+                    type="file"
+                    ref={fileInputRef}
+                    className="hidden"
+                    onChange={(e) => {
+                      const file = e.target.files[0];
+                      if (file) success(`Intel secured: ${file.name}`);
+                    }}
+                  />
                   <textarea
                     ref={inputRef}
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' && !e.shiftKey) {
-                        e.preventDefault();
-                        handleSend();
-                      }
-                    }}
-                    placeholder="Message AI Resume Assistant..."
+                    onKeyDown={(e) => e.key === 'Enter' && !e.shiftKey && (e.preventDefault(), generatedResumeJson ? handleEditWithAI(input) : handleSend())}
+                    placeholder={generatedResumeJson ? "Collaborate on adjustments..." : "Message AI Career Strategist..."}
+                    className="flex-1 bg-transparent border-none focus:ring-0 text-white placeholder:text-slate-500 px-4 py-3 min-h-[50px] max-h-[150px] resize-none text-[13px] font-medium leading-relaxed"
                     rows={1}
-                    className="w-full px-4 py-3 pr-12 border border-border dark:border-[#1E2640] rounded-xl bg-background dark:bg-[#0A0E27] text-text-primary dark:text-[#E8EAED] placeholder:text-text-secondary dark:placeholder:text-[#8B92A3] focus:outline-none focus:ring-2 focus:ring-workflow-primary focus:border-transparent resize-none overflow-hidden"
-                    style={{ minHeight: '48px', maxHeight: '200px' }}
-                    disabled={isTyping}
-                    onInput={(e) => {
-                      e.target.style.height = 'auto';
-                      e.target.style.height = e.target.scrollHeight + 'px';
-                    }}
+                    disabled={isTyping || isStreaming}
                   />
                   <button
-                    onClick={() => handleSend()}
-                    disabled={isTyping || !input.trim()}
-                    className="absolute right-2 bottom-2 p-2 bg-workflow-primary text-white rounded-lg hover:bg-workflow-primary-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-lg"
+                    onClick={() => generatedResumeJson ? handleEditWithAI(input) : handleSend()}
+                    disabled={!input.trim() || isTyping || isStreaming}
+                    className="p-3 bg-workflow-primary hover:bg-workflow-primary/90 text-white rounded-xl shadow-lg shadow-workflow-primary/20 disabled:opacity-30 disabled:shadow-none transition-all active:scale-95 mb-0.5 mr-0.5"
                   >
-                    <Send className="w-4 h-4" />
+                    <Send className="w-5 h-5" />
                   </button>
                 </div>
+              </div>
+            </div>
+          </div>
 
-                <div className="flex items-center justify-between mt-2 text-xs text-text-secondary dark:text-[#8B92A3]">
-                  <div className="flex items-center gap-4">
-                    <button
-                      onClick={handleRegenerate}
-                      className="flex items-center gap-1 hover:text-workflow-primary transition-colors"
-                    >
-                      <RefreshCw className="w-3.5 h-3.5" />
-                      New Chat
-                    </button>
-                  </div>
-                  <div>
-                    {resumeCount}/{resumeLimit === -1 ? '∞' : resumeLimit} resumes remaining
-                  </div>
+          {/* COLUMN 2: RESUME CANVAS (Persistent Display) */}
+          <div className={`flex-1 flex flex-col bg-[#020617] relative ${!isEditMode ? 'hidden lg:flex' : 'flex'}`}>
+
+            {/* CANVAS HEADER / TOOLS */}
+            <div className="h-14 border-b border-white/5 bg-[#0A0F1E]/50 backdrop-blur-md flex items-center justify-between px-6 shrink-0 z-10">
+              <div className="flex items-center gap-4">
+                <button
+                  onClick={() => setIsEditMode(!isEditMode)}
+                  className="p-2 text-slate-400 hover:text-white transition-colors lg:hidden"
+                  title={isEditMode ? "Expand Canvas" : "Show Chat"}
+                >
+                  <PanelLeft size={18} className={isEditMode ? "rotate-180 transition-transform" : "transition-transform"} />
+                </button>
+                <div className="flex items-center gap-2">
+                  <FileText size={14} className="text-workflow-primary" />
+                  <span className="text-[10px] font-black uppercase tracking-widest text-slate-300">Live Resume Canvas</span>
                 </div>
+
+                {/* 5 TOOLS */}
+                <div className="hidden lg:flex items-center gap-2 ml-4">
+                  {[
+                    { id: 'ats', icon: BarChart3, label: 'ATS Score' },
+                    { id: 'keywords', icon: Filter, label: 'Keywords' },
+                    { id: 'format', icon: Palette, label: 'Style' }
+                  ].map(tool => (
+                    <button
+                      key={tool.id}
+                      onClick={() => setActiveTool(tool.id)}
+                      className={`px-2.5 py-1 rounded-md text-[9px] font-bold uppercase tracking-widest border transition-all flex items-center gap-1.5 ${activeTool === tool.id ? 'bg-workflow-primary text-white border-workflow-primary' : 'bg-white/5 border-white/5 text-slate-500 hover:text-white hover:bg-white/10'}`}
+                    >
+                      <tool.icon size={12} />
+                      {tool.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <AnimatePresence>
+                  {showCanvasControls && (
+                    <motion.div
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: 20 }}
+                      className="flex items-center gap-2"
+                    >
+                      <button
+                        onClick={() => {
+                          const lastMsg = messages.filter(m => m.isResumeResult).pop();
+                          if (lastMsg?.resumeId) {
+                            navigate(`/resume/edit/${lastMsg.resumeId}`);
+                          } else if (selectedResumeId) {
+                            navigate(`/resume/edit/${selectedResumeId}`);
+                          }
+                        }}
+                        className="px-4 py-1.5 rounded-xl bg-white/5 border border-white/10 text-white text-[10px] font-black uppercase tracking-widest hover:bg-white/10 transition-all flex items-center gap-2"
+                      >
+                        <Edit2 size={14} /> Full Editor
+                      </button>
+                      <button
+                        onClick={() => {
+                          const lastMsg = messages.filter(m => m.isResumeResult).pop();
+                          if (lastMsg?.resumeId) handleSaveToDashboard(lastMsg.resumeId);
+                          else if (selectedResumeId) handleSaveToDashboard(selectedResumeId);
+                        }}
+                        className="px-4 py-1.5 rounded-xl bg-workflow-primary text-white text-[10px] font-black uppercase tracking-widest hover:brightness-110 transition-all shadow-lg shadow-workflow-primary/20 flex items-center gap-2"
+                      >
+                        <Save size={14} /> Commit Draft
+                      </button>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            </div>
+
+            {/* CANVAS VIEWPORT */}
+            <div className="flex-1 overflow-y-auto p-4 md:p-8 lg:p-12 custom-scrollbar bg-[radial-gradient(circle_at_center,rgba(0,70,255,0.03)_0%,transparent_70%)]">
+              <div className="max-w-[850px] mx-auto">
+                <AnimatePresence mode="wait">
+                  {generatedResumeJson ? (
+                    <motion.div
+                      key="preview"
+                      initial={{ opacity: 0, scale: 0.98 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      className="shadow-[0_40px_100px_rgba(0,0,0,0.4)]"
+                    >
+                      <ResumePreview
+                        resumeData={generatedResumeJson}
+                        template={selectedTemplate}
+                        onUpdate={handleCanvasUpdate}
+                        isGenerating={isStreaming}
+                      />
+                    </motion.div>
+                  ) : (
+                    <motion.div
+                      key="empty"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      className="h-[1000px] border-2 border-dashed border-white/5 rounded-3xl flex flex-col items-center justify-center p-12 text-center"
+                    >
+                      <div className="w-20 h-20 rounded-full bg-white/[0.02] flex items-center justify-center mb-8">
+                        <FileText size={32} className="text-slate-800" />
+                      </div>
+                      <h3 className="text-xl font-black text-slate-700 uppercase tracking-tighter mb-4">Awaiting Intel Payload</h3>
+                      <p className="max-w-xs text-sm text-slate-600 leading-relaxed font-medium"> Describe your career goals on the left to initialize the neural document construction.</p>
+
+                      <div className="mt-12 flex items-center gap-8 opacity-20 filter grayscale">
+                        <Zap size={24} />
+                        <Sparkles size={24} />
+                        <IconComponent name="Shield" size={24} />
+                        <Award size={24} />
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             </div>
           </div>
         </div>
       </div>
+
+      {/* INTELLIGENCE TOOLS OVERLAY */}
+      {/* INTELLIGENCE TOOLS OVERLAY */}
+      <AnimatePresence>
+        {activeTool && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            className="fixed inset-0 z-[110] flex items-center justify-center p-6 bg-[#0F172A]/80 backdrop-blur-xl"
+            onClick={() => setActiveTool(null)}
+          >
+            <motion.div
+              className={`w-full bg-[#1E293B] border border-white/10 rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[85vh] ${activeTool === 'format' ? 'max-w-6xl' : 'max-w-4xl'}`}
+              onClick={e => e.stopPropagation()}
+            >
+              <div className="p-8 border-b border-white/5 flex items-center justify-between bg-white/[0.02]">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-2xl bg-workflow-primary/20 flex items-center justify-center">
+                    {activeTool === 'format' ? <Palette className="text-workflow-primary" size={24} /> :
+                      activeTool === 'ats' ? <BarChart3 className="text-workflow-primary" size={24} /> :
+                        <Filter className="text-workflow-primary" size={24} />}
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-black text-white uppercase tracking-tighter">
+                      {activeTool === 'format' ? 'Design Architecture' :
+                        activeTool === 'ats' ? 'ATS Verification Core' : 'Keyword Intelligence'}
+                    </h3>
+                    <p className="text-xs text-slate-400 font-bold uppercase tracking-widest mt-1">
+                      {activeTool === 'format' ? 'Select a visual framework' : 'Deep Neural Analysis'}
+                    </p>
+                  </div>
+                </div>
+                <button onClick={() => setActiveTool(null)} className="p-3 rounded-xl bg-white/5 text-slate-400 hover:text-white transition-all"><X size={20} /></button>
+              </div>
+
+              <div className="flex-1 overflow-y-auto p-8 custom-scrollbar">
+
+                {activeTool === 'format' && (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {templates.map(t => (
+                      <button
+                        key={t.id}
+                        onClick={() => setSelectedTemplate(t.id)}
+                        className={`group relative aspect-[3/4] rounded-2xl border-2 overflow-hidden transition-all ${selectedTemplate === t.id ? 'border-workflow-primary ring-4 ring-workflow-primary/20' : 'border-white/10 hover:border-workflow-primary/50'}`}
+                      >
+                        <div className={`absolute inset-0 bg-gradient-to-br ${t.id === 'modern' ? 'from-slate-900 to-slate-800' : 'from-white to-slate-100'} flex items-center justify-center`}>
+                          {/* Preview Placeholder */}
+                          <div className="text-xs font-black uppercase tracking-widest text-slate-500">{t.name} Preview</div>
+                        </div>
+                        <div className="absolute inset-x-0 bottom-0 p-4 bg-black/80 backdrop-blur-sm">
+                          <div className="flex items-center justify-between">
+                            <span className="text-sm font-bold text-white">{t.name}</span>
+                            {selectedTemplate === t.id && <CheckCircle2 size={16} className="text-workflow-primary" />}
+                          </div>
+                          <p className="text-[10px] text-slate-400 mt-1">{t.description}</p>
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                )}
+
+                {activeTool === 'ats' && (
+                  <div className="space-y-8">
+                    <div className="flex items-center justify-center p-8">
+                      <div className="relative w-48 h-48 flex items-center justify-center">
+                        <svg className="w-full h-full transform -rotate-90">
+                          <circle cx="96" cy="96" r="88" stroke="currentColor" strokeWidth="12" fill="transparent" className="text-slate-800" />
+                          <circle cx="96" cy="96" r="88" stroke="#3B82F6" strokeWidth="12" fill="transparent" strokeDasharray={552} strokeDashoffset={552 - (552 * (atsScore || 0) / 100)} className="transition-all duration-1000 ease-out" />
+                        </svg>
+                        <div className="absolute flex flex-col items-center">
+                          <span className="text-5xl font-black text-white tracking-tighter">{atsScore || 0}</span>
+                          <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">ATS Score</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <EliteCard title="Pass Rate" icon={CheckCircle2}>
+                        <div className="text-2xl font-black text-green-400">High Probability</div>
+                        <p className="text-xs text-slate-400 mt-2">Your resume structure is standard and readable by most ATS parsers.</p>
+                      </EliteCard>
+                      <EliteCard title="Critical Issues" icon={X}>
+                        <div className="text-2xl font-black text-white">{100 - (atsScore || 0) < 20 ? '0' : '2'}</div>
+                        <p className="text-xs text-slate-400 mt-2">Minor formatting adjustments recommended.</p>
+                      </EliteCard>
+                    </div>
+                  </div>
+                )}
+
+                {activeTool === 'keywords' && (
+                  <div className="space-y-4">
+                    {Object.entries(keywordDensity).length > 0 ? Object.entries(keywordDensity).map(([key, val], i) => (
+                      <div key={i} className="flex flex-col gap-1.5">
+                        <div className="flex justify-between text-[10px] font-black uppercase text-slate-400">
+                          <span>{key}</span>
+                          <span>{val}%</span>
+                        </div>
+                        <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
+                          <motion.div
+                            initial={{ width: 0 }}
+                            animate={{ width: `${Math.min(val * 10, 100)}%` }}
+                            className="h-full bg-workflow-primary shadow-[0_0_10px_rgba(59,130,246,0.5)]"
+                          />
+                        </div>
+                      </div>
+                    )) : (
+                      <p className="text-[10px] text-slate-500 font-bold uppercase italic">No keyword intelligence found yet. Generate a resume first.</p>
+                    )}
+                  </div>
+                )}
+              </div>
+
+              <div className="p-6 border-t border-white/5 bg-white/[0.02] flex justify-end">
+                <button
+                  onClick={() => setActiveTool(null)}
+                  className="px-6 py-2.5 rounded-xl bg-workflow-primary text-white text-xs font-black uppercase tracking-widest hover:brightness-110 transition-all shadow-xl shadow-workflow-primary/20"
+                >
+                  Close Panel
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 };

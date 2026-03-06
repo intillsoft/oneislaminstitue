@@ -5,7 +5,8 @@
 
 import React from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
-import { useAuthContext } from '../contexts/AuthContext';
+import { useAuthContext, normalizeRole } from '../contexts/AuthContext';
+import AILoader from './ui/AILoader';
 
 const ProtectedRoute = ({
   children,
@@ -20,8 +21,8 @@ const ProtectedRoute = ({
   // Show loading while checking auth or profile
   if (loading || loadingProfile) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-workflow-primary"></div>
+      <div className="flex items-center justify-center min-vh-screen min-h-screen bg-bg">
+        <AILoader variant="pulse" text="Securing access..." />
       </div>
     );
   }
@@ -33,16 +34,30 @@ const ProtectedRoute = ({
   }
 
   // Check role requirements
-  const userRole = profile?.role || 'job-seeker';
+  // Use the canonical role from profile, or check metadata if profile isn't fully ready
+  const role = normalizeRole(profile?.role || user?.user_metadata?.role);
 
-  if (requiredRole && userRole !== requiredRole) {
-    // User doesn't have the required role
-    return <Navigate to="/dashboard" replace />;
+  if (requiredRole) {
+    if (requiredRole === 'admin' && role !== 'admin') {
+       return <Navigate to="/dashboard" replace />;
+    }
+    if (requiredRole === 'instructor' && role !== 'instructor' && role !== 'admin') {
+       return <Navigate to="/dashboard" replace />;
+    }
+    if (role !== requiredRole && role !== 'admin') {
+       return <Navigate to="/dashboard" replace />;
+    }
   }
 
-  if (allowedRoles && !allowedRoles.includes(userRole)) {
-    // User role not in allowed list
-    return <Navigate to="/dashboard" replace />;
+  if (allowedRoles) {
+    const isAllowed = allowedRoles.some(r => {
+      const normalizedR = normalizeRole(r);
+      return role === normalizedR || role === 'admin'; // Admins always allowed
+    });
+    
+    if (!isAllowed) {
+      return <Navigate to="/dashboard" replace />;
+    }
   }
 
   // Check subscription requirements

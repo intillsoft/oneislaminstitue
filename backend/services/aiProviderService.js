@@ -13,6 +13,15 @@ dotenv.config();
 // Get AI provider from environment (default: openai)
 const AI_PROVIDER = process.env.AI_PROVIDER || 'openai';
 
+// Standard 429 handling helper
+const handleRateLimitError = (provider, error) => {
+  const message = error.message || String(error);
+  if (message.includes('429') || message.toLowerCase().includes('rate limit')) {
+    logger.error(`[AI Service] ${provider} 429 Rate Limit reached. Please wait before retrying.`);
+  }
+  return error;
+};
+
 /**
  * Initialize AI client based on provider
  */
@@ -30,16 +39,6 @@ function getAIClient(providerOverride = null) {
         client: new OpenAI({ apiKey: process.env.OPENAI_API_KEY }),
       };
 
-    case 'huggingface':
-    case 'hf':
-      if (!process.env.HUGGINGFACE_API_KEY) {
-        logger.warn('Hugging Face API key not found, using public endpoint (may be rate limited)');
-        return {
-          type: 'huggingface',
-          apiKey: process.env.HUGGINGFACE_API_KEY || 'public',
-          baseURL: 'https://api-inference.huggingface.co/models',
-        };
-      }
       return {
         type: 'huggingface',
         apiKey: process.env.HUGGINGFACE_API_KEY,
@@ -114,13 +113,27 @@ const PROVIDER_PRIORITY = ['openai', 'gemini', 'anthropic', 'cohere', 'huggingfa
  * Generate text completion with robust fallback chain
  */
 export async function generateCompletion(prompt, options = {}) {
+  // Handle case where options are passed as first argument or part of first argument
+  let actualPrompt = prompt;
+  let actualOptions = options;
+
+  if (typeof prompt === 'object' && prompt.prompt) {
+    actualPrompt = prompt.prompt;
+    actualOptions = { ...prompt, ...options };
+  } else if (typeof prompt === 'object') {
+    // Fallback if the whole object is passed as first argument but without 'prompt' key
+    // This handles some edge cases in older calling patterns
+    actualOptions = { ...prompt, ...options };
+    actualPrompt = actualOptions.prompt || '';
+  }
+
   const {
     model,
     temperature = 0.7,
     max_tokens = 2000,
     systemMessage,
     aiProvider, // Allow override
-  } = options;
+  } = actualOptions;
 
   // Determine starting provider
   let currentProvider = aiProvider || process.env.AI_PROVIDER || 'openai';
@@ -179,14 +192,14 @@ export async function generateCompletion(prompt, options = {}) {
 
         case 'gemini':
           return await generateGeminiCompletion(aiClient, prompt, {
-            model: model || 'gemini-pro',
+            model: model || 'gemini-1.5-flash',
             temperature,
             max_tokens,
           });
 
         case 'cohere':
           return await generateCohereCompletion(aiClient, prompt, {
-            model: model || 'command-r-08-2024', // Latest available model
+            model: model || 'command-r-08-2024',
             temperature,
             max_tokens,
           });
@@ -195,13 +208,21 @@ export async function generateCompletion(prompt, options = {}) {
           throw new Error(`Unsupported AI provider type: ${aiClient.type}`);
       }
     } catch (error) {
-      logger.warn(`AI provider ${provider} failed: ${error.message}`);
-      console.warn(`[AI Service] ${provider} failed. Stack:`, error.stack);
-      if (error.response) {
-        console.warn(`[AI Service] Provider response:`, JSON.stringify(error.response.data || error.response));
-      }
       lastError = error;
-      // Continue to next provider in loop
+      const msg = error.message || String(error);
+
+      if (msg.includes('429') || msg.toLowerCase().includes('rate limit')) {
+        logger.error(`AI provider ${provider} blocked: Rate Limit Reached (429)`);
+      } else {
+        logger.warn(`AI provider ${provider} failed: ${msg}`);
+      }
+
+      if (!msg.includes('429')) {
+        console.warn(`[AI Service] ${provider} failed. Stack:`, error.stack);
+        if (error.response) {
+          console.warn(`[AI Service] Provider response:`, JSON.stringify(error.response.data || error.response));
+        }
+      }
     }
   }
 
@@ -244,7 +265,8 @@ async function generateOpenAICompletion(client, prompt, options) {
 const generateHuggingFaceCompletion = async (aiClient, prompt, options = {}) => {
   const model = options.model || 'mistralai/Mistral-7B-Instruct-v0.2';
   // Use the Hugging Face Inference API router for better reliability and model access
-  const url = `https://router.huggingface.co/models/${model}`;
+  // Standard Hugging Face Inference API URL construction
+  const url = `${aiClient.baseURL.endsWith('/') ? aiClient.baseURL : aiClient.baseURL + '/'}${model}`;
 
   const response = await fetch(url, {
     method: 'POST',
@@ -316,6 +338,7 @@ async function generateAnthropicCompletion(client, prompt, options) {
 const generateGeminiCompletion = async (aiClient, prompt, options = {}) => {
   const { GoogleGenerativeAI } = await import('@google/generative-ai');
   const genAI = new GoogleGenerativeAI(aiClient.apiKey);
+  // Default to gemini-1.5-flash which is more widely available/reliable than gemini-pro
   const model = genAI.getGenerativeModel({ model: options.model || 'gemini-1.5-flash' });
 
   const result = await model.generateContent({
@@ -357,8 +380,9 @@ export async function generateEmbedding(text) {
       case 'openai':
         if (aiClient.client) {
           const response = await aiClient.client.embeddings.create({
-            model: 'text-embedding-3-large',
+            model: 'text-embedding-3-small', // Using small for efficiency and consistency
             input: text,
+            dimensions: 1536, // Explicitly set dimensions
           });
           return response.data[0].embedding;
         }
@@ -400,13 +424,16 @@ export async function generateEmbedding(text) {
 async function generateHuggingFaceEmbedding(client, text) {
   const url = `${client.baseURL}/sentence-transformers/all-MiniLM-L6-v2`;
 
+  // Truncate text for Hugging Face to avoid "too long" errors (max ~512 tokens)
+  const truncatedText = text.substring(0, 2000);
+
   const response = await fetch(url, {
     method: 'POST',
     headers: {
       'Authorization': `Bearer ${client.apiKey}`,
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ inputs: text }),
+    body: JSON.stringify({ inputs: truncatedText }),
   });
 
   if (!response.ok) {
@@ -414,7 +441,23 @@ async function generateHuggingFaceEmbedding(client, text) {
   }
 
   const data = await response.json();
-  return Array.isArray(data) ? data[0] : data;
+
+  // Robust parsing: HF sometimes returns [{embedding: [...]}] or [[...]] or [...]
+  if (Array.isArray(data)) {
+    // If it's [[...]], return the first element
+    if (Array.isArray(data[0])) return data[0].filter(n => typeof n === 'number');
+    // If it's [...numbers], return it as is
+    if (typeof data[0] === 'number') return data;
+    // If it's [{embedding: ...}], check for that
+    if (data[0].embedding) return data[0].embedding;
+  }
+
+  if (data.error && data.error.includes('loading')) {
+    logger.warn(`HF Model loading, returning empty embedding: ${data.error}`);
+    return new Array(384).fill(0);
+  }
+
+  throw new Error(`Invalid embedding response from HF: ${JSON.stringify(data).substring(0, 100)}`);
 }
 
 /**
@@ -446,21 +489,49 @@ export async function generateEmbeddings(texts) {
  * Calculate cosine similarity between two embeddings
  */
 export function cosineSimilarity(embedding1, embedding2) {
-  if (embedding1.length !== embedding2.length) {
-    throw new Error('Embeddings must have the same length');
+  // Ensure we have numeric arrays
+  if (!Array.isArray(embedding1) || !Array.isArray(embedding2)) {
+    logger.error('Invalid embedding type for similarity:', {
+      type1: typeof embedding1,
+      isArr1: Array.isArray(embedding1),
+      type2: typeof embedding2,
+      isArr2: Array.isArray(embedding2)
+    });
+    return 0;
   }
 
+  // Filter non-numeric values just in case
+  const vec1 = embedding1.filter(n => typeof n === 'number');
+  const vec2 = embedding2.filter(n => typeof n === 'number');
+
+  if (vec1.length === 0 || vec2.length === 0) return 0;
+
+  if (vec1.length !== vec2.length) {
+    logger.warn(`Embedding length mismatch: ${vec1.length} vs ${vec2.length}. Truncating.`);
+    const minLength = Math.min(vec1.length, vec2.length);
+    const v1 = vec1.slice(0, minLength);
+    const v2 = vec2.slice(0, minLength);
+    return calculateActualSimilarity(v1, v2);
+  }
+
+  return calculateActualSimilarity(vec1, vec2);
+}
+
+function calculateActualSimilarity(v1, v2) {
   let dotProduct = 0;
   let norm1 = 0;
   let norm2 = 0;
 
-  for (let i = 0; i < embedding1.length; i++) {
-    dotProduct += embedding1[i] * embedding2[i];
-    norm1 += embedding1[i] * embedding1[i];
-    norm2 += embedding2[i] * embedding2[i];
+  for (let i = 0; i < v1.length; i++) {
+    dotProduct += v1[i] * v2[i];
+    norm1 += v1[i] * v1[i];
+    norm2 += v2[i] * v2[i];
   }
 
-  return dotProduct / (Math.sqrt(norm1) * Math.sqrt(norm2));
+  const denominator = Math.sqrt(norm1) * Math.sqrt(norm2);
+  if (denominator === 0) return 0;
+
+  return dotProduct / denominator;
 }
 
 export default {

@@ -103,7 +103,7 @@ export const adminService = {
       ).length;
       const totalApplications = totalApplicationsCount;
       const hiredCount = allApplications.filter(a => 
-        a.status === 'hired' || a.status === 'accepted'
+        a.status === 'completed' || a.status === 'enrolled' || a.status === 'offer'
       ).length;
 
       // Calculate growth rates
@@ -681,10 +681,10 @@ export const adminService = {
 
   _calculateSuccessRate(applications) {
     const total = applications.length;
-    const hired = applications.filter(a => 
-      a.status === 'hired' || a.status === 'accepted'
+    const completed = applications.filter(a => 
+      a.status === 'completed' || a.status === 'offer' // Legacy offer mapped to completed
     ).length;
-    return total > 0 ? (hired / total * 100).toFixed(1) : '0';
+    return total > 0 ? (completed / total * 100).toFixed(1) : '0';
   },
 
   _calculateTopIndustries(jobs) {

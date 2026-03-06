@@ -51,14 +51,14 @@ const BrandingCustomizationForm = ({
     <div>
       <div className="mb-6">
         <h2 className="text-xl font-semibold text-text-primary mb-2">Branding & Customization</h2>
-        <p className="text-text-secondary">
+        <p className="text-text-muted font-medium">
           Customize your company profile with visual elements to attract top talent.
         </p>
       </div>
       <div className="space-y-8">
         {/* Company Logo */}
         <div>
-          <label className="block text-sm font-medium text-text-primary mb-3">
+          <label className="block text-[10px] font-black text-text-muted uppercase tracking-widest ml-1 mb-3">
             Company Logo
           </label>
           
@@ -79,7 +79,7 @@ const BrandingCustomizationForm = ({
                 <button
                   type="button"
                   onClick={() => fileInputRef?.current?.click()}
-                  className="inline-flex items-center px-4 py-2 border border-border rounded-md shadow-sm text-sm font-medium text-text-primary bg-background hover:bg-surface transition-smooth">
+                  className="inline-flex items-center px-4 py-2 border border-border dark:border-white/10 rounded-xl shadow-sm text-[10px] font-black uppercase tracking-widest text-text-primary dark:text-white bg-bg-elevated hover:bg-bg transition-all">
 
                   <Icon name="Upload" size={16} className="mr-2" />
                   Browse Files
@@ -99,7 +99,7 @@ const BrandingCustomizationForm = ({
             
             <div className="flex flex-col">
               <p className="text-sm font-medium text-text-primary mb-2">Preview</p>
-              <div className="flex-1 bg-surface rounded-lg border border-border flex items-center justify-center p-4">
+              <div className="flex-1 bg-bg rounded-3xl border border-border dark:border-white/5 flex items-center justify-center p-8 shadow-inner">
                 {formData?.logoPreview ?
                 <div className="relative">
                     <div className="w-32 h-32 overflow-hidden rounded-lg">
@@ -136,7 +136,7 @@ const BrandingCustomizationForm = ({
         
         {/* Company Culture Photos */}
         <div>
-          <label className="block text-sm font-medium text-text-primary mb-3">
+          <label className="block text-[10px] font-black text-text-muted uppercase tracking-widest ml-1 mb-3">
             Company Culture Photos
           </label>
           
@@ -163,7 +163,7 @@ const BrandingCustomizationForm = ({
                   input.onchange = (e) => handleFileChange(e, 'culturePhotos');
                   input?.click();
                 }}
-                className="inline-flex items-center px-4 py-2 border border-border rounded-md shadow-sm text-sm font-medium text-text-primary bg-background hover:bg-surface transition-smooth">
+                className="inline-flex items-center px-4 py-2 border border-border dark:border-white/10 rounded-xl shadow-sm text-[10px] font-black uppercase tracking-widest text-text-primary dark:text-white bg-bg-elevated hover:bg-bg transition-all">
 
                 <Icon name="Upload" size={16} className="mr-2" />
                 Browse Files
@@ -179,9 +179,9 @@ const BrandingCustomizationForm = ({
           <div className="space-y-4">
               <h3 className="text-sm font-medium text-text-primary">Uploaded Photos</h3>
               
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {formData?.culturePhotos?.map((photo, index) =>
-              <div key={index} className="border border-border rounded-lg overflow-hidden bg-surface">
+              <div key={index} className="border border-border dark:border-white/5 rounded-3xl overflow-hidden bg-bg-elevated shadow-xl">
                     <div className="relative h-40">
                       <Image
                     src={URL.createObjectURL(photo)}
@@ -214,7 +214,7 @@ const BrandingCustomizationForm = ({
         
         {/* Brand Colors */}
         <div>
-          <label className="block text-sm font-medium text-text-primary mb-3">
+          <label className="block text-[10px] font-black text-text-muted uppercase tracking-widest ml-1 mb-3">
             Brand Colors (Optional)
           </label>
           
@@ -266,7 +266,7 @@ const BrandingCustomizationForm = ({
         </div>
         
         {/* Branding Tips */}
-        <div className="bg-surface-100 rounded-lg p-4 border border-border-light">
+        <div className="bg-bg p-8 rounded-[2.5rem] border border-border dark:border-white/5 shadow-2xl">
           <h3 className="text-sm font-medium text-text-primary mb-2 flex items-center">
             <Icon name="Lightbulb" size={16} className="mr-2 text-warning" />
             Branding Tips

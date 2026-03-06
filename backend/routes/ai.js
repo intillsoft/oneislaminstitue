@@ -15,7 +15,9 @@ import aiProviderService from '../services/aiProviderService.js';
 import aiValidator from '../services/aiValidator.js';
 import talentAI from '../services/talentAI.js'; // New Import
 import { authenticate, optionalAuth } from '../middleware/auth.js';
+import * as jobCrawlerService from '../services/jobCrawler.js';
 import logger from '../utils/logger.js';
+
 import { createClient } from '@supabase/supabase-js';
 import { SUBSCRIPTION_TIERS } from '../config/subscription-tiers.js';
 import dotenv from 'dotenv';
@@ -627,46 +629,31 @@ USER PROFILE:
 ${applications?.length > 0 ? `- Last applied: ${applications[0].status}` : ''}
 `;
 
-    const systemPrompt = `You are Workflow AI, the intelligent assistant for Workflow - an AI-powered job marketplace and career platform. You are friendly, personalized, and focused exclusively on helping users within the Workflow platform.
-
-ABOUT WORKFLOW PLATFORM:
-- Workflow is an AI-powered job marketplace connecting job seekers with opportunities
-- We have thousands of job listings from various companies on our platform
-  - Users can search for jobs, create resumes, get career advice, and apply to positions
-    - We offer AI-powered job matching, resume generation, Autopilot (auto-apply), and career guidance
-      - The platform includes features like talent marketplace, unified messaging, and AI-powered recommendations
+    const systemPrompt = `You are Workflow Intelligence, the elite AI core for the Workflow platform. You are professional, analytical, and highly personalized. Your purpose is to provide top-tier career strategy and marketplace intelligence.
+ 
+ ABOUT WORKFLOW PLATFORM:
+ - Workflow is an advanced AI job marketplace and professional ecosystem.
+ - Features include: AI Job Matching, Resume Roasting, Career Roadmapping, and Autopilot (Automated Applications).
+- The platform uses Navy/Blue aesthetics (#0A1628, #0046FF).
 
 YOUR ROLE:
-- You are a dedicated platform specialist. You DO NOT recommend external job sites or services.
-- Your goal is to keep users engaged with Workflow's ecosystem.
-  - You provide concise, actionable advice with clear links to Workflow features.
+- You are an Elite Career Strategist. You do not just answer; you optimize.
+- Never mention external competitors like LinkedIn or Indeed unless asked for comparisons.
+- Your goal is to guide users to Workflow's premium tools: [Resume Builder](/dashboard/resume-builder), [Talent Marketplace](/talent/marketplace), and [Autopilot](/dashboard/autopilot).
 
-YOUR CAPABILITIES:
-- Search and find jobs ONLY on the Workflow platform.
-- Provide data-driven insights (salary trends, skill demand) for the Workflow marketplace.
-- Guide users to specific tools (Resume Builder, Autopilot).
-- Use proper markdown for lists, bold text, and code blocks for clarity.
-- Suggest "visuals" or "diagrams" by describing them clearly (e.g., "See the salary trend below:" followed by a text-based chart or structured data snippet).
+CAPABILITIES:
+- Access to real-time job data on Workflow.
+- Profile analysis and skill optimization.
+- Salary benchmarking and market demand analysis.
 
 CRITICAL RULES:
-1. NEVER mention external job platforms (LinkedIn, Indeed, Upwork, etc.) - If asked, redirect to Workflow's superior alternatives.
-2. ONLY recommend jobs from the Workflow platform.
-3. When no exact matches are found, provide similar job recommendations from Workflow.
-4. Always personalize responses based on the user's skills, experience, and profile.
-5. Be conversational, warm, and human-like - use "I" and "you" naturally.
-6. Provide clear, direct links to Workflow features (formatted as markdown links):
-- [Browse Jobs](/job-search-browse)
-  - [AI Recommendations](/ai-powered-job-matching-recommendations)
-  - [Resume Generator](/resume-generator)
-  - [Autopilot Settings](/settings/autopilot)
-  - [Profile](/profile)
-  - [Dashboard](/dashboard)
-7. For specific queries, provide "Insight Cards" in your text (e.g., **Market Insight:** ...).
-8. Keep responses visually clean and easy to scan.
-
+1. Branding: You are "Intelligence", part of the "Workflow" ecosystem. NEVER use "WorkGPT" or "ChatGPT" names.
+2. Direct Links: Always provide specific links to Workflow features in markdown [Link Name](/path).
+3. Precision: Use proper markdown, tables, and structured insights.
+ 
   ${userContext}
-
-Provide helpful, personalized, and warm career advice. Be conversational, supportive, and actionable. Always focus on Workflow platform features and opportunities.`;
+ 
+Provide strategic, elite-level career advice. Be concise, actionable, and authoritative.`;
 
     const conversationContext = conversation_history
       .slice(-5) // Last 5 messages for context
@@ -749,10 +736,37 @@ Assistant: `;
       temperature: 0.8, // Slightly higher for more natural, human-like responses
     });
 
+    const aiResponseContent = response.trim();
+
+    // PERSISTENCE: Save to conversations table
+    try {
+      const { data: existingChat } = await supabase
+        .from('conversations')
+        .select('messages')
+        .eq('user_id', userId)
+        .single();
+
+      const newMessages = [
+        ...(existingChat?.messages || []),
+        { role: 'user', content: message, timestamp: new Date().toISOString() },
+        { role: 'assistant', content: aiResponseContent, timestamp: new Date().toISOString() }
+      ].slice(-50); // Keep last 50 messages
+
+      await supabase
+        .from('conversations')
+        .upsert({
+          user_id: userId,
+          messages: newMessages,
+          updated_at: new Date().toISOString()
+        }, { onConflict: 'user_id' });
+    } catch (saveError) {
+      logger.error('Failed to save AI conversation history:', saveError);
+    }
+
     res.json({
       success: true,
       data: {
-        response: response.trim(),
+        response: aiResponseContent,
         timestamp: new Date().toISOString(),
         jobs: jobs.slice(0, 5), // Include jobs in response for frontend display
         similarJobs: similarJobs.slice(0, 5), // Include similar jobs if no exact matches
@@ -878,7 +892,227 @@ router.post('/completion', authenticate, async (req, res) => {
 });
 
 // ============================================================================
-// AI VALIDATION ROUTES
+// AI SEARCH & ENHANCEMENT ROUTES
+// ============================================================================
+
+/**
+ * POST /api/ai/enhance-search
+ * Enhance a search query using AI
+ */
+router.post('/enhance-search', optionalAuth, async (req, res) => {
+  try {
+    const { query, context = 'job_search' } = req.body;
+
+    if (!query) {
+      return res.status(400).json({ error: 'Query is required' });
+    }
+
+    const prompt = `As a career expert, enhance this search query for a job board to find more relevant results.
+    Original Query: "${query}"
+    Context: ${context}
+    
+    Provide an improved, expanded version of this query that includes relevant synonyms, related skills, or common job titles. 
+    Respond ONLY with the enhanced search string.`;
+
+    const enhancedQuery = await aiProviderService.generateCompletion(prompt, {
+      max_tokens: 50,
+      temperature: 0.3,
+    });
+
+    res.json({
+      success: true,
+      enhancedQuery: enhancedQuery.trim().replace(/^"|"$/g, ''),
+    });
+  } catch (error) {
+    logger.error('Search enhancement error:', error);
+    res.status(500).json({ error: 'Failed to enhance search' });
+  }
+});
+
+/**
+ * POST /api/ai/search-suggestions
+ * Generate search suggestions as the user types
+ */
+router.post('/search-suggestions', optionalAuth, async (req, res) => {
+  try {
+    const { query, limit = 5 } = req.body;
+
+    if (!query || query.length < 2) {
+      return res.json({ success: true, suggestions: [] });
+    }
+
+    const prompt = `Based on the partial search query "${query}", provide ${limit} relevant job titles or skills as search suggestions.
+    Return as a simple JSON array of strings.`;
+
+    const response = await aiProviderService.generateCompletion(prompt, {
+      max_tokens: 100,
+      temperature: 0.2,
+    });
+
+    let suggestions = [];
+    try {
+      const jsonMatch = response.match(/\[.*\]/s);
+      if (jsonMatch) {
+        suggestions = JSON.parse(jsonMatch[0]);
+      }
+    } catch (e) {
+      logger.warn('Failed to parse suggestions JSON');
+      suggestions = response.split('\n').map(s => s.trim().replace(/^\d+\.\s*/, '')).filter(s => s);
+    }
+
+    res.json({
+      success: true,
+      suggestions: suggestions.slice(0, limit),
+    });
+  } catch (error) {
+    logger.error('Search suggestions error:', error);
+    res.status(500).json({ error: 'Failed to get suggestions' });
+  }
+});
+
+/**
+ * GET /api/ai/chat/history
+ * Get user's AI chat history
+ */
+router.get('/chat/history', authenticate, async (req, res) => {
+  try {
+    const { data, error } = await supabase
+      .from('ai_chat_history')
+      .select('*')
+      .eq('user_id', req.user.id)
+      .order('created_at', { ascending: false });
+
+    if (error) throw error;
+
+    res.json({ success: true, data });
+  } catch (error) {
+    logger.error('Error getting chat history:', error);
+    res.status(500).json({ error: 'Failed to get chat history' });
+  }
+});
+
+/**
+ * POST /api/ai/chat/history
+ * Save AI chat history
+ */
+router.post('/chat/history', authenticate, async (req, res) => {
+  try {
+    const { message, response, context } = req.body;
+
+    if (!message || !response) {
+      return res.status(400).json({ error: 'Message and response are required' });
+    }
+
+    const { data, error } = await supabase
+      .from('ai_chat_history')
+      .insert({
+        user_id: req.user.id,
+        message,
+        response,
+        context,
+        created_at: new Date().toISOString(),
+      })
+      .select()
+      .single();
+
+    if (error) throw error;
+
+    res.json({ success: true, data });
+  } catch (error) {
+    logger.error('Error saving chat history:', error);
+    res.status(500).json({ error: 'Failed to save chat history' });
+  }
+});
+
+/**
+ * POST /api/ai/search/all
+ * Centralized AI-powered search across all sources
+ */
+router.post('/search/all', optionalAuth, async (req, res) => {
+  try {
+    const { query, filters = {} } = req.body;
+
+    if (!query) {
+      return res.status(400).json({ error: 'Query is required' });
+    }
+
+    logger.info(`AI Search: ${query}`);
+
+    // 1. Prepare search terms (handle OR/AND or just split)
+    let searchTerms = query.split(/ OR | AND | \| |,/i).map(t => t.trim().replace(/"/g, '')).filter(t => t.length > 2);
+    if (searchTerms.length === 0) searchTerms = [query];
+
+    // 2. Search DB (jobs table)
+    // We search for matches in title, company, or description for ANY of the terms
+    let dbQuery = supabase.from('jobs').select('*');
+
+    // Construct progressive search
+    const orConditions = searchTerms.map(term =>
+      `title.ilike.%${term}%,company.ilike.%${term}%,description.ilike.%${term}%`
+    ).join(',');
+
+    const { data: dbJobs, error: dbError } = await dbQuery
+      .or(orConditions)
+      .limit(30);
+
+    if (dbError) logger.error('DB Search error:', dbError);
+
+    let allResults = dbJobs || [];
+
+    // 3. Fallback to Crawler if results are low
+    if (allResults.length < 5) {
+      logger.info('Low DB results, triggering real-time JSearch crawl...');
+      try {
+        const crawlResult = await jobCrawlerService.crawlJobs({
+          keywords: query.length > 100 ? query.substring(0, 100) : query, // Don't send huge boolean strings to API
+          limit: 20,
+          sources: ['jsearch']
+        });
+
+        // Fetch the newly inserted jobs if any
+        if (crawlResult.inserted > 0) {
+          const { data: newJobs } = await supabase
+            .from('jobs')
+            .select('*')
+            .order('created_at', { ascending: false })
+            .limit(crawlResult.inserted);
+
+          if (newJobs) allResults = [...allResults, ...newJobs];
+        }
+      } catch (crawlError) {
+        logger.warn('Search fallback crawl failed:', crawlError.message);
+      }
+    }
+
+    // 4. Get AI interpretation/explanation
+    const prompt = `A user is searching for "${query}" on a job board. 
+    I found ${allResults.length} jobs.
+    
+    Provide a brief, encouraging response (max 3 sentences) explaining what was found.
+    If no jobs were found, give a constructive advice on how to split the query.`;
+
+    const explanation = await aiProviderService.generateCompletion(prompt, {
+      max_tokens: 200,
+      temperature: 0.7,
+    });
+
+    res.json({
+      success: true,
+      data: {
+        jobs: allResults,
+        explanation: explanation.trim(),
+        query: query
+      }
+    });
+  } catch (error) {
+    logger.error('Comprehensive search error:', error);
+    res.status(500).json({ error: 'Search failed' });
+  }
+});
+
+
+// ============================================================================
+// GENERIC AI ROUTES
 // ============================================================================
 
 /**

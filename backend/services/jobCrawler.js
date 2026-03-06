@@ -8,6 +8,7 @@ import { createClient } from '@supabase/supabase-js';
 import dotenv from 'dotenv';
 import logger from '../utils/logger.js';
 import axios from 'axios';
+import jobCrawlerJSearch from './jobCrawlerJSearch.js';
 
 dotenv.config();
 
@@ -27,9 +28,9 @@ const INDEED_API_KEY = process.env.INDEED_API_KEY;
 async function crawlLinkedInJobs(keywords = 'software engineer', location = 'United States', limit = 50) {
   try {
     logger.info(`Crawling LinkedIn jobs: ${keywords} in ${location}`);
-    
+
     const jobs = [];
-    
+
     // Option 1: Use RapidAPI LinkedIn Jobs API
     if (RAPIDAPI_KEY) {
       try {
@@ -68,6 +69,11 @@ async function crawlLinkedInJobs(keywords = 'software engineer', location = 'Uni
         }
       } catch (apiError) {
         logger.warn('RapidAPI LinkedIn failed, trying alternative:', apiError.message);
+        if (isForbiddenError(apiError)) {
+          logger.info('403 detected for LinkedIn, triggering JSearch fallback');
+          const fallbackJobs = await fallbackToJSearch('LinkedIn', keywords, location, limit);
+          if (fallbackJobs.length > 0) return fallbackJobs;
+        }
       }
     }
 
@@ -127,9 +133,9 @@ async function crawlLinkedInJobs(keywords = 'software engineer', location = 'Uni
 async function crawlGlassdoorJobs(keywords = 'software engineer', location = 'United States', limit = 50) {
   try {
     logger.info(`Crawling Glassdoor jobs: ${keywords} in ${location}`);
-    
+
     const jobs = [];
-    
+
     if (RAPIDAPI_KEY) {
       try {
         const response = await axios.get('https://glassdoor-api.p.rapidapi.com/jobs', {
@@ -167,6 +173,11 @@ async function crawlGlassdoorJobs(keywords = 'software engineer', location = 'Un
         }
       } catch (apiError) {
         logger.warn('Glassdoor API failed:', apiError.message);
+        if (isForbiddenError(apiError)) {
+          logger.info('403 detected for Glassdoor, triggering JSearch fallback');
+          const fallbackJobs = await fallbackToJSearch('Glassdoor', keywords, location, limit);
+          if (fallbackJobs.length > 0) return fallbackJobs;
+        }
       }
     }
 
@@ -183,9 +194,9 @@ async function crawlGlassdoorJobs(keywords = 'software engineer', location = 'Un
 async function crawlIndeedJobs(keywords = 'software engineer', location = 'United States', limit = 50) {
   try {
     logger.info(`Crawling Indeed jobs: ${keywords} in ${location}`);
-    
+
     const jobs = [];
-    
+
     // Option 1: Use RapidAPI Indeed API
     if (RAPIDAPI_KEY) {
       try {
@@ -224,6 +235,11 @@ async function crawlIndeedJobs(keywords = 'software engineer', location = 'Unite
         }
       } catch (apiError) {
         logger.warn('RapidAPI Indeed failed:', apiError.message);
+        if (isForbiddenError(apiError)) {
+          logger.info('403 detected for Indeed, triggering JSearch fallback');
+          const fallbackJobs = await fallbackToJSearch('Indeed', keywords, location, limit);
+          if (fallbackJobs.length > 0) return fallbackJobs;
+        }
       }
     }
 
@@ -335,7 +351,7 @@ async function findDuplicateJob(job) {
         .eq('url', job.url)
         .limit(1)
         .single();
-      
+
       if (byUrl) return byUrl.id;
     }
 
@@ -348,7 +364,7 @@ async function findDuplicateJob(job) {
         .ilike('company', `%${job.company.substring(0, 50)}%`)
         .limit(1)
         .single();
-      
+
       if (byTitleCompany) {
         // Calculate similarity
         const titleSimilarity = calculateSimilarity(
@@ -359,7 +375,7 @@ async function findDuplicateJob(job) {
           job.company.toLowerCase(),
           byTitleCompany.company.toLowerCase()
         );
-        
+
         // If both are > 80% similar, consider it a duplicate
         if (titleSimilarity > 0.8 && companySimilarity > 0.8) {
           return byTitleCompany.id;
@@ -380,9 +396,9 @@ async function findDuplicateJob(job) {
 function calculateSimilarity(str1, str2) {
   const longer = str1.length > str2.length ? str1 : str2;
   const shorter = str1.length > str2.length ? str2 : str1;
-  
+
   if (longer.length === 0) return 1.0;
-  
+
   const distance = levenshteinDistance(longer, shorter);
   return (longer.length - distance) / longer.length;
 }
@@ -427,7 +443,7 @@ async function saveJobs(jobs) {
       try {
         // Check for duplicates
         const duplicateId = await findDuplicateJob(job);
-        
+
         if (duplicateId) {
           // Update existing job if it's from a different source or newer
           const { data: existing } = await supabase
@@ -515,7 +531,7 @@ export async function crawlJobs(options = {}) {
   const {
     keywords = 'software engineer',
     location = 'United States',
-    sources = ['linkedin', 'glassdoor', 'indeed'],
+    sources = ['jsearch', 'linkedin', 'glassdoor', 'indeed'],
     limit = 50,
   } = options;
 
@@ -528,26 +544,50 @@ export async function crawlJobs(options = {}) {
     for (const source of sources) {
       try {
         let jobs = [];
-        switch (source.toLowerCase()) {
-          case 'linkedin':
-            jobs = await crawlLinkedInJobs(keywords, location, limit);
-            break;
-          case 'glassdoor':
-            jobs = await crawlGlassdoorJobs(keywords, location, limit);
-            break;
-          case 'indeed':
-            jobs = await crawlIndeedJobs(keywords, location, limit);
-            break;
-          default:
-            logger.warn(`Unknown source: ${source}`);
+        try {
+          switch (source.toLowerCase()) {
+            case 'jsearch':
+              jobs = await jobCrawlerJSearch.searchJobs(keywords, { location, limit });
+              break;
+            case 'linkedin':
+              jobs = await crawlLinkedInJobs(keywords, location, limit);
+              break;
+            case 'glassdoor':
+              jobs = await crawlGlassdoorJobs(keywords, location, limit);
+              break;
+            case 'indeed':
+              jobs = await crawlIndeedJobs(keywords, location, limit);
+              break;
+            case 'monster':
+            case 'ziprecruiter':
+            case 'simplyhired':
+            case 'dice':
+            case 'careerbuilder':
+              // Use JSearch fallback for these new platforms
+              jobs = await fallbackToJSearch(source, keywords, location, limit);
+              break;
+            default:
+              logger.warn(`Unknown source: ${source}`);
+          }
+        } catch (sourceError) {
+          // PROACTIVE FALLBACK: If LinkedIn/Indeed/Glassdoor 403s/429s, try JSearch
+          const isErrorRequiringFallback = isForbiddenError(sourceError) ||
+            sourceError.message?.includes('429') ||
+            sourceError.message?.includes('Too Many Requests');
+
+          if (isErrorRequiringFallback && source.toLowerCase() !== 'jsearch') {
+            logger.info(`Source ${source} failed with error mapping to fallback. Using JSearch for "${keywords}" in "${location}"...`);
+            jobs = await fallbackToJSearch(source, keywords, location, limit);
+          } else {
+            throw sourceError;
+          }
         }
         allJobs.push(...jobs);
-        
-        // Rate limiting between sources
-        await new Promise(resolve => setTimeout(resolve, 2000));
+
+        // Increased rate limiting between sources (from 2s to 5s)
+        await new Promise(resolve => setTimeout(resolve, 5000));
       } catch (error) {
         logger.error(`Error crawling from ${source}:`, error);
-        // Continue with other sources
       }
     }
 
@@ -573,48 +613,56 @@ export async function crawlJobs(options = {}) {
  */
 export async function scheduleJobCrawl() {
   const commonKeywords = [
-    'software engineer',
-    'developer',
-    'data scientist',
-    'product manager',
-    'designer',
-    'marketing',
-    'sales',
-    'project manager',
-    'business analyst',
-    'consultant',
+    'software engineer', 'full stack developer', 'frontend engineer', 'backend developer',
+    'data scientist', 'machine learning', 'artificial intelligence', 'data analyst',
+    'product manager', 'project manager', 'business analyst',
+    'ui/ux designer', 'product designer', 'graphic designer',
+    'marketing manager', 'digital marketing', 'content writer', 'social media',
+    'sales manager', 'account executive', 'customer success',
+    'teacher', 'education technology', 'curriculum designer', 'tutor',
+    'human resources', 'recruiter', 'operations manager',
+    'financial analyst', 'accountant', 'legal counsel',
+    'civil engineer', 'mechanical engineer', 'electrician',
+    'customer service', 'receptionist', 'administrative assistant',
+    'nurse', 'healthcare assistant', 'physician',
+    'construction manager', 'logistics coordinator', 'warehouse associate'
   ];
 
   const locations = [
-    'United States',
-    'United Kingdom',
-    'Canada',
-    'Germany',
-    'France',
-    'Australia',
-    'India',
-    'Netherlands',
-    'Sweden',
-    'Singapore',
+    'United States', 'United Kingdom', 'Canada', 'Germany', 'France',
+    'Australia', 'India', 'Singapore', 'Japan', 'Remote',
+    'Netherlands', 'Sweden', 'United Arab Emirates', 'Brazil',
+    'Nigeria', 'South Africa', 'Kenya', 'Ghana', 'Egypt',
+    'Mexico', 'Spain', 'Italy', 'Switzerland', 'Norway'
   ];
+
+  // Helper to shuffle array
+  const shuffle = (array) => [...array].sort(() => 0.5 - Math.random());
 
   try {
     let totalInserted = 0;
     let totalSkipped = 0;
 
-    for (const keyword of commonKeywords.slice(0, 5)) { // Limit for initial run
-      for (const location of locations.slice(0, 3)) { // Limit for initial run
+    // Pick 8 random keywords and 5 random locations for variety in each run
+    const randomKeywords = shuffle(commonKeywords).slice(0, 8);
+    const randomLocations = shuffle(locations).slice(0, 5);
+
+    logger.info(`Starting randomized scheduled crawl with keywords: [${randomKeywords.join(', ')}] across [${randomLocations.join(', ')}]`);
+
+    for (const keyword of randomKeywords) {
+      for (const location of randomLocations) {
         try {
+          logger.info(`Crawling for "${keyword}" in "${location}"...`);
           const result = await crawlJobs({
             keywords: keyword,
             location: location,
-            sources: ['linkedin', 'glassdoor', 'indeed'],
+            sources: ['jsearch', 'linkedin', 'glassdoor', 'indeed'], // Added jsearch as primary
             limit: 20,
           });
-          
+
           totalInserted += result.inserted || 0;
           totalSkipped += result.skipped || 0;
-          
+
           // Rate limiting
           await new Promise(resolve => setTimeout(resolve, 5000));
         } catch (error) {
@@ -628,6 +676,34 @@ export async function scheduleJobCrawl() {
   } catch (error) {
     logger.error('Scheduled job crawl error:', error);
     throw error;
+  }
+}
+
+/**
+ * Helper: Detect if an error is a 403 Forbidden (common for scraper APIs)
+ */
+function isForbiddenError(error) {
+  if (!error) return false;
+  const status = error.response?.status;
+  const message = (error.message || '').toLowerCase();
+  return status === 403 || message.includes('403') || message.includes('forbidden');
+}
+
+/**
+ * Helper: Run a platform-specific search through JSearch as a fallback
+ */
+async function fallbackToJSearch(platform, keywords, location, limit) {
+  logger.info(`Attempting JSearch fallback for ${platform}: ${keywords} in ${location}`);
+  try {
+    // We add the platform to the query to help JSearch focus
+    const query = `${keywords} on ${platform}`;
+    const jobs = await jobCrawlerJSearch.searchJobs(query, { location, limit });
+
+    // Tag these jobs as coming from the original platform (via JSearch) for UI consistency
+    return jobs.map(j => ({ ...j, source: platform || j.source || 'External Site' }));
+  } catch (error) {
+    logger.error(`JSearch fallback failed for ${platform}:`, error.message);
+    return [];
   }
 }
 

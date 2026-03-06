@@ -1,12 +1,16 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Mail, Phone, MapPin, Globe, Linkedin, Github, ExternalLink, Maximize2, X, Minimize2, ZoomIn, ZoomOut } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Sparkles } from 'lucide-react';
 
-const ResumePreview = ({ data, template = 'modern' }) => {
+const ResumePreview = ({ data, resumeData, template = 'modern', isGenerating = false, onUpdate }) => {
     const containerRef = useRef(null);
     const contentRef = useRef(null);
     const [scale, setScale] = useState(1);
     const [isFullScreen, setIsFullScreen] = useState(false);
+
+    // Support both prop names for backward compatibility and robustness
+    const activeData = data || resumeData;
 
     // Auto-Scaling Logic (Fit to Container)
     useEffect(() => {
@@ -37,7 +41,7 @@ const ResumePreview = ({ data, template = 'modern' }) => {
         window.addEventListener('resize', calculateScale);
 
         return () => {
-            resizeObserver.disconnect();
+            if (resizeObserver) resizeObserver.disconnect();
             window.removeEventListener('resize', calculateScale);
         }
     }, [isFullScreen]);
@@ -64,14 +68,43 @@ const ResumePreview = ({ data, template = 'modern' }) => {
         return () => document.head.removeChild(style);
     }, []);
 
-    // Template Selector
+    // Data Update Helper (Deep Set)
+    const updateData = (path, value) => {
+        if (!onUpdate || !activeData) return;
+        const newData = JSON.parse(JSON.stringify(activeData));
+
+        const keys = path.split('.');
+        let current = newData;
+        for (let i = 0; i < keys.length - 1; i++) {
+            if (!current[keys[i]]) current[keys[i]] = {};
+            current = current[keys[i]];
+        }
+        current[keys[keys.length - 1]] = value;
+
+        onUpdate(newData);
+    };
+
     const renderTemplate = () => {
-        const props = { data };
+        if (!activeData) return (
+            <div className="h-full flex items-center justify-center p-12 text-center bg-slate-50">
+                <div className="max-w-xs">
+                    <div className="w-16 h-16 bg-slate-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                        <X className="text-slate-300" />
+                    </div>
+                    <h3 className="text-slate-400 font-bold uppercase tracking-widest text-xs">No Data Payload</h3>
+                    <p className="text-[10px] text-slate-400 mt-2">Initialize document parameters to begin blueprint rendering.</p>
+                </div>
+            </div>
+        );
+
+        const props = { data: activeData, onEdit: updateData };
         switch (template) {
             case 'professional': return <ProfessionalTemplate {...props} />;
             case 'executive': return <ExecutiveTemplate {...props} />;
             case 'creative': return <CreativeTemplate {...props} />;
             case 'technical': return <TechnicalTemplate {...props} />;
+            case 'openai': return <OpenAIMtemplate {...props} />;
+            case 'google': return <GoogleTemplate {...props} />;
             case 'modern': default: return <ModernTemplate {...props} />;
         }
     };
@@ -94,7 +127,6 @@ const ResumePreview = ({ data, template = 'modern' }) => {
             <div
                 ref={containerRef}
                 className="flex-1 overflow-y-auto custom-scrollbar flex justify-center items-start pt-8 pb-32"
-                onClick={() => setIsFullScreen(true)} // Click to view full
             >
                 <div
                     ref={contentRef}
@@ -103,11 +135,36 @@ const ResumePreview = ({ data, template = 'modern' }) => {
                         transform: `scale(${scale})`,
                         transformOrigin: 'top center',
                         width: '210mm',
-                        minHeight: '297mm',
-                        height: '297mm',
+                        minHeight: '297mm', // A4 Minimum
+                        height: 'auto', // Grow with content
                     }}
-                    className="bg-white text-gray-900 shadow-2xl origin-top transition-transform duration-200 ease-out cursor-pointer hover:shadow-indigo-500/20"
+                    className="bg-white text-gray-900 shadow-2xl origin-top transition-transform duration-200 ease-out cursor-pointer hover:shadow-indigo-500/20 relative"
                 >
+                    {/* AI Generation Overlay */}
+                    <AnimatePresence>
+                        {isGenerating && (
+                            <motion.div
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                className="absolute inset-0 z-50 bg-white/60 backdrop-blur-[2px] flex items-center justify-center rounded-sm"
+                            >
+                                <div className="bg-white px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-4 border border-slate-100">
+                                    <div className="relative">
+                                        <div className="w-8 h-8 rounded-xl bg-workflow-primary flex items-center justify-center animate-spin">
+                                            <Sparkles size={16} className="text-white" />
+                                        </div>
+                                        <div className="absolute -top-1 -right-1 w-3 h-3 bg-indigo-400 rounded-full border-2 border-white animate-pulse" />
+                                    </div>
+                                    <div className="flex flex-col">
+                                        <span className="text-sm font-black text-slate-900 uppercase tracking-tight">AI Architect Active</span>
+                                        <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Constructing Layout...</span>
+                                    </div>
+                                </div>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+
                     {renderTemplate()}
                 </div>
             </div>
@@ -149,7 +206,7 @@ const ResumePreview = ({ data, template = 'modern' }) => {
                                     transformOrigin: 'top center',
                                     width: '210mm',
                                     minHeight: '297mm',
-                                    height: '297mm',
+                                    height: 'auto', // Grow with content
                                 }}
                                 className="bg-white shadow-[0_0_100px_rgba(0,0,0,0.5)]"
                             >
@@ -177,19 +234,46 @@ const parseSkills = (skills) => {
 
 // --- TEMPLATES (Re-using existing exact implementations for consistency) ---
 
-const ModernTemplate = ({ data }) => {
-    const { personalInfo, summary, experience, education, skills } = data;
+// --- EDITABLE HELPERS ---
+const EditableText = ({ value, onChange, className, tagName = 'div', placeholder = '...' }) => {
+    return React.createElement(tagName, {
+        className: `${className} outline-none focus:outline-none focus:bg-blue-50/20 hover:bg-black/5 rounded transition-all cursor-text empty:before:content-[attr(data-placeholder)] empty:before:text-gray-300`,
+        'data-placeholder': placeholder,
+        contentEditable: true,
+        suppressContentEditableWarning: true,
+        onBlur: (e) => {
+            const text = e.currentTarget.innerText;
+            if (text !== value && onChange) onChange(text);
+        },
+        dangerouslySetInnerHTML: { __html: value || '' }
+    });
+};
+
+const ModernTemplate = ({ data = {}, onEdit }) => {
+    const { personalInfo = {}, summary = '', experience = [], education = [], skills = [] } = data;
     const skillsList = parseSkills(skills);
 
     return (
-        <div className="flex h-full font-sans text-sm">
-            <div className="w-[32%] bg-[#2D3748] text-white p-8 flex flex-col gap-8 h-full">
+        <div className="flex min-h-[297mm] h-auto font-sans text-sm">
+            <div className="w-[32%] bg-[#2D3748] text-white p-8 flex flex-col gap-8 h-auto pb-20">
                 <div className="text-center">
                     <div className="w-20 h-20 bg-teal-500 rounded-full mx-auto flex items-center justify-center text-3xl font-bold mb-4 shadow-lg text-white">
                         {personalInfo?.name?.charAt(0) || 'U'}
                     </div>
-                    <h2 className="text-lg font-bold text-white mb-1 leading-tight">{personalInfo?.name}</h2>
-                    <p className="text-xs text-teal-300 opacity-90">{personalInfo?.title}</p>
+                    <EditableText
+                        value={personalInfo?.name}
+                        onChange={(v) => onEdit?.('personalInfo.name', v)}
+                        tagName="h2"
+                        className="text-lg font-bold text-white mb-1 leading-tight"
+                        placeholder="NAME"
+                    />
+                    <EditableText
+                        value={personalInfo?.title}
+                        onChange={(v) => onEdit?.('personalInfo.title', v)}
+                        tagName="p"
+                        className="text-xs text-teal-300 opacity-90"
+                        placeholder="Job Title"
+                    />
                 </div>
                 <div className="space-y-4 text-xs">
                     <h3 className="text-teal-400 font-bold uppercase tracking-widest border-b border-gray-600 pb-2 mb-3">Contact</h3>
@@ -223,15 +307,33 @@ const ModernTemplate = ({ data }) => {
                     </div>
                 )}
             </div>
-            <div className="flex-1 p-8 bg-white text-slate-800 h-full">
+            <div className="flex-1 p-8 bg-white text-slate-800 h-auto">
                 <header className="mb-6 pb-4 border-b border-slate-200">
-                    <h1 className="text-3xl font-extrabold text-slate-900 uppercase tracking-tight mb-1">{personalInfo?.name}</h1>
-                    <p className="text-lg text-teal-600 font-medium">{personalInfo?.title}</p>
+                    <EditableText
+                        value={personalInfo?.name}
+                        onChange={(v) => onEdit?.('personalInfo.name', v)}
+                        tagName="h1"
+                        className="text-3xl font-extrabold text-slate-900 uppercase tracking-tight mb-1"
+                        placeholder="YOUR NAME"
+                    />
+                    <EditableText
+                        value={personalInfo?.title}
+                        onChange={(v) => onEdit?.('personalInfo.title', v)}
+                        tagName="p"
+                        className="text-lg text-teal-600 font-medium"
+                        placeholder="Professional Title"
+                    />
                 </header>
                 {summary && (
                     <section className="mb-6">
                         <h2 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Profile</h2>
-                        <p className="text-xs leading-relaxed text-slate-600 text-justify">{summary}</p>
+                        <EditableText
+                            value={summary}
+                            onChange={(v) => onEdit?.('summary', v)}
+                            tagName="p"
+                            className="text-xs leading-relaxed text-slate-600 text-justify"
+                            placeholder="Summary of your professional background..."
+                        />
                     </section>
                 )}
                 {experience?.length > 0 && (
@@ -242,13 +344,31 @@ const ModernTemplate = ({ data }) => {
                                 <div key={i} className="relative pl-4 border-l-2 border-slate-200">
                                     <div className="absolute -left-[5px] top-1.5 w-2 h-2 rounded-full bg-teal-500 ring-2 ring-white"></div>
                                     <div className="flex justify-between items-baseline mb-0.5">
-                                        <h3 className="text-sm font-bold text-slate-900">{exp.company}</h3>
+                                        <EditableText
+                                            value={exp.company}
+                                            onChange={(v) => onEdit?.(`experience.${i}.company`, v)}
+                                            tagName="h3"
+                                            className="text-sm font-bold text-slate-900"
+                                            placeholder="Company Name"
+                                        />
                                         <span className="text-[10px] font-bold text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded">{exp.startDate} – {exp.endDate || 'Present'}</span>
                                     </div>
-                                    <div className="text-xs text-teal-600 font-semibold mb-1.5">{exp.title}</div>
+                                    <EditableText
+                                        value={exp.title}
+                                        onChange={(v) => onEdit?.(`experience.${i}.title`, v)}
+                                        tagName="div"
+                                        className="text-xs text-teal-600 font-semibold mb-1.5"
+                                        placeholder="Job Title"
+                                    />
                                     <ul className="list-disc ml-3 space-y-1 marker:text-slate-300">
                                         {(exp.bullets || []).map((b, idx) => (
-                                            <li key={idx} className="text-[11px] text-slate-600 leading-relaxed pl-1 text-justify">{b}</li>
+                                            <li key={idx} className="text-[11px] text-slate-600 leading-relaxed pl-1 text-justify">
+                                                <EditableText
+                                                    value={b}
+                                                    onChange={(v) => onEdit?.(`experience.${i}.bullets.${idx}`, v)}
+                                                    tagName="span"
+                                                />
+                                            </li>
                                         ))}
                                     </ul>
                                 </div>
@@ -261,8 +381,8 @@ const ModernTemplate = ({ data }) => {
     );
 };
 
-const ExecutiveTemplate = ({ data }) => (
-    <div className="p-12 h-full bg-[#FAFAFA] font-serif text-[#1C1C1E]">
+const ExecutiveTemplate = ({ data = {} }) => (
+    <div className="p-12 min-h-[297mm] h-auto bg-[#FAFAFA] font-serif text-[#1C1C1E] pb-20">
         <header className="text-center mb-8 relative">
             <h1 className="text-4xl font-serif font-bold mb-2 tracking-tight text-gray-900">{data.personalInfo?.name}</h1>
             <p className="text-xs text-slate-500 uppercase tracking-widest font-sans">{data.personalInfo?.title}</p>
@@ -312,10 +432,10 @@ const ExecutiveTemplate = ({ data }) => (
     </div>
 );
 
-const CreativeTemplate = ({ data }) => {
-    const skills = parseSkills(data.skills);
+const CreativeTemplate = ({ data = {} }) => {
+    const skills = parseSkills(data?.skills);
     return (
-        <div className="h-full bg-white flex flex-col font-sans">
+        <div className="min-h-[297mm] h-auto bg-white flex flex-col font-sans pb-20">
             <div className="bg-indigo-600 text-white p-8">
                 <h1 className="text-5xl font-black tracking-tighter mb-2">{data.personalInfo?.name}</h1>
                 <p className="text-xl font-light opacity-80">{data.personalInfo?.title}</p>
@@ -374,10 +494,10 @@ const CreativeTemplate = ({ data }) => {
     );
 };
 
-const TechnicalTemplate = ({ data }) => {
-    const skills = parseSkills(data.skills);
+const TechnicalTemplate = ({ data = {} }) => {
+    const skills = parseSkills(data?.skills);
     return (
-        <div className="h-full bg-[#1E1E1E] text-[#D4D4D4] font-mono text-xs p-8 flex flex-col">
+        <div className="min-h-[297mm] h-auto bg-[#1E1E1E] text-[#D4D4D4] font-mono text-xs p-8 flex flex-col pb-20">
             <div className="border border-[#333] flex-1 p-6 rounded bg-[#252526] shadow-none print:shadow-none print:border-none">
                 <header className="mb-8 border-b border-[#333] pb-4">
                     <div className="text-[#569CD6] mb-1">class <span className="text-[#4EC9B0] font-bold text-lg">{data.personalInfo?.name?.replace(/\s/g, '') || 'Developer'}</span> extends <span className="text-[#4EC9B0]">Engineer</span> {'{'}</div>
@@ -429,8 +549,8 @@ const TechnicalTemplate = ({ data }) => {
     );
 };
 
-const ProfessionalTemplate = ({ data }) => (
-    <div className="h-full bg-white text-gray-800 font-serif p-10">
+const ProfessionalTemplate = ({ data = {} }) => (
+    <div className="min-h-[297mm] h-auto bg-white text-gray-800 font-serif p-10 pb-20">
         <header className="border-b-2 border-black pb-4 mb-6">
             <h1 className="text-3xl font-bold uppercase tracking-widest text-center mb-2 text-black">{data.personalInfo?.name}</h1>
             <div className="flex justify-center gap-4 text-xs text-gray-600 font-sans separator-dots">
@@ -462,5 +582,179 @@ const ProfessionalTemplate = ({ data }) => (
         )}
     </div>
 );
+
+const OpenAIMtemplate = ({ data = {} }) => {
+    const { personalInfo = {}, summary = '', experience = [], education = [], skills = [] } = data || {};
+    const skillsList = parseSkills(skills);
+
+    return (
+        <div className="theme-openai min-h-[297mm] h-auto bg-white flex flex-col p-12 pb-20">
+            <header className="mb-10 text-center">
+                <h1 className="text-4xl font-black tracking-[-0.05em] text-slate-900 mb-2">{personalInfo?.name}</h1>
+                <p className="text-sm font-bold uppercase tracking-widest text-indigo-600 mb-4">{personalInfo?.title}</p>
+                <div className="flex justify-center gap-6 text-[10px] font-bold text-slate-500 uppercase tracking-tight opacity-70">
+                    <span>{personalInfo?.email}</span>
+                    <span>{personalInfo?.phone}</span>
+                    <span>{personalInfo?.location}</span>
+                </div>
+            </header>
+
+            <div className="grid grid-cols-1 gap-12 flex-1">
+                {summary && (
+                    <section>
+                        <h2 className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-4 border-b border-slate-100 pb-2 flex items-center gap-2">
+                            <div className="w-1.5 h-1.5 rounded-full bg-indigo-500" /> Executive Overview
+                        </h2>
+                        <p className="text-sm leading-relaxed text-slate-700 font-medium text-justify">{summary}</p>
+                    </section>
+                )}
+
+                {experience?.length > 0 && (
+                    <section>
+                        <h2 className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-6 border-b border-slate-100 pb-2 flex items-center gap-2">
+                            <div className="w-1.5 h-1.5 rounded-full bg-indigo-500" /> Deployment History
+                        </h2>
+                        <div className="space-y-8">
+                            {experience.map((exp, i) => (
+                                <div key={i} className="group transition-all">
+                                    <div className="flex justify-between items-baseline mb-2">
+                                        <div className="flex flex-col">
+                                            <h3 className="text-lg font-[900] text-slate-900 leading-tight">{exp.company}</h3>
+                                            <div className="text-xs font-black text-indigo-600 uppercase tracking-tight">{exp.title}</div>
+                                        </div>
+                                        <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest bg-slate-50 px-2 py-1 rounded-md">{exp.startDate} — {exp.endDate || 'Current'}</div>
+                                    </div>
+                                    <ul className="space-y-2 mt-3">
+                                        {(exp.bullets || []).map((b, idx) => (
+                                            <li key={idx} className="text-[11px] leading-relaxed text-slate-600 font-medium relative pl-4 text-justify">
+                                                <span className="absolute left-0 top-1.5 w-1 h-1 bg-indigo-500/30 rounded-full group-hover:bg-indigo-500 transition-colors"></span>
+                                                {b}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            ))}
+                        </div>
+                    </section>
+                )}
+
+                <div className="grid grid-cols-2 gap-12">
+                    {education?.length > 0 && (
+                        <section>
+                            <h2 className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-4 border-b border-slate-100 pb-2 flex items-center gap-2">
+                                <div className="w-1.5 h-1.5 rounded-full bg-indigo-500" /> Academic Node
+                            </h2>
+                            <div className="space-y-4">
+                                {education.map((edu, i) => (
+                                    <div key={i}>
+                                        <div className="text-sm font-black text-slate-900">{edu.institution}</div>
+                                        <div className="text-xs font-bold text-slate-500">{edu.degree}</div>
+                                        <div className="text-[10px] font-black text-indigo-500 mt-1 uppercase tracking-widest">{edu.year}</div>
+                                    </div>
+                                ))}
+                            </div>
+                        </section>
+                    )}
+
+                    {skillsList.length > 0 && (
+                        <section>
+                            <h2 className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-4 border-b border-slate-100 pb-2 flex items-center gap-2">
+                                <div className="w-1.5 h-1.5 rounded-full bg-indigo-500" /> Neural Stack
+                            </h2>
+                            <div className="flex flex-wrap gap-2">
+                                {skillsList.map((s, i) => (
+                                    <span key={i} className="px-2 py-1 bg-slate-50 text-slate-700 rounded-md text-[10px] font-black uppercase tracking-tighter border border-slate-100 hover:border-indigo-500 transition-colors">
+                                        {typeof s === 'string' ? s : s.name}
+                                    </span>
+                                ))}
+                            </div>
+                        </section>
+                    )}
+                </div>
+            </div>
+        </div>
+    );
+};
+
+const GoogleTemplate = ({ data = {} }) => {
+    const { personalInfo = {}, summary = '', experience = [], education = [], skills = [] } = data || {};
+    const skillsList = parseSkills(skills);
+
+    return (
+        <div className="theme-google min-h-[297mm] h-auto bg-white flex flex-col p-16 font-sans pb-20">
+            <header className="mb-12">
+                <h1 className="text-5xl font-[300] tracking-tight text-slate-800 mb-3">{personalInfo?.name}</h1>
+                <div className="flex items-center gap-4 text-sm text-slate-500">
+                    <span className="font-bold text-slate-900 border-r border-slate-200 pr-4">{personalInfo?.title}</span>
+                    <span>{personalInfo?.email}</span>
+                    <span className="w-1 h-1 bg-slate-200 rounded-full" />
+                    <span>{personalInfo?.phone}</span>
+                </div>
+            </header>
+
+            <div className="space-y-12">
+                {summary && (
+                    <section>
+                        <p className="text-base text-slate-600 leading-relaxed font-[300] max-w-3xl text-justify">{summary}</p>
+                    </section>
+                )}
+
+                {experience?.length > 0 && (
+                    <section>
+                        <h2 className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-8">Professional Experience</h2>
+                        <div className="space-y-10">
+                            {experience.map((exp, i) => (
+                                <div key={i} className="flex flex-col gap-2">
+                                    <div className="flex justify-between items-center">
+                                        <h3 className="text-xl font-medium text-slate-900">{exp.company}</h3>
+                                        <span className="text-sm text-slate-400">{exp.startDate} — {exp.endDate || 'Present'}</span>
+                                    </div>
+                                    <div className="text-lg text-indigo-600 font-medium mb-2">{exp.title}</div>
+                                    <ul className="space-y-3">
+                                        {(exp.bullets || []).map((b, idx) => (
+                                            <li key={idx} className="text-[13px] leading-relaxed text-slate-500 font-[300] relative pl-6 text-justify">
+                                                <span className="absolute left-0 top-[10px] w-1.5 h-[1px] bg-indigo-200"></span>
+                                                {b}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            ))}
+                        </div>
+                    </section>
+                )}
+
+                <div className="grid grid-cols-[1fr_250px] gap-16 pt-12 border-t border-slate-100">
+                    {education?.length > 0 && (
+                        <section>
+                            <h2 className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-6">Education</h2>
+                            <div className="space-y-6">
+                                {education.map((edu, i) => (
+                                    <div key={i}>
+                                        <div className="text-lg font-medium text-slate-900">{edu.institution}</div>
+                                        <div className="text-sm text-slate-500">{edu.degree} · {edu.year}</div>
+                                    </div>
+                                ))}
+                            </div>
+                        </section>
+                    )}
+
+                    {skillsList.length > 0 && (
+                        <section>
+                            <h2 className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-6">Key Skills</h2>
+                            <div className="flex flex-wrap gap-x-6 gap-y-3">
+                                {skillsList.map((s, i) => (
+                                    <span key={i} className="text-sm font-medium text-slate-700 hover:text-indigo-600 transition-colors cursor-default">
+                                        {typeof s === 'string' ? s : s.name}
+                                    </span>
+                                ))}
+                            </div>
+                        </section>
+                    )}
+                </div>
+            </div>
+        </div>
+    );
+};
 
 export default ResumePreview;

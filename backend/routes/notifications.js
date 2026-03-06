@@ -10,6 +10,30 @@ import logger from '../utils/logger.js';
 const router = express.Router();
 
 /**
+ * POST /api/notifications
+ * Create a new notification
+ * Note: authenticate middleware is already applied in server.js
+ */
+router.post('/', async (req, res) => {
+  try {
+    const { userIds, ...notificationData } = req.body;
+    
+    if (userIds && Array.isArray(userIds)) {
+      // Handle bulk transmission
+      const results = await notificationService.createMany(userIds, notificationData, req.user.id);
+      return res.status(201).json({ success: true, data: results });
+    }
+
+    // Handle single notification
+    const notification = await notificationService.create(req.user.id, req.body);
+    res.status(201).json({ success: true, data: notification });
+  } catch (error) {
+    logger.error('Error creating notification:', error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
  * GET /api/notifications
  * Get user's notifications
  * Note: authenticate middleware is already applied in server.js

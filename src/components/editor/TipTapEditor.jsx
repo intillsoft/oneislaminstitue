@@ -142,10 +142,10 @@ const TipTapEditor = ({
   }
 
   return (
-    <div className={`border border-[#E2E8F0] dark:border-[#1E2640] rounded-xl overflow-hidden bg-white dark:bg-[#13182E] ${className}`}>
+    <div className={`border border-border rounded-2xl overflow-hidden bg-surface ${className}`}>
       {/* Toolbar */}
       {showToolbar && (
-        <div className="flex items-center justify-between p-2 border-b border-[#E2E8F0] dark:border-[#1E2640] bg-[#F8FAFC] dark:bg-[#1A2139] flex-wrap gap-2">
+        <div className="flex items-center justify-between p-2.5 border-b border-border bg-surface-elevated flex-wrap gap-2">
           {/* Formatting Tools */}
           <div className="flex items-center gap-1 flex-wrap">
             <ToolbarButton
@@ -164,7 +164,7 @@ const TipTapEditor = ({
               <Italic className="w-4 h-4" />
             </ToolbarButton>
 
-            <div className="w-px h-6 bg-[#E2E8F0] dark:bg-[#1E2640] mx-1" />
+            <div className="w-px h-6 bg-border mx-1" />
 
             <ToolbarButton
               onClick={() => editor.chain().focus().toggleBulletList().run()}
@@ -182,7 +182,7 @@ const TipTapEditor = ({
               <ListOrdered className="w-4 h-4" />
             </ToolbarButton>
 
-            <div className="w-px h-6 bg-[#E2E8F0] dark:bg-[#1E2640] mx-1" />
+            <div className="w-px h-6 bg-border mx-1" />
 
             <ToolbarButton
               onClick={() => editor.chain().focus().setTextAlign('left').run()}
@@ -208,7 +208,7 @@ const TipTapEditor = ({
               <AlignRight className="w-4 h-4" />
             </ToolbarButton>
 
-            <div className="w-px h-6 bg-[#E2E8F0] dark:bg-[#1E2640] mx-1" />
+            <div className="w-px h-6 bg-border mx-1" />
 
             <ToolbarButton
               onClick={() => {
@@ -223,7 +223,7 @@ const TipTapEditor = ({
               <LinkIcon className="w-4 h-4" />
             </ToolbarButton>
 
-            <div className="w-px h-6 bg-[#E2E8F0] dark:bg-[#1E2640] mx-1" />
+            <div className="w-px h-6 bg-border mx-1" />
 
             <ToolbarButton
               onClick={() => editor.chain().focus().undo().run()}
@@ -245,8 +245,8 @@ const TipTapEditor = ({
           {/* Action Buttons */}
           <div className="flex items-center gap-2">
             {autoSave && (
-              <span className="text-xs text-[#64748B] dark:text-[#8B92A3] hidden sm:block">
-                {Math.floor((Date.now() - lastSavedRef.current) / 1000) < 30 ? 'Saved' : 'Saving...'}
+              <span className="text-[9px] font-black uppercase tracking-widest text-text-muted hidden sm:block">
+                {Math.floor((Date.now() - lastSavedRef.current) / 1000) < 30 ? 'Synchronized' : 'Syncing...'}
               </span>
             )}
             <ToolbarButton
@@ -275,8 +275,8 @@ const TipTapEditor = ({
       </div>
 
       {/* Character Count (optional) */}
-      <div className="px-4 py-2 text-xs text-[#64748B] dark:text-[#8B92A3] border-t border-[#E2E8F0] dark:border-[#1E2640] bg-[#F8FAFC] dark:bg-[#1A2139]">
-        {editor.storage.characterCount?.characters() || editor.getText().length} characters
+      <div className="px-4 py-2 text-[9px] font-black uppercase tracking-widest text-text-muted border-t border-border bg-surface-elevated">
+        {editor.storage.characterCount?.characters() || editor.getText().length} UNITS DETECTED
       </div>
     </div>
   );
@@ -297,10 +297,10 @@ const ToolbarButton = ({
       onClick={onClick}
       disabled={disabled}
       className={`
-        p-2 rounded-lg transition-all duration-200 min-h-touch min-w-touch
+        p-2 rounded-xl transition-all duration-200 min-h-touch min-w-touch
         ${isActive 
-          ? 'bg-workflow-primary-50 dark:bg-workflow-primary-900/20 text-workflow-primary' 
-          : 'text-[#475569] dark:text-[#B4B9C4] hover:bg-[#F8FAFC] dark:hover:bg-[#1A2139]'
+          ? 'bg-workflow-primary/10 text-workflow-primary' 
+          : 'text-text-secondary hover:bg-surface-elevated'
         }
         ${disabled ? 'opacity-50 cursor-not-allowed' : ''}
         ${className}

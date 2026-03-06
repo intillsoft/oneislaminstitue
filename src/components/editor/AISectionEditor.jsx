@@ -107,31 +107,31 @@ Please provide the edited content in HTML format. Make it professional, ATS-frie
   };
 
   return (
-    <div className="bg-white dark:bg-[#13182E] rounded-lg p-6">
+    <div className="glass-panel rounded-2xl p-6">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
           <Sparkles className="w-5 h-5 text-workflow-primary" />
-          <h3 className="text-lg font-semibold text-text-primary dark:text-[#E8EAED]">
+          <h3 className="text-sm font-black text-text-primary uppercase tracking-tight">
             {sectionTitle}
           </h3>
         </div>
         <button
           onClick={onClose}
-          className="p-1 rounded-lg hover:bg-surface-100 dark:hover:bg-[#1E2640] transition-colors"
+          className="p-1.5 rounded-xl hover:bg-surface-elevated transition-colors"
         >
-          <X className="w-5 h-5 text-text-secondary dark:text-[#8B92A3]" />
+          <X className="w-5 h-5 text-text-muted" />
         </button>
       </div>
 
       <div className="space-y-4">
         {/* Current Content Preview */}
         {currentContent && (
-          <div className="p-4 bg-surface-50 dark:bg-[#1A2139] rounded-lg border border-border dark:border-[#1E2640]">
-            <p className="text-sm font-medium text-text-secondary dark:text-[#8B92A3] mb-2">
+          <div className="p-4 bg-surface rounded-xl border border-border">
+            <p className="text-[10px] font-black text-text-muted uppercase tracking-widest mb-2">
               Current Content:
             </p>
             <div 
-              className="prose prose-sm max-w-none text-text-secondary dark:text-[#B4B9C4]"
+              className="prose prose-sm max-w-none text-text-secondary font-medium"
               dangerouslySetInnerHTML={{ 
                 __html: currentContent?.html || (typeof currentContent === 'string' ? currentContent : '') 
               }}
@@ -141,14 +141,14 @@ Please provide the edited content in HTML format. Make it professional, ATS-frie
 
         {/* AI Prompt Input */}
         <div>
-          <label className="block text-sm font-medium text-text-primary dark:text-[#E8EAED] mb-2">
-            What would you like to change? (e.g., "Make it more professional", "Add more technical skills", "Emphasize leadership experience")
+          <label className="block text-[10px] font-black text-text-muted uppercase tracking-widest mb-2">
+            AI Prompt Matrix
           </label>
           <textarea
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
-            placeholder="Describe how you want to edit this section..."
-            className="w-full px-4 py-3 border border-border dark:border-[#1E2640] rounded-lg bg-background dark:bg-[#0A0E27] text-text-primary dark:text-[#E8EAED] placeholder:text-text-secondary dark:placeholder:text-[#8B92A3] focus:outline-none focus:ring-2 focus:ring-workflow-primary focus:border-transparent resize-none"
+            placeholder="Describe the desired synthesis..."
+            className="w-full px-4 py-3 border border-border rounded-xl bg-bg text-text-primary placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-workflow-primary focus:border-transparent resize-none text-sm font-medium"
             rows={4}
             disabled={isGenerating}
           />
@@ -159,7 +159,7 @@ Please provide the edited content in HTML format. Make it professional, ATS-frie
           onClick={handleAIEdit}
           disabled={isGenerating || !prompt.trim()}
           variant="primary"
-          className="w-full flex items-center justify-center gap-2"
+          className="w-full h-12 flex items-center justify-center gap-2 rounded-xl text-[10px] font-black uppercase tracking-widest"
         >
           {isGenerating ? (
             <>
@@ -190,12 +190,12 @@ Please provide the edited content in HTML format. Make it professional, ATS-frie
               exit={{ opacity: 0, y: -10 }}
               className="space-y-4"
             >
-              <div className="p-4 bg-workflow-primary-50 dark:bg-workflow-primary-900/20 rounded-lg border border-workflow-primary-200 dark:border-workflow-primary-800">
-                <p className="text-sm font-medium text-workflow-primary-700 dark:text-workflow-primary-300 mb-3">
-                  AI-Generated Preview:
+              <div className="p-4 bg-workflow-primary/5 rounded-xl border border-workflow-primary/20">
+                <p className="text-[10px] font-black text-workflow-primary uppercase tracking-widest mb-3">
+                  AI Synthesis Result:
                 </p>
                 <div 
-                  className="prose prose-sm max-w-none text-text-primary dark:text-[#E8EAED]"
+                  className="prose prose-sm max-w-none text-text-primary"
                   dangerouslySetInnerHTML={{ __html: preview }}
                 />
               </div>
