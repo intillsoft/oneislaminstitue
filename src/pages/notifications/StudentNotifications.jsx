@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuthContext } from '../../contexts/AuthContext';
 import { useToast } from '../../components/ui/Toast';
-import { ElitePageHeader } from '../../components/ui/EliteCard';
-import Icon from 'components/AppIcon';
+import Icon from '../../components/AppIcon';
 import { supabase } from '../../lib/supabase';
 import { formatDistanceToNow } from 'date-fns';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -14,6 +13,7 @@ const StudentNotifications = () => {
     const [notifications, setNotifications] = useState([]);
     const [loading, setLoading] = useState(true);
     const [filter, setFilter] = useState('all');
+    const [selectedNotification, setSelectedNotification] = useState(null);
 
     useEffect(() => {
         if (user?.id) {
@@ -64,15 +64,27 @@ const StudentNotifications = () => {
         return () => subscription.unsubscribe();
     };
 
-    const markAsRead = async (id, isRead) => {
+    const handleViewNotification = async (notif) => {
+        setSelectedNotification(notif);
+        if (!notif.is_read) {
+            markAsRead(notif.id, false);
+        }
+    };
+
+    const markAsRead = async (id, currentReadStatus) => {
         try {
             const { error } = await supabase
                 .from('notifications')
-                .update({ is_read: !isRead, read_at: !isRead ? new Date().toISOString() : null })
+                .update({ is_read: !currentReadStatus, read_at: !currentReadStatus ? new Date().toISOString() : null })
                 .eq('id', id);
 
             if (error) throw error;
-            loadNotifications();
+            
+            // Optimistic update
+            setNotifications(prev => prev.map(n => n.id === id ? { ...n, is_read: !currentReadStatus } : n));
+            if (selectedNotification?.id === id) {
+                setSelectedNotification(prev => ({ ...prev, is_read: !currentReadStatus }));
+            }
         } catch (err) {
             console.error('Error:', err);
         }
@@ -87,7 +99,8 @@ const StudentNotifications = () => {
 
             if (error) throw error;
             success('Message cleared');
-            loadNotifications();
+            setNotifications(prev => prev.filter(n => n.id !== id));
+            if (selectedNotification?.id === id) setSelectedNotification(null);
         } catch (err) {
             console.error('Error:', err);
         }
@@ -96,144 +109,240 @@ const StudentNotifications = () => {
     const unreadCount = notifications.filter(n => !n.is_read).length;
 
     return (
-        <div className="min-h-screen bg-slate-50 dark:bg-[#0A1120] relative overflow-hidden">
+        <div className="min-h-screen bg-slate-50 dark:bg-[#0A1120] relative overflow-hidden flex flex-col">
             {/* Elite Background Accents */}
             <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-7xl">
-                    <div className="absolute top-[-5%] right-[-12%] w-[45%] h-[45%] bg-emerald-500/5 rounded-full blur-[140px]" />
-                    <div className="absolute bottom-[-10%] left-[-10%] w-[35%] h-[35%] bg-blue-500/5 rounded-full blur-[110px]" />
+                    <div className="absolute top-[-5%] right-[-12%] w-[45%] h-[45%] bg-emerald-500/10 rounded-full blur-[140px]" />
+                    <div className="absolute bottom-[-10%] left-[-10%] w-[35%] h-[35%] bg-blue-500/10 rounded-full blur-[110px]" />
                 </div>
             </div>
 
-            <div className="max-w-6xl mx-auto py-16 px-6 lg:px-8 relative z-10 pb-40">
-                {/* Elite Header */}
-                <div className="flex flex-col md:flex-row md:items-end justify-between gap-12 mb-20 px-2">
-                    <div>
-                        <div className="flex items-center gap-4 mb-4">
-                            <div className="w-12 h-0.5 bg-emerald-500 rounded-full" />
-                            <span className="text-[10px] font-black uppercase tracking-[0.8em] text-emerald-500 ml-1">Notifications</span>
-                        </div>
-                        <h1 className="text-8xl font-black text-white tracking-tighter uppercase leading-none">
-                            Inbox<span className="text-emerald-500 text-7xl">.</span>
-                        </h1>
-                    </div>
+            <div className="flex-1 max-w-6xl w-full mx-auto pt-16 px-6 lg:px-8 relative z-10 flex flex-col">
+                <AnimatePresence mode="wait">
+                    {!selectedNotification ? (
+                        <motion.div 
+                            key="list"
+                            initial={{ opacity: 0, x: -20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            exit={{ opacity: 0, x: -20 }}
+                            className="flex flex-col h-full"
+                        >
+                            {/* Elite Header */}
+                            <div className="flex flex-col md:flex-row md:items-end justify-between gap-12 mb-20 px-2">
+                                <div>
+                                    <div className="flex items-center gap-4 mb-4">
+                                        <div className="w-10 h-0.5 bg-emerald-500 rounded-full" />
+                                        <span className="text-[10px] font-bold uppercase tracking-[0.6em] text-emerald-500">Secure Node</span>
+                                    </div>
+                                    <h1 className="text-2xl sm:text-3xl font-bold text-white tracking-tight uppercase">
+                                        Notifications<span className="text-emerald-500">.</span>
+                                    </h1>
+                                </div>
 
-                    <div className="flex items-center gap-14 border-l border-white/5 pl-14">
-                        <div className="group cursor-default">
-                            <p className="text-[9px] font-black text-slate-700 uppercase tracking-[0.4em] mb-2 group-hover:text-emerald-500 transition-colors">New</p>
-                            <p className="text-5xl font-black text-white">{unreadCount}</p>
-                        </div>
-                        <div className="group cursor-default">
-                            <p className="text-[9px] font-black text-slate-700 uppercase tracking-[0.4em] mb-2 group-hover:text-slate-400 transition-colors">Total</p>
-                            <p className="text-5xl font-black text-slate-900">{notifications.length}</p>
-                        </div>
-                    </div>
-                </div>
+                                <div className="flex items-center gap-10 border-l border-white/5 pl-10 hidden lg:flex">
+                                    <div className="group cursor-default text-right">
+                                        <p className="text-[9px] font-bold text-slate-700 uppercase tracking-[0.4em] mb-1">Unread Alerts</p>
+                                        <p className="text-2xl font-bold text-white tracking-tight">{unreadCount}</p>
+                                    </div>
+                                </div>
+                            </div>
 
-                {/* Navigation Filters */}
-                <div className="flex flex-col md:flex-row gap-8 md:items-center justify-between mb-16 px-6 pb-2 border-b border-white/5">
-                    <div className="flex gap-16">
-                        {[
-                            { id: 'all', label: 'Full Stream' },
-                            { id: 'unread', label: 'Unread' },
-                            { id: 'read', label: 'Archived' }
-                        ].map(t => (
-                            <button
-                                key={t.id}
-                                onClick={() => setFilter(t.id)}
-                                className={`py-4 text-[11px] font-black uppercase tracking-[0.5em] transition-all relative ${
-                                    filter === t.id
-                                        ? 'text-white'
-                                        : 'text-slate-800 hover:text-slate-400'
-                                }`}
-                            >
-                                {t.label}
-                                {filter === t.id && (
-                                    <motion.div layoutId="student-brief-tab" className="absolute bottom-[-1px] left-0 right-0 h-0.5 bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)]" />
-                                )}
-                            </button>
-                        ))}
-                    </div>
-                    
-                    {unreadCount > 0 && filter !== 'read' && (
-                        <div className="bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-widest shadow-2xl shadow-emerald-500/10">
-                            {unreadCount} Active Transmissions
-                        </div>
-                    )}
-                </div>
+                            {/* Navigation Filters */}
+                            <div className="flex flex-col md:flex-row gap-8 md:items-center justify-between mb-8 px-6 pb-2 border-b border-white/5">
+                                <div className="flex gap-16">
+                                    {[
+                                        { id: 'all', label: 'All Mail' },
+                                        { id: 'unread', label: 'Unread' },
+                                        { id: 'read', label: 'Archived' }
+                                    ].map(t => (
+                                        <button
+                                            key={t.id}
+                                            onClick={() => setFilter(t.id)}
+                                            className={`py-4 text-[11px] font-bold uppercase tracking-[0.4em] transition-all relative ${
+                                                filter === t.id
+                                                    ? 'text-white'
+                                                    : 'text-slate-800 hover:text-slate-400'
+                                            }`}
+                                        >
+                                            {t.label}
+                                            {filter === t.id && (
+                                                <motion.div layoutId="student-brief-tab" className="absolute bottom-[-1px] left-0 right-0 h-0.5 bg-emerald-500" />
+                                            )}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
 
-                {/* Message List */}
-                <div className="grid gap-5">
-                    {loading && !notifications.length ? (
-                        <div className="flex justify-center py-40">
-                            <div className="w-12 h-12 border-2 border-white/10 border-t-emerald-500 rounded-full animate-spin" />
-                        </div>
-                    ) : notifications.length === 0 ? (
-                        <div className="py-60 text-center bg-white/[0.01] border border-dashed border-white/5 rounded-[5rem]">
-                            <Icon name="Bell" size={96} className="mx-auto mb-12 text-slate-950 opacity-10" />
-                            <h3 className="text-[11px] font-black text-slate-900 uppercase tracking-[0.8em]">Briefing Registry Null</h3>
-                        </div>
-                    ) : (
-                        <AnimatePresence mode="popLayout">
-                            {notifications.map((notification, idx) => (
-                                <motion.div
-                                    key={notification.id}
-                                    initial={{ opacity: 0, scale: 0.99, y: 15 }}
-                                    animate={{ opacity: 1, scale: 1, y: 0 }}
-                                    exit={{ opacity: 0, scale: 0.98 }}
-                                    transition={{ delay: idx * 0.03 }}
-                                >
-                                    <div 
-                                        className={`group p-12 rounded-[4rem] border transition-all duration-700 ${
-                                            notification.is_read
-                                            ? 'bg-transparent border-white/5 opacity-40 grayscale'
-                                            : 'bg-white/[0.01] border-white/5 hover:border-emerald-500/20 hover:bg-white/[0.02] shadow-3xl shadow-black/40'
-                                        }`}
-                                    >
-                                        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-12">
-                                            <div className="flex-1 min-w-0">
-                                                <div className="flex items-center gap-6 mb-6">
-                                                    <div className={`w-3 h-3 rounded-full ${!notification.is_read ? 'bg-emerald-500 shadow-[0_0_20px_rgba(16,185,129,0.9)] animate-pulse' : 'bg-slate-900'}`} />
-                                                    <span className="text-[10px] font-black text-slate-800 uppercase tracking-[0.3em]">
-                                                        {formatDistanceToNow(new Date(notification.created_at), { addSuffix: true })}
-                                                    </span>
-                                                </div>
-
-                                                <h3 className="text-3xl font-black text-white uppercase tracking-tighter mb-4 group-hover:text-emerald-400 transition-colors">
-                                                    {notification.title}
-                                                </h3>
-                                                <p className="text-lg text-slate-600 font-medium leading-relaxed max-w-6xl group-hover:text-slate-400 transition-colors">
-                                                    {notification.message}
-                                                </p>
+                            {/* Message Registry */}
+                            <div className="flex-1 min-h-0 mb-20">
+                                <div className="bg-white/[0.01] border border-white/5 rounded-2xl overflow-hidden backdrop-blur-3xl">
+                                    {loading && !notifications.length ? (
+                                        <div className="flex justify-center py-40">
+                                            <div className="w-10 h-10 border-2 border-white/5 border-t-emerald-500 rounded-full animate-spin" />
+                                        </div>
+                                    ) : notifications.length === 0 ? (
+                                        <div className="py-60 text-center bg-transparent">
+                                            <div className="w-16 h-16 rounded-3xl bg-white/5 flex items-center justify-center mx-auto mb-10 border border-white/5">
+                                                <Icon name="Inbox" size={24} className="text-slate-800 opacity-20" />
                                             </div>
+                                            <h3 className="text-[11px] font-bold text-slate-900 uppercase tracking-[0.8em]">Briefing Registry Null</h3>
+                                        </div>
+                                    ) : (
+                                        <div className="divide-y divide-white/5">
+                                            <AnimatePresence mode="popLayout">
+                                                {notifications.map((notification) => {
+                                                    const isUnread = !notification.is_read;
+                                                    const sender = notification.data?.sender_name || 'System Administrator';
+                                                    
+                                                    return (
+                                                        <motion.div
+                                                            key={notification.id}
+                                                            initial={{ opacity: 0 }}
+                                                            animate={{ opacity: 1 }}
+                                                            exit={{ opacity: 0 }}
+                                                            transition={{ duration: 0.2 }}
+                                                            onClick={() => handleViewNotification(notification)}
+                                                            className={`group flex items-center gap-8 py-7 px-10 cursor-pointer transition-all duration-300 ${isUnread ? 'bg-white/[0.01] hover:bg-white/[0.03]' : 'bg-transparent opacity-60'}`}
+                                                        >
+                                                            <div className={`flex-shrink-0 w-2.5 h-2.5 rounded-full ${isUnread ? 'bg-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.5)]' : 'bg-slate-900'}`} />
+                                                            
+                                                            <div className="w-48 lg:w-64 flex-shrink-0">
+                                                                <span className={`text-[11px] uppercase tracking-[0.2em] truncate block ${isUnread ? 'font-black text-white' : 'font-bold text-slate-600'}`}>
+                                                                    {sender}
+                                                                </span>
+                                                            </div>
 
-                                            <div className="flex items-center gap-4 opacity-0 group-hover:opacity-100 transition-all scale-90 group-hover:scale-100">
-                                                <button
-                                                    onClick={() => markAsRead(notification.id, notification.is_read)}
-                                                    className={`p-7 rounded-[2rem] border transition-all ${
-                                                        notification.is_read
-                                                        ? 'bg-white/5 border-white/5 text-slate-800'
-                                                        : 'bg-emerald-500/10 border-emerald-500/30 text-emerald-500 hover:bg-emerald-500/20'
-                                                    }`}
-                                                    title={notification.is_read ? "Keep unread" : "Mark as processed"}
-                                                >
-                                                    <Icon name={notification.is_read ? 'Mail' : 'MailOpen'} size={24} />
-                                                </button>
-                                                <button
-                                                    onClick={() => deleteNotification(notification.id)}
-                                                    className="p-7 bg-white/5 border border-white/5 text-slate-800 hover:text-rose-500 hover:border-rose-500/40 rounded-[2rem] transition-all"
-                                                    title="Purge transmission"
-                                                >
-                                                    <Icon name="Trash2" size={24} />
-                                                </button>
+                                                            <div className="flex-1 min-w-0">
+                                                                <div className="flex items-center gap-4">
+                                                                    <span className={`text-[11px] uppercase tracking-widest truncate ${isUnread ? 'font-black text-white' : 'font-bold text-slate-500'}`}>
+                                                                        {notification.title}
+                                                                    </span>
+                                                                    <span className="text-slate-800 text-[10px] uppercase font-bold tracking-widest truncate opacity-20 group-hover:opacity-100 transition-opacity">
+                                                                        - {notification.message}
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+
+                                                            <div className="flex-shrink-0 w-32 text-right">
+                                                                <span className="text-[9px] font-black text-slate-800 uppercase tracking-widest">
+                                                                    {formatDistanceToNow(new Date(notification.created_at), { addSuffix: false })}
+                                                                </span>
+                                                            </div>
+                                                        </motion.div>
+                                                    );
+                                                })}
+                                            </AnimatePresence>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        </motion.div>
+                    ) : (
+                        <motion.div 
+                            key="detail"
+                            initial={{ opacity: 0, y: 20, scale: 0.98 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            exit={{ opacity: 0, y: 20, scale: 0.98 }}
+                            className="flex flex-col h-full mb-20 px-2"
+                        >
+                            {/* Detail Toolbar */}
+                            <div className="flex items-center justify-between mb-16 pt-4">
+                                <button
+                                    onClick={() => setSelectedNotification(null)}
+                                    className="flex items-center gap-4 px-4 py-2 rounded-xl bg-white/[0.03] border border-white/5 text-slate-600 hover:text-white transition-all active:scale-95 group"
+                                >
+                                    <Icon name="ArrowLeft" size={16} className="group-hover:-translate-x-1 transition-transform" />
+                                    <span className="text-[10px] font-bold uppercase tracking-[0.3em]">Back to Inbox</span>
+                                </button>
+
+                                <div className="flex items-center gap-4">
+                                    <button
+                                        onClick={() => markAsRead(selectedNotification.id, selectedNotification.is_read)}
+                                        className="p-3 rounded-xl bg-white/[0.03] border border-white/5 text-slate-600 hover:text-emerald-500 transition-all active:scale-95"
+                                        title={selectedNotification.is_read ? "Mark unread" : "Mark read"}
+                                    >
+                                        <Icon name={selectedNotification.is_read ? "Mail" : "MailOpen"} size={18} />
+                                    </button>
+                                    <button
+                                        onClick={() => deleteNotification(selectedNotification.id)}
+                                        className="p-3 rounded-xl bg-white/[0.03] border border-white/5 text-slate-600 hover:text-rose-500 transition-all active:scale-95"
+                                        title="Delete"
+                                    >
+                                        <Icon name="Trash2" size={18} />
+                                    </button>
+                                </div>
+                            </div>
+
+                            {/* Detailed View Container */}
+                            <div className="bg-white/[0.01] border border-white/5 rounded-2xl overflow-hidden backdrop-blur-3xl p-6 lg:p-10 relative">
+                                <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/5 rounded-full blur-[100px] -mr-32 -mt-32 pointer-events-none" />
+                                
+                                <div className="max-w-4xl mx-auto space-y-12">
+                                    <div className="space-y-8">
+                                        <div className="flex items-center gap-5">
+                                            <div className="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center border border-emerald-500/20">
+                                                <Icon name="Mail" size={18} className="text-emerald-500" />
+                                            </div>
+                                            <div>
+                                                <p className="text-[10px] font-bold text-emerald-500 uppercase tracking-widest mb-1">Authenticated Message</p>
+                                                <h2 className="text-xl lg:text-2xl font-bold text-white uppercase tracking-tight leading-tight">
+                                                    {selectedNotification.title}
+                                                </h2>
+                                            </div>
+                                        </div>
+
+                                        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pt-6 border-t border-white/5">
+                                            <div className="flex items-center gap-4">
+                                                <div className="w-10 h-10 rounded-full bg-slate-900 border border-white/5 flex items-center justify-center text-[10px] font-black text-slate-400">
+                                                    {(selectedNotification.data?.sender_name || 'SA')[0]}
+                                                </div>
+                                                <div>
+                                                    <p className="text-[11px] font-black text-white uppercase tracking-widest">
+                                                        {selectedNotification.data?.sender_name || 'System Administrator'}
+                                                    </p>
+                                                    <p className="text-[9px] font-black text-slate-700 uppercase tracking-widest mt-1">
+                                                        Authenticated Source
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div className="flex flex-col md:items-end gap-1">
+                                                <p className="text-[10px] font-black text-slate-600 uppercase tracking-widest">
+                                                    {new Date(selectedNotification.created_at).toLocaleDateString('en-US', { 
+                                                        year: 'numeric', 
+                                                        month: 'short', 
+                                                        day: 'numeric' 
+                                                    })}
+                                                </p>
+                                                <p className="text-[9px] font-black text-slate-800 uppercase tracking-widest">
+                                                    {new Date(selectedNotification.created_at).toLocaleTimeString()}
+                                                </p>
                                             </div>
                                         </div>
                                     </div>
-                                </motion.div>
-                            ))}
-                        </AnimatePresence>
-                    </div>
-                )}
+
+                                    <div className="prose prose-invert max-w-none pt-4">
+                                        <p className="text-lg text-slate-400 font-medium leading-[1.8] whitespace-pre-wrap selection:bg-emerald-500/20 select-text">
+                                            {selectedNotification.message}
+                                        </p>
+                                    </div>
+
+                                    <div className="pt-12 border-t border-white/5 flex items-center justify-between">
+                                         <p className="text-[9px] font-black text-slate-900 uppercase tracking-[0.5em]">
+                                            Digital Signature - {selectedNotification.id.substring(0, 12)}
+                                         </p>
+                                        <button 
+                                            onClick={() => setSelectedNotification(null)}
+                                            className="px-8 py-3 rounded-xl bg-white text-black text-[10px] font-bold uppercase tracking-widest hover:bg-emerald-500 hover:text-white transition-all active:scale-95"
+                                        >
+                                            Dismiss View
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
             </div>
         </div>
     );

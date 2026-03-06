@@ -212,45 +212,45 @@ const AdminNotifications = () => {
         {/* Elite Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-12 mb-20">
           <div>
-            <div className="flex items-center gap-4 mb-4">
-              <div className="w-10 h-0.5 bg-emerald-500 rounded-full" />
-              <span className="text-[10px] font-black uppercase tracking-[0.6em] text-emerald-500">Security & Ops</span>
+            <div className="flex items-center gap-3 mb-2">
+              <div className="w-8 h-0.5 bg-emerald-500 rounded-full" />
+              <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-500">Admin</span>
             </div>
-            <h1 className="text-7xl font-black text-white tracking-tighter uppercase leading-none">
-              Control Center<span className="text-emerald-500 text-7xl">.</span>
+            <h1 className="text-2xl sm:text-3xl font-bold text-white tracking-tight uppercase">
+              Notifications<span className="text-emerald-500">.</span>
             </h1>
           </div>
 
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-4">
             <button
                onClick={() => setComposing(!composing)}
-               className={`px-8 py-5 rounded-[2rem] flex items-center gap-4 transition-all duration-500 shadow-2xl ${
+               className={`h-11 px-6 rounded-xl flex items-center gap-3 transition-all duration-300 ${
                  composing 
                  ? 'bg-rose-500 text-white' 
-                 : 'bg-white text-black hover:bg-emerald-500 hover:text-white'
+                 : 'bg-emerald-600 text-white hover:bg-emerald-500'
                }`}
             >
-              <span className="text-xs font-black uppercase tracking-[0.2em]">{composing ? 'Abort Broadcast' : 'New Broadcast'}</span>
-              {composing ? <X size={18} /> : <Zap size={18} />}
+              <span className="text-xs font-bold uppercase tracking-widest">{composing ? 'Cancel' : 'New Message'}</span>
+              {composing ? <X size={16} /> : <Zap size={16} />}
             </button>
           </div>
         </div>
 
         {/* System Stats Bar */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-16">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-12">
             {[
-                { icon: Database, label: "Total Dispatch", value: notifications.length, color: "blue" },
-                { icon: AlertCircle, label: "Action Required", value: unreadCount, color: "amber" },
-                { icon: RefreshCw, label: "Core Synchronized", value: "99.9%", color: "green" },
-                { icon: Shield, label: "Encryption", value: "Locked", color: "blue" }
+                { icon: Database, label: "Total", value: notifications.length, color: "blue" },
+                { icon: AlertCircle, label: "Unread", value: unreadCount, color: "amber" },
+                { icon: RefreshCw, label: "Status", value: "Online", color: "green" },
+                { icon: Shield, label: "Security", value: "Secure", color: "blue" }
             ].map((stat, i) => (
-                <div key={i} className="bg-white/[0.02] border border-white/5 p-7 rounded-[2.5rem] flex flex-col gap-6 backdrop-blur-3xl group hover:border-emerald-500/20 transition-all duration-500">
-                    <div className={`w-12 h-12 rounded-2xl bg-${stat.color}-500/10 flex items-center justify-center group-hover:scale-110 transition-transform`}>
-                        <stat.icon size={20} className={stat.color === 'green' ? 'text-emerald-500' : stat.color === 'amber' ? 'text-amber-500' : 'text-blue-500'} />
+                <div key={i} className="bg-white/[0.02] border border-white/5 p-5 rounded-2xl flex flex-col gap-4 backdrop-blur-3xl group transition-all duration-300">
+                    <div className={`w-10 h-10 rounded-xl bg-${stat.color}-500/10 flex items-center justify-center`}>
+                        <stat.icon size={18} className={stat.color === 'green' ? 'text-emerald-500' : stat.color === 'amber' ? 'text-amber-500' : 'text-blue-500'} />
                     </div>
                    <div>
-                        <p className="text-[9px] font-black uppercase tracking-[0.3em] text-slate-600 mb-1">{stat.label}</p>
-                        <p className="text-2xl font-black text-white group-hover:text-emerald-400 transition-colors">{stat.value}</p>
+                        <p className="text-[9px] font-bold uppercase tracking-wider text-slate-600 mb-1">{stat.label}</p>
+                        <p className="text-2xl font-bold text-white group-hover:text-emerald-400 transition-colors uppercase">{stat.value}</p>
                    </div>
                 </div>
             ))}
@@ -265,14 +265,14 @@ const AdminNotifications = () => {
                     exit={{ opacity: 0, height: 0, scale: 0.98 }}
                     className="overflow-hidden mb-20"
                 >
-                    <div className="bg-white dark:bg-[#0f1429] border border-slate-100 dark:border-white/5 rounded-[4rem] p-12 lg:p-16 shadow-3xl relative overflow-hidden group">
+                    <div className="bg-white dark:bg-[#0f1429] border border-slate-100 dark:border-white/5 rounded-2xl p-8 lg:p-10 shadow-3xl relative overflow-hidden group">
                         <div className="absolute top-0 left-0 w-96 h-96 bg-emerald-500/5 rounded-full blur-[120px] -ml-48 -mt-48" />
                         
                         <div className="relative z-10 grid lg:grid-cols-3 gap-16">
                             {/* Configuration Column */}
                             <div className="space-y-12">
                                 <div className="space-y-6">
-                                    <label className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-500 ml-1">Target Segments</label>
+                                    <label className="text-[10px] font-bold uppercase tracking-widest text-slate-500 ml-1">Send to</label>
                                     <div className="grid grid-cols-2 gap-3">
                                         {[
                                             { id: 'everyone', label: 'Everyone' },
@@ -295,8 +295,8 @@ const AdminNotifications = () => {
                                     </div>
                                 </div>
 
-                                <div className="space-y-8 pt-12 border-t border-white/5">
-                                    <label className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-500 ml-1">Global Channels</label>
+                                <div className="space-y-8 pt-8 border-t border-white/5">
+                                    <label className="text-[10px] font-bold uppercase tracking-widest text-slate-500 ml-1">Method</label>
                                     <div className="grid gap-3">
                                         {[
                                             { id: 'sendInApp', label: 'System Alert', icon: Bell },
@@ -328,24 +328,24 @@ const AdminNotifications = () => {
                             {/* Payload Column */}
                             <div className="lg:col-span-2 space-y-12">
                                 <div className="space-y-6">
-                                    <label className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-500 ml-1">Announcement Subject</label>
+                                    <label className="text-[10px] font-bold uppercase tracking-widest text-slate-500 ml-1">Subject</label>
                                     <input
                                         type="text"
                                         value={composeData.title}
                                         onChange={(e) => setComposeData({ ...composeData, title: e.target.value })}
-                                        placeholder="Headline transmission..."
-                                        className="w-full bg-white/[0.02] border border-white/5 rounded-3xl px-10 py-7 text-white text-2xl font-black placeholder-slate-950 focus:outline-none focus:border-emerald-500/20 transition-all uppercase tracking-tighter"
+                                        placeholder="Enter subject..."
+                                        className="w-full bg-white/[0.02] border border-white/5 rounded-xl px-6 py-4 text-white text-base font-bold placeholder-slate-900 focus:outline-none focus:border-emerald-500/20 transition-all uppercase tracking-tight"
                                     />
                                 </div>
                                 
                                 <div className="space-y-6">
-                                    <label className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-500 ml-1">Detailed Message</label>
+                                    <label className="text-[10px] font-bold uppercase tracking-widest text-slate-500 ml-1">Message</label>
                                     <textarea
                                         value={composeData.message}
                                         onChange={(e) => setComposeData({ ...composeData, message: e.target.value })}
-                                        placeholder="Compose global platform update..."
-                                        rows={10}
-                                        className="w-full bg-white/[0.01] border border-white/5 rounded-[3.5rem] px-10 py-10 text-slate-500 text-lg font-medium focus:outline-none focus:border-emerald-500/20 transition-all resize-none leading-relaxed placeholder:text-slate-950"
+                                        placeholder="Type your message here..."
+                                        rows={8}
+                                        className="w-full bg-white/[0.01] border border-white/5 rounded-xl px-6 py-6 text-slate-500 text-sm font-medium focus:outline-none focus:border-emerald-500/20 transition-all resize-none leading-relaxed placeholder:text-slate-900"
                                     />
                                 </div>
 
@@ -353,14 +353,14 @@ const AdminNotifications = () => {
                                     <button
                                         onClick={sendNotification}
                                         disabled={loading}
-                                        className="w-full bg-emerald-600 text-white py-8 rounded-[2.5rem] text-[11px] font-black uppercase tracking-[0.5em] hover:bg-emerald-500 transition-all shadow-2xl shadow-emerald-500/20 disabled:opacity-30 flex items-center justify-center gap-6"
+                                        className="w-full bg-emerald-600 text-white py-5 rounded-xl text-[11px] font-bold uppercase tracking-widest hover:bg-emerald-500 transition-all disabled:opacity-30 flex items-center justify-center gap-4"
                                     >
                                         {loading ? (
-                                            <div className="w-6 h-6 border-[4px] border-white/20 border-t-white rounded-full animate-spin" />
+                                            <div className="w-5 h-5 border-[2px] border-white/20 border-t-white rounded-full animate-spin" />
                                         ) : (
-                                            <Zap size={20} fill="currentColor" />
+                                            <Zap size={18} fill="currentColor" />
                                         )}
-                                        {loading ? 'Initiating Dispatch...' : 'Broadcast Annoucement'}
+                                        {loading ? 'Sending...' : 'Send Message'}
                                     </button>
                                 </div>
                             </div>
@@ -396,14 +396,14 @@ const AdminNotifications = () => {
                     ))}
                 </div>
 
-                <div className="relative w-full lg:w-[400px] group">
-                    <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-800 opacity-40 transition-opacity group-focus-within:opacity-100" size={18} />
+                <div className="relative w-full lg:w-[350px] group">
+                    <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-800 opacity-40" size={16} />
                     <input
                         type="text"
-                        placeholder="Search system logs..."
+                        placeholder="Search logs..."
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
-                        className="w-full pl-16 pr-10 py-5 bg-white/[0.01] border border-white/5 rounded-[2rem] text-[11px] font-bold text-white focus:outline-none focus:border-emerald-500/20 transition-all placeholder:text-slate-900 uppercase tracking-widest"
+                        className="w-full pl-12 pr-6 py-3 bg-white/[0.01] border border-white/5 rounded-xl text-[11px] font-bold text-white focus:outline-none focus:border-emerald-500/20 transition-all placeholder:text-slate-900 uppercase tracking-widest"
                     />
                 </div>
             </div>
@@ -420,61 +420,64 @@ const AdminNotifications = () => {
                     </div>
                 ) : (
                     <AnimatePresence mode='popLayout'>
-                        {notifications.map((notification, idx) => (
-                            <motion.div
-                                key={notification.id}
-                                initial={{ opacity: 0, scale: 0.99, y: 15 }}
-                                animate={{ opacity: 1, scale: 1, y: 0 }}
-                                exit={{ opacity: 0, scale: 0.98 }}
-                                transition={{ delay: idx * 0.03 }}
-                            >
-                                <div 
-                                    className={`group p-12 rounded-[4rem] border transition-all duration-700 ${
-                                        notification.is_read 
-                                        ? 'bg-transparent border-white/5 opacity-40 grayscale' 
-                                        : 'bg-white/[0.01] border-white/5 hover:border-emerald-500/20 hover:bg-white/[0.02] shadow-3xl shadow-black/40'
-                                    }`}
+                        {notifications.map((notification, idx) => {
+                            const isUnread = !notification.is_read;
+                            return (
+                                <motion.div
+                                    key={notification.id}
+                                    initial={{ opacity: 0, scale: 0.99, y: 15 }}
+                                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                                    exit={{ opacity: 0, scale: 0.98 }}
+                                    transition={{ delay: idx * 0.03 }}
                                 >
-                                    <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-12">
-                                        <div className="flex-1 min-w-0">
-                                            <div className="flex items-center gap-6 mb-6">
-                                                <div className={`w-3 h-3 rounded-full ${notification.is_read ? 'bg-slate-900' : 'bg-emerald-500 shadow-[0_0_20px_rgba(16,185,129,0.9)] animate-pulse'}`} />
-                                                <span className="text-[10px] font-black text-slate-800 uppercase tracking-[0.3em]">
-                                                    {formatDistanceToNow(new Date(notification.created_at), { addSuffix: true })}
-                                                </span>
+                                    <div
+                                        className={`group p-12 rounded-[4rem] border transition-all duration-700 ${
+                                            !isUnread
+                                            ? 'bg-transparent border-white/5 opacity-40 grayscale'
+                                            : 'bg-white/[0.01] border-white/5 hover:border-emerald-500/20 hover:bg-white/[0.02] shadow-3xl shadow-black/40'
+                                        }`}
+                                    >
+                                        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-12">
+                                            <div className="flex-1 min-w-0">
+                                                <div className="flex items-center gap-6 mb-6">
+                                                    <div className={`w-3 h-3 rounded-full ${!isUnread ? 'bg-slate-900' : 'bg-emerald-500 shadow-[0_0_20px_rgba(16,185,129,0.9)] animate-pulse'}`} />
+                                                    <span className="text-[10px] font-black text-slate-800 uppercase tracking-[0.3em]">
+                                                        {formatDistanceToNow(new Date(notification.created_at), { addSuffix: true })}
+                                                    </span>
+                                                </div>
+                                                <h4 className="text-xl font-black text-white uppercase tracking-tight mb-2 group-hover:text-emerald-400 transition-colors">
+                                                    {notification.title}
+                                                </h4>
+                                                <p className="text-sm text-slate-600 font-medium leading-relaxed max-w-6xl group-hover:text-slate-400 transition-colors">
+                                                    {notification.message}
+                                                </p>
                                             </div>
-                                            <h4 className="text-3xl font-black text-white uppercase tracking-tighter mb-4 group-hover:text-emerald-400 transition-colors">
-                                                {notification.title}
-                                            </h4>
-                                            <p className="text-lg text-slate-600 font-medium leading-relaxed max-w-6xl group-hover:text-slate-400 transition-colors">
-                                                {notification.message}
-                                            </p>
-                                        </div>
 
-                                        <div className="flex items-center gap-4 opacity-0 group-hover:opacity-100 transition-all scale-90 group-hover:scale-100">
-                                            <button
-                                                onClick={() => markAsRead(notification.id, notification.is_read)}
-                                                className={`p-7 rounded-[2rem] border transition-all ${
-                                                    notification.is_read 
-                                                    ? 'bg-white/5 border-white/5 text-slate-800' 
-                                                    : 'bg-emerald-500/10 border-emerald-500/30 text-emerald-500 hover:bg-emerald-500/20'
-                                                }`}
-                                                title={notification.is_read ? "Keep as trace" : "Mark as processed"}
-                                            >
-                                                {notification.is_read ? <Mail size={24} /> : <MailOpen size={24} />}
-                                            </button>
-                                            <button
-                                                onClick={() => deleteNotification(notification.id)}
-                                                className="p-7 bg-white/5 border border-white/5 text-slate-800 hover:text-rose-500 hover:border-rose-500/40 rounded-[2rem] transition-all"
-                                                title="Purge transmission"
-                                            >
-                                                <Trash2 size={24} />
-                                            </button>
+                                            <div className="flex items-center gap-4 opacity-0 group-hover:opacity-100 transition-all scale-90 group-hover:scale-100">
+                                                <button
+                                                    onClick={() => markAsRead(notification.id, notification.is_read)}
+                                                    className={`p-7 rounded-[2rem] border transition-all ${
+                                                        !isUnread
+                                                        ? 'bg-white/5 border-white/5 text-slate-800'
+                                                        : 'bg-emerald-500/10 border-emerald-500/30 text-emerald-500 hover:bg-emerald-500/20'
+                                                    }`}
+                                                    title={!isUnread ? "Keep as trace" : "Mark as processed"}
+                                                >
+                                                    {!isUnread ? <Mail size={24} /> : <MailOpen size={24} />}
+                                                </button>
+                                                <button
+                                                    onClick={() => deleteNotification(notification.id)}
+                                                    className="p-7 bg-white/5 border border-white/5 text-slate-800 hover:text-rose-500 hover:border-rose-500/40 rounded-[2rem] transition-all"
+                                                    title="Purge transmission"
+                                                >
+                                                    <Trash2 size={24} />
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </motion.div>
-                        ))}
+                                </motion.div>
+                            );
+                        })}
                     </AnimatePresence>
                 )}
             </div>
