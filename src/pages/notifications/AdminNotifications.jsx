@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Zap, Mail, MailOpen, Trash2, Shield, Globe, Users, 
-  Book, Search, Clock, Database, AlertCircle, RefreshCw, X
+  Book, Search, Clock, Database, AlertCircle, RefreshCw, X,
+  Bell, Send
 } from 'lucide-react';
 import { useAuthContext } from '../../contexts/AuthContext';
 import { useToast } from '../../components/ui/Toast';
@@ -16,6 +17,8 @@ const AdminNotifications = () => {
 
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [filter, setFilter] = useState('all');
+  const [search, setSearch] = useState('');
   const [selectedNotification, setSelectedNotification] = useState(null);
   const [composing, setComposing] = useState(false);
   const [composeData, setComposeData] = useState({
@@ -26,6 +29,13 @@ const AdminNotifications = () => {
     sendEmail: false,
     sendSMS: false
   });
+
+  const handleViewNotification = (notification) => {
+    setSelectedNotification(notification);
+    if (!notification.is_read) {
+      markAsRead(notification.id, false);
+    }
+  };
 
   useEffect(() => {
     if (user?.id) {
@@ -551,4 +561,3 @@ const AdminNotifications = () => {
 };
 
 export default AdminNotifications;
-```
