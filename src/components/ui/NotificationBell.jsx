@@ -5,6 +5,7 @@ import { useAuthContext } from '../../contexts/AuthContext';
 import { apiService } from '../../lib/api';
 import { useToast } from './Toast';
 import { Link } from 'react-router-dom';
+import { formatDistanceToNow } from 'date-fns';
 
 const NotificationBell = () => {
   const { user } = useAuthContext();

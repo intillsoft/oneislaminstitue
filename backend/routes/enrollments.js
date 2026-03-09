@@ -29,35 +29,57 @@ router.get('/', authenticate, async (req, res) => {
         const { role } = req.user;
         const { status, course_id } = req.query;
 
-        let query = supabase
+        // Try the joined query first
+        let { data, error } = await supabase
             .from('applications')
             .select(`
                 *,
-                course:jobs(*, department:companies(name, logo))
+                course:jobs(*)
             `)
+            .or(`user_id.eq.${userId},student_id.eq.${userId}`)
             .order('created_at', { ascending: false });
 
-        // If not admin, filter by user_id
-        if (role !== 'admin') {
-            query = query.eq('user_id', userId);
+        // If joined query fails due to missing relationship, fallback to manual join
+        if (error && error.code === 'PGRST201') {
+            logger.warn('Enrollment join failed, falling back to manual fetch:', error.message);
+            
+            let query = supabase.from('applications').select('*');
+            
+            if (role !== 'admin') {
+                query = query.or(`user_id.eq.${userId},student_id.eq.${userId}`);
+            }
+
+            const { data: apps, error: appError } = await query.order('created_at', { ascending: false });
+            if (appError) throw appError;
+
+            if (apps && apps.length > 0) {
+                const jobIds = [...new Set(apps.map(a => a.job_id || a.course_id).filter(Boolean))];
+                const { data: jobs } = await supabase.from('jobs').select('*').in('id', jobIds);
+                
+                data = apps.map(app => ({
+                    ...app,
+                    course: jobs?.find(j => j.id === (app.job_id || app.course_id)) || null
+                }));
+            } else {
+                data = [];
+            }
+        } else if (error) {
+            throw error;
         }
 
+        // Apply filters in memory
+        let filteredData = data || [];
         if (status) {
-            query = query.eq('status', status);
+            filteredData = filteredData.filter(d => d.status === status);
         }
-
         if (course_id) {
-            query = query.eq('job_id', course_id);
+            filteredData = filteredData.filter(d => (d.job_id === course_id || d.course_id === course_id));
         }
 
-        const { data, error } = await query;
-
-        if (error) throw error;
-
-        res.json({ success: true, data });
+        res.json({ success: true, data: filteredData });
     } catch (error) {
         logger.error('Error fetching enrollments:', error);
-        res.status(500).json({ success: false, error: 'Failed to fetch enrollments' });
+        res.status(500).json({ success: false, error: 'Failed to fetch enrollments', message: error.message });
     }
 });
 

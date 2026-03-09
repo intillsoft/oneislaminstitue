@@ -94,7 +94,8 @@ export const notificationService = {
         return data || {
             email_notifications: true,
             push_notifications: true,
-            sms_notifications: false
+            sms_notifications: false,
+            whatsapp_notifications: false
         };
     },
 
@@ -132,7 +133,7 @@ export const notificationService = {
     },
 
     async create(userId, notification) {
-        const { sender_id, sendInApp = true, sendEmail = false, sendSMS = false, ...rest } = notification;
+        const { sender_id, sendInApp = true, sendEmail = false, sendSMS = false, sendWhatsApp = false, ...rest } = notification;
         let data = null;
         
         if (sendInApp) {
@@ -170,6 +171,13 @@ export const notificationService = {
                         await this.sendSMSNotification(recipientPhone, rest);
                     }
                 }
+
+                if (sendWhatsApp) {
+                    const recipientPhone = user.phone || user.phone_number;
+                    if (recipientPhone) {
+                        await this.sendWhatsAppNotification(recipientPhone, rest);
+                    }
+                }
             }
         } catch (prefError) {
             logger.error('Error handling channel notifications:', prefError);
@@ -186,7 +194,7 @@ export const notificationService = {
             return { success: false, error: 'No user IDs provided' };
         }
 
-        const { title, message, type, sendInApp = true, sendEmail = false, sendSMS = false, ...rest } = notification;
+        const { title, message, type, sendInApp = true, sendEmail = false, sendSMS = false, sendWhatsApp = false, ...rest } = notification;
         let data = null;
 
         if (sendInApp) {
@@ -210,7 +218,7 @@ export const notificationService = {
         }
 
         // Perform parallel alerting for all users
-        if (sendEmail || sendSMS) {
+        if (sendEmail || sendSMS || sendWhatsApp) {
             Promise.all(userIds.map(async (id) => {
                 try {
                     const results = await supabase.from('users').select('email, name, first_name, phone, phone_number').eq('id', id).single();
@@ -222,6 +230,12 @@ export const notificationService = {
                             const phone = results.data.phone || results.data.phone_number;
                             if (phone) {
                                 await this.sendSMSNotification(phone, notification);
+                            }
+                        }
+                        if (sendWhatsApp) {
+                            const phone = results.data.phone || results.data.phone_number;
+                            if (phone) {
+                                await this.sendWhatsAppNotification(phone, notification);
                             }
                         }
                     }
@@ -242,6 +256,16 @@ export const notificationService = {
             await smsService.sendSMS(phone, smsBody);
         } catch (error) {
             logger.error('Error sending SMS notification:', error);
+        }
+    },
+
+    async sendWhatsAppNotification(phone, notification) {
+        const { title, message } = notification;
+        try {
+            const waBody = `*One Islam Institute*\n\n*${title}*\n${message}`;
+            await smsService.sendWhatsApp(phone, waBody);
+        } catch (error) {
+            logger.error('Error sending WhatsApp notification:', error);
         }
     },
 

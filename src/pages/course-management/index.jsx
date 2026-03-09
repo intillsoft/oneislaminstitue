@@ -142,7 +142,8 @@ const CourseManagementPage = ({ activeTab: initialTab = 'create' }) => {
 
       console.log('💎 PERSISTENCE LOG: Processing donation values...', { 
         min: minDonation, 
-        max: maxDonation 
+        max: maxDonation,
+        price: minDonation
       });
 
       // Prepare requirements as a clean array for JSONB
@@ -181,6 +182,8 @@ const CourseManagementPage = ({ activeTab: initialTab = 'create' }) => {
         salary_min: minDonation,
         salary_max: maxDonation,
         price: minDonation,
+        min: minDonation, // Alias
+        max: maxDonation, // Alias
         
         status: status,
         estimated_duration_hours: parseAmount(data.estimated_duration_hours),
@@ -188,7 +191,8 @@ const CourseManagementPage = ({ activeTab: initialTab = 'create' }) => {
         instructor_bio: data.instructor_bio || null,
         ...(user?.id && { 
           created_by: user.id,
-          instructor_id: user.id 
+          instructor_id: user.id,
+          posted_by: user.id // Compatibility for some dashboard filters
         })
       };
 
@@ -205,6 +209,12 @@ const CourseManagementPage = ({ activeTab: initialTab = 'create' }) => {
               .update(currentPayload)
               .eq('id', selectedJob.id)
               .select();
+            
+            // Critical Check: If result is successful but no data returned, it's an RLS/Match failure
+            if (!result.error && (!result.data || result.data.length === 0)) {
+              console.warn('⚠️ ZERO ROWS AFFECTED: Possible RLS Policy rejection or row not found.');
+              throw new Error('Permission Denied: You may not have authority to edit this course, or it does not exist in your cluster.');
+            }
           } else {
             console.log('✨ CREATE MODE: New Course Insertion');
             result = await supabase
@@ -247,6 +257,10 @@ const CourseManagementPage = ({ activeTab: initialTab = 'create' }) => {
 
       const result = await performSaveOperation(jobData);
       const savedJob = Array.isArray(result.data) ? result.data[0] : result.data;
+
+      if (!savedJob) {
+        throw new Error('The operation completed but no data was returned from the database.');
+      }
 
       if (formMode === 'edit' && selectedJob?.id) {
         if (savedJob) setSelectedJob(savedJob);

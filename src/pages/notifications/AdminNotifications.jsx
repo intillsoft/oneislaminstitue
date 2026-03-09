@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Zap, Mail, MailOpen, Trash2, Shield, Globe, Users, 
   Book, Search, Clock, Database, AlertCircle, RefreshCw, X,
-  Bell, Send
+  Bell, Send, MessageSquare
 } from 'lucide-react';
 import { useAuthContext } from '../../contexts/AuthContext';
 import { useToast } from '../../components/ui/Toast';
@@ -27,7 +27,8 @@ const AdminNotifications = () => {
     recipient_type: 'all',
     sendInApp: true,
     sendEmail: false,
-    sendSMS: false
+    sendSMS: false,
+    sendWhatsApp: false
   });
 
   const handleViewNotification = (notification) => {
@@ -99,7 +100,7 @@ const AdminNotifications = () => {
       return;
     }
 
-    if (!composeData.sendInApp && !composeData.sendEmail && !composeData.sendSMS) {
+    if (!composeData.sendInApp && !composeData.sendEmail && !composeData.sendSMS && !composeData.sendWhatsApp) {
       showError('Select delivery channel');
       return;
     }
@@ -146,6 +147,7 @@ const AdminNotifications = () => {
           sendInApp: composeData.sendInApp,
           sendEmail: composeData.sendEmail,
           sendSMS: composeData.sendSMS,
+          sendWhatsApp: composeData.sendWhatsApp,
           data: { 
             recipient_type: composeData.recipient_type,
             sender_id: user.id,
@@ -163,7 +165,8 @@ const AdminNotifications = () => {
         recipient_type: 'everyone',
         sendInApp: true,
         sendEmail: false,
-        sendSMS: false
+        sendSMS: false,
+        sendWhatsApp: false
       });
       setComposing(false);
       loadNotifications();
@@ -310,7 +313,8 @@ const AdminNotifications = () => {
                                         {[
                                             { id: 'sendInApp', label: 'System Alert', icon: Bell },
                                             { id: 'sendEmail', label: 'Email Blast', icon: Mail },
-                                            { id: 'sendSMS', label: 'SMS Pipeline', icon: Send }
+                                            { id: 'sendSMS', label: 'SMS Pipeline', icon: Send },
+                                            { id: 'sendWhatsApp', label: 'WhatsApp Chat', icon: MessageSquare }
                                         ].map(channel => (
                                             <button
                                                 key={channel.id}

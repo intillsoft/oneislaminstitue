@@ -15,24 +15,34 @@ if (accountSid && authToken) {
 }
 
 export const smsService = {
-    async sendSMS(phoneNumber, message) {
+    async sendSMS(phoneNumber, message, options = {}) {
         if (!client) {
             logger.warn(`Twilio not configured. Skipping SMS to ${phoneNumber}`);
             return false;
         }
+
+        const { isWhatsApp = false } = options;
         
         try {
+            // Twilio WhatsApp requires 'whatsapp:' prefix for both 'from' and 'to'
+            const to = isWhatsApp ? `whatsapp:${phoneNumber.replace(/\s/g, '')}` : phoneNumber.replace(/\s/g, '');
+            const from = isWhatsApp ? `whatsapp:${fromPhoneNumber}` : fromPhoneNumber;
+
             const result = await client.messages.create({
                 body: message,
-                from: fromPhoneNumber,
-                to: phoneNumber
+                from: from,
+                to: to
             });
-            logger.info(`Successfully sent SMS to ${phoneNumber}. SID: ${result.sid}`);
+            logger.info(`Successfully sent ${isWhatsApp ? 'WhatsApp' : 'SMS'} to ${phoneNumber}. SID: ${result.sid}`);
             return true;
         } catch (error) {
-            logger.error(`Twilio SMS failed to ${phoneNumber}:`, error);
-            throw new Error(`Failed to send SMS: ${error.message}`);
+            logger.error(`Twilio ${isWhatsApp ? 'WhatsApp' : 'SMS'} failed to ${phoneNumber}:`, error);
+            throw new Error(`Failed to send message: ${error.message}`);
         }
+    },
+
+    async sendWhatsApp(phoneNumber, message) {
+        return this.sendSMS(phoneNumber, message, { isWhatsApp: true });
     },
 
     async verifyPhoneNumber(phoneNumber, code) {

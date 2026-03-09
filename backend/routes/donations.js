@@ -90,13 +90,12 @@ router.post('/paystack/initialize', async (req, res) => {
             email,
             amount: exactAmount,
             currency: finalCurrency,
-            // Add a timestamp as a cache buster and debug info
             callback_url: `${process.env.FRONTEND_URL || 'http://localhost:3000'}/checkout/verify?provider=paystack&courseId=${course_id || ''}&t=${Date.now()}`,
             metadata: {
                 custom_fields: [
                     { display_name: "User ID", variable_name: "user_id", value: user_id },
                     { display_name: "Course ID", variable_name: "course_id", value: course_id },
-                    { display_name: "Type", variable_name: "type", value: type || 'general' },
+                    { display_name: "Type", variable_name: "type", value: type || 'course_enrollment' },
                     { display_name: "Original Amount", variable_name: "original_amount", value: `${amount} ${currency || 'USD'}` }
                 ]
             }
@@ -115,27 +114,35 @@ router.post('/paystack/initialize', async (req, res) => {
             .insert({
                 user_id,
                 course_id: course_id || null,
-                amount: finalAmount, // Record the GHS amount
+                amount: finalAmount, 
                 currency: finalCurrency,
                 provider: 'paystack',
                 status: 'pending',
                 reference,
-                type: type || 'general',
-                title: `Paystack: ${course_id || 'General'}`
+                type: type || 'course_enrollment',
+                title: `Donation: ${course_id || 'Scholarship Support'}`
             });
 
         if (dbError) {
-            console.error('Record donation error:', dbError);
-            return res.status(500).json({ error: 'Failed to initialize transaction record' });
+            logger.error('Database Error initializing donation:', dbError);
+            return res.status(500).json({ error: 'Failed to record transaction initialization', details: dbError.message });
         }
 
         res.json({ authorization_url, reference });
     } catch (error) {
         const errorData = error.response?.data;
-        console.error('Paystack initialization error:', errorData || error.message);
+        logger.error(`Paystack Initialization Failed:`, {
+            email: req.body.email,
+            amount: req.body.amount,
+            error: errorData || error.message
+        });
         
-        const msg = errorData?.message || error.message || 'Paystack checkout failed';
-        res.status(500).json({ error: msg });
+        const msg = errorData?.message || error.message || 'Payment gateway initialization failed';
+        res.status(500).json({ 
+            error: msg, 
+            details: errorData,
+            hint: 'Ensure PAYSTACK_SECRET_KEY is valid and currency is supported by your Paystack account type.' 
+        });
     }
 });
 

@@ -51,11 +51,11 @@ router.post('/', async (req, res) => {
 
             // Handle course enrollment if applicable
             if (type === 'course_enrollment' && courseId && userId) {
-                // Check for existing application
+                // Check for existing enrollment using both possible column names
                 const { data: existingApp } = await supabase
                     .from('applications')
                     .select('id')
-                    .eq('course_id', courseId)
+                    .or(`course_id.eq.${courseId},job_id.eq.${courseId}`)
                     .eq('user_id', userId)
                     .maybeSingle();
 
@@ -64,8 +64,10 @@ router.post('/', async (req, res) => {
                         .from('applications')
                         .insert({
                             course_id: courseId,
+                            job_id: courseId, // Ensure both are populated for legacy/new compatibility
                             user_id: userId,
                             status: 'accepted',
+                            enrolled_at: new RegExp('Z$').test(new Date().toISOString()) ? new Date().toISOString() : new Date().toISOString() + 'Z',
                             notes: 'Auto-enrolled via verified Paystack donation'
                         });
 
@@ -74,6 +76,8 @@ router.post('/', async (req, res) => {
                     } else {
                         logger.info(`User ${userId} auto-enrolled in course ${courseId} via Paystack donation`);
                     }
+                } else {
+                    logger.info(`User ${userId} already enrolled in course ${courseId}, skipping auto-enroll.`);
                 }
             }
 
