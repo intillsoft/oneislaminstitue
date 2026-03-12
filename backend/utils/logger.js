@@ -27,14 +27,24 @@ const logger = winston.createLogger({
     })
   ),
   defaultMeta: { service: 'workflows-backend' },
-  transports: [
-    new winston.transports.File({ filename: 'logs/error.log', level: 'error' }),
-    new winston.transports.File({ filename: 'logs/combined.log' }),
-  ],
 });
 
-// Add console transport in development
-if (process.env.NODE_ENV !== 'production') {
+// Define transports based on environment
+if (process.env.NODE_ENV === 'production' || process.env.VERCEL) {
+  // Use console only in production/Vercel (read-only FS)
+  logger.add(
+    new winston.transports.Console({
+      format: winston.format.combine(
+        winston.format.timestamp(),
+        winston.format.json()
+      ),
+    })
+  );
+} else {
+  // Add file transports and console in development
+  logger.add(new winston.transports.File({ filename: 'logs/error.log', level: 'error' }));
+  logger.add(new winston.transports.File({ filename: 'logs/combined.log' }));
+  
   logger.add(
     new winston.transports.Console({
       format: winston.format.combine(

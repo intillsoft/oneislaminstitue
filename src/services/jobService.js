@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Course Service
  * Service layer for academic course operations
  */
@@ -24,31 +24,30 @@ export const courseService = {
       // Admins and recruiters can see all jobs including drafts
       // Note: RLS policies now allow everyone to view active jobs
       // Use provided role from filters or fallback
+      const userRole = filters.role;
       try {
-        const userRole = filters.role;
-        if (userRole === 'admin' || userRole === 'instructor') {
-            // Admins and instructors see all jobs including drafts
-        } else {
-            const { data: { user } } = await supabase.auth.getUser();
-            if (user) {
-              const { data: profile } = await supabase
-                .from('users')
-                .select('role')
-                .eq('id', user.id)
-                .single();
-              
-              if (!profile || (profile.role !== 'admin' && profile.role !== 'instructor')) {
-                query = query.or('status.eq.active,status.eq.published,status.is.null');
-              }
-            } else {
-              query = query.or('status.eq.active,status.eq.published,status.is.null');
-            }
+        const { data: { user } } = await supabase.auth.getUser();
+        let isAdminOrInstructor = (userRole === 'admin' || userRole === 'instructor');
+        
+        if (!isAdminOrInstructor && user) {
+          const { data: profile } = await supabase
+            .from('users')
+            .select('role')
+            .eq('id', user.id)
+            .single();
+          
+          if (profile && (profile.role === 'admin' || profile.role === 'instructor')) {
+            isAdminOrInstructor = true;
+          }
+        }
+
+        if (!isAdminOrInstructor) {
+          // Public and students only see live content
+          query = query.or('status.eq.published,status.eq.active,status.is.null');
         }
       } catch (authError) {
-        // If auth check fails, default to showing only active/published jobs
-        // This allows the app to work even if auth check fails
-        console.warn('Auth check failed, defaulting to active jobs only:', authError);
-        query = query.or('status.eq.active,status.eq.published,status.is.null');
+        // Fallback for non-auth environments or errors
+        query = query.or('status.eq.published,status.eq.active,status.is.null');
       }
 
       // Apply filters
@@ -358,4 +357,3 @@ export const courseService = {
 // Export jobService as a legacy alias to prevent SyntaxErrors during migration
 export const jobService = courseService;
 export default courseService;
-

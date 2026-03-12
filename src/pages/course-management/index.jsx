@@ -106,6 +106,7 @@ const CourseManagementPage = ({ activeTab: initialTab = 'create' }) => {
         screeningQuestions: []
       },
       publishSettings: { status: 'draft', scheduledDate: null },
+      status: 'draft',
       isFeatured: false
     }
   });
@@ -123,9 +124,17 @@ const CourseManagementPage = ({ activeTab: initialTab = 'create' }) => {
     try {
       const experienceLevel = data.experienceLevel || 'mid';
       const jobType = data.employmentType || 'full-time';
-      let status = data.publishSettings?.status || 'draft';
+      let status = data.status || data.publishSettings?.status || 'draft';
+      if (status === 'publish' || status === 'active') status = 'published';
 
-      if (status === 'publish') status = 'active';
+      // Auto-save protection: If we are auto-saving an already active/published course,
+      // and the state is empty/default, preserve the current status.
+      if (isAutoSave && (formMode === 'edit' || formMode === 'duplicate')) {
+         const currentStatus = selectedJob?.status || 'draft';
+         if ((currentStatus === 'active' || currentStatus === 'published') && status === 'draft') {
+            status = currentStatus;
+         }
+      }
 
       let requirements = '';
       if (data.requirements) {
@@ -189,10 +198,13 @@ const CourseManagementPage = ({ activeTab: initialTab = 'create' }) => {
         estimated_duration_hours: parseAmount(data.estimated_duration_hours),
         difficulty_rating: parseAmount(data.difficulty_rating),
         instructor_bio: data.instructor_bio || null,
+        // Sync ownership metadata with a defensive stance for existing courses
         ...(user?.id && { 
-          created_by: user.id,
-          instructor_id: user.id,
-          posted_by: user.id // Compatibility for some dashboard filters
+          // If creating, set current user as owner. 
+          // If editing, only set if the fields are missing to avoid hijacking others' courses
+          created_by: formMode === 'create' ? user.id : (selectedJob?.created_by || user.id),
+          instructor_id: formMode === 'create' ? user.id : (selectedJob?.instructor_id || user.id),
+          posted_by: formMode === 'create' ? user.id : (selectedJob?.posted_by || user.id)
         })
       };
 
@@ -267,7 +279,13 @@ const CourseManagementPage = ({ activeTab: initialTab = 'create' }) => {
         
         if (!isAutoSave) {
           success('Course updated successfully!');
-          reset(savedJob);
+          // Careful Reset: Map status back to the form structure
+          const resetData = {
+            ...savedJob,
+            status: savedJob.status || 'draft',
+            'publishSettings.status': savedJob.status || 'draft'
+          };
+          reset(resetData);
           loadMetrics();
         } else {
           reset(data, { keepValues: true });
@@ -278,7 +296,7 @@ const CourseManagementPage = ({ activeTab: initialTab = 'create' }) => {
           setSelectedJob(savedJob);
           reset(data, { keepValues: true });
         } else {
-          success(status === 'active' ? 'Course published successfully!' : 'Course draft saved!');
+          success(status === 'published' ? 'Course published successfully!' : 'Course draft saved!');
           handleJobSelect(savedJob);
           setActiveTab('curriculum');
           loadMetrics();
@@ -312,7 +330,8 @@ const CourseManagementPage = ({ activeTab: initialTab = 'create' }) => {
     setValue('requirements', job.requirements || '');
     
     // Ensure publish settings are loaded
-    setValue('publishSettings.status', job.status || 'draft');
+    setValue('status', job.status || 'published');
+    setValue('publishSettings.status', job.status || 'published');
 
     // Ensure arrays stay arrays for the studio's display logic
     const learningOutcomes = Array.isArray(job.learning_outcomes) 

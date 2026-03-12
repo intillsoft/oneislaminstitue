@@ -14,23 +14,26 @@ const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY;
 
 if (!supabaseUrl || !supabaseKey) {
-  throw new Error('❌ SUPABASE CREDENTIALS REQUIRED! Check backend/.env for SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY');
+  console.error('❌ Auth: SUPABASE CREDENTIALS MISSING!');
 }
 
-const supabase = createClient(supabaseUrl, supabaseKey, {
-  auth: {
-    persistSession: false,
-    autoRefreshToken: false,
-  },
-  global: {
-    fetch: (url, options) => {
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 8000); // 8s timeout
-      return fetch(url, { ...options, signal: controller.signal })
-        .finally(() => clearTimeout(timeoutId));
-    }
-  }
-});
+const supabase = (supabaseUrl && supabaseKey)
+  ? createClient(supabaseUrl, supabaseKey, {
+      auth: {
+        persistSession: false,
+        autoRefreshToken: false,
+      },
+      global: {
+        fetch: (url, options) => {
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 8000); // 8s timeout
+          return fetch(url, { ...options, signal: controller.signal })
+            .finally(() => clearTimeout(timeoutId));
+        }
+      }
+    })
+  : null;
+
 
 // In-memory token cache: token -> { user, expiresAt }
 const tokenCache = new Map();
@@ -105,6 +108,11 @@ export async function authenticate(req, res, next) {
     }
 
     const token = authHeader.substring(7);
+
+    if (!supabase) {
+      logger.error('Auth: Supabase client not initialized (missing credentials)');
+      return res.status(503).json({ error: 'Authentication service unavailable' });
+    }
 
     // 1. Check cache first (no network call needed)
     const cachedUser = getCachedUser(token);

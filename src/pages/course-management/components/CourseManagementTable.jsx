@@ -45,9 +45,9 @@ const CourseManagementTable = ({ onEdit, onDuplicate }) => {
 
   const handleToggleStatus = async (job) => {
     try {
-      const currentStatus = job.status || 'active';
+      const currentStatus = job.status || 'published';
       await jobService.toggleCourseStatus(job.id, currentStatus);
-      success(`Course ${currentStatus === 'active' ? 'unpublished' : 'published'} successfully.`);
+      success(`Course ${ (currentStatus === 'active' || currentStatus === 'published') ? 'unpublished' : 'published'} successfully.`);
       loadJobs(); // Reload to reflect changes
     } catch (error) {
       console.error('Error toggling status:', error);
@@ -59,7 +59,7 @@ const CourseManagementTable = ({ onEdit, onDuplicate }) => {
   const filteredJobs = jobs.filter(job => {
     const matchesSearch = job?.title?.toLowerCase()?.includes(searchQuery?.toLowerCase()) ||
                          (job?.subject_area || job?.industry || '')?.toLowerCase()?.includes(searchQuery?.toLowerCase());
-    const jobStatus = job.status || 'active';
+    const jobStatus = job.status || 'published';
     const matchesStatus = statusFilter === 'all' || jobStatus === statusFilter;
     return matchesSearch && matchesStatus;
   });
@@ -176,25 +176,25 @@ const CourseManagementTable = ({ onEdit, onDuplicate }) => {
 
                   <div className="flex flex-wrap items-center gap-3 lg:justify-end">
                     <div className={`px-4 py-1.5 rounded-xl border text-[9px] font-black uppercase tracking-[0.2em] flex items-center gap-2 ${
-                      (job.status || 'active') === 'active' 
+                      (job.status || 'published') === 'active' || job.status === 'published'
                         ? 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20'
                         : 'bg-text-muted/10 text-text-muted border-text-muted/20'
                     }`}>
-                      <div className={`w-1 h-1 rounded-full animate-pulse ${ (job.status || 'active') === 'active' ? 'bg-emerald-500' : 'bg-slate-500'}`} />
-                      {job.status || 'active'}
+                      <div className={`w-1 h-1 rounded-full animate-pulse ${ ((job.status || 'published') === 'active' || job.status === 'published') ? 'bg-emerald-500' : 'bg-slate-500'}`} />
+                      {job.status || 'published'}
                     </div>
 
                     <div className="flex items-center gap-2">
                       <button
                         onClick={() => handleToggleStatus(job)}
                         className={`p-3 bg-white dark:bg-white/5 rounded-xl transition-all border border-border dark:border-white/10 shadow-xl shadow-black/5 ${
-                          (job.status || 'active') === 'active' || job.status === 'published' 
+                          (job.status || 'published') === 'active' || job.status === 'published' 
                             ? 'text-amber-500 hover:bg-amber-500 hover:text-white' 
                             : 'text-emerald-500 hover:bg-emerald-500 hover:text-white'
                         }`}
-                        title={(job.status || 'active') === 'active' || job.status === 'published' ? "Unpublish Course" : "Publish Course"}
+                        title={(job.status || 'published') === 'active' || job.status === 'published' ? "Unpublish Course" : "Publish Course"}
                       >
-                        <Icon name={(job.status || 'active') === 'active' || job.status === 'published' ? "EyeOff" : "Eye"} size={14} />
+                        <Icon name={(job.status || 'published') === 'active' || job.status === 'published' ? "EyeOff" : "Eye"} size={14} />
                       </button>
                       <button
                         onClick={() => onEdit?.(job)}

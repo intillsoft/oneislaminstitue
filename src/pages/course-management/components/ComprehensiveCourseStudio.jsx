@@ -446,6 +446,7 @@ const ComprehensiveCourseStudio = ({
                     <button
                         type="button"
                         onClick={() => {
+                            setValue('status', 'draft', { shouldDirty: true });
                             setValue('publishSettings.status', 'draft', { shouldDirty: true });
                             handleSubmit((data) => onSubmit(data, false))();
                         }}
@@ -457,7 +458,8 @@ const ComprehensiveCourseStudio = ({
                     <button
                         type="button"
                         onClick={() => {
-                            setValue('publishSettings.status', 'active', { shouldDirty: true });
+                            setValue('status', 'published', { shouldDirty: true });
+                            setValue('publishSettings.status', 'published', { shouldDirty: true });
                             handleSubmit((data) => onSubmit(data, false))();
                         }}
                         disabled={!isValid || saveStatus === 'saving'}

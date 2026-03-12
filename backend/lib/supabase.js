@@ -8,13 +8,13 @@ const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY;
 
 if (!supabaseUrl || !supabaseKey) {
-    console.warn('Supabase credentials not found in environment variables');
+    console.error('❌ CRITICAL: Supabase credentials missing from environment variables!');
 }
 
-if (!supabaseUrl || !supabaseKey) {
-    throw new Error('❌ SUPABASE CREDENTIALS REQUIRED! Check backend/.env');
-}
+// Ensure the client doesn't crash if keys are missing (though it will fail later)
+export const supabase = (supabaseUrl && supabaseKey) 
+    ? createClient(supabaseUrl, supabaseKey)
+    : null;
 
-export const supabase = createClient(supabaseUrl, supabaseKey);
 
 export default supabase;

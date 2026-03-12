@@ -199,6 +199,7 @@ export const AuthProvider = ({ children }) => {
     loadingProfile,
     userRole: activeRole || profile?.role || normalizeRole(auth.user?.user_metadata?.role),
     baseRole: profile?.role || normalizeRole(auth.user?.user_metadata?.role),
+    isAdmin: (profile?.role || normalizeRole(auth.user?.user_metadata?.role)) === 'admin',
     activeRole,
     switchActiveRole,
     fetchProfile,

@@ -7,8 +7,16 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const router = express.Router();
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+const stripeKey = process.env.STRIPE_SECRET_KEY || 'sk_test_placeholder';
+const stripe = new Stripe(stripeKey);
 const PAYSTACK_SECRET_KEY = process.env.PAYSTACK_SECRET_KEY;
+
+if (!process.env.STRIPE_SECRET_KEY) {
+    console.warn('⚠️ STRIPE_SECRET_KEY is missing. Stripe payments will fail.');
+}
+if (!PAYSTACK_SECRET_KEY) {
+    console.warn('⚠️ PAYSTACK_SECRET_KEY is missing. Paystack payments will fail.');
+}
 
 // Initialize Stripe Payment Intent
 router.post('/stripe/create-intent', async (req, res) => {
@@ -71,17 +79,39 @@ router.post('/paystack/initialize', async (req, res) => {
             return res.status(400).json({ error: 'Missing required parameters' });
         }
 
+        // Type safety for amount
+        const numericAmount = parseFloat(amount);
+        if (isNaN(numericAmount) || numericAmount <= 0) {
+            return res.status(400).json({ error: 'Invalid donation amount.' });
+        }
+
+        // Check for missing credentials early
+        if (!PAYSTACK_SECRET_KEY) {
+            logger.error('Paystack Initialization Error: PAYSTACK_SECRET_KEY is missing');
+            return res.status(500).json({ 
+                error: 'Payment system misconfigured.', 
+                hint: 'Backend is missing PAYSTACK_SECRET_KEY environment variable.' 
+            });
+        }
+
+        if (!supabase) {
+            logger.error('Paystack Initialization Error: Supabase client not initialized');
+            return res.status(503).json({ 
+                error: 'Database connection unavailable.',
+                hint: 'Check SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY environment variables.'
+            });
+        }
+
         // Paystack integration in GH often only supports GHS. 
         // If USD is requested, we convert to GHS for the payment gateway.
         let finalCurrency = currency || 'GHS';
-        let finalAmount = amount;
+        let finalAmount = numericAmount;
 
         if (finalCurrency === 'USD') {
-            // Check if we should fallback to GHS (Ghanaian accounts often require this)
-            // Using a more accurate rate (approx 14.2 for mid-2024, but keeping it flexible)
+            // Using a more accurate rate (approx 14.2 for mid-2024)
             finalCurrency = 'GHS';
-            finalAmount = amount * 14.2; 
-            console.log(`Paystack: Converting $${amount} USD to ${finalAmount} GHS for GH integration`);
+            finalAmount = numericAmount * 14.2; 
+            console.log(`Paystack: Converting $${numericAmount} USD to ${finalAmount} GHS for GH integration`);
         }
 
         const exactAmount = Math.round(finalAmount * 100); // Paystack uses kobo/pesewas
@@ -96,7 +126,7 @@ router.post('/paystack/initialize', async (req, res) => {
                     { display_name: "User ID", variable_name: "user_id", value: user_id },
                     { display_name: "Course ID", variable_name: "course_id", value: course_id },
                     { display_name: "Type", variable_name: "type", value: type || 'course_enrollment' },
-                    { display_name: "Original Amount", variable_name: "original_amount", value: `${amount} ${currency || 'USD'}` }
+                    { display_name: "Original Amount", variable_name: "original_amount", value: `${numericAmount} ${currency || 'USD'}` }
                 ]
             }
         }, {
@@ -114,8 +144,8 @@ router.post('/paystack/initialize', async (req, res) => {
             .insert({
                 user_id,
                 course_id: course_id || null,
-                amount: finalAmount, 
-                currency: finalCurrency,
+                amount: numericAmount, 
+                currency: currency || 'USD', // Record the actual requested currency in DB
                 provider: 'paystack',
                 status: 'pending',
                 reference,
@@ -134,7 +164,8 @@ router.post('/paystack/initialize', async (req, res) => {
         logger.error(`Paystack Initialization Failed:`, {
             email: req.body.email,
             amount: req.body.amount,
-            error: errorData || error.message
+            error: errorData || error.message,
+            stack: error.stack
         });
         
         const msg = errorData?.message || error.message || 'Payment gateway initialization failed';
