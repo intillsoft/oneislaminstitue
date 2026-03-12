@@ -17,7 +17,14 @@ const router = express.Router();
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY;
 
-const supabase = createClient(supabaseUrl, supabaseKey);
+if (!supabaseUrl || !supabaseKey) {
+    console.error('❌ Enrollments route: SUPABASE credentials missing!');
+}
+
+const supabase = (supabaseUrl && supabaseKey) 
+    ? createClient(supabaseUrl, supabaseKey) 
+    : null;
+
 
 /**
  * GET /api/enrollments
@@ -28,6 +35,11 @@ router.get('/', authenticate, async (req, res) => {
         const userId = req.user.id;
         const { role } = req.user;
         const { status, course_id } = req.query;
+
+        if (!supabase) {
+            logger.error('Enrollment GET: Supabase not initialized (missing credentials)');
+            return res.json({ success: true, data: [], warning: 'Database connection unavailable' });
+        }
 
         // Try the joined query first
         let { data, error } = await supabase

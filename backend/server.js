@@ -36,6 +36,7 @@ import aiProfileRoutes from './routes/aiProfiles.js';
 import aiAgentsRoutes from './routes/aiAgents.js';
 import apiV1Routes from './routes/apiV1.js';
 import paystackWebhookRoutes from './routes/paystackWebhooks.js';
+import testServicesRoutes from './routes/testServices.js';
 // import studentProfileRoutes from './routes/studentProfiles.js';
 import { authenticate } from './middleware/auth.js';
 

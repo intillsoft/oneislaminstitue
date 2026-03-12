@@ -11,6 +11,12 @@ export const notificationService = {
     async getNotifications(userId, options = {}) {
         const { page = 1, limit = 20, read, type, search } = options;
 
+        // Guard: return empty result if supabase is not initialized
+        if (!supabase) {
+            logger.warn('notificationService.getNotifications: supabase client is null');
+            return { notifications: [], total: 0, page, limit };
+        }
+
         let query = supabase
             .from('notifications')
             .select('*', { count: 'exact' })
@@ -44,6 +50,10 @@ export const notificationService = {
 
     async getUnreadCount(userId) {
         try {
+            if (!supabase) {
+                logger.warn('notificationService.getUnreadCount: supabase client is null');
+                return 0;
+            }
             const { count, error } = await supabase
                 .from('notifications')
                 .select('*', { count: 'exact', head: true })
@@ -52,7 +62,6 @@ export const notificationService = {
 
             if (error) {
                 logger.error('Supabase error getting unread count:', error);
-                // Return 0 on error to prevent 500 response
                 return 0;
             }
             return count || 0;
@@ -152,36 +161,42 @@ export const notificationService = {
             data = created;
         }
         
-        // Channels
-        try {
-            const { data: user } = await supabase
-                .from('users')
-                .select('email, name, phone, phone_number')
-                .eq('id', userId)
-                .single();
+        // Fire-and-forget channel delivery — never blocks the main response
+        setImmediate(async () => {
+            try {
+                const { data: publicUser } = await supabase
+                    .from('users')
+                    .select('email, name, first_name, phone, phone_number')
+                    .eq('id', userId)
+                    .single();
 
-            if (user) {
-                if (sendEmail && user.email) {
-                    await this.sendEmailNotification(user, rest);
-                }
-                
-                if (sendSMS) {
-                    const recipientPhone = user.phone || user.phone_number;
-                    if (recipientPhone) {
-                        await this.sendSMSNotification(recipientPhone, rest);
-                    }
+                let userEmail = publicUser?.email;
+                let userName = publicUser?.name || publicUser?.first_name;
+
+                // Best-effort: fall back to auth.users (requires service role key)
+                if (!userEmail && supabase.auth?.admin) {
+                    try {
+                        const { data: authData } = await supabase.auth.admin.getUserById(userId);
+                        userEmail = authData?.user?.email;
+                        userName = userName || authData?.user?.user_metadata?.name || authData?.user?.user_metadata?.full_name;
+                    } catch (_) { /* service role key not available, skip */ }
                 }
 
-                if (sendWhatsApp) {
-                    const recipientPhone = user.phone || user.phone_number;
-                    if (recipientPhone) {
-                        await this.sendWhatsAppNotification(recipientPhone, rest);
-                    }
+                const resolvedUser = { ...(publicUser || {}), email: userEmail, name: userName };
+
+                if (sendEmail && userEmail) {
+                    await this.sendEmailNotification(resolvedUser, rest);
+                } else if (sendEmail) {
+                    logger.warn(`No email found for user ${userId}, skipping email delivery`);
                 }
+
+                const recipientPhone = publicUser?.phone || publicUser?.phone_number;
+                if (sendSMS && recipientPhone) await this.sendSMSNotification(recipientPhone, rest);
+                if (sendWhatsApp && recipientPhone) await this.sendWhatsAppNotification(recipientPhone, rest);
+            } catch (err) {
+                logger.error('Channel delivery error for user', userId, err.message);
             }
-        } catch (prefError) {
-            logger.error('Error handling channel notifications:', prefError);
-        }
+        });
 
         return data;
     },
@@ -217,32 +232,44 @@ export const notificationService = {
             data = created;
         }
 
-        // Perform parallel alerting for all users
+        // Fire-and-forget channel delivery for all users
         if (sendEmail || sendSMS || sendWhatsApp) {
-            Promise.all(userIds.map(async (id) => {
-                try {
-                    const results = await supabase.from('users').select('email, name, first_name, phone, phone_number').eq('id', id).single();
-                    if (results.data) {
-                        if (sendEmail && results.data.email) {
-                            await this.sendEmailNotification(results.data, notification);
+            setImmediate(() => {
+                Promise.all(userIds.map(async (id) => {
+                    try {
+                        const { data: publicUser } = await supabase
+                            .from('users')
+                            .select('email, name, first_name, phone, phone_number')
+                            .eq('id', id)
+                            .single();
+
+                        let userEmail = publicUser?.email;
+                        let userName = publicUser?.name || publicUser?.first_name;
+
+                        if (!userEmail && supabase.auth?.admin) {
+                            try {
+                                const { data: authData } = await supabase.auth.admin.getUserById(id);
+                                userEmail = authData?.user?.email;
+                                userName = userName || authData?.user?.user_metadata?.name || authData?.user?.user_metadata?.full_name;
+                            } catch (_) { /* no service role, skip */ }
                         }
-                        if (sendSMS) {
-                            const phone = results.data.phone || results.data.phone_number;
-                            if (phone) {
-                                await this.sendSMSNotification(phone, notification);
-                            }
+
+                        const resolvedUser = { ...(publicUser || {}), email: userEmail, name: userName };
+
+                        if (sendEmail && userEmail) {
+                            await this.sendEmailNotification(resolvedUser, notification);
+                        } else if (sendEmail) {
+                            logger.warn(`No email for user ${id}, skipping`);
                         }
-                        if (sendWhatsApp) {
-                            const phone = results.data.phone || results.data.phone_number;
-                            if (phone) {
-                                await this.sendWhatsAppNotification(phone, notification);
-                            }
-                        }
+
+                        const phone = publicUser?.phone || publicUser?.phone_number;
+                        if (sendSMS && phone) await this.sendSMSNotification(phone, notification);
+                        if (sendWhatsApp && phone) await this.sendWhatsAppNotification(phone, notification);
+                    } catch (err) {
+                        logger.error(`Channel delivery failed for user ${id}:`, err.message);
                     }
-                } catch (err) {
-                    logger.error(`Channel alerting failed for user ${id}:`, err);
-                }
-            })).catch(err => logger.error('Parallel alert error:', err));
+                })).catch(err => logger.error('Broadcast channel error:', err.message));
+            });
         }
 
         return data;

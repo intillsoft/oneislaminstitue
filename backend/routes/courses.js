@@ -20,10 +20,10 @@ if (!supabaseUrl || !supabaseKey) {
   logger.error('Missing Supabase credentials in courses.js');
 }
 
-const supabase = createClient(
-  supabaseUrl || 'https://placeholder.supabase.co',
-  supabaseKey || 'placeholder-key'
-);
+const supabase = (supabaseUrl && supabaseKey)
+  ? createClient(supabaseUrl, supabaseKey)
+  : null;
+
 
 /**
  * GET /api/courses
@@ -42,6 +42,11 @@ router.get('/', optionalAuth, async (req, res) => {
       remote,
       sort = 'newest'
     } = req.query;
+
+    if (!supabase) {
+      logger.error('GET /api/courses: Supabase not initialized');
+      return res.json({ success: true, data: [], total: 0, warning: 'Database unavailable' });
+    }
 
     let query = supabase
       .from('jobs') // Keep table name as 'jobs' for now until migration
