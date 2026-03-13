@@ -161,8 +161,8 @@ export const notificationService = {
             data = created;
         }
         
-        // Fire-and-forget channel delivery — never blocks the main response
-        setImmediate(async () => {
+        // Channel delivery
+        if (sendEmail || sendSMS || sendWhatsApp) {
             try {
                 const { data: publicUser } = await supabase
                     .from('users')
@@ -196,7 +196,7 @@ export const notificationService = {
             } catch (err) {
                 logger.error('Channel delivery error for user', userId, err.message);
             }
-        });
+        }
 
         return data;
     },
@@ -232,44 +232,42 @@ export const notificationService = {
             data = created;
         }
 
-        // Fire-and-forget channel delivery for all users
+        // Channel delivery for all users
         if (sendEmail || sendSMS || sendWhatsApp) {
-            setImmediate(() => {
-                Promise.all(userIds.map(async (id) => {
-                    try {
-                        const { data: publicUser } = await supabase
-                            .from('users')
-                            .select('email, name, first_name, phone, phone_number')
-                            .eq('id', id)
-                            .single();
+            await Promise.all(userIds.map(async (id) => {
+                try {
+                    const { data: publicUser } = await supabase
+                        .from('users')
+                        .select('email, name, first_name, phone, phone_number')
+                        .eq('id', id)
+                        .single();
 
-                        let userEmail = publicUser?.email;
-                        let userName = publicUser?.name || publicUser?.first_name;
+                    let userEmail = publicUser?.email;
+                    let userName = publicUser?.name || publicUser?.first_name;
 
-                        if (!userEmail && supabase.auth?.admin) {
-                            try {
-                                const { data: authData } = await supabase.auth.admin.getUserById(id);
-                                userEmail = authData?.user?.email;
-                                userName = userName || authData?.user?.user_metadata?.name || authData?.user?.user_metadata?.full_name;
-                            } catch (_) { /* no service role, skip */ }
-                        }
-
-                        const resolvedUser = { ...(publicUser || {}), email: userEmail, name: userName };
-
-                        if (sendEmail && userEmail) {
-                            await this.sendEmailNotification(resolvedUser, notification);
-                        } else if (sendEmail) {
-                            logger.warn(`No email for user ${id}, skipping`);
-                        }
-
-                        const phone = publicUser?.phone || publicUser?.phone_number;
-                        if (sendSMS && phone) await this.sendSMSNotification(phone, notification);
-                        if (sendWhatsApp && phone) await this.sendWhatsAppNotification(phone, notification);
-                    } catch (err) {
-                        logger.error(`Channel delivery failed for user ${id}:`, err.message);
+                    if (!userEmail && supabase.auth?.admin) {
+                        try {
+                            const { data: authData } = await supabase.auth.admin.getUserById(id);
+                            userEmail = authData?.user?.email;
+                            userName = userName || authData?.user?.user_metadata?.name || authData?.user?.user_metadata?.full_name;
+                        } catch (_) { /* no service role, skip */ }
                     }
-                })).catch(err => logger.error('Broadcast channel error:', err.message));
-            });
+
+                    const resolvedUser = { ...(publicUser || {}), email: userEmail, name: userName };
+
+                    if (sendEmail && userEmail) {
+                        await this.sendEmailNotification(resolvedUser, notification);
+                    } else if (sendEmail) {
+                        logger.warn(`No email for user ${id}, skipping`);
+                    }
+
+                    const phone = publicUser?.phone || publicUser?.phone_number;
+                    if (sendSMS && phone) await this.sendSMSNotification(phone, notification);
+                    if (sendWhatsApp && phone) await this.sendWhatsAppNotification(phone, notification);
+                } catch (err) {
+                    logger.error(`Channel delivery failed for user ${id}:`, err.message);
+                }
+            })).catch(err => logger.error('Broadcast channel error:', err.message));
         }
 
         return data;
