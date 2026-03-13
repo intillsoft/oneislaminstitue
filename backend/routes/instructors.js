@@ -12,10 +12,13 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const router = express.Router();
-const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY;
+if (!supabaseUrl || !supabaseKey) {
+  logger.warn('❌ Instructors: SUPABASE CREDENTIALS MISSING!');
+}
 
-const supabase = createClient(supabaseUrl, supabaseKey);
+const supabase = (supabaseUrl && supabaseKey)
+  ? createClient(supabaseUrl, supabaseKey)
+  : null;
 
 // Middleware to check instructor role
 const requireInstructor = async (req, res, next) => {

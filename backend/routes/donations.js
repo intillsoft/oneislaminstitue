@@ -12,10 +12,12 @@ const stripe = new Stripe(stripeKey);
 const PAYSTACK_SECRET_KEY = process.env.PAYSTACK_SECRET_KEY;
 
 if (!process.env.STRIPE_SECRET_KEY) {
-    console.warn('⚠️ STRIPE_SECRET_KEY is missing. Stripe payments will fail.');
+    logger.warn('⚠️ STRIPE_SECRET_KEY is missing. Stripe payments will fail.');
 }
 if (!PAYSTACK_SECRET_KEY) {
-    console.warn('⚠️ PAYSTACK_SECRET_KEY is missing. Paystack payments will fail.');
+    logger.warn('⚠️ PAYSTACK_SECRET_KEY is missing. Paystack payments will fail.');
+} else if (!PAYSTACK_SECRET_KEY.startsWith('sk_')) {
+    logger.warn('⚠️ PAYSTACK_SECRET_KEY appears to be invalid (should start with sk_).');
 }
 
 // Initialize Stripe Payment Intent
@@ -116,11 +118,17 @@ router.post('/paystack/initialize', async (req, res) => {
 
         const exactAmount = Math.round(finalAmount * 100); // Paystack uses kobo/pesewas
         
+        // Define callback URL — ensuring it's accessible in production
+        const baseUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
+        const callbackUrl = `${baseUrl.replace(/\/$/, '')}/checkout/verify?provider=paystack&courseId=${course_id || ''}&t=${Date.now()}`;
+
+        logger.info(`Paystack: Initializing transaction for ${email} - ${finalAmount} ${finalCurrency}`);
+
         const response = await axios.post('https://api.paystack.co/transaction/initialize', {
             email,
             amount: exactAmount,
             currency: finalCurrency,
-            callback_url: `${process.env.FRONTEND_URL || 'http://localhost:3000'}/checkout/verify?provider=paystack&courseId=${course_id || ''}&t=${Date.now()}`,
+            callback_url: callbackUrl,
             metadata: {
                 custom_fields: [
                     { display_name: "User ID", variable_name: "user_id", value: user_id },

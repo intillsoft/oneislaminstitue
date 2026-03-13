@@ -14,13 +14,12 @@ const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY;
 
 if (!supabaseUrl || !supabaseKey) {
-  logger.error('Missing Supabase credentials in email.js. Check SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY in .env');
+  logger.warn('❌ Email: SUPABASE CREDENTIALS MISSING!');
 }
 
-const supabase = createClient(
-  supabaseUrl || 'https://placeholder.supabase.co',
-  supabaseKey || 'placeholder-key'
-);
+const supabase = (supabaseUrl && supabaseKey)
+  ? createClient(supabaseUrl, supabaseKey)
+  : null;
 
 /**
  * Get email preferences

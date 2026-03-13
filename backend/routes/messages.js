@@ -7,11 +7,16 @@ const router = express.Router();
 import { authenticate } from '../middleware/auth.js';
 import { supabase } from '../lib/supabase.js';
 import aiService from '../services/aiProviderService.js';
+import logger from '../utils/logger.js';
 
 // 1. Get all conversations for current user
 router.get('/conversations', authenticate, async (req, res) => {
   try {
     const userId = req.user.id;
+
+    if (!supabase) {
+      return res.status(503).json({ success: false, error: 'Database service unavailable' });
+    }
 
     const { data, error } = await supabase
       .from('messaging_conversations')
@@ -24,15 +29,12 @@ router.get('/conversations', authenticate, async (req, res) => {
 
     if (error) throw error;
 
-    // Optionally: Fetch profiles for participants (excluding current user)
-    // For now, returning conversation objects
-
     res.json({
       success: true,
       data: data || []
     });
   } catch (error) {
-    console.error('Error fetching conversations:', error);
+    logger.error('Error fetching conversations:', error);
     res.status(500).json({ success: false, error: error.message });
   }
 });

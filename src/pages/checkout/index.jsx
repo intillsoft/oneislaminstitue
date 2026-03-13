@@ -188,7 +188,8 @@ const Checkout = () => {
             window.location.href = data.authorization_url;
         } catch (error) {
             console.error('Paystack error:', error);
-            showError('Could not initialize payment gateway.');
+            const errorMsg = error.response?.data?.error || error.message || 'Could not initialize payment gateway.';
+            showError(errorMsg);
             setIsProcessing(false);
         }
     };
