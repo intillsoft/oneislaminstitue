@@ -134,6 +134,7 @@ app.use('/api/notifications', authenticate, notificationRoutes);
 app.use('/api/subscriptions', subscriptionRoutes);
 app.use('/api/profile', authenticate, profileRoutes); // Generic user profile
 app.use('/api/ai-agents', authenticate, aiAgentsRoutes);
+app.use('/api/test-services', authenticate, testServicesRoutes);
 
 // Specialized AI/Discovery Services
 app.use('/api/course-crawler', authenticate, courseCrawlerRoutes);
