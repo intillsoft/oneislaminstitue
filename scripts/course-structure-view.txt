@@ -1,0 +1,790 @@
+Course: The Compass - A Complete Introduction to Islam
+  Module: Module 1: The Big Questions
+    1: Lesson 1.1: Who Am I? The Human Search for Identity
+    2: Lesson 1.2: Why Am I Here? The Purpose of Existence
+    3: Lesson 1.3: Where Am I Going? The Journey Ahead
+    4: Lesson 1.4: What is Truth? How Do We Know?
+    5: Lesson 1.5: Is There a God? The Human Intuition
+    6: Lesson 1.6: Why Do People Believe Differently?
+    7: Lesson 1.7: What is Success in This Life?
+    8: Lesson 1.8: What Happens After Death?
+    9: Lesson 1.9: How Do I Find Answers?
+    10: Lesson 1.10: Weekly Integration Task – The Big Questions
+  Module: Module 2: The Concept of God
+    1: Lesson 1: Who is Allah? Introducing the Creator
+    2: Lesson 2: Tawheed Explained - The Heart of Islamic Belief
+    3: Lesson 3: The 99 Names - An Overview
+    4: Lesson 4: Attributes of Allah - Understanding Divine Perfection
+    5: Lesson 5: Attributes of God - Understanding Divine Perfection
+    6: Lesson 6: Attributes of Allah - Understanding Divine Perfection
+    7: Lesson 7: Attributes of Allah - Understanding Divine Perfection
+    8: Lesson 8: Attributes of Allah - Understanding Divine Perfection
+    9: Lesson 9: Understanding Divine Attributes - A Deeper Exploration
+    10: Lesson 10: Weekly Integration Task - Recognizing God in My Day
+  Module: Module 3: The Divine Message
+    1: Lesson 1: What is the Quran? An Introduction
+    2: Lesson 2: How the Quran Was Revealed
+    3: Lesson 3: The Structure of the Quran
+    4: Lesson 4: Unveiling the Quran's Wisdom - A Thematic Exploration
+    5: Lesson 5: Deep Dive - Expanding on The Divine Message
+    6: Lesson 6: Understanding Tafsir and Its Role in Interpreting the Quran
+    7: Lesson 7: The Quran's Guidance on Social Justice
+    8: Lesson 8: The Quran's Guidance on Social Justice
+    9: Lesson 9: Unveiling the Quran's Universal Message
+    10: Lesson 10: Weekly Integration Task - Reading Quran with Fresh Eyes
+  Module: Module 4: The Final Messenger
+    1: Lesson 1: Who Was Muhammad (PBUH)? His Character Before Prophethood
+    2: Lesson 2: The Prophetic Mission - An Overview
+    3: Lesson 3: Why He Matters Today
+    4: Lesson 4: Deep Dive - Expanding on The Final Messenger
+    5: Lesson 5: The Prophet's Leadership and Legacy
+    6: Lesson 6: The Prophet's Leadership - A Study of His Conquests and Diplomacy
+    7: Lesson 7: Miracles and Signs of the Final Messenger
+    8: Lesson 8: The Prophetic Leadership - Guidance from the Quran and Hadith
+    9: Lesson 9: The Prophet's Legacy - A Beacon of Guidance
+    10: Lesson 10: Weekly Integration Task - Emulating One Prophetic Trait
+  Module: Module 5: The Path of Practice
+    1: Lesson 1: The Shahada - The Doorway to Islam
+    2: Lesson 2: Salah - The Daily Connection
+    3: Lesson 3: Zakat, Sawm, Hajj - The Other Pillars
+    4: Lesson 4: Cultivating Mindfulness - The Practice of Dhikr
+    5: Lesson 5: Cultivating Mindfulness in Daily Life
+    6: Lesson 6: Deep Dive - Expanding on The Path of Practice
+    7: Lesson 7: Cultivating Mindfulness in Daily Life
+    8: Lesson 8: Cultivating Mindfulness in Daily Life
+    9: Lesson 9: Cultivating Mindfulness in Daily Life
+    10: Lesson 10: Weekly Integration Task - One Small Practice, One Week
+  Module: Module 6: The Journey Ahead
+    1: Lesson 1: How to Grow After This Course
+    2: Lesson 2: Common Challenges for Beginners
+    3: Lesson 3: Resources for Lifelong Learning
+    4: Lesson 4: Deep Dive - Expanding on The Journey Ahead
+    5: Lesson 5: Deep Dive - Expanding on The Journey Ahead
+    6: Lesson 6: Deep Dive - Expanding on The Journey Ahead
+    7: Lesson 7: Deep Dive - Expanding on The Journey Ahead
+    8: Lesson 8: Deep Dive - Expanding on The Journey Ahead
+    9: Lesson 9: Deep Dive - Expanding on The Journey Ahead
+    10: Lesson 10: Weekly Integration Task - My 90-Day Growth Plan
+
+Course: The Divine Speech - Understanding the Quran
+  Module: Module 1: What Makes the Quran Unique?
+    1: Lesson 1: The Linguistic Miracle
+    2: Lesson 2: Literary Excellence and Inimitability
+    3: Lesson 3: Preservation Through History
+    4: Lesson 4: Deep Dive - Expanding on What Makes the Quran Unique?
+    5: Lesson 5: Deep Dive - Expanding on What Makes the Quran Unique?
+    6: Lesson 6: Deep Dive - Expanding on What Makes the Quran Unique?
+    7: Lesson 7: Deep Dive - Expanding on What Makes the Quran Unique?
+    8: Lesson 8: Deep Dive - Expanding on What Makes the Quran Unique?
+    9: Lesson 9: Deep Dive - Expanding on What Makes the Quran Unique?
+    10: Lesson 10: Weekly Integration Task - Listening with Intention
+  Module: Module 2: The Revelation Journey
+    1: Lesson 1: How Revelation Came
+    2: Lesson 2: The First Revelation
+    3: Lesson 3: Gradual Revelation - Wisdom and Purpose
+    4: Lesson 4: Deep Dive - Expanding on The Revelation Journey
+    5: Lesson 5: Deep Dive - Expanding on The Revelation Journey
+    6: Lesson 6: Deep Dive - Expanding on The Revelation Journey
+    7: Lesson 7: Deep Dive - Expanding on The Revelation Journey
+    8: Lesson 8: Deep Dive - Expanding on The Revelation Journey
+    9: Lesson 9: Deep Dive - Expanding on The Revelation Journey
+    10: Lesson 10: Weekly Integration Task - Reflecting on Revelation
+  Module: Module 3: Makkan vs. Madinan Revelations
+    1: Lesson 1: Characteristics of Makkan Surahs
+    2: Lesson 2: Characteristics of Madinan Surahs
+    3: Lesson 3: Why the Distinction Matters
+    4: Lesson 4: Deep Dive - Expanding on Makkan vs. Madinan Revelations
+    5: Lesson 5: Deep Dive - Expanding on Makkan vs. Madinan Revelations
+    6: Lesson 6: Deep Dive - Expanding on Makkan vs. Madinan Revelations
+    7: Lesson 7: Deep Dive - Expanding on Makkan vs. Madinan Revelations
+    8: Lesson 8: Deep Dive - Expanding on Makkan vs. Madinan Revelations
+    9: Lesson 9: Deep Dive - Expanding on Makkan vs. Madinan Revelations
+    10: Lesson 10: Weekly Integration Task - Comparing Two Surahs
+  Module: Module 4: The Structure of the Quran
+    1: Lesson 1: Understanding Surahs and Ayahs
+    2: Lesson 2: The Names of the Surahs
+    3: Lesson 3: The Logical Flow of the Quran
+    4: Lesson 4: Deep Dive - Expanding on The Structure of the Quran
+    5: Lesson 5: Deep Dive - Expanding on The Structure of the Quran
+    6: Lesson 6: Deep Dive - Expanding on The Structure of the Quran
+    7: Lesson 7: Deep Dive - Expanding on The Structure of the Quran
+    8: Lesson 8: Deep Dive - Expanding on The Structure of the Quran
+    9: Lesson 9: Deep Dive - Expanding on The Structure of the Quran
+    10: Lesson 10: Weekly Integration Task - Mapping a Juz
+  Module: Module 5: Stories of the Prophets in the Quran
+    1: Lesson 1: The Purpose of Prophetic Stories
+    2: Lesson 2: Adam, Noah, and Abraham (AS)
+    3: Lesson 3: Moses and Jesus (AS)
+    4: Lesson 4: Deep Dive - Expanding on Stories of the Prophets in the Quran
+    5: Lesson 5: Deep Dive - Expanding on Stories of the Prophets in the Quran
+    6: Lesson 6: Deep Dive - Expanding on Stories of the Prophets in the Quran
+    7: Lesson 7: Deep Dive - Expanding on Stories of the Prophets in the Quran
+    8: Lesson 8: Deep Dive - Expanding on Stories of the Prophets in the Quran
+    9: Lesson 9: Deep Dive - Expanding on Stories of the Prophets in the Quran
+    10: Lesson 10: Weekly Integration Task - Lessons from One Prophet's Story
+  Module: Module 6: The Hereafter in the Quran
+    1: Lesson 1: Descriptions of Paradise
+    2: Lesson 2: Descriptions of Hell
+    3: Lesson 3: The Day of Judgment
+    4: Lesson 4: Deep Dive - Expanding on The Hereafter in the Quran
+    5: Lesson 5: Deep Dive - Expanding on The Hereafter in the Quran
+    6: Lesson 6: Deep Dive - Expanding on The Hereafter in the Quran
+    7: Lesson 7: Deep Dive - Expanding on The Hereafter in the Quran
+    8: Lesson 8: Deep Dive - Expanding on The Hereafter in the Quran
+    9: Lesson 9: Deep Dive - Expanding on The Hereafter in the Quran
+    10: Lesson 10: Weekly Integration Task - Living with the Hereafter in Mind
+  Module: Module 7: Laws and Guidance in the Quran
+    1: Lesson 1: Worship and Ritual Laws
+    2: Lesson 2: Family and Social Laws
+    3: Lesson 3: Economic and Justice Principles
+    4: Lesson 4: Deep Dive - Expanding on Laws and Guidance in the Quran
+    5: Lesson 5: Deep Dive - Expanding on Laws and Guidance in the Quran
+    6: Lesson 6: Deep Dive - Expanding on Laws and Guidance in the Quran
+    7: Lesson 7: Deep Dive - Expanding on Laws and Guidance in the Quran
+    8: Lesson 8: Deep Dive - Expanding on Laws and Guidance in the Quran
+    9: Lesson 9: Deep Dive - Expanding on Laws and Guidance in the Quran
+    10: Lesson 10: Weekly Integration Task - Identifying a Quranic Value in My Life
+  Module: Module 8: How to Approach the Quran Today
+    1: Lesson 1: Etiquettes of Reading
+    2: Lesson 2: Finding Personal Connection
+    3: Lesson 3: Answering Common Questions
+    4: Lesson 4: Deep Dive - Expanding on How to Approach the Quran Today
+    5: Lesson 5: Deep Dive - Expanding on How to Approach the Quran Today
+    6: Lesson 6: Deep Dive - Expanding on How to Approach the Quran Today
+    7: Lesson 7: Deep Dive - Expanding on How to Approach the Quran Today
+    8: Lesson 8: Deep Dive - Expanding on How to Approach the Quran Today
+    9: Lesson 9: Deep Dive - Expanding on How to Approach the Quran Today
+    10: Lesson 10: Weekly Integration Task - My Quran Journey Plan
+
+Course: The Prophet's Way - Life & Lessons from Muhammad (PBUH)
+  Module: Module 1: The World Before Him
+    1: Lesson 1: Arabia Before Islam - Social Context
+    2: Lesson 2: Religious Landscape of the Time
+    3: Lesson 3: Political and Economic Conditions
+    4: Lesson 4: Deep Dive - Expanding on The World Before Him
+    5: Lesson 5: Deep Dive - Expanding on The World Before Him
+    6: Lesson 6: Deep Dive - Expanding on The World Before Him
+    7: Lesson 7: Deep Dive - Expanding on The World Before Him
+    8: Lesson 8: Deep Dive - Expanding on The World Before Him
+    9: Lesson 9: Deep Dive - Expanding on The World Before Him
+    10: Lesson 10: Weekly Integration Task - Understanding Pre-Islamic Mindset
+  Module: Module 2: The Early Years
+    1: Lesson 1: Birth and Childhood
+    2: Lesson 2: Youth and Young Adulthood
+    3: Lesson 3: Marriage to Khadijah
+    4: Lesson 4: Deep Dive - Expanding on The Early Years
+    5: Lesson 5: Deep Dive - Expanding on The Early Years
+    6: Lesson 6: Deep Dive - Expanding on The Early Years
+    7: Lesson 7: Deep Dive - Expanding on The Early Years
+    8: Lesson 8: Deep Dive - Expanding on The Early Years
+    9: Lesson 9: Deep Dive - Expanding on The Early Years
+    10: Lesson 10: Weekly Integration Task - Emulating "Al-Amin" in Daily Life
+  Module: Module 3: The Revelation
+    1: Lesson 1: The First Revelation in the Cave
+    2: Lesson 2: The Pause and Return of Revelation
+    3: Lesson 3: The Command to Preach
+    4: Lesson 4: Deep Dive - Expanding on The Revelation
+    5: Lesson 5: Deep Dive - Expanding on The Revelation
+    6: Lesson 6: Deep Dive - Expanding on The Revelation
+    7: Lesson 7: Deep Dive - Expanding on The Revelation
+    8: Lesson 8: Deep Dive - Expanding on The Revelation
+    9: Lesson 9: Deep Dive - Expanding on The Revelation
+    10: Lesson 10: Weekly Integration Task - Responding to a Call
+  Module: Module 4: The Meccan Period
+    1: Lesson 1: Public Preaching and Early Converts
+    2: Lesson 2: Persecution and Patience
+    3: Lesson 3: The Year of Sorrow
+    4: Lesson 4: Deep Dive - Expanding on The Meccan Period
+    5: Lesson 5: Deep Dive - Expanding on The Meccan Period
+    6: Lesson 6: Deep Dive - Expanding on The Meccan Period
+    7: Lesson 7: Deep Dive - Expanding on The Meccan Period
+    8: Lesson 8: Deep Dive - Expanding on The Meccan Period
+    9: Lesson 9: Deep Dive - Expanding on The Meccan Period
+    10: Lesson 10: Weekly Integration Task - Finding Strength in Hardship
+  Module: Module 5: The Migration (Hijrah)
+    1: Lesson 1: The Plan to Migrate
+    2: Lesson 2: The Cave of Thawr
+    3: Lesson 3: Arrival in Medina
+    4: Lesson 4: Deep Dive - Expanding on The Migration (Hijrah)
+    5: Lesson 5: Deep Dive - Expanding on The Migration (Hijrah)
+    6: Lesson 6: Deep Dive - Expanding on The Migration (Hijrah)
+    7: Lesson 7: Deep Dive - Expanding on The Migration (Hijrah)
+    8: Lesson 8: Deep Dive - Expanding on The Migration (Hijrah)
+    9: Lesson 9: Deep Dive - Expanding on The Migration (Hijrah)
+    10: Lesson 10: Weekly Integration Task - Leaving Something for Allah
+  Module: Module 6: The Madinan Period
+    1: Lesson 1: Building a Community
+    2: Lesson 2: Key Battles and Their Lessons
+    3: Lesson 3: Treaties and Diplomacy
+    4: Lesson 4: Deep Dive - Expanding on The Madinan Period
+    5: Lesson 5: Deep Dive - Expanding on The Madinan Period
+    6: Lesson 6: Deep Dive - Expanding on The Madinan Period
+    7: Lesson 7: Deep Dive - Expanding on The Madinan Period
+    8: Lesson 8: Deep Dive - Expanding on The Madinan Period
+    9: Lesson 9: Deep Dive - Expanding on The Madinan Period
+    10: Lesson 10: Weekly Integration Task - Leadership Lessons
+  Module: Module 7: The Final Years
+    1: Lesson 1: The Farewell Pilgrimage
+    2: Lesson 2: The Final Sermon
+    3: Lesson 3: His Final Days and Death
+    4: Lesson 4: Deep Dive - Expanding on The Final Years
+    5: Lesson 5: Deep Dive - Expanding on The Final Years
+    6: Lesson 6: Deep Dive - Expanding on The Final Years
+    7: Lesson 7: Deep Dive - Expanding on The Final Years
+    8: Lesson 8: Deep Dive - Expanding on The Final Years
+    9: Lesson 9: Deep Dive - Expanding on The Final Years
+    10: Lesson 10: Weekly Integration Task - Living His Final Advice
+  Module: Module 8: The Legacy
+    1: Lesson 1: His Character Summarized
+    2: Lesson 2: How He Is Loved
+    3: Lesson 3: Universal Lessons for Today
+    4: Lesson 4: Deep Dive - Expanding on The Legacy
+    5: Lesson 5: Deep Dive - Expanding on The Legacy
+    6: Lesson 6: Deep Dive - Expanding on The Legacy
+    7: Lesson 7: Deep Dive - Expanding on The Legacy
+    8: Lesson 8: Deep Dive - Expanding on The Legacy
+    9: Lesson 9: Deep Dive - Expanding on The Legacy
+    10: Lesson 10: Weekly Integration Task - One Trait to Carry Forward
+
+Course: The Architecture of Prayer - Mastering Salah with Mindfulness
+  Module: Module 1: Why We Pray
+    1: Lesson 1: The Purpose of Creation
+    2: Lesson 2: The Night Journey Story
+    3: Lesson 3: The Spiritual Benefits of Prayer
+    4: Lesson 4: Deep Dive - Expanding on Why We Pray
+    5: Lesson 5: Deep Dive - Expanding on Why We Pray
+    6: Lesson 6: Deep Dive - Expanding on Why We Pray
+    7: Lesson 7: Deep Dive - Expanding on Why We Pray
+    8: Lesson 8: Deep Dive - Expanding on Why We Pray
+    9: Lesson 9: Deep Dive - Expanding on Why We Pray
+    10: Lesson 10: Weekly Integration Task - 7-Day Prayer Intention Journal
+  Module: Module 2: The Outer Form
+    1: Lesson 1: Purity (Wudu) - Inner and Outer Cleanliness
+    2: Lesson 2: Conditions of Prayer (Shuruut)
+    3: Lesson 3: Physical Movements (Arkaan)
+    4: Lesson 4: Deep Dive - Expanding on The Outer Form
+    5: Lesson 5: Deep Dive - Expanding on The Outer Form
+    6: Lesson 6: Deep Dive - Expanding on The Outer Form
+    7: Lesson 7: Deep Dive - Expanding on The Outer Form
+    8: Lesson 8: Deep Dive - Expanding on The Outer Form
+    9: Lesson 9: Deep Dive - Expanding on The Outer Form
+    10: Lesson 10: Weekly Integration Task - Perfecting One Prayer Physically
+  Module: Module 3: The Inner Dimensions
+    1: Lesson 1: What is Khushu?
+    2: Lesson 2: The State of the Heart in Prayer
+    3: Lesson 3: Presence Before God
+    4: Lesson 4: Deep Dive - Expanding on The Inner Dimensions
+    5: Lesson 5: Deep Dive - Expanding on The Inner Dimensions
+    6: Lesson 6: Deep Dive - Expanding on The Inner Dimensions
+    7: Lesson 7: Deep Dive - Expanding on The Inner Dimensions
+    8: Lesson 8: Deep Dive - Expanding on The Inner Dimensions
+    9: Lesson 9: Deep Dive - Expanding on The Inner Dimensions
+    10: Lesson 10: Weekly Integration Task - Visualizing Standing Before Allah
+  Module: Module 4: Understanding What We Say
+    1: Lesson 1: Word-by-Word Meaning of Al-Fatihah
+    2: Lesson 2: Meanings of Tashahhud
+    3: Lesson 3: Meanings of Common Supplications
+    4: Lesson 4: Deep Dive - Expanding on Understanding What We Say
+    5: Lesson 5: Deep Dive - Expanding on Understanding What We Say
+    6: Lesson 6: Deep Dive - Expanding on Understanding What We Say
+    7: Lesson 7: Deep Dive - Expanding on Understanding What We Say
+    8: Lesson 8: Deep Dive - Expanding on Understanding What We Say
+    9: Lesson 9: Deep Dive - Expanding on Understanding What We Say
+    10: Lesson 10: Weekly Integration Task - Reciting with Understanding
+  Module: Module 5: Praying with Presence
+    1: Lesson 1: Techniques to Combat Distractions
+    2: Lesson 2: The Prophet's Way of Praying
+    3: Lesson 3: Connecting Each Movement to Meaning
+    4: Lesson 4: Deep Dive - Expanding on Praying with Presence
+    5: Lesson 5: Deep Dive - Expanding on Praying with Presence
+    6: Lesson 6: Deep Dive - Expanding on Praying with Presence
+    7: Lesson 7: Deep Dive - Expanding on Praying with Presence
+    8: Lesson 8: Deep Dive - Expanding on Praying with Presence
+    9: Lesson 9: Deep Dive - Expanding on Praying with Presence
+    10: Lesson 10: Weekly Integration Task - Distraction Tracking Journal
+  Module: Module 6: Beyond the Obligatory
+    1: Lesson 1: Sunnah Prayers - The Voluntary Gems
+    2: Lesson 2: Night Prayer (Tahajjud)
+    3: Lesson 3: Duha and Other Voluntary Prayers
+    4: Lesson 4: Deep Dive - Expanding on Beyond the Obligatory
+    5: Lesson 5: Deep Dive - Expanding on Beyond the Obligatory
+    6: Lesson 6: Deep Dive - Expanding on Beyond the Obligatory
+    7: Lesson 7: Deep Dive - Expanding on Beyond the Obligatory
+    8: Lesson 8: Deep Dive - Expanding on Beyond the Obligatory
+    9: Lesson 9: Deep Dive - Expanding on Beyond the Obligatory
+    10: Lesson 10: Weekly Integration Task - Adding One Sunnah Prayer
+
+Course: The 99 - Living the Names of Allah
+  Module: Module 1: The Names of Majesty
+    1: Lesson 1: Ar-Rahman - The Most Merciful
+    2: Lesson 2: Ar-Raheem - The Especially Merciful
+    3: Lesson 3: Al-Malik - The King, The Sovereign
+    4: Lesson 4: Deep Dive - Expanding on The Names of Majesty
+    5: Lesson 5: Deep Dive - Expanding on The Names of Majesty
+    6: Lesson 6: Deep Dive - Expanding on The Names of Majesty
+    7: Lesson 7: Deep Dive - Expanding on The Names of Majesty
+    8: Lesson 8: Deep Dive - Expanding on The Names of Majesty
+    9: Lesson 9: Deep Dive - Expanding on The Names of Majesty
+    10: Lesson 10: Weekly Integration Task - Embodying Mercy
+  Module: Module 2: The Names of Power
+    1: Lesson 1: Al-Aziz - The Almighty
+    2: Lesson 2: Al-Jabbar - The Compeller
+    3: Lesson 3: Al-Mutakabbir - The Supreme
+    4: Lesson 4: Deep Dive - Expanding on The Names of Power
+    5: Lesson 5: Deep Dive - Expanding on The Names of Power
+    6: Lesson 6: Deep Dive - Expanding on The Names of Power
+    7: Lesson 7: Deep Dive - Expanding on The Names of Power
+    8: Lesson 8: Deep Dive - Expanding on The Names of Power
+    9: Lesson 9: Deep Dive - Expanding on The Names of Power
+    10: Lesson 10: Weekly Integration Task - Finding Strength in Him
+  Module: Module 3: The Names of Knowledge
+    1: Lesson 1: Al-Aleem - The All-Knowing
+    2: Lesson 2: Al-Khabir - The All-Aware
+    3: Lesson 3: As-Samee - The All-Hearing
+    4: Lesson 4: Deep Dive - Expanding on The Names of Knowledge
+    5: Lesson 5: Deep Dive - Expanding on The Names of Knowledge
+    6: Lesson 6: Deep Dive - Expanding on The Names of Knowledge
+    7: Lesson 7: Deep Dive - Expanding on The Names of Knowledge
+    8: Lesson 8: Deep Dive - Expanding on The Names of Knowledge
+    9: Lesson 9: Deep Dive - Expanding on The Names of Knowledge
+    10: Lesson 10: Weekly Integration Task - Living with Awareness
+  Module: Module 4: The Names of Mercy
+    1: Lesson 1: Al-Ghafoor - The Forgiving
+    2: Lesson 2: At-Tawwab - The Accepter of Repentance
+    3: Lesson 3: Al-Wadud - The Loving
+    4: Lesson 4: Deep Dive - Expanding on The Names of Mercy
+    5: Lesson 5: Deep Dive - Expanding on The Names of Mercy
+    6: Lesson 6: Deep Dive - Expanding on The Names of Mercy
+    7: Lesson 7: Deep Dive - Expanding on The Names of Mercy
+    8: Lesson 8: Deep Dive - Expanding on The Names of Mercy
+    9: Lesson 9: Deep Dive - Expanding on The Names of Mercy
+    10: Lesson 10: Weekly Integration Task - Practicing Forgiveness
+  Module: Module 5: The Names of Provision
+    1: Lesson 1: Ar-Razzaq - The Provider
+    2: Lesson 2: Al-Fattah - The Opener
+    3: Lesson 3: Al-Wahhab - The Giver of Gifts
+    4: Lesson 4: Deep Dive - Expanding on The Names of Provision
+    5: Lesson 5: Deep Dive - Expanding on The Names of Provision
+    6: Lesson 6: Deep Dive - Expanding on The Names of Provision
+    7: Lesson 7: Deep Dive - Expanding on The Names of Provision
+    8: Lesson 8: Deep Dive - Expanding on The Names of Provision
+    9: Lesson 9: Deep Dive - Expanding on The Names of Provision
+    10: Lesson 10: Weekly Integration Task - Trusting in Provision
+  Module: Module 6: The Names of Guidance
+    1: Lesson 1: Al-Hadi - The Guide
+    2: Lesson 2: An-Nur - The Light
+    3: Lesson 3: Ar-Rashid - The Righteous Teacher
+    4: Lesson 4: Deep Dive - Expanding on The Names of Guidance
+    5: Lesson 5: Deep Dive - Expanding on The Names of Guidance
+    6: Lesson 6: Deep Dive - Expanding on The Names of Guidance
+    7: Lesson 7: Deep Dive - Expanding on The Names of Guidance
+    8: Lesson 8: Deep Dive - Expanding on The Names of Guidance
+    9: Lesson 9: Deep Dive - Expanding on The Names of Guidance
+    10: Lesson 10: Weekly Integration Task - Seeking Guidance
+  Module: Module 7: The Names of Justice
+    1: Lesson 1: Al-Adl - The Just
+    2: Lesson 2: Al-Hakam - The Judge
+    3: Lesson 3: Al-Muqsit - The Equitable
+    4: Lesson 4: Deep Dive - Expanding on The Names of Justice
+    5: Lesson 5: Deep Dive - Expanding on The Names of Justice
+    6: Lesson 6: Deep Dive - Expanding on The Names of Justice
+    7: Lesson 7: Deep Dive - Expanding on The Names of Justice
+    8: Lesson 8: Deep Dive - Expanding on The Names of Justice
+    9: Lesson 9: Deep Dive - Expanding on The Names of Justice
+    10: Lesson 10: Weekly Integration Task - Being Just
+  Module: Module 8: The Names of Protection
+    1: Lesson 1: Al-Hafiz - The Preserver
+    2: Lesson 2: Ar-Raqeeb - The Watchful
+    3: Lesson 3: Al-Wakeel - The Disposer of Affairs
+    4: Lesson 4: Deep Dive - Expanding on The Names of Protection
+    5: Lesson 5: Deep Dive - Expanding on The Names of Protection
+    6: Lesson 6: Deep Dive - Expanding on The Names of Protection
+    7: Lesson 7: Deep Dive - Expanding on The Names of Protection
+    8: Lesson 8: Deep Dive - Expanding on The Names of Protection
+    9: Lesson 9: Deep Dive - Expanding on The Names of Protection
+    10: Lesson 10: Weekly Integration Task - Trusting in Protection
+  Module: Module 9: The Names of Beauty
+    1: Lesson 1: Al-Jameel - The Beautiful
+    2: Lesson 2: Al-Badi - The Incomparable Originator
+    3: Lesson 3: Al-Lateef - The Subtle
+    4: Lesson 4: Deep Dive - Expanding on The Names of Beauty
+    5: Lesson 5: Deep Dive - Expanding on The Names of Beauty
+    6: Lesson 6: Deep Dive - Expanding on The Names of Beauty
+    7: Lesson 7: Deep Dive - Expanding on The Names of Beauty
+    8: Lesson 8: Deep Dive - Expanding on The Names of Beauty
+    9: Lesson 9: Deep Dive - Expanding on The Names of Beauty
+    10: Lesson 10: Weekly Integration Task - Seeing Beauty
+  Module: Module 10: Living the Names
+    1: Lesson 1: Making Dua with the Names
+    2: Lesson 2: A Lifestyle of Divine Consciousness
+    3: Lesson 3: Review and Integration
+    4: Lesson 4: Deep Dive - Expanding on Living the Names
+    5: Lesson 5: Deep Dive - Expanding on Living the Names
+    6: Lesson 6: Deep Dive - Expanding on Living the Names
+    7: Lesson 7: Deep Dive - Expanding on Living the Names
+    8: Lesson 8: Deep Dive - Expanding on Living the Names
+    9: Lesson 9: Deep Dive - Expanding on Living the Names
+    10: Lesson 10: Weekly Integration Task - My 99 Names Companion Plan
+
+Course: Living Halal - Navigating Modern Life with Confidence
+  Module: Module 1: The Philosophy of Halal
+    1: Lesson 1: Why Does God Permit and Forbid?
+    2: Lesson 2: The Concept of Purity
+    3: Lesson 3: Mercy and Wisdom Behind Rulings
+    4: Lesson 4: Deep Dive - Expanding on The Philosophy of Halal
+    5: Lesson 5: Deep Dive - Expanding on The Philosophy of Halal
+    6: Lesson 6: Deep Dive - Expanding on The Philosophy of Halal
+    7: Lesson 7: Deep Dive - Expanding on The Philosophy of Halal
+    8: Lesson 8: Deep Dive - Expanding on The Philosophy of Halal
+    9: Lesson 9: Deep Dive - Expanding on The Philosophy of Halal
+    10: Lesson 10: Weekly Integration Task - Reflecting on Personal Choices
+  Module: Module 2: Food and Drink
+    1: Lesson 1: What is Halal Meat? Zabihah Explained
+    2: Lesson 2: Alcohol and Intoxicants
+    3: Lesson 3: Additives, Gelatin, and Processed Foods
+    4: Lesson 4: Deep Dive - Expanding on Food and Drink
+    5: Lesson 5: Deep Dive - Expanding on Food and Drink
+    6: Lesson 6: Deep Dive - Expanding on Food and Drink
+    7: Lesson 7: Deep Dive - Expanding on Food and Drink
+    8: Lesson 8: Deep Dive - Expanding on Food and Drink
+    9: Lesson 9: Deep Dive - Expanding on Food and Drink
+    10: Lesson 10: Weekly Integration Task - Reading Food Labels
+  Module: Module 3: Finance and Earnings
+    1: Lesson 1: What is Riba? Understanding Interest
+    2: Lesson 2: Halal vs. Haram Income
+    3: Lesson 3: Mortgages, Loans, and Credit Cards
+    4: Lesson 4: Deep Dive - Expanding on Finance and Earnings
+    5: Lesson 5: Deep Dive - Expanding on Finance and Earnings
+    6: Lesson 6: Deep Dive - Expanding on Finance and Earnings
+    7: Lesson 7: Deep Dive - Expanding on Finance and Earnings
+    8: Lesson 8: Deep Dive - Expanding on Finance and Earnings
+    9: Lesson 9: Deep Dive - Expanding on Finance and Earnings
+    10: Lesson 10: Weekly Integration Task - Reviewing Personal Finances
+  Module: Module 4: Work and Business Ethics
+    1: Lesson 1: Honesty in Business
+    2: Lesson 2: Contracts and Agreements
+    3: Lesson 3: Navigating Workplace Challenges
+    4: Lesson 4: Deep Dive - Expanding on Work and Business Ethics
+    5: Lesson 5: Deep Dive - Expanding on Work and Business Ethics
+    6: Lesson 6: Deep Dive - Expanding on Work and Business Ethics
+    7: Lesson 7: Deep Dive - Expanding on Work and Business Ethics
+    8: Lesson 8: Deep Dive - Expanding on Work and Business Ethics
+    9: Lesson 9: Deep Dive - Expanding on Work and Business Ethics
+    10: Lesson 10: Weekly Integration Task - Ethical Workplace Review
+  Module: Module 5: Social Life and Relationships
+    1: Lesson 1: Gender Interactions
+    2: Lesson 2: Friendships and Community
+    3: Lesson 3: Non-Muslim Family and Neighbors
+    4: Lesson 4: Deep Dive - Expanding on Social Life and Relationships
+    5: Lesson 5: Deep Dive - Expanding on Social Life and Relationships
+    6: Lesson 6: Deep Dive - Expanding on Social Life and Relationships
+    7: Lesson 7: Deep Dive - Expanding on Social Life and Relationships
+    8: Lesson 8: Deep Dive - Expanding on Social Life and Relationships
+    9: Lesson 9: Deep Dive - Expanding on Social Life and Relationships
+    10: Lesson 10: Weekly Integration Task - Building Bridges
+  Module: Module 6: Personal Development
+    1: Lesson 1: Time Management as Worship
+    2: Lesson 2: Health, Fitness, and the Body
+    3: Lesson 3: Mental Health and Faith
+    4: Lesson 4: Deep Dive - Expanding on Personal Development
+    5: Lesson 5: Deep Dive - Expanding on Personal Development
+    6: Lesson 6: Deep Dive - Expanding on Personal Development
+    7: Lesson 7: Deep Dive - Expanding on Personal Development
+    8: Lesson 8: Deep Dive - Expanding on Personal Development
+    9: Lesson 9: Deep Dive - Expanding on Personal Development
+    10: Lesson 10: Weekly Integration Task - Personal Wellness Plan
+
+Course: The Inner Citadel - Purifying the Heart (Tazkiyah)
+  Module: Module 1: The Cardiology of the Soul
+    1: Lesson 1: The Concept of the Heart in Islam
+    2: Lesson 2: The Healthy vs. The Sick Heart
+    3: Lesson 3: Why Purification Matters
+    4: Lesson 4: Deep Dive - Expanding on The Cardiology of the Soul
+    5: Lesson 5: Deep Dive - Expanding on The Cardiology of the Soul
+    6: Lesson 6: Deep Dive - Expanding on The Cardiology of the Soul
+    7: Lesson 7: Deep Dive - Expanding on The Cardiology of the Soul
+    8: Lesson 8: Deep Dive - Expanding on The Cardiology of the Soul
+    9: Lesson 9: Deep Dive - Expanding on The Cardiology of the Soul
+    10: Lesson 10: Weekly Integration Task - Heart Check-Up
+  Module: Module 2: The Disease of Arrogance
+    1: Lesson 1: What is Arrogance?
+    2: Lesson 2: Signs and Symptoms
+    3: Lesson 3: The Prophet's Warning
+    4: Lesson 4: Deep Dive - Expanding on The Disease of Arrogance
+    5: Lesson 5: Deep Dive - Expanding on The Disease of Arrogance
+    6: Lesson 6: Deep Dive - Expanding on The Disease of Arrogance
+    7: Lesson 7: Deep Dive - Expanding on The Disease of Arrogance
+    8: Lesson 8: Deep Dive - Expanding on The Disease of Arrogance
+    9: Lesson 9: Deep Dive - Expanding on The Disease of Arrogance
+    10: Lesson 10: Weekly Integration Task - Humility Practice
+  Module: Module 3: The Disease of Envy
+    1: Lesson 1: Understanding Hasad
+    2: Lesson 2: The Fire That Consumes Good Deeds
+    3: Lesson 3: How to Neutralize Envy
+    4: Lesson 4: Deep Dive - Expanding on The Disease of Envy
+    5: Lesson 5: Deep Dive - Expanding on The Disease of Envy
+    6: Lesson 6: Deep Dive - Expanding on The Disease of Envy
+    7: Lesson 7: Deep Dive - Expanding on The Disease of Envy
+    8: Lesson 8: Deep Dive - Expanding on The Disease of Envy
+    9: Lesson 9: Deep Dive - Expanding on The Disease of Envy
+    10: Lesson 10: Weekly Integration Task - Celebrating Others
+  Module: Module 4: The Disease of Love of Wealth
+    1: Lesson 1: Greed and Stinginess
+    2: Lesson 2: Materialism in Modern Times
+    3: Lesson 3: Contentment (Qana'a)
+    4: Lesson 4: Deep Dive - Expanding on The Disease of Love of Wealth
+    5: Lesson 5: Deep Dive - Expanding on The Disease of Love of Wealth
+    6: Lesson 6: Deep Dive - Expanding on The Disease of Love of Wealth
+    7: Lesson 7: Deep Dive - Expanding on The Disease of Love of Wealth
+    8: Lesson 8: Deep Dive - Expanding on The Disease of Love of Wealth
+    9: Lesson 9: Deep Dive - Expanding on The Disease of Love of Wealth
+    10: Lesson 10: Weekly Integration Task - Practicing Generosity
+  Module: Module 5: The Disease of Show-Off
+    1: Lesson 1: What is Riya?
+    2: Lesson 2: Hidden Shirk
+    3: Lesson 3: Sincerity (Ikhlas)
+    4: Lesson 4: Deep Dive - Expanding on The Disease of Show-Off
+    5: Lesson 5: Deep Dive - Expanding on The Disease of Show-Off
+    6: Lesson 6: Deep Dive - Expanding on The Disease of Show-Off
+    7: Lesson 7: Deep Dive - Expanding on The Disease of Show-Off
+    8: Lesson 8: Deep Dive - Expanding on The Disease of Show-Off
+    9: Lesson 9: Deep Dive - Expanding on The Disease of Show-Off
+    10: Lesson 10: Weekly Integration Task - Secret Acts of Good
+  Module: Module 6: The Disease of Anger
+    1: Lesson 1: When Anger Controls You
+    2: Lesson 2: The Prophet's Guidance on Anger
+    3: Lesson 3: Practical Anger Management
+    4: Lesson 4: Deep Dive - Expanding on The Disease of Anger
+    5: Lesson 5: Deep Dive - Expanding on The Disease of Anger
+    6: Lesson 6: Deep Dive - Expanding on The Disease of Anger
+    7: Lesson 7: Deep Dive - Expanding on The Disease of Anger
+    8: Lesson 8: Deep Dive - Expanding on The Disease of Anger
+    9: Lesson 9: Deep Dive - Expanding on The Disease of Anger
+    10: Lesson 10: Weekly Integration Task - Anger Journal
+  Module: Module 7: The Disease of the Tongue
+    1: Lesson 1: Backbiting and Slander
+    2: Lesson 2: Lying and Excessive Speech
+    3: Lesson 3: Guarding the Tongue
+    4: Lesson 4: Deep Dive - Expanding on The Disease of the Tongue
+    5: Lesson 5: Deep Dive - Expanding on The Disease of the Tongue
+    6: Lesson 6: Deep Dive - Expanding on The Disease of the Tongue
+    7: Lesson 7: Deep Dive - Expanding on The Disease of the Tongue
+    8: Lesson 8: Deep Dive - Expanding on The Disease of the Tongue
+    9: Lesson 9: Deep Dive - Expanding on The Disease of the Tongue
+    10: Lesson 10: Weekly Integration Task - Speech Audit
+  Module: Module 8: The Cure - A Spiritual Plan
+    1: Lesson 1: Daily Practices for a Healthy Heart
+    2: Lesson 2: Muhasabah (Self-Accounting)
+    3: Lesson 3: Dhikr as Medicine
+    4: Lesson 4: Deep Dive - Expanding on The Cure - A Spiritual Plan
+    5: Lesson 5: Deep Dive - Expanding on The Cure - A Spiritual Plan
+    6: Lesson 6: Deep Dive - Expanding on The Cure - A Spiritual Plan
+    7: Lesson 7: Deep Dive - Expanding on The Cure - A Spiritual Plan
+    8: Lesson 8: Deep Dive - Expanding on The Cure - A Spiritual Plan
+    9: Lesson 9: Deep Dive - Expanding on The Cure - A Spiritual Plan
+    10: Lesson 10: Weekly Integration Task - My Heart Care Routine
+
+Course: Sacred Connections - Marriage & Family in Islam
+  Module: Module 1: The Purpose of Marriage
+    1: Lesson 1: Why Marry in Islam?
+    2: Lesson 2: Spiritual, Emotional, and Social Purposes
+    3: Lesson 3: Marriage as Half of Faith
+    4: Lesson 4: Deep Dive - Expanding on The Purpose of Marriage
+    5: Lesson 5: Deep Dive - Expanding on The Purpose of Marriage
+    6: Lesson 6: Deep Dive - Expanding on The Purpose of Marriage
+    7: Lesson 7: Deep Dive - Expanding on The Purpose of Marriage
+    8: Lesson 8: Deep Dive - Expanding on The Purpose of Marriage
+    9: Lesson 9: Deep Dive - Expanding on The Purpose of Marriage
+    10: Lesson 10: Weekly Integration Task - Reflecting on Intentions
+  Module: Module 2: Finding a Spouse
+    1: Lesson 1: Qualities to Seek
+    2: Lesson 2: The Process in Islam
+    3: Lesson 3: Istikhara and Involving Families
+    4: Lesson 4: Deep Dive - Expanding on Finding a Spouse
+    5: Lesson 5: Deep Dive - Expanding on Finding a Spouse
+    6: Lesson 6: Deep Dive - Expanding on Finding a Spouse
+    7: Lesson 7: Deep Dive - Expanding on Finding a Spouse
+    8: Lesson 8: Deep Dive - Expanding on Finding a Spouse
+    9: Lesson 9: Deep Dive - Expanding on Finding a Spouse
+    10: Lesson 10: Weekly Integration Task - Creating a Personal Profile
+  Module: Module 3: The Marriage Contract
+    1: Lesson 1: Rights and Responsibilities
+    2: Lesson 2: Understanding Mahr
+    3: Lesson 3: The Wedding and Starting Strong
+    4: Lesson 4: Deep Dive - Expanding on The Marriage Contract
+    5: Lesson 5: Deep Dive - Expanding on The Marriage Contract
+    6: Lesson 6: Deep Dive - Expanding on The Marriage Contract
+    7: Lesson 7: Deep Dive - Expanding on The Marriage Contract
+    8: Lesson 8: Deep Dive - Expanding on The Marriage Contract
+    9: Lesson 9: Deep Dive - Expanding on The Marriage Contract
+    10: Lesson 10: Weekly Integration Task - Discussing Expectations
+  Module: Module 4: Building a Loving Home
+    1: Lesson 1: The Prophet as a Husband
+    2: Lesson 2: Love Languages in Islam
+    3: Lesson 3: Communication and Conflict Resolution
+    4: Lesson 4: Deep Dive - Expanding on Building a Loving Home
+    5: Lesson 5: Deep Dive - Expanding on Building a Loving Home
+    6: Lesson 6: Deep Dive - Expanding on Building a Loving Home
+    7: Lesson 7: Deep Dive - Expanding on Building a Loving Home
+    8: Lesson 8: Deep Dive - Expanding on Building a Loving Home
+    9: Lesson 9: Deep Dive - Expanding on Building a Loving Home
+    10: Lesson 10: Weekly Integration Task - One Loving Action Daily
+  Module: Module 5: Raising Righteous Children
+    1: Lesson 1: Children as a Trust
+    2: Lesson 2: Tarbiyah - Spiritual Upbringing
+    3: Lesson 3: Teaching Love of God and the Prophet
+    4: Lesson 4: Deep Dive - Expanding on Raising Righteous Children
+    5: Lesson 5: Deep Dive - Expanding on Raising Righteous Children
+    6: Lesson 6: Deep Dive - Expanding on Raising Righteous Children
+    7: Lesson 7: Deep Dive - Expanding on Raising Righteous Children
+    8: Lesson 8: Deep Dive - Expanding on Raising Righteous Children
+    9: Lesson 9: Deep Dive - Expanding on Raising Righteous Children
+    10: Lesson 10: Weekly Integration Task - Quality Time Challenge
+  Module: Module 6: Navigating Challenges
+    1: Lesson 1: In-Laws and Extended Family
+    2: Lesson 2: Financial and Intimate Challenges
+    3: Lesson 3: When Things Go Wrong - Seeking Help
+    4: Lesson 4: Deep Dive - Expanding on Navigating Challenges
+    5: Lesson 5: Deep Dive - Expanding on Navigating Challenges
+    6: Lesson 6: Deep Dive - Expanding on Navigating Challenges
+    7: Lesson 7: Deep Dive - Expanding on Navigating Challenges
+    8: Lesson 8: Deep Dive - Expanding on Navigating Challenges
+    9: Lesson 9: Deep Dive - Expanding on Navigating Challenges
+    10: Lesson 10: Weekly Integration Task - Building Resilience
+
+Course: The Hereafter - Death, Judgment, and Eternal Life
+  Module: Module 1: The Certainty of Death
+    1: Lesson 1: Why We Forget Death
+    2: Lesson 2: The Wisdom in Death
+    3: Lesson 3: Remembering the End
+    4: Lesson 4: Deep Dive - Expanding on The Certainty of Death
+    5: Lesson 5: Deep Dive - Expanding on The Certainty of Death
+    6: Lesson 6: Deep Dive - Expanding on The Certainty of Death
+    7: Lesson 7: Deep Dive - Expanding on The Certainty of Death
+    8: Lesson 8: Deep Dive - Expanding on The Certainty of Death
+    9: Lesson 9: Deep Dive - Expanding on The Certainty of Death
+    10: Lesson 10: Weekly Integration Task - Reflecting on Mortality
+  Module: Module 2: The Moment of Death
+    1: Lesson 1: What Happens at Death?
+    2: Lesson 2: The Angel of Death
+    3: Lesson 3: The Good and Bad Death
+    4: Lesson 4: Deep Dive - Expanding on The Moment of Death
+    5: Lesson 5: Deep Dive - Expanding on The Moment of Death
+    6: Lesson 6: Deep Dive - Expanding on The Moment of Death
+    7: Lesson 7: Deep Dive - Expanding on The Moment of Death
+    8: Lesson 8: Deep Dive - Expanding on The Moment of Death
+    9: Lesson 9: Deep Dive - Expanding on The Moment of Death
+    10: Lesson 10: Weekly Integration Task - Preparing a Will
+  Module: Module 3: The Grave
+    1: Lesson 1: Life Between Death and Resurrection
+    2: Lesson 2: The Questioning (Munkar and Nakir)
+    3: Lesson 3: Blessings and Punishments
+    4: Lesson 4: Deep Dive - Expanding on The Grave
+    5: Lesson 5: Deep Dive - Expanding on The Grave
+    6: Lesson 6: Deep Dive - Expanding on The Grave
+    7: Lesson 7: Deep Dive - Expanding on The Grave
+    8: Lesson 8: Deep Dive - Expanding on The Grave
+    9: Lesson 9: Deep Dive - Expanding on The Grave
+    10: Lesson 10: Weekly Integration Task - Visiting the Graveyard
+  Module: Module 4: The Day of Judgment
+    1: Lesson 1: The Signs of the Hour
+    2: Lesson 2: The Resurrection and Gathering
+    3: Lesson 3: The Books, Scale, and Bridge
+    4: Lesson 4: Deep Dive - Expanding on The Day of Judgment
+    5: Lesson 5: Deep Dive - Expanding on The Day of Judgment
+    6: Lesson 6: Deep Dive - Expanding on The Day of Judgment
+    7: Lesson 7: Deep Dive - Expanding on The Day of Judgment
+    8: Lesson 8: Deep Dive - Expanding on The Day of Judgment
+    9: Lesson 9: Deep Dive - Expanding on The Day of Judgment
+    10: Lesson 10: Weekly Integration Task - Accountability Practice
+  Module: Module 5: Paradise
+    1: Lesson 1: Descriptions of Jannah
+    2: Lesson 2: Its Gates, Levels, and Joys
+    3: Lesson 3: The Greatest Reward - Seeing Allah
+    4: Lesson 4: Deep Dive - Expanding on Paradise
+    5: Lesson 5: Deep Dive - Expanding on Paradise
+    6: Lesson 6: Deep Dive - Expanding on Paradise
+    7: Lesson 7: Deep Dive - Expanding on Paradise
+    8: Lesson 8: Deep Dive - Expanding on Paradise
+    9: Lesson 9: Deep Dive - Expanding on Paradise
+    10: Lesson 10: Weekly Integration Task - Working for Jannah
+  Module: Module 6: Hellfire
+    1: Lesson 1: Descriptions of Jahannam
+    2: Lesson 2: Its Severity and Purpose
+    3: Lesson 3: Seeking Refuge and Mercy
+    4: Lesson 4: Deep Dive - Expanding on Hellfire
+    5: Lesson 5: Deep Dive - Expanding on Hellfire
+    6: Lesson 6: Deep Dive - Expanding on Hellfire
+    7: Lesson 7: Deep Dive - Expanding on Hellfire
+    8: Lesson 8: Deep Dive - Expanding on Hellfire
+    9: Lesson 9: Deep Dive - Expanding on Hellfire
+    10: Lesson 10: Weekly Integration Task - Gratitude for Guidance
+
+Course: Faith in Focus - Answering Life's Big Questions
+  Module: Module 1: The Problem of Evil
+    1: Lesson 1: Why Does Suffering Exist?
+    2: Lesson 2: Islamic Responses to the Problem
+    3: Lesson 3: The Purpose of Trials
+    4: Lesson 4: Deep Dive - Expanding on The Problem of Evil
+    5: Lesson 5: Deep Dive - Expanding on The Problem of Evil
+    6: Lesson 6: Deep Dive - Expanding on The Problem of Evil
+    7: Lesson 7: Deep Dive - Expanding on The Problem of Evil
+    8: Lesson 8: Deep Dive - Expanding on The Problem of Evil
+    9: Lesson 9: Deep Dive - Expanding on The Problem of Evil
+    10: Lesson 10: Weekly Integration Task - Finding Meaning in Hardship
+  Module: Module 2: Islam and Science
+    1: Lesson 1: Evolution and Creation
+    2: Lesson 2: The Big Bang and Quranic Miracles
+    3: Lesson 3: Harmony or Conflict?
+    4: Lesson 4: Deep Dive - Expanding on Islam and Science
+    5: Lesson 5: Deep Dive - Expanding on Islam and Science
+    6: Lesson 6: Deep Dive - Expanding on Islam and Science
+    7: Lesson 7: Deep Dive - Expanding on Islam and Science
+    8: Lesson 8: Deep Dive - Expanding on Islam and Science
+    9: Lesson 9: Deep Dive - Expanding on Islam and Science
+    10: Lesson 10: Weekly Integration Task - Exploring Scientific Verses
+  Module: Module 3: Women in Islam
+    1: Lesson 1: Common Misconceptions
+    2: Lesson 2: Rights and Spirituality of Women
+    3: Lesson 3: Historical and Modern Examples
+    4: Lesson 4: Deep Dive - Expanding on Women in Islam
+    5: Lesson 5: Deep Dive - Expanding on Women in Islam
+    6: Lesson 6: Deep Dive - Expanding on Women in Islam
+    7: Lesson 7: Deep Dive - Expanding on Women in Islam
+    8: Lesson 8: Deep Dive - Expanding on Women in Islam
+    9: Lesson 9: Deep Dive - Expanding on Women in Islam
+    10: Lesson 10: Weekly Integration Task - Researching a Female Scholar
+  Module: Module 4: Islam and the West
+    1: Lesson 1: Living as a Minority
+    2: Lesson 2: Integration vs. Assimilation
+    3: Lesson 3: Contributing to Society
+    4: Lesson 4: Deep Dive - Expanding on Islam and the West
+    5: Lesson 5: Deep Dive - Expanding on Islam and the West
+    6: Lesson 6: Deep Dive - Expanding on Islam and the West
+    7: Lesson 7: Deep Dive - Expanding on Islam and the West
+    8: Lesson 8: Deep Dive - Expanding on Islam and the West
+    9: Lesson 9: Deep Dive - Expanding on Islam and the West
+    10: Lesson 10: Weekly Integration Task - Community Engagement
+  Module: Module 5: Extremism and Moderation
+    1: Lesson 1: The Middle Path
+    2: Lesson 2: How Extremism Arises
+    3: Lesson 3: The True Meaning of Jihad
+    4: Lesson 4: Deep Dive - Expanding on Extremism and Moderation
+    5: Lesson 5: Deep Dive - Expanding on Extremism and Moderation
+    6: Lesson 6: Deep Dive - Expanding on Extremism and Moderation
+    7: Lesson 7: Deep Dive - Expanding on Extremism and Moderation
+    8: Lesson 8: Deep Dive - Expanding on Extremism and Moderation
+    9: Lesson 9: Deep Dive - Expanding on Extremism and Moderation
+    10: Lesson 10: Weekly Integration Task - Promoting Balance
+  Module: Module 6: The Future of Islam
+    1: Lesson 1: Challenges and Opportunities
+    2: Lesson 2: Young Muslims Today
+    3: Lesson 3: Islam in the Digital Age
+    4: Lesson 4: Deep Dive - Expanding on The Future of Islam
+    5: Lesson 5: Deep Dive - Expanding on The Future of Islam
+    6: Lesson 6: Deep Dive - Expanding on The Future of Islam
+    7: Lesson 7: Deep Dive - Expanding on The Future of Islam
+    8: Lesson 8: Deep Dive - Expanding on The Future of Islam
+    9: Lesson 9: Deep Dive - Expanding on The Future of Islam
+    10: Lesson 10: Weekly Integration Task - My Role in the Future
+
