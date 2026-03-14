@@ -4,7 +4,7 @@ import { Bell, X, Check, Trash2, Zap, ChevronDown } from 'lucide-react';
 import { useAuthContext } from '../../contexts/AuthContext';
 import { apiService } from '../../lib/api';
 import { useToast } from './Toast';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { formatDistanceToNow } from 'date-fns';
 
 const NotificationBell = () => {
@@ -15,6 +15,7 @@ const NotificationBell = () => {
   const [unreadCount, setUnreadCount] = useState(0);
   const [loading, setLoading] = useState(false);
   const dropdownRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (user) {
@@ -104,6 +105,21 @@ const NotificationBell = () => {
     }
   };
 
+  const handleNotificationClick = async (e, notification) => {
+    e.preventDefault();
+    if (!notification.is_read) {
+      handleMarkAsRead(notification.id);
+    }
+    setIsOpen(false);
+    if (notification.action_url) {
+      navigate(notification.action_url.replace('/jobs', '/courses'));
+    } else if (notification.data?.jobId) {
+      navigate(`/courses/detail/${notification.data.jobId}`);
+    } else {
+      // Just mark open/close if no direct URL
+    }
+  };
+
   if (!user) return null;
 
   return (
@@ -115,7 +131,11 @@ const NotificationBell = () => {
             loadNotifications();
           }
         }}
-        className="relative p-2.5 text-slate-500 hover:text-slate-900 dark:hover:text-white transition-all duration-300 hover:bg-slate-100 dark:hover:bg-white/5 rounded-xl border border-transparent hover:border-slate-200 dark:hover:border-white/5"
+        className={`relative p-2.5 transition-all duration-300 rounded-xl border ${
+          isOpen
+            ? 'bg-slate-100 border-slate-200 text-slate-900 shadow-inner dark:bg-white/[0.08] dark:border-white/10 dark:text-white'
+            : 'text-slate-500 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5 border-transparent hover:border-slate-200 dark:hover:border-white/5'
+        }`}
       >
         <Bell className="w-5 h-5" />
         {unreadCount > 0 && (
@@ -168,7 +188,8 @@ const NotificationBell = () => {
                   {notifications.map((notification) => (
                     <div
                       key={notification.id}
-                      className={`p-8 transition-all duration-500 hover:bg-slate-50 dark:hover:bg-white/[0.03] group relative overflow-hidden ${
+                      onClick={(e) => handleNotificationClick(e, notification)}
+                      className={`block p-8 transition-all duration-500 hover:bg-slate-50 dark:hover:bg-white/[0.03] cursor-pointer group relative overflow-hidden ${
                         !notification.is_read ? 'bg-emerald-50 dark:bg-emerald-500/[0.01]' : 'opacity-60 dark:opacity-40'
                       }`}
                     >
@@ -193,18 +214,15 @@ const NotificationBell = () => {
                             {notification.message || notification.description}
                           </p>
 
-                          <div className="flex items-center gap-6 opacity-0 group-hover:opacity-100 transition-all translate-y-2 group-hover:translate-y-0">
-                            {(notification.action_url || notification.data?.jobId) && (
-                              <Link
-                                to={notification.action_url ? notification.action_url.replace('/jobs', '/courses') : `/course/${notification.data.jobId}`}
-                                onClick={() => setIsOpen(false)}
-                                className="text-[9px] font-black text-emerald-600 hover:text-emerald-700 dark:text-emerald-500 dark:hover:text-white uppercase tracking-widest transition-colors flex items-center gap-1.5"
-                              >
+                            <div className="flex items-center gap-6 opacity-0 group-hover:opacity-100 transition-all translate-y-2 group-hover:translate-y-0">
+                              <span className="text-[9px] font-black text-emerald-600 dark:text-emerald-500 uppercase tracking-widest transition-colors flex items-center gap-1.5">
                                 View <ChevronDown className="-rotate-90 w-3 h-3" />
-                              </Link>
-                            )}
+                              </span>
                             <button
-                              onClick={() => handleMarkAsRead(notification.id)}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleMarkAsRead(notification.id);
+                              }}
                               className="text-[9px] font-black text-slate-400 hover:text-slate-900 dark:text-slate-600 dark:hover:text-white uppercase tracking-[0.2em] transition-colors"
                             >
                               Mark Read
