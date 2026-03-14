@@ -105,12 +105,19 @@ api.interceptors.response.use(
 
     // Handle 500 - Server Error
     if (error.response?.status >= 500) {
+      console.error(`🔥 Server Error [${error.response.status}] at ${originalRequest.url}:`, error.response.data);
       const serverMessage = error.response?.data?.error || error.response?.data?.message;
-      return Promise.reject(new Error(serverMessage || 'Server error. Please try again later or contact support.'));
+      return Promise.reject(new Error(serverMessage || 'Internal server error. Our team has been notified. Please try again in a few minutes.'));
     }
 
     // Return user-friendly error message
-    const errorMessage = error.response?.data?.message || error.message || 'An error occurred';
+    const errorMessage = error.response?.data?.message || error.response?.data?.error || error.message || 'An error occurred';
+    
+    // Log non-500 errors if they are unexpected
+    if (error.response?.status !== 401 && error.response?.status !== 404) {
+      console.warn(`⚠️ API Warning [${error.response?.status}] at ${originalRequest.url}:`, error.response?.data);
+    }
+
     return Promise.reject(new Error(errorMessage));
   }
 );

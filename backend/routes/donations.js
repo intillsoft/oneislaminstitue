@@ -140,26 +140,36 @@ router.post('/paystack/initialize', async (req, res) => {
         const callbackUrl = `${baseUrl.replace(/\/$/, '')}/checkout/verify?provider=paystack&courseId=${course_id || ''}&t=${Date.now()}`;
 
         logger.info(`Paystack: Initializing transaction for ${email} - ${finalAmount} ${finalCurrency}. Callback: ${callbackUrl}`);
-
-        const response = await axios.post('https://api.paystack.co/transaction/initialize', {
-            email,
-            amount: exactAmount,
-            currency: finalCurrency,
-            callback_url: callbackUrl,
-            metadata: {
-                custom_fields: [
-                    { display_name: "User ID", variable_name: "user_id", value: user_id },
-                    { display_name: "Course ID", variable_name: "course_id", value: course_id },
-                    { display_name: "Type", variable_name: "type", value: type || 'course_enrollment' },
-                    { display_name: "Original Amount", variable_name: "original_amount", value: `${numericAmount} ${currency || 'USD'}` }
-                ]
-            }
-        }, {
-            headers: {
-                Authorization: `Bearer ${PAYSTACK_SECRET_KEY}`,
-                'Content-Type': 'application/json'
-            }
-        });
+        let response;
+        try {
+            response = await axios.post('https://api.paystack.co/transaction/initialize', {
+                email,
+                amount: exactAmount,
+                currency: finalCurrency,
+                callback_url: callbackUrl,
+                metadata: {
+                    custom_fields: [
+                        { display_name: "User ID", variable_name: "user_id", value: user_id },
+                        { display_name: "Course ID", variable_name: "course_id", value: course_id },
+                        { display_name: "Type", variable_name: "type", value: type || 'course_enrollment' },
+                        { display_name: "Original Amount", variable_name: "original_amount", value: `${numericAmount} ${currency || 'USD'}` }
+                    ]
+                }
+            }, {
+                headers: {
+                    Authorization: `Bearer ${PAYSTACK_SECRET_KEY}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+        } catch (paystackError) {
+            const errorMsg = paystackError.response?.data?.message || paystackError.message;
+            logger.error(`Paystack API Error: ${errorMsg}`, paystackError.response?.data);
+            return res.status(502).json({ 
+                error: 'Failed to communicate with Paystack.',
+                message: errorMsg,
+                details: paystackError.response?.data
+            });
+        }
 
         const { authorization_url, reference } = response.data.data;
 
@@ -170,7 +180,7 @@ router.post('/paystack/initialize', async (req, res) => {
                 user_id,
                 course_id: course_id || null,
                 amount: numericAmount, 
-                currency: currency || 'USD', // Record the actual requested currency in DB
+                currency: currency || 'USD',
                 provider: 'paystack',
                 status: 'pending',
                 reference,
@@ -179,19 +189,15 @@ router.post('/paystack/initialize', async (req, res) => {
             });
 
         if (dbError) {
-            logger.error('Database Error initializing donation:', dbError);
-            return res.status(500).json({ error: 'Failed to record transaction initialization', details: dbError.message });
+            logger.error('Failed to record pending donation in database:', dbError);
+            // We still return the URL because the payment can proceed, 
+            // but the webhook might have trouble matching it later if this insert fails.
+            // However, it's better to fail early if DB is down.
+            return res.status(500).json({ error: 'Database error while initializing transaction.' });
         }
 
         res.json({ authorization_url, reference });
     } catch (error) {
-        const errorData = error.response?.data;
-        logger.error(`Paystack Initialization Failed:`, {
-            email: req.body.email,
-            amount: req.body.amount,
-            error: errorData || error.message,
-            stack: error.stack
-        });
         
         const msg = errorData?.message || error.message || 'Payment gateway initialization failed';
         res.status(500).json({ 

@@ -66,28 +66,34 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 // Middleware — CORS must come BEFORE Helmet to handle preflight requests
+const allowedOrigins = [
+  process.env.FRONTEND_URL,
+  'https://institue.oneislam.one',
+  'https://workflow-frontend-vq14.onrender.com',
+  'https://workflow.surf',
+  'https://rocket.new',
+  'http://localhost:3000',
+  'http://localhost:3001',
+  'http://localhost:5173'
+].filter(Boolean);
+
 app.use(cors({
   origin: function (origin, callback) {
-    const allowedOrigins = [
-      process.env.FRONTEND_URL,
-      'https://workflow-frontend-vq14.onrender.com',
-      'https://workflow.surf',
-      'http://localhost:3000',
-      'http://localhost:3001',
-      'http://localhost:5173'
-    ];
     // Allow requests with no origin (like mobile apps or curl requests)
     if (!origin) return callback(null, true);
-    if (allowedOrigins.indexOf(origin) === -1) {
-      // Allow all origins in development
+    
+    if (allowedOrigins.indexOf(origin) !== -1 || process.env.NODE_ENV !== 'production') {
       return callback(null, true);
+    } else {
+      logger.warn(`CORS blocked for origin: ${origin}`);
+      return callback(new Error('Not allowed by CORS'));
     }
-    return callback(null, true);
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
 }));
+
 app.use(helmet({
   crossOriginResourcePolicy: { policy: 'cross-origin' },
   crossOriginOpenerPolicy: { policy: 'unsafe-none' },
@@ -216,6 +222,33 @@ app.get('/api/cron/auto-apply', async (req, res) => {
     logger.error('CRON auto-apply failed:', error);
     res.status(500).json({ error: error.message });
   }
+});
+
+// 404 for unmatched API routes
+app.use('/api/*', (req, res) => {
+  res.status(404).json({
+    error: 'API endpoint not found',
+    path: req.originalUrl
+  });
+});
+
+// Global Error Handler
+app.use((err, req, res, next) => {
+  logger.error('Unhandled Server Error:', {
+    message: err.message,
+    stack: process.env.NODE_ENV === 'production' ? null : err.stack,
+    path: req.path,
+    method: req.method,
+    body: req.body
+  });
+
+  res.status(err.status || 500).json({
+    success: false,
+    error: process.env.NODE_ENV === 'production' 
+      ? 'Internal Server Error' 
+      : err.message,
+    message: 'An unexpected error occurred on the server.'
+  });
 });
 
 // Serve static files from the React app
