@@ -258,10 +258,7 @@ const InstructorPortal = () => {
         contextData={{ academyInfo: companyInfo, dateRange, activeTab }}
       />
 
-      {/* Ambient */}
-      <InstructorAmbient />
-
-      <div className="relative z-10 w-full pb-24 md:pb-16">
+      <div className="relative z-10 w-full pb-24 md:pb-16 min-h-screen bg-slate-50 dark:bg-[#0A0E27] text-slate-900 dark:text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
 
           {/* ────────────── PORTAL HERO HEADER ────────────── */}
@@ -276,10 +273,10 @@ const InstructorPortal = () => {
                   </span>
                 </div>
 
-                <h1 className="text-3xl sm:text-4xl font-black text-white leading-tight mb-1">
+                <h1 className="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white leading-tight mb-1">
                   Instructor <span className="text-violet-400">Portal</span>
                 </h1>
-                <p className="text-white/30 text-sm font-medium mt-2">
+                <p className="text-slate-500 dark:text-white/30 text-sm font-medium mt-2">
                   Monitor course performance and student engagement.
                 </p>
               </div>

@@ -188,8 +188,7 @@ const AcademicCentralCommand = () => {
   ];
 
   return (
-    <div className="relative min-h-screen text-slate-200 font-sans selection:bg-emerald-500/30">
-      <AdminAmbient />
+    <div className="relative min-h-screen bg-slate-50 dark:bg-[#0A0E27] text-slate-900 dark:text-white font-sans selection:bg-emerald-500/30">
       <DashboardAIAssistant dashboardType="admin" contextData={{ stats, activeTab }} />
 
       <div className="relative z-10 max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
@@ -203,7 +202,7 @@ const AcademicCentralCommand = () => {
                 Command Authority Active
               </span>
             </div>
-            <h1 className="text-3xl sm:text-4xl font-black text-white tracking-tight leading-none mb-2">
+            <h1 className="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white tracking-tight leading-none mb-2">
               Central <span className="text-emerald-500">Command</span>
             </h1>
             <p className="text-[11px] font-bold text-emerald-200/25 uppercase tracking-[0.18em]">

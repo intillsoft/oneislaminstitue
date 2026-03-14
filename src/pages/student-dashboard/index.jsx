@@ -183,8 +183,8 @@ const StudentDashboard = () => {
           <div className="w-20 h-20 rounded-2xl bg-white/5 flex items-center justify-center mx-auto mb-6 border border-white/10">
             <Icon name="Lock" className="w-10 h-10 text-white/20" />
           </div>
-          <h2 className="text-2xl font-black text-white mb-2">Sign in required</h2>
-          <p className="text-white/40 mb-8 font-medium">Please sign in to access your dashboard</p>
+          <h2 className="text-2xl font-black text-slate-900 dark:text-white mb-2">Sign in required</h2>
+          <p className="text-slate-500 dark:text-white/40 mb-8 font-medium">Please sign in to access your dashboard</p>
           <Link
             to="/login"
             className="inline-flex items-center gap-2 px-6 py-3 bg-emerald-600 text-white rounded-xl hover:bg-emerald-500 transition-all font-bold text-sm shadow-lg shadow-emerald-500/20"
@@ -198,10 +198,7 @@ const StudentDashboard = () => {
   }
 
   return (
-    <div className="relative pb-24 md:pb-16 min-h-screen">
-      {/* Ambient background */}
-      <StudentAmbient />
-
+    <div className="relative pb-24 md:pb-16 min-h-screen bg-slate-50 dark:bg-[#0A0E27] text-slate-900 dark:text-white">
       <DashboardAIAssistant
         dashboardType="student"
         contextData={{ metrics, profileCompletion: userData?.profileCompletion, activeTab }}
@@ -223,11 +220,11 @@ const StudentDashboard = () => {
                 </span>
               </div>
 
-              <h1 className="text-3xl sm:text-4xl font-black text-white leading-tight mb-1">
+              <h1 className="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white leading-tight mb-1">
                 {getGreeting()},<br />
                 <span className="text-emerald-400">{userData?.name}</span>
               </h1>
-              <p className="text-white/35 text-sm font-medium mt-2">
+              <p className="text-slate-500 dark:text-white/35 text-sm font-medium mt-2">
                 Your current progress and upcoming lessons.
               </p>
             </div>
