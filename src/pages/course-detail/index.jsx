@@ -368,7 +368,7 @@ const CourseDetail = () => {
           <div className="grid lg:grid-cols-[1fr,380px] gap-12 lg:gap-16">
             <div className="space-y-16">
               {/* Highlights */}
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {courseHighlights.map((item, i) => (
                   <div key={i} className="p-6 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
                     <item.icon size={20} className="text-emerald-500 mb-4" />

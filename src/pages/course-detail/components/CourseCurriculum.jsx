@@ -275,8 +275,8 @@ const CourseCurriculum = ({ courseId, courseTitle }) => {
                   <div className="w-8 h-8 rounded-sm bg-emerald-50 flex items-center justify-center text-emerald-600 text-xs font-semibold flex-shrink-0">
                     {mIndex + 1}
                   </div>
-                  <div>
-                    <h3 className="font-bold text-slate-900 dark:text-white text-sm group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-bold text-slate-900 dark:text-white text-sm group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors break-words">
                       {mod.title}
                     </h3>
                     {mod.description && (

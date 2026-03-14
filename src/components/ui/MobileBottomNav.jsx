@@ -49,6 +49,7 @@ const MobileBottomNav = () => {
 
     // More nav items (hidden by default)
     const moreNavItems = [
+        { icon: 'Info', label: 'About', path: '/mission' },
         { icon: 'BarChart3', label: 'Dashboard', path: '/dashboard' },
         { icon: 'User', label: 'Profile', path: '/profile' },
         { icon: 'Bookmark', label: 'Saved', path: '/dashboard/saved' },
