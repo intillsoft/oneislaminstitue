@@ -4,8 +4,6 @@
  */
 
 import { supabase } from '../lib/supabase';
-import { sendEmail } from '../lib/resend';
-import { Database } from '../types/supabase';
 
 type NotificationType = 'general' | 'course_update' | 'enrollment' | 'welcome' | 'deadline' | 'system' | 'achievement' | 'announcement';
 
@@ -17,6 +15,8 @@ interface NotificationPayload {
   type: string; // Changed to string for more flexibility across disparate modules
   data?: Record<string, any>;
   sendEmail?: boolean;
+  sendSMS?: boolean;
+  sendWhatsApp?: boolean;
 }
 
 /**
@@ -29,62 +29,34 @@ export const notificationService = {
    */
   async sendNotification(payload: NotificationPayload) {
     try {
-      const { userId, senderId, title, message, type, data, sendEmail: shouldSendEmail } = payload;
+      const session = await supabase.auth.getSession();
+      const token = session.data.session?.access_token;
+      
+      if (!token) {
+        throw new Error('Authentication required to send remote notifications');
+      }
 
-      // 1. Create in-app notification in Supabase
-      const { data: notification, error: notifError } = await supabase
-        .from('notifications')
-        .insert({
-          user_id: userId,
-          sender_id: senderId || null,
-          title,
-          message,
-          type,
-          data: data || null,
+      const response = await fetch('/api/notifications', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          ...payload,
+          // Forward these directly so the backend handles email processing
+          sendEmail: payload.sendEmail || false,
+          sendSMS: payload.sendSMS || false,
+          sendWhatsApp: payload.sendWhatsApp || false
         })
-        .select()
-        .single();
+      });
 
-      if (notifError) {
-        console.error('Error creating notification:', notifError);
-        throw notifError;
+      if (!response.ok) {
+        throw new Error(`Failed to send notification: ${response.statusText}`);
       }
 
-      // 2. Send email if requested
-      if (shouldSendEmail) {
-        try {
-          // Get user email
-          const { data: userData } = await supabase
-            .from('users')
-            .select('email, name')
-            .eq('id', userId)
-            .single();
-
-          if (userData?.email) {
-            await sendEmail({
-              to: userData.email,
-              subject: title,
-              html: `
-                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-                  <h2 style="color: #333; margin-bottom: 16px;">${title}</h2>
-                  <p style="color: #666; line-height: 1.6; margin-bottom: 24px;">${message}</p>
-                  <p style="color: #999; font-size: 12px; margin-top: 32px;">
-                    Log in to your account to view more details.
-                  </p>
-                </div>
-              `,
-            });
-          }
-        } catch (emailError) {
-          console.error('Error sending email notification:', emailError);
-          // Don't throw - in-app notification was created successfully
-        }
-      }
-
-      return {
-        success: true,
-        notification,
-      };
+      const result = await response.json();
+      return result;
     } catch (error) {
       console.error('Notification service error:', error);
       throw error;
@@ -96,63 +68,36 @@ export const notificationService = {
    */
   async sendBulkNotifications(payload: Omit<NotificationPayload, 'userId'> & { userIds: string[] }) {
     try {
-      const { userIds, senderId, title, message, type, data, sendEmail } = payload;
+      const session = await supabase.auth.getSession();
+      const token = session.data.session?.access_token;
 
-      const notifications = userIds.map(userId => ({
-        user_id: userId,
-        sender_id: senderId || null,
-        title,
-        message,
-        type,
-        data: data || null,
-      }));
-
-      // 1. Batch insert notifications
-      const { error: notifError } = await supabase
-        .from('notifications')
-        .insert(notifications);
-
-      if (notifError) {
-        console.error('Error creating bulk notifications:', notifError);
-        throw notifError;
+      if (!token) {
+        throw new Error('Authentication required to send remote broadcast');
       }
 
-      // 2. Send emails if requested
-      if (sendEmail) {
-        try {
-          const { data: users } = await supabase
-            .from('users')
-            .select('id, email, name')
-            .in('id', userIds);
+      const response = await fetch('/api/notifications', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          userIds: payload.userIds,
+          title: payload.title,
+          message: payload.message,
+          type: payload.type,
+          data: payload.data,
+          sendEmail: payload.sendEmail || false,
+          sendSMS: payload.sendSMS || false,
+          sendWhatsApp: payload.sendWhatsApp || false
+        })
+      });
 
-          if (users && users.length > 0) {
-            const emailPromises = users.map(user =>
-              sendEmail({
-                to: user.email,
-                subject: title,
-                html: `
-                  <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-                    <h2 style="color: #333; margin-bottom: 16px;">${title}</h2>
-                    <p style="color: #666; line-height: 1.6; margin-bottom: 24px;">${message}</p>
-                    <p style="color: #999; font-size: 12px; margin-top: 32px;">
-                      Log in to your account to view more details.
-                    </p>
-                  </div>
-                `,
-              }).catch(err => console.error(`Email send failed for ${user.email}:`, err))
-            );
-
-            await Promise.allSettled(emailPromises);
-          }
-        } catch (emailError) {
-          console.error('Error sending bulk emails:', emailError);
-        }
+      if (!response.ok) {
+        throw new Error(`Failed to send bulk notification: ${response.statusText}`);
       }
 
-      return {
-        success: true,
-        count: userIds.length,
-      };
+      return await response.json();
     } catch (error) {
       console.error('Bulk notification service error:', error);
       throw error;

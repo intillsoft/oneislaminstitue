@@ -118,7 +118,10 @@ router.post('/', authenticate, async (req, res) => {
                 title: 'Course Enrolled',
                 message: `You have successfully enrolled in: ${course?.title || 'a new course'}. Welcome!`,
                 type: 'ENROLLMENT',
-                data: { course_id: enrollmentData.job_id || enrollmentData.course_id }
+                data: { course_id: enrollmentData.job_id || enrollmentData.course_id },
+                sendEmail: true,
+                sendSMS: true,
+                sendWhatsApp: true
             });
         } catch (notifError) {
             logger.warn('Failed to send enrollment notification:', notifError);

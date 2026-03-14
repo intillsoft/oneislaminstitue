@@ -113,6 +113,7 @@ const LessonView = () => {
     const [sidebarOpen, setSidebarOpen] = useState(window.innerWidth >= 1024);
     const [courseProgress, setCourseProgress] = useState(null);
     const [completing, setCompleting] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
     
     const [passedQuizzes, setPassedQuizzes] = useState(new Set());
     const [showRewardModal, setShowRewardModal] = useState(false);
@@ -132,6 +133,7 @@ const LessonView = () => {
             scrollContainerRef.current.scrollTo(0, 0);
         }
         window.scrollTo(0, 0);
+        setCurrentPage(1);
     }, [lessonId]);
 
     useEffect(() => {
@@ -276,8 +278,31 @@ const LessonView = () => {
     const totalRequiredQuizzes = quizBlocks.length;
     const passedQuizzesCount = passedQuizzes.size;
     
+    
     // Ensure button is disabled if not all quizzes passed, but if already completed, it's never disabled
     const isCompleteButtonDisabled = completing || (!adminBypass && !isAlreadyCompleted && totalRequiredQuizzes > 0 && passedQuizzesCount < totalRequiredQuizzes);
+
+    const hasPages = activeLesson?.content_data?.pages && Array.isArray(activeLesson.content_data.pages);
+    const pages = hasPages ? activeLesson.content_data.pages : [];
+    const totalPages = pages.length;
+    const isLastPage = !hasPages || currentPage === totalPages;
+    const currentBlocks = hasPages ? (pages.find(p => p.page_number === currentPage)?.content || []) : (activeLesson?.content_blocks || []);
+
+    const handleNextPage = () => {
+        if (currentPage < totalPages) {
+            setCurrentPage(c => c + 1);
+            if (scrollContainerRef.current) scrollContainerRef.current.scrollTo(0, 0);
+            window.scrollTo(0, 0);
+        }
+    };
+
+    const handlePrevPage = () => {
+        if (currentPage > 1) {
+            setCurrentPage(c => c - 1);
+            if (scrollContainerRef.current) scrollContainerRef.current.scrollTo(0, 0);
+            window.scrollTo(0, 0);
+        }
+    };
 
     const handleNextLessonNavigate = () => {
         setShowRewardModal(false);
@@ -517,34 +542,94 @@ const LessonView = () => {
                     )}
 
                     {/* Lesson Body/Blocks */}
-                    <LessonBlockRenderer blocks={activeLesson.content_blocks || []} onQuizPassed={handleQuizPassed} />
+                    {hasPages && (
+                        <div className="flex flex-col items-center mb-10">
+                            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-emerald-600 mb-3">Page {currentPage} of {totalPages}</span>
+                            <div className="flex w-full max-w-xl gap-2">
+                                {pages.map(p => (
+                                    <div key={p.page_number} className={`h-1.5 flex-1 rounded-full overflow-hidden bg-slate-200 dark:bg-slate-800`}>
+                                        <div className={`h-full bg-emerald-500 transition-all duration-500 ${p.page_number <= currentPage ? 'w-full' : 'w-0'}`} />
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+                    
+                    <LessonBlockRenderer blocks={currentBlocks} onQuizPassed={handleQuizPassed} />
 
                     {/* Navigation Buttons Footer */}
                     <div className="flex flex-col sm:flex-row justify-between items-center gap-3 sm:gap-4 pt-8 sm:pt-12 mt-8 sm:mt-12 border-t border-emerald-100 dark:border-emerald-500/10">
-                        {prevLesson ? (
-                            <button 
-                                onClick={() => navigate(`/courses/${courseId}/lessons/${prevLesson.id}`)}
-                                className="w-full sm:w-auto flex justify-center items-center gap-2 sm:gap-3 px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl sm:rounded-2xl bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 font-bold uppercase tracking-widest text-[9px] sm:text-[10px] hover:bg-emerald-100 dark:hover:bg-emerald-500/20 transition-all border border-emerald-100 dark:border-emerald-500/10 active:scale-[0.98]"
-                            >
-                                <ChevronLeft size={16} />
-                                Previous Lesson
-                            </button>
-                        ) : <div className="hidden sm:block" />}
+                        {hasPages ? (
+                            <>
+                                {currentPage > 1 ? (
+                                    <button 
+                                        onClick={handlePrevPage}
+                                        className="w-full sm:w-auto flex justify-center items-center gap-2 sm:gap-3 px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl sm:rounded-2xl bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 font-bold uppercase tracking-widest text-[9px] sm:text-[10px] hover:bg-emerald-100 dark:hover:bg-emerald-500/20 transition-all border border-emerald-100 dark:border-emerald-500/10 active:scale-[0.98]"
+                                    >
+                                        <ChevronLeft size={16} /> Previous
+                                    </button>
+                                ) : (
+                                    prevLesson ? (
+                                        <button 
+                                            onClick={() => navigate(`/courses/${courseId}/lessons/${prevLesson.id}`)}
+                                            className="w-full sm:w-auto flex justify-center items-center gap-2 sm:gap-3 px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl sm:rounded-2xl bg-slate-50 dark:bg-slate-800 text-slate-500 font-bold uppercase tracking-widest text-[9px] sm:text-[10px] hover:bg-slate-100 dark:hover:bg-slate-700 transition-all active:scale-[0.98]"
+                                        >
+                                            <ChevronLeft size={16} /> Previous Lesson
+                                        </button>
+                                    ) : <div className="hidden sm:block" />
+                                )}
 
-                        <button 
-                            onClick={handleCompleteLesson}
-                            disabled={completing || (!isAlreadyCompleted && isCompleteButtonDisabled)}
-                            className={`w-full sm:w-auto flex justify-center items-center gap-2 px-6 sm:px-8 py-3.5 sm:py-3.5 rounded-xl sm:rounded-2xl font-bold uppercase tracking-[0.2em] text-[9px] sm:text-[10px] shadow-md transition-all disabled:opacity-50 cursor-pointer ${
-                                isAlreadyCompleted
-                                ? 'bg-emerald-600 text-white shadow-emerald-500/20'
-                                : nextLesson 
-                                    ? 'bg-emerald-600 text-white shadow-emerald-500/20 hover:bg-emerald-500 active:scale-[0.98]' 
-                                    : 'bg-amber-500 text-white shadow-amber-500/20 hover:bg-amber-400 active:scale-[0.98]'
-                            }`}
-                        >
-                            {completing ? 'Ascending...' : isAlreadyCompleted ? (nextLesson ? 'Next Lesson' : 'Course Overview') : nextLesson ? 'Complete Lesson' : 'Finish Course'}
-                            {!completing && <ChevronRight size={14} />}
-                        </button>
+                                {!isLastPage ? (
+                                    <button 
+                                        onClick={handleNextPage}
+                                        className="w-full sm:w-auto flex justify-center items-center gap-2 px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl sm:rounded-2xl bg-emerald-600 text-white font-bold uppercase tracking-[0.2em] text-[9px] sm:text-[10px] shadow-md transition-all hover:bg-emerald-500 active:scale-[0.98]"
+                                    >
+                                        Next <ChevronRight size={14} />
+                                    </button>
+                                ) : (
+                                    <button 
+                                        onClick={handleCompleteLesson}
+                                        disabled={completing || (!isAlreadyCompleted && isCompleteButtonDisabled)}
+                                        className={`w-full sm:w-auto flex justify-center items-center gap-2 px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl sm:rounded-2xl font-bold uppercase tracking-[0.2em] text-[9px] sm:text-[10px] shadow-md transition-all disabled:opacity-50 cursor-pointer ${
+                                            isAlreadyCompleted
+                                            ? 'bg-emerald-600 text-white shadow-emerald-500/20'
+                                            : nextLesson 
+                                                ? 'bg-emerald-600 text-white shadow-emerald-500/20 hover:bg-emerald-500 active:scale-[0.98]' 
+                                                : 'bg-amber-500 text-white shadow-amber-500/20 hover:bg-amber-400 active:scale-[0.98]'
+                                        }`}
+                                    >
+                                        {completing ? 'Ascending...' : isAlreadyCompleted ? (nextLesson ? 'Next Lesson' : 'Course Overview') : 'Submit & Complete'}
+                                        {!completing && <CheckCircle size={14} />}
+                                    </button>
+                                )}
+                            </>
+                        ) : (
+                            <>
+                                {prevLesson ? (
+                                    <button 
+                                        onClick={() => navigate(`/courses/${courseId}/lessons/${prevLesson.id}`)}
+                                        className="w-full sm:w-auto flex justify-center items-center gap-2 sm:gap-3 px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl sm:rounded-2xl bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 font-bold uppercase tracking-widest text-[9px] sm:text-[10px] hover:bg-emerald-100 dark:hover:bg-emerald-500/20 transition-all border border-emerald-100 dark:border-emerald-500/10 active:scale-[0.98]"
+                                    >
+                                        <ChevronLeft size={16} /> Previous Lesson
+                                    </button>
+                                ) : <div className="hidden sm:block" />}
+
+                                <button 
+                                    onClick={handleCompleteLesson}
+                                    disabled={completing || (!isAlreadyCompleted && isCompleteButtonDisabled)}
+                                    className={`w-full sm:w-auto flex justify-center items-center gap-2 px-6 sm:px-8 py-3.5 sm:py-3.5 rounded-xl sm:rounded-2xl font-bold uppercase tracking-[0.2em] text-[9px] sm:text-[10px] shadow-md transition-all disabled:opacity-50 cursor-pointer ${
+                                        isAlreadyCompleted
+                                        ? 'bg-emerald-600 text-white shadow-emerald-500/20'
+                                        : nextLesson 
+                                            ? 'bg-emerald-600 text-white shadow-emerald-500/20 hover:bg-emerald-500 active:scale-[0.98]' 
+                                            : 'bg-amber-500 text-white shadow-amber-500/20 hover:bg-amber-400 active:scale-[0.98]'
+                                    }`}
+                                >
+                                    {completing ? 'Ascending...' : isAlreadyCompleted ? (nextLesson ? 'Next Lesson' : 'Course Overview') : nextLesson ? 'Complete Lesson' : 'Finish Course'}
+                                    {!completing && <ChevronRight size={14} />}
+                                </button>
+                            </>
+                        )}
                     </div>
                 </div>
             </div>

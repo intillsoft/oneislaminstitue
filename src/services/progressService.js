@@ -96,7 +96,17 @@ export const progressService = {
               }
           }
 
-          const isLocked = isWeekLocked || isPrevIncomplete;
+          // Rule: Time-Gated integration task
+          let isTimeGatedLock = false;
+          if (lesson.content_data?.is_time_gated) {
+              const requiredDays = moduleWeek * 7;
+              const diffDays = Math.floor(diffTime / (24 * 60 * 60 * 1000));
+              if (diffDays < requiredDays - 1) {
+                  isTimeGatedLock = true;
+              }
+          }
+
+          const isLocked = isWeekLocked || isPrevIncomplete || isTimeGatedLock;
           lockedLessons[lesson.id] = isLocked;
 
           if (!hasFoundFirstIncomplete && !completedIds.includes(lesson.id)) {

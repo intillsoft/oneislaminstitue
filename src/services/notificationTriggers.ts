@@ -27,6 +27,8 @@ export const sendEnrollmentWelcomeNotification = async (
         action: 'view-course',
       },
       sendEmail: true,
+      sendSMS: true,
+      sendWhatsApp: true,
     });
 
     console.log(`[NOTIFICATION] Enrollment welcome sent to ${userName} (${userId})`);
@@ -54,6 +56,8 @@ export const sendRegistrationWelcomeNotification = async (
         action: 'browse-courses',
       },
       sendEmail: true,
+      sendSMS: true,
+      sendWhatsApp: true,
     });
 
     console.log(`[NOTIFICATION] Registration welcome sent to ${userEmail}`);
@@ -86,6 +90,8 @@ export const sendModuleCompletionNotification = async (
         action: 'continue-course',
       },
       sendEmail: true,
+      sendSMS: true,
+      sendWhatsApp: true,
     });
 
     console.log(`[NOTIFICATION] Module completion sent for ${moduleName} to ${userName}`);
@@ -116,6 +122,8 @@ export const sendCourseCompletionNotification = async (
         action: 'view-certificate',
       },
       sendEmail: true,
+      sendSMS: true,
+      sendWhatsApp: true,
     });
 
     console.log(`[NOTIFICATION] Course graduation sent to ${userName}`);
@@ -161,6 +169,8 @@ export const sendProgressUpdateNotification = async (
         action: 'continue-course',
       },
       sendEmail: progressPercentage >= 50,
+      sendSMS: progressPercentage >= 50,
+      sendWhatsApp: progressPercentage >= 50,
     });
 
     console.log(`[NOTIFICATION] Progress milestone (${progressPercentage}%) sent to ${userName}`);

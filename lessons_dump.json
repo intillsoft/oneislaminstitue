@@ -1,0 +1,276 @@
+[
+  {
+    "id": "dbe9eb16-2810-4893-b731-cacd8a3ea530",
+    "module_id": "c32c01b9-d72e-47ae-aefd-97cf10439b70",
+    "course_id": "d240b5c5-449e-43de-804f-5880f634d19e",
+    "title": "Lesson 1.1: Who Am I? The Human Search for Identity",
+    "description": null,
+    "content_type": "video",
+    "content_data": {},
+    "duration_minutes": 15,
+    "sort_order": 1,
+    "is_free_preview": false,
+    "is_published": true,
+    "created_at": "2026-03-14T15:03:52.540477+00:00",
+    "updated_at": "2026-03-14T15:03:52.540477+00:00",
+    "video_url": null,
+    "markdown_content": null,
+    "infographic_urls": null,
+    "pdf_attachment_urls": null,
+    "coin_reward": 10,
+    "xp_reward": 20,
+    "content_blocks": [
+      {
+        "id": "blk_1773500631290_75551",
+        "type": "text",
+        "content": "## Overview\n\nThis lesson provides the foundation for the topic. Review the material and proceed to the video and reflection exercises."
+      },
+      {
+        "id": "blk_1773500631290_3648",
+        "type": "video",
+        "content": {
+          "url": ""
+        }
+      },
+      {
+        "id": "blk_1773500631290_72355",
+        "type": "document",
+        "content": {
+          "url": "",
+          "title": "Companion Guide",
+          "platform": "PDF",
+          "description": "Download the study guide to accompany the lecture."
+        }
+      },
+      {
+        "id": "blk_1773500631290_80216",
+        "type": "reflection",
+        "content": {
+          "arabic": "تفكر",
+          "translation": "Reflect on how this applies to your life."
+        }
+      },
+      {
+        "id": "blk_1773500631290_30721",
+        "type": "quiz",
+        "content": {
+          "hint": "Review the overview.",
+          "options": [
+            "Option A",
+            "Option B",
+            "Option C",
+            "Option D"
+          ],
+          "question": "What is the key takeaway from this lesson?",
+          "correctIndex": 0
+        }
+      }
+    ]
+  },
+  {
+    "id": "a2f73f11-f205-4c22-99fa-25a66e5ebc0d",
+    "module_id": "c32c01b9-d72e-47ae-aefd-97cf10439b70",
+    "course_id": "d240b5c5-449e-43de-804f-5880f634d19e",
+    "title": "Lesson 1.2: Why Am I Here? The Purpose of Existence",
+    "description": null,
+    "content_type": "video",
+    "content_data": {},
+    "duration_minutes": 15,
+    "sort_order": 2,
+    "is_free_preview": false,
+    "is_published": true,
+    "created_at": "2026-03-14T15:03:52.855992+00:00",
+    "updated_at": "2026-03-14T15:03:52.855992+00:00",
+    "video_url": null,
+    "markdown_content": null,
+    "infographic_urls": null,
+    "pdf_attachment_urls": null,
+    "coin_reward": 10,
+    "xp_reward": 20,
+    "content_blocks": [
+      {
+        "id": "blk_1773500631619_11222",
+        "type": "text",
+        "content": "## Overview\n\nThis lesson provides the foundation for the topic. Review the material and proceed to the video and reflection exercises."
+      },
+      {
+        "id": "blk_1773500631619_56357",
+        "type": "video",
+        "content": {
+          "url": ""
+        }
+      },
+      {
+        "id": "blk_1773500631619_54990",
+        "type": "document",
+        "content": {
+          "url": "",
+          "title": "Companion Guide",
+          "platform": "PDF",
+          "description": "Download the study guide to accompany the lecture."
+        }
+      },
+      {
+        "id": "blk_1773500631619_51743",
+        "type": "reflection",
+        "content": {
+          "arabic": "تفكر",
+          "translation": "Reflect on how this applies to your life."
+        }
+      },
+      {
+        "id": "blk_1773500631619_20580",
+        "type": "quiz",
+        "content": {
+          "hint": "Review the overview.",
+          "options": [
+            "Option A",
+            "Option B",
+            "Option C",
+            "Option D"
+          ],
+          "question": "What is the key takeaway from this lesson?",
+          "correctIndex": 0
+        }
+      }
+    ]
+  },
+  {
+    "id": "85168893-bb36-40fb-b54f-88890fa5261b",
+    "module_id": "c32c01b9-d72e-47ae-aefd-97cf10439b70",
+    "course_id": "d240b5c5-449e-43de-804f-5880f634d19e",
+    "title": "Lesson 1.3: Where Am I Going? The Journey Ahead",
+    "description": null,
+    "content_type": "video",
+    "content_data": {},
+    "duration_minutes": 15,
+    "sort_order": 3,
+    "is_free_preview": false,
+    "is_published": true,
+    "created_at": "2026-03-14T15:03:53.146524+00:00",
+    "updated_at": "2026-03-14T15:03:53.146524+00:00",
+    "video_url": null,
+    "markdown_content": null,
+    "infographic_urls": null,
+    "pdf_attachment_urls": null,
+    "coin_reward": 10,
+    "xp_reward": 20,
+    "content_blocks": [
+      {
+        "id": "blk_1773500631920_36932",
+        "type": "text",
+        "content": "## Overview\n\nThis lesson provides the foundation for the topic. Review the material and proceed to the video and reflection exercises."
+      },
+      {
+        "id": "blk_1773500631920_48146",
+        "type": "video",
+        "content": {
+          "url": ""
+        }
+      },
+      {
+        "id": "blk_1773500631920_82892",
+        "type": "document",
+        "content": {
+          "url": "",
+          "title": "Companion Guide",
+          "platform": "PDF",
+          "description": "Download the study guide to accompany the lecture."
+        }
+      },
+      {
+        "id": "blk_1773500631920_45456",
+        "type": "reflection",
+        "content": {
+          "arabic": "تفكر",
+          "translation": "Reflect on how this applies to your life."
+        }
+      },
+      {
+        "id": "blk_1773500631920_37403",
+        "type": "quiz",
+        "content": {
+          "hint": "Review the overview.",
+          "options": [
+            "Option A",
+            "Option B",
+            "Option C",
+            "Option D"
+          ],
+          "question": "What is the key takeaway from this lesson?",
+          "correctIndex": 0
+        }
+      }
+    ]
+  },
+  {
+    "id": "ca3b5734-3344-47d8-8c50-034f9ef383af",
+    "module_id": "c32c01b9-d72e-47ae-aefd-97cf10439b70",
+    "course_id": "d240b5c5-449e-43de-804f-5880f634d19e",
+    "title": "Lesson 1.4: Weekly Integration Task - My Life Purpose Statement",
+    "description": null,
+    "content_type": "video",
+    "content_data": {
+      "time_gated": true
+    },
+    "duration_minutes": 120,
+    "sort_order": 4,
+    "is_free_preview": false,
+    "is_published": true,
+    "created_at": "2026-03-14T15:03:53.452234+00:00",
+    "updated_at": "2026-03-14T15:03:53.452234+00:00",
+    "video_url": null,
+    "markdown_content": null,
+    "infographic_urls": null,
+    "pdf_attachment_urls": null,
+    "coin_reward": 30,
+    "xp_reward": 50,
+    "content_blocks": [
+      {
+        "id": "blk_1773500632217_51567",
+        "type": "text",
+        "content": "## Overview\n\nThis lesson provides the foundation for the topic. Please complete this multi-day, real-world activity to reinforce your knowledge."
+      },
+      {
+        "id": "blk_1773500632217_73540",
+        "type": "video",
+        "content": {
+          "url": ""
+        }
+      },
+      {
+        "id": "blk_1773500632217_30748",
+        "type": "document",
+        "content": {
+          "url": "",
+          "title": "Companion Guide",
+          "platform": "PDF",
+          "description": "Download the study guide to accompany the lecture."
+        }
+      },
+      {
+        "id": "blk_1773500632217_37123",
+        "type": "reflection",
+        "content": {
+          "arabic": "تفكر",
+          "translation": "Reflect on how this applies to your life."
+        }
+      },
+      {
+        "id": "blk_1773500632217_69695",
+        "type": "quiz",
+        "content": {
+          "hint": "Review the overview.",
+          "options": [
+            "Option A",
+            "Option B",
+            "Option C",
+            "Option D"
+          ],
+          "question": "What is the key takeaway from this lesson?",
+          "correctIndex": 0
+        }
+      }
+    ]
+  }
+]
