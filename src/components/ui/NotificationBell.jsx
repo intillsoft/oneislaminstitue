@@ -149,23 +149,23 @@ const NotificationBell = () => {
             initial={{ opacity: 0, y: 12, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 8, scale: 0.99 }}
-            className="absolute right-0 mt-4 w-[calc(100vw-2rem)] md:w-96 bg-white/95 dark:bg-[#0c0c0e]/95 backdrop-blur-3xl border border-slate-200 dark:border-white/10 rounded-3xl z-50 overflow-hidden shadow-2xl dark:shadow-[0_30px_60px_rgba(0,0,0,0.8)] flex flex-col"
+            className="absolute right-0 mt-4 w-[calc(100vw-2rem)] md:w-96 bg-white/95 dark:bg-[#0A0E27]/95 backdrop-blur-3xl border border-slate-200 dark:border-white/10 rounded-2xl z-50 overflow-hidden shadow-2xl dark:shadow-[0_20px_40px_rgba(0,0,0,0.3)] flex flex-col"
           >
             {/* Header */}
-            <div className="flex items-center justify-between p-7 border-b border-slate-100 dark:border-white/5 bg-slate-50 dark:bg-white/[0.02]">
+            <div className="flex items-center justify-between p-4 border-b border-slate-100 dark:border-white/5 bg-slate-50 dark:bg-white/[0.02] flex-shrink-0">
               <div>
-                <h3 className="text-[10px] font-black text-slate-900 dark:text-white uppercase tracking-[0.4em]">Notifications</h3>
-                <p className="text-[9px] text-slate-500 font-bold uppercase tracking-widest mt-2 flex items-center gap-2">
+                <h3 className="text-[10px] font-black text-slate-900 dark:text-white uppercase tracking-[0.3em]">Notifications</h3>
+                <p className="text-[9px] text-slate-500 font-bold uppercase tracking-widest mt-1 flex items-center gap-2">
                   {unreadCount > 0 && <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]" />}
-                  {unreadCount > 0 ? `${unreadCount} New Messages` : 'All Caught Up'}
+                  {unreadCount > 0 ? `${unreadCount} New` : 'All Caught Up'}
                 </p>
               </div>
               {unreadCount > 0 && (
                 <button
                   onClick={handleMarkAllAsRead}
-                  className="text-[9px] font-black text-slate-500 hover:text-slate-900 dark:text-slate-600 dark:hover:text-white px-4 py-2 bg-slate-100 dark:bg-white/5 rounded-xl border border-slate-200 dark:border-white/5 transition-all uppercase tracking-[0.2em]"
+                  className="text-[9px] font-black text-slate-500 hover:text-slate-900 dark:text-slate-600 dark:hover:text-white px-3 py-1.5 bg-slate-100 dark:bg-white/5 rounded-xl border border-slate-200 dark:border-white/5 transition-all uppercase tracking-[0.1em]"
                 >
-                  Mark all read
+                  Clear All
                 </button>
               )}
             </div>
@@ -173,15 +173,15 @@ const NotificationBell = () => {
             {/* List */}
             <div className="overflow-y-auto max-h-[440px] custom-scrollbar">
               {loading && !notifications.length ? (
-                <div className="p-24 flex flex-col items-center justify-center gap-4">
-                  <div className="w-8 h-8 border-2 border-slate-200 dark:border-white/5 border-t-emerald-500 rounded-full animate-spin" />
+                <div className="p-12 flex flex-col items-center justify-center gap-4">
+                  <div className="w-6 h-6 border-2 border-slate-200 dark:border-white/5 border-t-emerald-500 rounded-full animate-spin" />
                 </div>
               ) : notifications.length === 0 ? (
-                <div className="p-24 text-center">
-                  <div className="w-20 h-20 rounded-[2rem] bg-slate-50 dark:bg-white/[0.01] border border-slate-200 dark:border-white/5 flex items-center justify-center mx-auto mb-8 text-slate-400 dark:text-slate-600 shadow-sm dark:shadow-2xl">
-                    <Zap className="w-8 h-8" />
+                <div className="p-12 text-center">
+                  <div className="w-14 h-14 rounded-2xl bg-slate-50 dark:bg-white/[0.01] border border-slate-200 dark:border-white/5 flex items-center justify-center mx-auto mb-4 text-slate-400 dark:text-slate-600 shadow-sm">
+                    <Zap className="w-6 h-6" />
                   </div>
-                  <p className="text-[10px] font-black text-slate-400 dark:text-slate-800 uppercase tracking-[0.6em]">No Messages</p>
+                  <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em]">No Messages</p>
                 </div>
               ) : (
                 <div className="divide-y divide-slate-100 dark:divide-white/5">
@@ -189,8 +189,8 @@ const NotificationBell = () => {
                     <div
                       key={notification.id}
                       onClick={(e) => handleNotificationClick(e, notification)}
-                      className={`block p-8 transition-all duration-500 hover:bg-slate-50 dark:hover:bg-white/[0.03] cursor-pointer group relative overflow-hidden ${
-                        !notification.is_read ? 'bg-emerald-50 dark:bg-emerald-500/[0.01]' : 'opacity-60 dark:opacity-40'
+                      className={`block p-4 transition-all duration-500 hover:bg-slate-100/50 dark:hover:bg-white/[0.03] cursor-pointer group relative overflow-hidden ${
+                        !notification.is_read ? 'bg-emerald-50/50 dark:bg-emerald-500/[0.02]' : 'opacity-70 dark:opacity-40'
                       }`}
                     >
                       <div className="flex items-start gap-6 relative z-10">
@@ -199,22 +199,22 @@ const NotificationBell = () => {
                         }`} />
                         
                         <div className="flex-1 min-w-0">
-                          <div className="flex justify-between items-start gap-4 mb-3">
-                            <h4 className={`text-xs font-black uppercase tracking-tight truncate transition-all ${!notification.is_read ? 'text-slate-900 group-hover:text-emerald-600 dark:text-white dark:group-hover:text-emerald-400' : 'text-slate-500'}`}>
+                          <div className="flex justify-between items-start gap-4 mb-1">
+                            <h4 className={`text-xs font-bold uppercase tracking-tight truncate transition-all ${!notification.is_read ? 'text-slate-900 group-hover:text-emerald-700 dark:text-white dark:group-hover:text-emerald-400' : 'text-slate-700 dark:text-slate-500'}`}>
                               {notification.title}
                             </h4>
-                            <span className="text-[8px] text-slate-500 dark:text-slate-700 font-bold uppercase tracking-widest whitespace-nowrap mt-0.5 opacity-60">
+                            <span className="text-[8px] text-slate-500 font-bold uppercase tracking-widest whitespace-nowrap mt-0.5 opacity-60">
                                 {formatDistanceToNow(new Date(notification.created_at), { addSuffix: true })}
                             </span>
                           </div>
                           
-                          <p className={`text-[11px] leading-relaxed line-clamp-2 mb-5 font-medium transition-all ${
-                            !notification.is_read ? 'text-slate-600 group-hover:text-slate-900 dark:text-slate-500 dark:group-hover:text-slate-300' : 'text-slate-400 dark:text-slate-700'
+                          <p className={`text-[11px] leading-relaxed line-clamp-2 mb-2 font-medium transition-all ${
+                            !notification.is_read ? 'text-slate-600 group-hover:text-slate-900 dark:text-slate-400 dark:group-hover:text-slate-200' : 'text-slate-400 dark:text-slate-600'
                           }`}>
                             {notification.message || notification.description}
                           </p>
 
-                            <div className="flex items-center gap-6 opacity-0 group-hover:opacity-100 transition-all translate-y-2 group-hover:translate-y-0">
+                          <div className="flex items-center gap-4 opacity-0 group-hover:opacity-100 transition-all translate-y-1 group-hover:translate-y-0">
                               <span className="text-[9px] font-black text-emerald-600 dark:text-emerald-500 uppercase tracking-widest transition-colors flex items-center gap-1.5">
                                 View <ChevronDown className="-rotate-90 w-3 h-3" />
                               </span>
@@ -242,13 +242,13 @@ const NotificationBell = () => {
             </div>
 
             {/* Footer */}
-            <div className="p-7 border-t border-slate-100 dark:border-white/5 bg-slate-50 dark:bg-white/[0.01]">
+            <div className="p-4 border-t border-slate-100 dark:border-white/5 bg-slate-50 dark:bg-white/[0.01] flex-shrink-0">
               <Link
                 to="/notifications"
                 onClick={() => setIsOpen(false)}
-                className="block w-full text-center py-5 rounded-[1.5rem] text-[10px] font-black uppercase tracking-[0.5em] text-slate-500 hover:text-slate-900 hover:bg-white border border-slate-200 shadow-sm dark:text-slate-700 dark:hover:text-white dark:hover:bg-white/5 dark:border-white/5 transition-all duration-500 dark:shadow-2xl dark:shadow-black/40"
+                className="block w-full text-center py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest text-slate-500 hover:text-slate-900 hover:bg-white border border-slate-200 shadow-sm dark:text-slate-400 dark:hover:text-white dark:hover:bg-white/5 dark:border-white/5 transition-all duration-500"
               >
-                View all settings
+                Settings
               </Link>
             </div>
           </motion.div>
