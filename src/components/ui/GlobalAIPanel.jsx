@@ -189,8 +189,8 @@ const GlobalAIPanel = () => {
             animate={{ x: 0, y: 0, opacity: 1 }}
             exit={{ x: '100%', y: 0, opacity: 0 }}
             transition={{ type: 'spring', damping: 28, stiffness: 240 }}
-            style={{ width: isMobile ? 'calc(100% - 48px)' : (isExpanded ? 'calc(100vw - 48px)' : panelWidth) }}
-            className={`fixed top-6 bottom-6 right-6 h-[calc(100dvh-3rem)] bg-white/95 dark:bg-[#0B1221]/95 backdrop-blur-2xl z-[9999] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] dark:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.8)] flex flex-col border border-gray-200/50 dark:border-white/10 rounded-3xl overflow-hidden ${
+            style={{ width: isMobile ? '100%' : (isExpanded ? '100vw' : panelWidth) }}
+            className={`fixed top-0 bottom-0 right-0 h-dvh bg-white dark:bg-[#0A0E27] backdrop-blur-3xl z-[9999] shadow-[-10px_0_50px_rgba(0,0,0,0.1)] dark:shadow-[-20px_0_80px_rgba(0,0,0,0.5)] flex flex-col border-l border-gray-100 dark:border-white/5 rounded-l-[2rem] md:rounded-l-[2.5rem] overflow-hidden ${
               !isResizing && !isExpanded && 'transition-all duration-300'
             }`}
           >
@@ -202,7 +202,7 @@ const GlobalAIPanel = () => {
               />
             )}
             {/* Header */}
-            <div className="flex items-center justify-between px-5 py-3.5 border-b border-gray-100/50 dark:border-white/5 bg-transparent">
+            <div className="flex items-center justify-between px-6 py-5 border-b border-gray-100 dark:border-white/5 bg-transparent flex-shrink-0">
               <div className="flex items-center gap-3">
                 <div className="w-8 h-8 flex items-center justify-center rounded-xl bg-gradient-to-br from-emerald-400 to-teal-500 shadow-sm shadow-emerald-500/20">
                   <Sparkles className="w-4 h-4 text-white drop-shadow-sm" />
@@ -290,10 +290,10 @@ const GlobalAIPanel = () => {
                         </div>
 
                         {msg.role === 'assistant' && !msg.content.startsWith('❌') && (
-                          <div className="mt-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <div className="mt-2 opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-2">
                             <button
                               onClick={() => handleCopyMessage(msg.content)}
-                              className="flex items-center gap-1 px-1.5 py-1 rounded text-xs text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors"
+                              className="flex items-center gap-1.5 px-2 py-1 rounded-md bg-gray-50 dark:bg-slate-800/50 hover:bg-gray-100 dark:hover:bg-slate-800 border border-gray-100 dark:border-white/5 text-xs text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 transition-colors"
                             >
                               {copied === msg.content ? <><Check className="w-3 h-3" /> Copied</> : <><Copy className="w-3 h-3" /> Copy</>}
                             </button>
@@ -309,7 +309,7 @@ const GlobalAIPanel = () => {
                         <div className="absolute inset-0 rounded-xl border border-white/20"></div>
                         <Sparkles className="w-4 h-4 text-white drop-shadow-sm" />
                       </div>
-                      <div className="flex items-center gap-2 bg-white dark:bg-slate-800/80 border border-gray-100 dark:border-white/5 px-5 py-4 rounded-2xl rounded-tl-sm shadow-sm">
+                      <div className="flex items-center gap-2 bg-slate-50 dark:bg-slate-800/80 border border-gray-100 dark:border-white/5 px-5 py-4 rounded-2xl rounded-tl-sm shadow-sm">
                         <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-bounce [animation-delay:-0.3s]"></span>
                         <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-bounce [animation-delay:-0.15s]"></span>
                         <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-bounce"></span>
@@ -322,7 +322,7 @@ const GlobalAIPanel = () => {
             </div>
 
             {/* Input Overlay */}
-            <div className="p-4 bg-transparent border-t border-gray-100/50 dark:border-white/5 relative">
+            <div className="p-5 bg-transparent border-t border-gray-100/80 dark:border-white/5 relative flex-shrink-0">
               {showScrollDown && (
                 <button
                   onClick={() => scrollToBottom()}
