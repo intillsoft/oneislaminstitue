@@ -120,11 +120,11 @@ const AdminNotifications = () => {
       } else {
         let roleFilter = [];
         if (composeData.recipient_type === 'students') {
-          roleFilter = ['student', 'job-seeker', 'applicant', 'participant'];
+          roleFilter = ['student', 'user', 'member', 'job-seeker', 'job_seeker', 'applicant', 'participant'];
         } else if (composeData.recipient_type === 'instructors') {
-          roleFilter = ['instructor', 'recruiter', 'talent', 'faculty'];
+          roleFilter = ['instructor', 'recruiter', 'talent', 'faculty', 'teacher'];
         } else if (composeData.recipient_type === 'admins') {
-          roleFilter = ['admin', 'super-admin', 'owner', 'moderator'];
+          roleFilter = ['admin', 'super-admin', 'super_admin', 'owner', 'moderator'];
         }
         
         const { data } = await supabase.from('users').select('id').in('role', roleFilter);

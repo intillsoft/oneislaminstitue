@@ -27,7 +27,7 @@ BEGIN
   FROM public.users
   WHERE id = auth.uid();
   
-  RETURN user_role = 'admin';
+  RETURN user_role IN ('admin', 'super-admin', 'super_admin', 'owner', 'moderator');
 END;
 $$;
 

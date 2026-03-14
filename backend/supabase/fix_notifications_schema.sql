@@ -54,12 +54,11 @@ CREATE POLICY "Elevated roles can send notifications"
     EXISTS (
       SELECT 1 FROM public.users 
       WHERE id = auth.uid() 
-      AND role IN ('instructor', 'recruiter', 'admin', 'super_admin')
+      AND role IN ('instructor', 'recruiter', 'admin', 'super-admin', 'super_admin', 'owner', 'moderator', 'faculty', 'teacher')
     )
   );
 
 -- Rule: Admin God Mode (View all)
--- (Only if absolutely necessary, but usually 'Sent' and 'Received' covers it)
 DROP POLICY IF EXISTS "Admin view all notifications" ON public.notifications;
 CREATE POLICY "Admin view all notifications" 
   ON public.notifications 
@@ -68,7 +67,7 @@ CREATE POLICY "Admin view all notifications"
     EXISTS (
       SELECT 1 FROM public.users 
       WHERE id = auth.uid() 
-      AND role = 'admin'
+      AND role IN ('admin', 'super-admin', 'super_admin', 'owner', 'moderator')
     )
   );
 
