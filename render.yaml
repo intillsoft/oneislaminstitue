@@ -1,14 +1,30 @@
 services:
   - type: web
-    name: workflow-frontend
+    name: workflow-all-in-one
     runtime: node
     plan: free
     buildCommand: npm run render-build
     startCommand: npm start
     envVars:
-      - key: SCARF_ANALYTICS
-        value: false
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
       - key: SUPABASE_URL
-        fromGroup: shared-keys
+        sync: false
+      - key: SUPABASE_ANON_KEY
+        sync: false
       - key: SUPABASE_SERVICE_ROLE_KEY
-        fromGroup: shared-keys
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: PAYSTACK_SECRET_KEY
+        sync: false
+      - key: PAYSTACK_PUBLIC_KEY
+        sync: false
+      - key: PAYSTACK_WEBHOOK_SECRET
+        sync: false
+      - key: FRONTEND_URL
+        sync: false
+      - key: BACKEND_URL
+        value: https://workflow-all-in-one.onrender.com
