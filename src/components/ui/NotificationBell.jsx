@@ -171,7 +171,7 @@ const NotificationBell = () => {
             </div>
 
             {/* List */}
-            <div className="overflow-y-auto max-h-[440px] custom-scrollbar">
+            <div className="overflow-y-auto max-h-[60vh] md:max-h-[440px] custom-scrollbar">
               {loading && !notifications.length ? (
                 <div className="p-12 flex flex-col items-center justify-center gap-4">
                   <div className="w-6 h-6 border-2 border-slate-200 dark:border-white/5 border-t-emerald-500 rounded-full animate-spin" />
