@@ -10,7 +10,9 @@ import logger from '../utils/logger.js';
 import { sendEmail } from '../services/emailService.js';
 
 const router = express.Router();
-const PAYSTACK_WEBHOOK_SECRET = process.env.PAYSTACK_WEBHOOK_SECRET;
+// Paystack uses the Secret Key to sign webhooks by default.
+// We look for a specific WEBHOOK_SECRET first, then fallback to the general SECRET_KEY.
+const PAYSTACK_WEBHOOK_SECRET = process.env.PAYSTACK_WEBHOOK_SECRET || process.env.PAYSTACK_SECRET_KEY;
 
 router.post('/', async (req, res) => {
     try {
