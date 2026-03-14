@@ -248,9 +248,9 @@ export const notificationService = {
                 sender_id: senderId || null,
                 title,
                 message,
-                type: type || 'general',
+                type: type || 'info',
                 is_read: false,
-                ...rest
+                data: rest || {}
             }));
 
             const { data: created, error } = await supabase
@@ -264,7 +264,12 @@ export const notificationService = {
 
         // Channel delivery for all users
         if (sendEmail || sendSMS || sendWhatsApp) {
-            await Promise.all(userIds.map(async (id) => {
+            // We pass the full notification object (including the custom messages in 'rest')
+            // but we need to make sure the individual send handlers can access them.
+            // Since we pass 'notification' directly below, and I updated the send handlers
+            // to look at individual fields like notification.emailMessage, it should work.
+            
+            userIds.forEach(async (id) => {
                 try {
                     const { data: publicUser } = await supabase
                         .from('users')
@@ -274,40 +279,45 @@ export const notificationService = {
 
                     let userEmail = publicUser?.email;
                     let userName = publicUser?.name || publicUser?.first_name;
+                    let userPhone = publicUser?.phone || publicUser?.phone_number;
 
                     if (!userEmail && supabase.auth?.admin) {
                         try {
                             const { data: authData } = await supabase.auth.admin.getUserById(id);
-                            userEmail = authData?.user?.email;
+                            userEmail = authData?.user?.email || userEmail;
                             userName = userName || authData?.user?.user_metadata?.name || authData?.user?.user_metadata?.full_name;
+                            userPhone = userPhone || authData?.user?.phone || authData?.user?.user_metadata?.phone;
                         } catch (_) { /* no service role, skip */ }
                     }
 
-                    const resolvedUser = { ...(publicUser || {}), email: userEmail, name: userName };
+                    const resolvedUser = { ...(publicUser || {}), email: userEmail, name: userName, phone: userPhone };
 
                     if (sendEmail && userEmail) {
                         await this.sendEmailNotification(resolvedUser, notification);
-                    } else if (sendEmail) {
-                        logger.warn(`No email for user ${id}, skipping`);
                     }
 
-                    const phone = publicUser?.phone || publicUser?.phone_number;
-                    if (sendSMS && phone) await this.sendSMSNotification(phone, notification);
-                    if (sendWhatsApp && phone) await this.sendWhatsAppNotification(phone, notification);
+                    if (sendSMS && userPhone) {
+                        await this.sendSMSNotification(userPhone, notification);
+                    }
+
+                    if (sendWhatsApp && userPhone) {
+                        await this.sendWhatsAppNotification(userPhone, notification);
+                    }
                 } catch (err) {
                     logger.error(`Channel delivery failed for user ${id}:`, err.message);
                 }
-            })).catch(err => logger.error('Broadcast channel error:', err.message));
+            });
         }
 
         return data;
     },
 
     async sendSMSNotification(phone, notification) {
-        const { title, message } = notification;
+        const { title, message, smsMessage } = notification;
         try {
-            // Concatenate for brevity in SMS
-            const smsBody = `[One Islam] ${title}: ${message}`;
+            // Prefer channel-specific message
+            const content = smsMessage || `${title}: ${message}`;
+            const smsBody = `[One Islam] ${content}`;
             await smsService.sendSMS(phone, smsBody);
         } catch (error) {
             logger.error('Error sending SMS notification:', error);
@@ -315,9 +325,11 @@ export const notificationService = {
     },
 
     async sendWhatsAppNotification(phone, notification) {
-        const { title, message } = notification;
+        const { title, message, whatsappMessage } = notification;
         try {
-            const waBody = `*One Islam Institute*\n\n*${title}*\n${message}`;
+            // Prefer channel-specific message
+            const content = whatsappMessage || `${title}\n${message}`;
+            const waBody = `*One Islam Institute*\n\n${content}`;
             await smsService.sendWhatsApp(phone, waBody);
         } catch (error) {
             logger.error('Error sending WhatsApp notification:', error);
@@ -325,14 +337,19 @@ export const notificationService = {
     },
 
     async sendEmailNotification(user, notification) {
-        let { title, message } = notification;
+        let { title, message, emailTitle, emailMessage } = notification;
         try {
             const userName = user.name || user.first_name || 'Student';
-            const personalizedMessage = message.replace(/\{\{name\}\}/g, userName);
+            
+            // Prefer channel-specific content
+            const finalSubject = emailTitle || title;
+            const finalMessage = emailMessage || message;
+            
+            const personalizedMessage = finalMessage.replace(/\{\{name\}\}/g, userName);
             
             await emailService.send({
                 to: user.email,
-                subject: title,
+                subject: finalSubject,
                 html: `
                     <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; background-color: #ffffff; padding: 40px; border: 1px solid #efefef; border-radius: 16px;">
                         <div style="text-align: center; margin-bottom: 40px;">

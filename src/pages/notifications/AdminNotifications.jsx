@@ -21,10 +21,15 @@ const AdminNotifications = () => {
   const [search, setSearch] = useState('');
   const [selectedNotification, setSelectedNotification] = useState(null);
   const [composing, setComposing] = useState(false);
+  const [composeMode, setComposeMode] = useState('simple'); // 'simple' or 'advanced'
   const [composeData, setComposeData] = useState({
     title: '',
     message: '',
-    recipient_type: 'all',
+    emailTitle: '',
+    emailMessage: '',
+    smsMessage: '',
+    whatsappMessage: '',
+    recipient_type: 'everyone',
     sendInApp: true,
     sendEmail: false,
     sendSMS: false,
@@ -143,6 +148,10 @@ const AdminNotifications = () => {
           userIds,
           title: composeData.title,
           message: composeData.message,
+          emailTitle: composeData.emailTitle,
+          emailMessage: composeData.emailMessage,
+          smsMessage: composeData.smsMessage,
+          whatsappMessage: composeData.whatsappMessage,
           type: 'admin_broadcast',
           sendInApp: composeData.sendInApp,
           sendEmail: composeData.sendEmail,
@@ -340,27 +349,121 @@ const AdminNotifications = () => {
 
                             {/* Payload Column */}
                             <div className="lg:col-span-2 space-y-12">
-                                <div className="space-y-6">
-                                    <label className="text-[10px] font-bold uppercase tracking-widest text-slate-500 ml-1">Subject</label>
-                                    <input
-                                        type="text"
-                                        value={composeData.title}
-                                        onChange={(e) => setComposeData({ ...composeData, title: e.target.value })}
-                                        placeholder="Enter subject..."
-                                        className="w-full bg-white/[0.02] border border-white/5 rounded-xl px-6 py-4 text-white text-base font-bold placeholder-slate-900 focus:outline-none focus:border-emerald-500/20 transition-all uppercase tracking-tight"
-                                    />
+                                <div className="flex items-center justify-between border-b border-white/5 pb-4">
+                                    <div className="flex gap-6">
+                                        <button 
+                                            onClick={() => setComposeMode('simple')}
+                                            className={`text-[10px] font-bold uppercase tracking-widest transition-all ${composeMode === 'simple' ? 'text-emerald-500' : 'text-slate-600'}`}
+                                        >
+                                            Simple Mode
+                                        </button>
+                                        <button 
+                                            onClick={() => setComposeMode('advanced')}
+                                            className={`text-[10px] font-bold uppercase tracking-widest transition-all ${composeMode === 'advanced' ? 'text-emerald-500' : 'text-slate-600'}`}
+                                        >
+                                            Advanced Mode
+                                        </button>
+                                    </div>
+                                    <div className="text-[9px] font-bold text-slate-800 uppercase tracking-widest">
+                                        {composeMode === 'simple' ? 'One message for all channels' : 'Craft separate experiences'}
+                                    </div>
                                 </div>
-                                
-                                <div className="space-y-6">
-                                    <label className="text-[10px] font-bold uppercase tracking-widest text-slate-500 ml-1">Message</label>
-                                    <textarea
-                                        value={composeData.message}
-                                        onChange={(e) => setComposeData({ ...composeData, message: e.target.value })}
-                                        placeholder="Type your message here..."
-                                        rows={8}
-                                        className="w-full bg-white/[0.01] border border-white/5 rounded-xl px-6 py-6 text-slate-500 text-sm font-medium focus:outline-none focus:border-emerald-500/20 transition-all resize-none leading-relaxed placeholder:text-slate-900"
-                                    />
-                                </div>
+
+                                {composeMode === 'simple' ? (
+                                    <div className="space-y-12 animate-in fade-in duration-500">
+                                        <div className="space-y-6">
+                                            <label className="text-[10px] font-bold uppercase tracking-widest text-slate-500 ml-1">Universal Subject</label>
+                                            <input
+                                                type="text"
+                                                value={composeData.title}
+                                                onChange={(e) => setComposeData({ ...composeData, title: e.target.value })}
+                                                placeholder="Enter subject..."
+                                                className="w-full bg-white/[0.02] border border-white/5 rounded-xl px-6 py-4 text-white text-base font-bold placeholder-slate-900 focus:outline-none focus:border-emerald-500/20 transition-all uppercase tracking-tight"
+                                            />
+                                        </div>
+                                        
+                                        <div className="space-y-6">
+                                            <label className="text-[10px] font-bold uppercase tracking-widest text-slate-500 ml-1">Universal Message</label>
+                                            <textarea
+                                                value={composeData.message}
+                                                onChange={(e) => setComposeData({ ...composeData, message: e.target.value })}
+                                                placeholder="Type your message here..."
+                                                rows={8}
+                                                className="w-full bg-white/[0.01] border border-white/5 rounded-xl px-6 py-6 text-slate-500 text-sm font-medium focus:outline-none focus:border-emerald-500/20 transition-all resize-none leading-relaxed placeholder:text-slate-900"
+                                            />
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <div className="space-y-12 animate-in slide-in-from-right-2 duration-500">
+                                        {/* In-App / Default */}
+                                        <div className="space-y-6">
+                                            <label className="text-[10px] font-bold uppercase tracking-widest text-emerald-500 ml-1">In-App Alert (Primary)</label>
+                                            <input
+                                                type="text"
+                                                value={composeData.title}
+                                                onChange={(e) => setComposeData({ ...composeData, title: e.target.value })}
+                                                placeholder="App Subject"
+                                                className="w-full bg-white/[0.02] border border-white/5 rounded-xl px-6 py-4 text-white text-sm font-bold placeholder-slate-900 focus:outline-none focus:border-emerald-500/20 transition-all uppercase"
+                                            />
+                                            <textarea
+                                                value={composeData.message}
+                                                onChange={(e) => setComposeData({ ...composeData, message: e.target.value })}
+                                                placeholder="App Notification Message"
+                                                rows={3}
+                                                className="w-full bg-white/[0.01] border border-white/5 rounded-xl px-6 py-4 text-slate-500 text-xs font-medium focus:outline-none focus:border-emerald-500/20 transition-all resize-none"
+                                            />
+                                        </div>
+
+                                        {composeData.sendEmail && (
+                                            <div className="space-y-6 pt-6 border-t border-white/5">
+                                                <label className="text-[10px] font-bold uppercase tracking-widest text-blue-500 ml-1">Email Content</label>
+                                                <input
+                                                    type="text"
+                                                    value={composeData.emailTitle}
+                                                    onChange={(e) => setComposeData({ ...composeData, emailTitle: e.target.value })}
+                                                    placeholder="Custom Email Subject (Leave blank to use App Subject)"
+                                                    className="w-full bg-white/[0.02] border border-white/5 rounded-xl px-6 py-4 text-white text-sm font-bold placeholder-slate-900 focus:outline-none focus:border-emerald-500/20 transition-all uppercase"
+                                                />
+                                                <textarea
+                                                    value={composeData.emailMessage}
+                                                    onChange={(e) => setComposeData({ ...composeData, emailMessage: e.target.value })}
+                                                    placeholder="Detailed Email Body (Markdown supported)"
+                                                    rows={5}
+                                                    className="w-full bg-white/[0.01] border border-white/5 rounded-xl px-6 py-4 text-slate-500 text-xs font-medium focus:outline-none focus:border-emerald-500/20 transition-all resize-none"
+                                                />
+                                            </div>
+                                        )}
+
+                                        {composeData.sendSMS && (
+                                            <div className="space-y-6 pt-6 border-t border-white/5">
+                                                <label className="text-[10px] font-bold uppercase tracking-widest text-amber-500 ml-1">SMS Pipeline (Max 160 chars)</label>
+                                                <textarea
+                                                    value={composeData.smsMessage}
+                                                    onChange={(e) => setComposeData({ ...composeData, smsMessage: e.target.value })}
+                                                    placeholder="Brief SMS message..."
+                                                    rows={2}
+                                                    className="w-full bg-white/[0.01] border border-white/5 rounded-xl px-6 py-4 text-slate-500 text-xs font-medium focus:outline-none focus:border-emerald-500/20 transition-all resize-none"
+                                                />
+                                                <div className="text-[8px] text-right text-slate-700 font-bold uppercase tracking-widest">
+                                                    Length: {composeData.smsMessage.length} / 160
+                                                </div>
+                                            </div>
+                                        )}
+
+                                        {composeData.sendWhatsApp && (
+                                            <div className="space-y-6 pt-6 border-t border-white/5">
+                                                <label className="text-[10px] font-bold uppercase tracking-widest text-emerald-400 ml-1">WhatsApp Chat</label>
+                                                <textarea
+                                                    value={composeData.whatsappMessage}
+                                                    onChange={(e) => setComposeData({ ...composeData, whatsappMessage: e.target.value })}
+                                                    placeholder="Craft a WhatsApp message (Emoji supported)"
+                                                    rows={4}
+                                                    className="w-full bg-white/[0.01] border border-white/5 rounded-xl px-6 py-4 text-slate-500 text-xs font-medium focus:outline-none focus:border-emerald-500/20 transition-all resize-none"
+                                                />
+                                            </div>
+                                        )}
+                                    </div>
+                                )}
 
                                 <div className="flex pt-6">
                                     <button
