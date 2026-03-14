@@ -3,36 +3,12 @@
  * Validates Supabase JWT tokens with local caching to reduce network calls
  */
 
-import { createClient } from '@supabase/supabase-js';
+import { supabase } from '../lib/supabase.js';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import logger from '../utils/logger.js';
 
 dotenv.config();
-
-const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY;
-
-if (!supabaseUrl || !supabaseKey) {
-  console.error('❌ Auth: SUPABASE CREDENTIALS MISSING!');
-}
-
-const supabase = (supabaseUrl && supabaseKey)
-  ? createClient(supabaseUrl, supabaseKey, {
-      auth: {
-        persistSession: false,
-        autoRefreshToken: false,
-      },
-      global: {
-        fetch: (url, options) => {
-          const controller = new AbortController();
-          const timeoutId = setTimeout(() => controller.abort(), 8000); // 8s timeout
-          return fetch(url, { ...options, signal: controller.signal })
-            .finally(() => clearTimeout(timeoutId));
-        }
-      }
-    })
-  : null;
 
 
 // In-memory token cache: token -> { user, expiresAt }

@@ -3,23 +3,12 @@
  * Validates X-API-Key header against the database
  */
 
-import { createClient } from '@supabase/supabase-js';
+import { supabase } from '../lib/supabase.js';
 import crypto from 'crypto';
 import logger from '../utils/logger.js';
 import dotenv from 'dotenv';
 
 dotenv.config();
-
-const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY;
-
-if (!supabaseUrl || !supabaseKey) {
-  logger.warn('❌ API Key Auth: SUPABASE CREDENTIALS MISSING!');
-}
-
-const supabase = (supabaseUrl && supabaseKey)
-  ? createClient(supabaseUrl, supabaseKey)
-  : null;
 
 /**
  * Hash a plain text API key

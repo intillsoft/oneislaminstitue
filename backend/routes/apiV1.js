@@ -4,7 +4,7 @@
  */
 
 import express from 'express';
-import { createClient } from '@supabase/supabase-js';
+import { supabase } from '../lib/supabase.js';
 import { apiKeyAuth, checkScope } from '../middleware/apiKeyAuth.js';
 import { generateEmbedding } from '../services/aiProviderService.js';
 import { auditService } from '../services/auditService.js';
@@ -15,16 +15,6 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const router = express.Router();
-const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY;
-
-if (!supabaseUrl || !supabaseKey) {
-  logger.warn('❌ API v1: SUPABASE CREDENTIALS MISSING!');
-}
-
-const supabase = (supabaseUrl && supabaseKey)
-  ? createClient(supabaseUrl, supabaseKey)
-  : null;
 
 // Apply API Key Authentication to ALL v1 routes
 router.use(apiKeyAuth);

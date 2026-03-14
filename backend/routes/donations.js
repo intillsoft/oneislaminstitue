@@ -2,6 +2,7 @@ import express from 'express';
 import Stripe from 'stripe';
 import axios from 'axios';
 import { supabase } from '../lib/supabase.js';
+import logger from '../utils/logger.js';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -42,6 +43,11 @@ router.post('/stripe/create-intent', async (req, res) => {
         });
 
         // Pre-record the donation in "pending" status
+        if (!supabase) {
+            logger.error('Stripe initialization error: Supabase client not initialized');
+            return res.status(503).json({ error: 'Database connection unavailable' });
+        }
+
         const { error: dbError } = await supabase
             .from('donations')
             .insert({
@@ -119,10 +125,21 @@ router.post('/paystack/initialize', async (req, res) => {
         const exactAmount = Math.round(finalAmount * 100); // Paystack uses kobo/pesewas
         
         // Define callback URL — ensuring it's accessible in production
-        const baseUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
+        // In production, we should prioritize the actual request origin if FRONTEND_URL is local
+        const requestOrigin = req.get('origin') || req.get('referer');
+        let baseUrl = process.env.FRONTEND_URL;
+        
+        // If FRONTEND_URL is localhost but we are being called from a real domain, use that instead
+        if ((!baseUrl || baseUrl.includes('localhost')) && requestOrigin && !requestOrigin.includes('localhost')) {
+            baseUrl = requestOrigin;
+            logger.info(`Paystack: Using request origin as baseUrl: ${baseUrl}`);
+        } else {
+            baseUrl = baseUrl || 'http://localhost:3000';
+        }
+
         const callbackUrl = `${baseUrl.replace(/\/$/, '')}/checkout/verify?provider=paystack&courseId=${course_id || ''}&t=${Date.now()}`;
 
-        logger.info(`Paystack: Initializing transaction for ${email} - ${finalAmount} ${finalCurrency}`);
+        logger.info(`Paystack: Initializing transaction for ${email} - ${finalAmount} ${finalCurrency}. Callback: ${callbackUrl}`);
 
         const response = await axios.post('https://api.paystack.co/transaction/initialize', {
             email,
@@ -220,6 +237,12 @@ router.post('/verify', async (req, res) => {
 
         if (isSuccess) {
             console.log(`[Verify] Payment success confirmed for ref: ${reference}`);
+            
+            if (!supabase) {
+                console.error('[Verify] Supabase client not initialized');
+                return res.status(503).json({ error: 'Database connection unavailable' });
+            }
+
             // Update donation status
             const { data: updateData, error: updateError } = await supabase
                 .from('donations')
@@ -297,61 +320,7 @@ router.post('/verify', async (req, res) => {
     }
 });
 
-// Paystack Webhook Handler
-router.post('/paystack/webhook', async (req, res) => {
-    // 1. Verify signature
-    const hash = req.headers['x-paystack-signature'];
-    if (!hash) return res.sendStatus(400);
-
-    // In production, verify the HMAC SHA512 signature using PAYSTACK_SECRET_KEY
-    // const crypto = require('crypto');
-    // const expected = crypto.createHmac('sha512', process.env.PAYSTACK_SECRET_KEY).update(JSON.stringify(req.body)).digest('hex');
-    // if (hash !== expected) return res.sendStatus(400);
-
-    const event = req.body;
-    
-    if (event.event === 'charge.success') {
-        const { reference, metadata, amount, currency } = event.data;
-        console.log(`[Webhook] Payment success for ref: ${reference}`);
-
-        // Update donation status
-        const { data: updateData, error: updateError } = await supabase
-            .from('donations')
-            .update({ status: 'completed' })
-            .eq('reference', reference)
-            .select()
-            .single();
-
-        if (updateError) {
-            console.error('[Webhook] Update Error:', updateError);
-            return res.sendStatus(500);
-        }
-
-        // Handle auto-enrollment if applicable
-        const type = updateData?.type || metadata?.type || 'general';
-        const course_id = updateData?.course_id || metadata?.custom_fields?.find(f => f.variable_name === 'course_id')?.value;
-        const user_id = updateData?.user_id || metadata?.custom_fields?.find(f => f.variable_name === 'user_id')?.value;
-
-        if (type === 'course_enrollment' && course_id && user_id) {
-            const { data: existingApp } = await supabase
-                .from('applications')
-                .select('id')
-                .eq('job_id', course_id)
-                .eq('user_id', user_id)
-                .maybeSingle();
-
-            if (!existingApp) {
-                await supabase.from('applications').insert({
-                    job_id: course_id,
-                    user_id: user_id,
-                    status: 'accepted',
-                    notes: 'Auto-enrolled via Paystack Webhook'
-                });
-            }
-        }
-    }
-
-    res.sendStatus(200);
-});
+// Redundant Paystack Webhook Handler removed. Please use /api/paystack-webhooks instead.
+// This ensures centralized logic in backend/routes/paystackWebhooks.js
 
 export default router;

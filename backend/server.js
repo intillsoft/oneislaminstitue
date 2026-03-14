@@ -9,6 +9,26 @@ import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import dotenv from 'dotenv';
 import logger from './utils/logger.js';
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+
+// PDF Parsing Polyfills for serverless environments
+if (typeof global.DOMMatrix === 'undefined') {
+  global.DOMMatrix = class DOMMatrix {
+    constructor() {}
+    toString() { return "[object DOMMatrix]"; }
+  };
+}
+if (typeof global.ImageData === 'undefined') {
+  global.ImageData = class ImageData {
+    constructor() {}
+  };
+}
+if (typeof global.Path2D === 'undefined') {
+  global.Path2D = class Path2D {
+    constructor() {}
+  };
+}
 
 // Routes
 import billingRoutes from './routes/billing.js';
@@ -247,6 +267,28 @@ if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
   app.listen(PORT, async () => {
     logger.info(`🚀 Server running on port ${PORT}`);
     console.log(`🚀 Server running on http://localhost:${PORT}`);
+
+    // Log critical environment variables (obfuscated) for debugging
+    const criticalVars = [
+      'SUPABASE_URL', 
+      'SUPABASE_SERVICE_ROLE_KEY', 
+      'PAYSTACK_SECRET_KEY', 
+      'PAYSTACK_WEBHOOK_SECRET',
+      'RESEND_API_KEY',
+      'TWILIO_AUTH_TOKEN'
+    ];
+    
+    console.log('--- Environment Variable Check ---');
+    criticalVars.forEach(v => {
+      const val = process.env[v];
+      if (!val) {
+        console.warn(`⚠️ ${v} is NOT set!`);
+      } else {
+        const masked = val.length > 8 ? `${val.substring(0, 4)}...${val.substring(val.length - 4)}` : '****';
+        console.log(`✅ ${v} is set: ${masked}`);
+      }
+    });
+    console.log('---------------------------------');
 
     if (process.env.ENABLE_CRON_JOBS !== 'true') {
       console.log('💡 Tip: Set ENABLE_CRON_JOBS=true to enable automatic job crawling');

@@ -164,37 +164,67 @@ export const notificationService = {
         // Channel delivery
         if (sendEmail || sendSMS || sendWhatsApp) {
             try {
-                const { data: publicUser } = await supabase
+                const { data: publicUser, error: publicUserError } = await supabase
                     .from('users')
                     .select('email, name, first_name, phone, phone_number')
                     .eq('id', userId)
                     .single();
 
+                if (publicUserError && publicUserError.code !== 'PGRST116') {
+                    logger.error(`Error fetching public user ${userId}:`, publicUserError);
+                }
+
                 let userEmail = publicUser?.email;
                 let userName = publicUser?.name || publicUser?.first_name;
+                let userPhone = publicUser?.phone || publicUser?.phone_number;
 
-                // Best-effort: fall back to auth.users (requires service role key)
-                if (!userEmail && supabase.auth?.admin) {
+                // Best-effort: fall back to auth.users if public record is incomplete
+                // requires SERVICE_ROLE_KEY to be used in supabase client
+                if ((!userEmail || !userPhone) && supabase.auth?.admin) {
                     try {
-                        const { data: authData } = await supabase.auth.admin.getUserById(userId);
-                        userEmail = authData?.user?.email;
-                        userName = userName || authData?.user?.user_metadata?.name || authData?.user?.user_metadata?.full_name;
-                    } catch (_) { /* service role key not available, skip */ }
+                        logger.info(`Attempting to resolve identity for ${userId} from auth service...`);
+                        const { data: authData, error: authError } = await supabase.auth.admin.getUserById(userId);
+                        
+                        if (!authError && authData?.user) {
+                            userEmail = userEmail || authData.user.email;
+                            userName = userName || authData.user.user_metadata?.name || authData.user.user_metadata?.full_name;
+                            userPhone = userPhone || authData.user.phone || authData.user.user_metadata?.phone;
+                        } else if (authError) {
+                            logger.warn(`Auth admin resolution failed for ${userId}:`, authError.message);
+                        }
+                    } catch (err) { 
+                        logger.warn(`Service role operations unavailable for notification delivery to ${userId}`);
+                    }
                 }
 
-                const resolvedUser = { ...(publicUser || {}), email: userEmail, name: userName };
+                const resolvedUser = { ...(publicUser || {}), email: userEmail, name: userName, phone: userPhone };
 
-                if (sendEmail && userEmail) {
-                    await this.sendEmailNotification(resolvedUser, rest);
-                } else if (sendEmail) {
-                    logger.warn(`No email found for user ${userId}, skipping email delivery`);
+                if (sendEmail) {
+                    if (userEmail) {
+                        await this.sendEmailNotification(resolvedUser, rest);
+                    } else {
+                        logger.warn(`Cannot send email: No email address resolved for user ${userId}`);
+                    }
                 }
 
-                const recipientPhone = publicUser?.phone || publicUser?.phone_number;
-                if (sendSMS && recipientPhone) await this.sendSMSNotification(recipientPhone, rest);
-                if (sendWhatsApp && recipientPhone) await this.sendWhatsAppNotification(recipientPhone, rest);
+                const recipientPhone = userPhone;
+                if (sendSMS) {
+                    if (recipientPhone) {
+                        await this.sendSMSNotification(recipientPhone, rest);
+                    } else {
+                        logger.warn(`Cannot send SMS: No phone number resolved for user ${userId}`);
+                    }
+                }
+                
+                if (sendWhatsApp) {
+                    if (recipientPhone) {
+                        await this.sendWhatsAppNotification(recipientPhone, rest);
+                    } else {
+                        logger.warn(`Cannot send WhatsApp: No phone number resolved for user ${userId}`);
+                    }
+                }
             } catch (err) {
-                logger.error('Channel delivery error for user', userId, err.message);
+                logger.error(`Critical failure in channel delivery for user ${userId}:`, err.message);
             }
         }
 

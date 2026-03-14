@@ -4,25 +4,15 @@
  */
 
 import express from 'express';
+import { supabase } from '../lib/supabase.js';
 import { authenticate, optionalAuth } from '../middleware/auth.js';
 import logger from '../utils/logger.js';
-import { createClient } from '@supabase/supabase-js';
 import dotenv from 'dotenv';
 import { generateEmbedding } from '../services/aiProviderService.js';
 
 dotenv.config();
 
 const router = express.Router();
-const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY;
-
-if (!supabaseUrl || !supabaseKey) {
-  logger.warn('❌ Talent: SUPABASE CREDENTIALS MISSING!');
-}
-
-const supabase = (supabaseUrl && supabaseKey)
-  ? createClient(supabaseUrl, supabaseKey)
-  : null;
 
 // ============================================================================
 // TALENT PROFILE ROUTES

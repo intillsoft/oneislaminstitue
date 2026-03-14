@@ -15,12 +15,21 @@ const PAYSTACK_WEBHOOK_SECRET = process.env.PAYSTACK_WEBHOOK_SECRET;
 router.post('/', async (req, res) => {
     try {
         // Verify signature
+        if (!PAYSTACK_WEBHOOK_SECRET) {
+            logger.error('PAYSTACK_WEBHOOK_SECRET is missing');
+            return res.status(500).send('Configuration Error');
+        }
+
+        if (PAYSTACK_WEBHOOK_SECRET.startsWith('http')) {
+            logger.error('CRITICAL: PAYSTACK_WEBHOOK_SECRET appears to be a URL instead of a secret key. Signature verification will fail.');
+        }
+
         const hash = crypto.createHmac('sha512', PAYSTACK_WEBHOOK_SECRET)
             .update(JSON.stringify(req.body))
             .digest('hex');
         
         if (hash !== req.headers['x-paystack-signature']) {
-            logger.warn('Paystack webhook signature verification failed');
+            logger.warn('Paystack webhook signature verification failed. Ensure PAYSTACK_WEBHOOK_SECRET matches Paystack dashboard.');
             return res.status(401).send('Unauthorized');
         }
 
