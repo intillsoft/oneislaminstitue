@@ -17,10 +17,11 @@ export const EliteCard = ({
         <motion.div
             onClick={onClick}
             className={`
-                bg-white/[0.02] 
-                dark:bg-emerald-500/[0.02]
-                border border-emerald-500/20 
-                dark:border-emerald-500/10
+                bg-white 
+                dark:bg-white/[0.02]
+                border border-slate-200 
+                dark:border-white/10
+                shadow-sm dark:shadow-none
                 rounded-2xl 
                 p-4 sm:p-5
                 transition-all
@@ -81,7 +82,7 @@ export const EliteStatCard = ({
                     <p className="text-[10px] font-black text-slate-500 uppercase tracking-[0.15em] mb-2 font-mono">
                         {displayLabel}
                     </p>
-                    <p className="text-2xl font-black text-white tracking-tighter">
+                    <p className="text-2xl font-black text-slate-900 dark:text-white tracking-tighter">
                         {value}
                     </p>
                     {trend && (
@@ -95,7 +96,7 @@ export const EliteStatCard = ({
                         </p>
                     )}
                 </div>
-                <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-white/5 border border-emerald-500/20 flex items-center justify-center flex-shrink-0 transition-colors group-hover:border-emerald-500/40`}>
+                <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 flex items-center justify-center flex-shrink-0 transition-colors group-hover:border-emerald-500/40`}>
                     <Icon className={`${colors.icon}`} size={typeof window !== 'undefined' && window.innerWidth < 640 ? 18 : 20} />
                 </div>
             </div>
@@ -135,7 +136,7 @@ export const EliteProgressBar = ({
                     </span>
                 )}
             </div>
-            <div className="h-1.5 bg-white/5 rounded-full overflow-hidden border border-emerald-500/20">
+            <div className="h-1.5 bg-slate-100 dark:bg-white/5 rounded-full overflow-hidden border border-slate-200 dark:border-white/10 shadow-inner">
                 <motion.div
                     className={`h-full ${bgColor} rounded-full`}
                     initial={{ width: 0 }}

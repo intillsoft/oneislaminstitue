@@ -79,7 +79,7 @@ const ProfileCompletion = ({ completion }) => {
           <li key={suggestion?.id}>
             <Link
               to={suggestion?.path}
-              className="flex items-center p-3 rounded-xl bg-surface-elevated dark:bg-white/5 hover:bg-surface dark:hover:bg-white/10 transition-all group border border-transparent hover:border-emerald-500/20"
+              className="flex items-center p-3 rounded-xl bg-slate-50 dark:bg-white/5 hover:bg-white dark:hover:bg-white/10 shadow-sm dark:shadow-none transition-all group border border-slate-200 dark:border-transparent hover:border-emerald-500/30 dark:hover:border-emerald-500/20"
             >
               <div className="w-9 h-9 rounded-lg bg-workflow-primary/10 dark:bg-workflow-primary/20 flex items-center justify-center mr-3 group-hover:bg-workflow-primary/20 dark:group-hover:bg-workflow-primary/30 transition-all flex-shrink-0">
                 <Icon name={suggestion?.icon} size={16} className="text-workflow-primary" />

@@ -42,11 +42,11 @@ const StudentAmbient = () => (
 const StatPill = ({ icon: Icon, value, label, color }) => (
   <motion.div
     whileHover={{ scale: 1.04 }}
-    className={`flex items-center gap-2 px-4 py-2 rounded-full border bg-white/[0.03] ${color} backdrop-blur-sm`}
+    className={`flex items-center gap-2 px-4 py-2 rounded-full border bg-white dark:bg-white/[0.03] shadow-sm dark:shadow-none ${color} backdrop-blur-sm`}
   >
     <Icon size={12} />
     <span className="text-xs font-bold tracking-wide">{value}</span>
-    <span className="text-[10px] text-white/40 hidden sm:block">{label}</span>
+    <span className="text-[10px] text-slate-500 dark:text-white/40 hidden sm:block">{label}</span>
   </motion.div>
 );
 
@@ -56,8 +56,8 @@ const TabBtn = ({ active, onClick, icon: TabIcon, label }) => (
     onClick={onClick}
     className={`relative flex items-center gap-2 px-4 py-2 rounded-xl text-[11px] font-bold uppercase tracking-widest transition-all duration-200 whitespace-nowrap ${
       active
-        ? 'text-emerald-400 bg-emerald-500/10 border border-emerald-500/20'
-        : 'text-white/30 hover:text-white/70 hover:bg-white/[0.04]'
+        ? 'text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-500/20 shadow-sm dark:shadow-none'
+        : 'text-slate-400 dark:text-white/30 hover:text-slate-900 hover:bg-slate-100 dark:hover:text-white/70 dark:hover:bg-white/[0.04]'
     }`}
   >
     <TabIcon size={13} />
@@ -160,9 +160,9 @@ const StudentDashboard = () => {
         return <SavedCourses />;
       default:
         return (
-          <div className="text-center py-20 bg-white/[0.02] rounded-2xl border border-emerald-500/10">
-            <Icon name="Search" size={48} className="mx-auto text-white/10 mb-4" />
-            <p className="text-white/30 font-bold text-sm">Content for this module is being curated.</p>
+          <div className="text-center py-20 bg-white dark:bg-white/[0.02] shadow-sm dark:shadow-none rounded-2xl border border-slate-200 dark:border-emerald-500/10">
+            <Icon name="Search" size={48} className="mx-auto text-slate-300 dark:text-white/10 mb-4" />
+            <p className="text-slate-500 dark:text-white/30 font-bold text-sm">Content for this module is being curated.</p>
           </div>
         );
     }
@@ -241,7 +241,7 @@ const StudentDashboard = () => {
               </Link>
               <Link
                 to="/profile"
-                className="flex items-center gap-2 px-5 py-2.5 bg-white/[0.05] hover:bg-white/[0.09] text-white/70 hover:text-white rounded-xl font-bold text-xs uppercase tracking-wider border border-white/10 transition-all"
+                className="flex items-center gap-2 px-5 py-2.5 bg-white dark:bg-white/[0.05] hover:bg-slate-100 dark:hover:bg-white/[0.09] text-slate-600 dark:text-white/70 hover:text-slate-900 dark:hover:text-white rounded-xl font-bold text-xs uppercase tracking-wider border border-slate-200 dark:border-white/10 shadow-sm dark:shadow-none transition-all"
               >
                 <User size={13} />
                 Profile

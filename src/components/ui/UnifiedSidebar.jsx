@@ -169,7 +169,7 @@ const UnifiedSidebar = () => {
   const sections = getSections();
 
   const sidebarContent = (
-    <div className="h-full flex flex-col bg-bg/80 backdrop-blur-xl border-r border-emerald-500/10 relative overflow-hidden transition-all duration-500 ease-in-out">
+    <div className="h-full flex flex-col bg-slate-50/80 dark:bg-[#0A0E27]/80 backdrop-blur-xl border-r border-slate-200 dark:border-emerald-500/10 relative overflow-hidden transition-all duration-500 ease-in-out">
       {/* Decorative Gradient Backgrounds */}
       <div className="absolute top-0 left-0 w-full h-64 bg-gradient-to-b from-emerald-500/5 to-transparent pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-emerald-500/5 to-transparent pointer-events-none" />
@@ -257,7 +257,7 @@ const UnifiedSidebar = () => {
         })}
       </nav>
 
-      <div className="p-4 border-t border-emerald-500/10 space-y-4 relative z-10 bg-bg/40 backdrop-blur-md">
+      <div className="p-4 border-t border-slate-200 dark:border-emerald-500/10 space-y-4 relative z-10 bg-slate-50/40 dark:bg-[#0A0E27]/40 backdrop-blur-md">
         <div className={`flex items-center ${isCollapsed ? 'justify-center' : 'justify-between'} gap-2 px-1`}>
           {!isCollapsed && <span className="text-[10px] font-black text-text-muted uppercase tracking-[0.2em]">Appearance</span>}
           <DarkModeToggle />
@@ -301,7 +301,7 @@ const UnifiedSidebar = () => {
                   initial={{ opacity: 0, scale: 0.95, y: 10 }}
                   animate={{ opacity: 1, scale: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.95, y: 10 }}
-                  className={`absolute ${isCollapsed ? 'left-full bottom-0 ml-4' : 'bottom-full mb-3 left-0 right-0'} bg-bg-elevated/95 backdrop-blur-2xl rounded-2xl shadow-2xl border border-emerald-500/20 overflow-hidden z-[100] min-w-[220px] p-2`}
+                  className={`absolute ${isCollapsed ? 'left-full bottom-0 ml-4' : 'bottom-full mb-3 left-0 right-0'} bg-white/95 dark:bg-[#0A0E27]/95 backdrop-blur-2xl rounded-2xl shadow-2xl border border-slate-200 dark:border-emerald-500/20 overflow-hidden z-[100] min-w-[220px] p-2`}
                 >
                   <Link
                     to="/profile"
@@ -363,7 +363,7 @@ const UnifiedSidebar = () => {
             initial={false}
             animate={{ width: isCollapsed ? 64 : 260 }}
             transition={{ duration: 0.2 }}
-            className="fixed left-0 top-[var(--header-height)] bottom-0 z-[90] hidden lg:block border-r border-emerald-500/20 bg-bg"
+            className="fixed left-0 top-[var(--header-height)] bottom-0 z-[90] hidden lg:block border-r border-slate-200 dark:border-emerald-500/20 bg-slate-50 dark:bg-[#0A0E27]"
           >
             {sidebarContent}
           </motion.aside>

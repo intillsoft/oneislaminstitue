@@ -89,7 +89,7 @@ const RecentActivity = () => {
     return (
       <div className="space-y-4">
         {[1, 2, 3].map(i => (
-          <div key={i} className="animate-pulse h-24 bg-surface dark:bg-bg border border-emerald-500/20 rounded-2xl"></div>
+          <div key={i} className="animate-pulse h-24 bg-white dark:bg-white/[0.05] border border-slate-200 dark:border-white/10 rounded-2xl shadow-sm dark:shadow-none"></div>
         ))}
       </div>
     );
@@ -99,8 +99,8 @@ const RecentActivity = () => {
     return (
       <EliteCard>
         <div className="text-center py-8">
-          <div className="w-16 h-16 rounded-2xl bg-surface-elevated dark:bg-white/5 flex items-center justify-center mx-auto mb-4">
-            <Icon name="Activity" className="w-8 h-8 text-text-muted dark:text-slate-600 transition-colors" />
+          <div className="w-16 h-16 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 shadow-sm flex items-center justify-center mx-auto mb-4">
+            <Icon name="Activity" className="w-8 h-8 text-slate-400 dark:text-slate-600 transition-colors" />
           </div>
           <h3 className="text-lg font-bold text-text-primary dark:text-white mb-2">No recent activity</h3>
           <p className="text-sm text-text-secondary dark:text-slate-400">Your recent course updates will appear here</p>
@@ -114,7 +114,7 @@ const RecentActivity = () => {
       {activities.map((activity) => (
         <div
           key={activity.id}
-          className="p-4 rounded-lg bg-surface-elevated dark:bg-white/5 hover:bg-surface dark:hover:bg-white/10 transition-all border border-emerald-500/20"
+          className="p-4 rounded-lg bg-white dark:bg-white/5 shadow-sm dark:shadow-none hover:bg-slate-50 dark:hover:bg-white/10 transition-all border border-slate-200 dark:border-white/10"
         >
           <div className="flex items-start gap-3">
             {activity.companyLogo && (
