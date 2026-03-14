@@ -22,8 +22,15 @@ const ToastProvider = ({ children }) => {
   const [toasts, setToasts] = useState([]);
 
   const addToast = useCallback((message, type = 'info', duration = 5000) => {
+    let displayMessage = message;
+    
+    // Handle objects and Errors to avoid [object Object]
+    if (typeof message === 'object' && message !== null) {
+      displayMessage = message.message || message.error || JSON.stringify(message);
+    }
+
     const id = `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-    const toast = { id, message, type, duration };
+    const toast = { id, message: String(displayMessage), type, duration };
     
     setToasts((prev) => [...prev, toast]);
     
