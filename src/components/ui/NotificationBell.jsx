@@ -16,6 +16,13 @@ const NotificationBell = () => {
   const [loading, setLoading] = useState(false);
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     if (user) {
@@ -131,7 +138,7 @@ const NotificationBell = () => {
   if (!user) return null;
 
   return (
-    <div className="relative" ref={dropdownRef}>
+    <div className="relative">
       <button
         onClick={() => {
           setIsOpen(!isOpen);
@@ -153,12 +160,41 @@ const NotificationBell = () => {
 
       <AnimatePresence>
         {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: 12, scale: 0.98 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 8, scale: 0.99 }}
-            className="fixed md:absolute left-4 right-4 md:left-auto md:right-0 top-16 md:top-auto mt-2 md:mt-4 md:w-96 bg-white dark:bg-[#0A0E27] backdrop-blur-3xl border border-slate-200 dark:border-white/5 rounded-2xl z-50 overflow-hidden shadow-2xl dark:shadow-[0_20px_40px_rgba(0,0,0,0.3)] flex flex-col"
-          >
+          <>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsOpen(false)}
+              className="fixed inset-0 bg-slate-900/30 dark:bg-black/40 backdrop-blur-sm z-[9998]"
+            />
+
+            <motion.div
+              initial={isMobile ? { y: '100%', opacity: 0 } : { x: '100%', opacity: 0 }}
+              animate={{ y: 0, x: 0, opacity: 1 }}
+              exit={isMobile ? { y: '100%', opacity: 0 } : { x: '100%', opacity: 0 }}
+              transition={{ type: 'spring', damping: 28, stiffness: 220 }}
+              drag={isMobile ? "y" : false}
+              dragConstraints={{ top: 0, bottom: 0 }}
+              dragElastic={0.2}
+              onDragEnd={(e, { offset, velocity }) => {
+                if (isMobile && (offset.y > 120 || velocity.y > 400)) {
+                  setIsOpen(false);
+                }
+              }}
+              style={{ 
+                width: isMobile ? '100%' : '380px',
+                height: isMobile ? '85dvh' : '100dvh' 
+              }}
+              className={`fixed ${isMobile ? 'bottom-0 left-0 right-0' : 'top-0 bottom-0 right-0'} bg-white dark:bg-[#0A0E27] backdrop-blur-3xl z-[9999] shadow-[-1px_-10px_40px_rgba(0,0,0,0.08)] dark:shadow-[-5px_-20px_60px_rgba(0,0,0,0.4)] flex flex-col border-gray-100 dark:border-white/5 ${isMobile ? 'border-t rounded-t-[2.5rem]' : 'border-l rounded-l-[2.5rem]'} overflow-hidden transition-all duration-300`}
+            >
+              {/* Pull Handle for Mobile */}
+              {isMobile && (
+                <div className="flex justify-center p-3 cursor-grab flex-shrink-0 border-b border-gray-50 dark:border-white/[0.02]">
+                  <div className="w-12 h-1.5 rounded-full bg-slate-200 dark:bg-slate-700/80" />
+                </div>
+              )}
             {/* Header */}
             <div className="flex items-center justify-between p-4 border-b border-slate-100 dark:border-white/5 bg-slate-50 dark:bg-white/[0.02] flex-shrink-0">
               <div>
@@ -260,6 +296,7 @@ const NotificationBell = () => {
               </Link>
             </div>
           </motion.div>
+          </>
         )}
       </AnimatePresence>
     </div>
