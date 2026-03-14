@@ -7,6 +7,7 @@ import express from 'express';
 import { authenticate } from '../middleware/auth.js';
 import * as jobCrawlerService from '../services/jobCrawler.js';
 import logger from '../utils/logger.js';
+import { supabase } from '../lib/supabase.js';
 
 const router = express.Router();
 
@@ -18,7 +19,7 @@ const router = express.Router();
 router.post('/crawl', authenticate, async (req, res) => {
   try {
     // Check role manually
-    const { data: profile, error: profileError } = await req.supabase
+    const { data: profile, error: profileError } = await supabase
       .from('users')
       .select('role')
       .eq('id', req.user.id)
@@ -67,7 +68,7 @@ router.post('/crawl', authenticate, async (req, res) => {
 router.post('/schedule', authenticate, async (req, res) => {
   try {
     // Check admin role
-    const { data: profile, error: profileError } = await req.supabase
+    const { data: profile, error: profileError } = await supabase
       .from('users')
       .select('role')
       .eq('id', req.user.id)
@@ -103,12 +104,7 @@ router.post('/schedule', authenticate, async (req, res) => {
  */
 router.get('/status', authenticate, async (req, res) => {
   try {
-    // Get statistics about crawled jobs
-    const { createClient } = await import('@supabase/supabase-js');
-    const supabase = createClient(
-      process.env.SUPABASE_URL,
-      process.env.SUPABASE_SERVICE_ROLE_KEY
-    );
+    // Get statistics about crawled jobs using centralized Supabase client
 
     // Get total jobs count
     const { count: totalJobsCount } = await supabase
