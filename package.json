@@ -90,7 +90,7 @@
     "dev:frontend": "vite",
     "dev:backend": "cd backend && npm run dev",
     "dev:all": "concurrently -n \"frontend,backend\" -c \"blue,green\" \"npm run dev:frontend\" \"npm run dev:backend\"",
-    "render-build": "npm install && npm run build",
+    "render-build": "npm install --include=dev && npm run build",
     "build": "vite build --sourcemap",
     "vercel-build": "npm run build",
     "preview": "vite preview"
