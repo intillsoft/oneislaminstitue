@@ -103,7 +103,7 @@ const CourseDiscovery = () => {
     <div className="min-h-screen bg-slate-50 dark:bg-[#0A1120] text-slate-900 dark:text-white font-sans selection:bg-emerald-500/30 pb-32">
       
       {/* Search Header */}
-      <section className="relative pt-32 pb-12 overflow-hidden">
+      <section className="relative pt-36 md:pt-40 pb-12 overflow-hidden">
         <div className="absolute inset-0 z-0">
           <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-emerald-500/5 rounded-full blur-[100px]" />
           <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-blue-500/5 rounded-full blur-[80px]" />
