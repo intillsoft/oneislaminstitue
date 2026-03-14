@@ -50,6 +50,30 @@ async function run() {
                  const embedUrl = embedMatch ? embedMatch[1] : "#";
                  content.push({ id: genId(), type: 'video', content: { url: embedUrl } });
                  content.push({ id: genId(), type: 'text', content: body });
+             } else if (type === 'companion_guide') {
+                 // Split into sections by trigger words
+                 const guideParts = body.split(/\n- \*\*/);
+                 for (const p of guideParts) {
+                    if (p.trim().length < 5) continue;
+                    const cleaned = p.startsWith('**') ? p : `**${p}`;
+                    if (cleaned.includes('Quranic Verses')) {
+                         const verses = cleaned.split('•').filter(v => v.trim().length > 10);
+                         verses.forEach(v => {
+                              const match = v.match(/(?:Surah)\s+(.*?)\s+–\s+“(.*?)”/);
+                              if (match) content.push({ id: genId(), type: 'quran', content: { reference: match[1].trim(), translation: match[2].trim() } });
+                              else content.push({ id: genId(), type: 'text', content: `• ${v.trim()}` });
+                         });
+                    } else if (cleaned.includes('Hadith References')) {
+                         const references = cleaned.split('•').filter(r => r.trim().length > 10);
+                         references.forEach(r => {
+                              const match = r.match(/“(.*?)”\s+\((.*?)\)/);
+                              if (match) content.push({ id: genId(), type: 'hadith', content: { reference: match[2].trim(), translation: match[1].trim() } });
+                              else content.push({ id: genId(), type: 'text', content: `• ${r.trim()}` });
+                         });
+                    } else {
+                         content.push({ id: genId(), type: 'text', content: cleaned.trim() });
+                    }
+                 }
              } else if (type === 'reflection_journal') {
                  content.push({ id: genId(), type: 'text', content: "## Reflection Journal" });
                  const prompts = body.split(/\d+\.\s+/).filter(p => p.trim().length > 2);
