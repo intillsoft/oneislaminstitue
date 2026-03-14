@@ -106,17 +106,25 @@ const NotificationBell = () => {
   };
 
   const handleNotificationClick = async (e, notification) => {
-    e.preventDefault();
     if (!notification.is_read) {
       handleMarkAsRead(notification.id);
     }
     setIsOpen(false);
-    if (notification.action_url) {
-      navigate(notification.action_url.replace('/jobs', '/courses'));
-    } else if (notification.data?.jobId) {
-      navigate(`/courses/detail/${notification.data.jobId}`);
-    } else {
-      // Just mark open/close if no direct URL
+    
+    let parsedData = {};
+    if (typeof notification.data === 'string') {
+      try { parsedData = JSON.parse(notification.data); } catch (err) {}
+    } else if (notification.data) {
+      parsedData = notification.data;
+    }
+
+    const actionUrl = notification.action_url || parsedData.action_url;
+    const jobId = parsedData.jobId || parsedData.courseId;
+
+    if (actionUrl) {
+      navigate(actionUrl.replace('/jobs', '/courses').replace('/job/', '/courses/detail/'));
+    } else if (jobId) {
+      navigate(`/courses/detail/${jobId}`);
     }
   };
 
