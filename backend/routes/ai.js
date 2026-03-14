@@ -18,23 +18,13 @@ import { authenticate, optionalAuth } from '../middleware/auth.js';
 import * as jobCrawlerService from '../services/jobCrawler.js';
 import logger from '../utils/logger.js';
 
-import { createClient } from '@supabase/supabase-js';
+import { supabase } from '../lib/supabase.js';
 import { SUBSCRIPTION_TIERS } from '../config/subscription-tiers.js';
 import dotenv from 'dotenv';
 
 dotenv.config();
 
 const router = express.Router();
-const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY;
-
-if (!supabaseUrl || !supabaseKey) {
-  logger.warn('❌ AI Routes: SUPABASE CREDENTIALS MISSING! Check environment variables.');
-}
-
-const supabase = (supabaseUrl && supabaseKey)
-  ? createClient(supabaseUrl, supabaseKey)
-  : null;
 
 // ============================================================================
 // RESUME GENERATOR ROUTES
