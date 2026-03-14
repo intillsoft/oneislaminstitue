@@ -185,15 +185,33 @@ const GlobalAIPanel = () => {
 
           {/* Sliding Panel */}
           <motion.div
-            initial={{ x: '100%', y: 0, opacity: 0 }}
-            animate={{ x: 0, y: 0, opacity: 1 }}
-            exit={{ x: '100%', y: 0, opacity: 0 }}
-            transition={{ type: 'spring', damping: 28, stiffness: 240 }}
-            style={{ width: isMobile ? '100%' : (isExpanded ? '100vw' : panelWidth) }}
-            className={`fixed top-0 bottom-0 right-0 h-dvh bg-white dark:bg-[#0A0E27] backdrop-blur-3xl z-[9999] shadow-[-10px_0_50px_rgba(0,0,0,0.1)] dark:shadow-[-20px_0_80px_rgba(0,0,0,0.5)] flex flex-col border-l border-gray-100 dark:border-white/5 rounded-l-[2rem] md:rounded-l-[2.5rem] overflow-hidden ${
+            initial={isMobile ? { y: '100%', opacity: 0 } : { x: '100%', opacity: 0 }}
+            animate={{ y: 0, x: 0, opacity: 1 }}
+            exit={isMobile ? { y: '100%', opacity: 0 } : { x: '100%', opacity: 0 }}
+            transition={{ type: 'spring', damping: 28, stiffness: 220 }}
+            drag={isMobile ? "y" : false}
+            dragConstraints={{ top: 0, bottom: 0 }}
+            dragElastic={0.2}
+            onDragEnd={(e, { offset, velocity }) => {
+              if (isMobile && (offset.y > 120 || velocity.y > 400)) {
+                closePanel();
+              }
+            }}
+            style={{ 
+              width: isMobile ? '100%' : (isExpanded ? '100vw' : panelWidth),
+              height: isMobile ? '88dvh' : '100dvh' 
+            }}
+            className={`fixed ${isMobile ? 'bottom-0 left-0 right-0' : 'top-0 bottom-0 right-0'} bg-white dark:bg-[#0A0E27] backdrop-blur-3xl z-[9999] shadow-[-1px_-10px_40px_rgba(0,0,0,0.08)] dark:shadow-[-5px_-20px_60px_rgba(0,0,0,0.4)] flex flex-col border-gray-100 dark:border-white/5 ${isMobile ? 'border-t rounded-t-[2.5rem]' : 'border-l rounded-l-[2.5rem]'} overflow-hidden ${
               !isResizing && !isExpanded && 'transition-all duration-300'
             }`}
           >
+            {/* Pull Handle for Mobile */}
+            {isMobile && (
+              <div className="flex justify-center p-3 cursor-grab flex-shrink-0 border-b border-gray-50 dark:border-white/[0.02]">
+                <div className="w-12 h-1.5 rounded-full bg-slate-200 dark:bg-slate-700/80" />
+              </div>
+            )}
+
             {/* Resizer Handle */}
             {!isMobile && !isExpanded && (
               <div 

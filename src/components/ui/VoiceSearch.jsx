@@ -125,24 +125,64 @@ const VoiceSearch = ({ onTranscript, onError, disabled = false }) => {
       <AnimatePresence>
         {isListening && (
           <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            className="absolute top-full mt-2 left-1/2 transform -translate-x-1/2 bg-gray-900 dark:bg-gray-800 text-white px-4 py-2 rounded-lg shadow-xl z-50 whitespace-nowrap"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-slate-900/30 dark:bg-black/60 backdrop-blur-md z-[99999] flex items-center justify-center p-4"
+            onClick={stopListening}
           >
-            <div className="flex items-center gap-2">
-              <motion.div
-                animate={{ scale: [1, 1.2, 1] }}
-                transition={{ repeat: Infinity, duration: 0.8 }}
-                className="w-2 h-2 bg-red-500 rounded-full"
-              />
-              <span className="text-sm font-medium">Listening...</span>
-            </div>
-            {transcript && (
-              <div className="mt-2 text-xs text-gray-300 border-t border-gray-700 pt-2">
-                {transcript}
+            <motion.div
+              initial={{ scale: 0.92, opacity: 0, y: 10 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.95, opacity: 0, y: 10 }}
+              onClick={(e) => e.stopPropagation()}
+              className="bg-white dark:bg-[#0A0E27] rounded-[2.5rem] p-8 max-w-sm w-full shadow-[-1px_15px_40px_rgba(0,0,0,0.1)] dark:shadow-[-5px_20px_50px_rgba(0,0,0,0.5)] border border-slate-100 dark:border-white/5 flex flex-col items-center text-center gap-6 relative overflow-hidden"
+            >
+              <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-emerald-400 via-teal-500 to-emerald-600 animate-pulse" />
+
+              {/* Pulsing Mic Ring */}
+              <div className="relative flex items-center justify-center w-24 h-24">
+                <motion.div
+                  animate={{ scale: [1, 1.4, 1], opacity: [0.1, 0.4, 0.1] }}
+                  transition={{ repeat: Infinity, duration: 1.5 }}
+                  className="absolute inset-0 rounded-full bg-emerald-500/20 dark:bg-emerald-500/10"
+                />
+                <motion.div
+                  animate={{ scale: [1, 1.2, 1], opacity: [0.2, 0.6, 0.2] }}
+                  transition={{ repeat: Infinity, duration: 1.5, delay: 0.3 }}
+                  className="absolute inset-2 rounded-full bg-emerald-500/30 dark:bg-emerald-500/20"
+                />
+                <div className="relative w-16 h-16 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-lg shadow-emerald-500/30">
+                  <Mic className="w-7 h-7 text-white animate-pulse" />
+                </div>
               </div>
-            )}
+
+              <div>
+                <h4 className="text-lg font-black text-slate-800 dark:text-white">Listening...</h4>
+                <p className="text-xs text-slate-400 dark:text-slate-500 mt-1 uppercase tracking-widest font-bold">Speak Clearly</p>
+              </div>
+
+              {transcript ? (
+                <div className="w-full bg-slate-50 dark:bg-white/[0.02] border border-slate-100 dark:border-white/5 rounded-2xl p-4 text-center">
+                  <p className="text-sm font-bold text-slate-800 dark:text-white leading-relaxed">
+                    "{transcript}"
+                  </p>
+                </div>
+              ) : (
+                <div className="h-14 flex items-center justify-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-bounce [animation-delay:-0.3s]" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-bounce [animation-delay:-0.15s]" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-bounce" />
+                </div>
+              )}
+
+              <button
+                onClick={stopListening}
+                className="mt-2 w-full py-3.5 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] shadow-xl hover:brightness-110 active:scale-95 transition-all"
+              >
+                Done Speaking
+              </button>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
