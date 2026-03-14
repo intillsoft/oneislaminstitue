@@ -72,6 +72,7 @@ const allowedOrigins = [
   'https://workflow-frontend-vq14.onrender.com',
   'https://workflow.surf',
   'https://rocket.new',
+  'https://oneislaminstitue.onrender.com',
   'http://localhost:3000',
   'http://localhost:3001',
   'http://localhost:5173'
@@ -95,6 +96,7 @@ app.use(cors({
 }));
 
 app.use(helmet({
+  contentSecurityPolicy: false,
   crossOriginResourcePolicy: { policy: 'cross-origin' },
   crossOriginOpenerPolicy: { policy: 'unsafe-none' },
   crossOriginEmbedderPolicy: false,
@@ -287,10 +289,11 @@ app.get('*', (req, res) => {
 
 // Global Error handler
 app.use((err, req, res, next) => {
-  logger.error('Unhandled error:', err);
+  logger.error(`Express Error on ${req.method} ${req.originalUrl}:`, err);
   res.status(500).json({
-    error: 'Internal server error',
-    message: process.env.NODE_ENV === 'development' ? err.message : undefined,
+    error: 'EXPRESS_CATCH_ALL_ERROR',
+    message: err.message,
+    path: req.originalUrl
   });
 });
 
