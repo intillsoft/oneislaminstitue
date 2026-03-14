@@ -115,7 +115,7 @@ const NotificationBell = () => {
             loadNotifications();
           }
         }}
-        className="relative p-2.5 text-slate-500 hover:text-white transition-all duration-300 hover:bg-white/5 rounded-xl border border-transparent hover:border-white/5"
+        className="relative p-2.5 text-slate-500 hover:text-slate-900 dark:hover:text-white transition-all duration-300 hover:bg-slate-100 dark:hover:bg-white/5 rounded-xl border border-transparent hover:border-slate-200 dark:hover:border-white/5"
       >
         <Bell className="w-5 h-5" />
         {unreadCount > 0 && (
@@ -129,12 +129,12 @@ const NotificationBell = () => {
             initial={{ opacity: 0, y: 12, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 8, scale: 0.99 }}
-            className="absolute right-0 mt-4 w-[calc(100vw-2rem)] md:w-96 bg-[#0c0c0e]/95 backdrop-blur-3xl border border-white/10 rounded-3xl z-50 overflow-hidden shadow-[0_30px_60px_rgba(0,0,0,0.8)] flex flex-col"
+            className="absolute right-0 mt-4 w-[calc(100vw-2rem)] md:w-96 bg-white/95 dark:bg-[#0c0c0e]/95 backdrop-blur-3xl border border-slate-200 dark:border-white/10 rounded-3xl z-50 overflow-hidden shadow-2xl dark:shadow-[0_30px_60px_rgba(0,0,0,0.8)] flex flex-col"
           >
             {/* Header */}
-            <div className="flex items-center justify-between p-7 border-b border-white/5 bg-white/[0.02]">
+            <div className="flex items-center justify-between p-7 border-b border-slate-100 dark:border-white/5 bg-slate-50 dark:bg-white/[0.02]">
               <div>
-                <h3 className="text-[10px] font-black text-white uppercase tracking-[0.4em]">Notifications</h3>
+                <h3 className="text-[10px] font-black text-slate-900 dark:text-white uppercase tracking-[0.4em]">Notifications</h3>
                 <p className="text-[9px] text-slate-500 font-bold uppercase tracking-widest mt-2 flex items-center gap-2">
                   {unreadCount > 0 && <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]" />}
                   {unreadCount > 0 ? `${unreadCount} New Messages` : 'All Caught Up'}
@@ -143,7 +143,7 @@ const NotificationBell = () => {
               {unreadCount > 0 && (
                 <button
                   onClick={handleMarkAllAsRead}
-                  className="text-[9px] font-black text-slate-600 hover:text-white px-4 py-2 bg-white/5 rounded-xl border border-white/5 transition-all uppercase tracking-[0.2em]"
+                  className="text-[9px] font-black text-slate-500 hover:text-slate-900 dark:text-slate-600 dark:hover:text-white px-4 py-2 bg-slate-100 dark:bg-white/5 rounded-xl border border-slate-200 dark:border-white/5 transition-all uppercase tracking-[0.2em]"
                 >
                   Mark all read
                 </button>
@@ -154,41 +154,41 @@ const NotificationBell = () => {
             <div className="overflow-y-auto max-h-[440px] custom-scrollbar">
               {loading && !notifications.length ? (
                 <div className="p-24 flex flex-col items-center justify-center gap-4">
-                  <div className="w-8 h-8 border-2 border-white/5 border-t-emerald-500 rounded-full animate-spin" />
+                  <div className="w-8 h-8 border-2 border-slate-200 dark:border-white/5 border-t-emerald-500 rounded-full animate-spin" />
                 </div>
               ) : notifications.length === 0 ? (
                 <div className="p-24 text-center">
-                  <div className="w-20 h-20 rounded-[2rem] bg-white/[0.01] border border-white/5 flex items-center justify-center mx-auto mb-8 text-slate-900 shadow-2xl">
+                  <div className="w-20 h-20 rounded-[2rem] bg-slate-50 dark:bg-white/[0.01] border border-slate-200 dark:border-white/5 flex items-center justify-center mx-auto mb-8 text-slate-400 dark:text-slate-600 shadow-sm dark:shadow-2xl">
                     <Zap className="w-8 h-8" />
                   </div>
-                  <p className="text-[10px] font-black text-slate-800 uppercase tracking-[0.6em]">No Messages</p>
+                  <p className="text-[10px] font-black text-slate-400 dark:text-slate-800 uppercase tracking-[0.6em]">No Messages</p>
                 </div>
               ) : (
-                <div className="divide-y divide-white/5">
+                <div className="divide-y divide-slate-100 dark:divide-white/5">
                   {notifications.map((notification) => (
                     <div
                       key={notification.id}
-                      className={`p-8 transition-all duration-500 hover:bg-white/[0.03] group relative overflow-hidden ${
-                        !notification.is_read ? 'bg-emerald-500/[0.01]' : 'opacity-40'
+                      className={`p-8 transition-all duration-500 hover:bg-slate-50 dark:hover:bg-white/[0.03] group relative overflow-hidden ${
+                        !notification.is_read ? 'bg-emerald-50 dark:bg-emerald-500/[0.01]' : 'opacity-60 dark:opacity-40'
                       }`}
                     >
                       <div className="flex items-start gap-6 relative z-10">
                         <div className={`mt-2 w-2 h-2 rounded-full flex-shrink-0 transition-all ${
-                          !notification.is_read ? 'bg-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.8)]' : 'bg-slate-800'
+                          !notification.is_read ? 'bg-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.8)]' : 'bg-slate-300 dark:bg-slate-800'
                         }`} />
                         
                         <div className="flex-1 min-w-0">
                           <div className="flex justify-between items-start gap-4 mb-3">
-                            <h4 className={`text-xs font-black uppercase tracking-tight truncate transition-all ${!notification.is_read ? 'text-white group-hover:text-emerald-400' : 'text-slate-500'}`}>
+                            <h4 className={`text-xs font-black uppercase tracking-tight truncate transition-all ${!notification.is_read ? 'text-slate-900 group-hover:text-emerald-600 dark:text-white dark:group-hover:text-emerald-400' : 'text-slate-500'}`}>
                               {notification.title}
                             </h4>
-                            <span className="text-[8px] text-slate-700 font-bold uppercase tracking-widest whitespace-nowrap mt-0.5 opacity-60">
+                            <span className="text-[8px] text-slate-500 dark:text-slate-700 font-bold uppercase tracking-widest whitespace-nowrap mt-0.5 opacity-60">
                                 {formatDistanceToNow(new Date(notification.created_at), { addSuffix: true })}
                             </span>
                           </div>
                           
                           <p className={`text-[11px] leading-relaxed line-clamp-2 mb-5 font-medium transition-all ${
-                            !notification.is_read ? 'text-slate-500 group-hover:text-slate-300' : 'text-slate-700'
+                            !notification.is_read ? 'text-slate-600 group-hover:text-slate-900 dark:text-slate-500 dark:group-hover:text-slate-300' : 'text-slate-400 dark:text-slate-700'
                           }`}>
                             {notification.message || notification.description}
                           </p>
@@ -198,14 +198,14 @@ const NotificationBell = () => {
                               <Link
                                 to={notification.action_url ? notification.action_url.replace('/jobs', '/courses') : `/course/${notification.data.jobId}`}
                                 onClick={() => setIsOpen(false)}
-                                className="text-[9px] font-black text-emerald-500 hover:text-white uppercase tracking-widest transition-colors flex items-center gap-1.5"
+                                className="text-[9px] font-black text-emerald-600 hover:text-emerald-700 dark:text-emerald-500 dark:hover:text-white uppercase tracking-widest transition-colors flex items-center gap-1.5"
                               >
                                 View <ChevronDown className="-rotate-90 w-3 h-3" />
                               </Link>
                             )}
                             <button
                               onClick={() => handleMarkAsRead(notification.id)}
-                              className="text-[9px] font-black text-slate-600 hover:text-white uppercase tracking-[0.2em] transition-colors"
+                              className="text-[9px] font-black text-slate-400 hover:text-slate-900 dark:text-slate-600 dark:hover:text-white uppercase tracking-[0.2em] transition-colors"
                             >
                               Mark Read
                             </button>
@@ -224,11 +224,11 @@ const NotificationBell = () => {
             </div>
 
             {/* Footer */}
-            <div className="p-7 border-t border-white/5 bg-white/[0.01]">
+            <div className="p-7 border-t border-slate-100 dark:border-white/5 bg-slate-50 dark:bg-white/[0.01]">
               <Link
                 to="/notifications"
                 onClick={() => setIsOpen(false)}
-                className="block w-full text-center py-5 rounded-[1.5rem] text-[10px] font-black uppercase tracking-[0.5em] text-slate-700 hover:text-white hover:bg-white/5 border border-white/5 transition-all duration-500 shadow-2xl shadow-black/40"
+                className="block w-full text-center py-5 rounded-[1.5rem] text-[10px] font-black uppercase tracking-[0.5em] text-slate-500 hover:text-slate-900 hover:bg-white border border-slate-200 shadow-sm dark:text-slate-700 dark:hover:text-white dark:hover:bg-white/5 dark:border-white/5 transition-all duration-500 dark:shadow-2xl dark:shadow-black/40"
               >
                 View all settings
               </Link>
