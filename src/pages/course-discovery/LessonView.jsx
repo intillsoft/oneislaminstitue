@@ -557,6 +557,12 @@ const LessonView = () => {
                                                     lessons: (m.lessons || []).map(l => l.id === activeLesson.id ? { ...l, content_blocks: draftBlocks, content_data: { pages: draftBlocks } } : l)
                                                 })));
                                                 
+                                                setActiveLesson(prev => ({
+                                                    ...prev,
+                                                    content_blocks: draftBlocks,
+                                                    content_data: { pages: draftBlocks }
+                                                }));
+                                                
                                                 success('Snapshot auto-saved seamlessly.');
                                                 setHasChanges(false);
                                             } catch (err) {
