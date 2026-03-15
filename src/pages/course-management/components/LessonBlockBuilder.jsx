@@ -103,360 +103,388 @@ const LessonBlockBuilder = ({ blocks = [], onChange }) => {
     };
 
     return (
-        <div className="space-y-8">
-            <div className="flex items-center gap-3 bg-white/5 p-1.5 rounded-2xl border border-white/5 w-fit shadow-sm max-w-full overflow-x-auto no-scrollbar">
-                {PAGE_TEMPLATES.map((tpl, index) => (
-                    <button key={tpl.number} onClick={() => setSelectedPageIdx(index)} className={`px-4 py-2 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all flex items-center gap-2 min-w-max ${selectedPageIdx === index ? 'bg-emerald-600 text-white shadow-lg' : 'text-slate-500 hover:text-white'}`}>
-                        <Icon name={tpl.icon} size={12} /> {tpl.label}
-                    </button>
-                ))}
-            </div>
-            <div className="flex items-center justify-between border-b border-emerald-100 dark:border-emerald-500/10 pb-6">
-                <div>
-                     <h4 className="text-[11px] font-black uppercase tracking-widest text-emerald-600 dark:text-emerald-400">Page {currentPage?.page_number}: {PAGE_TEMPLATES[selectedPageIdx]?.label.split('. ')[1]} Content</h4>
-                     <p className="text-xs text-slate-400 mt-1 font-medium">Add, arrange, and edit blocks for this page view.</p>
-                </div>
-            </div>
-            <div className="relative">
-                <DragDropContext onDragEnd={onDragEnd}>
-                    <Droppable droppableId="blocks" direction="vertical">
-                        {(provided) => (
-                            <div {...provided.droppableProps} ref={provided.innerRef} className="flex flex-wrap gap-y-8 gap-x-6 min-h-[200px]">
-                                {activeBlocks.map((block, idx) => {
-                                    const widthClass = block.layoutSettings?.width === '50%' ? 'w-full xl:w-[calc(50%-12px)]' : block.layoutSettings?.width === '33%' ? 'w-full 2xl:w-[calc(33.333%-16px)]' : 'w-full';
-                                    return (
-                                        <Draggable key={block.id} draggableId={block.id} index={idx}>
-                                            {(provided, snapshot) => (
-                                                <div ref={provided.innerRef} {...provided.draggableProps} className={`${widthClass} transition-all duration-300 relative group/block`} style={{ ...provided.draggableProps.style, zIndex: snapshot.isDragging ? 100 : 1 }}>
-                                                    <motion.div layout className={`bg-white/2 border border-white/5 rounded-2xl relative transition-all h-full flex flex-col ${snapshot.isDragging ? 'ring-1 ring-emerald-500/50 bg-white/5 shadow-2xl' : 'hover:bg-white/[0.04]'}`}>
-                                                        <div className="flex items-center justify-between px-4 py-3 border-b border-white/5 bg-white/2">
-                                                            <div className="flex items-center gap-4">
-                                                                <div {...provided.dragHandleProps} className="p-2 text-slate-500 hover:text-white transition-colors cursor-grab active:cursor-grabbing"><Icon name="GripVertical" size={16} /></div>
-                                                                <div className="flex items-center gap-3">
-                                                                    <div className="w-8 h-8 rounded-lg bg-emerald-600/10 text-emerald-500 flex items-center justify-center text-[10px] font-black border border-emerald-500/10">{idx + 1}</div>
-                                                                    <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5 border border-white/5">
-                                                                        <Icon name={BLOCK_TYPES.find(t => t.type === block.type)?.icon} size={14} className="text-emerald-500/70" />
-                                                                        <span className="text-[10px] font-black uppercase tracking-widest text-slate-300">{BLOCK_TYPES.find(t => t.type === block.type)?.label}</span>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div className="flex items-center gap-2">
-                                                                <button onClick={() => duplicateBlock(idx)} className="p-2 text-slate-500 hover:text-blue-500"><Icon name="Copy" size={16} /></button>
-                                                                <button onClick={() => removeBlock(block.id)} className="p-2 text-slate-500 hover:text-rose-500"><Icon name="Trash2" size={16} /></button>
-                                                            </div>
-                                                        </div>
-                                                        <div className="p-6 flex-1 h-full">
-                                                            {block.type === 'text' && (
-                                                                <div className="space-y-4">
-                                                                  <textarea
-                                                                      value={block.content?.text || ''}
-                                                                      onChange={e => updateBlockContent(block.id, { text: e.target.value })}
-                                                                      placeholder="Write your lesson text here (Markdown supported)..."
-                                                                      rows={4}
-                                                                      className="w-full bg-transparent border-none focus:ring-0 text-sm text-slate-700 dark:text-slate-300 placeholder:text-slate-400 resize-y min-h-[120px] leading-relaxed"
-                                                                  />
-                                                                </div>
-                                                            )}
-
-                                                            {block.type === 'hadith' && (
-                                                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                                                  <div className="space-y-3">
-                                                                    <span className="text-[10px] font-black uppercase text-emerald-600">English Text</span>
-                                                                    <textarea 
-                                                                      value={block.content?.english || ''}
-                                                                      onChange={e => updateBlockContent(block.id, { english: e.target.value })}
-                                                                      className="w-full h-32 bg-black/5 dark:bg-black/20 border border-white/5 rounded-2xl p-4 text-sm focus:outline-none focus:border-emerald-500/30"
-                                                                      placeholder="Hadith English translation..."
-                                                                    />
-                                                                  </div>
-                                                                  <div className="space-y-3">
-                                                                    <span className="text-[10px] font-black uppercase text-emerald-600">Arabic Text</span>
-                                                                    <textarea 
-                                                                      value={block.content?.arabic || ''}
-                                                                      onChange={e => updateBlockContent(block.id, { arabic: e.target.value })}
-                                                                      className="w-full h-32 bg-black/5 dark:bg-black/20 border border-white/5 rounded-2xl p-4 text-lg font-arabic text-right focus:outline-none focus:border-emerald-500/30"
-                                                                      dir="rtl"
-                                                                      placeholder="النص العربي هنا..."
-                                                                    />
-                                                                  </div>
-                                                                  <div className="space-y-3">
-                                                                    <span className="text-[10px] font-black uppercase text-emerald-600">Narrator</span>
-                                                                    <input 
-                                                                      value={block.content?.narrator || ''}
-                                                                      onChange={e => updateBlockContent(block.id, { narrator: e.target.value })}
-                                                                      className="w-full bg-black/5 dark:bg-black/20 border border-white/5 rounded-xl px-4 py-2 text-xs focus:outline-none"
-                                                                      placeholder="e.g. Abu Huraira"
-                                                                    />
-                                                                  </div>
-                                                                  <div className="space-y-3">
-                                                                    <span className="text-[10px] font-black uppercase text-emerald-600">Reference</span>
-                                                                    <input 
-                                                                      value={block.content?.reference || ''}
-                                                                      onChange={e => updateBlockContent(block.id, { reference: e.target.value })}
-                                                                      className="w-full bg-black/5 dark:bg-black/20 border border-white/5 rounded-xl px-4 py-2 text-xs focus:outline-none"
-                                                                      placeholder="e.g. Bukhari 1:1"
-                                                                    />
-                                                                  </div>
-                                                                </div>
-                                                            )}
-
-                                                            {block.type === 'quran' && (
-                                                                <div className="space-y-6">
-                                                                  <div className="grid grid-cols-2 gap-6">
-                                                                    <div className="space-y-2">
-                                                                      <span className="text-[10px] font-black uppercase text-emerald-600">Surah</span>
-                                                                      <input 
-                                                                        value={block.content?.surah || ''}
-                                                                        onChange={e => updateBlockContent(block.id, { surah: e.target.value })}
-                                                                        className="w-full bg-black/5 dark:bg-black/20 border border-white/5 rounded-xl px-4 py-2 text-xs focus:outline-none"
-                                                                        placeholder="Surah Al-Baqarah"
-                                                                      />
-                                                                    </div>
-                                                                    <div className="space-y-2">
-                                                                      <span className="text-[10px] font-black uppercase text-emerald-600">Verse Number</span>
-                                                                      <input 
-                                                                        value={block.content?.verse || ''}
-                                                                        onChange={e => updateBlockContent(block.id, { verse: e.target.value })}
-                                                                        className="w-full bg-black/5 dark:bg-black/20 border border-white/5 rounded-xl px-4 py-2 text-xs focus:outline-none"
-                                                                        placeholder="2:153"
-                                                                      />
-                                                                    </div>
-                                                                  </div>
-                                                                  <textarea 
-                                                                    value={block.content?.arabic || ''}
-                                                                    onChange={e => updateBlockContent(block.id, { arabic: e.target.value })}
-                                                                    className="w-full h-24 bg-black/5 dark:bg-black/20 border border-white/5 rounded-2xl p-4 text-xl font-arabic text-right focus:outline-none"
-                                                                    dir="rtl"
-                                                                    placeholder="Quranic text in Arabic..."
-                                                                  />
-                                                                  <textarea 
-                                                                    value={block.content?.translation || ''}
-                                                                    onChange={e => updateBlockContent(block.id, { translation: e.target.value })}
-                                                                    className="w-full h-24 bg-black/5 dark:bg-black/20 border border-white/5 rounded-2xl p-4 text-sm italic focus:outline-none"
-                                                                    placeholder="Translation..."
-                                                                  />
-                                                                </div>
-                                                            )}
-
-                                                            {block.type === 'scripture' && (
-                                                                <div className="space-y-4">
-                                                                  <textarea 
-                                                                    value={block.content?.arabic || ''}
-                                                                    onChange={e => updateBlockContent(block.id, { arabic: e.target.value })}
-                                                                    className="w-full h-24 bg-black/5 dark:bg-black/20 border border-white/5 rounded-2xl p-4 text-xl font-arabic text-right focus:outline-none"
-                                                                    dir="rtl"
-                                                                    placeholder="Arabic text..."
-                                                                  />
-                                                                  <textarea 
-                                                                    value={block.content?.translation || ''}
-                                                                    onChange={e => updateBlockContent(block.id, { translation: e.target.value })}
-                                                                    className="w-full h-24 bg-black/5 dark:bg-black/20 border border-white/5 rounded-2xl p-4 text-sm focus:outline-none"
-                                                                    placeholder="Translation..."
-                                                                  />
-                                                                  <input 
-                                                                    value={block.content?.reference || ''}
-                                                                    onChange={e => updateBlockContent(block.id, { reference: e.target.value })}
-                                                                    className="w-full bg-black/5 dark:bg-black/20 border border-white/5 rounded-xl px-4 py-2 text-xs focus:outline-none"
-                                                                    placeholder="Reference"
-                                                                  />
-                                                                </div>
-                                                            )}
-
-                                                            {block.type === 'design_markdown' && (
-                                                                <div className="space-y-4">
-                                                                  <input 
-                                                                    value={block.content?.title || ''}
-                                                                    onChange={e => updateBlockContent(block.id, { title: e.target.value })}
-                                                                    className="w-full bg-black/5 dark:bg-black/20 border border-white/5 rounded-xl px-4 py-2 text-sm font-black focus:outline-none"
-                                                                    placeholder="Styled Block Title"
-                                                                  />
-                                                                  <textarea 
-                                                                    value={block.content?.text || ''}
-                                                                    onChange={e => updateBlockContent(block.id, { text: e.target.value })}
-                                                                    className="w-full h-40 bg-black/5 dark:bg-black/20 border border-white/5 rounded-2xl p-4 text-sm leading-relaxed focus:outline-none"
-                                                                    placeholder="Content text..."
-                                                                  />
-                                                                  <input 
-                                                                    value={block.content?.footer || ''}
-                                                                    onChange={e => updateBlockContent(block.id, { footer: e.target.value })}
-                                                                    className="w-full bg-black/5 dark:bg-black/20 border border-white/5 rounded-xl px-4 py-2 text-[10px] focus:outline-none opacity-60"
-                                                                    placeholder="Footer text (optional)"
-                                                                  />
-                                                                </div>
-                                                            )}
-
-                                                            {block.type === 'video' && (
-                                                                <div className="space-y-4">
-                                                                    <input
-                                                                        type="text"
-                                                                        value={block.content?.url || ''}
-                                                                        onChange={e => updateBlockContent(block.id, { url: e.target.value }) }
-                                                                        placeholder="Paste YouTube or Vimeo URL..."
-                                                                        className="w-full bg-emerald-50/50 dark:bg-black/20 border border-emerald-100 dark:border-white/5 rounded-2xl px-5 py-4 text-sm text-emerald-900 dark:text-emerald-100 placeholder:text-slate-400 focus:outline-none focus:border-emerald-500/50 shadow-inner"
-                                                                    />
-                                                                </div>
-                                                            )}
-
-                                                            {block.type === 'audio' && (
-                                                                <div className="space-y-4">
-                                                                  <input 
-                                                                    value={block.content?.title || ''}
-                                                                    onChange={e => updateBlockContent(block.id, { title: e.target.value })}
-                                                                    className="w-full bg-black/5 dark:bg-black/20 border border-white/5 rounded-xl px-4 py-2 text-sm font-bold focus:outline-none"
-                                                                    placeholder="Audio Title"
-                                                                  />
-                                                                  <div className="grid grid-cols-2 gap-4">
-                                                                    <input 
-                                                                      value={block.content?.url || ''}
-                                                                      onChange={e => updateBlockContent(block.id, { url: e.target.value })}
-                                                                      className="w-full bg-black/5 dark:bg-black/20 border border-white/5 rounded-xl px-4 py-2 text-xs focus:outline-none"
-                                                                      placeholder="Audio File URL (Direct mp3/m4a)"
-                                                                    />
-                                                                    <input 
-                                                                      value={block.content?.duration || ''}
-                                                                      onChange={e => updateBlockContent(block.id, { duration: e.target.value })}
-                                                                      className="w-full bg-black/5 dark:bg-black/20 border border-white/5 rounded-xl px-4 py-2 text-xs focus:outline-none"
-                                                                      placeholder="Duration (e.g. 15:30)"
-                                                                    />
-                                                                  </div>
-                                                                </div>
-                                                            )}
-
-                                                            {block.type === 'image' && (
-                                                                <div className="space-y-4">
-                                                                    <div className="space-y-2">
-                                                                      <span className="text-[10px] font-black uppercase text-emerald-600 block">Image Source</span>
-                                                                      <input
-                                                                          type="text"
-                                                                          value={block.content?.url || ''}
-                                                                          onChange={e => updateBlockContent(block.id, { url: e.target.value })}
-                                                                          placeholder="Paste direct Image URL (HTTPS)..."
-                                                                          className="w-full bg-emerald-50/50 dark:bg-black/20 border border-emerald-100 dark:border-white/5 rounded-2xl px-5 py-4 text-sm text-emerald-900 dark:text-emerald-100 placeholder:text-slate-400 focus:outline-none focus:border-emerald-500/50 shadow-inner"
-                                                                      />
-                                                                    </div>
-                                                                    <div className="space-y-2">
-                                                                      <span className="text-[10px] font-black uppercase text-emerald-600 block">Illustration Caption</span>
-                                                                      <input
-                                                                          type="text"
-                                                                          value={block.content?.caption || ''}
-                                                                          onChange={e => updateBlockContent(block.id, { caption: e.target.value })}
-                                                                          placeholder="Optional caption for this image..."
-                                                                          className="w-full bg-black/5 dark:bg-black/20 border border-white/5 rounded-xl px-4 py-2 text-xs focus:outline-none"
-                                                                      />
-                                                                    </div>
-                                                                </div>
-                                                            )}
-
-                                                            {block.type === 'document' && (
-                                                                <div className="space-y-4">
-                                                                    <input 
-                                                                      value={block.content?.fileName || ''}
-                                                                      onChange={e => updateBlockContent(block.id, { fileName: e.target.value })}
-                                                                      className="w-full bg-black/5 dark:bg-black/20 border border-white/5 rounded-xl px-4 py-2 text-sm font-bold focus:outline-none"
-                                                                      placeholder="File Name"
-                                                                    />
-                                                                    <div className="grid grid-cols-2 gap-4">
-                                                                        <input
-                                                                            type="text"
-                                                                            value={block.content?.url || ''}
-                                                                            onChange={e => updateBlockContent(block.id, { url: e.target.value })}
-                                                                            placeholder="File URL..."
-                                                                            className="w-full bg-black/5 dark:bg-black/20 border border-white/5 rounded-xl px-4 py-2 text-xs focus:outline-none"
-                                                                        />
-                                                                        <input 
-                                                                          value={block.content?.fileSize || ''}
-                                                                          onChange={e => updateBlockContent(block.id, { fileSize: e.target.value })}
-                                                                          className="w-full bg-black/5 dark:bg-black/20 border border-white/5 rounded-xl px-4 py-2 text-xs focus:outline-none"
-                                                                          placeholder="Size (e.g. 2.5 MB)"
-                                                                        />
-                                                                    </div>
-                                                                </div>
-                                                            )}
-
-                                                            {block.type === 'summary' && (
-                                                                <div className="space-y-4">
-                                                                    <span className="text-[10px] font-black uppercase text-emerald-600 block">Core Summary Points</span>
-                                                                    {(block.content?.points || ['', '', '']).map((pt, pIdx) => (
-                                                                        <div key={pIdx} className="flex gap-3">
-                                                                            <div className="w-6 h-6 rounded-full bg-emerald-500/10 text-emerald-500 flex flex-shrink-0 items-center justify-center text-[10px] font-black">{pIdx + 1}</div>
-                                                                            <input 
-                                                                              value={pt}
-                                                                              onChange={e => {
-                                                                                  const newPts = [...(block.content?.points || ['', '', ''])];
-                                                                                  newPts[pIdx] = e.target.value;
-                                                                                  updateBlockContent(block.id, { points: newPts });
-                                                                              }}
-                                                                              className="flex-1 bg-transparent border-b border-white/10 text-sm focus:outline-none focus:border-emerald-500/30"
-                                                                              placeholder={`Learning objective / point ${pIdx + 1}`}
-                                                                            />
-                                                                        </div>
-                                                                    ))}
-                                                                </div>
-                                                            )}
-
-                                                            {block.type === 'quiz' && (
-                                                                <div className="space-y-5">
-                                                                    <div className="flex items-center gap-3 border-b border-emerald-100 dark:border-emerald-500/10 pb-3">
-                                                                        <Icon name="HelpCircle" size={16} className="text-emerald-500" />
-                                                                        <input
-                                                                            type="text"
-                                                                            value={block.question || ''}
-                                                                            onChange={e => updateBlock(block.id, { question: e.target.value })}
-                                                                            placeholder="Enter your question here..."
-                                                                            className="w-full bg-transparent text-sm font-bold text-emerald-900 dark:text-emerald-100 focus:outline-none placeholder:text-slate-400"
-                                                                        />
-                                                                    </div>
-                                                                    <div className="space-y-2.5 pl-4 border-l-2 border-emerald-500/20">
-                                                                        {(block.options || ['', '', '', '']).map((opt, oIdx) => (
-                                                                            <div key={oIdx} className="flex items-center gap-4 group/option">
-                                                                                <button 
-                                                                                    onClick={() => updateBlock(block.id, { correctIndex: oIdx })}
-                                                                                    className={`w-5 h-5 rounded-full border-2 flex flex-shrink-0 items-center justify-center transition-all ${block.correctIndex === oIdx ? 'border-emerald-500 bg-emerald-500 shadow-md scale-110' : 'border-slate-300 dark:border-slate-700 hover:border-emerald-300'}`}
-                                                                                >
-                                                                                    {block.correctIndex === oIdx && <div className="w-1.5 h-1.5 bg-white rounded-full" />}
-                                                                                </button>
-                                                                                <input
-                                                                                    type="text"
-                                                                                    value={opt}
-                                                                                    onChange={e => {
-                                                                                        const newOpts = [...block.options];
-                                                                                        newOpts[oIdx] = e.target.value;
-                                                                                        updateBlock(block.id, { options: newOpts });
-                                                                                    }}
-                                                                                    placeholder={`Option ${String.fromCharCode(65 + oIdx)}`}
-                                                                                    className={`flex-1 bg-transparent text-sm focus:outline-none transition-colors py-1 ${block.correctIndex === oIdx ? 'text-emerald-600 font-bold' : 'text-slate-500 hover:text-slate-700'}`}
-                                                                                />
-                                                                            </div>
-                                                                        ))}
-                                                                    </div>
-                                                                </div>
-                                                            )}
-                                                        </div>
-
-                                                    </motion.div>
-                                                </div>
-                                            )}
-                                        </Draggable>
-                                    );
-                                })}
-                                {provided.placeholder}
+        <div className="flex flex-col xl:flex-row gap-8 items-start h-full w-full">
+            {/* Left Workspace Panel - Page Selection Navigation Rails Workflow Stream Frame */}
+            <div className="w-full xl:w-72 space-y-3 shrink-0 top-6 sticky p-4 bg-white/2 rounded-3xl border border-white/5 backdrop-blur-3xl">
+                <span className="text-[9px] font-black uppercase text-emerald-500 tracking-[0.2em] mb-4 block px-2">Workspace Desk Pages</span>
+                <div className="flex flex-row xl:flex-col gap-2 overflow-x-auto xl:overflow-visible no-scrollbar pb-2 xl:pb-0">
+                    {PAGE_TEMPLATES.map((tpl, index) => (
+                        <button 
+                            key={tpl.number} 
+                            onClick={() => setSelectedPageIdx(index)} 
+                            className={`flex-1 xl:w-full text-left flex items-center gap-4 p-3.5 rounded-2xl transition-all active:scale-98 ${selectedPageIdx === index ? 'bg-emerald-600 text-white shadow-xl shadow-emerald-500/10' : 'text-slate-400 hover:bg-white/5 hover:text-white'}`}
+                        >
+                            <div className={`p-2 rounded-xl flex items-center justify-center transition-colors ${selectedPageIdx === index ? 'bg-white/20' : 'bg-white/5'}`}>
+                                <Icon name={tpl.icon} size={18} />
                             </div>
-                        )}
-                    </Droppable>
-                </DragDropContext>
-            </div>
-            {/* Add Blocks Bar */}
-            <div className="pt-8 border-t border-white/5">
-                <span className="text-[9px] font-black uppercase tracking-[0.3em] text-emerald-500/40 mb-6 block px-2">New Component</span>
-                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3">
-                    {BLOCK_TYPES.map(type => (
-                        <button key={type.type} onClick={() => addBlock(type.type)} className="group flex items-center gap-3 p-3 rounded-xl border border-white/5 hover:border-emerald-500/20 hover:bg-white/5 transition-all active:scale-95 shadow-sm">
-                            <Icon name={type.icon} size={14} className="text-slate-500" /> <span className="text-[9px] font-black uppercase tracking-widest text-slate-500">{type.label}</span>
+                            <div className="flex-1 min-w-0">
+                                <span className="text-[10px] font-black block uppercase tracking-wider truncate">{tpl.label.split('. ')[1]}</span>
+                                <span className={`text-[8px] font-bold block mt-0.5 ${selectedPageIdx === index ? 'text-emerald-100' : 'text-slate-500'}`}>
+                                     {pages[index]?.content?.length || 0} Block{pages[index]?.content?.length !== 1 ? 's' : ''}
+                                </span>
+                            </div>
                         </button>
                     ))}
+                </div>
+            </div>
+
+            {/* Center Main Workspace Canvas Blocks Setup Column setup desk */}
+            <div className="flex-1 space-y-8 w-full">
+                <div className="p-8 bg-white/2 rounded-3xl border border-white/5 backdrop-blur-3xl space-y-8">
+                    <div className="flex items-center justify-between border-b border-white/5 pb-6">
+                        <div>
+                             <h4 className="text-lg font-black uppercase tracking-tight text-white mb-1">
+                                 {PAGE_TEMPLATES[selectedPageIdx]?.label.split('. ')[1]} Canvas
+                             </h4>
+                             <p className="text-xs text-slate-500 font-medium tracking-wide">Compose and arrange modular content blocks effortlessly grid viewport frame desk.</p>
+                        </div>
+                        <div className="flex items-center gap-2">
+                             <span className="text-[8px] font-black text-slate-500 uppercase tracking-widest bg-white/5 px-3 py-1.5 rounded-lg border border-white/5">Auto-Saved</span>
+                        </div>
+                    </div>
+
+                    <div className="relative">
+                        <DragDropContext onDragEnd={onDragEnd}>
+                            <Droppable droppableId="blocks" direction="vertical">
+                                {(provided) => (
+                                    <div {...provided.droppableProps} ref={provided.innerRef} className="flex flex-wrap gap-y-8 gap-x-6 min-h-[300px]">
+                                        {activeBlocks.map((block, idx) => {
+                                            const widthClass = block.layoutSettings?.width === '50%' ? 'w-full xl:w-[calc(50%-12px)]' : block.layoutSettings?.width === '33%' ? 'w-full 2xl:w-[calc(33.333%-16px)]' : 'w-full';
+                                            return (
+                                                <Draggable key={block.id} draggableId={block.id} index={idx}>
+                                                    {(provided, snapshot) => (
+                                                        <div ref={provided.innerRef} {...provided.draggableProps} className={`${widthClass} transition-all duration-300 relative group/block`} style={{ ...provided.draggableProps.style, zIndex: snapshot.isDragging ? 100 : 1 }}>
+                                                            <motion.div layout className={`bg-white/2 border border-white/5 rounded-2xl relative transition-all h-full flex flex-col ${snapshot.isDragging ? 'ring-2 ring-emerald-500 bg-white/5 shadow-2xl' : 'hover:bg-white/[0.04] scroll-mt-24'}`}>
+                                                                <div className="flex items-center justify-between px-4 py-3 border-b border-white/5 bg-white/2">
+                                                                    <div className="flex items-center gap-4">
+                                                                        <div {...provided.dragHandleProps} className="p-2 text-slate-500 hover:text-white transition-colors cursor-grab active:cursor-grabbing"><Icon name="GripVertical" size={16} /></div>
+                                                                        <div className="flex items-center gap-3">
+                                                                            <div className="w-8 h-8 rounded-lg bg-emerald-600/10 text-emerald-500 flex items-center justify-center text-[10px] font-black border border-emerald-500/10">{idx + 1}</div>
+                                                                            <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5 border border-white/5">
+                                                                                <Icon name={BLOCK_TYPES.find(t => t.type === block.type)?.icon} size={14} className="text-emerald-500/70" />
+                                                                                <span className="text-[10px] font-black uppercase tracking-widest text-slate-300">{BLOCK_TYPES.find(t => t.type === block.type)?.label}</span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className="flex items-center gap-2">
+                                                                        <button onClick={() => duplicateBlock(idx)} className="p-2 text-slate-500 hover:text-blue-500"><Icon name="Copy" size={16} /></button>
+                                                                        <button onClick={() => removeBlock(block.id)} className="p-2 text-slate-500 hover:text-rose-500"><Icon name="Trash2" size={16} /></button>
+                                                                    </div>
+                                                                </div>
+                                                                <div className="p-6 flex-1 h-full">
+                                                                    {block.type === 'text' && (
+                                                                        <div className="space-y-4">
+                                                                          <textarea
+                                                                              value={block.content?.text || ''}
+                                                                              onChange={e => updateBlockContent(block.id, { text: e.target.value })}
+                                                                              placeholder="Write your lesson text here (Markdown supported)..."
+                                                                              rows={4}
+                                                                              className="w-full bg-transparent border-none focus:ring-0 text-sm text-slate-300 placeholder:text-slate-600 resize-y min-h-[120px] leading-relaxed"
+                                                                          />
+                                                                        </div>
+                                                                    )}
+
+                                                                    {block.type === 'hadith' && (
+                                                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                                                          <div className="space-y-3">
+                                                                            <span className="text-[10px] font-black uppercase text-emerald-600">English Text</span>
+                                                                            <textarea 
+                                                                              value={block.content?.english || ''}
+                                                                              onChange={e => updateBlockContent(block.id, { english: e.target.value })}
+                                                                              className="w-full h-32 bg-black/20 border border-white/5 rounded-2xl p-4 text-sm focus:outline-none focus:border-emerald-500/30 text-white placeholder:text-slate-600"
+                                                                              placeholder="Hadith English translation..."
+                                                                            />
+                                                                          </div>
+                                                                          <div className="space-y-3">
+                                                                            <span className="text-[10px] font-black uppercase text-emerald-600">Arabic Text</span>
+                                                                            <textarea 
+                                                                              value={block.content?.arabic || ''}
+                                                                              onChange={e => updateBlockContent(block.id, { arabic: e.target.value })}
+                                                                              className="w-full h-32 bg-black/20 border border-white/5 rounded-2xl p-4 text-lg font-arabic text-right focus:outline-none focus:border-emerald-500/30 text-white placeholder:text-slate-600"
+                                                                              dir="rtl"
+                                                                              placeholder="النص العربي هنا..."
+                                                                            />
+                                                                          </div>
+                                                                          <div className="space-y-3">
+                                                                            <span className="text-[10px] font-black uppercase text-emerald-600">Narrator</span>
+                                                                            <input 
+                                                                              value={block.content?.narrator || ''}
+                                                                              onChange={e => updateBlockContent(block.id, { narrator: e.target.value })}
+                                                                              className="w-full bg-black/20 border border-white/5 rounded-xl px-4 py-2 text-xs focus:outline-none text-white"
+                                                                              placeholder="e.g. Abu Huraira"
+                                                                            />
+                                                                          </div>
+                                                                          <div className="space-y-3">
+                                                                            <span className="text-[10px] font-black uppercase text-emerald-600">Reference</span>
+                                                                            <input 
+                                                                              value={block.content?.reference || ''}
+                                                                              onChange={e => updateBlockContent(block.id, { reference: e.target.value })}
+                                                                              className="w-full bg-black/20 border border-white/5 rounded-xl px-4 py-2 text-xs focus:outline-none text-white"
+                                                                              placeholder="e.g. Bukhari 1:1"
+                                                                            />
+                                                                          </div>
+                                                                        </div>
+                                                                    )}
+
+                                                                    {block.type === 'quran' && (
+                                                                        <div className="space-y-6">
+                                                                          <div className="grid grid-cols-2 gap-6">
+                                                                            <div className="space-y-2">
+                                                                              <span className="text-[10px] font-black uppercase text-emerald-600">Surah</span>
+                                                                              <input 
+                                                                                value={block.content?.surah || ''}
+                                                                                onChange={e => updateBlockContent(block.id, { surah: e.target.value })}
+                                                                                className="w-full bg-black/20 border border-white/5 rounded-xl px-4 py-2 text-xs focus:outline-none text-white"
+                                                                                placeholder="Surah Al-Baqarah"
+                                                                              />
+                                                                            </div>
+                                                                            <div className="space-y-2">
+                                                                              <span className="text-[10px] font-black uppercase text-emerald-600">Verse Number</span>
+                                                                              <input 
+                                                                                value={block.content?.verse || ''}
+                                                                                onChange={e => updateBlockContent(block.id, { verse: e.target.value })}
+                                                                                className="w-full bg-black/20 border border-white/5 rounded-xl px-4 py-2 text-xs focus:outline-none text-white"
+                                                                                placeholder="2:153"
+                                                                              />
+                                                                            </div>
+                                                                          </div>
+                                                                          <textarea 
+                                                                            value={block.content?.arabic || ''}
+                                                                            onChange={e => updateBlockContent(block.id, { arabic: e.target.value })}
+                                                                            className="w-full h-24 bg-black/20 border border-white/5 rounded-2xl p-4 text-xl font-arabic text-right focus:outline-none text-white"
+                                                                            dir="rtl"
+                                                                            placeholder="Quranic text in Arabic..."
+                                                                          />
+                                                                          <textarea 
+                                                                            value={block.content?.translation || ''}
+                                                                            onChange={e => updateBlockContent(block.id, { translation: e.target.value })}
+                                                                            className="w-full h-24 bg-black/20 border border-white/5 rounded-2xl p-4 text-sm italic focus:outline-none text-white"
+                                                                            placeholder="Translation..."
+                                                                          />
+                                                                        </div>
+                                                                    )}
+
+                                                                    {block.type === 'scripture' && (
+                                                                        <div className="space-y-4">
+                                                                          <textarea 
+                                                                            value={block.content?.arabic || ''}
+                                                                            onChange={e => updateBlockContent(block.id, { arabic: e.target.value })}
+                                                                            className="w-full h-24 bg-black/20 border border-white/5 rounded-2xl p-4 text-xl font-arabic text-right focus:outline-none text-white"
+                                                                            dir="rtl"
+                                                                            placeholder="Arabic text..."
+                                                                          />
+                                                                          <textarea 
+                                                                            value={block.content?.translation || ''}
+                                                                            onChange={e => updateBlockContent(block.id, { translation: e.target.value })}
+                                                                            className="w-full h-24 bg-black/20 border border-white/5 rounded-2xl p-4 text-sm focus:outline-none text-white"
+                                                                            placeholder="Translation..."
+                                                                          />
+                                                                          <input 
+                                                                            value={block.content?.reference || ''}
+                                                                            onChange={e => updateBlockContent(block.id, { reference: e.target.value })}
+                                                                            className="w-full bg-black/20 border border-white/5 rounded-xl px-4 py-2 text-xs focus:outline-none text-white"
+                                                                            placeholder="Reference"
+                                                                          />
+                                                                        </div>
+                                                                    )}
+
+                                                                    {block.type === 'design_markdown' && (
+                                                                        <div className="space-y-4">
+                                                                          <input 
+                                                                            value={block.content?.title || ''}
+                                                                            onChange={e => updateBlockContent(block.id, { title: e.target.value })}
+                                                                            className="w-full bg-black/20 border border-white/5 rounded-xl px-4 py-2 text-sm font-black focus:outline-none text-white"
+                                                                            placeholder="Styled Block Title"
+                                                                          />
+                                                                          <textarea 
+                                                                            value={block.content?.text || ''}
+                                                                            onChange={e => updateBlockContent(block.id, { text: e.target.value })}
+                                                                            className="w-full h-40 bg-black/20 border border-white/5 rounded-2xl p-4 text-sm leading-relaxed focus:outline-none text-white"
+                                                                            placeholder="Content text..."
+                                                                          />
+                                                                          <input 
+                                                                            value={block.content?.footer || ''}
+                                                                            onChange={e => updateBlockContent(block.id, { footer: e.target.value })}
+                                                                            className="w-full bg-black/20 border border-white/5 rounded-xl px-4 py-2 text-[10px] focus:outline-none opacity-60 text-white"
+                                                                            placeholder="Footer text (optional)"
+                                                                          />
+                                                                        </div>
+                                                                    )}
+
+                                                                    {block.type === 'video' && (
+                                                                        <div className="space-y-4">
+                                                                            <input
+                                                                                type="text"
+                                                                                value={block.content?.url || ''}
+                                                                                onChange={e => updateBlockContent(block.id, { url: e.target.value }) }
+                                                                                placeholder="Paste YouTube or Vimeo URL..."
+                                                                                className="w-full bg-black/20 border border-white/5 rounded-xl px-5 py-4 text-sm text-white focus:outline-none"
+                                                                            />
+                                                                        </div>
+                                                                    )}
+
+                                                                    {block.type === 'audio' && (
+                                                                        <div className="space-y-4">
+                                                                          <input 
+                                                                            value={block.content?.title || ''}
+                                                                            onChange={e => updateBlockContent(block.id, { title: e.target.value })}
+                                                                            className="w-full bg-black/20 border border-white/5 rounded-xl px-4 py-2 text-sm font-bold focus:outline-none text-white"
+                                                                            placeholder="Audio Title"
+                                                                          />
+                                                                          <div className="grid grid-cols-2 gap-4">
+                                                                            <input 
+                                                                              value={block.content?.url || ''}
+                                                                              onChange={e => updateBlockContent(block.id, { url: e.target.value })}
+                                                                              className="w-full bg-black/20 border border-white/5 rounded-xl px-4 py-2 text-xs focus:outline-none text-white"
+                                                                              placeholder="Audio File URL"
+                                                                            />
+                                                                            <input 
+                                                                              value={block.content?.duration || ''}
+                                                                              onChange={e => updateBlockContent(block.id, { duration: e.target.value })}
+                                                                              className="w-full bg-black/20 border border-white/5 rounded-xl px-4 py-2 text-xs focus:outline-none text-white"
+                                                                              placeholder="Duration (e.g. 15:30)"
+                                                                            />
+                                                                          </div>
+                                                                        </div>
+                                                                    )}
+
+                                                                    {block.type === 'image' && (
+                                                                        <div className="space-y-4">
+                                                                            <input
+                                                                                type="text"
+                                                                                value={block.content?.url || ''}
+                                                                                onChange={e => updateBlockContent(block.id, { url: e.target.value })}
+                                                                                placeholder="Image URL (HTTPS)..."
+                                                                                className="w-full bg-black/20 border border-white/5 rounded-xl px-4 py-3 text-sm text-white focus:outline-none"
+                                                                            />
+                                                                            <input
+                                                                                type="text"
+                                                                                value={block.content?.caption || ''}
+                                                                                onChange={e => updateBlockContent(block.id, { caption: e.target.value })}
+                                                                                placeholder="Illustration Caption..."
+                                                                                className="w-full bg-black/20 border border-white/5 rounded-xl px-4 py-2 text-xs focus:outline-none text-white"
+                                                                            />
+                                                                        </div>
+                                                                    )}
+
+                                                                    {block.type === 'summary' && (
+                                                                        <div className="space-y-4">
+                                                                            {(block.content?.points || ['', '', '']).map((pt, pIdx) => (
+                                                                                <div key={pIdx} className="flex gap-3">
+                                                                                    <div className="w-6 h-6 rounded-full bg-emerald-500/10 text-emerald-500 flex flex-shrink-0 items-center justify-center text-[10px] font-black">{pIdx + 1}</div>
+                                                                                    <input 
+                                                                                      value={pt}
+                                                                                      onChange={e => {
+                                                                                          const newPts = [...(block.content?.points || ['', '', ''])];
+                                                                                          newPts[pIdx] = e.target.value;
+                                                                                          updateBlockContent(block.id, { points: newPts });
+                                                                                      }}
+                                                                                      className="flex-1 bg-transparent border-b border-white/10 text-sm focus:outline-none focus:border-emerald-500/30 text-white"
+                                                                                      placeholder={`Learning objective point ${pIdx + 1}`}
+                                                                                    />
+                                                                                </div>
+                                                                            ))}
+                                                                        </div>
+                                                                    )}
+
+                                                                    {block.type === 'quiz' && (
+                                                                        <div className="space-y-5">
+                                                                            <input
+                                                                                type="text"
+                                                                                value={block.question || ''}
+                                                                                onChange={e => updateBlock(block.id, { question: e.target.value })}
+                                                                                placeholder="Enter Question..."
+                                                                                className="w-full bg-transparent text-sm font-bold text-white focus:outline-none"
+                                                                            />
+                                                                            <div className="space-y-2.5 pl-4 border-l-2 border-emerald-500/20">
+                                                                                {(block.options || ['', '', '', '']).map((opt, oIdx) => (
+                                                                                    <div key={oIdx} className="flex items-center gap-4">
+                                                                                        <button 
+                                                                                            onClick={() => updateBlock(block.id, { correctIndex: oIdx })}
+                                                                                            className={`w-5 h-5 rounded-full border-2 flex flex-shrink-0 items-center justify-center ${block.correctIndex === oIdx ? 'border-emerald-500 bg-emerald-500' : 'border-slate-700'}`}
+                                                                                        >
+                                                                                            {block.correctIndex === oIdx && <div className="w-1.5 h-1.5 bg-white rounded-full" />}
+                                                                                        </button>
+                                                                                        <input
+                                                                                            type="text"
+                                                                                            value={opt}
+                                                                                            onChange={e => {
+                                                                                                const newOpts = [...block.options];
+                                                                                                newOpts[oIdx] = e.target.value;
+                                                                                                updateBlock(block.id, { options: newOpts });
+                                                                                            }}
+                                                                                            placeholder="Option text..."
+                                                                                            className={`flex-1 bg-transparent text-sm focus:outline-none ${block.correctIndex === oIdx ? 'text-emerald-500 font-bold' : 'text-slate-400'}`}
+                                                                                        />
+                                                                                    </div>
+                                                                                ))}
+                                                                            </div>
+                                                                        </div>
+                                                                    )}
+                                                                </div>
+                                                            </motion.div>
+                                                        </div>
+                                                    )}
+                                                </Draggable>
+                                            );
+                                        })}
+                                        {provided.placeholder}
+                                    </div>
+                                )}
+                            </Droppable>
+                        </DragDropContext>
+                    </div>
+
+                    {/* Add Blocks Bar */}
+                    <div className="pt-8 border-t border-white/5">
+                        <span className="text-[9px] font-black uppercase tracking-[0.3em] text-emerald-500/40 mb-6 block px-2">New Component Canvas Stream</span>
+                        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3">
+                            {BLOCK_TYPES.map(type => (
+                                <button key={type.type} onClick={() => addBlock(type.type)} className="group flex items-center gap-3 p-3 rounded-xl border border-white/5 hover:border-emerald-500/20 hover:bg-white/5 transition-all active:scale-95 shadow-sm">
+                                    <Icon name={type.icon} size={14} className="text-slate-500" /> <span className="text-[9px] font-black uppercase tracking-widest text-slate-500">{type.label}</span>
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Right Side Frame: AI Workspace Copilot Workspace canvas stream layout side sheet widget natively on stream flawlessly */}
+            <div className="w-full xl:w-80 shrink-0 top-6 sticky space-y-4">
+                <div className="p-6 bg-white/2 rounded-3xl border border-white/5 backdrop-blur-3xl space-y-4 h-full flex flex-col justify-between">
+                    <div>
+                        <div className="flex items-center gap-2 text-emerald-400 mb-2">
+                             <Icon name="Zap" size={16} />
+                             <span className="text-[10px] font-black uppercase tracking-[0.2em]">AI Copilot Workspace</span>
+                        </div>
+                        <p className="text-[10px] text-slate-500 leading-relaxed">Auto-generate cinematic content scripts effortlessly based on your overview notes & context triggers dynamically sidebar stream.</p>
+                        
+                        <div className="mt-4 space-y-3">
+                             <textarea 
+                                  className="w-full bg-black/30 border border-white/5 rounded-2xl p-4 text-xs text-white placeholder:text-slate-600 focus:outline-none focus:border-emerald-500/30 resize-none h-28"
+                                  placeholder={`Ask AI to generate rich items for this ${PAGE_TEMPLATES[selectedPageIdx]?.label.split('. ')[1]} setup...`}
+                             />
+                             <button className="w-full py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-[9px] font-black uppercase tracking-widest shadow-lg shadow-emerald-500/10 active:scale-95 transition-all flex items-center justify-center gap-2">
+                                  <Icon name="Sparkles" size={12} /> Generate Content
+                             </button>
+                        </div>
+                    </div>
+                    
+                    {/* Live Preview / Stats Box native in coping stream pane frame layout stream flawlessly */}
+                    <div className="pt-4 border-t border-white/5 space-y-3 mt-4">
+                        <div className="flex items-center justify-between">
+                            <span className="text-[9px] font-black text-slate-500 uppercase">Page Blocks</span>
+                            <span className="text-xs font-black text-white">{activeBlocks.length}</span>
+                        </div>
+                        <div className="flex items-center justify-between">
+                            <span className="text-[9px] font-black text-slate-500 uppercase">Est. Minutes</span>
+                            <span className="text-xs font-black text-emerald-500">{activeBlocks.length * 2} m</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     );
 };
+
 export default LessonBlockBuilder;
