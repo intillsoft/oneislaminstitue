@@ -1,0 +1,106 @@
+[
+  {
+    "page_number": 1,
+    "page_type": "overview",
+    "content": [
+      {
+        "id": "b1_16_1",
+        "type": "design_markdown",
+        "content": {
+          "text": "# Why Do People Believe Differently?\n\n### 🎯 Goal\nTo understand the factors that lead to religious diversity, and to develop an Islamic perspective on other faiths while maintaining confidence in Islam as the final truth.\n\n### ⏱️ Time Estimate\n40 minutes\n\n### ❓ Key Questions\n- Why are there so many religions and beliefs in the world?\n- How does Islam explain the existence of other faiths?\n- What is the role of culture, upbringing, and personal choice in shaping belief?\n- How should Muslims view and interact with people of other religions?"
+        }
+      },
+      {
+        "id": "b1_16_2",
+        "type": "summary",
+        "content": {
+          "points": [
+            "**Taqlid** – Blind imitation, following ancestors without evidence.",
+            "**Tahrif** – Corruption or alteration of scriptures.",
+            "**Naskh** – Abrogation (superseding of previous laws).",
+            "**'Aql** – Reason, intellect.",
+            "**Ahl al-Kitab** – People of the Book (Jews and Christians).",
+            "**Tasamuh** – Tolerance, coexistence."
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "page_number": 2,
+    "page_type": "video",
+    "content": [
+      {
+        "id": "v1_16_2",
+        "type": "video",
+        "content": {
+          "url": "https://www.youtube.com/watch?v=YOUR_VIDEO_ID_4"
+        }
+      },
+      {
+        "id": "v2_16_2",
+        "type": "design_markdown",
+        "content": {
+          "text": "### 📜 Video Description\nIn this thought‑provoking lecture, Shaykh Yasir Qadhi addresses the question of why different religions exist.\n\n### ⏱️ Video Chapters\n- 0:00 – Introduction: The fact of religious diversity\n- 4:30 – The fitrah and its obstruction\n- 10:15 – Prophets sent to every nation\n- 17:40 – Corruption of original messages\n- 31:00 – Divine wisdom in diversity\n- 38:15 – How to interact with others"
+        }
+      }
+    ]
+  },
+  {
+    "page_number": 3,
+    "page_type": "companion_guide",
+    "content": [
+      {
+         "id": "blk_1_6_c1",
+         "type": "design_markdown",
+         "content": {
+             "text": "### 💡 Summary of Key Points\n- Environment, culture, and personal choice obscure the fitrah.\n- Allah sent prophets to every nation with the same core message.\n- Over time, many original messages were corrupted or lost.\n- \"There is no compulsion in religion\" (2:256) – faith must be chosen freely.\n\n--- \n\n### 📖 Deeper Explanation\n**The Fitrah and Its Obstruction**\nThe Prophet said: \"Every child is born upon the fitrah, then his parents make him...\" This explains shaping factors: parents, society, and education influence what one ends up believing.\n\n**Prophets Sent to All Nations**\nAllah states: \"And there was no nation but that there had passed within it a warner.\" (35:24). They all taught the same: worship Allah and live righteously."
+         }
+      },
+      {
+         "id": "quran_1_6_1",
+         "type": "quran",
+         "content": {
+             "surah": "2", "verse": "256",
+             "arabic": "لَا إِكْرَاهَ فِي الدِّينِ ۖ قَد تَّبَيَّنَ الرُّشْدُ مِنَ الْغَيِّ",
+             "translation": "There shall be no compulsion in [acceptance of] the religion. The right course has become clear from the wrong."
+         }
+      },
+      {
+         "id": "quran_1_6_2",
+         "type": "quran",
+         "content": {
+             "surah": "5", "verse": "48",
+             "arabic": "لِكُلٍّ جَعَلْنَا مِنكُمْ شِرْعَةً وَمِنْهَاجًا ۚ وَلَوْ شَاءَ اللَّهُ لَجَعَلَكُمْ أُمَّةً وَاحِدَةً",
+             "translation": "For each We have appointed a law and a method. Had Allah willed, He could have made you one nation, but [He intended] to test you in what He has given you."
+         }
+      }
+    ]
+  },
+  {
+    "page_number": 4,
+    "page_type": "reflection_journal",
+    "content": [
+      {
+        "id": "ref_1_6_1",
+        "type": "design_markdown",
+        "content": {
+             "text": "### Question 1\nThink about your own religious background. What factors (family, culture, education) most shaped your beliefs?"
+        }
+      }
+    ]
+  },
+  {
+    "page_number": 5,
+    "page_type": "knowledge_check",
+    "content": [
+      {
+        "id": "quiz_1_6_1",
+        "type": "quiz",
+        "question": "What is tahrif?",
+        "options": ["Abrogation", "Corruption of scriptures", "Blind imitation", "Tolerance"],
+        "correctIndex": 1
+      }
+    ]
+  }
+]

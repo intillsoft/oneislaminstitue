@@ -116,7 +116,9 @@ const LessonView = () => {
     const [completing, setCompleting] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     
-    const [passedQuizzes, setPassedQuizzes] = useState(new Set());`r`n    const [showRewardModal, setShowRewardModal] = useState(false);`r`n    const [rewardTimer, setRewardTimer] = useState(null);
+    const [passedQuizzes, setPassedQuizzes] = useState(new Set());
+    const [showRewardModal, setShowRewardModal] = useState(false);
+    const [rewardTimer, setRewardTimer] = useState(null);
     const [lockData, setLockData] = useState({ lockedModules: {}, lockedLessons: {}, nextAvailable: null });
     const [isEditing, setIsEditing] = useState(false);
     const [draftBlocks, setDraftBlocks] = useState(null);

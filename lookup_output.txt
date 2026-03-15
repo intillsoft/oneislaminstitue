@@ -1,0 +1,199 @@
+[
+  {
+    "id": "a8e0f930-b7a7-4eb7-b193-e078776cb685",
+    "module_id": "24850fe8-6ae3-4a8b-b3e6-706ef1a1cea1",
+    "course_id": "71f275a5-398b-49fc-951c-3e54030d51b0",
+    "title": "Parenting philosophy",
+    "description": null,
+    "content_type": "text",
+    "content_data": null,
+    "duration_minutes": 20,
+    "sort_order": 1,
+    "is_free_preview": false,
+    "is_published": true,
+    "created_at": "2026-03-03T12:02:29.208551+00:00",
+    "updated_at": "2026-03-03T12:02:29.208551+00:00",
+    "video_url": null,
+    "markdown_content": null,
+    "infographic_urls": null,
+    "pdf_attachment_urls": null,
+    "coin_reward": 10,
+    "xp_reward": 15,
+    "content_blocks": [
+      {
+        "id": "blk_1772539338567_464859",
+        "type": "objectives",
+        "order": 0,
+        "content": {
+          "items": [
+            "Analyze the psychological underpinnings of Parenting philosophy.",
+            "Identify modern challenges and pitfalls regarding Parenting philosophy.",
+            "Develop a proactive Islamic strategy for managing Parenting philosophy.",
+            "Synthesize learnings from Parenting Alignment to build a lasting relationship blueprint."
+          ]
+        }
+      },
+      {
+        "id": "blk_1772539338567_320463",
+        "type": "concept",
+        "order": 1,
+        "content": {
+          "arabic": "الذكاء العاطفي الزوجي",
+          "translation": "Parenting philosophy: Mastering relationship intelligence through the lens of modern psychology and Islamic wisdom."
+        }
+      },
+      {
+        "id": "blk_1772539338567_255362",
+        "type": "text",
+        "order": 2,
+        "content": "## Parenting philosophy\n\nIn this session, we dive deep into **Parenting philosophy**. Modern marriage faces unprecedented pressures from digital culture, changing social roles, and unrealistic expectations. To succeed, we must move beyond basic law into true relationship intelligence.\n\n> \"And of His signs is that He created for you from yourselves mates that you may find tranquillity in them; and He placed between you affection and mercy.\" (Surah Ar-Rum 30:21)\n\nTranquillity (*Sakinah*) is not accidental; it is built through the intentional practice of Parenting philosophy."
+      },
+      {
+        "id": "blk_1772539338567_595697",
+        "type": "infographic",
+        "order": 3,
+        "content": {
+          "items": [
+            {
+              "icon": "Search",
+              "title": "Identification",
+              "description": "Recognizing the signs of Parenting philosophy in your bond."
+            },
+            {
+              "icon": "MessageSquare",
+              "title": "Communication",
+              "description": "Opening the dialogue with empathy."
+            },
+            {
+              "icon": "Sliders",
+              "title": "Adjustment",
+              "description": "Modifying behaviors and expectations."
+            },
+            {
+              "icon": "Heart",
+              "title": "Connection",
+              "description": "Strengthening the bond of trust."
+            }
+          ],
+          "layout": "process"
+        }
+      },
+      {
+        "id": "blk_1772539338567_51795",
+        "type": "quran",
+        "order": 4,
+        "content": {
+          "arabic": "هُنَّ لِبَاسٌ لَّكُمْ وَأَنتُمْ لِبَاسٌ لَّهُنَّ",
+          "translation": "They are clothing for you and you are clothing for them. (Surah Al-Baqarah 2:187)"
+        }
+      },
+      {
+        "id": "blk_1772539338567_413599",
+        "type": "hadith",
+        "order": 5,
+        "content": {
+          "arabic": "أَكْمَلُ الْمُؤْمِنِينَ إِيمَانًا أَحْسَنُهُمْ خُلُقًا وَخِيَارُكُمْ خِيَارُكُمْ لِنِسَائِهِمْ",
+          "translation": "The best of you are those who are best to their wives. (At-Tirmidhi)"
+        }
+      },
+      {
+        "id": "blk_1772539338567_398298",
+        "type": "text",
+        "order": 6,
+        "content": "### Relationship Lab: Parenting philosophy\n\nTo master **Parenting Alignment**, you must learn the art of emotional responsiveness. When your partner raises an issue regarding Parenting philosophy, it is an invitation for connection, not an attack.\n\n1. **Triggers** — What makes Parenting philosophy difficult for you?\n2. **The \"Bids\" for Connection** — How to spot them in daily life.\n3. **De-escalation** — Breaking the cycle of blame.\n4. **Legacy** — How this strength impacts your children and future generations."
+      },
+      {
+        "id": "blk_1772539338567_750153",
+        "type": "callout",
+        "order": 7,
+        "author": "Relationship Intelligence Lab",
+        "content": "Relationship Intelligence Task:\n- Perform a 5-minute \"Relationship Audit\" focused on Parenting philosophy.\n- Identify one \"Repair Attempt\" you can use this week.\n- Discuss one shared goal related to Parenting Alignment with your partner or mentor.\n- Record one thing you appreciate about your partner’s approach to this topic."
+      },
+      {
+        "id": "blk_1772539338567_354406",
+        "type": "quiz",
+        "order": 8,
+        "content": {
+          "hint": "Clothes protect and cover.",
+          "options": [
+            "Strict control over one another",
+            "Mutual protection, warmth, and concealment of faults",
+            "Economic partnership only",
+            "A reminder to dress modestly"
+          ],
+          "question": "What is the primary psychological goal of the \"Clothing\" metaphor (2:187) in the context of Parenting philosophy?",
+          "correctIndex": 1
+        }
+      },
+      {
+        "id": "blk_1772539338567_112848",
+        "type": "quiz",
+        "order": 9,
+        "content": {
+          "hint": "Focus on your own feelings rather than attacking.",
+          "options": [
+            "Winning the argument at any cost",
+            "Using \"I\" statements and emotional validation",
+            "Silent treatment until they apologize",
+            "Bringing up past mistakes to gain leverage"
+          ],
+          "question": "In modern psychology, what is the most effective way to handle a conflict regarding Parenting philosophy?",
+          "correctIndex": 1
+        }
+      },
+      {
+        "id": "blk_1772539338567_6869",
+        "type": "quiz",
+        "order": 10,
+        "content": {
+          "hint": "It is the core goal of an Islamic marriage.",
+          "options": [
+            "A state of constant excitement",
+            "The presence of deep rooted peace and security in the home",
+            "The absence of any disagreement",
+            "Strict adherence to traditional gender roles only"
+          ],
+          "question": "What is \"Sakinah\" in the context of relationship intelligence?",
+          "correctIndex": 1
+        }
+      },
+      {
+        "id": "blk_1772539338567_125676",
+        "type": "reflection",
+        "order": 11,
+        "content": {
+          "arabic": "التفكر الزوجي",
+          "translation": "How would your family life transform if Parenting philosophy became a core strength of your home? What is one behavior you are willing to change today to invite more Sakinah?"
+        }
+      },
+      {
+        "id": "blk_1772539338567_316721",
+        "type": "document",
+        "order": 12,
+        "content": {
+          "url": "https://www.gottman.com/blog/category/marriage-life/",
+          "title": "The Gottman Institute — Research-Based Marriage",
+          "platform": "Gottman Institute",
+          "description": "World-leading research on why marriages succeed or fail."
+        }
+      },
+      {
+        "id": "blk_1772539338567_18778",
+        "type": "document",
+        "order": 13,
+        "content": {
+          "url": "https://ifstudies.org/blog/category/marriage",
+          "title": "Institute for Family Studies — Modern Realities",
+          "platform": "IFS",
+          "description": "Data and analysis on marriage trends in the digital age."
+        }
+      },
+      {
+        "id": "blk_1772539338567_497131",
+        "type": "conclusion",
+        "order": 14,
+        "content": "Mastering Parenting philosophy is an investment in your legacy. By completing this session within Parenting Alignment, you are building a home founded on Sakinah, Mawaddah, and Rahmah. Carry these insights into your daily interactions and watch your relationships thrive."
+      }
+    ]
+  }
+]

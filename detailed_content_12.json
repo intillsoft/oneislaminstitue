@@ -1,0 +1,34 @@
+[
+  {
+    "page_number": 3,
+    "page_type": "companion_guide",
+    "content": [
+      {
+         "id": "blk_1_2_c1",
+         "type": "design_markdown",
+         "content": {
+             "text": "### 💡 Summary of Key Points\n- Worship (**Ubudiyyah**) is the supreme purpose of our existence.\n- We are chosen as **Khalifah** (vicegerents) of Allah on Earth and responsibility.\n- This world is a place of trial, growth, and patience preparing for the Hereafter.\n\n--- \n\n### 📖 Deeper Explanation\n**Ubudiyyah (Worship)**\nOur creation is purposeful. Allah explicitly states, \"I did not create jinn and humans except to worship Me\" (51:56). Worship is not just ritual prayer (Salah); any noble action performed with a pure intention transforms into continuous worship."
+         }
+      },
+      {
+         "id": "quran_1_2_1",
+         "type": "quran",
+         "content": {
+             "surah": "51", "verse": "56",
+             "arabic": "وَمَا خَلَقْتُ الْجِنَّ وَالْإِنسَ إِلَّا لِيَعْبُدُونِ",
+             "translation": "I did not create the jinn and humans except to worship Me."
+         }
+      },
+      {
+         "id": "hadith_1_2_1",
+         "type": "hadith",
+         "content": {
+             "narrator": "Muslim",
+             "arabic": "",
+             "translation": "This world is a bridge; pass over it, but do not build upon it.",
+             "reference": "Imam Nawawi collections"
+         }
+      }
+    ]
+  }
+]

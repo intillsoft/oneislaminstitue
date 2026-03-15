@@ -1,0 +1,34 @@
+[
+  {
+    "page_number": 3,
+    "page_type": "companion_guide",
+    "content": [
+      {
+         "id": "blk_1_1_c1",
+         "type": "design_markdown",
+         "content": {
+             "text": "### 💡 Summary of Key Points\n- Every human contains a **Fitrah** (innate disposition to recognize God).\n- The soul (**Ruh**) is of divine origin and blown into the body.\n- The self (**Nafs**) can struggle between lower desires and higher morality.\n\n--- \n\n### 📖 Deeper Explanation\n**The Concept of Fitrah**\nIslam teaches that children are born upon a pure, unconditioned nature. When humans reflect on creation, their soul automatically infers a supreme Creator.\n\n**The Soul (Ruh)**\nYou are more than just biology. To complete the search for identity, one must feed the soul its spiritual sustenance through remembrance of Allah and prayer."
+         }
+      },
+      {
+         "id": "quran_1_1_1",
+         "type": "quran",
+         "content": {
+             "surah": "7", "verse": "172",
+             "arabic": "وَإِذْ أَخَذَ رَبُّكَ مِن بَنِي آدَمَ مِن ظُهُورِهِمْ ذُرِّيَّتَهُمْ وَأَشْهَدَهُمْ عَلَىٰ أَنفُسِهِمْ أَلَسْتُ بِرَبِّكُمْ ۖ قَالُوا بَلَىٰ ۛ شَهِدْنَا",
+             "translation": "And when your Lord took from the children of Adam from their backs their descendants and made them testify of themselves, 'Am I not your Lord?' They said, 'Yes, we have testified.'"
+         }
+      },
+      {
+         "id": "hadith_1_1_1",
+         "type": "hadith",
+         "content": {
+             "narrator": "Bukhari",
+             "arabic": "",
+             "translation": "Every child is born upon the fitrah.",
+             "reference": "Sahih Bukhari"
+         }
+      }
+    ]
+  }
+]

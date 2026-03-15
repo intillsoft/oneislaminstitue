@@ -1,0 +1,60 @@
+[
+  {
+    "page_number": 3,
+    "page_type": "companion_guide",
+    "content": [
+      {
+         "id": "blk_1_3_c1",
+         "type": "design_markdown",
+         "content": {
+             "text": "### 💡 Summary of Key Points\n- This life (**dunya**) is temporary and purposeful—it is a test.\n- Death is not the end but a transition to the next stage.\n- After death, the soul enters **Barzakh** until Resurrection Day.\n\n--- \n\n### 📖 Deeper Explanation\n\n**The Dunya: Place of Test**\nThe Quran describes this world as a trial. Allah says: \"[He] who created death and life to test you as to which of you is best in deed.\" (67:2). The dunya is not meant to be permanent; it is a farm where seeds are planted for the Hereafter.\n\n**Barzakh: The Intermediate Realm**\nAfter death, the soul enters Barzakh (Arabic for barrier). Two angels, Munkar and Nakir, ask three questions: \"Who is your Lord? What is your religion? Who is this man?\"\n\n**Day of Judgment**\nThe angel Israfil will blow the Trumpet, and souls will unite with bodies. Humanity is gathered, deeds are weighed on the Mizan scale, and we cross the Sirat over Hell to reach Paradise.\n\n**Paradise and Hell**\nParadise (Jannah) is a place of absolute bliss—palaces, rivers, and seeing Allah. Hell (Jahannam) is severe torment and being veiled from Allah."
+         }
+      },
+      {
+         "id": "quran_1_3_1",
+         "type": "quran",
+         "content": {
+             "surah": "67", "verse": "2",
+             "arabic": "الَّذِي خَلَقَ الْمَوْتَ وَالْحَيَاةَ لِيَبْلُوَكُمْ أَيُّكُمْ أَحْسَنُ عَمَلًا",
+             "translation": "[He] who created death and life to test you [as to] which of you is best in deed."
+         }
+      },
+      {
+         "id": "quran_1_3_2",
+         "type": "quran",
+         "content": {
+             "surah": "3", "verse": "185",
+             "arabic": "كُلُّ نَفْسٍ ذَائِقَةُ الْمَوْتِ ۗ وَإِنَّمَا تُوَفَّوْنَ أُجُورَكُمْ يَوْمَ الْقِيَامَةِ",
+             "translation": "Every soul will taste death, and you will only be given your full compensation on the Day of Resurrection."
+         }
+      },
+      {
+         "id": "hadith_1_3_1",
+         "type": "hadith",
+         "content": {
+             "narrator": "Muslim",
+             "arabic": "",
+             "translation": "The world is a prison for the believer and a paradise for the disbeliever.",
+             "reference": "Sahih Muslim"
+         }
+      },
+      {
+         "id": "hadith_1_3_2",
+         "type": "hadith",
+         "content": {
+             "narrator": "Bukhari",
+             "arabic": "",
+             "translation": "Live in this world as if you are a stranger or a wayfarer.",
+             "reference": "Sahih Bukhari"
+         }
+      },
+      {
+         "id": "story_1_3",
+         "type": "design_markdown",
+         "content": {
+             "text": "### 📖 Stories & Examples\n**The Man Who Killed 99 People**\nA man who killed 99 people asked if he could repent. A scholar supported him, and as he sought the righteous land, he died on the way. Measured by distance, he was closer to forgiveness, teaching that sincere repentance is always accepted."
+         }
+      }
+    ]
+  }
+]

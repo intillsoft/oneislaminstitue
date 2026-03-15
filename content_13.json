@@ -1,0 +1,126 @@
+[
+  {
+    "page_number": 1,
+    "page_type": "overview",
+    "content": [
+      {
+        "id": "b1_1",
+        "type": "design_markdown",
+        "content": {
+          "text": "# Where Am I Going? The Journey Ahead\n\n### 🎯 Goal\nTo understand the Islamic perspective on life as a journey toward the Hereafter, and how this shapes our purpose and priorities.\n\n### ⏱️ Time Estimate\n35 minutes\n\n### ❓ Key Questions\n- What happens after death according to Islam?\n- What is the purpose of this temporary world (dunya)?\n- How should we prepare for the next life (akhirah)?\n- What are the stages of the journey after death?"
+        }
+      },
+      {
+        "id": "b1_2",
+        "type": "summary",
+        "content": {
+          "points": [
+            "**Dunya** – The present world, the lower life, temporary abode.",
+            "**Akhirah** – The Hereafter, the final and eternal life.",
+            "**Barzakh** – The intermediate state between death and resurrection.",
+            "**Qiyamah** – The Day of Standing (Resurrection).",
+            "**Ba'th** – Resurrection, being raised from the dead.",
+            "**Hashr** – The gathering of all humanity for judgment.",
+            "**Mizan** – The scale that weighs deeds.",
+            "**Sirat** – The bridge over Hell that leads to Paradise.",
+            "**Jannah** – Paradise, the Garden of eternal bliss.",
+            "**Jahannam** – Hellfire, the place of punishment."
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "page_number": 2,
+    "page_type": "video",
+    "content": [
+      {
+        "id": "b2_1",
+        "type": "video",
+        "content": {
+          "url": "https://www.youtube.com/watch?v=YOUR_VIDEO_ID_1"
+        }
+      },
+      {
+        "id": "b2_2",
+        "type": "design_markdown",
+        "content": {
+          "text": "### 📜 Video Description\nIn this powerful lecture, Shaykh Yasir Qadhi takes us on a journey through the Islamic understanding of death, the grave, and the Day of Judgment. He explains why remembering the Hereafter is essential for living a purposeful life.\n\n### ⏱️ Video Chapters\n- 0:00 – Introduction: Why we must think about where we are going\n- 4:30 – The reality of death\n- 10:15 – The moment of death & soul's departure\n- 16:40 – Barzakh\n- 24:20 – Day of Judgment\n- 32:10 – Paradise and Hell\n- 38:45 – How to prepare\n- 44:30 – Conclusion and dua"
+        }
+      }
+    ]
+  },
+  {
+    "page_number": 3,
+    "page_type": "companion_guide",
+    "content": [
+      {
+        "id": "b3_1",
+        "type": "design_markdown",
+        "content": {
+          "text": "### 💡 Summary of Key Points\n- This life (dunya) is temporary and purposeful—it is a test.\n- Death is not the end but a transition to the next stage.\n- After death, the soul enters Barzakh until the Day of Resurrection.\n\n### 📖 Deeper Explanation\n**The Dunya: Place of Test**\nThe Quran describes this world as a trial. Allah says: \"[He] who created death and life to test you as to which of you is best in deed.\" (67:2). The dunya is transient, a farm where we plant seeds for the Hereafter."
+        }
+      },
+      {
+        "id": "quran_13_1",
+        "type": "quran",
+        "content": {
+          "surah": "67",
+          "verse": "2",
+          "arabic": "الَّذِي خَلَقَ الْمَوْتَ وَالْحَيَاةَ لِيَبْلُوَكُمْ أَيُّكُمْ أَحْسَنُ عَمَلًا",
+          "translation": "[He] who created death and life to test you [as to] which of you is best in deed."
+        }
+      },
+      {
+        "id": "hadith_13_1",
+        "type": "hadith",
+        "content": {
+          "narrator": "Muslim",
+          "arabic": "",
+          "translation": "The world is a prison for the believer and a paradise for the disbeliever.",
+          "reference": "Muslim"
+        }
+      }
+    ]
+  },
+  {
+    "page_number": 4,
+    "page_type": "reflection_journal",
+    "content": [
+      {
+        "id": "ref_1_3_1",
+        "type": "design_markdown",
+        "content": {
+          "text": "### Question 1\nBefore this lesson, how often did you think about death and what comes after? Has this lesson changed that?"
+        }
+      },
+      {
+        "id": "ref_1_3_2",
+        "type": "design_markdown",
+        "content": {
+          "text": "### Question 2\nImagine standing before the angels Munkar and Nakir. What would you say when asked about your Lord and religion?"
+        }
+      }
+    ]
+  },
+  {
+    "page_number": 5,
+    "page_type": "knowledge_check",
+    "content": [
+      {
+        "id": "quiz_1_3_1",
+        "type": "quiz",
+        "question": "What is the name of the intermediate state between death and the Day of Resurrection?",
+        "options": ["Qiyamah", "Barzakh", "Hashr", "Sirat"],
+        "correctIndex": 1
+      },
+      {
+        "id": "quiz_1_3_2",
+        "type": "quiz",
+        "question": "Which two angels question the deceased in the grave?",
+        "options": ["Jibril and Mika'il", "Munkar and Nakir", "Israfil and Azra'il", "Ridwan and Malik"],
+        "correctIndex": 1
+      }
+    ]
+  }
+]

@@ -1,0 +1,50 @@
+[
+  {
+    "page_number": 3,
+    "page_type": "companion_guide",
+    "content": [
+      {
+         "id": "blk_1_4_c1",
+         "type": "design_markdown",
+         "content": {
+             "text": "### 💡 Summary of Key Points\n- Truth (**haqq**) is not relative; it is real, objective, and knowable.\n- Allah is **Al-Haqq** (The Truth), and all truth originates from Him.\n- Multiple sources of knowledge: **Senses, Reason, Revelation, Fitrah**.\n- Certainty (**yaqin**) has levels: knowledge by inference, observation, and direct experience.\n\n--- \n\n### 📖 Deeper Explanation\n\n**The Crisis of Truth**\nWe live in an age where \"truth\" is often considered subjective. Modern relativism claims what is true for you may not be true for me. Islam offers a alternative: truth is real and accessible to everyone.\n\n**Sources of Knowledge in Islam**\n1. **The Senses (Hawass):** We learn through sight, hearing, touch. The Quran tells us to observe creation (camel, heavens).\n2. **Reason ('Aql):** God-given faculty to process sensory data and draw conclusions like universe has a Creator.\n3. **Revelation (Wahy):** Answers beyond reach of reason, about God's nature and purpose of life (Quran and Sunnah).\n4. **Fitrah:** Innate disposition to recognize truth and goodness. It inclines us toward belief in God.\n5. **Reliable Transmission:** Trusted reports for history/science (hadith criticism)."
+         }
+      },
+      {
+         "id": "quran_1_4_1",
+         "type": "quran",
+         "content": {
+             "surah": "22", "verse": "62",
+             "arabic": "ذَلِكَ بِأَنَّ اللَّهَ هُوَ الْحَقُّ وَأَنَّ مَا يَدْعُونَ مِن دُونِهِ هُوَ الْبَاطِلُ",
+             "translation": "That is because Allah is the Truth, and what they invoke besides Him is falsehood, and because Allah is the Most High, the Grand."
+         }
+      },
+      {
+         "id": "quran_1_4_2",
+         "type": "quran",
+         "content": {
+             "surah": "17", "verse": "81",
+             "arabic": "وَقُلْ جَاءَ الْحَقُّ وَزَهَقَ الْبَاطِلُ ۚ إِنَّ الْبَاطِلَ كَانَ زَهُوقًا",
+             "translation": "And say, 'Truth has come, and falsehood has perished. Indeed, falsehood is ever bound to perish.'"
+         }
+      },
+      {
+         "id": "hadith_1_4_1",
+         "type": "hadith",
+         "content": {
+             "narrator": "Bukhari",
+             "arabic": "",
+             "translation": "Every child is born upon the fitrah; his parents make him a Jew, a Christian, or a Magian.",
+             "reference": "Sahih Bukhari"
+         }
+      },
+      {
+         "id": "story_1_4",
+         "type": "design_markdown",
+         "content": {
+             "text": "### 📖 Stories & Examples\n**Prophet Ibrahim (AS) Seeking Truth**\nIbrahim questioned idols in his society. He used his intellect and observation (stars setting, sun setting) to conclude that transient things cannot be gods."
+         }
+      }
+    ]
+  }
+]

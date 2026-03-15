@@ -1,0 +1,108 @@
+[
+  {
+    "page_number": 1,
+    "page_type": "overview",
+    "content": [
+      {
+        "id": "b1_15_1",
+        "type": "design_markdown",
+        "content": {
+          "text": "# Is There a God? The Human Intuition\n\n### 🎯 Goal\nTo explore the natural human inclination to believe in a Creator, and to examine rational arguments that support the existence of God.\n\n### ⏱️ Time Estimate\n40 minutes\n\n### ❓ Key Questions\n- What is the fitrah and how does it point to God?\n- What are the main rational arguments for God’s existence?\n- How does the Quran present signs of God in creation?\n- Why do some people deny God despite this intuition?"
+        }
+      },
+      {
+        "id": "b1_15_2",
+        "type": "summary",
+        "content": {
+          "points": [
+            "**Fitrah** – The innate human disposition to believe in God and recognize truth.",
+            "**Dalil** – Proof, evidence.",
+            "**Ayat** – Signs (in the universe and in the Quran).",
+            "**Tawheed** – The oneness of God.",
+            "**Khaliq** – The Creator.",
+            "**Nidham** – Order, design.",
+            "**Yaqin** – Certainty.",
+            "**Shirk** – Associating partners with God."
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "page_number": 2,
+    "page_type": "video",
+    "content": [
+      {
+        "id": "v1_15_2",
+        "type": "video",
+        "content": {
+          "url": "https://www.youtube.com/watch?v=YOUR_VIDEO_ID_3"
+        }
+      },
+      {
+        "id": "v2_15_2",
+        "type": "design_markdown",
+        "content": {
+          "text": "### 📜 Video Description\nIn this inspiring talk, Mufti Menk takes us on a journey through the natural world, showing how every aspect of creation points to the existence of a wise and powerful Creator.\n\n### ⏱️ Video Chapters\n- 0:00 – Introduction: The universal search for God\n- 4:20 – The fitrah\n- 9:15 – The order of the universe\n- 15:40 – The complexity of life (signs in our body)\n- 28:30 – Why some deny God\n- 34:45 – Strengthening your certainty"
+        }
+      }
+    ]
+  },
+  {
+    "page_number": 3,
+    "page_type": "companion_guide",
+    "content": [
+      {
+        "id": "blk_1_5_c1",
+        "type": "design_markdown",
+        "content": {
+          "text": "### 💡 Summary of Key Points\n- Every human is born with a fitrah – an innate awareness of God.\n- The universe displays overwhelming order, design, and fine‑tuning.\n- The Quran invites us to reflect on \"signs\" (ayat) in creation.\n\n--- \n\n### 📖 Deeper Explanation\n**The Fitrah**\nThe Prophet Muhammad say: \"Every child is born upon the fitrah...\" Fitrah is the original uncorrupted nature that inclines toward belief in one God. It is like a compass.\n\n**The Argument from Design**\nImagine finding a watch in the desert. You wouldn't think it came by chance. Intricate parts demand a watchmaker. The spiral galaxies or DNA demand intentional design."
+         }
+      },
+      {
+        "id": "quran_1_5_1",
+        "type": "quran",
+        "content": {
+             "surah": "30", "verse": "30",
+             "arabic": "فَأَقِمْ وَجْهَكَ لِلدِّينِ حَنِيفًا ۚ فِطْرَتَ اللَّهِ الَّتِي فَطَرَ النَّاسَ عَلَيْهَا",
+             "translation": "So direct your face toward the religion, inclining to truth. [Adhere to] the fitrah of Allah upon which He has created people."
+        }
+      },
+      {
+        "id": "quran_1_5_2",
+        "type": "quran",
+        "content": {
+             "surah": "3", "verse": "190",
+             "arabic": "إِنَّ فِي خَلْقِ السَّمَاوَاتِ وَالْأَرْضِ وَاخْتِلَافِ اللَّيْلِ وَالنَّهَارِ لَآيَاتٍ لِّأُولِي الْأَلْبَابِ",
+             "translation": "Indeed, in the creation of the heavens and the earth and the alternation of the night and day are signs for those of understanding."
+        }
+      }
+    ]
+  },
+  {
+    "page_number": 4,
+    "page_type": "reflection_journal",
+    "content": [
+      {
+        "id": "ref_1_5_1",
+        "type": "design_markdown",
+        "content": {
+             "text": "### Question 1\nDescribe a moment in your life when you felt a strong sense of awe or wonder at nature. What did that make you feel about a Creator?"
+        }
+      }
+    ]
+  },
+  {
+    "page_number": 5,
+    "page_type": "knowledge_check",
+    "content": [
+      {
+        "id": "quiz_1_5_1",
+        "type": "quiz",
+        "question": "What is the fitrah?",
+        "options": ["Type of prayer", "The innate human disposition to believe in God", "Soul after death", "Holy book"],
+        "correctIndex": 1
+      }
+    ]
+  }
+]

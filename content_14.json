@@ -1,0 +1,107 @@
+[
+  {
+    "page_number": 1,
+    "page_type": "overview",
+    "content": [
+      {
+        "id": "b1_14_1",
+        "type": "design_markdown",
+        "content": {
+          "text": "# What is Truth? How Do We Know?\n\n### 🎯 Goal\nTo explore the Islamic understanding of truth, knowledge, and the sources of certainty in a world of competing claims.\n\n### ⏱️ Time Estimate\n35 minutes\n\n### ❓ Key Questions\n- What is truth (haqq) and can we know it?\n- What are the sources of knowledge in Islam?\n- How do reason, senses, and revelation work together?\n- What is the role of the fitrah in knowing truth?"
+        }
+      },
+      {
+        "id": "b1_14_2",
+        "type": "summary",
+        "content": {
+          "points": [
+            "**Haqq** – Truth, reality, what is real and authentic.",
+            "**Batil** – Falsehood, that which is vain and unreal.",
+            "**'Ilm** – Knowledge, certainty.",
+            "**Wahy** – Divine revelation.",
+            "**'Aql** – Intellect, reason.",
+            "**Fitrah** – Innate human nature inclined toward truth.",
+            "**Yaqin** – Certainty, firm conviction.",
+            "**Dalil** – Proof, evidence."
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "page_number": 2,
+    "page_type": "video",
+    "content": [
+      {
+        "id": "v1_14_2",
+        "type": "video",
+        "content": {
+          "url": "https://www.youtube.com/watch?v=YOUR_VIDEO_ID_2"
+        }
+      },
+      {
+        "id": "v2_14_2",
+        "type": "design_markdown",
+        "content": {
+          "text": "### 📜 Video Description\nIn this profound lecture, Shaykh Hamza Yusuf addresses one of the most pressing questions of our time: Can we know the truth?\n\n### ⏱️ Video Chapters\n- 0:00 – Introduction: Crisis of truth in modern world\n- 5:30 – What is truth (haqq) in the Quran?\n- 12:15 – Sources of knowledge: Senses, reason, revelation\n- 20:40 – The fitrah\n- 28:10 – Distinguish truth from falsehood\n- 35:45 – Certainty (yaqin)\n- 48:00 – Conclusion and dua"
+        }
+      }
+    ]
+  },
+  {
+    "page_number": 3,
+    "page_type": "companion_guide",
+    "content": [
+      {
+        "id": "b1_14_3",
+        "type": "design_markdown",
+        "content": {
+          "text": "### 💡 Summary of Key Points\n- Truth (haqq) is not relative; it is real and knowable.\n- Allah is Al-Haqq (The Truth).\n- Multiple sources of knowledge: Senses, Reason, Revelation, Fitrah.\n\n### 📖 Deeper Explanation\n**The Crisis of Truth**\nWe live in an age where \"truth\" is often considered subjective. Islam offers a alternative: truth is real and accessible to everyone.\n\n**Allah is The Truth**\nAll truth originates from Him. To know truth is to align oneself with reality."
+        }
+      },
+      {
+        "id": "quran_14_1",
+        "type": "quran",
+        "content": {
+          "surah": "22",
+          "verse": "62",
+          "arabic": "ذَلِكَ بِأَنَّ اللَّهَ هُوَ الْحَقُّ وَأَنَّ مَا يَدْعُونَ مِن دُونِهِ هُوَ الْبَاطِلُ",
+          "translation": "That is because Allah is the Truth, and what they invoke besides Him is falsehood."
+        }
+      }
+    ]
+  },
+  {
+    "page_number": 4,
+    "page_type": "reflection_journal",
+    "content": [
+      {
+        "id": "ref_1_4_1",
+        "type": "design_markdown",
+        "content": {
+          "text": "### Question 1\nBefore this lesson, did you believe that objective truth exists? Has your perspective changed?"
+        }
+      }
+    ]
+  },
+  {
+    "page_number": 5,
+    "page_type": "knowledge_check",
+    "content": [
+      {
+        "id": "quiz_1_4_1",
+        "type": "quiz",
+        "question": "What does the name 'Al-Haqq' mean?",
+        "options": ["The Creator", "The Truth", "The Provider", "The Forgiving"],
+        "correctIndex": 1
+      },
+      {
+        "id": "quiz_1_4_2",
+        "type": "quiz",
+        "question": "Which of the following is NOT a source of knowledge in Islam?",
+        "options": ["Senses", "Reason", "Personal desires (hawa)", "Revelation"],
+        "correctIndex": 2
+      }
+    ]
+  }
+]
