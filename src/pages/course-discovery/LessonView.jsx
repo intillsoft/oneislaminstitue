@@ -31,6 +31,7 @@ import LessonBlockRenderer from './components/LessonBlockRenderer';
 import FloatingLessonAssistants from './components/FloatingLessonAssistants';
 import LessonSidebar from './components/LessonSidebar';
 import AILoader from '../../components/ui/AILoader';
+import LessonBlockBuilder from '../course-management/components/LessonBlockBuilder';
 
 const CompletionModal = ({ isOpen, type, coins, onNext }) => {
     if (!isOpen) return null;
@@ -119,6 +120,7 @@ const LessonView = () => {
     const [showRewardModal, setShowRewardModal] = useState(false);
     const [rewardTimer, setRewardTimer] = useState(null);
     const [lockData, setLockData] = useState({ lockedModules: {}, lockedLessons: {}, nextAvailable: null });
+    const [isEditing, setIsEditing] = useState(false);
     
     // Admin/Instructor Bypass Mode
     const isAdminOrInstructor = userRole === 'admin' || userRole === 'instructor';
@@ -382,6 +384,27 @@ const LessonView = () => {
         }
     };
 
+    const handleInlineSave = async (newBlocks) => {
+        if (!activeLesson?.id) return;
+        
+        setActiveLesson(prev => ({ ...prev, content_blocks: newBlocks }));
+        
+        try {
+            await supabase
+                .from('course_lessons')
+                .update({ content_blocks: newBlocks })
+                .eq('id', activeLesson.id);
+                
+            setModules(prev => prev.map(m => ({
+                ...m,
+                lessons: (m.lessons || []).map(l => l.id === activeLesson.id ? { ...l, content_blocks: newBlocks } : l)
+            })));
+                
+        } catch (err) {
+             console.error('Inline save error:', err);
+        }
+    };
+
     if (loading) {
         return (
             <div className="min-h-screen bg-slate-50 dark:bg-[#0A0E27] flex items-center justify-center">
@@ -480,10 +503,24 @@ const LessonView = () => {
                     </div>
 
                     <div className="flex items-center gap-1.5 lg:gap-3 ml-2">
+                        {isAdminOrInstructor && (
+                            <button 
+                                onClick={() => setIsEditing(!isEditing)}
+                                className={`flex items-center gap-2 px-3 lg:px-4 py-2 rounded-xl text-[9px] font-black uppercase tracking-[0.15em] transition-all border ${
+                                    isEditing 
+                                    ? 'bg-emerald-600 text-white border-emerald-500 shadow-emerald-500/20' 
+                                    : 'bg-white/5 border-white/10 text-slate-400 hover:text-white hover:bg-white/10'
+                                }`}
+                            >
+                                <Icon name={isEditing ? 'Eye' : 'Edit3'} size={12} />
+                                <span className="hidden xs:inline">{isEditing ? 'View Mode' : 'Edit Mode'}</span>
+                            </button>
+                        )}
+
                         <button 
                             onClick={handleCompleteLesson}
                             disabled={isCompleteButtonDisabled}
-                            className={`flex items-center gap-1.5 px-3 lg:px-4 py-1.5 rounded-full text-[8px] font-semibold uppercase tracking-[0.18em] transition-all shadow-md active:scale-95 disabled:opacity-30 disabled:grayscale ${
+                            className={`flex items-center gap-1.5 px-3 lg:px-4 py-2 rounded-xl text-[8px] font-semibold uppercase tracking-[0.18em] transition-all shadow-md active:scale-95 disabled:opacity-30 disabled:grayscale ${
                                 isAlreadyCompleted 
                                 ? 'bg-emerald-600 text-white shadow-emerald-500/10' 
                                 : nextLesson
@@ -542,20 +579,31 @@ const LessonView = () => {
                     )}
 
                     {/* Lesson Body/Blocks */}
-                    {hasPages && (
-                        <div className="flex flex-col items-center mb-10">
-                            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-emerald-600 mb-3">Page {currentPage} of {totalPages}</span>
-                            <div className="flex w-full max-w-xl gap-2">
-                                {pages.map(p => (
-                                    <div key={p.page_number} className={`h-1.5 flex-1 rounded-full overflow-hidden bg-slate-200 dark:bg-slate-800`}>
-                                        <div className={`h-full bg-emerald-500 transition-all duration-500 ${p.page_number <= currentPage ? 'w-full' : 'w-0'}`} />
-                                    </div>
-                                ))}
-                            </div>
+                    {isEditing ? (
+                        <div className="bg-white/2 rounded-3xl border border-white/5 p-6 backdrop-blur-3xl min-h-[500px]">
+                            <LessonBlockBuilder 
+                                blocks={activeLesson.content_blocks || []}
+                                onChange={handleInlineSave}
+                            />
                         </div>
+                    ) : (
+                        <>
+                            {hasPages && (
+                                <div className="flex flex-col items-center mb-10">
+                                    <span className="text-[10px] font-black uppercase tracking-[0.2em] text-emerald-600 mb-3">Page {currentPage} of {totalPages}</span>
+                                    <div className="flex w-full max-w-xl gap-2">
+                                        {pages.map(p => (
+                                            <div key={p.page_number} className={`h-1.5 flex-1 rounded-full overflow-hidden bg-slate-200 dark:bg-slate-800`}>
+                                                <div className={`h-full bg-emerald-500 transition-all duration-500 ${p.page_number <= currentPage ? 'w-full' : 'w-0'}`} />
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+                            
+                            <LessonBlockRenderer blocks={currentBlocks} onQuizPassed={handleQuizPassed} />
+                        </>
                     )}
-                    
-                    <LessonBlockRenderer blocks={currentBlocks} onQuizPassed={handleQuizPassed} />
 
                     {/* Navigation Buttons Footer */}
                     <div className="flex flex-col sm:flex-row justify-between items-center gap-3 sm:gap-4 pt-8 sm:pt-12 mt-8 sm:mt-12 border-t border-emerald-100 dark:border-emerald-500/10">
