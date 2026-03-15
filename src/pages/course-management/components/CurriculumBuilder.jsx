@@ -257,7 +257,7 @@ const CurriculumBuilder = ({ courseId, courseTitle }) => {
     return (
         <div className="w-full flex flex-col h-full bg-[#06091F]/30 min-h-screen">
             {/* Minimalist Top Navigation */}
-            <div className="sticky top-0 z-50 px-8 py-4 bg-[#0A0E27]/60 backdrop-blur-xl border-b border-white/5 flex items-center justify-between gap-6">
+            <div className="sticky top-0 z-50 px-8 py-4 bg-[#0A0E27]/60 backdrop-blur-xl border-b border-emerald-500/10 flex items-center justify-between gap-6">
                 <div className="flex items-center gap-4">
                     <div className="flex items-center gap-1">
                         <button 
@@ -287,7 +287,7 @@ const CurriculumBuilder = ({ courseId, courseTitle }) => {
                         className={`px-4 py-1.5 rounded-lg border transition-all flex items-center gap-2 active:scale-95 ${
                             showJumpMenu 
                             ? 'bg-emerald-600 border-emerald-500 text-white' 
-                            : 'bg-white/5 border-white/5 text-slate-400 hover:border-white/10'
+                            : 'bg-white/5 border-emerald-500/10 text-slate-400 hover:border-emerald-500/20'
                         }`}
                     >
                         <span className="text-[9px] font-black uppercase tracking-widest text-white">Full List</span>
@@ -298,7 +298,7 @@ const CurriculumBuilder = ({ courseId, courseTitle }) => {
                 <div className="flex items-center gap-2">
                     <button 
                         onClick={() => navigate(`/courses/detail/${courseId}`)}
-                        className="hidden md:flex items-center gap-2 px-4 py-1.5 bg-white/5 text-slate-500 rounded-lg border border-white/5 text-[9px] font-black uppercase tracking-widest hover:bg-white/10 transition-all"
+                        className="hidden md:flex items-center gap-2 px-4 py-1.5 bg-white/5 text-slate-500 rounded-lg border border-emerald-500/10 text-[9px] font-black uppercase tracking-widest hover:bg-white/10 transition-all"
                     >
                         <Icon name="Eye" size={12} /> Preview
                     </button>
@@ -317,7 +317,7 @@ const CurriculumBuilder = ({ courseId, courseTitle }) => {
                             initial={{ opacity: 0, y: 5 }}
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: 5 }}
-                            className="absolute top-full mt-2 left-1/2 -translate-x-1/2 min-w-[280px] bg-[#0A0E27] rounded-3xl border border-white/10 shadow-2xl p-5 z-[200] backdrop-blur-2xl"
+                            className="absolute top-full mt-2 left-1/2 -translate-x-1/2 min-w-[280px] bg-[#0A0E27] rounded-3xl border border-emerald-500/20 shadow-2xl p-5 z-[200] backdrop-blur-2xl"
                         >
                             <div className="flex items-center justify-between mb-4">
                                 <h3 className="text-[9px] font-black uppercase tracking-[0.3em] text-emerald-500">Module List</h3>
@@ -336,7 +336,7 @@ const CurriculumBuilder = ({ courseId, courseTitle }) => {
                                         className={`aspect-square rounded-xl flex flex-col items-center justify-center transition-all border ${
                                             activeModuleId === m.id
                                             ? 'bg-emerald-600 border-emerald-500 text-white shadow-md'
-                                            : 'bg-white/5 border-white/5 text-slate-500 hover:border-white/10'
+                                            : 'bg-white/5 border-emerald-500/10 text-slate-500 hover:border-emerald-500/20'
                                         }`}
                                     >
                                         <span className="text-xs font-black">{idx + 1}</span>
@@ -368,9 +368,9 @@ const CurriculumBuilder = ({ courseId, courseTitle }) => {
                             exit={{ opacity: 0, x: -20 }}
                             className="max-w-6xl mx-auto space-y-8 pb-32"
                         >
-                            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 pb-6 border-b border-white/5">
+                            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 pb-6 border-b border-emerald-500/10">
                                 <div className="flex items-center gap-4">
-                                    <button onClick={() => setFocusedLessonId(null)} className="p-3 bg-white/5 hover:bg-[#0A0E27] backdrop-blur-xl rounded-2xl text-slate-400 hover:text-white border border-white/5 hover:border-emerald-500/20 transition-all flex items-center justify-center">
+                                    <button onClick={() => setFocusedLessonId(null)} className="p-3 bg-white/5 hover:bg-[#0A0E27] backdrop-blur-xl rounded-2xl text-slate-400 hover:text-white border border-emerald-500/10 hover:border-emerald-500/20 transition-all flex items-center justify-center">
                                         <Icon name="ChevronLeft" size={20} />
                                     </button>
                                     <div>
@@ -390,14 +390,14 @@ const CurriculumBuilder = ({ courseId, courseTitle }) => {
 
                             <div className="flex flex-col gap-6 items-start w-full">
                                 {/* Side Workspace Configuration Panel Stream Header natively setup */}                                <div className="w-full">
-                                    <div className="p-5 bg-white/2 rounded-3xl border border-white/5 flex flex-col md:flex-row items-center gap-6 backdrop-blur-3xl">
+                                    <div className="p-5 bg-white/2 rounded-3xl border border-emerald-500/10 flex flex-col md:flex-row items-center gap-6 backdrop-blur-3xl">
                                         <div className="flex items-center gap-2 text-emerald-400 shrink-0">
                                             <Icon name="Sliders" size={16} />
                                             <span className="text-[10px] font-black uppercase tracking-widest leading-none">Lesson Config</span>
                                         </div>
                                         
                                         <div className="flex-1 flex flex-col md:flex-row gap-6 w-full">
-                                            <div className="flex-1 flex items-center justify-between border-b border-white/10 pb-2 pt-1 group focus-within:border-emerald-500/30 transition-all">
+                                            <div className="flex-1 flex items-center justify-between border-b border-emerald-500/20 pb-2 pt-1 group focus-within:border-emerald-500/30 transition-all">
                                                 <div className="flex-1">
                                                      <span className="text-[7px] font-black text-slate-500 uppercase tracking-widest block">Duration</span>
                                                      <input 
@@ -410,7 +410,7 @@ const CurriculumBuilder = ({ courseId, courseTitle }) => {
                                                 <span className="text-[8px] font-bold text-slate-500">min</span>
                                             </div>
                                             
-                                            <div className="flex-1 flex items-center justify-between border-b border-white/10 pb-2 pt-1 group focus-within:border-blue-400/30 transition-all">
+                                            <div className="flex-1 flex items-center justify-between border-b border-emerald-500/20 pb-2 pt-1 group focus-within:border-blue-400/30 transition-all">
                                                 <div className="flex-1">
                                                      <span className="text-[7px] font-black text-blue-400 uppercase tracking-widest block">XP Reward</span>
                                                      <input 
@@ -422,7 +422,7 @@ const CurriculumBuilder = ({ courseId, courseTitle }) => {
                                                 </div>
                                             </div>
                                             
-                                            <div className="flex-1 flex items-center justify-between border-b border-white/10 pb-2 pt-1 group focus-within:border-emerald-400/30 transition-all">
+                                            <div className="flex-1 flex items-center justify-between border-b border-emerald-500/20 pb-2 pt-1 group focus-within:border-emerald-400/30 transition-all">
                                                 <div className="flex-1">
                                                      <span className="text-[7px] font-black text-emerald-400 uppercase tracking-widest block">Coins</span>
                                                      <input 
@@ -439,7 +439,7 @@ const CurriculumBuilder = ({ courseId, courseTitle }) => {
 
                                 {/* Main Workspace Canvas Full Widescreen setups stream frame flawless setup frame */}
                                 <div className="w-full">
-                                    <div className="p-8 bg-white/2 rounded-3xl border border-white/5 backdrop-blur-3xl min-h-[500px]">
+                                    <div className="p-8 bg-white/2 rounded-3xl border border-emerald-500/10 backdrop-blur-3xl min-h-[500px]">
                                         <LessonBlockBuilder 
                                             blocks={activeModule?.lessons.find(l => l.id === focusedLessonId)?.content_blocks || []} 
                                             onChange={(newIdBlocks) => updateLesson(focusedLessonId, { content_blocks: newIdBlocks })} 
@@ -457,7 +457,7 @@ const CurriculumBuilder = ({ courseId, courseTitle }) => {
                             className="max-w-5xl mx-auto space-y-8 pb-32"
                         >
                             {/* Module Header Card */}
-                            <div className="bg-white/5 backdrop-blur-sm rounded-[2.5rem] p-8 border border-white/5 relative group">
+                            <div className="bg-white/5 backdrop-blur-sm rounded-[2.5rem] p-8 border border-emerald-500/10 relative group">
                                 <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
                                     <div className="flex-1 space-y-2 w-full">
                                         <input 
@@ -470,7 +470,7 @@ const CurriculumBuilder = ({ courseId, courseTitle }) => {
                                     </div>
 
                                     <div className="flex items-center gap-3 shrink-0">
-                                        <div className="flex items-center gap-3 flex-1 flex items-center justify-between border-b border-white/10 pb-1.5 pt-1 group focus-within:border-emerald-500/30 transition-all">
+                                        <div className="flex items-center gap-3 flex-1 flex items-center justify-between border-b border-emerald-500/20 pb-1.5 pt-1 group focus-within:border-emerald-500/30 transition-all">
                                             <span className="text-[8px] font-black text-slate-500 uppercase tracking-widest">Unlock Week</span>
                                             <input 
                                                 type="number"
@@ -484,13 +484,13 @@ const CurriculumBuilder = ({ courseId, courseTitle }) => {
                                         <div className="flex gap-2">
                                             <button 
                                                 onClick={() => duplicateModule(activeModuleId)}
-                                                className="p-3 bg-white/5 text-slate-400 hover:text-white rounded-xl border border-white/5 transition-all"
+                                                className="p-3 bg-white/5 text-slate-400 hover:text-white rounded-xl border border-emerald-500/10 transition-all"
                                             >
                                                 <Icon name="Copy" size={16} />
                                             </button>
                                             <button 
                                                 onClick={() => deleteModule(activeModuleId)}
-                                                className="p-3 bg-white/5 text-rose-500/60 hover:text-rose-500 rounded-xl border border-white/5 transition-all"
+                                                className="p-3 bg-white/5 text-rose-500/60 hover:text-rose-500 rounded-xl border border-emerald-500/10 transition-all"
                                             >
                                                 <Icon name="Trash2" size={16} />
                                             </button>
@@ -505,10 +505,10 @@ const CurriculumBuilder = ({ courseId, courseTitle }) => {
                                     <motion.div 
                                         key={lesson.id}
                                         layoutId={`lesson-card-${lesson.id}`}
-                                        className="bg-white/2 border border-white/5 rounded-2xl p-4 hover:bg-white/5 transition-all group/card relative flex flex-col md:flex-row items-center justify-between gap-6"
+                                        className="bg-white/2 border border-emerald-500/10 rounded-2xl p-4 hover:bg-white/5 transition-all group/card relative flex flex-col md:flex-row items-center justify-between gap-6"
                                     >
                                         <div className="flex items-center gap-6 flex-1 min-w-0">
-                                            <div className="w-10 h-10 rounded-xl bg-white/5 text-slate-500 flex items-center justify-center text-[10px] font-black border border-white/5 group-hover/card:bg-emerald-600 group-hover/card:text-white transition-all">
+                                            <div className="w-10 h-10 rounded-xl bg-white/5 text-slate-500 flex items-center justify-center text-[10px] font-black border border-emerald-500/10 group-hover/card:bg-emerald-600 group-hover/card:text-white transition-all">
                                                 {(idx + 1).toString().padStart(2, '0')}
                                             </div>
                                             
@@ -554,7 +554,7 @@ const CurriculumBuilder = ({ courseId, courseTitle }) => {
 
                                 <button 
                                     onClick={() => addLesson(activeModuleId)}
-                                    className="border border-dashed border-white/5 rounded-2xl p-4 flex items-center gap-4 hover:bg-emerald-600/[0.02] hover:border-emerald-500/20 transition-all group"
+                                    className="border border-dashed border-emerald-500/10 rounded-2xl p-4 flex items-center gap-4 hover:bg-emerald-600/[0.02] hover:border-emerald-500/20 transition-all group"
                                 >
                                     <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-slate-700 group-hover:bg-emerald-600 group-hover:text-white transition-all">
                                         <Icon name="Plus" size={18} />

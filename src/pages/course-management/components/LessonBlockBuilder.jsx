@@ -106,7 +106,7 @@ const LessonBlockBuilder = ({ blocks = [], onChange }) => {
     return (
         <div className="flex flex-col xl:flex-row gap-8 items-start h-full w-full">
             {/* Left Workspace Panel - Page Selection Navigation Rails Workflow Stream Frame */}
-            <div className="w-full xl:w-72 space-y-3 shrink-0 top-6 sticky p-4 bg-white/2 rounded-3xl border border-white/5 backdrop-blur-3xl">
+            <div className="w-full xl:w-72 space-y-3 shrink-0 top-6 sticky p-4 bg-white/2 rounded-3xl border border-emerald-500/10 backdrop-blur-3xl">
                 <span className="text-[9px] font-black uppercase text-emerald-500 tracking-[0.2em] mb-4 block px-2">Workspace Desk Pages</span>
                 <div className="flex flex-row xl:flex-col gap-2 overflow-x-auto xl:overflow-visible no-scrollbar pb-2 xl:pb-0">
                     {PAGE_TEMPLATES.map((tpl, index) => (
@@ -131,8 +131,8 @@ const LessonBlockBuilder = ({ blocks = [], onChange }) => {
 
             {/* Center Main Workspace Canvas Blocks Setup Column setup desk */}
             <div className="flex-1 space-y-8 w-full">
-                <div className="p-8 bg-white/2 rounded-3xl border border-white/5 backdrop-blur-3xl space-y-8">
-                    <div className="flex items-center justify-between border-b border-white/5 pb-6">
+                <div className="p-8 bg-white/2 rounded-3xl border border-emerald-500/10 backdrop-blur-3xl space-y-8">
+                    <div className="flex items-center justify-between border-b border-emerald-500/10 pb-6">
                         <div>
                              <h4 className="text-lg font-black uppercase tracking-tight text-white mb-1">
                                  {PAGE_TEMPLATES[selectedPageIdx]?.label.split('. ')[1]} Canvas
@@ -140,7 +140,7 @@ const LessonBlockBuilder = ({ blocks = [], onChange }) => {
                              <p className="text-xs text-slate-500 font-medium tracking-wide">Compose and arrange modular content blocks effortlessly grid viewport frame desk.</p>
                         </div>
                         <div className="flex items-center gap-2">
-                             <span className="text-[8px] font-black text-slate-500 uppercase tracking-widest bg-white/5 px-3 py-1.5 rounded-lg border border-white/5">Auto-Saved</span>
+                             <span className="text-[8px] font-black text-slate-500 uppercase tracking-widest bg-white/5 px-3 py-1.5 rounded-lg border border-emerald-500/10">Auto-Saved</span>
                         </div>
                     </div>
 
@@ -155,7 +155,7 @@ const LessonBlockBuilder = ({ blocks = [], onChange }) => {
                                                 <Draggable key={block.id} draggableId={block.id} index={idx}>
                                                     {(provided, snapshot) => (
                                                         <div ref={provided.innerRef} {...provided.draggableProps} className={`${widthClass} transition-all duration-300 relative group/block`} style={{ ...provided.draggableProps.style, zIndex: snapshot.isDragging ? 100 : 1 }}>
-                                                            <motion.div layout className={`bg-white/[0.03] border border-white/5 rounded-[1.5rem] relative transition-all h-full flex flex-col ${snapshot.isDragging ? 'ring-2 ring-emerald-500 bg-white/5 shadow-2x backdrop-blur-3xl' : 'hover:bg-white/[0.05] hover:border-white/10 scroll-mt-24'}`}>
+                                                            <motion.div layout className={`bg-white/[0.03] border border-emerald-500/10 rounded-[1.5rem] relative transition-all h-full flex flex-col ${snapshot.isDragging ? 'ring-2 ring-emerald-500 bg-white/5 shadow-2x backdrop-blur-3xl' : 'hover:bg-white/[0.05] hover:border-white/10 scroll-mt-24'}`}>
                                                                 
                                                                 {/* Absolute Floating Label Tag for CMS experience native stream setup flawless setup seamlessly */}
                                                                 <div className="absolute top-4 left-4 flex items-center gap-1.5 px-2 py-1 rounded-lg bg-emerald-500/10 border border-emerald-500/10 opacity-40 group-hover/block:opacity-100 transition-all z-10">
@@ -171,7 +171,7 @@ const LessonBlockBuilder = ({ blocks = [], onChange }) => {
                                                                       <button onClick={() => duplicateBlock(idx)} className="p-1.5 text-slate-400 hover:text-emerald-500 transition-colors">
                                                                           <Icon name="Copy" size={12} />
                                                                       </button>
-                                                                      <button onClick={() => removeBlock(block.id)} className="p-1.5 text-slate-400 hover:text-rose-500 border-l border-white/5 pl-2 transition-colors">
+                                                                      <button onClick={() => removeBlock(block.id)} className="p-1.5 text-slate-400 hover:text-rose-500 border-l border-emerald-500/10 pl-2 transition-colors">
                                                                           <Icon name="Trash2" size={12} />
                                                                       </button>
                                                                 </div>
@@ -196,7 +196,7 @@ const LessonBlockBuilder = ({ blocks = [], onChange }) => {
                                                                             <textarea 
                                                                               value={block.content?.english || ''}
                                                                               onChange={e => updateBlockContent(block.id, { english: e.target.value })}
-                                                                              className="w-full h-32 bg-black/20 border border-white/5 rounded-2xl p-4 text-sm focus:outline-none focus:border-emerald-500/30 text-white placeholder:text-slate-600"
+                                                                              className="w-full h-32 bg-black/20 border border-emerald-500/10 rounded-2xl p-4 text-sm focus:outline-none focus:border-emerald-500/30 text-white placeholder:text-slate-600"
                                                                               placeholder="Hadith English translation..."
                                                                             />
                                                                           </div>
@@ -205,7 +205,7 @@ const LessonBlockBuilder = ({ blocks = [], onChange }) => {
                                                                             <textarea 
                                                                               value={block.content?.arabic || ''}
                                                                               onChange={e => updateBlockContent(block.id, { arabic: e.target.value })}
-                                                                              className="w-full h-32 bg-black/20 border border-white/5 rounded-2xl p-4 text-lg font-arabic text-right focus:outline-none focus:border-emerald-500/30 text-white placeholder:text-slate-600"
+                                                                              className="w-full h-32 bg-black/20 border border-emerald-500/10 rounded-2xl p-4 text-lg font-arabic text-right focus:outline-none focus:border-emerald-500/30 text-white placeholder:text-slate-600"
                                                                               dir="rtl"
                                                                               placeholder="النص العربي هنا..."
                                                                             />
@@ -215,7 +215,7 @@ const LessonBlockBuilder = ({ blocks = [], onChange }) => {
                                                                             <input 
                                                                               value={block.content?.narrator || ''}
                                                                               onChange={e => updateBlockContent(block.id, { narrator: e.target.value })}
-                                                                              className="w-full bg-black/20 border border-white/5 rounded-xl px-4 py-2 text-xs focus:outline-none text-white"
+                                                                              className="w-full bg-black/20 border border-emerald-500/10 rounded-xl px-4 py-2 text-xs focus:outline-none text-white"
                                                                               placeholder="e.g. Abu Huraira"
                                                                             />
                                                                           </div>
@@ -224,7 +224,7 @@ const LessonBlockBuilder = ({ blocks = [], onChange }) => {
                                                                             <input 
                                                                               value={block.content?.reference || ''}
                                                                               onChange={e => updateBlockContent(block.id, { reference: e.target.value })}
-                                                                              className="w-full bg-black/20 border border-white/5 rounded-xl px-4 py-2 text-xs focus:outline-none text-white"
+                                                                              className="w-full bg-black/20 border border-emerald-500/10 rounded-xl px-4 py-2 text-xs focus:outline-none text-white"
                                                                               placeholder="e.g. Bukhari 1:1"
                                                                             />
                                                                           </div>
@@ -239,7 +239,7 @@ const LessonBlockBuilder = ({ blocks = [], onChange }) => {
                                                                               <input 
                                                                                 value={block.content?.surah || ''}
                                                                                 onChange={e => updateBlockContent(block.id, { surah: e.target.value })}
-                                                                                className="w-full bg-black/20 border border-white/5 rounded-xl px-4 py-2 text-xs focus:outline-none text-white"
+                                                                                className="w-full bg-black/20 border border-emerald-500/10 rounded-xl px-4 py-2 text-xs focus:outline-none text-white"
                                                                                 placeholder="Surah Al-Baqarah"
                                                                               />
                                                                             </div>
@@ -248,7 +248,7 @@ const LessonBlockBuilder = ({ blocks = [], onChange }) => {
                                                                               <input 
                                                                                 value={block.content?.verse || ''}
                                                                                 onChange={e => updateBlockContent(block.id, { verse: e.target.value })}
-                                                                                className="w-full bg-black/20 border border-white/5 rounded-xl px-4 py-2 text-xs focus:outline-none text-white"
+                                                                                className="w-full bg-black/20 border border-emerald-500/10 rounded-xl px-4 py-2 text-xs focus:outline-none text-white"
                                                                                 placeholder="2:153"
                                                                               />
                                                                             </div>
@@ -256,14 +256,14 @@ const LessonBlockBuilder = ({ blocks = [], onChange }) => {
                                                                           <textarea 
                                                                             value={block.content?.arabic || ''}
                                                                             onChange={e => updateBlockContent(block.id, { arabic: e.target.value })}
-                                                                            className="w-full h-24 bg-black/20 border border-white/5 rounded-2xl p-4 text-xl font-arabic text-right focus:outline-none text-white"
+                                                                            className="w-full h-24 bg-black/20 border border-emerald-500/10 rounded-2xl p-4 text-xl font-arabic text-right focus:outline-none text-white"
                                                                             dir="rtl"
                                                                             placeholder="Quranic text in Arabic..."
                                                                           />
                                                                           <textarea 
                                                                             value={block.content?.translation || ''}
                                                                             onChange={e => updateBlockContent(block.id, { translation: e.target.value })}
-                                                                            className="w-full h-24 bg-black/20 border border-white/5 rounded-2xl p-4 text-sm italic focus:outline-none text-white"
+                                                                            className="w-full h-24 bg-black/20 border border-emerald-500/10 rounded-2xl p-4 text-sm italic focus:outline-none text-white"
                                                                             placeholder="Translation..."
                                                                           />
                                                                         </div>
@@ -274,20 +274,20 @@ const LessonBlockBuilder = ({ blocks = [], onChange }) => {
                                                                           <textarea 
                                                                             value={block.content?.arabic || ''}
                                                                             onChange={e => updateBlockContent(block.id, { arabic: e.target.value })}
-                                                                            className="w-full h-24 bg-black/20 border border-white/5 rounded-2xl p-4 text-xl font-arabic text-right focus:outline-none text-white"
+                                                                            className="w-full h-24 bg-black/20 border border-emerald-500/10 rounded-2xl p-4 text-xl font-arabic text-right focus:outline-none text-white"
                                                                             dir="rtl"
                                                                             placeholder="Arabic text..."
                                                                           />
                                                                           <textarea 
                                                                             value={block.content?.translation || ''}
                                                                             onChange={e => updateBlockContent(block.id, { translation: e.target.value })}
-                                                                            className="w-full h-24 bg-black/20 border border-white/5 rounded-2xl p-4 text-sm focus:outline-none text-white"
+                                                                            className="w-full h-24 bg-black/20 border border-emerald-500/10 rounded-2xl p-4 text-sm focus:outline-none text-white"
                                                                             placeholder="Translation..."
                                                                           />
                                                                           <input 
                                                                             value={block.content?.reference || ''}
                                                                             onChange={e => updateBlockContent(block.id, { reference: e.target.value })}
-                                                                            className="w-full bg-black/20 border border-white/5 rounded-xl px-4 py-2 text-xs focus:outline-none text-white"
+                                                                            className="w-full bg-black/20 border border-emerald-500/10 rounded-xl px-4 py-2 text-xs focus:outline-none text-white"
                                                                             placeholder="Reference"
                                                                           />
                                                                         </div>
@@ -298,19 +298,19 @@ const LessonBlockBuilder = ({ blocks = [], onChange }) => {
                                                                           <input 
                                                                             value={block.content?.title || ''}
                                                                             onChange={e => updateBlockContent(block.id, { title: e.target.value })}
-                                                                            className="w-full bg-black/20 border border-white/5 rounded-xl px-4 py-2 text-sm font-black focus:outline-none text-white"
+                                                                            className="w-full bg-black/20 border border-emerald-500/10 rounded-xl px-4 py-2 text-sm font-black focus:outline-none text-white"
                                                                             placeholder="Styled Block Title"
                                                                           />
                                                                           <textarea 
                                                                             value={block.content?.text || ''}
                                                                             onChange={e => updateBlockContent(block.id, { text: e.target.value })}
-                                                                            className="w-full h-40 bg-black/20 border border-white/5 rounded-2xl p-4 text-sm leading-relaxed focus:outline-none text-white"
+                                                                            className="w-full h-40 bg-black/20 border border-emerald-500/10 rounded-2xl p-4 text-sm leading-relaxed focus:outline-none text-white"
                                                                             placeholder="Content text..."
                                                                           />
                                                                           <input 
                                                                             value={block.content?.footer || ''}
                                                                             onChange={e => updateBlockContent(block.id, { footer: e.target.value })}
-                                                                            className="w-full bg-black/20 border border-white/5 rounded-xl px-4 py-2 text-[10px] focus:outline-none opacity-60 text-white"
+                                                                            className="w-full bg-black/20 border border-emerald-500/10 rounded-xl px-4 py-2 text-[10px] focus:outline-none opacity-60 text-white"
                                                                             placeholder="Footer text (optional)"
                                                                           />
                                                                         </div>
@@ -323,7 +323,7 @@ const LessonBlockBuilder = ({ blocks = [], onChange }) => {
                                                                                 value={block.content?.url || ''}
                                                                                 onChange={e => updateBlockContent(block.id, { url: e.target.value }) }
                                                                                 placeholder="Paste YouTube or Vimeo URL..."
-                                                                                className="w-full bg-black/20 border border-white/5 rounded-xl px-5 py-4 text-sm text-white focus:outline-none"
+                                                                                className="w-full bg-black/20 border border-emerald-500/10 rounded-xl px-5 py-4 text-sm text-white focus:outline-none"
                                                                             />
                                                                         </div>
                                                                     )}
@@ -333,20 +333,20 @@ const LessonBlockBuilder = ({ blocks = [], onChange }) => {
                                                                           <input 
                                                                             value={block.content?.title || ''}
                                                                             onChange={e => updateBlockContent(block.id, { title: e.target.value })}
-                                                                            className="w-full bg-black/20 border border-white/5 rounded-xl px-4 py-2 text-sm font-bold focus:outline-none text-white"
+                                                                            className="w-full bg-black/20 border border-emerald-500/10 rounded-xl px-4 py-2 text-sm font-bold focus:outline-none text-white"
                                                                             placeholder="Audio Title"
                                                                           />
                                                                           <div className="grid grid-cols-2 gap-4">
                                                                             <input 
                                                                               value={block.content?.url || ''}
                                                                               onChange={e => updateBlockContent(block.id, { url: e.target.value })}
-                                                                              className="w-full bg-black/20 border border-white/5 rounded-xl px-4 py-2 text-xs focus:outline-none text-white"
+                                                                              className="w-full bg-black/20 border border-emerald-500/10 rounded-xl px-4 py-2 text-xs focus:outline-none text-white"
                                                                               placeholder="Audio File URL"
                                                                             />
                                                                             <input 
                                                                               value={block.content?.duration || ''}
                                                                               onChange={e => updateBlockContent(block.id, { duration: e.target.value })}
-                                                                              className="w-full bg-black/20 border border-white/5 rounded-xl px-4 py-2 text-xs focus:outline-none text-white"
+                                                                              className="w-full bg-black/20 border border-emerald-500/10 rounded-xl px-4 py-2 text-xs focus:outline-none text-white"
                                                                               placeholder="Duration (e.g. 15:30)"
                                                                             />
                                                                           </div>
@@ -360,14 +360,14 @@ const LessonBlockBuilder = ({ blocks = [], onChange }) => {
                                                                                 value={block.content?.url || ''}
                                                                                 onChange={e => updateBlockContent(block.id, { url: e.target.value })}
                                                                                 placeholder="Image URL (HTTPS)..."
-                                                                                className="w-full bg-black/20 border border-white/5 rounded-xl px-4 py-3 text-sm text-white focus:outline-none"
+                                                                                className="w-full bg-black/20 border border-emerald-500/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none"
                                                                             />
                                                                             <input
                                                                                 type="text"
                                                                                 value={block.content?.caption || ''}
                                                                                 onChange={e => updateBlockContent(block.id, { caption: e.target.value })}
                                                                                 placeholder="Illustration Caption..."
-                                                                                className="w-full bg-black/20 border border-white/5 rounded-xl px-4 py-2 text-xs focus:outline-none text-white"
+                                                                                className="w-full bg-black/20 border border-emerald-500/10 rounded-xl px-4 py-2 text-xs focus:outline-none text-white"
                                                                             />
                                                                         </div>
                                                                     )}
@@ -441,11 +441,11 @@ const LessonBlockBuilder = ({ blocks = [], onChange }) => {
                     </div>
 
                     {/* Add Blocks Bar */}
-                    <div className="pt-8 border-t border-white/5">
+                    <div className="pt-8 border-t border-emerald-500/10">
                         <span className="text-[9px] font-black uppercase tracking-[0.3em] text-emerald-500/40 mb-6 block px-2">New Component Canvas Stream</span>
                         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3">
                             {BLOCK_TYPES.map(type => (
-                                <button key={type.type} onClick={() => addBlock(type.type)} className="group flex items-center gap-3 p-3 rounded-xl border border-white/5 hover:border-emerald-500/20 hover:bg-white/5 transition-all active:scale-95 shadow-sm">
+                                <button key={type.type} onClick={() => addBlock(type.type)} className="group flex items-center gap-3 p-3 rounded-xl border border-emerald-500/10 hover:border-emerald-500/20 hover:bg-white/5 transition-all active:scale-95 shadow-sm">
                                     <Icon name={type.icon} size={14} className="text-slate-500" /> <span className="text-[9px] font-black uppercase tracking-widest text-slate-500">{type.label}</span>
                                 </button>
                             ))}
@@ -456,7 +456,7 @@ const LessonBlockBuilder = ({ blocks = [], onChange }) => {
 
             {/* Right Side Frame: AI Workspace Copilot Workspace canvas stream layout side sheet widget natively on stream flawlessly */}
             <div className={`transition-all duration-300 grow-0 ${isAiExpanded ? 'w-full xl:w-80 opacity-100' : 'w-full xl:w-12 h-14 xl:h-auto overflow-hidden xl:opacity-60'} top-6 sticky space-y-4`}>
-                <motion.div layout className={`p-5 bg-white/2 rounded-3xl border border-white/5 backdrop-blur-3xl h-full flex flex-col justify-between transition-all duration-300 ${isAiExpanded ? '' : 'p-2 xl:px-0 items-center justify-center bg-emerald-600/5'}`}>
+                <motion.div layout className={`p-5 bg-white/2 rounded-3xl border border-emerald-500/10 backdrop-blur-3xl h-full flex flex-col justify-between transition-all duration-300 ${isAiExpanded ? '' : 'p-2 xl:px-0 items-center justify-center bg-emerald-600/5'}`}>
                     {!isAiExpanded ? (
                         <button onClick={() => setIsAiExpanded(true)} className="flex items-center justify-center h-full xl:min-h-[300px] w-full text-emerald-500 hover:text-emerald-400 transition-all flex-row xl:flex-col gap-2">
                              <Icon name="Zap" size={16} className="animate-pulse" />
@@ -478,7 +478,7 @@ const LessonBlockBuilder = ({ blocks = [], onChange }) => {
                                 
                                 <div className="mt-4 space-y-3">
                                      <textarea 
-                                          className="w-full bg-black/30 border border-white/5 rounded-2xl p-4 text-xs text-white placeholder:text-slate-600 focus:outline-none focus:border-emerald-500/30 resize-none h-28"
+                                          className="w-full bg-black/30 border border-emerald-500/10 rounded-2xl p-4 text-xs text-white placeholder:text-slate-600 focus:outline-none focus:border-emerald-500/30 resize-none h-28"
                                           placeholder={`Ask AI to generate rich items for this ${PAGE_TEMPLATES[selectedPageIdx]?.label.split('. ')[1]} setup...`}
                                      />
                                      <button className="w-full py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-[9px] font-black uppercase tracking-widest shadow-lg shadow-emerald-500/10 active:scale-95 transition-all flex items-center justify-center gap-2">
@@ -488,7 +488,7 @@ const LessonBlockBuilder = ({ blocks = [], onChange }) => {
                             </div>
                             
                             {/* Live Preview / Stats Box native in coping stream pane frame layout stream flawlessly */}
-                            <div className="pt-4 border-t border-white/5 space-y-3 mt-4">
+                            <div className="pt-4 border-t border-emerald-500/10 space-y-3 mt-4">
                                 <div className="flex items-center justify-between">
                                     <span className="text-[9px] font-black text-slate-500 uppercase">Page Blocks</span>
                                     <span className="text-xs font-black text-white">{activeBlocks.length}</span>
