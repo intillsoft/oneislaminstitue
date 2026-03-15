@@ -103,7 +103,7 @@ const CompletionModal = ({ isOpen, type, coins, onNext }) => {
 
 const LessonView = () => {
     const { courseId, lessonId } = useParams();
-    const { user, userRole } = useAuthContext();
+    const { user, userRole, baseRole } = useAuthContext();
     const { success, error: showError } = useToast();
     const navigate = useNavigate();
 
@@ -123,7 +123,7 @@ const LessonView = () => {
     const [isEditing, setIsEditing] = useState(false);
     
     // Admin/Instructor Bypass Mode
-    const isAdminOrInstructor = userRole === 'admin' || userRole === 'instructor';
+    const isAdminOrInstructor = baseRole === 'admin' || baseRole === 'instructor';
     const adminBypass = isAdminOrInstructor && localStorage.getItem('adminBypass') === 'true';
 
     const lastActivityLoggedRef = React.useRef(null);
