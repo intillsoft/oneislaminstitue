@@ -662,6 +662,7 @@ const LessonView = () => {
                         <div className="bg-white/2 rounded-3xl border border-white/5 p-6 backdrop-blur-3xl min-h-[500px]">
                             <LessonBlockBuilder 
                                 blocks={draftBlocks || (hasPages ? activeLesson.content_data.pages : activeLesson?.content_blocks || [])}
+                                initialPage={currentPage}
                                 onChange={(newBlocks) => { 
                                      setDraftBlocks(newBlocks); 
                                      setHasChanges(true); 

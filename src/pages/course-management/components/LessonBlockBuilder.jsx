@@ -31,8 +31,8 @@ const PAGE_TEMPLATES = [
     { number: 5, type: 'knowledge_check', label: '5. Knowledge Check', icon: 'HelpCircle' }
 ];
 
-const LessonBlockBuilder = ({ blocks = [], onChange }) => {
-    const [selectedPageIdx, setSelectedPageIdx] = useState(0);
+const LessonBlockBuilder = ({ blocks = [], onChange, initialPage = 1 }) => {
+    const [selectedPageIdx, setSelectedPageIdx] = useState(initialPage - 1);
     const [isAiExpanded, setIsAiExpanded] = useState(false); // Defaulting collapsed so canvas gets Maximum Cinematic width natively stream!
     const [showAddPanel, setShowAddPanel] = useState(false);
 
