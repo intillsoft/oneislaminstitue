@@ -389,46 +389,49 @@ const CurriculumBuilder = ({ courseId, courseTitle }) => {
                             </div>
 
                             <div className="flex flex-col gap-6 items-start w-full">
-                                {/* Side Workspace Configuration Panel Stream Header natively setup */}
-                                <div className="w-full">
+                                {/* Side Workspace Configuration Panel Stream Header natively setup */}                                <div className="w-full">
                                     <div className="p-5 bg-white/2 rounded-3xl border border-white/5 flex flex-col md:flex-row items-center gap-6 backdrop-blur-3xl">
                                         <div className="flex items-center gap-2 text-emerald-400 shrink-0">
                                             <Icon name="Sliders" size={16} />
                                             <span className="text-[10px] font-black uppercase tracking-widest leading-none">Lesson Config</span>
                                         </div>
                                         
-                                        <div className="flex-1 flex flex-col md:flex-row gap-4 w-full">
-                                            <div className="flex-1 bg-black/20 rounded-2xl border border-white/5 p-3 flex items-center justify-between px-4">
-                                                <span className="text-[8px] font-black text-slate-500 uppercase tracking-widest">Duration</span>
-                                                <div className="flex items-center gap-1">
+                                        <div className="flex-1 flex flex-col md:flex-row gap-6 w-full">
+                                            <div className="flex-1 flex items-center justify-between border-b border-white/10 pb-2 pt-1 group focus-within:border-emerald-500/30 transition-all">
+                                                <div className="flex-1">
+                                                     <span className="text-[7px] font-black text-slate-500 uppercase tracking-widest block">Duration</span>
                                                      <input 
-                                                         type="number"
-                                                         value={activeModule?.lessons.find(l => l.id === focusedLessonId)?.duration_minutes || ''}
-                                                         onChange={(e) => updateLesson(focusedLessonId, { duration_minutes: parseInt(e.target.value) || 0 })}
-                                                         className="bg-transparent text-sm font-black text-white focus:outline-none focus:text-emerald-500 text-right w-12"
+                                                          type="number"
+                                                          value={activeModule?.lessons.find(l => l.id === focusedLessonId)?.duration_minutes || ''}
+                                                          onChange={(e) => updateLesson(focusedLessonId, { duration_minutes: parseInt(e.target.value) || 0 })}
+                                                          className="bg-transparent text-[13px] font-black text-white focus:outline-none focus:text-emerald-500 w-full mt-0.5"
                                                      />
-                                                     <span className="text-[9px] font-bold text-slate-600">min</span>
+                                                </div>
+                                                <span className="text-[8px] font-bold text-slate-500">min</span>
+                                            </div>
+                                            
+                                            <div className="flex-1 flex items-center justify-between border-b border-white/10 pb-2 pt-1 group focus-within:border-blue-400/30 transition-all">
+                                                <div className="flex-1">
+                                                     <span className="text-[7px] font-black text-blue-400 uppercase tracking-widest block">XP Reward</span>
+                                                     <input 
+                                                          type="number"
+                                                          value={activeModule?.lessons.find(l => l.id === focusedLessonId)?.xp_reward || 0}
+                                                          onChange={(e) => updateLesson(focusedLessonId, { xp_reward: parseInt(e.target.value) || 0 })}
+                                                          className="bg-transparent text-[13px] font-black text-white focus:outline-none focus:text-blue-400 w-full mt-0.5"
+                                                     />
                                                 </div>
                                             </div>
                                             
-                                            <div className="flex-1 bg-black/20 rounded-2xl border border-white/5 p-3 flex items-center justify-between px-4">
-                                                <span className="text-[8px] font-black text-blue-400 uppercase tracking-widest">XP Reward</span>
-                                                <input 
-                                                    type="number"
-                                                    value={activeModule?.lessons.find(l => l.id === focusedLessonId)?.xp_reward || 0}
-                                                    onChange={(e) => updateLesson(focusedLessonId, { xp_reward: parseInt(e.target.value) || 0 })}
-                                                    className="bg-transparent text-sm font-black text-white focus:outline-none text-right w-12"
-                                                />
-                                            </div>
-                                            
-                                            <div className="flex-1 bg-black/20 rounded-2xl border border-white/5 p-3 flex items-center justify-between px-4">
-                                                <span className="text-[8px] font-black text-emerald-400 uppercase tracking-widest">Coins</span>
-                                                <input 
-                                                    type="number"
-                                                    value={activeModule?.lessons.find(l => l.id === focusedLessonId)?.coin_reward || 0}
-                                                    onChange={(e) => updateLesson(focusedLessonId, { coin_reward: parseInt(e.target.value) || 0 })}
-                                                    className="bg-transparent text-sm font-black text-white focus:outline-none text-right w-12"
-                                                />
+                                            <div className="flex-1 flex items-center justify-between border-b border-white/10 pb-2 pt-1 group focus-within:border-emerald-400/30 transition-all">
+                                                <div className="flex-1">
+                                                     <span className="text-[7px] font-black text-emerald-400 uppercase tracking-widest block">Coins</span>
+                                                     <input 
+                                                          type="number"
+                                                          value={activeModule?.lessons.find(l => l.id === focusedLessonId)?.coin_reward || 0}
+                                                          onChange={(e) => updateLesson(focusedLessonId, { coin_reward: parseInt(e.target.value) || 0 })}
+                                                          className="bg-transparent text-[13px] font-black text-white focus:outline-none focus:text-emerald-500 w-full mt-0.5"
+                                                     />
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -467,7 +470,7 @@ const CurriculumBuilder = ({ courseId, courseTitle }) => {
                                     </div>
 
                                     <div className="flex items-center gap-3 shrink-0">
-                                        <div className="flex items-center gap-3 p-3 bg-black/20 rounded-2xl border border-white/5">
+                                        <div className="flex items-center gap-3 flex-1 flex items-center justify-between border-b border-white/10 pb-1.5 pt-1 group focus-within:border-emerald-500/30 transition-all">
                                             <span className="text-[8px] font-black text-slate-500 uppercase tracking-widest">Unlock Week</span>
                                             <input 
                                                 type="number"
