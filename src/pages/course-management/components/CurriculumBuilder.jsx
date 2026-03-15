@@ -62,7 +62,7 @@ const CurriculumBuilder = ({ courseId, courseTitle }) => {
                 ...mod,
                 lessons: (lessonsData || []).filter(l => l.module_id === mod.id).map(l => ({
                     ...l,
-                    content_blocks: l.content_data?.pages || []
+                    content_blocks: l.content_data?.pages || l.content_blocks || []
                 }))
             }));
 
@@ -150,8 +150,7 @@ const CurriculumBuilder = ({ courseId, courseTitle }) => {
         
         const dbUpdates = { ...updates };
         if (updates.content_blocks) {
-             dbUpdates.content_data = { ...updates.content_data, pages: updates.content_blocks };
-             delete dbUpdates.content_blocks;
+             dbUpdates.content_data = { ...(updates.content_data || {}), pages: updates.content_blocks };
         }
         await supabase.from('course_lessons').update(dbUpdates).eq('id', lessonId);
     };
