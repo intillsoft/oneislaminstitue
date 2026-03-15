@@ -470,7 +470,7 @@ const LessonView = () => {
                 className={`flex-1 overflow-y-auto scroll-native relative w-full transition-all duration-500 ease-in-out ${sidebarOpen ? 'lg:pl-[280px]' : ''}`}
             >
                 {/* Header Navbar transparent overlay natively flawlessly setup frame */}
-                <div className="sticky top-0 z-30 bg-white/40 dark:bg-[#0A0E27]/40 backdrop-blur-3xl border-b border-emerald-500/10 h-[var(--header-height)] px-4 lg:px-12 flex justify-between items-center transition-all">
+                <div className="sticky top-0 z-30 bg-white/95 dark:bg-[#0A1120]/95 backdrop-blur-md border-b border-slate-200/50 dark:border-slate-800/50 h-[var(--header-height)] px-4 lg:px-12 flex justify-between items-center transition-all">
                     <div className="flex items-center gap-4 lg:gap-6">
                         <button 
                             onClick={() => setSidebarOpen(!sidebarOpen)}
