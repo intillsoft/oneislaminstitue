@@ -34,6 +34,7 @@ const PAGE_TEMPLATES = [
 const LessonBlockBuilder = ({ blocks = [], onChange }) => {
     const [selectedPageIdx, setSelectedPageIdx] = useState(0);
     const [isAiExpanded, setIsAiExpanded] = useState(false); // Defaulting collapsed so canvas gets Maximum Cinematic width natively stream!
+    const [showAddPanel, setShowAddPanel] = useState(false);
 
     const ensurePagesStructure = () => {
          const pages = Array.isArray(blocks) ? [...blocks] : [];
@@ -441,15 +442,38 @@ const LessonBlockBuilder = ({ blocks = [], onChange }) => {
                     </div>
 
                     {/* Add Blocks Bar */}
-                    <div className="pt-8 border-t border-emerald-500/10">
-                        <span className="text-[9px] font-black uppercase tracking-[0.3em] text-emerald-500/40 mb-6 block px-2">New Component Canvas Stream</span>
-                        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3">
-                            {BLOCK_TYPES.map(type => (
-                                <button key={type.type} onClick={() => addBlock(type.type)} className="group flex items-center gap-3 p-3 rounded-xl border border-emerald-500/10 hover:border-emerald-500/20 hover:bg-white/5 transition-all active:scale-95 shadow-sm">
-                                    <Icon name={type.icon} size={14} className="text-slate-500" /> <span className="text-[9px] font-black uppercase tracking-widest text-slate-500">{type.label}</span>
-                                </button>
-                            ))}
-                        </div>
+                    <div className="pt-8 border-t border-emerald-500/10 flex flex-col items-center relative z-40">
+                        <motion.button 
+                            whileTap={{ scale: 0.95 }}
+                            onClick={() => setShowAddPanel(!showAddPanel)} 
+                            className={`flex items-center gap-2 px-5 py-3 rounded-xl shadow-xl transition-all font-black uppercase tracking-widest text-[9px] ${showAddPanel ? 'bg-rose-600 hover:bg-rose-500 shadow-rose-500/10 text-white' : 'bg-emerald-600 hover:bg-emerald-500 shadow-emerald-500/20 text-white'}`}
+                        >
+                            <Icon name={showAddPanel ? 'Minus' : 'Plus'} size={12} />
+                            {showAddPanel ? 'Close Canvas Elements' : 'Insert Element Component'}
+                        </motion.button>
+
+                        <AnimatePresence>
+                            {showAddPanel && (
+                                <motion.div 
+                                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                                    exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                                    transition={{ duration: 0.2, ease: "easeOut" }}
+                                    className="mt-4 p-3 bg-black/40 border border-emerald-500/10 rounded-2xl flex flex-wrap gap-2 justify-center max-w-3xl backdrop-blur-3xl"
+                                >
+                                    {BLOCK_TYPES.map(type => (
+                                        <button 
+                                            key={type.type} 
+                                            onClick={() => { addBlock(type.type); setShowAddPanel(false); }} 
+                                            className="flex items-center gap-2 px-3.5 py-2.5 bg-white/5 hover:bg-white/10 border border-emerald-500/10 rounded-xl text-[9px] font-bold uppercase tracking-widest text-emerald-500 hover:text-emerald-400 transition-all active:scale-95"
+                                        >
+                                            <Icon name={type.icon} size={11} className="text-emerald-500" />
+                                            {type.label}
+                                        </button>
+                                    ))}
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
                     </div>
                 </div>
             </div>
