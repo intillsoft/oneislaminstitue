@@ -33,6 +33,7 @@ const PAGE_TEMPLATES = [
 
 const LessonBlockBuilder = ({ blocks = [], onChange }) => {
     const [selectedPageIdx, setSelectedPageIdx] = useState(0);
+    const [isAiExpanded, setIsAiExpanded] = useState(false); // Defaulting collapsed so canvas gets Maximum Cinematic width natively stream!
 
     const ensurePagesStructure = () => {
          const pages = Array.isArray(blocks) ? [...blocks] : [];
@@ -154,24 +155,28 @@ const LessonBlockBuilder = ({ blocks = [], onChange }) => {
                                                 <Draggable key={block.id} draggableId={block.id} index={idx}>
                                                     {(provided, snapshot) => (
                                                         <div ref={provided.innerRef} {...provided.draggableProps} className={`${widthClass} transition-all duration-300 relative group/block`} style={{ ...provided.draggableProps.style, zIndex: snapshot.isDragging ? 100 : 1 }}>
-                                                            <motion.div layout className={`bg-white/2 border border-white/5 rounded-2xl relative transition-all h-full flex flex-col ${snapshot.isDragging ? 'ring-2 ring-emerald-500 bg-white/5 shadow-2xl' : 'hover:bg-white/[0.04] scroll-mt-24'}`}>
-                                                                <div className="flex items-center justify-between px-4 py-3 border-b border-white/5 bg-white/2">
-                                                                    <div className="flex items-center gap-4">
-                                                                        <div {...provided.dragHandleProps} className="p-2 text-slate-500 hover:text-white transition-colors cursor-grab active:cursor-grabbing"><Icon name="GripVertical" size={16} /></div>
-                                                                        <div className="flex items-center gap-3">
-                                                                            <div className="w-8 h-8 rounded-lg bg-emerald-600/10 text-emerald-500 flex items-center justify-center text-[10px] font-black border border-emerald-500/10">{idx + 1}</div>
-                                                                            <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5 border border-white/5">
-                                                                                <Icon name={BLOCK_TYPES.find(t => t.type === block.type)?.icon} size={14} className="text-emerald-500/70" />
-                                                                                <span className="text-[10px] font-black uppercase tracking-widest text-slate-300">{BLOCK_TYPES.find(t => t.type === block.type)?.label}</span>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className="flex items-center gap-2">
-                                                                        <button onClick={() => duplicateBlock(idx)} className="p-2 text-slate-500 hover:text-blue-500"><Icon name="Copy" size={16} /></button>
-                                                                        <button onClick={() => removeBlock(block.id)} className="p-2 text-slate-500 hover:text-rose-500"><Icon name="Trash2" size={16} /></button>
-                                                                    </div>
+                                                            <motion.div layout className={`bg-white/[0.03] border border-white/5 rounded-[1.5rem] relative transition-all h-full flex flex-col ${snapshot.isDragging ? 'ring-2 ring-emerald-500 bg-white/5 shadow-2x backdrop-blur-3xl' : 'hover:bg-white/[0.05] hover:border-white/10 scroll-mt-24'}`}>
+                                                                
+                                                                {/* Absolute Floating Label Tag for CMS experience native stream setup flawless setup seamlessly */}
+                                                                <div className="absolute top-4 left-4 flex items-center gap-1.5 px-2 py-1 rounded-lg bg-emerald-500/10 border border-emerald-500/10 opacity-40 group-hover/block:opacity-100 transition-all z-10">
+                                                                     <Icon name={BLOCK_TYPES.find(t => t.type === block.type)?.icon} size={11} className="text-emerald-500" />
+                                                                     <span className="text-[8px] font-black uppercase tracking-[0.1em] text-emerald-500">{BLOCK_TYPES.find(t => t.type === block.type)?.label}</span>
                                                                 </div>
-                                                                <div className="p-6 flex-1 h-full">
+
+                                                                {/* Absolute Floating Webflow style CMS tools setups stream flawless setup natively setup streamline support frame flawlessly */}
+                                                                <div className="absolute top-3 right-3 opacity-0 group-hover/block:opacity-100 transition-all flex items-center gap-1.5 z-20 bg-black/80 backdrop-blur-xl p-1 rounded-xl border border-white/10 shadow-xl">
+                                                                      <div {...provided.dragHandleProps} className="p-1.5 text-slate-500 hover:text-white transition-colors cursor-grab active:cursor-grabbing">
+                                                                          <Icon name="GripVertical" size={12} />
+                                                                      </div>
+                                                                      <button onClick={() => duplicateBlock(idx)} className="p-1.5 text-slate-400 hover:text-emerald-500 transition-colors">
+                                                                          <Icon name="Copy" size={12} />
+                                                                      </button>
+                                                                      <button onClick={() => removeBlock(block.id)} className="p-1.5 text-slate-400 hover:text-rose-500 border-l border-white/5 pl-2 transition-colors">
+                                                                          <Icon name="Trash2" size={12} />
+                                                                      </button>
+                                                                </div>
+
+                                                                <div className="p-6 pt-14 flex-1 h-full">
                                                                     {block.type === 'text' && (
                                                                         <div className="space-y-4">
                                                                           <textarea
@@ -450,38 +455,52 @@ const LessonBlockBuilder = ({ blocks = [], onChange }) => {
             </div>
 
             {/* Right Side Frame: AI Workspace Copilot Workspace canvas stream layout side sheet widget natively on stream flawlessly */}
-            <div className="w-full xl:w-80 shrink-0 top-6 sticky space-y-4">
-                <div className="p-6 bg-white/2 rounded-3xl border border-white/5 backdrop-blur-3xl space-y-4 h-full flex flex-col justify-between">
-                    <div>
-                        <div className="flex items-center gap-2 text-emerald-400 mb-2">
-                             <Icon name="Zap" size={16} />
-                             <span className="text-[10px] font-black uppercase tracking-[0.2em]">AI Copilot Workspace</span>
-                        </div>
-                        <p className="text-[10px] text-slate-500 leading-relaxed">Auto-generate cinematic content scripts effortlessly based on your overview notes & context triggers dynamically sidebar stream.</p>
-                        
-                        <div className="mt-4 space-y-3">
-                             <textarea 
-                                  className="w-full bg-black/30 border border-white/5 rounded-2xl p-4 text-xs text-white placeholder:text-slate-600 focus:outline-none focus:border-emerald-500/30 resize-none h-28"
-                                  placeholder={`Ask AI to generate rich items for this ${PAGE_TEMPLATES[selectedPageIdx]?.label.split('. ')[1]} setup...`}
-                             />
-                             <button className="w-full py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-[9px] font-black uppercase tracking-widest shadow-lg shadow-emerald-500/10 active:scale-95 transition-all flex items-center justify-center gap-2">
-                                  <Icon name="Sparkles" size={12} /> Generate Content
-                             </button>
-                        </div>
-                    </div>
-                    
-                    {/* Live Preview / Stats Box native in coping stream pane frame layout stream flawlessly */}
-                    <div className="pt-4 border-t border-white/5 space-y-3 mt-4">
-                        <div className="flex items-center justify-between">
-                            <span className="text-[9px] font-black text-slate-500 uppercase">Page Blocks</span>
-                            <span className="text-xs font-black text-white">{activeBlocks.length}</span>
-                        </div>
-                        <div className="flex items-center justify-between">
-                            <span className="text-[9px] font-black text-slate-500 uppercase">Est. Minutes</span>
-                            <span className="text-xs font-black text-emerald-500">{activeBlocks.length * 2} m</span>
-                        </div>
-                    </div>
-                </div>
+            <div className={`transition-all duration-300 grow-0 ${isAiExpanded ? 'w-full xl:w-80 opacity-100' : 'w-full xl:w-12 h-14 xl:h-auto overflow-hidden xl:opacity-60'} top-6 sticky space-y-4`}>
+                <motion.div layout className={`p-5 bg-white/2 rounded-3xl border border-white/5 backdrop-blur-3xl h-full flex flex-col justify-between transition-all duration-300 ${isAiExpanded ? '' : 'p-2 xl:px-0 items-center justify-center bg-emerald-600/5'}`}>
+                    {!isAiExpanded ? (
+                        <button onClick={() => setIsAiExpanded(true)} className="flex items-center justify-center h-full xl:min-h-[300px] w-full text-emerald-500 hover:text-emerald-400 transition-all flex-row xl:flex-col gap-2">
+                             <Icon name="Zap" size={16} className="animate-pulse" />
+                             <span className="text-[8px] font-black uppercase tracking-widest xl:[writing-mode:vertical-lr] xl:rotate-180">Expand AI</span>
+                        </button>
+                    ) : (
+                        <>
+                            <div>
+                                <div className="flex items-center justify-between mb-2">
+                                     <div className="flex items-center gap-2 text-emerald-400">
+                                          <Icon name="Zap" size={16} />
+                                          <span className="text-[10px] font-black uppercase tracking-[0.2em]">AI Copilot</span>
+                                     </div>
+                                     <button onClick={() => setIsAiExpanded(false)} className="p-1.5 text-slate-400 hover:text-white rounded-lg hover:bg-white/5 transition-all">
+                                          <Icon name="X" size={12} />
+                                     </button>
+                                </div>
+                                <p className="text-[10px] text-slate-500 leading-relaxed">Auto-generate cinematic content scripts effortlessly based on your overview context triggers sidebar stream.</p>
+                                
+                                <div className="mt-4 space-y-3">
+                                     <textarea 
+                                          className="w-full bg-black/30 border border-white/5 rounded-2xl p-4 text-xs text-white placeholder:text-slate-600 focus:outline-none focus:border-emerald-500/30 resize-none h-28"
+                                          placeholder={`Ask AI to generate rich items for this ${PAGE_TEMPLATES[selectedPageIdx]?.label.split('. ')[1]} setup...`}
+                                     />
+                                     <button className="w-full py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-[9px] font-black uppercase tracking-widest shadow-lg shadow-emerald-500/10 active:scale-95 transition-all flex items-center justify-center gap-2">
+                                          <Icon name="Sparkles" size={12} /> Generate Content
+                                     </button>
+                                </div>
+                            </div>
+                            
+                            {/* Live Preview / Stats Box native in coping stream pane frame layout stream flawlessly */}
+                            <div className="pt-4 border-t border-white/5 space-y-3 mt-4">
+                                <div className="flex items-center justify-between">
+                                    <span className="text-[9px] font-black text-slate-500 uppercase">Page Blocks</span>
+                                    <span className="text-xs font-black text-white">{activeBlocks.length}</span>
+                                </div>
+                                <div className="flex items-center justify-between">
+                                    <span className="text-[9px] font-black text-slate-500 uppercase">Est. Minutes</span>
+                                    <span className="text-xs font-black text-emerald-500">{activeBlocks.length * 2} m</span>
+                                </div>
+                            </div>
+                        </>
+                    )}
+                </motion.div>
             </div>
         </div>
     );
