@@ -33,65 +33,26 @@ const CurriculumBuilder = ({ courseId, courseTitle }) => {
         }
     }, [courseId]);
 
-    const loadCurriculum = async () => {
-        try {
-            setLoading(true);
-            const { data, error } = await supabase
-                .from('lessons')
-                .select('*')
-                .eq('course_id', courseId)
-                .order('order_index', { ascending: true });
 
-            if (error) throw error;
-
-            // Group by module_name into virtual modules
-            const modMap = new Map();
-            (data || []).forEach(lesson => {
-                const mName = lesson.module_name || 'General';
-                if (!modMap.has(mName)) {
-                    modMap.set(mName, {
-                        id: mName,
-                        title: mName,
-                        unlock_week: 1,
-                        lessons: [],
-                    });
-                }
-                modMap.get(mName).lessons.push(lesson);
-            });
-            const sortedData = Array.from(modMap.values());
-            
-            setModules(sortedData);
-            if (sortedData.length > 0 && !activeModuleId) {
-                setActiveModuleId(sortedData[0].id);
-            }
-        } catch (error) {
-            console.error('Load curriculum error:', error);
-            showError('Failed to load module list');
-        } finally {
-            setLoading(false);
-        }
-    };
 
     const addModule = async () => {
         try {
             const newModName = `Module ${modules.length + 1}`;
-            // Insert a placeholder lesson to create the module
             const { data, error } = await supabase
-                .from('lessons')
+                .from('course_modules')
                 .insert([{
                     course_id: courseId,
-                    module_name: newModName,
-                    title: 'New Lesson',
-                    order_index: (modules.flatMap(m => m.lessons).length),
+                    title: newModName,
+                    sort_order: modules.length,
                     is_published: true,
                 }])
                 .select()
                 .single();
 
             if (error) throw error;
-            const newMod = { id: newModName, title: newModName, unlock_week: 1, lessons: [data] };
+            const newMod = { id: data.id, title: newModName, unlock_week: 1, lessons: [] };
             setModules([...modules, newMod]);
-            setActiveModuleId(newModName);
+            setActiveModuleId(data.id);
             success('Module created');
         } catch (error) {
             showError('Failed to create module');
@@ -101,14 +62,13 @@ const CurriculumBuilder = ({ courseId, courseTitle }) => {
     const addLesson = async (moduleId) => {
         try {
             const module = modules.find(m => m.id === moduleId);
-            const nextOrder = modules.flatMap(m => m.lessons).length;
+            const nextOrder = module?.lessons?.length || 0;
             const { data, error } = await supabase
-                .from('lessons')
+                .from('course_lessons')
                 .insert([{
-                    course_id: courseId,
-                    module_name: moduleId, // moduleId is the module_name string
+                    module_id: moduleId,
                     title: 'New Lesson',
-                    order_index: nextOrder,
+                    sort_order: nextOrder,
                     is_published: true,
                 }])
                 .select()
@@ -128,15 +88,14 @@ const CurriculumBuilder = ({ courseId, courseTitle }) => {
     };
 
     const updateModuleTitle = async (moduleId, title) => {
-        // Rename module_name on all lessons in this module
         setModules(prev => prev.map(m => m.id === moduleId ? { ...m, title } : m));
-        await supabase.from('lessons').update({ module_name: title }).eq('module_name', moduleId).eq('course_id', courseId);
+        await supabase.from('course_modules').update({ title }).eq('id', moduleId);
     };
 
     const updateModuleWeek = async (moduleId, unlock_week) => {
         const week = parseInt(unlock_week) || 1;
         setModules(prev => prev.map(m => m.id === moduleId ? { ...m, unlock_week: week } : m));
-        // No direct column for unlock_week in lessons table - store in local state only
+        await supabase.from('course_modules').update({ unlock_week: week }).eq('id', moduleId);
     };
 
     const updateLesson = async (lessonId, updates) => {
@@ -144,13 +103,20 @@ const CurriculumBuilder = ({ courseId, courseTitle }) => {
             ...m,
             lessons: m.lessons.map(l => l.id === lessonId ? { ...l, ...updates } : l)
         })));
-        await supabase.from('lessons').update(updates).eq('id', lessonId);
+        
+        const dbUpdates = { ...updates };
+        if (updates.content_blocks) {
+             dbUpdates.content_data = { ...updates.content_data, pages: updates.content_blocks };
+             delete dbUpdates.content_blocks;
+        }
+        await supabase.from('course_lessons').update(dbUpdates).eq('id', lessonId);
     };
+
 
     const deleteModule = async (moduleId) => {
         if (!confirm('Are you sure? This will delete all lessons in this module.')) return;
         try {
-            await supabase.from('lessons').delete().eq('module_name', moduleId).eq('course_id', courseId);
+            await supabase.from('course_modules').delete().eq('id', moduleId);
             const newModules = modules.filter(m => m.id !== moduleId);
             setModules(newModules);
             if (activeModuleId === moduleId) {
@@ -164,7 +130,7 @@ const CurriculumBuilder = ({ courseId, courseTitle }) => {
 
     const deleteLesson = async (moduleId, lessonId) => {
         try {
-            await supabase.from('lessons').delete().eq('id', lessonId);
+            await supabase.from('course_lessons').delete().eq('id', lessonId);
             setModules(prev => prev.map(m => 
                 m.id === moduleId 
                 ? { ...m, lessons: m.lessons.filter(l => l.id !== lessonId) }
@@ -175,6 +141,7 @@ const CurriculumBuilder = ({ courseId, courseTitle }) => {
             showError('Failed to delete lesson');
         }
     };
+
 
     const duplicateModule = async (moduleId) => {
         try {
