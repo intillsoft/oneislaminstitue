@@ -105,10 +105,10 @@ const LessonBlockBuilder = ({ blocks = [], onChange, initialPage = 1 }) => {
     };
 
     return (
-        <div className="flex flex-col xl:flex-row gap-8 items-start h-full w-full">
+        <div className="flex flex-col xl:flex-row gap-4 xl:gap-8 items-start h-full w-full">
             {/* Left Workspace Panel - Page Selection Navigation Rails Workflow Stream Frame */}
-            <div className="w-full xl:w-72 space-y-3 shrink-0 top-6 sticky p-4 bg-white/2 rounded-3xl border border-emerald-500/10 backdrop-blur-3xl">
-                <span className="text-[9px] font-black uppercase text-emerald-500 tracking-[0.2em] mb-4 block px-2">Workspace Desk Pages</span>
+            <div className="w-full xl:w-72 space-y-3 shrink-0 xl:sticky top-6 p-3 sm:p-4 bg-white/2 rounded-3xl border border-emerald-500/10 backdrop-blur-3xl">
+                <span className="text-[9px] font-black uppercase text-emerald-500 tracking-[0.2em] mb-2 block px-2">Workspace Desk Pages</span>
                 <div className="flex flex-row xl:flex-col gap-2 overflow-x-auto xl:overflow-visible no-scrollbar pb-2 xl:pb-0">
                     {PAGE_TEMPLATES.map((tpl, index) => (
                         <button 
@@ -131,11 +131,11 @@ const LessonBlockBuilder = ({ blocks = [], onChange, initialPage = 1 }) => {
             </div>
 
             {/* Center Main Workspace Canvas Blocks Setup Column setup desk */}
-            <div className="flex-1 space-y-8 w-full">
-                <div className="p-8 bg-white/2 rounded-3xl border border-emerald-500/10 backdrop-blur-3xl space-y-8">
-                    <div className="flex items-center justify-between border-b border-emerald-500/10 pb-6">
+            <div className="flex-1 space-y-6 w-full">
+                <div className="p-4 sm:p-8 bg-white/2 rounded-3xl border border-emerald-500/10 backdrop-blur-3xl space-y-6">
+                    <div className="flex items-center justify-between border-b border-emerald-500/10 pb-4">
                         <div>
-                             <h4 className="text-lg font-black uppercase tracking-tight text-white mb-1">
+                             <h4 className="text-base sm:text-lg font-black uppercase tracking-tight text-white mb-1">
                                  {PAGE_TEMPLATES[selectedPageIdx]?.label.split('. ')[1]} Canvas
                              </h4>
                              <p className="text-xs text-slate-500 font-medium tracking-wide">Compose and arrange modular content blocks effortlessly grid viewport frame desk.</p>
@@ -177,7 +177,7 @@ const LessonBlockBuilder = ({ blocks = [], onChange, initialPage = 1 }) => {
                                                                       </button>
                                                                 </div>
 
-                                                                <div className="p-6 pt-14 flex-1 h-full">
+                                                                <div className="p-4 sm:p-6 pt-12 sm:pt-14 flex-1 h-full">
                                                                     {block.type === 'text' && (
                                                                         <div className="space-y-4">
                                                                           <textarea
