@@ -33,9 +33,53 @@ const CurriculumBuilder = ({ courseId, courseTitle }) => {
         }
     }, [courseId]);
 
+    const loadCurriculum = async () => {
+        setLoading(true);
+        try {
+            const { data: modulesData, error: modError } = await supabase
+                .from('course_modules')
+                .select('*')
+                .eq('course_id', courseId)
+                .order('sort_order', { ascending: true });
 
+            if (modError) throw modError;
+
+            if (!modulesData || modulesData.length === 0) {
+                setModules([]);
+                setLoading(false);
+                return;
+            }
+
+            const { data: lessonsData, error: lessonError } = await supabase
+                .from('course_lessons')
+                .select('*')
+                .in('module_id', modulesData.map(m => m.id))
+                .order('sort_order', { ascending: true });
+
+            if (lessonError) throw lessonError;
+
+            const structuredModules = modulesData.map(mod => ({
+                ...mod,
+                lessons: (lessonsData || []).filter(l => l.module_id === mod.id).map(l => ({
+                    ...l,
+                    content_blocks: l.content_data?.pages || []
+                }))
+            }));
+
+            setModules(structuredModules);
+            const firstMod = structuredModules.find(m => m.id);
+            if (firstMod && !activeModuleId) {
+                setActiveModuleId(firstMod.id);
+            }
+        } catch (err) {
+            showError('Failed to load curriculum');
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const addModule = async () => {
+
         try {
             const newModName = `Module ${modules.length + 1}`;
             const { data, error } = await supabase
