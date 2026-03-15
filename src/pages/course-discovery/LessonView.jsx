@@ -116,11 +116,13 @@ const LessonView = () => {
     const [completing, setCompleting] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     
-    const [passedQuizzes, setPassedQuizzes] = useState(new Set());
-    const [showRewardModal, setShowRewardModal] = useState(false);
-    const [rewardTimer, setRewardTimer] = useState(null);
+    const [passedQuizzes, setPassedQuizzes] = useState(new Set());`r`n    const [showRewardModal, setShowRewardModal] = useState(false);`r`n    const [rewardTimer, setRewardTimer] = useState(null);
     const [lockData, setLockData] = useState({ lockedModules: {}, lockedLessons: {}, nextAvailable: null });
     const [isEditing, setIsEditing] = useState(false);
+    const [draftBlocks, setDraftBlocks] = useState(null);
+    const [hasChanges, setHasChanges] = useState(false);
+    const [editHistory, setEditHistory] = useState([]);
+    const [historyIndex, setHistoryIndex] = useState(-1);
     
     // Admin/Instructor Bypass Mode
     const isAdminOrInstructor = baseRole === 'admin' || baseRole === 'instructor';
@@ -504,17 +506,92 @@ const LessonView = () => {
 
                     <div className="flex items-center gap-1.5 lg:gap-3 ml-2">
                         {isAdminOrInstructor && (
-                            <button 
-                                onClick={() => setIsEditing(!isEditing)}
-                                className={`flex items-center gap-2 px-3 lg:px-4 py-2 rounded-xl text-[9px] font-black uppercase tracking-[0.15em] transition-all border ${
-                                    isEditing 
-                                    ? 'bg-emerald-600 text-white border-emerald-500 shadow-emerald-500/20' 
-                                    : 'bg-white/5 border-white/10 text-slate-400 hover:text-white hover:bg-white/10'
-                                }`}
-                            >
-                                <Icon name={isEditing ? 'Eye' : 'Edit3'} size={12} />
-                                <span className="hidden xs:inline">{isEditing ? 'View Mode' : 'Edit Mode'}</span>
-                            </button>
+                            <>
+                                {isEditing && (
+                                    <div className="hidden md:flex items-center gap-1 border-r border-white/5 pr-2 mr-1">
+                                        <button 
+                                            onClick={() => {
+                                                if (historyIndex > 0) {
+                                                    const prevIdx = historyIndex - 1;
+                                                    setHistoryIndex(prevIdx);
+                                                    setDraftBlocks(editHistory[prevIdx]);
+                                                }
+                                            }}
+                                            disabled={historyIndex <= 0}
+                                            type="button"
+                                            className="p-1.5 rounded-lg hover:bg-white/5 text-slate-400 disabled:opacity-30"
+                                        >
+                                            <Icon name="CornerUpLeft" size={13} />
+                                        </button>
+                                        <button 
+                                            onClick={() => {
+                                                if (historyIndex < editHistory.length - 1) {
+                                                    const nextIdx = historyIndex + 1;
+                                                    setHistoryIndex(nextIdx);
+                                                    setDraftBlocks(editHistory[nextIdx]);
+                                                }
+                                            }}
+                                            disabled={historyIndex >= editHistory.length - 1}
+                                            type="button"
+                                            className="p-1.5 rounded-lg hover:bg-white/5 text-slate-400 disabled:opacity-30"
+                                        >
+                                            <Icon name="CornerUpRight" size={13} />
+                                        </button>
+                                    </div>
+                                )}
+
+                                {isEditing && (
+                                    <button 
+                                        onClick={async () => {
+                                            if (!draftBlocks) return;
+                                            try {
+                                                await supabase.from('course_lessons').update({ 
+                                                    content_blocks: draftBlocks,
+                                                    content_data: { pages: draftBlocks }
+                                                }).eq('id', activeLesson.id);
+                                                
+                                                setModules(prev => prev.map(m => ({
+                                                    ...m,
+                                                    lessons: (m.lessons || []).map(l => l.id === activeLesson.id ? { ...l, content_blocks: draftBlocks, content_data: { pages: draftBlocks } } : l)
+                                                })));
+                                                
+                                                success('Snapshot auto-saved seamlessly.');
+                                                setHasChanges(false);
+                                            } catch (err) {
+                                                showError('Save failed.');
+                                            }
+                                        }}
+                                        disabled={!hasChanges}
+                                        className={`flex items-center gap-1 px-3 py-2 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all ${
+                                            hasChanges 
+                                            ? 'bg-emerald-600 text-white shadow-emerald-500/20 animate-pulse' 
+                                            : 'bg-white/5 text-slate-500 disabled:opacity-40'
+                                        }`}
+                                    >
+                                        <Icon name="Save" size={12} /> Save
+                                    </button>
+                                )}
+
+                                <button 
+                                    onClick={() => {
+                                        setIsEditing(!isEditing);
+                                        if (!isEditing) {
+                                             const initialData = hasPages ? activeLesson.content_data.pages : activeLesson?.content_blocks || [];
+                                             setDraftBlocks(initialData);
+                                             setEditHistory([initialData]);
+                                             setHistoryIndex(0);
+                                        }
+                                    }}
+                                    className={`flex items-center gap-2 px-3 lg:px-4 py-2 rounded-xl text-[9px] font-black uppercase tracking-[0.15em] transition-all border ${
+                                        isEditing 
+                                        ? 'bg-white/5 border-white/10 text-slate-400 hover:text-white hover:bg-white/10' 
+                                        : 'bg-emerald-600 text-white border-emerald-500 shadow-emerald-500/20'
+                                    }`}
+                                >
+                                    <Icon name={isEditing ? 'Eye' : 'Edit3'} size={12} />
+                                    <span className="hidden xs:inline">{isEditing ? 'View' : 'Edit'}</span>
+                                </button>
+                            </>
                         )}
 
                         <button 
@@ -582,8 +659,13 @@ const LessonView = () => {
                     {isEditing ? (
                         <div className="bg-white/2 rounded-3xl border border-white/5 p-6 backdrop-blur-3xl min-h-[500px]">
                             <LessonBlockBuilder 
-                                blocks={activeLesson.content_blocks || []}
-                                onChange={handleInlineSave}
+                                blocks={draftBlocks || (hasPages ? activeLesson.content_data.pages : activeLesson?.content_blocks || [])}
+                                onChange={(newBlocks) => { 
+                                     setDraftBlocks(newBlocks); 
+                                     setHasChanges(true); 
+                                     setEditHistory(prev => [...prev.slice(0, historyIndex + 1), newBlocks]);
+                                     setHistoryIndex(prev => prev + 1);
+                                }}
                             />
                         </div>
                     ) : (
