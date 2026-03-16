@@ -26,7 +26,7 @@ const MobileBottomNav = () => {
 
     useEffect(() => {
         const checkMobile = () => {
-            setIsMobile(window.innerWidth < 768);
+            setIsMobile(window.innerWidth < 1024);
         };
         checkMobile();
         window.addEventListener('resize', checkMobile);
@@ -117,13 +117,13 @@ const MobileBottomNav = () => {
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
                             onClick={() => setShowMore(false)}
-                            className="fixed inset-0 z-40 bg-black/30 backdrop-blur-sm md:hidden"
+                            className="fixed inset-0 z-40 bg-black/30 backdrop-blur-sm lg:hidden"
                         />
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: 20 }}
-                            className="fixed bottom-20 left-0 right-0 z-40 md:hidden"
+                            className="fixed bottom-20 left-0 right-0 z-40 lg:hidden"
                         >
                             <div className="max-w-6xl mx-auto px-4">
                                 <div className="bg-surface dark:bg-emerald-950/95 backdrop-blur-xl rounded-2xl border border-emerald-500/20 shadow-2xl p-4 space-y-4">

@@ -257,6 +257,8 @@ const InstructorPortal = () => {
         dashboardType="instructor"
         contextData={{ academyInfo: companyInfo, dateRange, activeTab }}
       />
+      
+      <InstructorAmbient />
 
       <div className="relative z-10 w-full pb-24 md:pb-16 min-h-screen bg-slate-50 dark:bg-[#0A0E27] text-slate-900 dark:text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
