@@ -187,6 +187,70 @@ const AcademicCentralCommand = () => {
     { label: 'System Health',       value: `${stats.ecoVitality}%`, icon: 'Zap',           accentClass: 'bg-gradient-to-r from-teal-500/70 to-transparent'    },
   ];
 
+  // ─── Smartphone Detection ───
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 1024);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  const flatItems = navGroups.flatMap(g => g.items);
+
+  // ─── Cinematic Mobile-Native Display ───
+  if (isMobile) {
+    return (
+      <div className="relative min-h-screen bg-[#0A0E27] text-white selection:bg-emerald-500/30 pb-28 pt-6 px-4">
+        <AdminAmbient />
+        <DashboardAIAssistant dashboardType="admin" contextData={{ stats, activeTab }} />
+
+        {/* Header App Bar */}
+        <header className="flex items-center justify-between mb-8 px-2">
+          <div>
+            <h1 className="text-2xl font-black text-white tracking-tight">Command Panel</h1>
+            <p className="text-[10px] font-bold text-emerald-400/60 uppercase tracking-widest mt-0.5">Admin authority</p>
+          </div>
+          <button onClick={loadStats} className="w-10 h-10 rounded-xl bg-white/[0.03] border border-emerald-500/10 flex items-center justify-center text-emerald-400">
+            <Icon name="RefreshCw" size={16} className={loadingStats ? 'animate-spin' : ''} />
+          </button>
+        </header>
+
+        {/* Compact Stat Bubbles */}
+        <div className="grid grid-cols-2 gap-3 mb-8">
+          {statCards.map(s => (
+            <div key={s.label} className="relative overflow-hidden rounded-2xl bg-white/[0.02] border border-emerald-500/10 p-4">
+              <div className={`absolute top-0 left-0 right-0 h-[1.5px] ${s.accentClass}`} />
+              <p className="text-[8px] font-black text-emerald-200/20 uppercase tracking-[0.2em] mb-1">{s.label}</p>
+              <p className="text-lg font-black text-white">{s.value}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* 2x2 Action Tiles (App format) */}
+        <p className="px-2 mb-3 text-[9px] font-black text-emerald-200/40 uppercase tracking-[0.3em]">Management Modules</p>
+        <div className="grid grid-cols-2 gap-4">
+          {flatItems.map(item => (
+            <button
+              key={item.id}
+              onClick={() => navigate(`/admin/dashboard/${item.id}`)}
+              className="flex flex-col items-center justify-center p-6 bg-white/[0.03] border border-emerald-500/10 rounded-3xl aspect-square hover:bg-emerald-500/5 active:scale-95 transition-all duration-200"
+            >
+              <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mb-4 text-emerald-400">
+                <Icon name={item.icon} size={24} className={item.color} />
+              </div>
+              <span className="text-[11px] font-black uppercase tracking-[0.15em] text-slate-200">{item.label}</span>
+            </button>
+          ))}
+        </div>
+
+        {/* Global Modal Sheet Wrapper hook triggers (e.g. if viewing active module overlay) */}
+        <Outlet />
+      </div>
+    );
+  }
+
+  // ─── Standard Desktop View ───
   return (
     <div className="relative min-h-screen bg-slate-50 dark:bg-[#0A0E27] text-slate-900 dark:text-white font-sans selection:bg-emerald-500/30">
       <DashboardAIAssistant dashboardType="admin" contextData={{ stats, activeTab }} />

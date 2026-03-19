@@ -197,6 +197,81 @@ const StudentDashboard = () => {
     );
   }
 
+  // ─── Smartphone Detection ───
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 1024);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  const mobileActions = [
+    { label: 'My Courses', icon: BookOpen, path: '/dashboard/enrollments', color: 'text-emerald-500' },
+    { label: 'Saved', icon: Bookmark, path: '/dashboard/saved', color: 'text-cyan-500' },
+    { label: 'Certificates', icon: Award, path: '/dashboard/certificates', color: 'text-amber-500' },
+    { label: 'Browse', icon: Search, path: '/courses', color: 'text-sky-500' },
+    { label: 'Profile', icon: User, path: '/profile', color: 'text-violet-500' },
+    { label: 'AI Help', icon: Sparkles, path: '/ai-chat', color: 'text-fuchsia-500' },
+  ];
+
+  if (isMobile) {
+    return (
+      <div className="relative pb-24 pt-6 px-4 min-h-screen bg-[#0A0E27] text-white selection:bg-emerald-500/30">
+        <StudentAmbient />
+        <DashboardAIAssistant
+          dashboardType="student"
+          contextData={{ metrics, profileCompletion: userData?.profileCompletion, activeTab }}
+        />
+
+        {/* 📱 Header App Bar */}
+        <header className="flex items-center justify-between mb-8 px-2">
+          <div>
+            <div className="flex items-center gap-2 mb-1">
+              <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              <span className="text-[9px] font-black text-emerald-400/70 uppercase tracking-widest leading-none">Scholar Account</span>
+            </div>
+            <h1 className="text-2xl font-black text-white tracking-tight">{getGreeting()}</h1>
+          </div>
+          <button onClick={() => navigate('/notifications')} className="w-10 h-10 rounded-xl bg-white/[0.03] border border-emerald-500/10 flex items-center justify-center text-emerald-400">
+            <Icon name="Bell" size={18} />
+          </button>
+        </header>
+
+        {/* 📊 Compact Stat Bubbles */}
+        <div className="grid grid-cols-2 gap-3 mb-8">
+          <div className="relative overflow-hidden rounded-2xl bg-white/[0.02] border border-emerald-500/10 p-4">
+            <div className="absolute top-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-orange-500 to-transparent" />
+            <p className="text-[8px] font-black text-orange-200/40 uppercase tracking-[0.2em] mb-1">Enrolled</p>
+            <p className="text-lg font-black text-white">{metrics.enrollmentsActive}</p>
+          </div>
+          <div className="relative overflow-hidden rounded-2xl bg-white/[0.02] border border-emerald-500/10 p-4">
+            <div className="absolute top-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-amber-500 to-transparent" />
+            <p className="text-[8px] font-black text-amber-200/40 uppercase tracking-[0.2em] mb-1">Certificates</p>
+            <p className="text-lg font-black text-white">{metrics.certificatesEarned}</p>
+          </div>
+        </div>
+
+        {/* 📱 2x2 Dashboard App Navigation */}
+        <p className="px-2 mb-3 text-[9px] font-black text-emerald-200/40 uppercase tracking-[0.3em]">Quick Utilities</p>
+        <div className="grid grid-cols-2 gap-4">
+          {mobileActions.map((item, idx) => (
+            <button
+              key={idx}
+              onClick={() => navigate(item.path)}
+              className="flex flex-col items-center justify-center p-6 bg-white/[0.03] border border-emerald-500/10 rounded-3xl aspect-square hover:bg-emerald-500/5 active:scale-95 transition-all duration-200"
+            >
+              <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mb-4 text-emerald-400 shadow-md">
+                <item.icon size={24} className={item.color} />
+              </div>
+              <span className="text-[11px] font-black uppercase tracking-[0.12em] text-slate-200">{item.label}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="relative pb-24 md:pb-16 min-h-screen bg-slate-50 dark:bg-[#0A0E27] text-slate-900 dark:text-white">
       <DashboardAIAssistant
