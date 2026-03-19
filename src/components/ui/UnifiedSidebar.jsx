@@ -258,10 +258,7 @@ const UnifiedSidebar = () => {
       </nav>
 
       <div className="p-4 border-t border-slate-200 dark:border-emerald-500/10 space-y-4 relative z-10 bg-slate-50/40 dark:bg-[#0A0E27]/40 backdrop-blur-md">
-        <div className={`flex items-center ${isCollapsed ? 'justify-center' : 'justify-between'} gap-2 px-1`}>
-          {!isCollapsed && <span className="text-[10px] font-black text-text-muted uppercase tracking-[0.2em]">Appearance</span>}
-          <DarkModeToggle />
-        </div>
+        {/* Appearance toggle removed for unified Dark Mode anchor flawslessly */}
 
         {user && (
           <div className="relative group">

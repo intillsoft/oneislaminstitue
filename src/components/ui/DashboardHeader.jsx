@@ -215,10 +215,6 @@ const DashboardHeader = () => {
 
                     <NotificationBell />
 
-                    <div className="hidden sm:block">
-                        <DarkModeToggle />
-                    </div>
-
                     <div className="h-5 w-px bg-slate-200 dark:bg-white/[0.08]" />
 
                     {/* Profile Menu */}

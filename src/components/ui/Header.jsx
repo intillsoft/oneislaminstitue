@@ -146,9 +146,7 @@ const Header = () => {
 
           {/* ACTIONS */}
           <div className="flex items-center gap-4 ml-auto">
-             <div className="hidden sm:block">
-               <DarkModeToggle />
-             </div>
+             {/* DarkModeToggle removed for cinematic layout */}
 
              {isAuthenticated ? (
                <div className="flex items-center gap-3">
@@ -280,10 +278,7 @@ const Header = () => {
                   </div>
                 </div>
 
-                <div className="pt-4 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between">
-                  <span className="text-sm font-bold text-slate-600 dark:text-slate-300">Theme Preference</span>
-                  <DarkModeToggle />
-                </div>
+                {/* Dark mode preference removed for standalone theme absolute */}
               </div>
             </div>
           </motion.div>
