@@ -34,6 +34,9 @@ body {
   font-family: 'Inter', sans-serif;
   overflow-x: hidden;
   width: 100%;
+  overscroll-behavior: none;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 /* Fluid Typography */
