@@ -1,146 +1,44 @@
-import React, { useState, useEffect } from 'react';
-import Icon from 'components/AppIcon';
-import { jobService } from '../../../services/jobService';
-import { useAuthContext } from '../../../contexts/AuthContext';
-import { useToast } from '../../../components/ui/Toast';
-import { formatDistanceToNow } from 'date-fns';
-import { motion, AnimatePresence } from 'framer-motion';
-import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
+const fs = require('fs');
+const file = 'c:\\Users\\USER\\OneDrive\\Documents\\new workflow\\-workflow\\src\\pages\\course-management\\components\\CourseManagementTable.jsx';
+let content = fs.readFileSync(file, 'utf8');
 
-const CourseManagementTable = ({ onEdit, onDuplicate }) => {
-  const { user, profile } = useAuthContext();
-  const { success, error: showError } = useToast();
-  
-  const [searchQuery, setSearchQuery] = useState('');
-  const [statusFilter, setStatusFilter] = useState('all');
-  const [sortBy, setSortBy] = useState('datePosted');
-  const [sortDirection, setSortDirection] = useState('desc');
-  const [jobs, setJobs] = useState([]);
-  const [loading, setLoading] = useState(true);
+// 1. Ensure DragDropContext import is there flawless
+if (!content.includes('import { DragDropContext, Droppable, Draggable }')) {
+    content = content.replace(`import { motion, AnimatePresence } from 'framer-motion';`, `import { motion, AnimatePresence } from 'framer-motion';\nimport { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';`);
+}
+
+// 2. Inject onDragEnd method and handleDelete flawslessly layout
+if (!content.includes('const onDragEnd =')) {
+    const stateTarget = `  const [loading, setLoading] = useState(true);`;
+    const injectMethods = `  const [loading, setLoading] = useState(true);
 
   const onDragEnd = (result) => {
     if (!result.destination) return;
-    const items = [...sortedJobs];
+    const items = [...jobs];
     const [reorderedItem] = items.splice(result.source.index, 1);
     items.splice(result.destination.index, 0, reorderedItem);
     setJobs(items);
     success('Priority order updated locally!');
   };
-  
-  useEffect(() => {
-    if (user) {
+
+  const handleDelete = async (job) => {
+    if (!window.confirm(\`Are you sure you want to delete "\${job.title}"?\`)) return;
+    try {
+      const { supabase } = await import('../../../lib/supabase');
+      const { error } = await supabase.from('jobs').delete().eq('id', job.id);
+      if (error) throw error;
+      success('Course deleted successfully.');
       loadJobs();
-    } else {
-      setLoading(false);
+    } catch (err) {
+      console.error('Error deleting course:', err);
+      showError('Failed to delete course.');
     }
-  }, [user]);
+  };`;
+    content = content.replace(stateTarget, injectMethods);
+}
 
-  const loadJobs = async () => {
-    try {
-      setLoading(true);
-      // Fetch courses created by the instructor
-      const result = await jobService.getAll({ 
-        pageSize: 100,
-        ...(profile?.role !== 'admin' && { instructorId: user.id }),
-        role: profile?.role
-      });
-      setJobs(result.data || []);
-    } catch (error) {
-      console.error('Error loading courses:', error);
-      showError('Failed to load academic cluster');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleToggleStatus = async (job) => {
-    try {
-      const currentStatus = job.status || 'published';
-      await jobService.toggleCourseStatus(job.id, currentStatus);
-      success(`Course ${ (currentStatus === 'active' || currentStatus === 'published') ? 'unpublished' : 'published'} successfully.`);
-      loadJobs(); // Reload to reflect changes
-    } catch (error) {
-      console.error('Error toggling status:', error);
-      showError('Failed to change course status.');
-    }
-  };
-
-  // Filter jobs
-  const filteredJobs = jobs.filter(job => {
-    const matchesSearch = job?.title?.toLowerCase()?.includes(searchQuery?.toLowerCase()) ||
-                         (job?.subject_area || job?.industry || '')?.toLowerCase()?.includes(searchQuery?.toLowerCase());
-    const jobStatus = job.status || 'published';
-    const matchesStatus = statusFilter === 'all' || jobStatus === statusFilter;
-    return matchesSearch && matchesStatus;
-  });
-  
-  // Sort jobs
-  const sortedJobs = [...filteredJobs]?.sort((a, b) => {
-    let aValue = a?.[sortBy === 'datePosted' ? 'created_at' : sortBy];
-    let bValue = b?.[sortBy === 'datePosted' ? 'created_at' : sortBy];
-    
-    if (aValue === null) return 1;
-    if (bValue === null) return -1;
-    
-    if (sortBy === 'datePosted') {
-      aValue = new Date(aValue);
-      bValue = new Date(bValue);
-    }
-    
-    if (typeof aValue === 'string') {
-      aValue = aValue?.toLowerCase();
-      bValue = bValue?.toLowerCase();
-    }
-    
-    return sortDirection === 'asc' ? (aValue > bValue ? 1 : -1) : (aValue < bValue ? 1 : -1);
-  });
-  
-  const handleSort = (column) => {
-    if (sortBy === column) {
-      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
-    } else {
-      setSortBy(column);
-      setSortDirection('desc');
-    }
-  };
-
-  if (loading) {
-    return (
-      <div className="space-y-6">
-        {[1, 2, 3].map(i => (
-          <div key={i} className="animate-pulse h-24 bg-surface-elevated dark:bg-white/5 rounded-[2rem] border border-border dark:border-white/5"></div>
-        ))}
-      </div>
-    );
-  }
-
-  return (
-    <div className="space-y-6">
-      {/* Search and Control Matrix */}
-      <div className="flex flex-col md:flex-row gap-4">
-        <div className="flex-1 relative group">
-          <Icon name="Search" size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted group-focus-within:text-emerald-500 transition-colors" />
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Query Registry..."
-            className="w-full bg-surface-elevated dark:bg-white/5 border border-border dark:border-white/10 rounded-2xl pl-12 pr-6 py-3.5 text-xs font-bold text-text-primary outline-none focus:ring-2 focus:ring-emerald-500/20 transition-all"
-          />
-        </div>
-        <select
-          value={statusFilter}
-          onChange={(e) => setStatusFilter(e.target.value)}
-          className="bg-surface-elevated dark:bg-white/5 border border-border dark:border-white/10 rounded-2xl px-6 py-3.5 text-xs font-black uppercase tracking-widest text-text-secondary outline-none appearance-none cursor-pointer hover:bg-surface transition-all"
-        >
-          <option value="all">Global Status</option>
-          <option value="active">Active Cell</option>
-          <option value="draft">Draft State</option>
-          <option value="archived">Archived</option>
-        </select>
-      </div>
-
-      {/* Course List - Modern Card View */}
+// 3. Reconstruct full list map flawless with Draggable wrappers Node absolute flawslessly
+const fullListSection = `      {/* Course List - Modern Card View */}
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="courses">
           {(provided) => (
@@ -191,23 +89,23 @@ const CourseManagementTable = ({ onEdit, onDuplicate }) => {
                             </div>
 
                             <div className="flex flex-wrap items-center gap-3 lg:justify-end">
-                              <div className={`px-4 py-1.5 rounded-xl border text-[9px] font-black uppercase tracking-[0.2em] flex items-center gap-2 ${
+                              <div className={\`px-4 py-1.5 rounded-xl border text-[9px] font-black uppercase tracking-[0.2em] flex items-center gap-2 \${
                                 (job.status || 'published') === 'active' || job.status === 'published'
                                   ? 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20'
                                   : 'bg-text-muted/10 text-text-muted border-text-muted/20'
-                              }`}>
-                                <div className={`w-1 h-1 rounded-full animate-pulse ${ ((job.status || 'published') === 'active' || job.status === 'published') ? 'bg-emerald-500' : 'bg-slate-500'}`} />
+                              }\`}>
+                                <div className={\`w-1 h-1 rounded-full animate-pulse \${ ((job.status || 'published') === 'active' || job.status === 'published') ? 'bg-emerald-500' : 'bg-slate-500'}\`} />
                                 {job.status || 'published'}
                               </div>
 
                               <div className="flex items-center gap-2">
                                 <button
                                   onClick={() => handleToggleStatus(job)}
-                                  className={`p-3 bg-white dark:bg-white/5 rounded-xl transition-all border border-border dark:border-white/10 shadow-xl shadow-black/5 ${
+                                  className={\`p-3 bg-white dark:bg-white/5 rounded-xl transition-all border border-border dark:border-white/10 shadow-xl shadow-black/5 \${
                                     (job.status || 'published') === 'active' || job.status === 'published' 
                                       ? 'text-amber-500 hover:bg-amber-500 hover:text-white' 
                                       : 'text-emerald-500 hover:bg-emerald-500 hover:text-white'
-                                  }`}
+                                  }\`}
                                   title={(job.status || 'published') === 'active' || job.status === 'published' ? "Unpublish Course" : "Publish Course"}
                                 >
                                   <Icon name={(job.status || 'published') === 'active' || job.status === 'published' ? "EyeOff" : "Eye"} size={14} />
@@ -246,9 +144,13 @@ const CourseManagementTable = ({ onEdit, onDuplicate }) => {
             </div>
           )}
         </Droppable>
-      </DragDropContext>
-    </div>
-  );
-};
+      </DragDropContext>`;
 
-export default CourseManagementTable;
+// Split and replace lower target safely
+const targetRegex = /\{\/\* Course List - Modern Card View \*\/\}(.|\n)*AnimatePresence>(\s*)<\/div>(\s*)<\/div>(\s*);/m;
+
+// To avoid Regexp clipping errors, we can read lines with specific ranges and rewrite flawlessly Node
+content = content.split('      {/* Course List - Modern Card View */}')[0] + fullListSection + '\n    </div>\n  );\n};\n\nexport default CourseManagementTable;';
+
+fs.writeFileSync(file, content, 'utf8');
+console.log('DRAG_AND_DELETE_REWRITTEN OK');
