@@ -273,6 +273,21 @@ const CourseDetail = () => {
             {/* Sidebar / Mobile Action Card */}
             <aside className="lg:block">
               <div className="lg:sticky lg:top-28 space-y-6">
+                {/* Intro Course Video Plate layout flawslessly Cinematic Cinematic */}
+                {course.preview_video_url && (
+                    <div className="rounded-[2.5rem] overflow-hidden border border-slate-200 dark:border-white/5 aspect-video relative group shadow-2xl shadow-emerald-500/10 bg-black">
+                        <video 
+                            src={course.preview_video_url} 
+                            controls 
+                            className="w-full h-full object-cover"
+                            poster={course.thumbnail_url}
+                            playsInline
+                            disablePictureInPicture={false}
+                            controlsList="nodownload"
+                        />
+                    </div>
+                )}
+                
                 <div className="bg-white dark:bg-[#0f1429] rounded-[2.5rem] border border-slate-100 dark:border-white/5 p-7 shadow-2xl shadow-emerald-500/5 overflow-hidden relative">
                   <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-500/5 rounded-full blur-2xl -mr-8 -mt-8" />
                                     <div className="mb-8 flex items-end justify-between lg:block relative z-10">
