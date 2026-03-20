@@ -75,10 +75,11 @@ const Header = () => {
 
   return (
     <motion.header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 h-[72px] flex items-center ${isScrolled
-        ? 'bg-white/95 dark:bg-[#0A1120]/95 backdrop-blur-md border-b border-slate-200/50 dark:border-slate-800/50 shadow-sm'
-        : 'bg-transparent'
-        }`}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 h-[72px] flex items-center ${
+        location.pathname.includes('/courses') 
+          ? 'bg-white/100 dark:bg-[#0A0E27] border-b border-white/[0.03]' 
+          : (isScrolled ? 'bg-white/95 dark:bg-[#0A0E27] backdrop-blur-md border-b border-white/[0.03] shadow-sm' : 'bg-transparent')
+      }`}
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
