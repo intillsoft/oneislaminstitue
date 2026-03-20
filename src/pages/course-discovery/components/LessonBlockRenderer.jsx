@@ -481,16 +481,23 @@ const LessonBlockRenderer = ({ blocks = [], onQuizPassed }) => {
         <div className="relative">
             {showCelebration && <FlowerCelebration />}
             
-            <div className="flex flex-col gap-y-12 max-w-5xl mx-auto px-4">
-                {/* Sequential Content Blocks */}
-                <div className="flex flex-col gap-y-12">
+            <div className="max-w-6xl mx-auto px-4">
+                {/* Sequential Content Blocks - supporting Flex Wrap Cinema native setup flawlessly */}
+                <div className="flex flex-wrap gap-y-8 gap-x-6 items-stretch">
                     {mainContentBlocks.map((block, index) => {
                         const isLastQuiz = block.type === 'quiz' && 
                                          index === mainContentBlocks.findLastIndex(b => b.type === 'quiz');
                         
+                        const widthClass = block.layoutSettings?.width === '50%' ? 'w-full md:w-[calc(50%-12px)]' : block.layoutSettings?.width === '33%' ? 'w-full lg:w-[calc(33.333%-16px)]' : 'w-full';
+
                         return (
                             <React.Fragment key={block.id || index}>
-                                <div className="w-full">
+                                <div 
+                                    className={`${!block.layoutSettings?.width?.includes('px') ? widthClass : ''} transition-all duration-300`}
+                                    style={{ 
+                                        width: block.layoutSettings?.width?.includes('px') ? block.layoutSettings.width : undefined,
+                                    }}
+                                >
                                     <BlockItem 
                                         block={block} 
                                         index={index} 
@@ -576,6 +583,7 @@ const BlockItem = ({ block, index, quizAnswer, onAnswerChange, isVerified, shake
         viewport={{ once: true, margin: '-20px' }}
         transition={{ duration: 1.2, delay: index * 0.08, ease: [0.16, 1, 0.3, 1] }}
         className="h-full"
+        style={{ height: block.layoutSettings?.height || 'auto' }}
     >
         <BlockRenderer 
             block={block} 
