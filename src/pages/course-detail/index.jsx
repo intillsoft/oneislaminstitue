@@ -276,15 +276,31 @@ const CourseDetail = () => {
                 {/* Intro Course Video Plate layout flawslessly Cinematic Cinematic */}
                 {course.preview_video_url && (
                     <div className="rounded-[2.5rem] overflow-hidden border border-slate-200 dark:border-white/5 aspect-video relative group shadow-2xl shadow-emerald-500/10 bg-black">
-                        <video 
-                            src={course.preview_video_url} 
-                            controls 
-                            className="w-full h-full object-cover"
-                            poster={course.thumbnail_url}
-                            playsInline
-                            disablePictureInPicture={false}
-                            controlsList="nodownload"
-                        />
+                        {course.preview_video_url.includes('youtube.com') || course.preview_video_url.includes('youtu.be') ? (
+                            <iframe 
+                                src={`https://www.youtube.com/embed/${course.preview_video_url.includes('watch?v=') ? course.preview_video_url.split('watch?v=')[1] : course.preview_video_url.split('/').pop()}`}
+                                className="w-full h-full"
+                                allow="autoplay; encrypted-media; picture-in-picture"
+                                allowFullScreen
+                            />
+                        ) : course.preview_video_url.includes('vimeo.com') ? (
+                            <iframe 
+                                src={`https://player.vimeo.com/video/${course.preview_video_url.split('/').pop()}`}
+                                className="w-full h-full"
+                                allow="autoplay; fullscreen; picture-in-picture"
+                                allowFullScreen
+                            />
+                        ) : (
+                            <video 
+                                src={course.preview_video_url} 
+                                controls 
+                                className="w-full h-full object-cover"
+                                poster={course.thumbnail_url}
+                                playsInline
+                                disablePictureInPicture={false}
+                                controlsList="nodownload"
+                            />
+                        )}
                     </div>
                 )}
                 
