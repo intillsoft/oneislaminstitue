@@ -108,7 +108,7 @@ const DashboardHeader = () => {
     const canSwitch = availableRoles.length > 1;
 
     return (
-        <header className="fixed top-0 left-0 right-0 z-[100] h-[var(--header-height)] bg-white/95 dark:bg-[#060A1A]/95 backdrop-blur-xl border-b border-slate-200 dark:border-white/[0.03] shadow-sm dark:shadow-md transition-all duration-300">
+        <header className="fixed top-0 left-0 right-0 z-[100] h-[var(--header-height)] bg-white/95 dark:bg-[#0A0E27] border-b border-white/[0.03] shadow-sm dark:shadow-md transition-all duration-300">
             <div className="h-full px-4 sm:px-6 flex items-center justify-between gap-4">
 
                 {/* Left: Logo + Nav */}

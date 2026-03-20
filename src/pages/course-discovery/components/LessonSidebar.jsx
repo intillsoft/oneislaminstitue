@@ -47,14 +47,14 @@ const LessonSidebar = ({
                         animate={{ x: 0 }}
                         exit={{ x: '-100%' }}
                         transition={{ duration: 0.4, ease: "circOut" }}
-                        className="fixed left-0 top-[var(--header-height)] bottom-0 z-50 w-[300px] bg-[#060A1A]/95 backdrop-blur-3xl flex flex-col h-[calc(100vh-var(--header-height))] border-r border-emerald-500/10 shadow-3xl safe-area-bottom overflow-hidden"
+                        className="fixed left-0 top-[var(--header-height)] bottom-0 z-50 w-[300px] bg-[#0A0E27]/95 backdrop-blur-3xl flex flex-col h-[calc(100vh-var(--header-height))] border-r border-emerald-500/10 shadow-3xl safe-area-bottom overflow-hidden"
                     >
                         {/* Decorative Background Glows */}
                         <div className="absolute top-0 left-0 w-full h-40 bg-gradient-to-b from-emerald-500/5 via-transparent to-transparent pointer-events-none" />
                         <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-emerald-500/5 rounded-full blur-[80px] pointer-events-none" />
                         
                         {/* Sidebar Header - Navigation & Close */}
-                        <div className="flex-shrink-0 h-14 flex items-center justify-between px-6 border-b border-white/[0.03] relative z-50 bg-[#060A1A]/40 backdrop-blur-md">
+                        <div className="flex-shrink-0 h-14 flex items-center justify-between px-6 border-b border-white/[0.03] relative z-50 bg-[#0A0E27]/40 backdrop-blur-md">
                             <button 
                                 onClick={() => navigate(`/courses/${courseId}/learn`)}
                                 className="flex items-center gap-3 text-slate-300 hover:text-emerald-400 transition-all group"
