@@ -648,6 +648,27 @@ const BlockRenderer = ({ block, index, quizAnswer, onAnswerChange, isVerified, s
     };
 
     switch (b.type) {
+        case 'accordion':
+            return (
+                <div className="rounded-[1.25rem] bg-white/[0.03] border border-slate-100 dark:border-white/5 shadow-sm overflow-hidden group/accordion w-full">
+                    <details className="group">
+                        <summary className="flex items-center justify-between p-5 cursor-pointer list-none [&::-webkit-details-marker]:hidden">
+                            <h3 className="text-sm font-black text-slate-800 dark:text-white uppercase tracking-wider flex items-center gap-2">
+                                <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                                {b.title || 'Accordion Item'}
+                            </h3>
+                            <div className="text-slate-400 group-open:rotate-180 transition-transform duration-300">
+                                <span className="text-xl">↓</span>
+                            </div>
+                        </summary>
+                        <div className="px-5 pb-5 border-t border-slate-100 dark:border-white/[0.03] pt-4">
+                            <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                                {b.text || 'Hidden details.'}
+                            </p>
+                        </div>
+                    </details>
+                </div>
+            );
         case 'text':
             return (
                 <div className="prose prose-slate dark:prose-invert max-w-none prose-emerald prose-headings:tracking-tight prose-p:leading-[1.9]">

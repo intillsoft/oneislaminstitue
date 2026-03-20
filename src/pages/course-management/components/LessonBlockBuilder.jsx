@@ -14,7 +14,8 @@ const BLOCK_TYPES = [
     { type: 'audio', icon: 'Music', label: 'Audio', color: 'text-emerald-500', bg: 'bg-emerald-500/10' },
     { type: 'document', icon: 'FileText', label: 'Document', color: 'text-emerald-500', bg: 'bg-emerald-500/10' },
     { type: 'summary', icon: 'Target', label: 'Core Summary', color: 'text-emerald-500', bg: 'bg-emerald-500/10' },
-    { type: 'quiz', icon: 'HelpCircle', label: 'Knowledge Quiz', color: 'text-emerald-500', bg: 'bg-emerald-500/10' }
+    { type: 'quiz', icon: 'HelpCircle', label: 'Knowledge Quiz', color: 'text-emerald-500', bg: 'bg-emerald-500/10' },
+    { type: 'accordion', icon: 'ChevronDown', label: 'Collapsible', color: 'text-emerald-500', bg: 'bg-emerald-500/10' }
 ];
 
 const WIDTH_OPTIONS = [
@@ -147,7 +148,29 @@ const LessonBlockBuilder = ({ blocks = [], onChange, initialPage = 1 }) => {
         else if (type === 'document') newBlock.content = { fileName: '', fileSize: '', url: '' };
         else if (type === 'summary') newBlock.content = { points: ['', '', ''] };
         else if (type === 'quiz') { newBlock.question = ''; newBlock.options = ['', '', '', '']; newBlock.correctIndex = 0; }
+        else if (type === 'accordion') newBlock.content = { title: '', text: '' };
         triggerChange([...activeBlocks, newBlock]);
+    };
+
+    const fetchQuranVerse = async (blockId, verse) => {
+        if (!verse) return;
+        try {
+            const cleanVerse = verse.trim().replace(/\s+/g, "");
+            const response = await fetch(`https://api.alquran.cloud/v1/ayah/${cleanVerse}/editions/quran-uthmani,en.sahih`);
+            const data = await response.json();
+            
+            if (data.status === "OK" && data.data && data.data.length >= 2) {
+                // Find and update block content
+                updateBlockContent(blockId, {
+                    arabic: data.data[0].text,
+                    translation: data.data[1].text
+                });
+            } else {
+                alert("Verse not found. Format Example: 2:255");
+            }
+        } catch (err) {
+            console.error("Quran Fetch Error:", err);
+        }
     };
 
     const duplicateBlock = (idx) => {
@@ -281,7 +304,24 @@ const LessonBlockBuilder = ({ blocks = [], onChange, initialPage = 1 }) => {
                                                                 </div>
 
                                                                 <div className="p-4 sm:p-6 pt-12 sm:pt-14 flex-1 h-full">
-                                                                    {block.type === 'text' && (
+                                                                    {block.type === 'accordion' && (
+                                                                         <div className="space-y-4">
+                                                                           <input 
+                                                                             value={block.content?.title || ''}
+                                                                             onChange={e => updateBlockContent(block.id, { title: e.target.value })}
+                                                                             className="w-full bg-black/20 border border-emerald-500/10 rounded-xl px-4 py-2 text-sm font-black focus:outline-none text-white"
+                                                                             placeholder="Collapsible Title..."
+                                                                           />
+                                                                           <textarea 
+                                                                             value={block.content?.text || ''}
+                                                                             onChange={e => updateBlockContent(block.id, { text: e.target.value })}
+                                                                             className="w-full h-32 bg-black/20 border border-emerald-500/10 rounded-2xl p-4 text-sm leading-relaxed focus:outline-none text-white"
+                                                                             placeholder="Hidden content text (Markdown)..."
+                                                                           />
+                                                                         </div>
+                                                                     )}
+
+                                                                     {block.type === 'text' && (
                                                                         <div className="space-y-4">
                                                                           <textarea
                                                                               value={block.content?.text || ''}
@@ -348,12 +388,20 @@ const LessonBlockBuilder = ({ blocks = [], onChange, initialPage = 1 }) => {
                                                                               />
                                                                             </div>
                                                                             <div className="space-y-2">
-                                                                              <span className="text-[10px] font-black uppercase text-emerald-600">Verse Number</span>
+                                                                              <div className="flex items-center justify-between">
+                                                                                 <span className="text-[10px] font-black uppercase text-emerald-600">Verse Number</span>
+                                                                                 <button 
+                                                                                     onClick={() => fetchQuranVerse(block.id, block.content?.verse)}
+                                                                                     className="px-2 py-1 bg-emerald-500/10 hover:bg-emerald-500 text-emerald-400 hover:text-white rounded-lg text-[9px] font-black uppercase tracking-widest flex items-center gap-1 border border-emerald-500/20 transition-all active:scale-95"
+                                                                                 >
+                                                                                     <Icon name="Zap" size={10} /> Fetch
+                                                                                 </button>
+                                                                               </div>
                                                                               <input 
                                                                                 value={block.content?.verse || ''}
                                                                                 onChange={e => updateBlockContent(block.id, { verse: e.target.value })}
                                                                                 className="w-full bg-black/20 border border-emerald-500/10 rounded-xl px-4 py-2 text-xs focus:outline-none text-white"
-                                                                                placeholder="2:153"
+                                                                                placeholder="e.g. 2:255"
                                                                               />
                                                                             </div>
                                                                           </div>
