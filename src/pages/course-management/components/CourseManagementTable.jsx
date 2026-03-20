@@ -20,9 +20,19 @@ const CourseManagementTable = ({ onEdit, onDuplicate }) => {
 
   const onDragEnd = (result) => {
     if (!result.destination) return;
-    const items = [...sortedJobs];
-    const [reorderedItem] = items.splice(result.source.index, 1);
-    items.splice(result.destination.index, 0, reorderedItem);
+    const items = [...jobs]; // map against primary items array reference Node absolute flawslessly Cinematic Cinematic
+    // Get the item from filtered list which users were viewing
+    const draggedItem = filteredJobs[result.source.index];
+    const sourceIndexInJobs = items.findIndex(j => j.id === draggedItem.id);
+    
+    const [reorderedItem] = items.splice(sourceIndexInJobs, 1);
+    
+    // Find approximate index to insert inside absolute arrays reference Node absolute flawslessly 
+    const targetItem = filteredJobs[result.destination.index];
+    const destIndexInJobs = targetItem ? items.findIndex(j => j.id === targetItem.id) : items.length;
+    
+    items.splice(destIndexInJobs, 0, reorderedItem);
+    setJobs(items);
     setJobs(items);
     success('Priority order updated locally!');
   };
@@ -166,7 +176,6 @@ const CourseManagementTable = ({ onEdit, onDuplicate }) => {
                         <motion.div
                           ref={providedDraggable.innerRef}
                           {...providedDraggable.draggableProps}
-                          {...providedDraggable.dragHandleProps}
                           initial={{ opacity: 0, y: 10 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ delay: idx * 0.05 }}
@@ -174,6 +183,9 @@ const CourseManagementTable = ({ onEdit, onDuplicate }) => {
                         >
                           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
                             <div className="flex items-center gap-5">
+                              <div {...providedDraggable.dragHandleProps} className="cursor-grab text-slate-500 hover:text-emerald-500 transition-colors p-1.5 opacity-30 group-hover:opacity-100 flex items-center justify-center">
+                                <Icon name="GripVertical" size={16} />
+                              </div>
                               <div className="w-14 h-14 rounded-2xl bg-emerald-600/10 flex items-center justify-center text-emerald-600 border border-emerald-600/20">
                                 <Icon name="BookOpen" size={24} />
                               </div>
