@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import Icon from '../../../components/AppIcon';
@@ -33,8 +33,74 @@ const PAGE_TEMPLATES = [
 
 const LessonBlockBuilder = ({ blocks = [], onChange, initialPage = 1 }) => {
     const [selectedPageIdx, setSelectedPageIdx] = useState(initialPage - 1);
-    const [isAiExpanded, setIsAiExpanded] = useState(false); // Defaulting collapsed so canvas gets Maximum Cinematic width natively stream!
+    const [isAiExpanded, setIsAiExpanded] = useState(false); 
     const [showAddPanel, setShowAddPanel] = useState(false);
+    const [resizing, setResizing] = useState(null); // { id, startX, startY, startW, startH }
+
+    // Dynamic Sizing Engine for Blocks nodes scalable viewport flawslessly Cinema
+    useEffect(() => {
+        const handleMouseMove = (e) => {
+            if (!resizing) return;
+            const deltaX = e.clientX - resizing.startX;
+            const deltaY = e.clientY - resizing.startY;
+            const el = document.getElementById(`block-shell-${resizing.id}`);
+            if (el) {
+                const newWidth = Math.max(300, resizing.startW + deltaX);
+                const newHeight = Math.max(120, resizing.startH + deltaY);
+                el.style.width = `${newWidth}px`;
+                el.style.height = `${newHeight}px`;
+                
+                // Also update corresponding container wrapper bounds seamlessly
+                const inner = el.querySelector('.block-inner-surface');
+                if (inner) inner.style.height = `${newHeight}px`;
+            }
+        };
+
+        const handleMouseUp = () => {
+            if (!resizing) return;
+            const el = document.getElementById(`block-shell-${resizing.id}`);
+            if (el) {
+                const updatedBlocks = pages[selectedPageIdx]?.content || [];
+                const targetBlock = updatedBlocks.find(b => b.id === resizing.id);
+                if (targetBlock) {
+                    const newBlocks = updatedBlocks.map(b => b.id === resizing.id ? {
+                        ...b,
+                        layoutSettings: {
+                            ...(b.layoutSettings || {}),
+                            width: el.style.width,
+                            height: el.style.height
+                        }
+                    } : b);
+                    triggerChange(newBlocks);
+                }
+            }
+            setResizing(null);
+        };
+
+        if (resizing) {
+            window.addEventListener('mousemove', handleMouseMove);
+            window.addEventListener('mouseup', handleMouseUp);
+        }
+        return () => {
+            window.removeEventListener('mousemove', handleMouseMove);
+            window.removeEventListener('mouseup', handleMouseUp);
+        };
+    }, [resizing]);
+
+    const onResizeStart = (e, blockId) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const el = document.getElementById(`block-shell-${blockId}`);
+        if (!el) return;
+        const rect = el.getBoundingClientRect();
+        setResizing({
+            id: blockId,
+            startX: e.clientX,
+            startY: e.clientY,
+            startW: rect.width,
+            startH: rect.height
+        });
+    };
 
     const ensurePagesStructure = () => {
          const pages = Array.isArray(blocks) ? [...blocks] : [];
@@ -151,13 +217,36 @@ const LessonBlockBuilder = ({ blocks = [], onChange, initialPage = 1 }) => {
                                 {(provided) => (
                                     <div {...provided.droppableProps} ref={provided.innerRef} className="flex flex-wrap gap-y-8 gap-x-6 min-h-[300px]">
                                         {activeBlocks.map((block, idx) => {
-                                            const widthClass = block.layoutSettings?.width === '50%' ? 'w-full xl:w-[calc(50%-12px)]' : block.layoutSettings?.width === '33%' ? 'w-full 2xl:w-[calc(33.333%-16px)]' : 'w-full';
+                                            const widthClass = block.layoutSettings?.width === '50%' ? 'w-full md:w-[calc(50%-12px)]' : block.layoutSettings?.width === '33%' ? 'w-full lg:w-[calc(33.333%-16px)]' : 'w-full';
                                             return (
                                                 <Draggable key={block.id} draggableId={block.id} index={idx}>
                                                     {(provided, snapshot) => (
-                                                        <div ref={provided.innerRef} {...provided.draggableProps} className={`${widthClass} transition-all duration-300 relative group/block`} style={{ ...provided.draggableProps.style, zIndex: snapshot.isDragging ? 100 : 1 }}>
-                                                            <motion.div layout className={`bg-white/[0.03] border border-emerald-500/10 rounded-[1.5rem] relative transition-all h-full flex flex-col ${snapshot.isDragging ? 'ring-2 ring-emerald-500 bg-white/5 shadow-2x backdrop-blur-3xl' : 'hover:bg-white/[0.05] hover:border-white/10 scroll-mt-24'}`}>
-                                                                
+                                                        <div 
+                                                            ref={provided.innerRef} 
+                                                            {...provided.draggableProps} 
+                                                            id={`block-shell-${block.id}`}
+                                                            className={`${!block.layoutSettings?.width?.includes('px') ? widthClass : ''} transition-all duration-300 relative group/block`} 
+                                                            style={{ 
+                                                                ...provided.draggableProps.style, 
+                                                                zIndex: snapshot.isDragging ? 100 : 1,
+                                                                width: block.layoutSettings?.width?.includes('px') ? block.layoutSettings.width : undefined,
+                                                            }}
+                                                        >
+                                                            <motion.div 
+                                                                layout 
+                                                                className={`bg-white/[0.03] border border-emerald-500/10 rounded-[1.5rem] relative transition-all block-inner-surface flex flex-col ${snapshot.isDragging ? 'ring-2 ring-emerald-500 bg-white/5 shadow-2x backdrop-blur-3xl' : 'hover:bg-white/[0.05] hover:border-white/10 scroll-mt-24'}`}
+                                                                style={{
+                                                                    height: block.layoutSettings?.height || 'auto'
+                                                                }}
+                                                            >
+                                                                {/* Absolute Resizing Handle Anchor support */}
+                                                                <div 
+                                                                    onMouseDown={(e) => onResizeStart(e, block.id)}
+                                                                    className="absolute bottom-2 right-2 w-4 h-4 bg-emerald-500/20 hover:bg-emerald-500 cursor-se-resize rounded-lg opacity-0 group-hover/block:opacity-100 transition-all z-30 flex items-center justify-center p-0.5 border border-emerald-500/50"
+                                                                >
+                                                                    <div className="w-1.5 h-1.5 border-r-2 border-b-2 border-white rounded-br-sm" />
+                                                                </div>
+
                                                                 {/* Absolute Floating Label Tag for CMS experience native stream setup flawless setup seamlessly */}
                                                                 <div className="absolute top-4 left-4 flex items-center gap-1.5 px-2 py-1 rounded-lg bg-emerald-500/10 border border-emerald-500/10 opacity-40 group-hover/block:opacity-100 transition-all z-10">
                                                                      <Icon name={BLOCK_TYPES.find(t => t.type === block.type)?.icon} size={11} className="text-emerald-500" />
@@ -165,7 +254,20 @@ const LessonBlockBuilder = ({ blocks = [], onChange, initialPage = 1 }) => {
                                                                 </div>
 
                                                                 {/* Absolute Floating Webflow style CMS tools setups stream flawless setup natively setup streamline support frame flawlessly */}
-                                                                <div className="absolute top-3 right-3 opacity-0 group-hover/block:opacity-100 transition-all flex items-center gap-1.5 z-20 bg-black/80 backdrop-blur-xl p-1 rounded-xl border border-white/10 shadow-xl">
+                                                                <div className="absolute top-3 right-3 opacity-0 group-hover/block:opacity-100 transition-all flex items-center gap-1 z-20 bg-black/80 backdrop-blur-xl p-1 rounded-xl border border-white/10 shadow-xl">
+                                                                       {/* Width Options Presets for quick snap Cinema native Stream frame setup */}
+                                                                       <div className="flex items-center border-r border-emerald-500/10 pr-1 gap-0.5">
+                                                                           {WIDTH_OPTIONS.map(opt => (
+                                                                               <button 
+                                                                                   key={opt.value}
+                                                                                   title={opt.label}
+                                                                                   onClick={() => updateBlock(block.id, { layoutSettings: { ...(block.layoutSettings || {}), width: opt.value } })}
+                                                                                   className={`p-1.5 rounded-lg transition-all ${block.layoutSettings?.width === opt.value ? 'bg-emerald-500 text-white' : 'text-slate-400 hover:text-emerald-400'}`}
+                                                                               >
+                                                                                   <Icon name={opt.icon} size={10} />
+                                                                               </button>
+                                                                           ))}
+                                                                       </div>
                                                                       <div {...provided.dragHandleProps} className="p-1.5 text-slate-500 hover:text-white transition-colors cursor-grab active:cursor-grabbing">
                                                                           <Icon name="GripVertical" size={12} />
                                                                       </div>
