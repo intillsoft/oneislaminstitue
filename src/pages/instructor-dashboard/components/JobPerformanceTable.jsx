@@ -103,11 +103,13 @@ const JobPerformanceTable = () => {
   };
 
   return (
-    <EliteCard className="overflow-hidden border-border bg-bg/20">
+    <div className="bg-[#0C1236]/30 backdrop-blur-xl border border-white/[0.04] rounded-3xl relative overflow-hidden shadow-2xl h-full flex flex-col">
+      <div className="absolute top-0 right-0 w-80 h-80 bg-violet-500/[0.02] blur-3xl rounded-full -z-10" />
+
       <div className="flex flex-col xl:flex-row items-start xl:items-center justify-between p-8 gap-6">
         <div>
-          <h3 className="text-xs font-black text-text-muted uppercase tracking-[0.2em] mb-1">Academic Matrix</h3>
-          <h2 className="text-xl font-black text-text-primary uppercase tracking-tight">Active Course Cluster</h2>
+          <h3 className="text-[10px] font-black text-white/40 uppercase tracking-[0.2em] mb-1">Academic Matrix</h3>
+          <h2 className="text-xl font-black text-white uppercase tracking-tight">Active Course Cluster</h2>
         </div>
 
         <div className="flex flex-wrap items-center gap-4 w-full xl:w-auto">
@@ -115,22 +117,22 @@ const JobPerformanceTable = () => {
             <select
               value={filter}
               onChange={(e) => setFilter(e?.target?.value)}
-              className="appearance-none bg-surface-elevated border border-border dark:border-white/5 rounded-xl py-2 pl-4 pr-10 text-[10px] font-black uppercase tracking-widest text-text-secondary outline-none focus:ring-1 focus:ring-workflow-primary/50 transition-all cursor-pointer"
+              className="appearance-none bg-white/[0.02] border border-white/[0.05] rounded-xl py-2 pl-4 pr-10 text-[10px] font-black uppercase tracking-widest text-white/70 outline-none focus:ring-1 focus:ring-violet-500/50 transition-all cursor-pointer hover:bg-white/[0.04]"
             >
               <option value="all">System: All Courses</option>
               <option value="active">Active Cluster</option>
               <option value="expired">Archived</option>
               <option value="draft">Review State</option>
             </select>
-            <Icon name="ChevronDown" size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted pointer-events-none group-hover:text-text-primary transition-colors" />
+            <Icon name="ChevronDown" size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-white/40 pointer-events-none group-hover:text-white transition-colors" />
           </div>
 
           <div className="relative flex-1 xl:w-64">
-            <Icon name="Search" size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted" />
+            <Icon name="Search" size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-white/40" />
             <input
               type="text"
               placeholder="QUERIES..."
-              className="w-full bg-surface-elevated border border-border dark:border-white/5 rounded-xl py-2 pl-10 pr-4 text-[10px] font-black uppercase tracking-widest text-text-primary outline-none focus:ring-1 focus:ring-workflow-primary/50 transition-all placeholder:text-text-muted/50"
+              className="w-full bg-white/[0.02] border border-white/[0.05] rounded-xl py-2 pl-10 pr-4 text-[10px] font-black uppercase tracking-widest text-white outline-none focus:ring-1 focus:ring-violet-500/50 transition-all placeholder:text-white/20"
             />
           </div>
         </div>
@@ -139,8 +141,8 @@ const JobPerformanceTable = () => {
       <div className="overflow-x-auto">
         <table className="w-full text-left border-collapse">
           <thead>
-            <tr className="bg-surface border-y border-border dark:border-white/5">
-              <th className="px-8 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-text-muted">Course Specification</th>
+            <tr className="bg-white/[0.02] border-y border-white/[0.04]">
+              <th className="px-8 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-white/40">Course Specification</th>
               <th className="px-8 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-text-muted">Academic Status</th>
               <th className="px-8 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-text-muted cursor-pointer hover:text-text-primary transition-colors" onClick={() => handleSort('views')}>
                 <div className="flex items-center gap-2">Views {sortField === 'views' && <Icon name={sortDirection === 'asc' ? 'ArrowUp' : 'ArrowDown'} size={10} />}</div>
@@ -209,7 +211,7 @@ const JobPerformanceTable = () => {
         </table>
       </div>
 
-      <div className="px-8 py-6 flex items-center justify-between border-t border-border bg-surface/10">
+      <div className="px-8 py-6 flex items-center justify-between border-t border-white/[0.04] bg-white/[0.01]">
         <div className="text-[10px] font-black uppercase tracking-widest text-text-muted">
           Showing <span className="text-text-primary">{sortedJobs?.length}</span> Nodes In Current Cluster
         </div>
@@ -222,7 +224,7 @@ const JobPerformanceTable = () => {
           </button>
         </div>
       </div>
-    </EliteCard>
+    </div>
   );
 };
 

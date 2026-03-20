@@ -14,6 +14,7 @@ import ApplicationTracker from './components/ApplicationTracker';
 import SavedCourses from './components/SavedCourses';
 import ProfileCompletion from './components/ProfileCompletion';
 import DashboardAIAssistant from '../../components/ui/DashboardAIAssistant';
+import MobileBottomNav from '../../components/ui/MobileBottomNav';
 import { courseService } from '../../services/jobService';
 import AILoader from '../../components/ui/AILoader';
 
@@ -72,6 +73,15 @@ const TABS = [
 ];
 
 const StudentDashboard = () => {
+  // ─── Smartphone Detection ───
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 1024);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
   const { user, profile, loading: authLoading } = useAuthContext();
   const navigate = useNavigate();
   const path = window.location.pathname;
@@ -197,15 +207,6 @@ const StudentDashboard = () => {
     );
   }
 
-  // ─── Smartphone Detection ───
-  const [isMobile, setIsMobile] = useState(false);
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 1024);
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
-
   const mobileActions = [
     { label: 'My Courses', icon: BookOpen, path: '/dashboard/enrollments', color: 'text-emerald-500' },
     { label: 'Saved', icon: Bookmark, path: '/dashboard/saved', color: 'text-cyan-500' },
@@ -268,94 +269,62 @@ const StudentDashboard = () => {
             </button>
           ))}
         </div>
+        <MobileBottomNav type="student" />
       </div>
     );
   }
 
   return (
-    <div className="relative pb-24 md:pb-16 min-h-screen bg-slate-50 dark:bg-[#0A0E27] text-slate-900 dark:text-white">
+    <div className="relative pb-24 md:pb-16 min-h-screen bg-[#080B24] text-white selection:bg-emerald-500/30">
+      <StudentAmbient />
       <DashboardAIAssistant
         dashboardType="student"
         contextData={{ metrics, profileCompletion: userData?.profileCompletion, activeTab }}
       />
 
-      {/* ── Page Container ── */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <div className="flex flex-col gap-8">
 
-        {/* ────────────────── GREETING HERO SECTION ────────────────── */}
-        <div className="mb-8">
-          {/* Greeting row */}
-          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-6">
+          {/* 🌟 PREMIUM HEADER BENTO CAP */}
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 p-8 bg-[#0C1236]/30 backdrop-blur-xl border border-white/[0.04] rounded-3xl relative overflow-hidden shadow-2xl">
+            <div className="absolute top-0 right-0 w-80 h-80 bg-emerald-500/[0.04] blur-3xl rounded-full -z-10" />
+            
             <div>
-              {/* Subtle meta label */}
               <div className="flex items-center gap-2 mb-3">
                 <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                <span className="text-[10px] font-black text-emerald-400/70 uppercase tracking-[0.25em]">
-                  Scholar Dashboard
-                </span>
+                <span className="text-[10px] font-black text-emerald-400/70 uppercase tracking-[0.25em]">Scholar Space</span>
               </div>
-
-              <h1 className="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white leading-tight mb-1">
-                {getGreeting()},<br />
-                <span className="text-emerald-400">{userData?.name}</span>
+              <h1 className="text-3xl sm:text-4xl font-black text-white leading-tight">
+                {getGreeting()}, <span className="text-emerald-400">{userData?.name}</span>
               </h1>
-              <p className="text-slate-500 dark:text-white/35 text-sm font-medium mt-2">
-                Your current progress and upcoming lessons.
-              </p>
+              <p className="text-white/40 text-sm font-medium mt-2">Manage your academic courses and progress tracker.</p>
             </div>
 
-            {/* Quick CTA buttons */}
-            <div className="flex flex-row sm:flex-col gap-2">
-              <Link
-                to="/courses"
-                className="flex items-center gap-2 px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-bold text-xs uppercase tracking-wider shadow-lg shadow-emerald-600/20 transition-all hover:shadow-emerald-500/30 group"
-              >
-                <Search size={13} />
-                Find Courses
-                <ArrowUpRight size={12} className="opacity-50 group-hover:opacity-100 transition-opacity" />
+            <div className="flex items-center gap-3">
+              <Link to="/courses" className="flex items-center gap-2 px-5 py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-bold text-xs uppercase tracking-wider shadow-lg shadow-emerald-600/20 transition-all hover:scale-105">
+                <Search size={13} /> Find Courses
               </Link>
-              <Link
-                to="/profile"
-                className="flex items-center gap-2 px-5 py-2.5 bg-white dark:bg-white/[0.05] hover:bg-slate-100 dark:hover:bg-white/[0.09] text-slate-600 dark:text-white/70 hover:text-slate-900 dark:hover:text-white rounded-xl font-bold text-xs uppercase tracking-wider border border-slate-200 dark:border-white/10 shadow-sm dark:shadow-none transition-all"
-              >
-                <User size={13} />
-                Profile
+              <Link to="/profile" className="flex items-center gap-2 px-5 py-3 bg-white/[0.05] hover:bg-white/[0.08] text-white/80 rounded-xl font-bold text-xs uppercase tracking-wider border border-white/[0.05] transition-all">
+                <User size={13} /> Profile
               </Link>
             </div>
           </div>
 
-          {/* Stat pills row */}
-          <div className="flex flex-wrap gap-2">
-            <StatPill icon={Flame} value={metrics.enrollmentsActive} label="Active Courses" color="border-orange-500/20 text-orange-400" />
-            <StatPill icon={Award} value={metrics.certificatesEarned} label="Certificates" color="border-amber-500/20 text-amber-400" />
-            <StatPill icon={Bookmark} value={metrics.savedCourses} label="Saved" color="border-cyan-500/20 text-cyan-400" />
-            <StatPill icon={Target} value={`${userData.profileCompletion}%`} label="Profile" color="border-violet-500/20 text-violet-400" />
+          {/* 🍱 TAB NAVIGATION BENTO BRIDGE */}
+          <div className="flex items-center gap-2 p-1.5 bg-[#0C1236]/30 border border-white/[0.03] backdrop-blur-md rounded-2xl self-start">
+            {TABS.map(tab => (
+              <TabBtn key={tab.id} active={activeTab === tab.id} onClick={() => setActiveTab(tab.id)} icon={tab.icon} label={tab.label} />
+            ))}
           </div>
-        </div>
 
-        {/* ────────────────── TAB NAVIGATION ────────────────── */}
-        <div className="flex items-center gap-1 mb-8 overflow-x-auto pb-1 scrollbar-hide">
-          {TABS.map(tab => (
-            <TabBtn
-              key={tab.id}
-              active={activeTab === tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              icon={tab.icon}
-              label={tab.label}
-            />
-          ))}
-        </div>
+          {/* 🍱 MAIN CONTENT BENTO WORKSPACE */}
+          <motion.div key={activeTab} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.25, ease: 'easeOut' }}>
+            {renderTabContent()}
+          </motion.div>
 
-        {/* ────────────────── MAIN CONTENT ────────────────── */}
-        <motion.div
-          key={activeTab}
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.25, ease: 'easeOut' }}
-        >
-          {renderTabContent()}
-        </motion.div>
+        </div>
       </div>
+    </div>
     </div>
   );
 };

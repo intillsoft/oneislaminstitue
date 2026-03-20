@@ -4,6 +4,7 @@ import Icon from 'components/AppIcon';
 import ScheduleInterviewsModal from './ScheduleInterviewsModal';
 import BulkMessagesModal from './BulkMessagesModal';
 import { useToast } from '../../../components/ui/Toast';
+import { motion } from 'framer-motion';
 
 import { EliteCard } from '../../../components/ui/EliteCard';
 
@@ -95,35 +96,41 @@ const QuickActions = () => {
             <ActionComponent
               key={action?.id}
               {...actionProps}
-              className="text-left group outline-none h-full"
+              className="text-left group outline-none h-full flex flex-col"
             >
-              <EliteCard className="p-8 h-full border-border bg-surface hover:bg-surface-elevated transition-all relative overflow-hidden">
+              <motion.div 
+                whileHover={{ y: -5, scale: 1.02 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                className="p-8 h-full flex flex-col justify-between border border-white/[0.04] bg-[#0C1236]/30 backdrop-blur-xl hover:bg-[#0C1236]/50 hover:border-white/[0.08] transition-all rounded-3xl relative overflow-hidden shadow-2xl group cursor-pointer"
+              >
                 {action.badge && (
-                  <div className="absolute top-4 right-4 translate-x-12 translate-y-[-12px] rotate-45 bg-workflow-primary px-10 py-1 text-[8px] font-black uppercase tracking-widest text-white shadow-lg">
+                  <div className="absolute top-4 right-4 translate-x-12 translate-y-[-12px] rotate-45 bg-violet-600 px-10 py-1 text-[8px] font-black uppercase tracking-widest text-white shadow-lg">
                     {action.badge}
                   </div>
                 )}
 
-                <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-6 transition-all group-hover:scale-110 ${config.bg} ${config.border} border shadow-lg`}>
-                  <Icon
-                    name={action?.icon}
-                    size={24}
-                    className={config.text}
-                  />
+                <div>
+                  <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-6 transition-all group-hover:scale-110 ${config.bg} border border-white/[0.05] shadow-lg`}>
+                    <Icon
+                      name={action?.icon}
+                      size={20}
+                      className={config.text}
+                    />
+                  </div>
+
+                  <h3 className="text-sm font-black text-white uppercase tracking-wider mb-2 group-hover:text-violet-400 transition-colors">
+                    {action?.title}
+                  </h3>
+                  <p className="text-xs font-medium text-white/40 mb-6 leading-relaxed">
+                    {action?.description}
+                  </p>
                 </div>
 
-                <h3 className="text-lg font-black text-white uppercase tracking-tight mb-2 group-hover:text-workflow-primary transition-colors">
-                  {action?.title}
-                </h3>
-                <p className="text-xs font-medium text-text-secondary dark:text-slate-500 mb-6 leading-relaxed">
-                  {action?.description}
-                </p>
-
-                <div className="mt-auto flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 group-hover:text-white transition-all">
-                  <span>Execute Action</span>
-                  <Icon name="ArrowRight" size={14} className="group-hover:translate-x-1 transition-transform" />
+                <div className="mt-auto flex items-center gap-2 text-[9px] font-black uppercase tracking-[0.2em] text-white/30 group-hover:text-white transition-all">
+                  <span>Execute</span>
+                  <Icon name="ArrowRight" size={12} className="group-hover:translate-x-1 transition-transform" />
                 </div>
-              </EliteCard>
+              </motion.div>
             </ActionComponent>
           );
         })}

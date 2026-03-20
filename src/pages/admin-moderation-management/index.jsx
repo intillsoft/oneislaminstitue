@@ -6,6 +6,7 @@ import { useAuthContext } from '../../contexts/AuthContext';
 import { supabase } from '../../lib/supabase';
 import { EliteCard } from '../../components/ui/EliteCard';
 import DashboardAIAssistant from '../../components/ui/DashboardAIAssistant';
+import MobileBottomNav from '../../components/ui/MobileBottomNav';
 
 // Dynamic Imports for Components
 import ModerationQueue from './components/ModerationQueue';
@@ -106,6 +107,15 @@ const NavGroup = ({ title, items, activeTab, onSelect }) => (
 );
 
 const AcademicCentralCommand = () => {
+  // ─── Smartphone Detection ───
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 1024);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
   const { user, profile } = useAuthContext();
   const { tab } = useParams();
   const location = useLocation();
@@ -187,15 +197,6 @@ const AcademicCentralCommand = () => {
     { label: 'System Health',       value: `${stats.ecoVitality}%`, icon: 'Zap',           accentClass: 'bg-gradient-to-r from-teal-500/70 to-transparent'    },
   ];
 
-  // ─── Smartphone Detection ───
-  const [isMobile, setIsMobile] = useState(false);
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 1024);
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
-
   const flatItems = navGroups.flatMap(g => g.items);
 
   // ─── Cinematic Mobile-Native Display ───
@@ -246,6 +247,7 @@ const AcademicCentralCommand = () => {
 
         {/* Global Modal Sheet Wrapper hook triggers (e.g. if viewing active module overlay) */}
         <Outlet />
+        <MobileBottomNav type="admin" />
       </div>
     );
   }

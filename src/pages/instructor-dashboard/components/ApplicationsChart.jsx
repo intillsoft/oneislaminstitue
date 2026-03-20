@@ -113,23 +113,23 @@ const ApplicationsChart = () => {
   }
 
   return (
-    <EliteCard className="p-8 border-border overflow-hidden relative bg-surface/50">
-      <div className="absolute top-0 right-0 p-8 opacity-10 text-text-muted">
+    <div className="p-8 bg-[#0C1236]/30 backdrop-blur-xl border border-white/[0.04] rounded-3xl relative overflow-hidden shadow-2xl h-full flex flex-col">
+      <div className="absolute top-0 right-0 p-8 opacity-10 text-white/20">
         <Icon name="Activity" size={120} />
       </div>
 
-      <div className="relative z-10">
+      <div className="relative z-10 flex-1 flex flex-col">
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h3 className="text-xs font-black text-text-muted uppercase tracking-[0.2em] mb-1">Volume Analysis</h3>
-            <h2 className="text-xl font-black text-text-primary uppercase tracking-tight">Application Trajectory</h2>
+            <h3 className="text-[10px] font-black text-white/40 uppercase tracking-[0.2em] mb-1">Volume Analysis</h3>
+            <h2 className="text-xl font-black text-white uppercase tracking-tight">Application Trajectory</h2>
           </div>
-          <div className="flex p-1 bg-surface-elevated rounded-xl border border-border">
+          <div className="flex p-1 bg-white/[0.02] rounded-xl border border-white/[0.05]">
             <button
               onClick={() => setChartView('weekly')}
               className={`px-4 py-1.5 text-[10px] font-black uppercase tracking-widest rounded-lg transition-all ${chartView === 'weekly'
-                ? 'bg-workflow-primary text-white shadow-lg'
-                : 'text-text-muted hover:text-text-primary'
+                ? 'bg-violet-600 text-white shadow-lg'
+                : 'text-white/40 hover:text-white'
                 }`}
             >
               Weekly
@@ -137,8 +137,8 @@ const ApplicationsChart = () => {
             <button
               onClick={() => setChartView('monthly')}
               className={`px-4 py-1.5 text-[10px] font-black uppercase tracking-widest rounded-lg transition-all ${chartView === 'monthly'
-                ? 'bg-workflow-primary text-white shadow-lg'
-                : 'text-text-muted hover:text-text-primary'
+                ? 'bg-violet-600 text-white shadow-lg'
+                : 'text-white/40 hover:text-white'
                 }`}
             >
               Monthly
@@ -219,7 +219,7 @@ const ApplicationsChart = () => {
           </div>
         </div>
       </div>
-    </EliteCard>
+    </div>
   );
 };
 

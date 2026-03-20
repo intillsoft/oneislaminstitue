@@ -20,25 +20,28 @@ const StatCard = ({ icon: IconComp, label, value, color, loading, delay = 0 }) =
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 12 }}
+      initial={{ opacity: 0, y: 15 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3, delay }}
-      whileHover={{ y: -2, transition: { duration: 0.15 } }}
-      className={`relative overflow-hidden rounded-2xl border ${cfg.border} bg-white/[0.025] p-5 group hover:bg-white/[0.04] transition-all duration-300`}
+      whileHover={{ y: -6, scale: 1.02, rotate: 0.5 }}
+      transition={{ type: 'spring', stiffness: 260, damping: 20 }}
+      className={`relative overflow-hidden rounded-3xl border border-white/[0.04] bg-[#0C1236]/40 backdrop-blur-xl p-6 group hover:border-white/[0.08] transition-all duration-300 overflow-visible shadow-2xl`}
     >
+      {/* Immersive glow mesh backdrop */}
+      <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br ${cfg.line} -z-10 blur-2xl filter`} />
+
       {/* Top-left gradient accent line */}
-      <div className={`absolute top-0 left-0 w-16 h-[2px] bg-gradient-to-r ${cfg.line}`} />
+      <div className={`absolute top-0 left-0 w-24 h-[1.5px] bg-gradient-to-r ${cfg.line}`} />
 
       <div className="flex items-start justify-between">
         <div className="min-w-0 flex-1">
-          <p className="text-[9px] font-black text-white/25 uppercase tracking-[0.25em] mb-3">{label}</p>
-          <p className="text-2xl sm:text-3xl font-black text-white/90 tracking-tight tabular-nums">
+          <p className="text-[10px] font-black text-white/30 uppercase tracking-[0.25em] mb-3">{label}</p>
+          <p className="text-3xl sm:text-4xl font-black text-white tracking-tight tabular-nums">
             {value}
           </p>
         </div>
 
-        <div className={`w-9 h-9 rounded-xl ${cfg.bg} flex items-center justify-center flex-shrink-0 border ${cfg.border} group-hover:scale-110 transition-transform duration-200`}>
-          {IconComp && <IconComp size={16} className={cfg.icon} />}
+        <div className={`w-11 h-11 rounded-2xl ${cfg.bg} flex items-center justify-center flex-shrink-0 border border-white/[0.03] group-hover:scale-110 group-hover:bg-white/5 transition-all duration-300 shadow-lg`}>
+          {IconComp && <IconComp size={18} className={cfg.icon} />}
         </div>
       </div>
     </motion.div>

@@ -169,7 +169,11 @@ const UnifiedSidebar = () => {
   const sections = getSections();
 
   const sidebarContent = (
-    <div className="h-full flex flex-col bg-slate-50/80 dark:bg-[#0A0E27]/80 backdrop-blur-xl border-r border-slate-200 dark:border-emerald-500/10 relative overflow-hidden transition-all duration-500 ease-in-out">
+    <div className={`flex flex-col relative overflow-hidden transition-all duration-500 ease-in-out pointer-events-auto ${
+      isMobile 
+        ? 'h-full bg-[#0A0E27]/90 backdrop-blur-2xl border-r border-emerald-500/10' 
+        : `h-[calc(100vh-calc(var(--header-height)+2rem))] m-4 rounded-3xl bg-[#090C22]/40 backdrop-blur-2xl border border-white/[0.04] shadow-2xl`
+    }`}>
       {/* Decorative Gradient Backgrounds */}
       <div className="absolute top-0 left-0 w-full h-64 bg-gradient-to-b from-emerald-500/5 to-transparent pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-emerald-500/5 to-transparent pointer-events-none" />
@@ -221,8 +225,8 @@ const UnifiedSidebar = () => {
                       key={item.path}
                       onClick={() => handleNavClick(item.path)}
                       className={`w-full flex items-center ${isCollapsed ? 'justify-center px-0' : 'justify-start px-4'} py-3.5 rounded-2xl text-[11px] font-bold transition-all relative group ${active
-                        ? 'bg-emerald-600/10 text-emerald-600 shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)] border border-emerald-600/20'
-                        : 'text-text-muted hover:text-text-primary hover:bg-emerald-500/5'
+                        ? 'bg-gradient-to-r from-emerald-500/10 to-transparent text-emerald-300 border border-emerald-500/10'
+                        : 'text-white/40 hover:text-white/80 hover:bg-white/[0.03]'
                         }`}
                       whileHover={{ x: isCollapsed ? 0 : 4 }}
                     >
@@ -257,7 +261,7 @@ const UnifiedSidebar = () => {
         })}
       </nav>
 
-      <div className="p-4 border-t border-slate-200 dark:border-emerald-500/10 space-y-4 relative z-10 bg-slate-50/40 dark:bg-[#0A0E27]/40 backdrop-blur-md">
+      <div className="p-4 border-t border-emerald-500/10 space-y-4 relative z-10 bg-[#0A0E27]/40 backdrop-blur-md">
         {/* Appearance toggle removed for unified Dark Mode anchor flawslessly */}
 
         {user && (
@@ -358,9 +362,9 @@ const UnifiedSidebar = () => {
         <>
           <motion.aside
             initial={false}
-            animate={{ width: isCollapsed ? 64 : 260 }}
+            animate={{ width: isCollapsed ? 96 : 280 }}
             transition={{ duration: 0.2 }}
-            className="fixed left-0 top-[var(--header-height)] bottom-0 z-[90] hidden lg:block border-r border-slate-200 dark:border-emerald-500/20 bg-slate-50 dark:bg-[#0A0E27]"
+            className="fixed left-0 top-[var(--header-height)] bottom-0 z-[90] hidden lg:block bg-transparent pointer-events-none"
           >
             {sidebarContent}
           </motion.aside>

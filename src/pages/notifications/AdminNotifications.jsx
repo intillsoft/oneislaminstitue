@@ -220,7 +220,7 @@ const AdminNotifications = () => {
   const unreadCount = notifications.filter(n => !n.is_read).length;
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-[#0A1120] relative overflow-hidden">
+    <div className="min-h-screen bg-[#0A0E27] relative overflow-hidden flex flex-col">
       {/* Elite Background Accents */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-7xl">
@@ -234,11 +234,11 @@ const AdminNotifications = () => {
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-12 mb-20">
           <div>
             <div className="flex items-center gap-3 mb-2">
-              <div className="w-8 h-0.5 bg-emerald-500 rounded-full" />
-              <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-500">Admin</span>
+              <div className="w-8 h-0.5 bg-violet-500 rounded-full" />
+              <span className="text-[10px] font-bold uppercase tracking-wider text-violet-400">Admin Control</span>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-bold text-white tracking-tight uppercase">
-              Notifications<span className="text-emerald-500">.</span>
+            <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight uppercase">
+              System Dispatch<span className="text-violet-500">.</span>
             </h1>
           </div>
 
@@ -265,7 +265,7 @@ const AdminNotifications = () => {
                 { icon: RefreshCw, label: "Status", value: "Online", color: "green" },
                 { icon: Shield, label: "Security", value: "Secure", color: "blue" }
             ].map((stat, i) => (
-                <div key={i} className="bg-white/[0.02] border border-white/5 p-5 rounded-2xl flex flex-col gap-4 backdrop-blur-3xl group transition-all duration-300">
+                <div key={i} className="bg-[#0C1236]/30 backdrop-blur-xl border border-white/[0.04] p-5 rounded-2xl flex flex-col gap-4 shadow-xl group transition-all duration-300">
                     <div className={`w-10 h-10 rounded-xl bg-${stat.color}-500/10 flex items-center justify-center`}>
                         <stat.icon size={18} className={stat.color === 'green' ? 'text-emerald-500' : stat.color === 'amber' ? 'text-amber-500' : 'text-blue-500'} />
                     </div>
@@ -286,7 +286,7 @@ const AdminNotifications = () => {
                     exit={{ opacity: 0, height: 0, scale: 0.98 }}
                     className="overflow-hidden mb-20"
                 >
-                    <div className="bg-white dark:bg-[#0f1429] border border-slate-100 dark:border-white/5 rounded-2xl p-8 lg:p-10 shadow-3xl relative overflow-hidden group">
+                    <div className="bg-[#0C1236]/40 backdrop-blur-3xl border border-white/[0.04] rounded-3xl p-8 lg:p-10 shadow-2xl relative overflow-hidden group">
                         <div className="absolute top-0 left-0 w-96 h-96 bg-emerald-500/5 rounded-full blur-[120px] -ml-48 -mt-48" />
                         
                         <div className="relative z-10 grid lg:grid-cols-3 gap-16">
@@ -530,7 +530,7 @@ const AdminNotifications = () => {
                 </div>
               </div>
 
-              <div className="bg-white/[0.01] border border-white/5 rounded-2xl overflow-hidden backdrop-blur-3xl">
+              <div className="bg-[#0C1236]/40 border border-white/[0.04] rounded-3xl overflow-hidden backdrop-blur-3xl shadow-2xl">
                 {loading && !notifications.length ? (
                   <div className="flex justify-center py-20">
                     <div className="w-8 h-8 border-2 border-white/5 border-t-emerald-500 rounded-full animate-spin" />

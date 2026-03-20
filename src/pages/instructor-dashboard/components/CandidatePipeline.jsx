@@ -96,11 +96,13 @@ const CandidatePipeline = () => {
   };
 
   return (
-    <EliteCard className="overflow-hidden border-white/5 bg-white/[0.01]">
+    <div className="bg-[#0C1236]/30 backdrop-blur-xl border border-white/[0.04] rounded-3xl relative overflow-hidden shadow-2xl h-full flex flex-col">
+      <div className="absolute top-0 right-0 w-80 h-80 bg-violet-500/[0.02] blur-3xl rounded-full -z-10" />
+
       <div className="p-8 pb-4">
         <div className="flex flex-col xl:flex-row items-start xl:items-center justify-between gap-6 mb-8">
           <div>
-            <h3 className="text-xs font-black text-slate-500 uppercase tracking-[0.2em] mb-1">Scholar Oversight</h3>
+            <h3 className="text-[10px] font-black text-white/40 uppercase tracking-[0.2em] mb-1">Scholar Oversight</h3>
             <h2 className="text-xl font-black text-white uppercase tracking-tight">Student Success Pipeline</h2>
           </div>
 
@@ -122,13 +124,13 @@ const CandidatePipeline = () => {
                 key={stage.id}
                 onClick={() => setActiveStage(stage.id)}
                 className={`group relative flex items-center gap-3 px-5 py-2.5 rounded-2xl border transition-all whitespace-nowrap ${isActive
-                  ? 'bg-workflow-primary border-workflow-primary text-white shadow-lg shadow-workflow-primary/40'
-                  : 'bg-white/[0.03] border-white/5 text-text-muted hover:border-white/20 hover:text-text-primary'
+                  ? 'bg-violet-600 border-violet-500 text-white shadow-lg shadow-violet-600/30'
+                  : 'bg-white/[0.03] border-white/5 text-white/40 hover:border-white/20 hover:text-white'
                   }`}
               >
-                <Icon name={stage.icon} size={14} className={isActive ? 'text-white' : 'text-slate-600 group-hover:text-slate-400'} />
+                <Icon name={stage.icon} size={14} className={isActive ? 'text-white' : 'text-white/30 group-hover:text-white/60'} />
                 <span className="text-[10px] font-black uppercase tracking-widest">{stage.label}</span>
-                <span className={`px-2 py-0.5 rounded-lg text-[9px] font-black ${isActive ? 'bg-white/20 text-white' : 'bg-white/5 text-slate-600'
+                <span className={`px-2 py-0.5 rounded-lg text-[9px] font-black ${isActive ? 'bg-white/20 text-white' : 'bg-white/5 text-white/30'
                   }`}>
                   {stage.count}
                 </span>
@@ -250,7 +252,7 @@ const CandidatePipeline = () => {
           </div>
         </div>
       </div>
-    </EliteCard>
+    </div>
   );
 };
 

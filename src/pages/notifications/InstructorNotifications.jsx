@@ -247,11 +247,11 @@ const InstructorNotifications = () => {
   );
 
     return (
-        <div className="min-h-screen bg-slate-50 dark:bg-[#0A1120] relative overflow-hidden flex flex-col">
+        <div className="min-h-screen bg-[#0A0E27] relative overflow-hidden flex flex-col">
             {/* Elite Background Accents */}
             <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-max-7xl">
-                    <div className="absolute top-[-5%] right-[-12%] w-[45%] h-[45%] bg-emerald-500/10 rounded-full blur-[140px]" />
+                    <div className="absolute top-[-5%] right-[-12%] w-[45%] h-[45%] bg-violet-500/10 rounded-full blur-[140px]" />
                     <div className="absolute bottom-[-10%] left-[-10%] w-[35%] h-[35%] bg-blue-500/10 rounded-full blur-[110px]" />
                 </div>
             </div>
@@ -270,18 +270,18 @@ const InstructorNotifications = () => {
                             <div className="flex flex-col md:flex-row md:items-end justify-between gap-12 mb-20 px-2">
                                 <div>
                                     <div className="flex items-center gap-4 mb-4">
-                                        <div className="w-10 h-0.5 bg-emerald-500 rounded-full" />
-                                        <span className="text-[10px] font-bold uppercase tracking-[0.6em] text-emerald-500">Instructor Node</span>
+                                        <div className="w-10 h-0.5 bg-violet-500 rounded-full" />
+                                        <span className="text-[10px] font-bold uppercase tracking-[0.6em] text-violet-400">Instructor Node</span>
                                     </div>
-                                    <h1 className="text-2xl sm:text-3xl font-bold text-white tracking-tight uppercase">
-                                        Communication Hub<span className="text-emerald-500">.</span>
+                                    <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight uppercase">
+                                        Communication Hub<span className="text-violet-500">.</span>
                                     </h1>
                                 </div>
 
                                 <div className="flex items-center gap-14 border-l border-white/5 pl-14 hidden md:flex">
                                     <div className="group cursor-default text-right hidden lg:block">
-                                        <p className="text-[9px] font-bold text-slate-700 uppercase tracking-[0.4em] mb-1">Unread Alerts</p>
-                                        <p className="text-2xl font-bold text-white tracking-tight">{unreadCount}</p>
+                                        <p className="text-[9px] font-bold text-white/30 uppercase tracking-[0.4em] mb-1">Unread Alerts</p>
+                                        <p className="text-2xl font-black text-white tracking-tight">{unreadCount}</p>
                                     </div>
                                     <button
                                         onClick={() => setShowComposer(!showComposer)}
@@ -306,8 +306,8 @@ const InstructorNotifications = () => {
                                         exit={{ opacity: 0, height: 0 }}
                                         className="overflow-hidden mb-16"
                                     >
-                                        <div className="bg-white/[0.02] dark:bg-[#0f1429]/40 backdrop-blur-3xl rounded-2xl border border-white/5 p-6 lg:p-10 shadow-3xl relative overflow-hidden">
-                                            <div className="absolute top-0 left-0 w-96 h-96 bg-emerald-500/5 rounded-full blur-[120px] -ml-48 -mt-48 pointer-events-none" />
+                                        <div className="bg-[#0C1236]/40 backdrop-blur-3xl rounded-3xl border border-white/[0.04] p-6 lg:p-10 shadow-2xl relative overflow-hidden">
+                                            <div className="absolute top-0 left-0 w-96 h-96 bg-violet-500/5 rounded-full blur-[120px] -ml-48 -mt-48 pointer-events-none" />
                                             
                                             <div className="relative z-10 grid lg:grid-cols-5 gap-16">
                                                 <div className="lg:col-span-2 space-y-12">
@@ -471,7 +471,7 @@ const InstructorNotifications = () => {
 
                             {/* Gmail Style List */}
                              <div className="flex-1 min-h-0 mb-40">
-                                <div className="bg-white/[0.01] border border-white/5 rounded-2xl overflow-hidden backdrop-blur-3xl">
+                                <div className="bg-[#0C1236]/40 border border-white/[0.04] rounded-3xl overflow-hidden backdrop-blur-3xl shadow-2xl">
                                     {loading && !displayNotifications.length ? (
                                         <div className="flex justify-center py-40">
                                             <div className="w-10 h-10 border-2 border-white/5 border-t-emerald-500 rounded-full animate-spin" />
@@ -570,8 +570,8 @@ const InstructorNotifications = () => {
                             </div>
 
                              {/* Detailed Message Container */}
-                            <div className="bg-white/[0.01] border border-white/5 rounded-2xl overflow-hidden backdrop-blur-3xl p-6 lg:p-10 relative">
-                                <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/5 rounded-full blur-[100px] -mr-32 -mt-32 pointer-events-none" />
+                            <div className="bg-[#0C1236]/40 border border-white/[0.04] rounded-3xl overflow-hidden backdrop-blur-3xl shadow-2xl p-6 lg:p-10 relative">
+                                <div className="absolute top-0 right-0 w-64 h-64 bg-violet-500/5 rounded-full blur-[100px] -mr-32 -mt-32 pointer-events-none" />
                                 
                                 <div className="max-w-4xl mx-auto space-y-12">
                                     <div className="space-y-8">

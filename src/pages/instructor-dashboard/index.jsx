@@ -17,7 +17,8 @@ import DemographicInsights from './components/DemographicInsights';
 import PaymentHistory from './components/PaymentHistory';
 import CompanyManagementSection from './components/CompanyManagementSection';
 import DashboardAIAssistant from '../../components/ui/DashboardAIAssistant';
-
+import MobileBottomNav from '../../components/ui/MobileBottomNav';
+import { courseService } from '../../services/jobService';
 /* ─── Instructor ambient: violet / indigo knowledge aesthetic ─── */
 const InstructorAmbient = () => (
   <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
@@ -71,6 +72,15 @@ const TABS = [
 ];
 
 const InstructorPortal = () => {
+  // ─── Smartphone Detection ───
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 1024);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
   const { user, profile } = useAuthContext();
   const { tab: activeTab = 'overview' } = useParams();
   const navigate = useNavigate();
@@ -251,15 +261,6 @@ const InstructorPortal = () => {
     }
   };
 
-  // ─── Smartphone Detection ───
-  const [isMobile, setIsMobile] = useState(false);
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 1024);
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
-
   if (isMobile) {
     return (
       <div className="relative pb-24 pt-6 px-4 min-h-screen bg-[#0A0E27] text-white selection:bg-violet-500/30">
@@ -312,71 +313,54 @@ const InstructorPortal = () => {
             </button>
           ))}
         </div>
+        <MobileBottomNav type="instructor" />
       </div>
     );
   }
 
   return (
-    <>
+    <div className="relative pb-24 md:pb-16 min-h-screen bg-[#080B24] text-white selection:bg-violet-500/30">
+      <InstructorAmbient />
       <DashboardAIAssistant
         dashboardType="instructor"
         contextData={{ academyInfo: companyInfo, dateRange, activeTab }}
       />
-      
-      <InstructorAmbient />
 
-      <div className="relative z-10 w-full pb-24 md:pb-16 min-h-screen bg-slate-50 dark:bg-[#0A0E27] text-slate-900 dark:text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <div className="flex flex-col gap-8">
 
-          {/* ────────────── PORTAL HERO HEADER ────────────── */}
-          <div className="mb-8">
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-5 mb-6">
-              <div>
-                {/* Faculty badge */}
-                <div className="flex items-center gap-2 mb-3">
-                  <div className="w-1.5 h-1.5 rounded-full bg-violet-400 animate-pulse" />
-                  <span className="text-[10px] font-black text-violet-400/60 uppercase tracking-[0.25em]">
-                    Faculty Portal
-                  </span>
-                </div>
-
-                <h1 className="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white leading-tight mb-1">
-                  Instructor <span className="text-violet-400">Portal</span>
-                </h1>
-                <p className="text-slate-500 dark:text-white/30 text-sm font-medium mt-2">
-                  Monitor course performance and student engagement.
-                </p>
+          {/* 🌟 PREMIUM HEADER BENTO CAP */}
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 p-8 bg-[#0C1236]/30 backdrop-blur-xl border border-white/[0.04] rounded-3xl relative overflow-hidden shadow-2xl">
+            <div className="absolute top-0 right-0 w-80 h-80 bg-violet-500/[0.04] blur-3xl rounded-full -z-10" />
+            
+            <div>
+              <div className="flex items-center gap-2 mb-3">
+                <div className="w-1.5 h-1.5 rounded-full bg-violet-400 animate-pulse" />
+                <span className="text-[10px] font-black text-violet-400/60 uppercase tracking-[0.25em]">Instructor Central</span>
               </div>
-
-              {/* Header actions */}
-              <div className="flex flex-row gap-2">
-                <button
-                  onClick={handleExport}
-                  className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white/[0.04] border border-white/[0.08] text-xs font-bold text-white/50 hover:text-white/80 hover:bg-white/[0.07] uppercase tracking-wider transition-all"
-                >
-                  <Icon name="Download" size={13} />
-                  Export
-                </button>
-                <Link
-                  to="/instructor/courses/new"
-                  className="flex items-center gap-2 px-5 py-2.5 bg-violet-600 hover:bg-violet-500 text-white rounded-xl font-bold text-xs uppercase tracking-wider shadow-lg shadow-violet-600/20 transition-all"
-                >
-                  <Icon name="Plus" size={13} />
-                  New Course
-                </Link>
+              <h1 className="text-3xl sm:text-4xl font-black text-white leading-tight">
+                Faculty Portal
+              </h1>
+              <p className="text-white/40 text-sm font-medium mt-2">Monitor course performance and student engagement.</p>
+              
+              <div className="flex flex-wrap gap-2 mt-4">
+                <InfoPill icon="Building2" label="Institution" value={companyInfo.name} color="border-violet-500/20" />
+                <InfoPill icon="Award"     label="Tier"        value={companyInfo.subscription} color="border-indigo-500/20" />
               </div>
             </div>
 
-            {/* Info pills */}
-            <div className="flex flex-wrap gap-2">
-              <InfoPill icon="Building2" label="Institution" value={companyInfo.name} color="border-violet-500/20" />
-              <InfoPill icon="Award"     label="Tier"        value={companyInfo.subscription} color="border-indigo-500/20" />
-              <InfoPill icon="Calendar"  label="Renews"      value={companyInfo.expiresOn} color="border-sky-500/20" />
+            <div className="flex items-center gap-3">
+              <button onClick={handleExport} className="flex items-center gap-2 px-5 py-3 bg-white/[0.05] hover:bg-white/[0.08] text-white/80 rounded-xl font-bold text-xs uppercase tracking-wider border border-white/[0.05] transition-all">
+                <Icon name="Download" size={13} /> Export
+              </button>
+              <Link to="/instructor/courses/new" className="flex items-center gap-2 px-5 py-3 bg-violet-600 hover:bg-violet-500 text-white rounded-xl font-bold text-xs uppercase tracking-wider shadow-lg shadow-violet-600/20 transition-all hover:scale-105">
+                <Icon name="Plus" size={13} /> New Course
+              </Link>
             </div>
           </div>
 
-          {/* ────────────── TAB NAVIGATION ────────────── */}
-          <div className="flex items-center gap-1 mb-8 overflow-x-auto pb-1 scrollbar-hide">
+          {/* 🍱 TAB NAVIGATION BENTO BRIDGE */}
+          <div className="flex items-center gap-2 p-1.5 bg-[#0C1236]/30 border border-white/[0.03] backdrop-blur-md rounded-2xl self-start overflow-x-auto max-w-full scrollbar-hide">
             {TABS.map(tab => (
               <InstructorTab
                 key={tab.id}
@@ -388,7 +372,7 @@ const InstructorPortal = () => {
             ))}
           </div>
 
-          {/* ────────────── MAIN CONTENT ────────────── */}
+          {/* 🍱 MAIN CONTENT BENTO WORKSPACE */}
           <AnimatePresence mode="wait">
             <motion.div
               key={activeTab}
@@ -400,9 +384,10 @@ const InstructorPortal = () => {
               {renderContent()}
             </motion.div>
           </AnimatePresence>
+
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

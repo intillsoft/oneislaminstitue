@@ -176,7 +176,7 @@ const StudentNotifications = () => {
 
                             {/* Message Registry */}
                             <div className="flex-1 min-h-0 mb-20">
-                                <div className="bg-white/[0.01] border border-white/5 rounded-2xl overflow-hidden backdrop-blur-3xl">
+                                <div className="bg-[#0C1236]/40 border border-white/[0.04] rounded-3xl overflow-hidden backdrop-blur-3xl shadow-2xl">
                                     {loading && !notifications.length ? (
                                         <div className="flex justify-center py-40">
                                             <div className="w-10 h-10 border-2 border-white/5 border-t-emerald-500 rounded-full animate-spin" />
@@ -189,7 +189,7 @@ const StudentNotifications = () => {
                                             <h3 className="text-[11px] font-bold text-slate-900 uppercase tracking-[0.8em]">Briefing Registry Null</h3>
                                         </div>
                                     ) : (
-                                        <div className="divide-y divide-white/5">
+                                        <div className="divide-y divide-white/[0.03]">
                                             <AnimatePresence mode="popLayout">
                                                 {notifications.map((notification) => {
                                                     const isUnread = !notification.is_read;
@@ -275,8 +275,8 @@ const StudentNotifications = () => {
                             </div>
 
                             {/* Detailed View Container */}
-                            <div className="bg-white/[0.01] border border-white/5 rounded-2xl overflow-hidden backdrop-blur-3xl p-6 lg:p-10 relative">
-                                <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/5 rounded-full blur-[100px] -mr-32 -mt-32 pointer-events-none" />
+                            <div className="bg-[#0C1236]/40 border border-white/[0.04] rounded-3xl overflow-hidden backdrop-blur-3xl shadow-2xl p-6 lg:p-10 relative">
+                                <div className="absolute top-0 right-0 w-64 h-64 bg-violet-500/5 rounded-full blur-[100px] -mr-32 -mt-32 pointer-events-none" />
                                 
                                 <div className="max-w-4xl mx-auto space-y-12">
                                     <div className="space-y-8">
