@@ -230,6 +230,7 @@ const LessonBlockBuilder = ({ blocks = [], onChange, initialPage = 1 }) => {
                                                                 ...provided.draggableProps.style, 
                                                                 zIndex: snapshot.isDragging ? 100 : 1,
                                                                 width: block.layoutSettings?.width?.includes('px') ? block.layoutSettings.width : undefined,
+                                                                height: block.layoutSettings?.height || undefined,
                                                             }}
                                                         >
                                                             <motion.div 

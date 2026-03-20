@@ -496,6 +496,7 @@ const LessonBlockRenderer = ({ blocks = [], onQuizPassed }) => {
                                     className={`${!block.layoutSettings?.width?.includes('px') ? widthClass : ''} transition-all duration-300`}
                                     style={{ 
                                         width: block.layoutSettings?.width?.includes('px') ? block.layoutSettings.width : undefined,
+                                        height: block.layoutSettings?.height || undefined,
                                     }}
                                 >
                                     <BlockItem 
