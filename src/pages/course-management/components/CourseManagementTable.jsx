@@ -5,6 +5,7 @@ import { useAuthContext } from '../../../contexts/AuthContext';
 import { useToast } from '../../../components/ui/Toast';
 import { formatDistanceToNow } from 'date-fns';
 import { motion, AnimatePresence } from 'framer-motion';
+import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 
 const CourseManagementTable = ({ onEdit, onDuplicate }) => {
   const { user, profile } = useAuthContext();
@@ -16,6 +17,15 @@ const CourseManagementTable = ({ onEdit, onDuplicate }) => {
   const [sortDirection, setSortDirection] = useState('desc');
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const onDragEnd = (result) => {
+    if (!result.destination) return;
+    const items = [...sortedJobs];
+    const [reorderedItem] = items.splice(result.source.index, 1);
+    items.splice(result.destination.index, 0, reorderedItem);
+    setJobs(items);
+    success('Priority order updated locally!');
+  };
   
   useEffect(() => {
     if (user) {
@@ -213,11 +223,17 @@ const CourseManagementTable = ({ onEdit, onDuplicate }) => {
                     </div>
                   </div>
                 </div>
-              </motion.div>
+                  </motion.div>
+                )}
+              </Draggable>
             ))
           )}
+          {provided.placeholder}
         </AnimatePresence>
       </div>
+          )}
+        </Droppable>
+      </DragDropContext>
     </div>
   );
 };
