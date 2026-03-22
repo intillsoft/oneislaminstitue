@@ -111,6 +111,7 @@ const CurriculumBuilder = ({ courseId, courseTitle }) => {
                 .from('course_lessons')
                 .insert([{
                     module_id: moduleId,
+                    course_id: courseId, // Insert course anchor to satisfy non-null layouts absolute flawless
                     title: 'New Lesson',
                     sort_order: nextOrder,
                     is_published: true,

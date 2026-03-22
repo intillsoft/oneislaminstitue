@@ -95,135 +95,141 @@ const FlipCard = ({ children }) => {
 };
 
 const InteractiveSacredCard = ({ type, front, back }) => {
-    const [flipped, setFlipped] = useState(false);
+    const [activeTab, setActiveTab] = useState('english');
     
-    // Theme configurations
+    // Theme configurations with explicit Tailwind class mappings
     const configs = {
         Q: { 
             name: 'Sacred Verse (Qur’an)', 
             icon: <Sparkles size={16} />, 
             color: 'emerald',
-            accent: 'border-emerald-500',
+            accent: 'emerald-500',
+            accentBorder: 'hover:border-emerald-500/30',
             bg: 'bg-emerald-50/60 dark:bg-emerald-500/5',
-            backTitle: 'Original Arabic Script'
+            tabBg: 'bg-emerald-500'
         },
         H: { 
             name: 'Prophetic Tradition (Hadith)', 
             icon: <BookOpen size={16} />, 
             color: 'amber',
-            accent: 'border-amber-500',
+            accent: 'amber-500',
+            accentBorder: 'hover:border-amber-500/30',
             bg: 'bg-amber-50/60 dark:bg-amber-500/5',
-            backTitle: 'Original Source Narrative'
+            tabBg: 'bg-amber-500'
         },
         S: { 
             name: 'Scholarly Insight', 
             icon: <Info size={16} />, 
             color: 'indigo',
-            accent: 'border-indigo-500',
+            accent: 'indigo-500',
+            accentBorder: 'hover:border-indigo-500/30',
             bg: 'bg-indigo-50/60 dark:bg-indigo-500/5',
-            backTitle: 'Contextual Analysis'
+            tabBg: 'bg-indigo-500'
         },
         R: { 
             name: 'Spiritual Reflection', 
             icon: <RefreshCw size={16} />, 
             color: 'rose',
-            accent: 'border-rose-500',
+            accent: 'rose-500',
+            accentBorder: 'hover:border-rose-500/30',
             bg: 'bg-rose-50/60 dark:bg-rose-500/5',
-            backTitle: 'Heart Application'
+            tabBg: 'bg-rose-500'
         },
         C: { 
             name: 'Key Concept', 
             icon: <Layout size={16} />, 
             color: 'cyan',
-            accent: 'border-cyan-500',
+            accent: 'cyan-500',
+            accentBorder: 'hover:border-cyan-500/30',
             bg: 'bg-cyan-50/60 dark:bg-cyan-500/5',
-            backTitle: 'Technical Breakdown'
+            tabBg: 'bg-cyan-500'
         },
         L: { 
             name: 'Legal Principle', 
             icon: <Target size={16} />, 
             color: 'slate',
-            accent: 'border-slate-500',
+            accent: 'slate-500',
+            accentBorder: 'hover:border-slate-500/30',
             bg: 'bg-slate-50/60 dark:bg-slate-500/5',
-            backTitle: 'Juridical Context'
+            tabBg: 'bg-slate-500'
         }
     };
 
     const config = configs[type] || configs.S;
 
     return (
-        <div 
-            className="my-8 relative cursor-pointer select-none group w-full block"
-            style={{ perspective: '2000px', WebkitPerspective: '2000px' }}
-            onClick={() => setFlipped(!flipped)}
-        >
-            <motion.div
-                animate={{ rotateY: flipped ? 180 : 0 }}
-                transition={{ 
-                    duration: 0.7, 
-                    type: "spring", 
-                    stiffness: 90, 
-                    damping: 20 
-                }}
-                style={{ 
-                    transformStyle: 'preserve-3d',
-                    WebkitTransformStyle: 'preserve-3d',
-                    position: 'relative',
-                    height: 'auto',
-                    minHeight: '160px',
-                    width: '100%'
-                }}
-                className="relative w-full"
-            >
-                {/* Front Side: Translation/Insight */}
-                <div
-                    style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden', transform: 'rotateY(0deg) translateZ(1px)' }}
-                    className="relative px-8 py-10 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-white/10 group-hover:border-emerald-500/30 rounded-[2rem] transition-all duration-500 flex flex-col h-full items-center justify-center text-center"
-                >
-                    {/* Decorative elegant quote mark */}
-                    <div className={`absolute top-2 left-6 opacity-[0.03] dark:opacity-[0.05] font-serif text-[120px] leading-none select-none pointer-events-none text-${config.color}-500`}>"</div>
-                    
-                    <div className="flex items-center gap-3 mb-6 relative z-10">
-                        <div className={`w-8 h-8 rounded-full bg-${config.color}-50 dark:bg-${config.color}-500/10 flex items-center justify-center text-${config.color}-500 dark:text-${config.color}-400 ring-1 ring-${config.color}-500/20`}>
+        <div className="my-8 relative group w-full">
+            <div className={`relative px-8 py-10 rounded-[2.5rem] bg-white dark:bg-slate-900/40 border border-slate-200/60 dark:border-white/10 ${config.accentBorder} backdrop-blur-3xl transition-all duration-500 flex flex-col gap-8 shadow-sm hover:shadow-xl hover:shadow-${config.color}-500/[0.02]`}>
+                
+                {/* Header Container: Icon/Title and Sleek Slider Tabs */}
+                <div className="flex flex-col sm:flex-row items-center justify-between w-full gap-4 z-10">
+                    <div className="flex items-center gap-3">
+                        <div className={`w-8 h-8 rounded-full ${config.bg} flex items-center justify-center text-${config.color}-600 dark:text-${config.color}-400 ring-1 ring-${config.color}-500/20 shadow-inner`}>
                             {config.icon}
                         </div>
-                        <p className={`text-[9px] font-black uppercase tracking-[0.25em] text-slate-500 dark:text-slate-400`}>
+                        <p className="text-[9px] font-black uppercase tracking-[0.25em] text-slate-500 dark:text-slate-400">
                             {config.name}
                         </p>
                     </div>
-                    
-                    <div className="text-lg md:text-xl font-medium leading-[1.8] text-slate-800 dark:text-slate-200 mb-6 flex-1 max-w-3xl px-4 relative z-10 prose prose-slate dark:prose-invert prose-emerald text-center flex flex-col items-center justify-center italic" style={{ letterSpacing: '-0.01em' }}>
-                        <ReactMarkdown components={markdownComponents}>
-                            {typeof front === 'string' ? front.replace(/undefined/g, '') : ''}
-                        </ReactMarkdown>
-                    </div>
-                    
-                    <div className="flex items-center gap-2 text-[8px] font-black uppercase tracking-widest text-slate-400 group-hover:text-emerald-500 transition-colors relative z-10">
-                        <RefreshCw size={10} className="group-hover:rotate-180 transition-transform duration-700" /> Read original
+
+                    {/* Segmented Controller Tab Bar */}
+                    <div className="bg-slate-100/80 dark:bg-slate-800/80 p-0.5 rounded-full flex items-center relative gap-0.5 backdrop-blur-md border border-slate-200/30 dark:border-white/5">
+                        {['english', 'arabic'].map((tab) => (
+                            <button
+                                key={tab}
+                                onClick={(e) => { e.stopPropagation(); setActiveTab(tab); }}
+                                className={`relative z-10 px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider transition-all duration-300 ${activeTab === tab ? 'text-white' : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200'}`}
+                            >
+                                {activeTab === tab && (
+                                    <motion.div
+                                        layoutId={`tab-bg-${config.name.replace(/\s+/g, '')}`}
+                                        className={`absolute inset-0 rounded-full ${config.tabBg} -z-10 shadow-lg shadow-${config.color}-500/20`}
+                                        transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                                    />
+                                )}
+                                {tab}
+                            </button>
+                        ))}
                     </div>
                 </div>
 
-                {/* Back Side: Arabic/Source */}
-                <div
-                    style={{ 
-                        backfaceVisibility: 'hidden', 
-                        WebkitBackfaceVisibility: 'hidden',
-                        transform: 'rotateY(180deg) translateZ(1px)',
-                        position: 'absolute', 
-                        top: 0, 
-                        left: 0, 
-                        width: '100%',
-                        height: '100%'
-                    }}
-                    className={`px-8 py-10 bg-slate-50 dark:bg-slate-800 border border-slate-200/80 dark:border-white/10 rounded-[2rem] flex items-center justify-center`}
-                >
-                    <div className={`text-2xl md:text-3xl font-arabic leading-[2] text-slate-900 dark:text-white text-center ${type === 'Q' ? 'font-arabic-bold' : ''} prose-p:my-0`}>
-                        <ReactMarkdown components={markdownComponents}>
-                            {typeof back === 'string' ? back.replace(/undefined/g, '') : ''}
-                        </ReactMarkdown>
-                    </div>
+                {/* Content Area Rendering with Animations */}
+                <div className="flex-1 w-full flex items-center justify-center min-h-[140px] relative z-10 px-4">
+                    <div className={`absolute top-2 left-6 opacity-[0.03] dark:opacity-[0.05] font-serif text-[120px] leading-none select-none pointer-events-none text-${config.color}-500`}>"</div>
+                    
+                    <AnimatePresence mode="wait">
+                        {activeTab === 'english' ? (
+                            <motion.div
+                                key="english"
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -10 }}
+                                transition={{ duration: 0.3 }}
+                                className="text-[17px] md:text-xl font-medium leading-[1.8] text-slate-800 dark:text-slate-200 prose prose-slate dark:prose-invert max-w-3xl text-center italic flex flex-col items-center justify-center px-4"
+                            >
+                                <ReactMarkdown components={markdownComponents}>
+                                    {typeof front === 'string' ? front.replace(/undefined/g, '') : ''}
+                                </ReactMarkdown>
+                            </motion.div>
+                        ) : (
+                            <motion.div
+                                key="arabic"
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -10 }}
+                                transition={{ duration: 0.3 }}
+                                className="w-full flex justify-center px-4"
+                            >
+                                <div className={`text-2xl md:text-3xl font-arabic leading-[2.3] text-slate-900 dark:text-white text-center ${type === 'Q' ? 'font-arabic-bold' : ''} prose-p:my-0`}>
+                                    <ReactMarkdown components={markdownComponents}>
+                                        {typeof back === 'string' ? back.replace(/undefined/g, '') : ''}
+                                    </ReactMarkdown>
+                                </div>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
                 </div>
-            </motion.div>
+            </div>
         </div>
     );
 };
@@ -497,6 +503,9 @@ const LessonBlockRenderer = ({ blocks = [], onQuizPassed }) => {
                                     style={{ 
                                         width: block.layoutSettings?.width?.includes('px') ? block.layoutSettings.width : undefined,
                                         height: block.layoutSettings?.height || undefined,
+                                        padding: block.layoutSettings?.padding ? `${block.layoutSettings.padding}px` : undefined,
+                                        marginBottom: block.layoutSettings?.marginBottom ? `${block.layoutSettings.marginBottom}px` : undefined,
+                                        borderRadius: block.layoutSettings?.borderRadius ? `${block.layoutSettings.borderRadius}px` : undefined
                                     }}
                                 >
                                     <BlockItem 
@@ -800,6 +809,46 @@ const BlockRenderer = ({ block, index, quizAnswer, onAnswerChange, isVerified, s
                             ))}
                         </div>
                     </EliteCard>
+                </div>
+            );
+        case 'key_summary':
+            return (
+                <div className="w-full my-8 max-w-4xl mx-auto">
+                    <div className="p-8 rounded-[2rem] bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-white/10 shadow-lg relative overflow-hidden backdrop-blur-3xl">
+                        <div className="absolute top-0 right-0 w-64 h-64 blur-[80px] rounded-full -translate-y-1/2 translate-x-1/2 opacity-5" style={{ backgroundColor: b.content?.color || '#10b981' }} />
+                        <div className="relative z-10 space-y-6">
+                            <div className="flex items-center gap-3">
+                                <div className="w-1.5 h-6 rounded-full" style={{ backgroundColor: b.content?.color || '#10b981' }} />
+                                <h4 className="text-xl font-black tracking-tight text-slate-900 dark:text-white">
+                                    {b.content?.title || 'Key Takeaways'}
+                                </h4>
+                            </div>
+                            <div className="flex flex-col gap-4">
+                                {(b.content?.items || []).map((item, iIdx) => (
+                                    <motion.div 
+                                        key={iIdx}
+                                        initial={{ opacity: 0, y: 10 }}
+                                        whileInView={{ opacity: 1, y: 0 }}
+                                        viewport={{ once: true }}
+                                        transition={{ delay: iIdx * 0.1 }}
+                                        className="p-4 rounded-xl bg-slate-50/50 dark:bg-slate-800/40 border border-slate-100 dark:border-white/5 flex gap-4 transition-all"
+                                    >
+                                        <div className="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-black mt-0.5 shadow-sm" style={{ backgroundColor: b.content?.color || '#10b981' }}>
+                                            {iIdx + 1}
+                                        </div>
+                                        <div>
+                                            <span className="text-base font-bold tracking-tight block mb-1" style={{ color: b.content?.color || '#10b981' }}>
+                                                {item.keyword}
+                                            </span>
+                                            <p className="text-sm font-medium leading-relaxed text-slate-600 dark:text-slate-300">
+                                                {item.explanation}
+                                            </p>
+                                        </div>
+                                    </motion.div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
                 </div>
             );
         case 'conclusion':

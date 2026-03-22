@@ -13,6 +13,7 @@ const BLOCK_TYPES = [
     { type: 'image', icon: 'Image', label: 'Image URL', color: 'text-emerald-500', bg: 'bg-emerald-500/10' },
     { type: 'audio', icon: 'Music', label: 'Audio', color: 'text-emerald-500', bg: 'bg-emerald-500/10' },
     { type: 'document', icon: 'FileText', label: 'Document', color: 'text-emerald-500', bg: 'bg-emerald-500/10' },
+    { type: 'key_summary', icon: 'CheckSquare', label: 'Key Summary', color: 'text-emerald-500', bg: 'bg-emerald-500/10' },
     { type: 'summary', icon: 'Target', label: 'Core Summary', color: 'text-emerald-500', bg: 'bg-emerald-500/10' },
     { type: 'quiz', icon: 'HelpCircle', label: 'Knowledge Quiz', color: 'text-emerald-500', bg: 'bg-emerald-500/10' },
     { type: 'accordion', icon: 'ChevronDown', label: 'Collapsible', color: 'text-emerald-500', bg: 'bg-emerald-500/10' }
@@ -35,6 +36,7 @@ const PAGE_TEMPLATES = [
 const LessonBlockBuilder = ({ blocks = [], onChange, initialPage = 1 }) => {
     const [selectedPageIdx, setSelectedPageIdx] = useState(initialPage - 1);
     const [isAiExpanded, setIsAiExpanded] = useState(false); 
+    const [activeBlockId, setActiveBlockId] = useState(null); 
     const [showAddPanel, setShowAddPanel] = useState(false);
     const [resizing, setResizing] = useState(null); // { id, startX, startY, startW, startH }
 
@@ -146,6 +148,7 @@ const LessonBlockBuilder = ({ blocks = [], onChange, initialPage = 1 }) => {
         else if (type === 'image') newBlock.content = { url: '', caption: '' };
         else if (type === 'audio') newBlock.content = { title: '', duration: '', url: '' };
         else if (type === 'document') newBlock.content = { fileName: '', fileSize: '', url: '' };
+        else if (type === 'key_summary') newBlock.content = { title: 'Core Takeaways', color: '#10b981', items: [{ keyword: '', explanation: '' }] };
         else if (type === 'summary') newBlock.content = { points: ['', '', ''] };
         else if (type === 'quiz') { newBlock.question = ''; newBlock.options = ['', '', '', '']; newBlock.correctIndex = 0; }
         else if (type === 'accordion') newBlock.content = { title: '', text: '' };
@@ -260,7 +263,10 @@ const LessonBlockBuilder = ({ blocks = [], onChange, initialPage = 1 }) => {
                                                                 layout 
                                                                 className={`bg-white/[0.03] border border-emerald-500/10 rounded-[1.5rem] relative transition-all block-inner-surface flex flex-col ${snapshot.isDragging ? 'ring-2 ring-emerald-500 bg-white/5 shadow-2x backdrop-blur-3xl' : 'hover:bg-white/[0.05] hover:border-white/10 scroll-mt-24'}`}
                                                                 style={{
-                                                                    height: block.layoutSettings?.height || 'auto'
+                                                                    height: block.layoutSettings?.height || 'auto',
+                                                                     padding: block.layoutSettings?.padding ? `${block.layoutSettings.padding}px` : undefined,
+                                                                     marginBottom: block.layoutSettings?.marginBottom ? `${block.layoutSettings.marginBottom}px` : undefined,
+                                                                     borderRadius: block.layoutSettings?.borderRadius ? `${block.layoutSettings.borderRadius}px` : undefined
                                                                 }}
                                                             >
                                                                 {/* Absolute Resizing Handle Anchor support */}
@@ -292,6 +298,9 @@ const LessonBlockBuilder = ({ blocks = [], onChange, initialPage = 1 }) => {
                                                                                </button>
                                                                            ))}
                                                                        </div>
+                                                                      <button onClick={() => setActiveBlockId(activeBlockId === block.id ? null : block.id)} className={`p-1.5 ${activeBlockId === block.id ? 'text-sky-500' : 'text-slate-400 hover:text-sky-400'} transition-colors`}>
+                                                                           <Icon name="Settings" size={12} />
+                                                                       </button>
                                                                       <div {...provided.dragHandleProps} className="p-1.5 text-slate-500 hover:text-white transition-colors cursor-grab active:cursor-grabbing">
                                                                           <Icon name="GripVertical" size={12} />
                                                                       </div>
@@ -521,6 +530,78 @@ const LessonBlockBuilder = ({ blocks = [], onChange, initialPage = 1 }) => {
                                                                                 placeholder="Illustration Caption..."
                                                                                 className="w-full bg-black/20 border border-emerald-500/10 rounded-xl px-4 py-2 text-xs focus:outline-none text-white"
                                                                             />
+                                                                        </div>
+                                                                    )}
+
+                                                                    {block.type === 'key_summary' && (
+                                                                        <div className="space-y-5">
+                                                                            <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
+                                                                                <input 
+                                                                                    value={block.content?.title || ''}
+                                                                                    onChange={e => updateBlockContent(block.id, { title: e.target.value })}
+                                                                                    className="flex-1 bg-black/20 border border-emerald-500/10 rounded-xl px-4 py-2.5 text-sm font-black focus:outline-none text-white"
+                                                                                    placeholder="Summary Header Title..."
+                                                                                />
+                                                                                <div className="flex items-center gap-2 bg-black/20 p-2 rounded-xl border border-emerald-500/10">
+                                                                                    <span className="text-[9px] font-black uppercase text-slate-500">Color</span>
+                                                                                    <input 
+                                                                                        type="color"
+                                                                                        value={block.content?.color || '#10b981'}
+                                                                                        onChange={e => updateBlockContent(block.id, { color: e.target.value })}
+                                                                                        className="w-6 h-6 rounded-lg cursor-pointer bg-transparent border-none"
+                                                                                    />
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <div className="space-y-4">
+                                                                                {(block.content?.items || []).map((item, iIdx) => (
+                                                                                    <div key={iIdx} className="group/item relative bg-black/10 p-4 rounded-xl border border-white/5 space-y-3">
+                                                                                        <div className="flex items-center gap-3">
+                                                                                            <div className="w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-black shadow-lg" style={{ backgroundColor: block.content?.color || '#10b981' }}>{iIdx + 1}</div>
+                                                                                            <input 
+                                                                                                value={item.keyword || ''}
+                                                                                                onChange={e => {
+                                                                                                    const newItems = [...(block.content?.items || [])];
+                                                                                                    newItems[iIdx] = { ...item, keyword: e.target.value };
+                                                                                                    updateBlockContent(block.id, { items: newItems });
+                                                                                                }}
+                                                                                                className="flex-1 bg-transparent border-b border-white/10 text-sm font-black focus:outline-none placeholder:text-slate-600 text-white"
+                                                                                                placeholder="Key Phrase / Keyword..."
+                                                                                                style={{ color: block.content?.color || '#10b981' }}
+                                                                                            />
+                                                                                            <button 
+                                                                                                onClick={() => {
+                                                                                                    const newItems = (block.content?.items || []).filter((_, idx) => idx !== iIdx);
+                                                                                                    updateBlockContent(block.id, { items: newItems });
+                                                                                                }}
+                                                                                                className="opacity-0 group-hover/item:opacity-100 text-slate-400 hover:text-rose-500 transition-all p-1"
+                                                                                            >
+                                                                                                <Icon name="Trash" size={12} />
+                                                                                            </button>
+                                                                                        </div>
+                                                                                        <textarea 
+                                                                                            value={item.explanation || ''}
+                                                                                            onChange={e => {
+                                                                                                const newItems = [...(block.content?.items || [])];
+                                                                                                newItems[iIdx] = { ...item, explanation: e.target.value };
+                                                                                                updateBlockContent(block.id, { items: newItems });
+                                                                                            }}
+                                                                                            className="w-full bg-black/20 border border-white/5 rounded-xl p-3 text-xs leading-relaxed focus:outline-none placeholder:text-slate-600 text-slate-300 resize-none h-16"
+                                                                                            placeholder="Detailed explanation..."
+                                                                                        />
+                                                                                    </div>
+                                                                                ))}
+                                                                            </div>
+
+                                                                            <button 
+                                                                                onClick={() => {
+                                                                                    const newItems = [...(block.content?.items || []), { keyword: '', explanation: '' }];
+                                                                                    updateBlockContent(block.id, { items: newItems });
+                                                                                }}
+                                                                                className="w-full py-2.5 rounded-xl border border-dashed border-emerald-500/20 hover:border-emerald-500/40 text-emerald-500 hover:text-emerald-400 text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-2 transition-all hover:bg-emerald-500/5"
+                                                                            >
+                                                                                <Icon name="Plus" size={12} /> Add Point
+                                                                            </button>
                                                                         </div>
                                                                     )}
 
