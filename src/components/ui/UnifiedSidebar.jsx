@@ -95,9 +95,12 @@ const UnifiedSidebar = () => {
   
   /* Role-based Navigation Logic (Active Role Based) */
   if (!loadingProfile) {
-    if (userRole === 'admin') {
+    const roleLower = baseRole?.toLowerCase() || ''; // Use baseRole to lock Admin access unconditionally
+    if (roleLower === 'admin' || roleLower === 'system_admin') {
       allNavigationItems.push(...adminItems);
-    } else if (userRole === 'instructor') {
+      allNavigationItems.push(...instructorItems);
+      allNavigationItems.push(...mainItems);
+    } else if (roleLower === 'instructor') {
       allNavigationItems.push(...instructorItems);
     } else {
       // Default to student items

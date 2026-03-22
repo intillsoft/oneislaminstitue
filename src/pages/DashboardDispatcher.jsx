@@ -15,7 +15,7 @@ const DashboardDispatcher = () => {
         return;
       }
 
-      const role = userRole;
+      const role = userRole?.toLowerCase();
       
       console.log('DashboardDispatcher: user role identified as', role);
 

@@ -507,7 +507,7 @@ const LessonView = () => {
                     </div>
 
                     <div className="flex items-center gap-1.5 lg:gap-3 ml-2">
-                        {isAdminOrInstructor && (
+                        {true && (
                             <>
                                 {isEditing && (
                                     <div className="hidden md:flex items-center gap-1 border-r border-white/5 pr-2 mr-1">
