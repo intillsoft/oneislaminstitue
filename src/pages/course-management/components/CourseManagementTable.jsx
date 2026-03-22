@@ -7,7 +7,7 @@ import { formatDistanceToNow } from 'date-fns';
 import { motion, AnimatePresence } from 'framer-motion';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 
-const CourseManagementTable = ({ onEdit, onDuplicate }) => {
+const CourseManagementTable = ({ onEdit, onEditCurriculum, onDuplicate }) => {
   const { user, profile } = useAuthContext();
   const { success, error: showError } = useToast();
   
@@ -227,9 +227,16 @@ const CourseManagementTable = ({ onEdit, onDuplicate }) => {
                                 <button
                                   onClick={() => onEdit?.(job)}
                                   className="p-3 bg-white dark:bg-white/5 text-text-muted rounded-xl hover:bg-emerald-600 hover:text-white transition-all border border-border dark:border-white/10 shadow-xl shadow-black/5"
-                                  title="Edit Curriculum"
+                                  title="Edit Info"
                                 >
                                   <Icon name="Edit" size={14} />
+                                </button>
+                                <button
+                                  onClick={() => onEditCurriculum?.(job)}
+                                  className="p-3 bg-white dark:bg-white/5 text-blue-400 rounded-xl hover:bg-blue-600 hover:text-white transition-all border border-border dark:border-white/10 shadow-xl shadow-black/5"
+                                  title="Edit Curriculum Canvas"
+                                >
+                                  <Icon name="BookOpen" size={14} />
                                 </button>
                                 <button
                                   onClick={() => onDuplicate?.(job)}

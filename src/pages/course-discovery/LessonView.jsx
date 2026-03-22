@@ -126,8 +126,8 @@ const LessonView = () => {
     const [editHistory, setEditHistory] = useState([]);
     const [historyIndex, setHistoryIndex] = useState(-1);
     
-    // Admin/Instructor Bypass Mode
-    const isAdminOrInstructor = baseRole === 'admin' || baseRole === 'instructor';
+    const baseRoleLower = baseRole?.toLowerCase() || '';
+    const isAdminOrInstructor = baseRoleLower === 'admin' || baseRoleLower === 'instructor';
     const adminBypass = isAdminOrInstructor && localStorage.getItem('adminBypass') === 'true';
 
     const lastActivityLoggedRef = React.useRef(null);

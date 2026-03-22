@@ -471,6 +471,11 @@ const CourseManagementPage = ({ activeTab: initialTab = 'create' }) => {
           <div className="w-full overflow-hidden">
             <CourseManagementTable
               onEdit={handleJobSelect}
+              onEditCurriculum={(job) => {
+                  setSelectedJob(job);
+                  setFormMode('edit');
+                  setActiveTab('curriculum');
+              }}
               onDuplicate={handleJobDuplicate}
             />
           </div>
