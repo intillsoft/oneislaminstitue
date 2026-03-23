@@ -247,7 +247,43 @@ const LessonBlockBuilder = ({ blocks = [], onChange, initialPage = 1 }) => {
                     </div>
 
                     <div className="relative">
-                        <DragDropContext onDragEnd={onDragEnd}>
+                        
+                    {/* Floating Add Blocks Bar at the TOP of the Canvas node absolute flawlessly */}
+                    <div className="pb-6 mb-6 border-b border-emerald-500/10 flex flex-col items-center relative z-40">
+                        <motion.button 
+                            whileTap={{ scale: 0.95 }}
+                            onClick={() => setShowAddPanel(!showAddPanel)} 
+                            className={`flex items-center gap-2 px-5 py-3 rounded-xl shadow-xl transition-all font-black uppercase tracking-widest text-[9px] \${showAddPanel ? 'bg-rose-600 hover:bg-rose-500 shadow-rose-500/10 text-white' : 'bg-emerald-600 hover:bg-emerald-500 shadow-emerald-500/20 text-white'}`}
+                        >
+                            <Icon name={showAddPanel ? 'Minus' : 'Plus'} size={12} />
+                            {showAddPanel ? 'Close Canvas Elements' : 'Insert Element Component'}
+                        </motion.button>
+
+                        <AnimatePresence>
+                            {showAddPanel && (
+                                <motion.div 
+                                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                                    exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                                    transition={{ duration: 0.2, ease: "easeOut" }}
+                                    className="mt-4 p-3 bg-black/40 border border-emerald-500/10 rounded-2xl flex flex-wrap gap-2 justify-center max-w-3xl backdrop-blur-3xl"
+                                >
+                                    {BLOCK_TYPES.map(type => (
+                                        <button 
+                                            key={type.type} 
+                                            onClick={() => { addBlock(type.type); setShowAddPanel(false); }} 
+                                            className="flex items-center gap-2 px-3.5 py-2.5 bg-white/5 hover:bg-white/10 border border-emerald-500/10 rounded-xl text-[9px] font-bold uppercase tracking-widest text-emerald-500 hover:text-emerald-400 transition-all active:scale-95"
+                                        >
+                                            <Icon name={type.icon} size={11} className="text-emerald-500" />
+                                            {type.label}
+                                        </button>
+                                    ))}
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+                    </div>
+
+                    <DragDropContext onDragEnd={onDragEnd}>
                             <Droppable droppableId="blocks" direction="vertical">
                                 {(provided) => (
                                     <div {...provided.droppableProps} ref={provided.innerRef} className="flex flex-wrap gap-y-8 gap-x-6 min-h-[300px]">
@@ -634,7 +670,61 @@ const LessonBlockBuilder = ({ blocks = [], onChange, initialPage = 1 }) => {
                                                                         </div>
                                                                     )}
 
-                                                                    {block.type === 'quiz' && (
+                                                                    
+                                                                     {![
+                                                                       'accordion', 'text', 'hadith', 'quran', 'scripture',
+                                                                       'design_markdown', 'video', 'audio', 'image', 'document',
+                                                                       'key_summary', 'summary', 'quiz'
+                                                                     ].includes(block.type) && (
+                                                                         <div className="space-y-4">
+                                                                             {typeof block.content === 'string' ? (
+                                                                                 <textarea 
+                                                                                     value={block.content}
+                                                                                     onChange={e => updateBlock(block.id, { content: e.target.value })}
+                                                                                     className="w-full bg-black/20 border border-emerald-500/10 rounded-xl p-4 text-xs focus:outline-none text-white leading-relaxed resize-y"
+                                                                                     rows={6}
+                                                                                 />
+                                                                             ) : typeof block.content === 'object' && block.content !== null && Object.entries(block.content || {}).map(([key, value]) => {
+                                                                                 if (typeof value === 'string') {
+                                                                                     return (
+                                                                                         <div key={key} className="space-y-1">
+                                                                                             <span className="text-[9px] font-black uppercase text-emerald-500">{key}</span>
+                                                                                             <textarea 
+                                                                                                 value={value}
+                                                                                                 onChange={e => updateBlockContent(block.id, { [key]: e.target.value })}
+                                                                                                 className="w-full bg-black/20 border border-emerald-500/10 rounded-xl p-3 text-xs focus:outline-none text-white leading-relaxed resize-y"
+                                                                                                 rows={Math.min(10, Math.max(2, value.length / 50))}
+                                                                                             />
+                                                                                         </div>
+                                                                                     );
+                                                                                 }
+                                                                                 if (Array.isArray(value) && typeof value[0] === 'string') {
+                                                                                     return (
+                                                                                         <div key={key} className="space-y-1">
+                                                                                             <span className="text-[9px] font-black uppercase text-emerald-500">{key}</span>
+                                                                                             <div className="space-y-2">
+                                                                                                 {value.map((item, i) => (
+                                                                                                     <input 
+                                                                                                         key={i}
+                                                                                                         value={item}
+                                                                                                         onChange={e => {
+                                                                                                             const newArr = [...value];
+                                                                                                             newArr[i] = e.target.value;
+                                                                                                             updateBlockContent(block.id, { [key]: newArr });
+                                                                                                         }}
+                                                                                                         className="w-full bg-black/20 border border-emerald-500/10 rounded-xl px-4 py-2 text-xs focus:outline-none text-white"
+                                                                                                     />
+                                                                                                 ))}
+                                                                                             </div>
+                                                                                         </div>
+                                                                                     );
+                                                                                 }
+                                                                                 return null;
+                                                                             })}
+                                                                         </div>
+                                                                     )}
+
+                                                                     {block.type === 'quiz' && (
                                                                         <div className="space-y-5">
                                                                             <input
                                                                                 type="text"
