@@ -117,7 +117,7 @@ const DashboardMobileNav = () => {
         initial={{ y: 100 }}
         animate={{ y: 0 }}
         transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-        className="fixed bottom-0 left-0 right-0 z-50 bg-bg/85 backdrop-blur-2xl border-t border-border dark:border-white/5 pb-[var(--safe-area-bottom)]"
+        className="fixed bottom-3 left-3 right-3 z-50 bg-slate-900/40 dark:bg-[#13182E]/40 backdrop-blur-3xl border border-white/5 shadow-2xl rounded-[28px] px-2 flex items-center h-16 pointer-events-auto max-w-md mx-auto"
       >
         <div className="flex items-center justify-between max-w-6xl mx-auto px-1 h-[var(--bottom-nav-height)]">
           {primaryNavItems.map((item) => {
