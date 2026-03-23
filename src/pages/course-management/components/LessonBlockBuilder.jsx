@@ -185,7 +185,16 @@ const LessonBlockBuilder = ({ blocks = [], onChange, initialPage = 1 }) => {
     };
 
     const updateBlock = (id, updates) => { triggerChange(activeBlocks.map(b => b.id === id ? { ...b, ...updates } : b)); };
-    const updateBlockContent = (id, contentUpdates) => { triggerChange(activeBlocks.map(b => b.id === id ? { ...b, content: { ...(b.content || {}), ...contentUpdates } } : b)); };
+    const updateBlockContent = (id, contentUpdates) => {
+        triggerChange(activeBlocks.map(b => {
+             if (b.id !== id) return b;
+             let currentContent = b.content;
+             if (typeof currentContent === 'string') {
+                 currentContent = { text: currentContent };
+             }
+             return { ...b, content: { ...(currentContent || {}), ...contentUpdates } };
+        }));
+    };
     const removeBlock = (id) => { triggerChange(activeBlocks.filter(b => b.id !== id)); };
 
     const onDragEnd = (result) => {
@@ -322,7 +331,7 @@ const LessonBlockBuilder = ({ blocks = [], onChange, initialPage = 1 }) => {
                                                                              placeholder="Collapsible Title..."
                                                                            />
                                                                            <textarea 
-                                                                             value={block.content?.text || ''}
+                                                                             value={typeof block.content === 'string' ? block.content : block.content?.text || ''}
                                                                              onChange={e => updateBlockContent(block.id, { text: e.target.value })}
                                                                              className="w-full h-32 bg-black/20 border border-emerald-500/10 rounded-2xl p-4 text-sm leading-relaxed focus:outline-none text-white"
                                                                              placeholder="Hidden content text (Markdown)..."
@@ -333,7 +342,7 @@ const LessonBlockBuilder = ({ blocks = [], onChange, initialPage = 1 }) => {
                                                                      {block.type === 'text' && (
                                                                         <div className="space-y-4">
                                                                           <textarea
-                                                                              value={block.content?.text || ''}
+                                                                              value={typeof block.content === 'string' ? block.content : block.content?.text || ''}
                                                                               onChange={e => updateBlockContent(block.id, { text: e.target.value })}
                                                                               placeholder="Write your lesson text here (Markdown supported)..."
                                                                               rows={4}
@@ -463,7 +472,7 @@ const LessonBlockBuilder = ({ blocks = [], onChange, initialPage = 1 }) => {
                                                                             placeholder="Styled Block Title"
                                                                           />
                                                                           <textarea 
-                                                                            value={block.content?.text || ''}
+                                                                            value={typeof block.content === 'string' ? block.content : block.content?.text || ''}
                                                                             onChange={e => updateBlockContent(block.id, { text: e.target.value })}
                                                                             className="w-full h-40 bg-black/20 border border-emerald-500/10 rounded-2xl p-4 text-sm leading-relaxed focus:outline-none text-white"
                                                                             placeholder="Content text..."
@@ -772,7 +781,14 @@ export default LessonBlockBuilder;
                                                                        'key_summary', 'summary', 'quiz'
                                                                      ].includes(block.type) && (
                                                                          <div className="space-y-4">
-                                                                             {Object.entries(block.content || {}).map(([key, value]) => {
+                                                                             {typeof block.content === 'string' ? (
+                                                                                 <textarea 
+                                                                                     value={block.content}
+                                                                                     onChange={e => updateBlock(block.id, { content: e.target.value })}
+                                                                                     className="w-full bg-black/20 border border-emerald-500/10 rounded-xl p-4 text-xs focus:outline-none text-white leading-relaxed resize-y"
+                                                                                     rows={6}
+                                                                                 />
+                                                                             ) : typeof block.content === 'object' && block.content !== null && Object.entries(block.content || {}).map(([key, value]) => {
                                                                                  if (typeof value === 'string') {
                                                                                      return (
                                                                                          <div key={key} className="space-y-1">
