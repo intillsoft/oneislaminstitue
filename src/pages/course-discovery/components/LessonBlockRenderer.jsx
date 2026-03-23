@@ -37,7 +37,7 @@ const getEmbedUrl = (url) => {
         else if (inputUrl.includes('/embed/')) videoId = inputUrl.split('/embed/')[1].split('?')[0].trim();
         else if (inputUrl.includes('/shorts/')) videoId = inputUrl.split('/shorts/')[1].split('?')[0].trim();
         else if (inputUrl.includes('youtube.com')) videoId = inputUrl.split('/').pop().split('?')[0].trim();
-        else videoId = inputUrl.split('?')[0].trim();
+        else videoId = '';
 
         if (videoId && videoId.length > 0 && videoId !== 'II?rel' && videoId !== 'II') {
             return `https://www.youtube-nocookie.com/embed/${videoId}?rel=0&modestbranding=1&showinfo=0&origin=${typeof window !== 'undefined' ? encodeURIComponent(window.location.origin) : ''}`;
