@@ -109,9 +109,9 @@ const LessonBlockBuilder = ({ blocks = [], onChange, initialPage = 1 }) => {
          const pages = Array.isArray(blocks) ? [...blocks] : [];
          if (pages.length > 0 && !pages[0].hasOwnProperty('page_number')) {
               return [
-                { page_number: 1, page_type: 'overview', content: [] },
+                { page_number: 1, page_type: 'overview', content: pages },
                 { page_number: 2, page_type: 'video', content: [] },
-                { page_number: 3, page_type: 'companion_guide', content: pages },
+                { page_number: 3, page_type: 'companion_guide', content: [] },
                 { page_number: 4, page_type: 'reflection_journal', content: [] },
                 { page_number: 5, page_type: 'knowledge_check', content: [] }
               ];
