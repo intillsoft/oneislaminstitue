@@ -239,6 +239,17 @@ export const MediaBlock = ({ content }) => {
             allowFullScreen
             referrerPolicy="strict-origin-when-cross-origin"
           ></iframe>
+          {/* Overlay Escape Link for Restricted Embeds flawslessly Node flowslessly */}
+          <div className="absolute bottom-4 right-4 z-50">
+               <a 
+                 href={content.url} 
+                 target="_blank" 
+                 rel="noopener noreferrer" 
+                 className="flex items-center gap-1.5 px-3 py-2 bg-black/60 hover:bg-black/80 backdrop-blur-md border border-white/10 rounded-xl text-[9px] font-black uppercase tracking-wider text-white hover:text-emerald-400 transition-all shadow-xl"
+               >
+                    <Icon name="ExternalLink" size={11} className="text-emerald-500" /> Watch on YouTube
+               </a>
+          </div>
         </div>
       ) : (
         <div className="p-12 text-center text-white flex flex-col items-center justify-center space-y-4">
