@@ -75,22 +75,25 @@ api.interceptors.response.use(
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
 
-      // Try to refresh session
-      const { data: { session }, error: refreshError } = await supabase.auth.refreshSession();
+      try {
+        // Try to refresh session
+        const { data: { session }, error: refreshError } = await supabase.auth.refreshSession();
 
-      if (!refreshError && session) {
-        originalRequest.headers.Authorization = `Bearer ${session.access_token}`;
-        return api(originalRequest);
-      }
+        if (!refreshError && session) {
+          originalRequest.headers.Authorization = `Bearer ${session.access_token}`;
+          return api(originalRequest);
+        }
 
-      // Redirect to login ONLY if we had a session that failed to refresh
-      const { data: { session: currentSession } } = await supabase.auth.getSession();
-      if (currentSession) {
+        // If refresh fails, we MUST kill the local session, or we fall into an infinite 401/Auth context reload loop.
+        await supabase.auth.signOut();
         window.location.href = '/login';
         return Promise.reject(new Error('Session expired. Please sign in again.'));
-      }
 
-      return Promise.reject(error);
+      } catch (err) {
+        await supabase.auth.signOut();
+        window.location.href = '/login';
+        return Promise.reject(err);
+      }
     }
 
     // Handle 403 - Forbidden
