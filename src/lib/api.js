@@ -76,7 +76,7 @@ api.interceptors.response.use(
       originalRequest._retry = true;
 
       try {
-        // Try to refresh session
+        // We shouldn't bombard refreshSession if multiple requests 401 at once.
         const { data: { session }, error: refreshError } = await supabase.auth.refreshSession();
 
         if (!refreshError && session) {
@@ -84,14 +84,20 @@ api.interceptors.response.use(
           return api(originalRequest);
         }
 
-        // If refresh fails, we MUST kill the local session, or we fall into an infinite 401/Auth context reload loop.
-        await supabase.auth.signOut();
-        window.location.href = '/login';
+        // Check if there's genuinely no session anymore.
+        const { data: { session: currentSession } } = await supabase.auth.getSession();
+        if (!currentSession) {
+          // Only force logout if the local session is completely dead
+          await supabase.auth.signOut();
+          if (window.location.pathname !== '/login') {
+            window.location.href = '/login';
+          }
+        }
         return Promise.reject(new Error('Session expired. Please sign in again.'));
 
       } catch (err) {
-        await supabase.auth.signOut();
-        window.location.href = '/login';
+        // Don't kill the session on a rate limit catch, just reject it
+        console.warn('Refresh session threw (rate limit or disconnected):', err);
         return Promise.reject(err);
       }
     }
