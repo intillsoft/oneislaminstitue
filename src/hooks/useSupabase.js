@@ -162,10 +162,12 @@ export function useAuth() {
 
   useEffect(() => {
     // Get initial session
-    auth.getSession().then((res) => {
-      const session = res?.data?.session || null;
+    auth.getSession().then((session) => {
       setSession(session);
       setUser(session?.user ?? null);
+      setLoading(false);
+    }).catch((err) => {
+      console.error('Failed to get session:', err);
       setLoading(false);
     });
 

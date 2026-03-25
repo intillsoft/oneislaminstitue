@@ -1,0 +1,152 @@
+const { createClient } = require('@supabase/supabase-js');
+const fs = require('fs');
+require('dotenv').config({ path: 'backend/.env' });
+
+const url = process.env.SUPABASE_URL;
+const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+const supabase = createClient(url, key);
+
+async function run() {
+    const lessonId = '42ab766d-1a0d-48d7-98c1-42dcd9240ab9'; 
+    const { data: lesson } = await supabase.from('course_lessons').select('content_data').eq('id', lessonId).single();
+    if (!lesson || !lesson.content_data?.pages) {
+         console.log('NO PAGES FOUND');
+         return;
+    }
+    const pages = lesson.content_data.pages;
+    const page3 = pages.find(p => p.page_number === 3);
+
+    if (!page3) {
+         console.log('NO PAGE 3 FOUND');
+         return;
+    }
+
+    // Explicitly rebuild Page 3 to be 100% Verbatim flawless Coordinate
+    page3.content = [
+           {
+              "id": "intro_text",
+              "type": "text",
+              "content": "**Summary of Key Points**\n\n- Every human is born with a fitrah – an innate awareness of God.\n- The universe displays overwhelming order, design, and fine‑tuning, pointing to a Creator.\n- Our own existence, consciousness, and moral sense also point to a transcendent source.\n- The Quran invites us to reflect on \"signs\" (ayat) in creation as evidence of the Creator.\n- While the fitrah is natural, it can be obscured by environment, culture, and personal choices.\n- Certainty in God grows through reflection, study, and sincere seeking.\n- Rational arguments (cosmological, teleological, moral) support the intuitive knowledge of God.\n\n---\n\n**Deeper Explanation**\n\n**The Fitrah – The Innate Compass**\n"
+           },
+           {
+              "id": "h_fitrah_1",
+              "type": "hadith",
+              "translation": "\"Every child is born upon the fitrah, then his parents make him a Jew, a Christian, or a Magian.\"",
+              "arabic": "مَا مِنْ مَوْلُودٍ إِلَّا يُولَدُ عَلَى الْفِطْرَةِ، فَأَبَوَاهُ يُهَوِّدَانِهِ أَوْ يُنَصِّرَانِهِ أَوْ يُمَجِّسَانِهِ"
+           },
+           {
+              "id": "fitrah_body",
+              "type": "text",
+              "content": "Fitrah is the original, uncorrupted state in which humans are created – a pure nature that inclines toward belief in one God and moral goodness. It is like a compass that, when not tampered with, points to true north.\n\nThis innate disposition explains why children naturally ask \"Who made the sky?\" and why even atheists in moments of extreme distress often cry out to a higher power. The fitrah is a direct witness to God within every soul. Allah says:\n"
+           },
+           {
+              "id": "q_fitrah_1",
+              "type": "quran",
+              "translation": "\"So direct your face toward the religion, inclining to truth. [Adhere to] the fitrah of Allah upon which He has created [all] people. No change should there be in the creation of Allah.\"",
+              "arabic": "فَأَقِمْ وَجْهَكَ لِلدِّينِ حَنِيفًا ۚ فِطْرَتَ اللَّهِ الَّتِي فَطَرَ النَّاسَ عَلَيْهَا ۚ لَا تَبْدِيلَ لِخَلْقِ اللَّهِ"
+           },
+           {
+              "id": "fitrah_end_body",
+              "type": "text",
+              "content": "However, the fitrah can be covered by layers of conditioning, culture, and sin – like a mirror covered with dust. When that dust is wiped away, the original reflection reappears.\n\n**The Argument from Design (Teleological Argument)**\n\nImagine walking in a desert and finding a watch on the ground. You would never assume it came together by chance; its intricate parts, working together to tell time, demand a watchmaker. The universe is infinitely more complex than any watch. From the spiral galaxies to the double‑helix of DNA, from the precise tilt of the earth to the constants of physics, everything points to intentional design.\n\nThe Quran draws attention to this:\n"
+           },
+           {
+              "id": "q_design_1",
+              "type": "quran",
+              "translation": "\"Indeed, in the creation of the heavens and the earth and the alternation of the night and the day are signs for those of understanding.\"",
+              "arabic": "إِنَّ فِي خَلْقِ السَّمَاوَاتِ وَالْأَرْضِ وَاخْتِلَافِ اللَّيْلِ وَالنَّهَارِ لَآيَاتٍ لِّأُولِي الْأَلْبَابِ"
+           },
+           {
+              "id": "design_end_body",
+              "type": "text",
+              "content": "The word \"signs\" (ayat) is the same used for verses of the Quran – creation itself is a book of signs pointing to its Author.\n\n**The Cosmological Argument**\n\nEverything that begins to exist has a cause. The universe began to exist (scientific evidence points to a beginning – the Big Bang). Therefore, the universe has a cause. That cause must be eternal, powerful, and beyond the universe – what we call God.\n\nThe Quran presents this argument succinctly:\n"
+           },
+           {
+              "id": "q_cosmo_1",
+              "type": "quran",
+              "translation": "\"Were they created by nothing, or were they the creators [of themselves]? Or did they create the heavens and the earth? Rather, they are not certain.\"",
+              "arabic": "أَمْ خُلِقُوا مِنْ غَيْرِ شَيْءٍ أَمْ هُمُ الْخَالِقُونَ، أَمْ خَلَقُوا السَّمَاوَاتِ وَالْأَرْضَ ۚ بَل لَّا يُوقِنُونَ"
+           },
+           {
+              "id": "cosmo_end_body",
+              "type": "text",
+              "content": "Either the universe came from nothing (impossible), or it created itself (absurd), or it has a Creator.\n\n**The Moral Argument**\n\nHumans have an innate sense of right and wrong. We believe that torturing children for fun is wrong, not just a matter of opinion. This objective morality cannot be explained by evolution alone; it points to a transcendent Moral Lawgiver. Allah describes this internal witness:\n"
+           },
+           {
+              "id": "q_moral_1",
+              "type": "quran",
+              "translation": "\"And [by] the soul and He who proportioned it, and inspired it [with discernment of] its wickedness and its righteousness.\"",
+              "arabic": "وَنَفْسٍ وَمَا سَوَّاهَا، فَأَلْهَمَهَا فُجُورَهَا وَتَقْوَاهَا"
+           },
+           {
+              "id": "moral_end_body",
+              "type": "text",
+              "content": "**Why Do Some Deny God?**\n\nDespite the clear signs, some people reject belief in God. The Quran explains several reasons:\n\n- **Arrogance and pride:** \"They denied them, although their souls were convinced thereof, out of injustice and haughtiness.\"\n- **Blind following:** \"Indeed, they found their fathers astray, so they hasten in their footsteps.\"\n- **Love of this world:** \"But you prefer the worldly life, while the Hereafter is better and more enduring.\"\n- **Sins clouding the heart:** \"No! Rather, the stain has covered their hearts of that which they were earning.\"\n\n**Strengthening Your Certainty**\n\nThe believer's certainty in God grows through:\n\n- Reflecting on nature and one's own body\n- Studying the Quran with its descriptions of creation\n- Reading the stories of prophets and their struggles\n- Making du'a for guidance and certainty\n- Surrounding oneself with righteous people\n- Removing distractions that harden the heart\n"
+           },
+           {
+              "id": "divider_verses",
+              "type": "text",
+              "content": "---\n## Supplemental Quranic Verses\n"
+           },
+           {
+              "id": "q_verse_2_164",
+              "type": "quran",
+              "translation": "\"Indeed, in the creation of the heavens and the earth, and the alternation of the night and the day, and the [great] ships which sail through the sea... are signs for a people who use reason.\"",
+              "arabic": "إِنَّ فِي خَلْقِ السَّمَاوَاتِ وَالْأَرْضِ وَاخْتِلَافِ اللَّيْلِ وَالنَّهَارِ وَالْفُلْكِ الَّتِي تَجْرِي فِي الْبَحْرِ بِمَا يَنفَعُ النَّاسَ"
+           },
+           {
+              "id": "q_verse_41_53",
+              "type": "quran",
+              "translation": "\"We will show them Our signs in the horizons and within themselves until it becomes clear to them that it is the truth.\"",
+              "arabic": "سَنُرِيهِمْ آيَاتِنَا فِي الْآفَاقِ وَفِي أَنفُسِهِمْ حَتَّىٰ يَتَبَيَّنَ لَهُمْ أَنَّهُ الْحَقُّ"
+           },
+           {
+              "id": "q_verse_51_20",
+              "type": "quran",
+              "translation": "\"And on the earth are signs for the certain [in faith], and in yourselves. Then will you not see?\"",
+              "arabic": "وَفِي الْأَرْضِ آيَاتٌ لِّلْمُوقِنِينَ، وَفِي أَنفُسِكُمْ ۚ أَفَلَا تُبْصِرُونَ"
+           },
+           {
+              "id": "divider_hadiths",
+              "type": "text",
+              "content": "---\n## Supplemental Hadith References\n"
+           },
+           {
+              "id": "h_verse_fitrah_rep",
+              "type": "hadith",
+              "translation": "\"Every child is born upon the fitrah; his parents make him a Jew, a Christian, or a Magian.\"",
+              "arabic": "مَا مِنْ مَوْلُودٍ إِلَّا يُولَدُ عَلَى الْفِطْرَةِ، فَأَبَوَاهُ يُهَوِّدَانِهِ أَوْ يُنَصِّرَانِهِ أَوْ يُمَجِّسَانِهِ"
+           },
+           {
+              "id": "h_verse_strong",
+              "type": "hadith",
+              "translation": "\"The strong believer is better and more beloved to Allah than the weak believer, but there is good in both.\"",
+              "arabic": "الْمُؤْمِنُ الْقَوِيُّ خَيْرٌ وَأَحَبُّ إِلَى اللَّهِ مِنَ الْمُؤْمِنِ الضَّعِيفِ، وَفِي كُلٍّ خَيْرٌ"
+           },
+           {
+              "id": "h_verse_hearts",
+              "type": "hadith",
+              "translation": "\"Indeed, Allah does not look at your appearance or your wealth, but He looks at your hearts and your deeds.\"",
+              "arabic": "إِنَّ اللَّهَ لَا يَنْظُرُ إِلَى صُوَرِكُمْ وَأَمْوَالِكُمْ، وَلَكِنْ يَنْظُرُ إِلَى قُلُوبِكُمْ وَأَعْمَالِكُمْ"
+           },
+           {
+              "id": "divider_stories",
+              "type": "text",
+              "content": "---\n## Stories and Examples\n\n**The Bedouin and the Camel**\n\nA Bedouin was once asked how he knew God existed. He replied: \"The camel's dung indicates the camel; footprints indicate the traveler. So the heavens with their stars, the earth with its mountains and valleys, and the oceans with their waves – do they not indicate the All‑Hearing, All‑Seeing?\" This simple analogy captures the argument from design.\n\n**The Story of Prophet Ibrahim (Abraham) Seeking God**\n\nProphet Ibrahim (peace be upon him) grew up in a society that worshipped idols. He used his reason to question this practice. The Quran narrates:\n\n> *\"فَلَمَّا جَنَّ عَلَيْهِ اللَّيْلُ رَأَىٰ كَوْكَبًا ۖ قَالَ هَـٰذَا رَبِّي ۖ فَلَمَّا أَفَلَ قَالَ لَا أُحِبُّ الْآفِلِينَ\"*\n> \"When the night covered him, he saw a star. He said, 'This is my lord.' But when it set, he said, 'I like not those that set.'\" (Quran 6:76)\n\nHe then observed the moon and the sun, each setting. He concluded that the true Lord is the One who never sets, the Creator of all. He used his senses and reason to arrive at the truth, and Allah guided him.\n\n**The Astronaut's Testimony**\n\nMany astronauts, upon seeing the earth from space, have reported profound spiritual experiences. Soviet cosmonaut Alexei Leonov said, \"The Earth was small, light blue, and so touchingly alone. I felt a sudden overwhelming sense of awe and a conviction that there must be a Creator.\" Such experiences resonate with the fitrah.\n\n**The Story of Abu Jahl's Admission**\n\nEven the staunchest enemies of the Prophet acknowledged a supreme Creator. Abu Jahl, when asked if he believed Muhammad was truthful, said: \"We know he is truthful, but we follow the ways of our fathers.\" This shows that knowledge of truth can coexist with rejection due to arrogance or social pressure.\n\n**The Fine‑Tuning of the Universe**\n\nScientists have discovered that the constants of physics (gravity, electromagnetic force, etc.) are precisely set to allow life. If gravity were slightly stronger, the universe would collapse; if weaker, stars would not form. This fine‑tuning points to intentional design rather than chance. The Prophet (peace be upon him) said: \"Reflect on the creation of Allah, but do not reflect on Allah Himself.\"\n\n--- \n\n### Key Takeaways\n\n1. **Fitrah is your inner compass.** You were born with an innate awareness of God.\n2. **Creation points to the Creator.** The universe is full of signs.\n3. **Rational arguments support faith.**\n4. **Denial often stems from the heart, not the mind.**\n5. **Certainty grows with reflection.**\n6. **Your body is a sign.**\n7. **Ask Allah for guidance.**\n\n---\n\n### Vocabulary\n\n| Term | Definition |\n| :--- | :--- |\n| **Fitrah** | Innate human nature inclined to believe in God and recognize truth. |\n| **Dalil** | Proof, evidence. |\n| **Ayat** | Signs (in creation and revelation). |\n| **Tawheed** | Oneness of God. |\n| **Khaliq** | The Creator. |\n| **Nidham** | Order, design. |\n| **Sabab** | Cause. |\n| **Ghayb** | The unseen. |\n| **Yaqin** | Certainty. |\n| **Shirk** | Associating partners with God. |\n"
+           }
+    ];
+
+    const { error } = await supabase
+        .from('course_lessons')
+        .update({ content_data: { pages: pages } })
+        .eq('id', lessonId);
+
+    if (error) {
+         console.error('ERROR SEEDING P3 VERBATIM:', error);
+         return;
+    }
+
+    console.log('PAGE 3 VERBATIM RESTORE OK');
+}
+
+run();

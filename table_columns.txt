@@ -1,0 +1,22 @@
+[
+  "id",
+  "module_id",
+  "course_id",
+  "title",
+  "description",
+  "content_type",
+  "content_data",
+  "duration_minutes",
+  "sort_order",
+  "is_free_preview",
+  "is_published",
+  "created_at",
+  "updated_at",
+  "video_url",
+  "markdown_content",
+  "infographic_urls",
+  "pdf_attachment_urls",
+  "coin_reward",
+  "xp_reward",
+  "content_blocks"
+]
