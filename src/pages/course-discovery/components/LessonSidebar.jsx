@@ -47,14 +47,18 @@ const LessonSidebar = ({
                         animate={{ x: 0 }}
                         exit={{ x: '-100%' }}
                         transition={{ duration: 0.4, ease: "circOut" }}
-                        className="fixed left-0 top-[var(--header-height)] bottom-0 z-50 w-[300px] bg-[#0A0E27]/95 backdrop-blur-3xl flex flex-col h-[calc(100vh-var(--header-height))] border-r border-emerald-500/10 shadow-3xl safe-area-bottom overflow-hidden"
+                        className={`fixed left-0 top-[var(--header-height)] z-50 w-[300px] flex flex-col pointer-events-auto transition-all duration-500 ease-in-out ${
+                            isMobile 
+                            ? 'bottom-0 bg-[#0A0E27]/90 backdrop-blur-2xl border-r border-emerald-500/10 rounded-tr-[2.5rem]' 
+                            : 'h-[calc(100vh-calc(var(--header-height)+2rem))] mt-4 ml-4 rounded-3xl bg-[#090C22]/40 backdrop-blur-2xl border border-white/[0.04] shadow-2xl'
+                        } overflow-hidden`}
                     >
                         {/* Decorative Background Glows */}
-                        <div className="absolute top-0 left-0 w-full h-40 bg-gradient-to-b from-emerald-500/5 via-transparent to-transparent pointer-events-none" />
-                        <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-emerald-500/5 rounded-full blur-[80px] pointer-events-none" />
+                        <div className="absolute top-0 left-0 w-full h-64 bg-gradient-to-b from-emerald-500/5 to-transparent pointer-events-none" />
+                        <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-emerald-500/5 to-transparent pointer-events-none" />
                         
                         {/* Sidebar Header - Navigation & Close */}
-                        <div className="flex-shrink-0 h-14 flex items-center justify-between px-6 border-b border-white/[0.03] relative z-50 bg-[#0A0E27]/40 backdrop-blur-md">
+                        <div className="flex-shrink-0 h-14 flex items-center justify-between px-6 border-b border-emerald-500/10 relative z-50">
                             <button 
                                 onClick={() => navigate(`/courses/${courseId}/learn`)}
                                 className="flex items-center gap-3 text-slate-300 hover:text-emerald-400 transition-all group"
@@ -161,10 +165,10 @@ const LessonSidebar = ({
                                                 }}
                                                 className={`w-full flex items-center justify-between gap-4 px-4 py-3.5 rounded-2xl transition-all border relative group ${
                                                     isActive 
-                                                    ? 'bg-emerald-500/[0.07] border-emerald-500/20 text-white shadow-lg shadow-emerald-500/5' 
+                                                    ? 'bg-gradient-to-r from-emerald-500/10 to-transparent text-emerald-300 border-emerald-500/10 shadow-lg shadow-emerald-500/5' 
                                                     : isLocked 
                                                         ? 'opacity-20 border-transparent'
-                                                        : 'text-slate-400 hover:text-white hover:bg-white/[0.03] border-white/[0.02] hover:border-white/[0.06]'
+                                                        : 'text-slate-400 hover:text-white hover:bg-white/[0.03] border-transparent hover:border-white/[0.06]'
                                                 }`}
                                             >
                                                 {isActive && (
@@ -176,11 +180,11 @@ const LessonSidebar = ({
                                                 
                                                 <div className="flex items-center gap-3 min-w-0 pl-3">
                                                     <div className={`flex-shrink-0 w-5 h-5 flex items-center justify-center rounded-lg text-[8px] font-black border transition-all ${
-                                                        isActive ? 'bg-emerald-500 border-emerald-500/20 text-white shadow-lg shadow-emerald-500/10' : 'bg-white/[0.03] border-white/[0.03] text-slate-500 group-hover:text-emerald-400 group-hover:border-emerald-500/20'
+                                                        isActive ? 'bg-emerald-500 border-emerald-500/20 text-[#090C22] shadow-lg shadow-emerald-500/10' : 'bg-white/[0.03] border-white/[0.03] text-slate-500 group-hover:text-emerald-400 group-hover:border-emerald-500/20'
                                                     }`}>
                                                         {isLocked && !isActive ? <Lock size={8} /> : lIndex + 1}
                                                     </div>
-                                                    <span className={`text-[10px] font-black uppercase tracking-wider truncate ${isActive ? 'text-white' : 'group-hover:text-white transition-colors'}`}>
+                                                    <span className={`text-[10px] font-black uppercase tracking-wider truncate transition-colors ${isActive ? 'text-emerald-400 animate-pulse-elite' : 'group-hover:text-emerald-500'}`}>
                                                         {lesson.title}
                                                     </span>
                                                 </div>

@@ -193,7 +193,7 @@ const JobPerformanceTable = () => {
                   <td className="px-8 py-6 text-sm font-black text-text-secondary hidden xl:table-cell">{job?.academicValue}</td>
                   <td className="px-8 py-6 text-right">
                     <div className="flex items-center justify-end gap-3 opacity-40 group-hover:opacity-100 transition-opacity">
-                      <Link to={`/courses/detail/${job?.id}`} target="_blank" className="p-2 bg-surface text-text-muted rounded-lg hover:bg-workflow-primary hover:text-white transition-all border border-border shadow-xl flex items-center justify-center">
+                      <Link to={`/courses/detail/${job?.id}`} className="p-2 bg-surface text-text-muted rounded-lg hover:bg-workflow-primary hover:text-white transition-all border border-border shadow-xl flex items-center justify-center">
                         <Icon name="Eye" size={14} />
                       </Link>
                       <Link to="/instructor/courses" className="p-2 bg-surface text-text-muted rounded-lg hover:bg-emerald-600 hover:text-white transition-all border border-border shadow-xl flex items-center justify-center">

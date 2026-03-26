@@ -467,7 +467,7 @@ const LessonView = () => {
             {/* Main Content Area */}
             <div 
                 ref={scrollContainerRef}
-                className={`flex-1 overflow-y-auto scroll-native relative w-full transition-all duration-500 ease-in-out ${sidebarOpen ? 'lg:pl-[300px]' : ''}`}
+                className={`flex-1 overflow-y-auto scroll-native relative w-full transition-all duration-500 ease-in-out ${sidebarOpen ? 'lg:pl-[332px]' : ''}`}
             >
                 {/* Header Navbar transparent overlay natively flawlessly setup frame */}
                 <div className="sticky top-0 z-30 bg-white/100 dark:bg-[#0A0E27] border-b border-white/[0.03] h-[var(--header-height)] px-4 lg:px-12 flex justify-between items-center transition-all">
