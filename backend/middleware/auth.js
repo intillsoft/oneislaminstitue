@@ -13,6 +13,7 @@ dotenv.config();
 
 // In-memory token cache: token -> { user, expiresAt }
 const tokenCache = new Map();
+const pendingVerifications = new Map(); // NEW: Deduplicate concurrent requests
 const CACHE_TTL_MS = 60_000; // Cache valid tokens for 60 seconds
 
 function getCachedUser(token) {
@@ -26,7 +27,6 @@ function getCachedUser(token) {
 }
 
 function setCachedUser(token, user) {
-  // Clean up old entries periodically
   if (tokenCache.size > 500) {
     const now = Date.now();
     for (const [key, entry] of tokenCache.entries()) {
@@ -39,13 +39,6 @@ function setCachedUser(token, user) {
   });
 }
 
-/**
- * Attempt to decode the JWT locally without a network call.
- * This gives us the user's sub (id), email, and role from the token payload.
- * We do NOT verify the signature here — only use this as a fallback when
- * Supabase is unreachable. The token was issued by Supabase so it's trusted
- * if it hasn't expired.
- */
 function decodeTokenLocally(token) {
   try {
     const decoded = jwt.decode(token, { complete: true });
@@ -54,7 +47,6 @@ function decodeTokenLocally(token) {
     const { sub, email, exp, user_metadata, app_metadata } = decoded.payload;
     if (!sub) return null;
 
-    // Check if expired
     if (exp && Date.now() / 1000 > exp) {
       logger.warn('Local JWT decode: token is expired');
       return null;
@@ -72,9 +64,6 @@ function decodeTokenLocally(token) {
   }
 }
 
-/**
- * Authenticate user from JWT token
- */
 export async function authenticate(req, res, next) {
   try {
     const authHeader = req.headers.authorization;
@@ -100,7 +89,16 @@ export async function authenticate(req, res, next) {
 
     // 2. Try Supabase verification (authoritative but needs network)
     try {
-      const { data: { user }, error } = await supabase.auth.getUser(token);
+      // DEDUPLICATE CONCURRENT REQUESTS (Prevents 429 on initial dashboard load burst)
+      let verifyPromise = pendingVerifications.get(token);
+      if (!verifyPromise) {
+        verifyPromise = supabase.auth.getUser(token).finally(() => {
+          pendingVerifications.delete(token); // CLEANUP
+        });
+        pendingVerifications.set(token, verifyPromise);
+      }
+
+      const { data: { user }, error } = await verifyPromise;
 
       if (!error && user) {
         setCachedUser(token, user);
@@ -110,20 +108,20 @@ export async function authenticate(req, res, next) {
       }
 
       if (error) {
-        // If it's a network/timeout error, fall through to local decode
+        // Fallback to local if it's a network OR rate limit error
         const isNetworkError = error.message?.includes('fetch') ||
           error.message?.includes('timeout') ||
           error.message?.includes('ECONNREFUSED') ||
           error.message?.includes('ConnectTimeout') ||
-          error.message?.includes('UND_ERR');
+          error.message?.includes('UND_ERR') ||
+          error.status === 429 || // RATE LIMIT (Too Many Requests)
+          error.message?.includes('rate limit'); // Supabase custom error
 
         if (!isNetworkError) {
-          // It's an actual auth error (invalid token, expired, etc.)
           logger.warn('Auth: Invalid token -', error.message);
           return res.status(401).json({ error: 'Invalid token' });
         }
-
-        logger.warn('Auth: Supabase network issue, falling back to local JWT decode:', error.message);
+        logger.warn('Auth: Supabase network/rate issue, falling back to local JWT decode:', error.message);
       }
     } catch (networkErr) {
       logger.warn('Auth: Network error reaching Supabase, trying local decode:', networkErr.message);
@@ -132,8 +130,7 @@ export async function authenticate(req, res, next) {
     // 3. Fallback: local JWT decode (no network, no signature verification)
     const localUser = decodeTokenLocally(token);
     if (localUser) {
-      logger.info(`Auth: Using local decode for user ${localUser.id} (Supabase temporarily unreachable)`);
-      // Cache for a shorter time since we didn't fully verify
+      logger.info(`Auth: Using local decode for user ${localUser.id} (Supabase rate limited/unreachable)`);
       tokenCache.set(token, { user: localUser, expiresAt: Date.now() + 30_000 });
       req.user = localUser;
       req.supabase = supabase;
