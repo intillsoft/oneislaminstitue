@@ -237,7 +237,7 @@ const Checkout = () => {
                             <div className="flex flex-wrap items-center gap-2 sm:gap-4 mb-6 sm:mb-8">
                                 <div className="flex items-center gap-1.5 sm:gap-2 px-3 py-1.5 bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 mb-2 sm:mb-0">
                                     <BookOpen className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-500" />
-                                    <span className="text-[10px] sm:text-xs font-black uppercase tracking-widest text-slate-700 dark:text-slate-300">One Islam Institute</span>
+                                    <span className="text-[10px] sm:text-xs font-black uppercase tracking-widest text-slate-700 dark:text-slate-300">Hope Dawah Institute</span>
                                 </div>
                                 <span className="text-[10px] sm:text-xs font-bold text-slate-500 dark:text-slate-400 px-2 border-l border-slate-200 dark:border-slate-700">
                                     Trusted Secure Entry

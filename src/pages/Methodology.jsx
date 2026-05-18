@@ -122,7 +122,7 @@ const Methodology = () => {
                         ))}
                     </div>
                     <p className="mt-6 text-slate-500 text-xs max-w-2xl mx-auto italic">
-                        *While we curate content from these institutions, One Islam Institute is an independent entity focused on pedagogical structuring.
+                        *While we curate content from these institutions, Hope Dawah Institute is an independent entity focused on pedagogical structuring.
                     </p>
                 </div>
             </section>

@@ -174,7 +174,7 @@ export const certificateService = {
             fontFamily: "Inter",
             showLogo: true,
             layout: "classic", // classic, modern, minimal, centered
-            signatureName: "One Islam Institute",
+            signatureName: "Hope Dawah Institute",
             signatureTitle: "Academic Director",
             customText: lessonId ? "This is to certify that you have successfully achieved this learning milestone." : "This is to certify that you have successfully completed the course requirements."
         }

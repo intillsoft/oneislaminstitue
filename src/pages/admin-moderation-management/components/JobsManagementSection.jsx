@@ -143,7 +143,7 @@ const JobsManagementSection = () => {
                         </div>
                         <div className="min-w-0">
                           <div className="text-sm font-bold text-white group-hover:text-emerald-500 transition-colors uppercase tracking-tight truncate">{course.title}</div>
-                          <div className="text-[10px] font-semibold text-slate-500 uppercase tracking-widest mt-1">{course.company || 'One Islam Institute'} • {course.industry || 'Sacred Knowledge'}</div>
+                          <div className="text-[10px] font-semibold text-slate-500 uppercase tracking-widest mt-1">{course.company || 'Hope Dawah Institute'} • {course.industry || 'Sacred Knowledge'}</div>
                         </div>
                       </div>
                     </td>

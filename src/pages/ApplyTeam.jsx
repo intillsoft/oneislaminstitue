@@ -55,7 +55,7 @@ const ApplyTeam = () => {
                     </div>
                     <h2 className="text-3xl font-black text-white mb-4 uppercase italic">JazakAllah Khair</h2>
                     <p className="text-slate-400 mb-8 leading-relaxed">
-                        Your application to join the One Islam Curator Team has been received. Our team will review your profile and reach out via <span className="text-white font-bold">{formData.email}</span> within 5-7 business days.
+                        Your application to join the Hope Dawah Curator Team has been received. Our team will review your profile and reach out via <span className="text-white font-bold">{formData.email}</span> within 5-7 business days.
                     </p>
                     <button 
                         onClick={() => navigate('/')}

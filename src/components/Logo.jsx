@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 /**
- * Logo Component - Displays the One Islam Institute logo
+ * Logo Component - Displays the Hope Dawah Institute logo
  * 
  * @param {string} size - Size: 'sm', 'md', 'lg', 'xl'
  * @param {string} className - Additional CSS classes

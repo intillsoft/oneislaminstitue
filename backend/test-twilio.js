@@ -33,7 +33,7 @@ async function testTwilio() {
     try {
         console.log(`Sending test SMS to ${TO_PHONE_NUMBER}...`);
         const message = await client.messages.create({
-            body: 'Hello from One Islam Institute! Your Twilio integration is working successfully.',
+            body: 'Hello from Hope Dawah Institute! Your Twilio integration is working successfully.',
             from: fromPhoneNumber,
             to: TO_PHONE_NUMBER
         });

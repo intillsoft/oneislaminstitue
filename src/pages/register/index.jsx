@@ -160,7 +160,7 @@ const Register = () => {
               Create Your Account
             </h1>
             <p className="text-lg text-text-secondary dark:text-dark-text-secondary">
-              Choose your role and start your journey with One Islam Institute
+              Choose your role and start your journey with Hope Dawah Institute
             </p>
           </div>
 

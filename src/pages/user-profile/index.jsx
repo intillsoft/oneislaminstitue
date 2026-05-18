@@ -341,13 +341,13 @@ const UserProfile = () => {
   return (
     <>
       <Helmet>
-        <title>Academic Identity Registry - One Islam Institute</title>
+        <title>Academic Identity Registry - Hope Dawah Institute</title>
       </Helmet>
       <div className="pb-20">
         <div className="mx-auto pt-6">
             <ElitePageHeader
               title="Academic Identity"
-              description="Managing your scholarly presence and cryptographic credentials within the One Islam Institute."
+              description="Managing your scholarly presence and cryptographic credentials within the Hope Dawah Institute."
               badge="Scholar Profile"
             />
 

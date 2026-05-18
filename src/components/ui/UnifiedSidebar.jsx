@@ -1,6 +1,6 @@
 /**
  * Unified Sidebar Component - Academic Metamorphosis
- * Adapted for One Islam Institute
+ * Adapted for Hope Dawah Institute
  */
 
 import React, { useState, useEffect, useRef } from 'react';

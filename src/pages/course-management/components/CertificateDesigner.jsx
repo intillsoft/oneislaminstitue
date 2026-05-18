@@ -31,7 +31,7 @@ const CertificateDesigner = ({ courseId, courseTitle }) => {
     borderStyle: "ornate", // none, simple, ornate, double
     showLogo: true,
     showSeal: true,
-    signatureName: "One Islam Institute",
+    signatureName: "Hope Dawah Institute",
     signatureTitle: "Academic Director",
     customText: "This is to certify that you have successfully completed the rigorous requirements of this academic course."
   });
@@ -275,7 +275,7 @@ const CertificateDesigner = ({ courseId, courseTitle }) => {
                                         </div>
                                      )}
                                      <div className="text-left">
-                                        <p className="text-[10px] font-black tracking-[0.2em] uppercase text-stone-900 leading-tight">One Islam Institute</p>
+                                        <p className="text-[10px] font-black tracking-[0.2em] uppercase text-stone-900 leading-tight">Hope Dawah Institute</p>
                                         <p className="text-[6px] font-bold text-stone-500 uppercase tracking-widest -mt-1">Verified Academic Branch</p>
                                      </div>
                                   </div>

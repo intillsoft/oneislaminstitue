@@ -97,7 +97,7 @@ const RegisterForm = ({ onSuccess, isLoading: externalLoading }) => {
         professional_title: formData.professionalTitle,
         role: 'student',
       });
-      success('Account created successfully! You can now access the One Islam Institute.');
+      success('Account created successfully! You can now access the Hope Dawah Institute.');
       if (onSuccess) {
         onSuccess({
           fullName: formData?.fullName,

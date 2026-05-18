@@ -298,7 +298,7 @@ async function restructureCourses() {
       total_modules: c.modules.length,
       total_lessons: c.modules.reduce((acc, m) => acc + m.lessons.length, 0),
       instructor_id: instr?.id,
-      company: 'One Islam Institute',
+      company: 'Hope Dawah Institute',
       course_level: 'beginner',
       created_by: instr?.id
     }).select().single();

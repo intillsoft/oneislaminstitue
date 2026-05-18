@@ -317,7 +317,7 @@ export const notificationService = {
         try {
             // Prefer channel-specific message
             const content = smsMessage || `${title}: ${message}`;
-            const smsBody = `[One Islam] ${content}`;
+            const smsBody = `[Hope Dawah] ${content}`;
             await smsService.sendSMS(phone, smsBody);
         } catch (error) {
             logger.error('Error sending SMS notification:', error);
@@ -329,7 +329,7 @@ export const notificationService = {
         try {
             // Prefer channel-specific message
             const content = whatsappMessage || `${title}\n${message}`;
-            const waBody = `*One Islam Institute*\n\n${content}`;
+            const waBody = `*Hope Dawah Institute*\n\n${content}`;
             await smsService.sendWhatsApp(phone, waBody);
         } catch (error) {
             logger.error('Error sending WhatsApp notification:', error);
@@ -353,7 +353,7 @@ export const notificationService = {
                 html: `
                     <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; background-color: #ffffff; padding: 40px; border: 1px solid #efefef; border-radius: 16px;">
                         <div style="text-align: center; margin-bottom: 40px;">
-                            <h1 style="color: #10b981; margin: 0; font-size: 28px; letter-spacing: -0.025em; font-weight: 800;">ONE ISLAM</h1>
+                            <h1 style="color: #10b981; margin: 0; font-size: 28px; letter-spacing: -0.025em; font-weight: 800;">Hope Dawah</h1>
                             <p style="color: #64748b; margin-top: 8px; font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em;">Elite Scholarly Curriculum</p>
                         </div>
                         
@@ -363,7 +363,7 @@ export const notificationService = {
                             
                             <div style="margin-top: 48px; padding-top: 32px; border-top: 1px solid #f1f5f9; text-align: center;">
                                 <p style="color: #94a3b8; font-size: 12px; margin-bottom: 8px;">You're receiving this as a member of our global knowledge network.</p>
-                                <p style="color: #94a3b8; font-size: 12px; margin: 0;">&copy; 2026 One Islam Institute. All rights reserved.</p>
+                                <p style="color: #94a3b8; font-size: 12px; margin: 0;">&copy; 2026 Hope Dawah Institute. All rights reserved.</p>
                             </div>
                         </div>
                     </div>

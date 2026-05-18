@@ -102,7 +102,7 @@ router.post('/', async (req, res) => {
             if (user) {
                 await sendEmail({
                     to: user.email,
-                    subject: 'Donation Received - One Islam Institute',
+                    subject: 'Donation Received - Hope Dawah Institute',
                     html: `<p>Hello ${user.name || 'User'},</p><p>We have successfully received your donation of ${data.currency} ${(data.amount / 100).toFixed(2)}.</p><p>Thank you for your support!</p>`
                 });
             }

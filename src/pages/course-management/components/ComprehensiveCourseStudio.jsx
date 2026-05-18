@@ -5,7 +5,7 @@ import Icon from 'components/AppIcon';
 import { EliteCard } from '../../../components/ui/EliteCard';
 
 /**
- * Comprehensive Course Studio - The advanced toolkit for One Islam Institute
+ * Comprehensive Course Studio - The advanced toolkit for Hope Dawah Institute
  * Handles the full lifecycle of course creation with depth and premium aesthetics.
  */
 const ComprehensiveCourseStudio = ({

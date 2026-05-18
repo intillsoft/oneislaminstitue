@@ -145,7 +145,7 @@ const Pricing = () => {
   return (
     <>
       <Helmet>
-        <title>Academic Plans - One Islam Institute</title>
+        <title>Academic Plans - Hope Dawah Institute</title>
         <meta name="description" content="Choose the perfect study plan for your Islamic learning journey" />
       </Helmet>
       <div className="min-h-screen bg-slate-50 dark:bg-[#0A1120] pt-20">
@@ -475,7 +475,7 @@ const Pricing = () => {
                 },
                 {
                   q: 'Are the certifications accredited?',
-                  a: 'Our certifications are verified by the One Islam Institute curation panel and are recognized for their academic rigour.',
+                  a: 'Our certifications are verified by the Hope Dawah Institute curation panel and are recognized for their academic rigour.',
                 },
                 {
                   q: 'Is there a trial period?',

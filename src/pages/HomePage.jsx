@@ -94,7 +94,7 @@ const HomePage = () => {
   ]);
   const [testimonials] = useState([
     {
-      quote: "One Islam Institute transformed how I study. The structured curriculum and access to verified research is world-class.",
+      quote: "Hope Dawah Institute transformed how I study. The structured curriculum and access to verified research is world-class.",
       author: "Sarah Chen",
       role: "Theology Student",
       rating: 5,
@@ -271,8 +271,8 @@ const HomePage = () => {
   return (
     <div className="homepage-container">
         <Helmet>
-          <title>One Islam Institute | Authentic Islamic Curriculum & Research Curation</title>
-          <meta name="description" content="Access a structured Islamic curriculum curated from verified sources. One Islam Institute offers a comprehensive gateway to master sacred sciences with academic excellence." />
+          <title>Hope Dawah Institute | Authentic Islamic Curriculum & Research Curation</title>
+          <meta name="description" content="Access a structured Islamic curriculum curated from verified sources. Hope Dawah Institute offers a comprehensive gateway to master sacred sciences with academic excellence." />
           <meta name="keywords" content="Islamic Courses, Authentic Islam, Quran, Hadith, Seerah, Fiqh, Islamic Research, Traditional Islamic Knowledge, Muslim Student Platform" />
         </Helmet>
         <div className="min-h-screen bg-slate-50 dark:bg-[#0A1120] selection:bg-emerald-500/30">

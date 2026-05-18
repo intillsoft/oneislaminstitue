@@ -30,7 +30,7 @@ const DashboardAIAssistant = ({
         'Review enrollment activity trends',
         'Optimize course crawler settings'
       ],
-      systemMessage: 'You are workflowAI, an intelligent assistant for One Islam Institute administrators. Help with academy analytics, student moderation, system optimization, and platform management.'
+      systemMessage: 'You are workflowAI, an intelligent assistant for Hope Dawah Institute administrators. Help with academy analytics, student moderation, system optimization, and platform management.'
     },
     recruiter: {
       name: 'Instructor AI Assistant',

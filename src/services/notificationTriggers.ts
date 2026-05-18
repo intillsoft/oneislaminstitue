@@ -49,7 +49,7 @@ export const sendRegistrationWelcomeNotification = async (
     await notificationService.sendNotification({
       userId,
       senderId: 'system',
-      title: `Welcome to One Islam, ${userName}!`,
+      title: `Welcome to Hope Dawah, ${userName}!`,
       message: `Salam ${userName}! Welcome aboard. Explore our elite curriculum and start your path of knowledge today.`,
       type: 'welcome',
       data: {

@@ -68,11 +68,11 @@ const PORT = process.env.PORT || 3001;
 // Middleware — CORS must come BEFORE Helmet to handle preflight requests
 const allowedOrigins = [
   process.env.FRONTEND_URL,
-  'https://institue.oneislam.one',
+  'https://institue.HopeDawah.one',
   'https://workflow-frontend-vq14.onrender.com',
   'https://workflow.surf',
   'https://rocket.new',
-  'https://oneislaminstitue.onrender.com',
+  'https://HopeDawahinstitue.onrender.com',
   'http://localhost:3000',
   'http://localhost:3001',
   'http://localhost:5173'
@@ -137,7 +137,7 @@ app.use('/api/paystack-webhooks', paystackWebhookRoutes); // No auth for Paystac
 // Enterprise API v1 (Standardized access for partners)
 app.use('/api/v1', apiV1Routes);
 
-// Main Routes — Unified under One Islam Institute terminology
+// Main Routes — Unified under Hope Dawah Institute terminology
 app.use('/api/courses', courseRoutes);
 app.use('/api/instructor', instructorRoutes);
 app.use('/api/enrollments', authenticate, enrollmentRoutes);

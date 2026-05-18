@@ -116,7 +116,7 @@ const RelatedCourses = ({ currentCourseId }) => {
                   <h3 className="text-base font-bold text-slate-900 dark:text-white mb-2 group-hover:text-emerald-600 dark:group-hover:text-emerald-500 transition-colors line-clamp-2">
                     {course.title}
                   </h3>
-                  <p className="text-xs text-slate-500 dark:text-slate-400 mb-4">{course.company || 'One Islam Institute'}</p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mb-4">{course.company || 'Hope Dawah Institute'}</p>
                   
                   <div className="mt-auto pt-4 border-t border-slate-100 dark:border-white/5 flex items-center justify-between">
                     <div className="flex items-center gap-1.5 text-[10px] font-bold text-slate-400 uppercase tracking-widest">

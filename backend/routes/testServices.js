@@ -63,14 +63,14 @@ router.post('/email', async (req, res) => {
   try {
     const result = await emailService.send({
       to,
-      subject: subject || '✅ Test Email from One Islam Institute',
+      subject: subject || '✅ Test Email from Hope Dawah Institute',
       html: `
         <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); padding: 48px 40px; border-radius: 24px;">
           <div style="text-align: center; margin-bottom: 40px;">
             <div style="display: inline-flex; align-items: center; justify-content: center; width: 72px; height: 72px; background: linear-gradient(135deg, #10b981, #059669); border-radius: 50%; margin-bottom: 20px;">
               <span style="font-size: 32px;">✉️</span>
             </div>
-            <h1 style="color: #10b981; margin: 0; font-size: 28px; font-weight: 800; letter-spacing: -0.025em;">ONE ISLAM INSTITUTE</h1>
+            <h1 style="color: #10b981; margin: 0; font-size: 28px; font-weight: 800; letter-spacing: -0.025em;">Hope Dawah INSTITUTE</h1>
             <p style="color: #64748b; margin-top: 8px; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em;">Service Test Confirmation</p>
           </div>
           
@@ -80,15 +80,15 @@ router.post('/email', async (req, res) => {
               <span style="color: #10b981; font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;">System Operational</span>
             </div>
             <p style="color: #e2e8f0; font-size: 18px; font-weight: 600; margin: 0 0 12px;">Your Resend email integration is working!</p>
-            <p style="color: #94a3b8; font-size: 14px; line-height: 1.7; margin: 0;">This test email was sent successfully at <strong style="color: #cbd5e1;">${new Date().toUTCString()}</strong> via the One Islam Institute admin panel.</p>
+            <p style="color: #94a3b8; font-size: 14px; line-height: 1.7; margin: 0;">This test email was sent successfully at <strong style="color: #cbd5e1;">${new Date().toUTCString()}</strong> via the Hope Dawah Institute admin panel.</p>
           </div>
 
           <div style="text-align: center; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.08);">
-            <p style="color: #475569; font-size: 12px; margin: 0;">© 2026 One Islam Institute · Email infrastructure powered by Resend</p>
+            <p style="color: #475569; font-size: 12px; margin: 0;">© 2026 Hope Dawah Institute · Email infrastructure powered by Resend</p>
           </div>
         </div>
       `,
-      text: `One Islam Institute - Email Service Test\n\nYour Resend email integration is working!\n\nThis test was sent at ${new Date().toUTCString()}.`
+      text: `Hope Dawah Institute - Email Service Test\n\nYour Resend email integration is working!\n\nThis test was sent at ${new Date().toUTCString()}.`
     });
 
     logger.info(`Test email sent to ${to} by admin ${req.user?.id}`);
@@ -116,7 +116,7 @@ router.post('/sms', async (req, res) => {
   }
 
   try {
-    const message = `[One Islam Institute] ✅ Test SMS - Your Twilio SMS integration is working correctly! Sent at ${new Date().toUTCString()}.`;
+    const message = `[Hope Dawah Institute] ✅ Test SMS - Your Twilio SMS integration is working correctly! Sent at ${new Date().toUTCString()}.`;
     await smsService.sendSMS(to, message);
 
     logger.info(`Test SMS sent to ${to} by admin ${req.user?.id}`);
@@ -149,7 +149,7 @@ router.post('/whatsapp', async (req, res) => {
   }
 
   try {
-    const message = `*One Islam Institute*\n\n✅ *WhatsApp Test Successful!*\n\nYour Twilio WhatsApp integration is working correctly.\n\n_Sent at ${new Date().toUTCString()}._`;
+    const message = `*Hope Dawah Institute*\n\n✅ *WhatsApp Test Successful!*\n\nYour Twilio WhatsApp integration is working correctly.\n\n_Sent at ${new Date().toUTCString()}._`;
     await smsService.sendWhatsApp(to, message);
 
     logger.info(`Test WhatsApp sent to ${to} by admin ${req.user?.id}`);

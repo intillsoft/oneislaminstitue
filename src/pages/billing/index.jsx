@@ -117,7 +117,7 @@ const Billing = () => {
   return (
     <>
       <Helmet>
-        <title>Billing & Subscription - One Islam Institute</title>
+        <title>Billing & Subscription - Hope Dawah Institute</title>
       </Helmet>
       <div className="min-h-screen bg-white dark:bg-[#0A0E27]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">

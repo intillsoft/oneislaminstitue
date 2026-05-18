@@ -113,7 +113,7 @@ const GlobalAIPanel = () => {
           body: JSON.stringify({
             contents: [{
               parts: [{
-                text: `You are the One Islam Institute's intelligent Assistant. Respond comprehensively and politely, formatting output in beautiful Markdown.\n\n${fullPrompt}`
+                text: `You are the Hope Dawah Institute's intelligent Assistant. Respond comprehensively and politely, formatting output in beautiful Markdown.\n\n${fullPrompt}`
               }]
             }],
             generationConfig: {

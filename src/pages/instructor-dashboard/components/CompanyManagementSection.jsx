@@ -47,9 +47,9 @@ const CompanyManagementSection = () => {
             } else {
                 // Fallback for demo
                 setCompanyData({
-                    name: profile?.company_name || 'One Islam Academy',
+                    name: profile?.company_name || 'Hope Dawah Academy',
                     description: 'Innovative academic modules for the modern scholar.',
-                    website: 'https://oneislam.institute',
+                    website: 'https://HopeDawah.institute',
                     industry: 'Islamic Studies',
                     size: '11-50 Curator Team Members',
                     location: 'Sydney, Australia',

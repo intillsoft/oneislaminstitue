@@ -45,7 +45,7 @@ const CertificateCard = ({ cert, index, onShare, onDownload }) => {
                     </div>
                     <div>
                         <h3 className="font-bold text-lg leading-tight text-text-primary mb-1">{cert.title}</h3>
-                        <p className="text-xs text-text-muted uppercase tracking-wide font-medium">{cert.course?.company || 'One Islam Institute'}</p>
+                        <p className="text-xs text-text-muted uppercase tracking-wide font-medium">{cert.course?.company || 'Hope Dawah Institute'}</p>
                     </div>
                 </div>
                 <span className={`px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-wider border ${gradeBg[cert.grade] || gradeBg['Pass']}`}>
@@ -127,7 +127,7 @@ const MyCertificates = () => {
 
   const handleShare = async (cert) => {
     try {
-      await navigator.clipboard.writeText(`I earned a certificate in "${cert.title}" from One Islam Institute! 🎓 Verify: ${cert.certificate_number}`);
+      await navigator.clipboard.writeText(`I earned a certificate in "${cert.title}" from Hope Dawah Institute! 🎓 Verify: ${cert.certificate_number}`);
       // Toast notification could be added here
     } catch { /* clipboard not supported */ }
   };

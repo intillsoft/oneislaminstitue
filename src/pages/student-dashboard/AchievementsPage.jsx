@@ -138,7 +138,7 @@ const AchievementsPage = () => {
         <div className="space-y-12 pb-20">
             <ElitePageHeader
                 title="Scholar Registry: Achievements"
-                description="Your intellectual milestones and academic status within the One Islam Institute."
+                description="Your intellectual milestones and academic status within the Hope Dawah Institute."
                 badge="Knowledge Rewards"
             />
 

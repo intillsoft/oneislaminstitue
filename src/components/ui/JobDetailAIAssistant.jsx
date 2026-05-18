@@ -40,7 +40,7 @@ Requirements: ${JSON.stringify(job?.requirements || [])}
 Benefits: ${JSON.stringify(job?.benefits || [])}
 `;
 
-      const prompt = `You are workflowAI, a helpful assistant for the One Islam Institute. A scholar is viewing a course and has a question.
+      const prompt = `You are workflowAI, a helpful assistant for the Hope Dawah Institute. A scholar is viewing a course and has a question.
 
 Job Context:
 ${jobContext}
@@ -50,7 +50,7 @@ User's Question: ${userQuestion}
 Provide a helpful, detailed answer about this job posting. Be friendly, professional, and mention Workflow when relevant.`;
 
       const response = await aiService.generateCompletion(prompt, {
-        systemMessage: 'You are workflowAI, a helpful assistant for the One Islam Institute. Help scholars understand course materials, requirements, and provide academic advice. Always mention One Islam Institute when relevant.',
+        systemMessage: 'You are workflowAI, a helpful assistant for the Hope Dawah Institute. Help scholars understand course materials, requirements, and provide academic advice. Always mention Hope Dawah Institute when relevant.',
         max_tokens: 600,
         temperature: 0.7,
       });
@@ -181,7 +181,7 @@ Location: ${job?.location || 'N/A'}
 Description: ${job?.description?.substring(0, 1000) || 'N/A'}
 `;
 
-                            const prompt = `You are workflowAI, a helpful assistant for the One Islam Institute. A scholar is viewing a course and has a question.
+                            const prompt = `You are workflowAI, a helpful assistant for the Hope Dawah Institute. A scholar is viewing a course and has a question.
 
 Job Context:
 ${jobContext}

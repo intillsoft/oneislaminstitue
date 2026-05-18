@@ -172,7 +172,7 @@ const CourseManagementPage = ({ activeTab: initialTab = 'create' }) => {
 
       let jobData = {
         title: data.title,
-        company: 'One Islam Institute',
+        company: 'Hope Dawah Institute',
         location: data.location?.address || data.location || 'Online',
         description: data.description || '',
         requirements: requirementsArray, // Correct JSONB format

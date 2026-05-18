@@ -1,6 +1,6 @@
 /**
  * Lesson Renderer - Dynamic Logic & UI Organization
- * One Islam Institute Structured Learning System
+ * Hope Dawah Institute Structured Learning System
  */
 
 import React, { useState } from 'react';

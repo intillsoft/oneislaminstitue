@@ -192,7 +192,7 @@ const StudyProgressTracker = () => {
                                     <div className="flex justify-between items-start mb-3">
                                         <div>
                                             <h4 className="font-bold text-text-primary group-hover:text-emerald-600 transition-colors">{entry.course?.title || 'Untitled Course'}</h4>
-                                            <p className="text-xs text-text-muted">{entry.course?.company || 'One Islam Institute'}</p>
+                                            <p className="text-xs text-text-muted">{entry.course?.company || 'Hope Dawah Institute'}</p>
                                         </div>
                                         <div className="px-2 py-1 rounded-lg bg-surface-elevated border border-border">
                                             <span className="text-[10px] font-black text-text-secondary uppercase tracking-wider">

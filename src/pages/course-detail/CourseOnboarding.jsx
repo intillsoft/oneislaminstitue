@@ -207,7 +207,7 @@ const CourseOnboarding = () => {
                     </div>
                     <div className="flex-1 min-w-0">
                       <h3 className="text-lg font-bold text-slate-900 dark:text-white truncate">{course?.title}</h3>
-                      <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">{course?.company || 'One Islam Institute'}</p>
+                      <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">{course?.company || 'Hope Dawah Institute'}</p>
                     </div>
                   </div>
                   
@@ -435,7 +435,7 @@ const CourseOnboarding = () => {
                   <div className="p-5 border-b border-slate-100 dark:border-slate-800">
                     <p className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-2">Course</p>
                     <p className="text-base font-bold text-slate-900 dark:text-white">{course?.title}</p>
-                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">{course?.company || 'One Islam Institute'}</p>
+                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">{course?.company || 'Hope Dawah Institute'}</p>
                   </div>
 
                   {/* Goals */}
