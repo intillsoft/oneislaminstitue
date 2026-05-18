@@ -50,9 +50,17 @@
 
 
     <script>
-      // Enforce light theme (pure white) globally
-      document.documentElement.classList.remove("dark");
-      localStorage.setItem("theme", "light");
+      // Initialize theme before React loads to prevent flash
+      (function () {
+        const theme = localStorage.getItem("theme");
+        const prefersDark = window.matchMedia(
+          "(prefers-color-scheme: dark)",
+        ).matches;
+        const shouldBeDark = theme === "dark" || (!theme && prefersDark);
+        if (shouldBeDark) {
+          document.documentElement.classList.add("dark");
+        }
+      })();
     </script>
   </head>
 
