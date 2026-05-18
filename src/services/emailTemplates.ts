@@ -136,7 +136,7 @@ export const generateCourseCompletionEmail = (
         <style>
           body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; }
           .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-          .header { background: linear-gradient(135deg, #10b981 0%, #059669 100%); padding: 30px; border-radius: 8px 8px 0 0; color: white; text-align: center; }
+          .header { background: linear-gradient(135deg, #10b981 0%, #0046FF 100%); padding: 30px; border-radius: 8px 8px 0 0; color: white; text-align: center; }
           .content { background: #f9fafb; padding: 30px; border-radius: 0 0 8px 8px; }
           .button { display: inline-block; background: #10b981; color: white; padding: 12px 30px; border-radius: 5px; text-decoration: none; margin: 20px 0; }
           .achievement { text-align: center; padding: 20px; background: #f0fdf4; border: 2px solid #10b981; border-radius: 8px; margin: 20px 0; }

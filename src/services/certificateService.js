@@ -169,7 +169,7 @@ export const certificateService = {
         course_id: courseId,
         lesson_id: lessonId,
         design_data: {
-            primaryColor: "#059669",
+            primaryColor: "#0046FF",
             secondaryColor: "#10b981",
             fontFamily: "Inter",
             showLogo: true,

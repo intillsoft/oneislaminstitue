@@ -47,12 +47,11 @@ const Logo = ({
   };
 
   const currentSize = sizeMap[size] || sizeMap.md;
-  const donateGreen = '#059669'; // Official Brand Green
 
   const logoContent = horizontal ? (
     <div className={`flex items-center gap-2 leading-none font-display ${className}`}>
       <div className={`flex items-baseline font-black ${currentSize.hSize} tracking-tighter`}>
-        <span style={{ color: donateGreen }}>HOPE</span>
+        <span className="text-workflow-primary">HOPE</span>
         <span className="text-white ml-1">DAWAH</span>
       </div>
       <div className={`text-white font-black uppercase ${currentSize.hSize} tracking-tighter border-l border-white/20 pl-2 ml-1`}>
@@ -62,7 +61,7 @@ const Logo = ({
   ) : (
     <div className={`flex flex-col items-center leading-[0.9] font-display ${className}`}>
       <div className={`flex items-baseline font-black ${currentSize.top} ${currentSize.spacing}`}>
-        <span style={{ color: donateGreen }}>HOPE</span>
+        <span className="text-workflow-primary">HOPE</span>
         <span className="text-white ml-1.5">DAWAH</span>
       </div>
       <div className={`text-white font-black uppercase ${currentSize.bottom} ${currentSize.bottomSpacing} mt-1 text-center w-full`}>

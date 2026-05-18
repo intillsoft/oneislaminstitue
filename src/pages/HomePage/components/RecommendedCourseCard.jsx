@@ -8,7 +8,7 @@ import { progressService } from '../../../services/progressService';
 
 // Deterministic gradient per card based on index
 const gradients = [
-  ['#10b981', '#059669'],   // emerald
+  ['#10b981', '#0046FF'],   // emerald
   ['#8b5cf6', '#6d28d9'],   // violet
   ['#f59e0b', '#d97706'],   // amber
   ['#3b82f6', '#2563eb'],   // blue
