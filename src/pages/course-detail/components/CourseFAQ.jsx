@@ -23,9 +23,9 @@ const CourseFAQ = () => {
   ];
 
   return (
-    <section className="py-20 border-t border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50">
+    <section className="py-20 border-t border-[var(--color-border-primary)] dark:border-slate-800 bg-white/50 dark:bg-slate-900/50">
       <div className="max-w-3xl mx-auto px-6">
-        <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-10 text-center tracking-tight">Common Questions</h2>
+        <h2 className="text-2xl font-bold text-[var(--color-text-primary)] dark:text-white mb-10 text-center tracking-tight">Common Questions</h2>
         
         <div className="space-y-4">
           {faqs.map((faq, index) => (
@@ -41,13 +41,13 @@ const FAQItem = ({ faq }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden transition-all hover:border-emerald-500/30">
+    <div className="bg-white dark:bg-slate-900 rounded-2xl border border-[var(--color-border-primary)] dark:border-slate-800 overflow-hidden transition-all hover:border-[var(--color-primary)]/30">
       <button 
         onClick={() => setIsOpen(!isOpen)}
         className="w-full flex items-center justify-between p-6 text-left"
       >
-        <span className="font-bold text-slate-900 dark:text-white text-base">{faq.question}</span>
-        <div className={`p-2 rounded-lg bg-slate-100 dark:bg-slate-800 transition-colors ${isOpen ? 'text-emerald-600 dark:text-emerald-500' : 'text-slate-400'}`}>
+        <span className="font-bold text-[var(--color-text-primary)] dark:text-white text-base">{faq.question}</span>
+        <div className={`p-2 rounded-lg bg-slate-100 dark:bg-slate-800 transition-colors ${isOpen ? 'text-[var(--color-primary)] dark:text-[var(--color-primary)]' : 'text-slate-400'}`}>
           {isOpen ? <Minus size={16} /> : <Plus size={16} />}
         </div>
       </button>
@@ -60,7 +60,7 @@ const FAQItem = ({ faq }) => {
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.2 }}
           >
-            <div className="px-6 pb-6 pt-0 text-slate-600 dark:text-slate-400 leading-relaxed text-sm">
+            <div className="px-6 pb-6 pt-0 text-[var(--color-text-secondary)] dark:text-slate-400 leading-relaxed text-sm">
               {faq.answer}
             </div>
           </motion.div>

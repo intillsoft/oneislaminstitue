@@ -8,12 +8,14 @@ import { Link } from 'react-router-dom';
  * @param {string} className - Additional CSS classes
  * @param {boolean} link - Whether to wrap in a Link to /
  * @param {boolean} horizontal - Force horizontal layout for tight spaces
+ * @param {boolean} darkBg - Whether the logo is on a dark background
  */
 const Logo = ({ 
   size = 'md',
   className = '',
   link = true,
-  horizontal = false
+  horizontal = false,
+  darkBg = false
 }) => {
   const sizeMap = {
     sm: {
@@ -47,25 +49,26 @@ const Logo = ({
   };
 
   const currentSize = sizeMap[size] || sizeMap.md;
-  const donateGreen = '#059669'; // Official Brand Green
+  const brandGreen = '#059669'; // Official Brand Green — preserved
+  const textColor = darkBg ? 'text-white' : 'text-[#1A1A1A]';
 
   const logoContent = horizontal ? (
     <div className={`flex items-center gap-2 leading-none font-display ${className}`}>
       <div className={`flex items-baseline font-black ${currentSize.hSize} tracking-tighter`}>
-        <span style={{ color: donateGreen }}>HOPE</span>
-        <span className="text-white ml-1">DAWAH</span>
+        <span style={{ color: brandGreen }}>HOPE</span>
+        <span className={`${textColor} ml-1`}>DAWAH</span>
       </div>
-      <div className={`text-white font-black uppercase ${currentSize.hSize} tracking-tighter border-l border-white/20 pl-2 ml-1`}>
+      <div className={`${textColor} font-black uppercase ${currentSize.hSize} tracking-tighter border-l ${darkBg ? 'border-white/20' : 'border-[#E0E0E0]'} pl-2 ml-1`}>
         INSTITUTE
       </div>
     </div>
   ) : (
     <div className={`flex flex-col items-center leading-[0.9] font-display ${className}`}>
       <div className={`flex items-baseline font-black ${currentSize.top} ${currentSize.spacing}`}>
-        <span style={{ color: donateGreen }}>HOPE</span>
-        <span className="text-white ml-1.5">DAWAH</span>
+        <span style={{ color: brandGreen }}>HOPE</span>
+        <span className={`${textColor} ml-1.5`}>DAWAH</span>
       </div>
-      <div className={`text-white font-black uppercase ${currentSize.bottom} ${currentSize.bottomSpacing} mt-1 text-center w-full`}>
+      <div className={`${textColor} font-black uppercase ${currentSize.bottom} ${currentSize.bottomSpacing} mt-1 text-center w-full`}>
         INSTITUTE
       </div>
     </div>

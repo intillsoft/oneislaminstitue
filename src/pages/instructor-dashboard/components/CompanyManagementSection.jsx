@@ -123,8 +123,8 @@ const CompanyManagementSection = () => {
                         <div className="flex items-center gap-3">
                             <h3 className="text-2xl font-black text-white uppercase tracking-tight">{companyData.name}</h3>
                             {companyData.verified && (
-                                <span className="p-1 bg-emerald-500/10 rounded-full border border-emerald-500/20">
-                                    <Icon name="Check" size={12} className="text-emerald-500" />
+                                <span className="p-1 bg-[var(--color-primary)]/10 rounded-full border border-[var(--color-primary)]/20">
+                                    <Icon name="Check" size={12} className="text-[var(--color-primary)]" />
                                 </span>
                             )}
                         </div>
@@ -142,13 +142,13 @@ const CompanyManagementSection = () => {
                         </div>
                         <div>
                             <h4 className="text-md font-black text-white uppercase tracking-tight">Academy Intel</h4>
-                            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">Core Academic Identity</p>
+                            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-text-tertiary)]">Core Academic Identity</p>
                         </div>
                     </div>
 
                     <div className="space-y-6">
                         <div>
-                            <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-2 block ml-1">Academy Name</label>
+                            <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-tertiary)] mb-2 block ml-1">Academy Name</label>
                             <input
                                 type="text"
                                 value={companyData.name}
@@ -159,7 +159,7 @@ const CompanyManagementSection = () => {
 
                         <div className="grid grid-cols-2 gap-4">
                             <div>
-                                <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-2 block ml-1">Academic Field</label>
+                                <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-tertiary)] mb-2 block ml-1">Academic Field</label>
                                 <input
                                     type="text"
                                     value={companyData.industry}
@@ -168,7 +168,7 @@ const CompanyManagementSection = () => {
                                 />
                             </div>
                             <div>
-                                <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-2 block ml-1">Curator Team Size</label>
+                                <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-tertiary)] mb-2 block ml-1">Curator Team Size</label>
                                 <input
                                     type="text"
                                     value={companyData.size}
@@ -179,9 +179,9 @@ const CompanyManagementSection = () => {
                         </div>
 
                         <div>
-                            <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-2 block ml-1">Public Website</label>
+                            <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-tertiary)] mb-2 block ml-1">Public Website</label>
                             <div className="relative">
-                                <Icon name="Link" size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
+                                <Icon name="Link" size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--color-text-tertiary)]" />
                                 <input
                                     type="text"
                                     value={companyData.website}
@@ -200,13 +200,13 @@ const CompanyManagementSection = () => {
                         </div>
                         <div>
                             <h4 className="text-md font-black text-white uppercase tracking-tight">Academic Mission</h4>
-                            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">Educational Philosophy</p>
+                            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-text-tertiary)]">Educational Philosophy</p>
                         </div>
                     </div>
 
                     <div className="space-y-6 h-full flex flex-col">
                         <div className="flex-1">
-                            <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-2 block ml-1">Description</label>
+                            <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-tertiary)] mb-2 block ml-1">Description</label>
                             <textarea
                                 value={companyData.description}
                                 onChange={(e) => setCompanyData({ ...companyData, description: e.target.value })}

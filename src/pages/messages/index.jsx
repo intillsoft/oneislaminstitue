@@ -227,13 +227,13 @@ const Messages = () => {
           <div className="lg:col-span-4 xl:col-span-3 flex flex-col bg-white/5 backdrop-blur-3xl rounded-[3rem] border border-white/5 overflow-hidden">
             <div className="p-8 border-b border-white/5">
               <div className="relative group">
-                <Icon name="Search" className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-blue-500 transition-colors" size={18} />
+                <Icon name="Search" className="absolute left-5 top-1/2 -translate-y-1/2 text-[var(--color-text-tertiary)] group-focus-within:text-blue-500 transition-colors" size={18} />
                 <input
                   type="text"
                   placeholder="SEARCH PROTOCOLS..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-14 pr-6 py-4 bg-white/5 border border-white/5 rounded-2xl text-xs font-black uppercase tracking-[0.2em] outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition-all placeholder:text-slate-600"
+                  className="w-full pl-14 pr-6 py-4 bg-white/5 border border-white/5 rounded-2xl text-xs font-black uppercase tracking-[0.2em] outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition-all placeholder:text-[var(--color-text-secondary)]"
                 />
               </div>
             </div>
@@ -271,7 +271,7 @@ const Messages = () => {
                         {conv.last_message_at ? formatDistanceToNow(new Date(conv.last_message_at), { addSuffix: false }).replace('about ', '') : ''}
                       </span>
                     </div>
-                    <p className={`text-xs mt-1 truncate ${selectedConversation === conv.id ? 'text-blue-100' : 'text-slate-500'}`}>
+                    <p className={`text-xs mt-1 truncate ${selectedConversation === conv.id ? 'text-blue-100' : 'text-[var(--color-text-tertiary)]'}`}>
                       {conv.last_message || 'SECURE CONNECTION ACTIVE'}
                     </p>
                   </div>
@@ -299,7 +299,7 @@ const Messages = () => {
                         {currentConversation?.other_user_name}
                         <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse shadow-lg shadow-green-500/50" />
                       </h3>
-                      <p className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] mt-0.5">
+                      <p className="text-[10px] font-black text-[var(--color-text-tertiary)] uppercase tracking-[0.2em] mt-0.5">
                         {currentConversation?.other_user_role} registry // verified status
                       </p>
                     </div>
@@ -339,7 +339,7 @@ const Messages = () => {
                               }`}>
                               {msg.message}
                             </div>
-                            <span className="text-[9px] font-black text-slate-600 uppercase mt-2 tracking-widest px-2">
+                            <span className="text-[9px] font-black text-[var(--color-text-secondary)] uppercase mt-2 tracking-widest px-2">
                               {formatDistanceToNow(new Date(msg.created_at), { addSuffix: true })}
                               {isOwn && msg.is_read && <span className="ml-2 text-blue-500">✓ DELIVERED</span>}
                             </span>
@@ -368,7 +368,7 @@ const Messages = () => {
                             </div>
                             <h4 className="text-[10px] font-black uppercase tracking-widest text-purple-300">Sentience Report</h4>
                           </div>
-                          <button onClick={() => setVibeAnalysis(null)} className="text-slate-500 hover:text-white"><Icon name="X" size={14} /></button>
+                          <button onClick={() => setVibeAnalysis(null)} className="text-[var(--color-text-tertiary)] hover:text-white"><Icon name="X" size={14} /></button>
                         </div>
                         <p className="text-xs text-slate-300 leading-relaxed italic border-l-2 border-purple-500/50 pl-4 mb-4">
                           "{vibeAnalysis.analysis}"
@@ -388,13 +388,13 @@ const Messages = () => {
                       exit={{ opacity: 0, y: 20 }}
                       className="absolute bottom-36 left-8 right-8 z-20"
                     >
-                      <EliteCard className="p-6 border-emerald-500/30 bg-emerald-950/20 backdrop-blur-3xl flex items-center justify-between gap-6">
+                      <EliteCard className="p-6 border-[var(--color-primary)]/30 bg-emerald-950/20 backdrop-blur-3xl flex items-center justify-between gap-6">
                         <div className="flex items-center gap-4">
-                          <div className="p-3 bg-emerald-500/20 rounded-2xl text-emerald-400">
+                          <div className="p-3 bg-[var(--color-primary)]/20 rounded-2xl text-[var(--color-primary)]">
                             <Icon name="TrendingUp" size={24} />
                           </div>
                           <div>
-                            <h4 className="text-xs font-black uppercase tracking-widest text-emerald-300">Revenue Opportunity Detected</h4>
+                            <h4 className="text-xs font-black uppercase tracking-widest text-[var(--color-primary)]">Revenue Opportunity Detected</h4>
                             <p className="text-[11px] text-slate-400 mt-1">{upsellSuggestion.reason}</p>
                           </div>
                         </div>
@@ -404,11 +404,11 @@ const Messages = () => {
                               setNewMessage(upsellSuggestion.suggestion);
                               setUpsellSuggestion(null);
                             }}
-                            className="px-6 py-3 bg-emerald-600 text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-emerald-700 transition-all shadow-lg shadow-emerald-500/20"
+                            className="px-6 py-3 bg-[var(--color-primary)] text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-[var(--color-primary-hover)] transition-all shadow-lg shadow-[var(--color-primary)]/20"
                           >
                             Use Suggestion: {upsellSuggestion.service_name}
                           </button>
-                          <button onClick={() => setUpsellSuggestion(null)} className="p-3 text-slate-500 hover:text-white"><Icon name="X" size={18} /></button>
+                          <button onClick={() => setUpsellSuggestion(null)} className="p-3 text-[var(--color-text-tertiary)] hover:text-white"><Icon name="X" size={18} /></button>
                         </div>
                       </EliteCard>
                     </motion.div>
@@ -430,12 +430,12 @@ const Messages = () => {
                         }}
                         placeholder="ENTER NEURAL COMMAND..."
                         rows={2}
-                        className="w-full pl-6 pr-32 py-5 bg-white/5 border border-white/5 rounded-3xl text-sm outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition-all resize-none custom-scrollbar placeholder:text-slate-600"
+                        className="w-full pl-6 pr-32 py-5 bg-white/5 border border-white/5 rounded-3xl text-sm outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition-all resize-none custom-scrollbar placeholder:text-[var(--color-text-secondary)]"
                       />
                       <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-2">
                         <button
                           onClick={handleSmartUpsell}
-                          className="p-3 bg-white/5 hover:bg-white/10 text-emerald-500 rounded-xl transition-all"
+                          className="p-3 bg-white/5 hover:bg-white/10 text-[var(--color-primary)] rounded-xl transition-all"
                           title="Strategic Upsell"
                         >
                           <Icon name="DollarSign" size={18} />
@@ -479,7 +479,7 @@ const Messages = () => {
                     <Icon name="MessageSquare" size={48} className="text-slate-700 group-hover:text-blue-500 transition-colors duration-700" />
                   </div>
                   <h2 className="text-3xl font-black uppercase tracking-tight text-white mb-4">Awaiting Signal</h2>
-                  <p className="text-sm text-slate-500 uppercase tracking-widest leading-relaxed">
+                  <p className="text-sm text-[var(--color-text-tertiary)] uppercase tracking-widest leading-relaxed">
                     Select a neural frequency from the lateral registry to initiate secure stakeholder communication.
                   </p>
                 </div>

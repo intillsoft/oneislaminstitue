@@ -109,24 +109,24 @@ const AIChatPanel = forwardRef(({ onUpdateResume, currentResume, onThinking }, r
     const QuickAction = ({ icon: Icon, label, color, tool }) => (
         <button
             onClick={() => handleTool(tool || label)}
-            className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:border-workflow-primary hover:bg-workflow-primary/5 transition-all group"
+            className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100 dark:bg-white/5 border border-[var(--color-border-primary)] dark:border-white/10 hover:border-workflow-primary hover:bg-workflow-primary/5 transition-all group"
         >
-            <Icon size={12} className="text-slate-500 group-hover:text-workflow-primary" />
-            <span className="text-[10px] font-bold text-slate-600 dark:text-slate-300 group-hover:text-workflow-primary">{label}</span>
+            <Icon size={12} className="text-[var(--color-text-tertiary)] group-hover:text-workflow-primary" />
+            <span className="text-[10px] font-bold text-[var(--color-text-secondary)] dark:text-slate-300 group-hover:text-workflow-primary">{label}</span>
         </button>
     );
 
     return (
         <div className="flex flex-col h-full bg-white dark:bg-[#0F172A] overflow-hidden">
             {/* Header */}
-            <div className="h-14 px-6 flex items-center justify-between border-b border-slate-200 dark:border-white/5 shrink-0">
+            <div className="h-14 px-6 flex items-center justify-between border-b border-[var(--color-border-primary)] dark:border-white/5 shrink-0">
                 <div className="flex items-center gap-2">
                     <Sparkles size={18} className="text-workflow-primary" />
                     <span className="text-sm font-bold text-slate-800 dark:text-white">AI Assistant</span>
                 </div>
                 <button
                     onClick={() => setShowTools(!showTools)}
-                    className="text-[10px] font-bold tracking-tight text-slate-500 hover:text-workflow-primary transition-colors flex items-center gap-1"
+                    className="text-[10px] font-bold tracking-tight text-[var(--color-text-tertiary)] hover:text-workflow-primary transition-colors flex items-center gap-1"
                 >
                     {showTools ? 'Hide Tools' : 'Show Tools'}
                     <ChevronDown size={14} className={`transition-transform duration-200 ${showTools ? 'rotate-180' : ''}`} />
@@ -140,11 +140,11 @@ const AIChatPanel = forwardRef(({ onUpdateResume, currentResume, onThinking }, r
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: 'auto', opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
-                        className="overflow-hidden border-b border-slate-200 dark:border-white/5 bg-slate-50/50 dark:bg-white/[0.02]"
+                        className="overflow-hidden border-b border-[var(--color-border-primary)] dark:border-white/5 bg-white/50 dark:bg-white/[0.02]"
                     >
                         <div className="p-4 flex flex-wrap gap-2">
                             <QuickAction icon={Wand2} label="Fix Formatting" tool="Format Fixer" color="bg-indigo-500" />
-                            <QuickAction icon={Target} label="Job Match" tool="Job Matcher" color="bg-emerald-500" />
+                            <QuickAction icon={Target} label="Job Match" tool="Job Matcher" color="bg-[var(--color-primary)]" />
                             <QuickAction icon={Search} label="Remove Buzzwords" tool="Buzzword Blast" color="bg-rose-500" />
                             <QuickAction icon={FileText} label="Generate Summary" tool="Summary Gen" color="bg-violet-500" />
                             <QuickAction icon={Bot} label="Cover Letter" tool="Cover Letter" color="bg-fuchsia-500" />
@@ -163,25 +163,25 @@ const AIChatPanel = forwardRef(({ onUpdateResume, currentResume, onThinking }, r
                         <div className={`flex flex-col gap-2 max-w-[80%] ${msg.role === 'user' ? 'items-end' : 'items-start'}`}>
                             <div className={`p-4 rounded-2xl text-[13px] leading-relaxed ${msg.role === 'user'
                                 ? 'bg-workflow-primary text-white rounded-tr-none'
-                                : 'bg-slate-100 dark:bg-slate-800/50 text-slate-700 dark:text-slate-200 rounded-tl-none border border-slate-200 dark:border-white/5'
+                                : 'bg-slate-100 dark:bg-slate-800/50 text-slate-700 dark:text-slate-200 rounded-tl-none border border-[var(--color-border-primary)] dark:border-white/5'
                                 }`}>
                                 {msg.text}
                             </div>
 
                             {msg.pendingData && !msg.applied && !msg.discarded && (
-                                <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-white/10 rounded-xl p-4 mt-2 w-full shadow-sm">
+                                <div className="bg-white dark:bg-slate-800 border border-[var(--color-border-primary)] dark:border-white/10 rounded-xl p-4 mt-2 w-full shadow-sm">
                                     <div className="flex items-center gap-2 mb-3">
                                         <Sparkles size={14} className="text-workflow-primary" />
                                         <span className="text-[11px] font-bold text-slate-800 dark:text-white uppercase tracking-tight">Proposed Changes</span>
                                     </div>
                                     <div className="flex gap-2">
                                         <button onClick={() => handleApplyChanges(i, msg.pendingData)} className="flex-1 py-2 bg-workflow-primary text-white text-xs font-bold rounded-lg hover:bg-workflow-blue transition-all">Accept & Apply</button>
-                                        <button onClick={() => handleDiscardChanges(i)} className="px-4 py-2 border border-slate-200 dark:border-white/10 text-slate-500 text-xs font-bold rounded-lg hover:bg-slate-50 dark:hover:bg-white/5 transition-colors">Discard</button>
+                                        <button onClick={() => handleDiscardChanges(i)} className="px-4 py-2 border border-[var(--color-border-primary)] dark:border-white/10 text-[var(--color-text-tertiary)] text-xs font-bold rounded-lg hover:bg-white dark:hover:bg-white/5 transition-colors">Discard</button>
                                     </div>
                                 </div>
                             )}
 
-                            {msg.applied && <div className="flex items-center gap-1.5 text-[11px] font-bold text-emerald-500 mt-1"><Check size={14} /> Changes applied to resume</div>}
+                            {msg.applied && <div className="flex items-center gap-1.5 text-[11px] font-bold text-[var(--color-primary)] mt-1"><Check size={14} /> Changes applied to resume</div>}
                         </div>
                     </div>
                 ))}
@@ -192,7 +192,7 @@ const AIChatPanel = forwardRef(({ onUpdateResume, currentResume, onThinking }, r
                                 <Bot size={14} className="text-white" />
                             </div>
                         </div>
-                        <div className="p-4 bg-slate-100 dark:bg-slate-800/50 rounded-2xl rounded-tl-none flex items-center gap-1 h-10 border border-slate-200 dark:border-white/5">
+                        <div className="p-4 bg-slate-100 dark:bg-slate-800/50 rounded-2xl rounded-tl-none flex items-center gap-1 h-10 border border-[var(--color-border-primary)] dark:border-white/5">
                             <div className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce [animation-delay:-0.3s]" />
                             <div className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce [animation-delay:-0.15s]" />
                             <div className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" />
@@ -202,14 +202,14 @@ const AIChatPanel = forwardRef(({ onUpdateResume, currentResume, onThinking }, r
             </div>
 
             {/* Input Area */}
-            <div className="p-6 bg-white dark:bg-[#0F172A] border-t border-slate-200 dark:border-white/5">
+            <div className="p-6 bg-white dark:bg-[#0F172A] border-t border-[var(--color-border-primary)] dark:border-white/5">
                 <div className="relative group max-w-3xl mx-auto">
                     <textarea
                         value={input}
                         onChange={(e) => setInput(e.target.value)}
                         onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSend(); } }}
                         placeholder="Message AI Assistant..."
-                        className="w-full bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl p-4 pr-16 text-sm text-slate-800 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-workflow-primary/20 focus:border-workflow-primary transition-all resize-none min-h-[56px] max-h-32"
+                        className="w-full bg-white dark:bg-white/5 border border-[var(--color-border-primary)] dark:border-white/10 rounded-xl p-4 pr-16 text-sm text-slate-800 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-workflow-primary/20 focus:border-workflow-primary transition-all resize-none min-h-[56px] max-h-32"
                     />
                     <button
                         onClick={() => handleSend()}

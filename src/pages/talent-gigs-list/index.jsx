@@ -114,8 +114,8 @@ const TalentGigsList = () => {
                       />
                       <div className="absolute top-3 right-3">
                         <span className={`px-2 py-1 rounded-lg text-[8px] font-black uppercase tracking-widest border ${gig.is_active
-                            ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20 shadow-lg'
-                            : 'bg-slate-900/80 text-slate-500 border-white/10'
+                            ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)] border-[var(--color-primary)]/20 shadow-lg'
+                            : 'bg-slate-900/80 text-[var(--color-text-tertiary)] border-white/10'
                           }`}>
                           {gig.is_active ? 'Active' : 'Inactive'}
                         </span>
@@ -126,8 +126,8 @@ const TalentGigsList = () => {
                       <Icon name="Briefcase" className="w-10 h-10 text-slate-800" />
                       <div className="absolute top-3 right-3">
                         <span className={`px-2 py-1 rounded-lg text-[8px] font-black uppercase tracking-widest border ${gig.is_active
-                            ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
-                            : 'bg-slate-900/80 text-slate-500 border-white/10'
+                            ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)] border-[var(--color-primary)]/20'
+                            : 'bg-slate-900/80 text-[var(--color-text-tertiary)] border-white/10'
                           }`}>
                           {gig.is_active ? 'Active' : 'Inactive'}
                         </span>
@@ -193,7 +193,7 @@ const TalentGigsList = () => {
                 <Icon name="Briefcase" className="w-10 h-10 text-slate-800" />
               </div>
               <h3 className="text-xl font-black text-white mb-2 tracking-tight">Zero Gigs Detected</h3>
-              <p className="text-slate-500 mb-8 font-medium">Initialize your first gig node to start earning.</p>
+              <p className="text-[var(--color-text-tertiary)] mb-8 font-medium">Initialize your first gig node to start earning.</p>
               <Link
                 to="/talent/gigs/create"
                 className="inline-flex items-center gap-2 px-8 py-4 bg-workflow-primary text-white rounded-2xl hover:bg-workflow-primary/80 transition-all font-black uppercase tracking-widest text-xs shadow-xl shadow-workflow-primary/20"

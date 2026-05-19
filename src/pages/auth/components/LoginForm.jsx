@@ -183,7 +183,7 @@ const LoginForm = ({ onSuccess, isLoading: externalLoading }) => {
             className="h-4 w-4 text-workflow-primary focus:ring-workflow-primary/40 bg-white/5 border-white/10 rounded"
             disabled={loading}
           />
-          <span className="ml-2 text-[11px] font-bold uppercase tracking-wider text-slate-500 group-hover:text-slate-400">Remember me</span>
+          <span className="ml-2 text-[11px] font-bold uppercase tracking-wider text-[var(--color-text-tertiary)] group-hover:text-slate-400">Remember me</span>
         </label>
         <Link
           to="/forgot-password"
@@ -218,7 +218,7 @@ const LoginForm = ({ onSuccess, isLoading: externalLoading }) => {
           <div className="w-full border-t border-[#E2E8F0] dark:border-[#1E2640]"></div>
         </div>
         <div className="relative flex justify-center text-sm">
-          <span className="px-2 bg-white dark:bg-[#0A0E27] text-[#64748B] dark:text-[#8B92A3]">Or continue with</span>
+          <span className="px-2 bg-white dark:bg-[var(--color-bg-dark)] text-[#64748B] dark:text-[#8B92A3]">Or continue with</span>
         </div>
       </div>
 

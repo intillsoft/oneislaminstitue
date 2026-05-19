@@ -98,7 +98,7 @@ const TalentSkillVerification = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gray-50 dark:bg-[#0A0E27]">
+        <div className="min-h-screen bg-gray-50 dark:bg-[var(--color-bg-dark)]">
             <UnifiedSidebar />
             <div className="ml-0 lg:ml-64 min-h-screen flex flex-col">
                 <div className="max-w-4xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-6 flex-1 flex flex-col">

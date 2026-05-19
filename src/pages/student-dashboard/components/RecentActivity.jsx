@@ -2,11 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Icon from 'components/AppIcon';
 import Image from 'components/AppImage';
-import { EliteCard } from '../../../components/ui/EliteCard';
 import { enrollmentService } from '../../../services/applicationService';
 import { useAuthContext } from '../../../contexts/AuthContext';
 import { formatDistanceToNow } from 'date-fns';
-import ComponentAIAssistant from '../../../components/ui/ComponentAIAssistant';
 
 const RecentActivity = () => {
   const { user } = useAuthContext();
@@ -63,33 +61,22 @@ const RecentActivity = () => {
     return messages[status] || 'Enrollment status update';
   };
 
-  const getStatusColor = (status) => {
-    const colors = {
-      applied: 'text-workflow-primary',
-      reviewed: 'text-text-muted',
-      interview: 'text-emerald-500',
-      offer: 'text-emerald-500',
-      rejected: 'text-red-500',
-    };
-    return colors[status] || 'text-text-muted';
-  };
-
   const getStatusBadge = (status) => {
     const badges = {
-      applied: 'bg-workflow-primary/10 text-workflow-primary border-workflow-primary/20',
-      reviewed: 'bg-surface-elevated text-text-muted border-border',
-      interview: 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20',
-      offer: 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20',
-      rejected: 'bg-red-500/10 text-red-500 border-red-500/20',
+      applied: 'bg-[var(--color-info-bg)] text-[var(--color-primary)] border-[var(--color-border-secondary)]',
+      reviewed: 'bg-[var(--color-bg-secondary)] text-[var(--color-text-tertiary)] border-[var(--color-card-border)]',
+      interview: 'bg-[var(--color-success-bg)] text-[var(--color-success)] border-green-200',
+      offer: 'bg-[var(--color-success-bg)] text-[var(--color-success)] border-green-200',
+      rejected: 'bg-[var(--color-error-bg)] text-[var(--color-error)] border-red-200',
     };
-    return badges[status] || 'bg-surface-elevated text-text-muted border-emerald-500/20';
+    return badges[status] || 'bg-[var(--color-bg-secondary)] text-[var(--color-text-tertiary)] border-[var(--color-card-border)]';
   };
 
   if (loading) {
     return (
-      <div className="space-y-4">
+      <div className="space-y-3">
         {[1, 2, 3].map(i => (
-          <div key={i} className="animate-pulse h-24 bg-white dark:bg-white/[0.05] border border-slate-200 dark:border-white/10 rounded-2xl shadow-sm dark:shadow-none"></div>
+          <div key={i} className="animate-pulse h-24 bg-white border border-[var(--color-card-border)] rounded-xl"></div>
         ))}
       </div>
     );
@@ -97,15 +84,15 @@ const RecentActivity = () => {
 
   if (activities.length === 0) {
     return (
-      <EliteCard>
+      <div className="bg-white border border-[var(--color-card-border)] rounded-xl p-6" style={{ boxShadow: 'var(--shadow-card)' }}>
         <div className="text-center py-8">
-          <div className="w-16 h-16 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 shadow-sm flex items-center justify-center mx-auto mb-4">
-            <Icon name="Activity" className="w-8 h-8 text-slate-400 dark:text-slate-600 transition-colors" />
+          <div className="w-16 h-16 rounded-xl bg-[var(--color-bg-secondary)] border border-[var(--color-card-border)] flex items-center justify-center mx-auto mb-4">
+            <Icon name="Activity" className="w-8 h-8 text-[var(--color-text-tertiary)]" />
           </div>
-          <h3 className="text-lg font-bold text-text-primary dark:text-white mb-2">No recent activity</h3>
-          <p className="text-sm text-text-secondary dark:text-slate-400">Your recent course updates will appear here</p>
+          <h3 className="text-lg font-bold text-[var(--color-text-primary)] mb-2">No recent activity</h3>
+          <p className="text-sm text-[var(--color-text-tertiary)]">Your recent course updates will appear here</p>
         </div>
-      </EliteCard>
+      </div>
     );
   }
 
@@ -114,11 +101,12 @@ const RecentActivity = () => {
       {activities.map((activity) => (
         <div
           key={activity.id}
-          className="p-4 rounded-lg bg-white dark:bg-white/5 shadow-sm dark:shadow-none hover:bg-slate-50 dark:hover:bg-white/10 transition-all border border-slate-200 dark:border-white/10"
+          className="p-4 rounded-xl bg-white border border-[var(--color-card-border)] hover:border-[var(--color-border-secondary)] transition-all"
+          style={{ boxShadow: 'var(--shadow-card)' }}
         >
           <div className="flex items-start gap-3">
             {activity.companyLogo && (
-              <div className="w-10 h-10 rounded-lg overflow-hidden flex-shrink-0 border border-emerald-500/20">
+              <div className="w-10 h-10 rounded-lg overflow-hidden flex-shrink-0 border border-[var(--color-card-border)]">
                 <Image
                   src={activity.companyLogo}
                   alt={activity.company}
@@ -129,26 +117,26 @@ const RecentActivity = () => {
             <div className="flex-1 min-w-0">
               <div className="flex items-start justify-between mb-1 gap-2">
                 <div className="flex-1 min-w-0">
-                  <h4 className="text-sm font-bold text-text-primary dark:text-white truncate">
+                  <h4 className="text-sm font-bold text-[var(--color-text-primary)] truncate">
                     {activity.position}
                   </h4>
-                  <p className="text-xs font-medium text-text-muted dark:text-slate-400">{activity.company}</p>
+                  <p className="text-xs font-medium text-[var(--color-text-tertiary)]">{activity.company}</p>
                 </div>
-                <span className={`flex-shrink-0 text-xs font-bold px-2 py-1 rounded-lg border ${getStatusBadge(activity.status)} uppercase tracking-wide`}>
+                <span className={`flex-shrink-0 text-xs font-bold px-2 py-1 rounded-md border ${getStatusBadge(activity.status)} uppercase tracking-wide`}>
                   {activity.status}
                 </span>
               </div>
-              <p className="text-xs md:text-sm text-text-secondary dark:text-slate-300 mb-2">
+              <p className="text-xs md:text-sm text-[var(--color-text-secondary)] mb-2">
                 {activity.message}
               </p>
               <div className="flex items-center justify-between text-xs">
-                <span className="text-text-muted dark:text-slate-500">
+                <span className="text-[var(--color-text-tertiary)]">
                   {activity.timestamp && formatDistanceToNow(new Date(activity.timestamp), { addSuffix: true })}
                 </span>
                 {activity.jobId && (
                   <Link
                     to={`/courses/detail/${activity.jobId}`}
-                    className="font-semibold text-emerald-600 hover:text-emerald-700 flex items-center gap-1 transition-colors"
+                    className="font-bold text-[var(--color-primary)] hover:text-[var(--color-primary-hover)] flex items-center gap-1 transition-colors"
                   >
                     <span className="hidden sm:inline">Details</span>
                     <Icon name="ArrowRight" size={12} />

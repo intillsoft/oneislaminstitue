@@ -238,7 +238,7 @@ const ResumeEditorManual = ({ data, onChange, onAIAction }) => {
             <div className="pt-2">
                 {isAddingSection ? (
                     <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="p-4 bg-white/80 dark:bg-white/5 backdrop-blur-xl border border-black/5 dark:border-white/10 rounded-2xl shadow-2xl">
-                        <label className="block text-[8px] font-black uppercase tracking-widest text-slate-500 mb-2">Initialize New Node</label>
+                        <label className="block text-[8px] font-black uppercase tracking-widest text-[var(--color-text-tertiary)] mb-2">Initialize New Node</label>
                         <div className="flex gap-2">
                             <input
                                 type="text"
@@ -271,21 +271,21 @@ const SectionWrapper = ({ title, icon: Icon, children, defaultOpen = false, drag
         <div className={`bg-white/40 dark:bg-[#0f172a]/40 backdrop-blur-3xl rounded-xl border transition-all overflow-hidden ${isDragging ? 'border-workflow-primary shadow-2xl scale-[1.01] z-50 bg-white dark:bg-[#0f172a]' : 'border-black/5 dark:border-white/5'}`}>
             <div className={`w-full px-3 py-2 flex items-center justify-between hover:bg-black/5 dark:hover:bg-white/5 transition-colors ${isDragging ? 'bg-workflow-primary/5' : ''}`}>
                 <div className="flex items-center gap-2 flex-1 overflow-hidden">
-                    <div {...dragHandleProps} className="cursor-grab text-slate-300 dark:text-slate-600 hover:text-workflow-primary transition-colors">
+                    <div {...dragHandleProps} className="cursor-grab text-slate-300 dark:text-[var(--color-text-secondary)] hover:text-workflow-primary transition-colors">
                         <GripVertical size={16} />
                     </div>
                     <button onClick={() => setIsOpen(!isOpen)} className="flex items-center gap-2 flex-1 text-left">
                         <div className="w-6 h-6 rounded-lg bg-workflow-primary/10 flex items-center justify-center text-workflow-primary">
                             <Icon size={12} />
                         </div>
-                        <h3 className="font-black text-slate-900 dark:text-white text-[10px] uppercase tracking-widest truncate">{title}</h3>
+                        <h3 className="font-black text-[var(--color-text-primary)] dark:text-white text-[10px] uppercase tracking-widest truncate">{title}</h3>
                     </button>
                 </div>
                 <div className="flex items-center gap-1">
                     <button onClick={(e) => { e.stopPropagation(); onAI?.(); }} className="p-1.5 text-workflow-primary/60 hover:text-workflow-primary hover:bg-workflow-primary/10 rounded-lg transition-all group">
                         <Sparkles size={12} className="group-hover:animate-pulse" />
                     </button>
-                    <button onClick={() => setIsOpen(!isOpen)} className="p-1 text-slate-300 hover:text-slate-600 dark:hover:text-white transition-colors"><ChevronDown size={14} className={`transition-transform duration-300 ${isOpen ? 'rotate-180 text-workflow-primary' : ''}`} /></button>
+                    <button onClick={() => setIsOpen(!isOpen)} className="p-1 text-slate-300 hover:text-[var(--color-text-secondary)] dark:hover:text-white transition-colors"><ChevronDown size={14} className={`transition-transform duration-300 ${isOpen ? 'rotate-180 text-workflow-primary' : ''}`} /></button>
                 </div>
             </div>
             <AnimatePresence>
@@ -303,20 +303,20 @@ const SectionWrapper = ({ title, icon: Icon, children, defaultOpen = false, drag
 
 const InputField = ({ label, value, onChange, type = 'text', placeholder }) => (
     <div className="flex flex-col gap-1">
-        <label className="text-[8px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-[0.2em]">{label}</label>
+        <label className="text-[8px] font-black text-[var(--color-text-tertiary)] dark:text-slate-400 uppercase tracking-[0.2em]">{label}</label>
         <input
             type={type}
             value={value || ''}
             onChange={e => onChange(e.target.value)}
             placeholder={placeholder}
-            className="w-full px-2 py-1.5 bg-black/5 dark:bg-white/5 border border-transparent focus:border-workflow-primary/30 outline-none transition-all rounded-lg text-xs font-bold text-slate-900 dark:text-white placeholder-slate-400"
+            className="w-full px-2 py-1.5 bg-black/5 dark:bg-white/5 border border-transparent focus:border-workflow-primary/30 outline-none transition-all rounded-lg text-xs font-bold text-[var(--color-text-primary)] dark:text-white placeholder-slate-400"
         />
     </div>
 );
 
 const RichTextArea = ({ value, onChange, onSelect, rows = 3, className, placeholder, label }) => (
     <div className="flex flex-col gap-1">
-        {label && <label className="text-[8px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-[0.2em]">{label}</label>}
+        {label && <label className="text-[8px] font-black text-[var(--color-text-tertiary)] dark:text-slate-400 uppercase tracking-[0.2em]">{label}</label>}
         <textarea
             value={value || ''}
             onChange={e => onChange(e.target.value)}

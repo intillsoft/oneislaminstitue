@@ -103,7 +103,7 @@ const JobCrawlerPanel = () => {
       <div className="flex flex-col xl:flex-row items-start xl:items-center justify-between gap-8 px-4">
         <div>
           <h2 className="text-2xl font-black text-white uppercase tracking-tight">Intelligence Crawler</h2>
-          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 mt-1">Global Entity Indexing & Ingestion Engine</p>
+          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-text-tertiary)] mt-1">Global Entity Indexing & Ingestion Engine</p>
         </div>
 
         <button onClick={loadStatus} disabled={loading} className="px-6 py-2.5 bg-white/5 border border-white/10 rounded-xl text-[10px] font-black uppercase tracking-widest text-slate-300 hover:text-white hover:bg-white/10 transition-all flex items-center gap-3">
@@ -115,7 +115,7 @@ const JobCrawlerPanel = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
         {[
           { label: 'DB ENTITIES', value: status?.data?.total_jobs_in_db || 0, icon: 'BarChart3', color: 'text-blue-500', bg: 'bg-blue-500/10' },
-          { label: 'LAST INDEX', value: status?.data?.last_run?.inserted || 0, icon: 'Play', color: 'text-emerald-500', bg: 'bg-emerald-500/10' },
+          { label: 'LAST INDEX', value: status?.data?.last_run?.inserted || 0, icon: 'Play', color: 'text-[var(--color-primary)]', bg: 'bg-[var(--color-primary)]/10' },
           { label: 'REDUNDANCIES', value: status?.data?.last_run?.skipped || 0, icon: 'RefreshCw', color: 'text-amber-500', bg: 'bg-amber-500/10' },
           { label: 'SYNC LATENCY', value: '42ms', icon: 'Clock', color: 'text-purple-500', bg: 'bg-purple-500/10' },
         ].map((stat, i) => (
@@ -125,7 +125,7 @@ const JobCrawlerPanel = () => {
                 <Icon name={stat.icon} size={20} className={stat.color} />
               </div>
               <div>
-                <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest">{stat.label}</p>
+                <p className="text-[10px] font-black text-[var(--color-text-tertiary)] uppercase tracking-widest">{stat.label}</p>
                 <p className="text-xl font-black text-white uppercase tracking-tight">{stat.value}</p>
               </div>
             </div>
@@ -136,15 +136,15 @@ const JobCrawlerPanel = () => {
       <div className="grid grid-cols-1 xl:grid-cols-12 gap-8">
         <div className="xl:col-span-8">
           <EliteCard className="p-10 border-white/5 bg-white/[0.01]">
-            <h3 className="text-xs font-black text-slate-500 uppercase tracking-[0.3em] mb-10">Manual Indexing Protocol</h3>
+            <h3 className="text-xs font-black text-[var(--color-text-tertiary)] uppercase tracking-[0.3em] mb-10">Manual Indexing Protocol</h3>
             <div className="space-y-8">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div className="space-y-2">
-                  <label className="text-[9px] font-black text-slate-500 uppercase tracking-widest pl-1">ENTITY KEYWORDS</label>
+                  <label className="text-[9px] font-black text-[var(--color-text-tertiary)] uppercase tracking-widest pl-1">ENTITY KEYWORDS</label>
                   <input type="text" value={formData.keywords} onChange={(e) => setFormData(prev => ({ ...prev, keywords: e.target.value }))} className="w-full bg-white/[0.03] border border-white/10 rounded-xl px-5 py-4 text-[11px] font-black text-white focus:outline-none focus:border-blue-500/50 transition-all" />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-[9px] font-black text-slate-500 uppercase tracking-widest pl-1">TARGET LOCALE</label>
+                  <label className="text-[9px] font-black text-[var(--color-text-tertiary)] uppercase tracking-widest pl-1">TARGET LOCALE</label>
                   <input type="text" value={formData.location} onChange={(e) => setFormData(prev => ({ ...prev, location: e.target.value }))} className="w-full bg-white/[0.03] border border-white/10 rounded-xl px-5 py-4 text-[11px] font-black text-white focus:outline-none focus:border-blue-500/50 transition-all" />
                 </div>
               </div>
@@ -152,10 +152,10 @@ const JobCrawlerPanel = () => {
               <div className="space-y-4">
                 <div className="flex flex-col md:flex-row gap-8">
                   <div className="flex-1 space-y-4">
-                    <label className="text-[9px] font-black text-slate-500 uppercase tracking-widest pl-1">INTELLIGENCE SOURCES</label>
+                    <label className="text-[9px] font-black text-[var(--color-text-tertiary)] uppercase tracking-widest pl-1">INTELLIGENCE SOURCES</label>
                     <div className="flex flex-wrap gap-3">
                       {['linkedin', 'glassdoor', 'indeed'].map((source) => (
-                        <button key={source} onClick={() => toggleSource(source)} className={`px-6 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all border ${formData.sources.includes(source) ? 'bg-blue-600 border-blue-600 text-white shadow-lg shadow-blue-500/20' : 'bg-white/5 border-white/5 text-slate-500 hover:text-white hover:bg-white/10'}`}>
+                        <button key={source} onClick={() => toggleSource(source)} className={`px-6 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all border ${formData.sources.includes(source) ? 'bg-blue-600 border-blue-600 text-white shadow-lg shadow-blue-500/20' : 'bg-white/5 border-white/5 text-[var(--color-text-tertiary)] hover:text-white hover:bg-white/10'}`}>
                           {source}
                         </button>
                       ))}
@@ -163,7 +163,7 @@ const JobCrawlerPanel = () => {
                   </div>
 
                   <div className="space-y-2 w-full md:w-1/3">
-                    <label className="text-[9px] font-black text-slate-500 uppercase tracking-widest pl-1">FRESHNESS LIMIT (AGE)</label>
+                    <label className="text-[9px] font-black text-[var(--color-text-tertiary)] uppercase tracking-widest pl-1">FRESHNESS LIMIT (AGE)</label>
                     <select
                       value={formData.date_posted}
                       onChange={(e) => setFormData(prev => ({ ...prev, date_posted: e.target.value }))}
@@ -220,7 +220,7 @@ const JobCrawlerPanel = () => {
 
         <div className="xl:col-span-4">
           <EliteCard className="p-8 border-white/5 bg-white/[0.01]">
-            <h3 className="text-xs font-black text-slate-500 uppercase tracking-[0.2em] mb-6">Security Context</h3>
+            <h3 className="text-xs font-black text-[var(--color-text-tertiary)] uppercase tracking-[0.2em] mb-6">Security Context</h3>
             <div className="space-y-6">
               <div className="p-5 rounded-2xl bg-blue-500/5 border border-blue-500/10">
                 <div className="flex items-center gap-3 mb-3">
@@ -232,8 +232,8 @@ const JobCrawlerPanel = () => {
               <div className="space-y-4">
                 {['RAPIDAPI_KEY', 'LINKEDIN_TOKEN', 'INDEED_CLIENT_ID'].map(token => (
                   <div key={token} className="flex items-center justify-between">
-                    <span className="text-[10px] font-black text-slate-600 uppercase tracking-widest">{token}</span>
-                    <span className="text-[9px] font-black text-emerald-500 uppercase tracking-widest">ACTIVE</span>
+                    <span className="text-[10px] font-black text-[var(--color-text-secondary)] uppercase tracking-widest">{token}</span>
+                    <span className="text-[9px] font-black text-[var(--color-primary)] uppercase tracking-widest">ACTIVE</span>
                   </div>
                 ))}
               </div>

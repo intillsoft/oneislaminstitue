@@ -196,7 +196,7 @@ const JobPerformanceTable = () => {
                       <Link to={`/courses/detail/${job?.id}`} className="p-2 bg-surface text-text-muted rounded-lg hover:bg-workflow-primary hover:text-white transition-all border border-border shadow-xl flex items-center justify-center">
                         <Icon name="Eye" size={14} />
                       </Link>
-                      <Link to="/instructor/courses" className="p-2 bg-surface text-text-muted rounded-lg hover:bg-emerald-600 hover:text-white transition-all border border-border shadow-xl flex items-center justify-center">
+                      <Link to="/instructor/courses" className="p-2 bg-surface text-text-muted rounded-lg hover:bg-[var(--color-primary)] hover:text-white transition-all border border-border shadow-xl flex items-center justify-center">
                         <Icon name="Edit" size={14} />
                       </Link>
                       <button className="p-2 bg-surface text-text-muted rounded-lg hover:bg-rose-600 hover:text-white transition-all border border-border shadow-xl flex items-center justify-center">

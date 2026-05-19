@@ -148,13 +148,13 @@ const NotificationBell = () => {
         }}
         className={`relative p-2.5 transition-all duration-300 rounded-xl border ${
           isOpen
-            ? 'bg-slate-100 border-slate-200 text-slate-900 shadow-inner dark:bg-white/[0.08] dark:border-white/10 dark:text-white'
-            : 'text-slate-500 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5 border-transparent hover:border-slate-200 dark:hover:border-white/5'
+            ? 'bg-slate-100 border-[var(--color-border-primary)] text-[var(--color-text-primary)] shadow-inner dark:bg-white/[0.08] dark:border-white/10 dark:text-white'
+            : 'text-[var(--color-text-tertiary)] hover:text-[var(--color-text-primary)] dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5 border-transparent hover:border-[var(--color-border-primary)] dark:hover:border-white/5'
         }`}
       >
         <Bell className="w-5 h-5" />
         {unreadCount > 0 && (
-          <span className="absolute top-2 right-2 w-2 h-2 bg-emerald-500 rounded-full shadow-[0_0_12px_rgba(16,185,129,0.8)]" />
+          <span className="absolute top-2 right-2 w-2 h-2 bg-[var(--color-primary)] rounded-full shadow-[0_0_12px_rgba(16,185,129,0.8)]" />
         )}
       </button>
 
@@ -187,7 +187,7 @@ const NotificationBell = () => {
                 width: isMobile ? '100%' : '380px',
                 height: isMobile ? '85dvh' : '100dvh' 
               }}
-              className={`fixed ${isMobile ? 'bottom-0 left-0 right-0' : 'top-0 bottom-0 right-0'} bg-white dark:bg-[#0A0E27] backdrop-blur-3xl z-[9999] shadow-[-1px_-10px_40px_rgba(0,0,0,0.08)] dark:shadow-[-5px_-20px_60px_rgba(0,0,0,0.4)] flex flex-col border-gray-100 dark:border-white/5 ${isMobile ? 'border-t rounded-t-[2.5rem]' : 'border-l rounded-l-[2.5rem]'} overflow-hidden transition-all duration-300`}
+              className={`fixed ${isMobile ? 'bottom-0 left-0 right-0' : 'top-0 bottom-0 right-0'} bg-white dark:bg-[var(--color-bg-dark)] backdrop-blur-3xl z-[9999] shadow-[-1px_-10px_40px_rgba(0,0,0,0.08)] dark:shadow-[-5px_-20px_60px_rgba(0,0,0,0.4)] flex flex-col border-gray-100 dark:border-white/5 ${isMobile ? 'border-t rounded-t-[2.5rem]' : 'border-l rounded-l-[2.5rem]'} overflow-hidden transition-all duration-300`}
             >
               {/* Pull Handle for Mobile */}
               {isMobile && (
@@ -196,18 +196,18 @@ const NotificationBell = () => {
                 </div>
               )}
             {/* Header */}
-            <div className="flex items-center justify-between p-4 border-b border-slate-100 dark:border-white/5 bg-slate-50 dark:bg-white/[0.02] flex-shrink-0">
+            <div className="flex items-center justify-between p-4 border-b border-slate-100 dark:border-white/5 bg-white dark:bg-white/[0.02] flex-shrink-0">
               <div>
-                <h3 className="text-[10px] font-black text-slate-900 dark:text-white uppercase tracking-[0.3em]">Notifications</h3>
-                <p className="text-[9px] text-slate-500 font-bold uppercase tracking-widest mt-1 flex items-center gap-2">
-                  {unreadCount > 0 && <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]" />}
+                <h3 className="text-[10px] font-black text-[var(--color-text-primary)] dark:text-white uppercase tracking-[0.3em]">Notifications</h3>
+                <p className="text-[9px] text-[var(--color-text-tertiary)] font-bold uppercase tracking-widest mt-1 flex items-center gap-2">
+                  {unreadCount > 0 && <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-primary)] shadow-[0_0_8px_rgba(16,185,129,0.5)]" />}
                   {unreadCount > 0 ? `${unreadCount} New` : 'All Caught Up'}
                 </p>
               </div>
               {unreadCount > 0 && (
                 <button
                   onClick={handleMarkAllAsRead}
-                  className="text-[9px] font-black text-slate-500 hover:text-slate-900 dark:text-slate-600 dark:hover:text-white px-3 py-1.5 bg-slate-100 dark:bg-white/5 rounded-xl border border-slate-200 dark:border-white/5 transition-all uppercase tracking-[0.1em]"
+                  className="text-[9px] font-black text-[var(--color-text-tertiary)] hover:text-[var(--color-text-primary)] dark:text-[var(--color-text-secondary)] dark:hover:text-white px-3 py-1.5 bg-slate-100 dark:bg-white/5 rounded-xl border border-[var(--color-border-primary)] dark:border-white/5 transition-all uppercase tracking-[0.1em]"
                 >
                   Clear All
                 </button>
@@ -218,11 +218,11 @@ const NotificationBell = () => {
             <div className="overflow-y-auto max-h-[60vh] md:max-h-[440px] custom-scrollbar">
               {loading && !notifications.length ? (
                 <div className="p-12 flex flex-col items-center justify-center gap-4">
-                  <div className="w-6 h-6 border-2 border-slate-200 dark:border-white/5 border-t-emerald-500 rounded-full animate-spin" />
+                  <div className="w-6 h-6 border-2 border-[var(--color-border-primary)] dark:border-white/5 border-t-emerald-500 rounded-full animate-spin" />
                 </div>
               ) : notifications.length === 0 ? (
                 <div className="p-12 text-center">
-                  <div className="w-14 h-14 rounded-2xl bg-slate-50 dark:bg-white/[0.01] border border-slate-200 dark:border-white/5 flex items-center justify-center mx-auto mb-4 text-slate-400 dark:text-slate-600 shadow-sm">
+                  <div className="w-14 h-14 rounded-2xl bg-white dark:bg-white/[0.01] border border-[var(--color-border-primary)] dark:border-white/5 flex items-center justify-center mx-auto mb-4 text-slate-400 dark:text-[var(--color-text-secondary)] shadow-sm">
                     <Zap className="w-6 h-6" />
                   </div>
                   <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em]">No Messages</p>
@@ -234,32 +234,32 @@ const NotificationBell = () => {
                       key={notification.id}
                       onClick={(e) => handleNotificationClick(e, notification)}
                       className={`block p-4 transition-all duration-500 hover:bg-slate-100/50 dark:hover:bg-white/[0.03] cursor-pointer group relative overflow-hidden ${
-                        !notification.is_read ? 'bg-emerald-50/50 dark:bg-emerald-500/[0.02]' : 'opacity-70 dark:opacity-40'
+                        !notification.is_read ? 'bg-[var(--color-primary-light)]/50 dark:bg-[var(--color-primary)]/[0.02]' : 'opacity-70 dark:opacity-40'
                       }`}
                     >
                       <div className="flex items-start gap-6 relative z-10">
                         <div className={`mt-2 w-2 h-2 rounded-full flex-shrink-0 transition-all ${
-                          !notification.is_read ? 'bg-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.8)]' : 'bg-slate-300 dark:bg-slate-800'
+                          !notification.is_read ? 'bg-[var(--color-primary)] shadow-[0_0_12px_rgba(16,185,129,0.8)]' : 'bg-slate-300 dark:bg-slate-800'
                         }`} />
                         
                         <div className="flex-1 min-w-0">
                           <div className="flex justify-between items-start gap-4 mb-1">
-                            <h4 className={`text-xs font-bold uppercase tracking-tight truncate transition-all ${!notification.is_read ? 'text-slate-900 group-hover:text-emerald-700 dark:text-white dark:group-hover:text-emerald-400' : 'text-slate-700 dark:text-slate-500'}`}>
+                            <h4 className={`text-xs font-bold uppercase tracking-tight truncate transition-all ${!notification.is_read ? 'text-[var(--color-text-primary)] group-hover:text-[var(--color-primary)] dark:text-white dark:group-hover:text-[var(--color-primary)]' : 'text-slate-700 dark:text-[var(--color-text-tertiary)]'}`}>
                               {notification.title}
                             </h4>
-                            <span className="text-[8px] text-slate-500 font-bold uppercase tracking-widest whitespace-nowrap mt-0.5 opacity-60">
+                            <span className="text-[8px] text-[var(--color-text-tertiary)] font-bold uppercase tracking-widest whitespace-nowrap mt-0.5 opacity-60">
                                 {formatDistanceToNow(new Date(notification.created_at), { addSuffix: true })}
                             </span>
                           </div>
                           
                           <p className={`text-[11px] leading-relaxed line-clamp-2 mb-2 font-medium transition-all ${
-                            !notification.is_read ? 'text-slate-600 group-hover:text-slate-900 dark:text-slate-400 dark:group-hover:text-slate-200' : 'text-slate-400 dark:text-slate-600'
+                            !notification.is_read ? 'text-[var(--color-text-secondary)] group-hover:text-[var(--color-text-primary)] dark:text-slate-400 dark:group-hover:text-slate-200' : 'text-slate-400 dark:text-[var(--color-text-secondary)]'
                           }`}>
                             {notification.message || notification.description}
                           </p>
 
                           <div className="flex items-center gap-4 opacity-0 group-hover:opacity-100 transition-all translate-y-1 group-hover:translate-y-0">
-                              <span className="text-[9px] font-black text-emerald-600 dark:text-emerald-500 uppercase tracking-widest transition-colors flex items-center gap-1.5">
+                              <span className="text-[9px] font-black text-[var(--color-primary)] dark:text-[var(--color-primary)] uppercase tracking-widest transition-colors flex items-center gap-1.5">
                                 View <ChevronDown className="-rotate-90 w-3 h-3" />
                               </span>
                             <button
@@ -267,7 +267,7 @@ const NotificationBell = () => {
                                 e.stopPropagation();
                                 handleMarkAsRead(notification.id);
                               }}
-                              className="text-[9px] font-black text-slate-400 hover:text-slate-900 dark:text-slate-600 dark:hover:text-white uppercase tracking-[0.2em] transition-colors"
+                              className="text-[9px] font-black text-slate-400 hover:text-[var(--color-text-primary)] dark:text-[var(--color-text-secondary)] dark:hover:text-white uppercase tracking-[0.2em] transition-colors"
                             >
                               Mark Read
                             </button>
@@ -277,7 +277,7 @@ const NotificationBell = () => {
                       
                       {/* Elegant hover background accent */}
                       {!notification.is_read && (
-                          <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/[0.03] blur-[60px] -mr-16 -mt-16 group-hover:bg-emerald-500/10 transition-all" />
+                          <div className="absolute top-0 right-0 w-32 h-32 bg-[var(--color-primary)]/[0.03] blur-[60px] -mr-16 -mt-16 group-hover:bg-[var(--color-primary)]/10 transition-all" />
                       )}
                     </div>
                   ))}
@@ -286,11 +286,11 @@ const NotificationBell = () => {
             </div>
 
             {/* Footer */}
-            <div className="p-4 border-t border-slate-100 dark:border-white/5 bg-slate-50 dark:bg-white/[0.01] flex-shrink-0">
+            <div className="p-4 border-t border-slate-100 dark:border-white/5 bg-white dark:bg-white/[0.01] flex-shrink-0">
               <Link
                 to="/notifications"
                 onClick={() => setIsOpen(false)}
-                className="block w-full text-center py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest text-slate-500 hover:text-slate-900 hover:bg-white border border-slate-200 shadow-sm dark:text-slate-400 dark:hover:text-white dark:hover:bg-white/5 dark:border-white/5 transition-all duration-500"
+                className="block w-full text-center py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest text-[var(--color-text-tertiary)] hover:text-[var(--color-text-primary)] hover:bg-white border border-[var(--color-border-primary)] shadow-sm dark:text-slate-400 dark:hover:text-white dark:hover:bg-white/5 dark:border-white/5 transition-all duration-500"
               >
                 Settings
               </Link>

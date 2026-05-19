@@ -100,12 +100,12 @@ const CourseDiscovery = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-[#0A1120] text-slate-900 dark:text-white font-sans selection:bg-emerald-500/30 pb-32">
+    <div className="min-h-screen bg-white dark:bg-[var(--color-bg-dark)] text-[var(--color-text-primary)] dark:text-white font-sans selection:bg-[var(--color-primary)]/30 pb-32">
       
       {/* Search Header */}
       <section className="relative pt-36 md:pt-40 pb-12 overflow-hidden">
         <div className="absolute inset-0 z-0">
-          <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-emerald-500/5 rounded-full blur-[100px]" />
+          <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-[var(--color-primary)]/5 rounded-full blur-[100px]" />
           <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-blue-500/5 rounded-full blur-[80px]" />
         </div>
 
@@ -116,11 +116,11 @@ const CourseDiscovery = () => {
               className="max-w-3xl mx-auto space-y-6"
             >
               <h1 className="text-3xl md:text-5xl font-black tracking-tight leading-tight">
-                Explore the <span className="text-emerald-600">Curriculum</span>
+                Explore the <span className="text-[var(--color-primary)]">Curriculum</span>
               </h1>
               
-              <div className="bg-white dark:bg-[#0f1429] p-1.5 rounded-3xl flex items-center gap-2 group border border-slate-100 dark:border-white/5 shadow-2xl shadow-emerald-500/5 transition-all focus-within:border-emerald-500/20">
-                    <div className="pl-4 text-slate-300 group-focus-within:text-emerald-500 transition-colors">
+              <div className="bg-white dark:bg-[#0f1429] p-1.5 rounded-3xl flex items-center gap-2 group border border-slate-100 dark:border-white/5 shadow-2xl shadow-emerald-500/5 transition-all focus-within:border-[var(--color-primary)]/20">
+                    <div className="pl-4 text-slate-300 group-focus-within:text-[var(--color-primary)] transition-colors">
                       <Search className="w-5 h-5" />
                     </div>
                     <input
@@ -128,7 +128,7 @@ const CourseDiscovery = () => {
                       value={searchQuery}
                       onChange={(e) => { setSearchQuery(e.target.value); setCurrentPage(1); }}
                       placeholder="Search for subjects, lessons, or modules..."
-                      className="flex-1 bg-transparent border-none focus:ring-0 text-slate-900 dark:text-white placeholder-slate-400 py-3.5 text-[15px] font-bold"
+                      className="flex-1 bg-transparent border-none focus:ring-0 text-[var(--color-text-primary)] dark:text-white placeholder-slate-400 py-3.5 text-[15px] font-bold"
                     />
                     <div className="flex items-center gap-1 pr-1.5">
                       <VoiceSearch
@@ -136,13 +136,13 @@ const CourseDiscovery = () => {
                       />
                       <button
                         onClick={() => setIsAdvancedSearchOpen(true)}
-                        className="p-2.5 rounded-2xl hover:bg-slate-50 dark:hover:bg-white/5 text-slate-300 hover:text-emerald-500 transition-all"
+                        className="p-2.5 rounded-2xl hover:bg-white dark:hover:bg-white/5 text-slate-300 hover:text-[var(--color-primary)] transition-all"
                       >
                         <SlidersHorizontal className="w-5 h-5" />
                       </button>
                       <button
                         onClick={() => { setCurrentPage(1); loadJobs(); }}
-                        className="bg-emerald-600 text-white px-8 py-3.5 rounded-2xl font-black hover:brightness-110 active:scale-95 transition-all shadow-xl shadow-emerald-500/10 text-[10px] tracking-[0.2em] uppercase"
+                        className="bg-[var(--color-primary)] text-white px-8 py-3.5 rounded-2xl font-black hover:brightness-110 active:scale-95 transition-all shadow-xl shadow-emerald-500/10 text-[10px] tracking-[0.2em] uppercase"
                       >
                         Find Course
                       </button>
@@ -174,7 +174,7 @@ const CourseDiscovery = () => {
 
             {/* List Header */}
             <div className="flex items-center justify-between border-b border-slate-100 dark:border-white/5 pb-6">
-                <h2 className="text-xl font-black tracking-tight text-slate-900 dark:text-white">
+                <h2 className="text-xl font-black tracking-tight text-[var(--color-text-primary)] dark:text-white">
                   {isLoading ? 'Scanning...' : `${totalJobs} Courses Available`}
                 </h2>
                 
@@ -182,7 +182,7 @@ const CourseDiscovery = () => {
                   <select
                     value={sortBy}
                     onChange={(e) => setSortBy(e.target.value)}
-                    className="appearance-none bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-full pl-6 pr-12 py-2.5 text-xs font-black text-slate-600 dark:text-slate-400 outline-none focus:border-emerald-500 transition-all cursor-pointer uppercase tracking-widest"
+                    className="appearance-none bg-white dark:bg-slate-900 border border-[var(--color-border-primary)] dark:border-white/10 rounded-full pl-6 pr-12 py-2.5 text-xs font-black text-[var(--color-text-secondary)] dark:text-slate-400 outline-none focus:border-[var(--color-primary)] transition-all cursor-pointer uppercase tracking-widest"
                   >
                     <option value="relevance">Relevance</option>
                     <option value="created_at">Newest</option>
@@ -220,7 +220,7 @@ const CourseDiscovery = () => {
                     <button
                       onClick={() => setCurrentPage(p => p + 1)}
                       disabled={isLoading}
-                      className="px-12 py-4 rounded-2xl bg-slate-900 text-white font-black hover:bg-emerald-600 transition-all disabled:opacity-50 text-[10px] uppercase tracking-[0.2em] shadow-xl hover:shadow-emerald-500/20"
+                      className="px-12 py-4 rounded-2xl bg-slate-900 text-white font-black hover:bg-[var(--color-primary)] transition-all disabled:opacity-50 text-[10px] uppercase tracking-[0.2em] shadow-xl hover:shadow-[var(--color-primary)]/20"
                     >
                       {isLoading ? 'Scanning...' : 'Load more items'}
                     </button>
@@ -228,8 +228,8 @@ const CourseDiscovery = () => {
                 )}
               </div>
             ) : (
-              <div className="p-20 text-center rounded-[3rem] border-2 border-dashed border-slate-200 dark:border-white/10 flex flex-col items-center">
-                <div className="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mb-6">
+              <div className="p-20 text-center rounded-[3rem] border-2 border-dashed border-[var(--color-border-primary)] dark:border-white/10 flex flex-col items-center">
+                <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mb-6">
                   <BookOpen size={30} className="text-slate-300" />
                 </div>
                 <h3 className="text-xl font-black mb-2">No Courses Found</h3>

@@ -89,7 +89,7 @@ const CandidatePipeline = () => {
     if (s === 'screening' || s === 'reviewing') return { label: 'SCREEN', color: 'text-amber-500', bg: 'bg-amber-500/10', border: 'border-amber-500/20' };
     if (s === 'interview' || s === 'interview_scheduled') return { label: 'SYNC', color: 'text-workflow-accent', bg: 'bg-workflow-accent/10', border: 'border-workflow-accent/20' };
     if (s === 'assessment' || s === 'testing') return { label: 'EVAL', color: 'text-indigo-500', bg: 'bg-indigo-500/10', border: 'border-indigo-500/20' };
-    if (s === 'offer' || s === 'offer_sent') return { label: 'OFFER', color: 'text-emerald-500', bg: 'bg-emerald-500/10', border: 'border-emerald-500/20' };
+    if (s === 'offer' || s === 'offer_sent') return { label: 'OFFER', color: 'text-[var(--color-primary)]', bg: 'bg-[var(--color-primary)]/10', border: 'border-[var(--color-primary)]/20' };
     if (s === 'hired' || s === 'accepted') return { label: 'HIRED', color: 'text-sky-500', bg: 'bg-sky-500/10', border: 'border-sky-500/20' };
     if (s === 'rejected' || s === 'declined') return { label: 'FAIL', color: 'text-rose-500', bg: 'bg-rose-500/10', border: 'border-rose-500/20' };
     return { label: 'PEND', color: 'text-text-muted', bg: 'bg-text-muted/10', border: 'border-text-muted/20' };
@@ -144,11 +144,11 @@ const CandidatePipeline = () => {
         <table className="w-full text-left border-collapse">
           <thead>
             <tr className="border-b border-white/5">
-              <th className="py-4 pr-8 text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">Student Identity</th>
-              <th className="py-4 pr-8 text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">Enrolled Course</th>
-              <th className="py-4 pr-8 text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">Enrollment Date</th>
-              <th className="py-4 pr-8 text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">Current Phase</th>
-              <th className="py-4 text-right text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">Academic Review</th>
+              <th className="py-4 pr-8 text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-text-tertiary)]">Student Identity</th>
+              <th className="py-4 pr-8 text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-text-tertiary)]">Enrolled Course</th>
+              <th className="py-4 pr-8 text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-text-tertiary)]">Enrollment Date</th>
+              <th className="py-4 pr-8 text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-text-tertiary)]">Current Phase</th>
+              <th className="py-4 text-right text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-text-tertiary)]">Academic Review</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-white/[0.03]">
@@ -164,7 +164,7 @@ const CandidatePipeline = () => {
                   <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center mx-auto mb-6">
                     <Icon name="Users" size={32} className="text-slate-800" />
                   </div>
-                  <h3 className="text-sm font-black text-slate-500 uppercase tracking-[0.2em]">Cluster Data Nullified</h3>
+                  <h3 className="text-sm font-black text-[var(--color-text-tertiary)] uppercase tracking-[0.2em]">Cluster Data Nullified</h3>
                 </td>
               </tr>
             ) : (
@@ -184,13 +184,13 @@ const CandidatePipeline = () => {
                             alt={candidate.name}
                             className="w-12 h-12 rounded-2xl border border-white/10 object-cover shadow-2xl transition-transform group-hover:scale-110"
                           />
-                          <div className={`absolute -bottom-1 -right-1 w-4 h-4 rounded-full border-2 border-bg-elevated ${config.label === 'HIRED' ? 'bg-emerald-500' : 'bg-workflow-primary'}`} />
+                          <div className={`absolute -bottom-1 -right-1 w-4 h-4 rounded-full border-2 border-bg-elevated ${config.label === 'HIRED' ? 'bg-[var(--color-primary)]' : 'bg-workflow-primary'}`} />
                         </div>
                         <div>
                           <div className="text-sm font-black text-text-primary dark:text-white uppercase tracking-tight mb-0.5 group-hover:text-workflow-primary transition-colors">
                             {candidate.name || candidate.email?.split('@')[0]}
                           </div>
-                          <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">
+                          <div className="text-[10px] font-bold text-[var(--color-text-tertiary)] uppercase tracking-widest">
                             {candidate.email}
                           </div>
                         </div>
@@ -198,7 +198,7 @@ const CandidatePipeline = () => {
                     </td>
                     <td className="py-6 pr-8">
                       <div className="text-sm font-black text-slate-300 uppercase tracking-tight">{job.title || 'UNSPECIFIED'}</div>
-                      <div className="text-[9px] font-black text-slate-600 uppercase tracking-[0.1em]">{job.industry || 'GENERAL'}</div>
+                      <div className="text-[9px] font-black text-[var(--color-text-secondary)] uppercase tracking-[0.1em]">{job.industry || 'GENERAL'}</div>
                     </td>
                     <td className="py-6 pr-8">
                       <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
@@ -216,7 +216,7 @@ const CandidatePipeline = () => {
                         <button className="w-9 h-9 flex items-center justify-center rounded-xl bg-white/5 border border-white/5 text-slate-400 hover:bg-workflow-primary hover:border-workflow-primary hover:text-white transition-all shadow-xl">
                           <Icon name="Mail" size={14} />
                         </button>
-                        <button className="w-9 h-9 flex items-center justify-center rounded-xl bg-white/5 border border-white/5 text-slate-400 hover:bg-emerald-600 hover:border-emerald-500 hover:text-white transition-all shadow-xl">
+                        <button className="w-9 h-9 flex items-center justify-center rounded-xl bg-white/5 border border-white/5 text-slate-400 hover:bg-[var(--color-primary)] hover:border-[var(--color-primary)] hover:text-white transition-all shadow-xl">
                           <Icon name="Calendar" size={14} />
                         </button>
                         <button className="w-9 h-9 flex items-center justify-center rounded-xl bg-white/5 border border-white/5 text-slate-400 hover:bg-white/10 hover:text-white transition-all shadow-xl">
@@ -233,7 +233,7 @@ const CandidatePipeline = () => {
       </div>
 
       <div className="px-8 py-6 bg-white/[0.02] border-t border-white/5 flex items-center justify-between">
-        <div className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
+        <div className="text-[10px] font-black text-[var(--color-text-tertiary)] uppercase tracking-widest">
           SYSTEM ACTIVE: <span className="text-white">{filteredCandidates?.length}</span> ENTITIES IDENTIFIED
         </div>
         <div className="flex items-center gap-4">
@@ -243,10 +243,10 @@ const CandidatePipeline = () => {
             ))}
           </div>
           <div className="flex items-center gap-2">
-            <button className="w-8 h-8 flex items-center justify-center rounded-lg bg-white/5 border border-white/5 text-slate-500 hover:text-white transition-all disabled:opacity-20">
+            <button className="w-8 h-8 flex items-center justify-center rounded-lg bg-white/5 border border-white/5 text-[var(--color-text-tertiary)] hover:text-white transition-all disabled:opacity-20">
               <Icon name="ChevronLeft" size={16} />
             </button>
-            <button className="w-8 h-8 flex items-center justify-center rounded-lg bg-white/5 border border-white/5 text-slate-500 hover:text-white transition-all disabled:opacity-20">
+            <button className="w-8 h-8 flex items-center justify-center rounded-lg bg-white/5 border border-white/5 text-[var(--color-text-tertiary)] hover:text-white transition-all disabled:opacity-20">
               <Icon name="ChevronRight" size={16} />
             </button>
           </div>

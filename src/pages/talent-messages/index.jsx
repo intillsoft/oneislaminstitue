@@ -50,7 +50,7 @@ const TalentMessages = () => {
   }
 
   return (
-    <div className="min-h-screen bg-white dark:bg-[#0A0E27]">
+    <div className="min-h-screen bg-white dark:bg-[var(--color-bg-dark)]">
       <UnifiedSidebar />
       <div className="ml-0 lg:ml-64 min-h-screen">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -153,8 +153,8 @@ const TalentMessages = () => {
                           {currentConversation.other_user_name || 'Unknown User'}
                         </p>
                         <div className="flex items-center gap-1.5 mt-0.5">
-                          <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                          <p className="text-[10px] font-black uppercase tracking-widest text-emerald-500">Node Active</p>
+                          <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-primary)] animate-pulse" />
+                          <p className="text-[10px] font-black uppercase tracking-widest text-[var(--color-primary)]">Node Active</p>
                         </div>
                       </div>
                     </div>

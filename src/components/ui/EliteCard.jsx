@@ -19,14 +19,14 @@ export const EliteCard = ({
             className={`
                 bg-white 
                 dark:bg-white/[0.02]
-                border border-slate-200 
+                border border-[var(--color-border-primary)] 
                 dark:border-white/10
                 shadow-sm dark:shadow-none
                 rounded-2xl 
                 p-4 sm:p-5
                 transition-all
                 duration-300
-                ${onClick ? 'cursor-pointer hover:border-emerald-500/40 active:scale-[0.98]' : ''}
+                ${onClick ? 'cursor-pointer hover:border-[var(--color-primary)]/40 active:scale-[0.98]' : ''}
                 ${className}
             `}
             {...props}
@@ -53,9 +53,9 @@ export const EliteStatCard = ({
             text: 'text-workflow-primary dark:text-workflow-primary/80'
         },
         green: {
-            bg: 'bg-emerald-500/10 dark:bg-emerald-500/20',
-            icon: 'text-emerald-500',
-            text: 'text-emerald-500 dark:text-emerald-400'
+            bg: 'bg-[var(--color-primary)]/10 dark:bg-[var(--color-primary)]/20',
+            icon: 'text-[var(--color-primary)]',
+            text: 'text-[var(--color-primary)] dark:text-[var(--color-primary)]'
         },
         amber: {
             bg: 'bg-amber-500/10 dark:bg-amber-500/20',
@@ -76,19 +76,19 @@ export const EliteStatCard = ({
     const trendIsNegative = typeof trend === 'object' ? trend?.isPositive === false : trendDirection === 'down';
 
     return (
-        <EliteCard className={`${className} border-emerald-500/20 hover:border-emerald-500/40`}>
+        <EliteCard className={`${className} border-[var(--color-primary)]/20 hover:border-[var(--color-primary)]/40`}>
             <div className="flex items-center justify-between">
                 <div className="flex-1">
-                    <p className="text-[10px] font-black text-slate-500 uppercase tracking-[0.15em] mb-2 font-mono">
+                    <p className="text-[10px] font-black text-[var(--color-text-tertiary)] uppercase tracking-[0.15em] mb-2 font-mono">
                         {displayLabel}
                     </p>
-                    <p className="text-2xl font-black text-slate-900 dark:text-white tracking-tighter">
+                    <p className="text-2xl font-black text-[var(--color-text-primary)] dark:text-white tracking-tighter">
                         {value}
                     </p>
                     {trend && (
-                        <p className={`text-[11px] font-black mt-2 flex items-center gap-1 uppercase tracking-wider ${trendIsPositive ? 'text-emerald-500' :
+                        <p className={`text-[11px] font-black mt-2 flex items-center gap-1 uppercase tracking-wider ${trendIsPositive ? 'text-[var(--color-primary)]' :
                                 trendIsNegative ? 'text-rose-500' :
-                                    'text-slate-500'
+                                    'text-[var(--color-text-tertiary)]'
                             } `}>
                             {trendIsPositive && <Icon name="TrendingUp" size={12} />}
                             {trendIsNegative && <Icon name="TrendingDown" size={12} />}
@@ -96,7 +96,7 @@ export const EliteStatCard = ({
                         </p>
                     )}
                 </div>
-                <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 flex items-center justify-center flex-shrink-0 transition-colors group-hover:border-emerald-500/40`}>
+                <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-white dark:bg-white/5 border border-[var(--color-border-primary)] dark:border-white/10 flex items-center justify-center flex-shrink-0 transition-colors group-hover:border-[var(--color-primary)]/40`}>
                     <Icon className={`${colors.icon}`} size={typeof window !== 'undefined' && window.innerWidth < 640 ? 18 : 20} />
                 </div>
             </div>
@@ -116,7 +116,7 @@ export const EliteProgressBar = ({
 
     const colorClasses = {
         blue: 'bg-workflow-primary',
-        green: 'bg-emerald-500',
+        green: 'bg-[var(--color-primary)]',
         amber: 'bg-amber-500',
         red: 'bg-red-500',
         gradient: 'bg-gradient-to-r from-workflow-primary via-workflow-accent to-workflow-accent'
@@ -127,16 +127,16 @@ export const EliteProgressBar = ({
     return (
         <div className={className}>
             <div className="flex items-center justify-between mb-2">
-                <span className="text-[10px] font-black uppercase tracking-widest text-slate-500">
+                <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-tertiary)]">
                     {label}
                 </span>
                 {showPercentage && (
-                    <span className="text-[10px] font-black text-emerald-500 mb-0.5">
+                    <span className="text-[10px] font-black text-[var(--color-primary)] mb-0.5">
                         {percentage}%
                     </span>
                 )}
             </div>
-            <div className="h-1.5 bg-slate-100 dark:bg-white/5 rounded-full overflow-hidden border border-slate-200 dark:border-white/10 shadow-inner">
+            <div className="h-1.5 bg-slate-100 dark:bg-white/5 rounded-full overflow-hidden border border-[var(--color-border-primary)] dark:border-white/10 shadow-inner">
                 <motion.div
                     className={`h-full ${bgColor} rounded-full`}
                     initial={{ width: 0 }}

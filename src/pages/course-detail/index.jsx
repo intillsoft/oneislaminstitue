@@ -194,8 +194,8 @@ const CourseDetail = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-50 dark:bg-[#0A1120] flex items-center justify-center">
-        <div className="w-10 h-10 border-2 border-slate-200 dark:border-slate-700 border-t-emerald-500 rounded-full animate-spin" />
+      <div className="min-h-screen bg-white dark:bg-[var(--color-bg-dark)] flex items-center justify-center">
+        <div className="w-10 h-10 border-2 border-[var(--color-border-primary)] dark:border-slate-700 border-t-emerald-500 rounded-full animate-spin" />
       </div>
     );
   }
@@ -213,11 +213,11 @@ const CourseDetail = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-[#0A1120] selection:bg-emerald-500/30">
+    <div className="min-h-screen bg-white dark:bg-[var(--color-bg-dark)] selection:bg-[var(--color-primary)]/30">
       {/* Subtle Background */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-7xl">
-          <div className="absolute top-[-10%] right-[-5%] w-[40%] h-[40%] bg-emerald-500/5 rounded-full blur-[120px]" />
+          <div className="absolute top-[-10%] right-[-5%] w-[40%] h-[40%] bg-[var(--color-primary)]/5 rounded-full blur-[120px]" />
           <div className="absolute top-[10%] left-[-5%] w-[30%] h-[30%] bg-blue-500/5 rounded-full blur-[100px]" />
         </div>
       </div>
@@ -233,11 +233,11 @@ const CourseDetail = () => {
           >
             <Link 
               to="/courses" 
-              className="p-1.5 sm:p-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 transition-all shadow-sm active:scale-95"
+              className="p-1.5 sm:p-2 rounded-xl bg-white dark:bg-slate-800 border border-[var(--color-border-primary)] dark:border-slate-700 hover:bg-white dark:hover:bg-slate-700 transition-all shadow-sm active:scale-95"
             >
-              <ArrowLeft size={16} className="text-slate-500 dark:text-slate-400" />
+              <ArrowLeft size={16} className="text-[var(--color-text-tertiary)] dark:text-slate-400" />
             </Link>
-            <span className="px-2.5 sm:px-3 py-1 rounded-lg bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 text-[9px] sm:text-[10px] font-black uppercase tracking-widest border border-emerald-100 dark:border-emerald-500/20">
+            <span className="px-2.5 sm:px-3 py-1 rounded-lg bg-[var(--color-primary-light)] dark:bg-[var(--color-primary)]/10 text-[var(--color-primary)] dark:text-[var(--color-primary)] text-[9px] sm:text-[10px] font-black uppercase tracking-widest border border-[var(--color-border-secondary)] dark:border-[var(--color-primary)]/20">
               {course.industry || 'Course'}
             </span>
           </motion.div>
@@ -247,25 +247,25 @@ const CourseDetail = () => {
               <motion.h1 
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="text-2xl sm:text-3xl md:text-4xl font-black text-slate-900 dark:text-white mb-4 sm:mb-6 leading-tight tracking-tight"
+                className="text-2xl sm:text-3xl md:text-4xl font-black text-[var(--color-text-primary)] dark:text-white mb-4 sm:mb-6 leading-tight tracking-tight"
               >
                 {course.title}
               </motion.h1>
 
               <div className="flex flex-wrap items-center gap-2 sm:gap-4 mb-6 sm:mb-8">
-                <div className="flex items-center gap-1.5 sm:gap-2 px-3 py-1.5 bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 mb-2 sm:mb-0">
-                  <BookOpen className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-500" />
+                <div className="flex items-center gap-1.5 sm:gap-2 px-3 py-1.5 bg-white dark:bg-slate-800 rounded-lg border border-[var(--color-border-primary)] dark:border-slate-700 mb-2 sm:mb-0">
+                  <BookOpen className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[var(--color-primary)]" />
                   <span className="text-[10px] sm:text-xs font-black uppercase tracking-widest text-slate-700 dark:text-slate-300">{course.company || 'Hope Dawah Institute'}</span>
                 </div>
-                <span className="text-[10px] sm:text-xs font-bold text-slate-500 dark:text-slate-400 px-2 border-l border-slate-200 dark:border-slate-700">
+                <span className="text-[10px] sm:text-xs font-bold text-[var(--color-text-tertiary)] dark:text-slate-400 px-2 border-l border-[var(--color-border-primary)] dark:border-slate-700">
                   {course.experience_level || 'All Levels'}
                 </span>
-                <span className="flex items-center gap-1 text-[10px] sm:text-xs font-bold text-slate-500 dark:text-slate-400 px-2 border-l border-slate-200 dark:border-slate-700">
+                <span className="flex items-center gap-1 text-[10px] sm:text-xs font-bold text-[var(--color-text-tertiary)] dark:text-slate-400 px-2 border-l border-[var(--color-border-primary)] dark:border-slate-700">
                   <Globe className="w-3 h-3 sm:w-3.5 sm:h-3.5" /> {course.location || 'Online'}
                 </span>
               </div>
 
-              <p className="text-sm sm:text-base md:text-lg text-slate-600 dark:text-slate-400 leading-relaxed max-w-2xl">
+              <p className="text-sm sm:text-base md:text-lg text-[var(--color-text-secondary)] dark:text-slate-400 leading-relaxed max-w-2xl">
                 {course.description || 'A comprehensive learning experience designed to deepen your understanding.'}
               </p>
             </div>
@@ -275,7 +275,7 @@ const CourseDetail = () => {
               <div className="lg:sticky lg:top-28 space-y-6">
                 {/* Intro Course Video Plate layout flawslessly Cinematic Cinematic */}
                 {course.preview_video_url && (
-                    <div className="rounded-[2.5rem] overflow-hidden border border-slate-200 dark:border-white/5 aspect-video relative group shadow-2xl shadow-emerald-500/10 bg-black">
+                    <div className="rounded-[2.5rem] overflow-hidden border border-[var(--color-border-primary)] dark:border-white/5 aspect-video relative group shadow-2xl shadow-emerald-500/10 bg-black">
                         {(() => {
                             const url = course.preview_video_url;
                             if (url.includes('youtube.com') || url.includes('youtu.be')) {
@@ -321,14 +321,14 @@ const CourseDetail = () => {
                 )}
                 
                 <div className="bg-white dark:bg-[#0f1429] rounded-[2.5rem] border border-slate-100 dark:border-white/5 p-7 shadow-2xl shadow-emerald-500/5 overflow-hidden relative">
-                  <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-500/5 rounded-full blur-2xl -mr-8 -mt-8" />
+                  <div className="absolute top-0 right-0 w-24 h-24 bg-[var(--color-primary)]/5 rounded-full blur-2xl -mr-8 -mt-8" />
                                     <div className="mb-8 flex items-end justify-between lg:block relative z-10">
                     <div>
                       <p className="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] mb-2">Access Type</p>
                       <div className="flex items-baseline gap-2 flex-wrap">
                         {course.salary_min > 0 ? (
                           <>
-                            <span className="text-xl sm:text-2xl font-black text-emerald-600 dark:text-emerald-400 tracking-tight">
+                            <span className="text-xl sm:text-2xl font-black text-[var(--color-primary)] dark:text-[var(--color-primary)] tracking-tight">
                               ${course.salary_min}{course.salary_max > 0 ? ` – $${course.salary_max}` : '+'}
                             </span>
                             <span className="text-[10px] font-black text-amber-600 bg-amber-50 dark:bg-amber-500/10 px-2 py-0.5 rounded border border-amber-100 dark:border-amber-500/20 uppercase tracking-widest">
@@ -337,10 +337,10 @@ const CourseDetail = () => {
                           </>
                         ) : (
                           <>
-                            <span className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight">
+                            <span className="text-xl sm:text-2xl font-black text-[var(--color-text-primary)] dark:text-white tracking-tight">
                               Scholarly Access
                             </span>
-                            <span className="text-[10px] font-black text-emerald-600 bg-emerald-50 dark:bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-100 dark:border-emerald-500/20 uppercase tracking-widest">
+                            <span className="text-[10px] font-black text-[var(--color-primary)] bg-[var(--color-primary-light)] dark:bg-[var(--color-primary)]/10 px-2 py-0.5 rounded border border-[var(--color-border-secondary)] dark:border-[var(--color-primary)]/20 uppercase tracking-widest">
                               Free
                             </span>
                           </>
@@ -348,7 +348,7 @@ const CourseDetail = () => {
                       </div>
                     </div>
                     <div className="lg:hidden">
-                       <span className="px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-[9px] font-black text-emerald-500 uppercase tracking-[0.1em]">
+                       <span className="px-3 py-1 rounded-full bg-[var(--color-primary)]/10 border border-[var(--color-primary)]/20 text-[9px] font-black text-[var(--color-primary)] uppercase tracking-[0.1em]">
                          Active Enrollment
                        </span>
                     </div>
@@ -358,7 +358,7 @@ const CourseDetail = () => {
                     <button 
                       onClick={handleEnroll}
                       disabled={isEnrolling}
-                      className="w-full py-4 bg-emerald-600 text-white rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] hover:bg-emerald-500 transition-all flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/10 active:scale-95 disabled:opacity-50"
+                      className="w-full py-4 bg-[var(--color-primary)] text-white rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] hover:bg-[var(--color-primary)] transition-all flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/10 active:scale-95 disabled:opacity-50"
                     >
                       {isEnrolling ? 'Processing...' : (isAlreadyEnrolled ? 'Continue Class' : 'Enroll Now')} {isAlreadyEnrolled && <ArrowRight size={14} />}
                     </button>
@@ -366,22 +366,22 @@ const CourseDetail = () => {
                         <div className="w-full pt-2">
                             <div className="flex justify-between items-center text-[9px] font-black text-slate-400 uppercase tracking-widest mb-2">
                                 <span>Mastery Progress</span>
-                                <span className="text-emerald-500">{Math.round(progressData.completion_percentage || 0)}%</span>
+                                <span className="text-[var(--color-primary)]">{Math.round(progressData.completion_percentage || 0)}%</span>
                             </div>
                             <div className="w-full h-1 bg-slate-100 dark:bg-white/5 rounded-full overflow-hidden">
                                 <motion.div 
                                     initial={{ width: 0 }}
                                     animate={{ width: `${progressData.completion_percentage || 0}%` }}
-                                    className="h-full bg-emerald-500 rounded-full"
+                                    className="h-full bg-[var(--color-primary)] rounded-full"
                                 />
                             </div>
                         </div>
                     )}
                     <button 
                       onClick={handleSaveCourse}
-                      className="w-full py-4 bg-slate-50 dark:bg-white/[0.03] text-slate-500 dark:text-slate-400 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] border border-slate-100 dark:border-white/5 transition-all flex items-center justify-center gap-2 hover:bg-slate-100 dark:hover:bg-white/5"
+                      className="w-full py-4 bg-white dark:bg-white/[0.03] text-[var(--color-text-tertiary)] dark:text-slate-400 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] border border-slate-100 dark:border-white/5 transition-all flex items-center justify-center gap-2 hover:bg-slate-100 dark:hover:bg-white/5"
                     >
-                      {isCourseSaved ? <ShieldCheck size={14} className="text-emerald-500" /> : <Bookmark size={14} />}
+                      {isCourseSaved ? <ShieldCheck size={14} className="text-[var(--color-primary)]" /> : <Bookmark size={14} />}
                       {isCourseSaved ? 'Saved to Path' : 'Bookmark'}
                     </button>
                   </div>
@@ -393,19 +393,19 @@ const CourseDetail = () => {
       </section>
 
       {/* Fixed Mobile Bottom Bar */}
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 p-4 pb-[max(var(--safe-area-bottom,env(safe-area-inset-bottom)),16px)] bg-white/90 dark:bg-[#0A1120]/90 backdrop-blur-2xl border-t border-slate-200 dark:border-white/5 flex items-center gap-3">
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 p-4 pb-[max(var(--safe-area-bottom,env(safe-area-inset-bottom)),16px)] bg-white/90 dark:bg-[var(--color-bg-dark)]/90 backdrop-blur-2xl border-t border-[var(--color-border-primary)] dark:border-white/5 flex items-center gap-3">
         <button 
           onClick={handleEnroll}
           disabled={isEnrolling}
-          className="flex-1 py-4 bg-emerald-600 hover:bg-emerald-500 active:scale-[0.98] text-white rounded-2xl text-[10px] sm:text-xs font-black uppercase tracking-[0.2em] shadow-xl shadow-emerald-500/20 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+          className="flex-1 py-4 bg-[var(--color-primary)] hover:bg-[var(--color-primary)] active:scale-[0.98] text-white rounded-2xl text-[10px] sm:text-xs font-black uppercase tracking-[0.2em] shadow-xl shadow-[var(--color-primary)]/20 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
         >
           {isEnrolling ? 'Loading...' : (isAlreadyEnrolled ? 'Open Classroom' : 'Enroll Now')} {isAlreadyEnrolled && <ArrowRight size={14} />}
         </button>
          <button 
           onClick={handleSaveCourse}
-          className="w-[52px] h-[52px] sm:w-14 sm:h-14 bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-2xl flex items-center justify-center text-slate-500 dark:text-slate-400 active:scale-95 transition-all shadow-sm"
+          className="w-[52px] h-[52px] sm:w-14 sm:h-14 bg-slate-100 dark:bg-white/5 border border-[var(--color-border-primary)] dark:border-white/10 rounded-2xl flex items-center justify-center text-[var(--color-text-tertiary)] dark:text-slate-400 active:scale-95 transition-all shadow-sm"
         >
-          <Bookmark size={20} className={isCourseSaved ? "text-emerald-500" : ""} fill={isCourseSaved ? "currentColor" : "none"} />
+          <Bookmark size={20} className={isCourseSaved ? "text-[var(--color-primary)]" : ""} fill={isCourseSaved ? "currentColor" : "none"} />
         </button>
       </div>
 
@@ -417,10 +417,10 @@ const CourseDetail = () => {
               {/* Highlights */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {courseHighlights.map((item, i) => (
-                  <div key={i} className="p-6 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
-                    <item.icon size={20} className="text-emerald-500 mb-4" />
-                    <h4 className="text-sm font-bold text-slate-900 dark:text-white mb-1">{item.label}</h4>
-                    <p className="text-xs text-slate-500 dark:text-slate-400">{item.desc}</p>
+                  <div key={i} className="p-6 bg-white dark:bg-slate-900 rounded-2xl border border-[var(--color-border-primary)] dark:border-slate-800 shadow-sm">
+                    <item.icon size={20} className="text-[var(--color-primary)] mb-4" />
+                    <h4 className="text-sm font-bold text-[var(--color-text-primary)] dark:text-white mb-1">{item.label}</h4>
+                    <p className="text-xs text-[var(--color-text-tertiary)] dark:text-slate-400">{item.desc}</p>
                   </div>
                 ))}
               </div>
@@ -431,12 +431,12 @@ const CourseDetail = () => {
               {/* Outcomes */}
               {outcomes.length > 0 && (
                 <div>
-                  <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-6">What You'll Learn</h2>
+                  <h2 className="text-xl font-bold text-[var(--color-text-primary)] dark:text-white mb-6">What You'll Learn</h2>
                   <div className="grid md:grid-cols-2 gap-4">
                     {outcomes.map((outcome, i) => (
-                      <div key={i} className="flex items-start gap-3 p-4 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800">
-                        <CheckCircle size={16} className="text-emerald-500 mt-1 flex-shrink-0" />
-                        <span className="text-sm text-slate-600 dark:text-slate-400">{typeof outcome === 'string' ? outcome : outcome.text}</span>
+                      <div key={i} className="flex items-start gap-3 p-4 bg-white dark:bg-slate-900 rounded-xl border border-[var(--color-border-primary)] dark:border-slate-800">
+                        <CheckCircle size={16} className="text-[var(--color-primary)] mt-1 flex-shrink-0" />
+                        <span className="text-sm text-[var(--color-text-secondary)] dark:text-slate-400">{typeof outcome === 'string' ? outcome : outcome.text}</span>
                       </div>
                     ))}
                   </div>

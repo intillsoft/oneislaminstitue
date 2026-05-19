@@ -323,8 +323,8 @@ const PlatformAnalytics = ({ dateRange }) => {
         subtitle="Global health metrics, user engagement velocity, and recursive revenue tracking"
         action={
           <div className="flex items-center gap-3">
-            <span className="text-[10px] font-black uppercase tracking-widest text-slate-500 mr-2 italic">Active Filter: {dateRange}</span>
-            <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+            <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-tertiary)] mr-2 italic">Active Filter: {dateRange}</span>
+            <div className="w-2 h-2 rounded-full bg-[var(--color-primary)] animate-pulse" />
           </div>
         }
       />
@@ -335,12 +335,12 @@ const PlatformAnalytics = ({ dateRange }) => {
           <EliteCard key={metric.id} className="p-8 border-white/5 bg-white/[0.02] hover:scale-[1.02] transition-all group">
             <div className="flex items-start justify-between">
               <div className="flex-1">
-                <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500 mb-2">{metric.title}</p>
+                <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[var(--color-text-tertiary)] mb-2">{metric.title}</p>
                 <h3 className="text-2xl font-bold text-white mb-1 tracking-tight">{metric.value}</h3>
-                <p className="text-[10px] font-semibold text-slate-500 italic">{metric.description}</p>
+                <p className="text-[10px] font-semibold text-[var(--color-text-tertiary)] italic">{metric.description}</p>
               </div>
               <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 border transition-all duration-500 ${metric.color === 'primary' ? 'bg-indigo-500/10 border-indigo-500/20 group-hover:bg-indigo-500/20' :
-                metric.color === 'secondary' ? 'bg-emerald-500/10 border-emerald-500/20 group-hover:bg-emerald-500/20' :
+                metric.color === 'secondary' ? 'bg-[var(--color-primary)]/10 border-[var(--color-primary)]/20 group-hover:bg-[var(--color-primary)]/20' :
                   metric.color === 'accent' ? 'bg-blue-500/10 border-blue-500/20 group-hover:bg-blue-500/20' :
                     'bg-amber-500/10 border-amber-500/20 group-hover:bg-amber-500/20'
                 }`}>
@@ -349,7 +349,7 @@ const PlatformAnalytics = ({ dateRange }) => {
                   size={20}
                   className={
                     metric.color === 'primary' ? 'text-indigo-500' :
-                      metric.color === 'secondary' ? 'text-emerald-500' :
+                      metric.color === 'secondary' ? 'text-[var(--color-primary)]' :
                         metric.color === 'accent' ? 'text-blue-500' :
                           'text-amber-500'
                   }
@@ -357,7 +357,7 @@ const PlatformAnalytics = ({ dateRange }) => {
               </div>
             </div>
             <div className="mt-8 flex items-center gap-3">
-              <div className={`flex items-center px-2 py-1 rounded-lg text-[10px] font-bold uppercase tracking-widest ${metric.changeType === 'increase' ? 'bg-emerald-500/10 text-emerald-500' : 'bg-rose-500/10 text-rose-500'
+              <div className={`flex items-center px-2 py-1 rounded-lg text-[10px] font-bold uppercase tracking-widest ${metric.changeType === 'increase' ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)]' : 'bg-rose-500/10 text-rose-500'
                 }`}>
                 <Icon
                   name={metric.changeType === 'increase' ? 'TrendingUp' : 'TrendingDown'}
@@ -366,7 +366,7 @@ const PlatformAnalytics = ({ dateRange }) => {
                 />
                 {metric.change}%
               </div>
-              <span className="text-[9px] font-bold uppercase tracking-widest text-slate-600">vs. baseline</span>
+              <span className="text-[9px] font-bold uppercase tracking-widest text-[var(--color-text-secondary)]">vs. baseline</span>
             </div>
           </EliteCard>
         ))}
@@ -378,32 +378,32 @@ const PlatformAnalytics = ({ dateRange }) => {
           <h3 className="text-sm font-bold text-white uppercase tracking-widest mb-8">Platform Health Overview</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             <div className="text-center">
-              <div className="w-12 h-12 bg-emerald-500/10 rounded-full flex items-center justify-center mx-auto mb-3">
-                <Icon name="Zap" size={18} className="text-emerald-500" />
+              <div className="w-12 h-12 bg-[var(--color-primary)]/10 rounded-full flex items-center justify-center mx-auto mb-3">
+                <Icon name="Zap" size={18} className="text-[var(--color-primary)]" />
               </div>
               <h4 className="text-2xl font-bold text-white tracking-tight">{platformHealth.systemUptime}</h4>
-              <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mt-1">System Uptime</p>
+              <p className="text-[10px] font-bold text-[var(--color-text-tertiary)] uppercase tracking-widest mt-1">System Uptime</p>
             </div>
             <div className="text-center">
               <div className="w-12 h-12 bg-blue-500/10 rounded-full flex items-center justify-center mx-auto mb-3">
                 <Icon name="Clock" size={18} className="text-blue-500" />
               </div>
               <h4 className="text-2xl font-bold text-white tracking-tight">{platformHealth.avgResponseTime}</h4>
-              <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mt-1">Avg Response</p>
+              <p className="text-[10px] font-bold text-[var(--color-text-tertiary)] uppercase tracking-widest mt-1">Avg Response</p>
             </div>
             <div className="text-center">
               <div className="w-12 h-12 bg-rose-500/10 rounded-full flex items-center justify-center mx-auto mb-3">
                 <Icon name="AlertTriangle" size={18} className="text-rose-500" />
               </div>
               <h4 className="text-2xl font-bold text-white tracking-tight">{platformHealth.errorRate}</h4>
-              <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mt-1">Error Rate</p>
+              <p className="text-[10px] font-bold text-[var(--color-text-tertiary)] uppercase tracking-widest mt-1">Error Rate</p>
             </div>
             <div className="text-center">
               <div className="w-12 h-12 bg-amber-500/10 rounded-full flex items-center justify-center mx-auto mb-3">
                 <Icon name="Star" size={18} className="text-amber-500" />
               </div>
               <h4 className="text-2xl font-bold text-white tracking-tight">{platformHealth.satisfactionScore}</h4>
-              <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mt-1">Satisfaction</p>
+              <p className="text-[10px] font-bold text-[var(--color-text-tertiary)] uppercase tracking-widest mt-1">Satisfaction</p>
             </div>
           </div>
         </div>
@@ -417,15 +417,15 @@ const PlatformAnalytics = ({ dateRange }) => {
             <div className="flex flex-wrap gap-6">
               <div className="flex items-center gap-2">
                 <div className="w-2.5 h-2.5 bg-blue-500 rounded-full"></div>
-                <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Students</span>
+                <span className="text-[10px] font-bold text-[var(--color-text-tertiary)] uppercase tracking-widest">Students</span>
               </div>
               <div className="flex items-center gap-2">
-                <div className="w-2.5 h-2.5 bg-emerald-500 rounded-full"></div>
-                <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Instructors</span>
+                <div className="w-2.5 h-2.5 bg-[var(--color-primary)] rounded-full"></div>
+                <span className="text-[10px] font-bold text-[var(--color-text-tertiary)] uppercase tracking-widest">Instructors</span>
               </div>
               <div className="flex items-center gap-2">
                 <div className="w-2.5 h-2.5 bg-purple-500 rounded-full"></div>
-                <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Faculties</span>
+                <span className="text-[10px] font-bold text-[var(--color-text-tertiary)] uppercase tracking-widest">Faculties</span>
               </div>
             </div>
           </div>

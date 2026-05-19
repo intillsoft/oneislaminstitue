@@ -47,7 +47,7 @@ const ForgotPassword = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-white dark:bg-[#0A0E27]">
+    <div className="min-h-screen bg-white dark:bg-[var(--color-bg-dark)]">
       <div className="max-w-md mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <Breadcrumb customItems={breadcrumbItems} />
         

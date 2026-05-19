@@ -121,7 +121,7 @@ const RecentActivity = () => {
       secondary: 'bg-white/5',
       accent: 'bg-workflow-accent/10 dark:bg-workflow-accent/20',
       warning: 'bg-amber-500/10 dark:bg-amber-500/20',
-      success: 'bg-emerald-500/10 dark:bg-emerald-500/20',
+      success: 'bg-[var(--color-primary)]/10 dark:bg-[var(--color-primary)]/20',
       error: 'bg-rose-500/10 dark:bg-rose-500/20',
     };
     return backgrounds[color] || 'bg-white/5';
@@ -133,7 +133,7 @@ const RecentActivity = () => {
       secondary: 'text-text-muted',
       accent: 'text-workflow-accent',
       warning: 'text-amber-500',
-      success: 'text-emerald-500',
+      success: 'text-[var(--color-primary)]',
       error: 'text-rose-500',
     };
     return colors[color] || 'text-text-muted';
@@ -187,10 +187,10 @@ const RecentActivity = () => {
                           alt={activity.user.name} 
                           className="h-4 w-4 rounded-full mr-1"
                         />
-                        <span className="text-xs text-text-secondary dark:text-slate-500 truncate">{activity.user.name}</span>
+                        <span className="text-xs text-text-secondary dark:text-[var(--color-text-tertiary)] truncate">{activity.user.name}</span>
                       </div>
                     )}
-                    <span className="text-xs text-text-secondary dark:text-slate-500">
+                    <span className="text-xs text-text-secondary dark:text-[var(--color-text-tertiary)]">
                       {formatTimestamp(activity.timestamp)}
                     </span>
                   </div>

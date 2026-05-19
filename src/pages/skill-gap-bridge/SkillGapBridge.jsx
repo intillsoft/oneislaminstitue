@@ -80,40 +80,40 @@ const SkillGapBridge = () => {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full">
                         <div className="space-y-6">
                             <div className="flex items-center gap-4 mb-2">
-                                <div className="p-3 bg-emerald-500/10 border border-emerald-500/20 rounded-2xl">
-                                    <Cpu className="text-emerald-500" />
+                                <div className="p-3 bg-[var(--color-primary)]/10 border border-[var(--color-primary)]/20 rounded-2xl">
+                                    <Cpu className="text-[var(--color-primary)]" />
                                 </div>
                                 <h2 className="text-2xl font-black text-white uppercase tracking-tighter">Skill Gap Bridge</h2>
                             </div>
 
-                            <div className="space-y-4 bg-[#0A0E12] p-8 border border-emerald-500/10 rounded-3xl relative overflow-hidden group">
+                            <div className="space-y-4 bg-[#0A0E12] p-8 border border-[var(--color-primary)]/10 rounded-3xl relative overflow-hidden group">
                                 <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
-                                    <Network size={80} className="text-emerald-500" />
+                                    <Network size={80} className="text-[var(--color-primary)]" />
                                 </div>
 
                                 <div className="space-y-4 relative z-10">
                                     <div>
-                                        <label className="block text-[10px] font-black uppercase tracking-[0.3em] text-emerald-500/50 mb-3">Origin (Your Skills)</label>
+                                        <label className="block text-[10px] font-black uppercase tracking-[0.3em] text-[var(--color-primary)]/50 mb-3">Origin (Your Skills)</label>
                                         <textarea
                                             value={formData.currentSkills}
                                             onChange={(e) => setFormData({ ...formData, currentSkills: e.target.value })}
                                             placeholder="Enter current tech stack..."
-                                            className="w-full h-32 bg-black/50 border border-white/5 p-4 rounded-xl text-emerald-50 font-mono text-xs focus:border-emerald-500/50 outline-none transition-all resize-none"
+                                            className="w-full h-32 bg-black/50 border border-white/5 p-4 rounded-xl text-emerald-50 font-mono text-xs focus:border-[var(--color-primary)]/50 outline-none transition-all resize-none"
                                         />
                                     </div>
                                     <div>
-                                        <label className="block text-[10px] font-black uppercase tracking-[0.3em] text-emerald-500/50 mb-3">Destination (Target Role)</label>
+                                        <label className="block text-[10px] font-black uppercase tracking-[0.3em] text-[var(--color-primary)]/50 mb-3">Destination (Target Role)</label>
                                         <textarea
                                             value={formData.targetRole}
                                             onChange={(e) => setFormData({ ...formData, targetRole: e.target.value })}
                                             placeholder="Enter goal position..."
-                                            className="w-full h-32 bg-black/50 border border-white/5 p-4 rounded-xl text-emerald-50 font-mono text-xs focus:border-emerald-500/50 outline-none transition-all resize-none"
+                                            className="w-full h-32 bg-black/50 border border-white/5 p-4 rounded-xl text-emerald-50 font-mono text-xs focus:border-[var(--color-primary)]/50 outline-none transition-all resize-none"
                                         />
                                     </div>
                                     <button
                                         onClick={handleAnalyze}
                                         disabled={isLoading || !formData.targetRole || !formData.currentSkills}
-                                        className="w-full py-5 bg-emerald-600 text-black font-black text-[12px] uppercase tracking-[0.4em] hover:bg-emerald-400 transition-all flex items-center justify-center gap-3 active:scale-95 disabled:opacity-30"
+                                        className="w-full py-5 bg-[var(--color-primary)] text-black font-black text-[12px] uppercase tracking-[0.4em] hover:bg-emerald-400 transition-all flex items-center justify-center gap-3 active:scale-95 disabled:opacity-30"
                                     >
                                         {isLoading ? <Loader2 className="animate-spin" /> : <><Zap size={16} /> Materialize Path</>}
                                     </button>
@@ -124,9 +124,9 @@ const SkillGapBridge = () => {
                         <div className="flex flex-col justify-center space-y-8 p-8 border-l border-white/5">
                             <div className="space-y-2">
                                 <h4 className="text-xs font-black text-white uppercase tracking-widest flex items-center gap-2">
-                                    <ShieldCheck size={14} className="text-emerald-500" /> Protocol
+                                    <ShieldCheck size={14} className="text-[var(--color-primary)]" /> Protocol
                                 </h4>
-                                <p className="text-[11px] text-slate-500 font-medium leading-relaxed uppercase">
+                                <p className="text-[11px] text-[var(--color-text-tertiary)] font-medium leading-relaxed uppercase">
                                     The Bridge calculates the exact requirements to transition from your current matrix state to a higher tier role.
                                 </p>
                             </div>
@@ -137,10 +137,10 @@ const SkillGapBridge = () => {
                                     { t: "Sync Rate", v: "98.4% Accuracy in career mapping" }
                                 ].map((item, i) => (
                                     <div key={i} className="flex items-center gap-4">
-                                        <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                                        <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-primary)]" />
                                         <div>
                                             <p className="text-[9px] font-black text-white uppercase tracking-widest">{item.t}</p>
-                                            <p className="text-[9px] text-emerald-500/50 font-bold uppercase">{item.v}</p>
+                                            <p className="text-[9px] text-[var(--color-primary)]/50 font-bold uppercase">{item.v}</p>
                                         </div>
                                     </div>
                                 ))}
@@ -157,31 +157,31 @@ const SkillGapBridge = () => {
                         className="bg-[#0A0E12] border border-white/5 rounded-[2rem] p-8 flex flex-col space-y-6"
                     >
                         <div className="flex items-center justify-between">
-                            <h3 className="text-[10px] font-black text-slate-500 uppercase tracking-[0.3em]">Origin Profile</h3>
-                            <div className="px-3 py-1 bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 text-[8px] font-black uppercase rounded-full">Steady</div>
+                            <h3 className="text-[10px] font-black text-[var(--color-text-tertiary)] uppercase tracking-[0.3em]">Origin Profile</h3>
+                            <div className="px-3 py-1 bg-[var(--color-primary)]/10 border border-[var(--color-primary)]/20 text-[var(--color-primary)] text-[8px] font-black uppercase rounded-full">Steady</div>
                         </div>
                         <div className="flex-1 space-y-4">
-                            <p className="text-[9px] font-black text-emerald-500/50 uppercase tracking-[0.2em]">Verified Strengths</p>
+                            <p className="text-[9px] font-black text-[var(--color-primary)]/50 uppercase tracking-[0.2em]">Verified Strengths</p>
                             <div className="flex flex-wrap gap-2">
                                 {analysis.existingStrengths.map((s, i) => (
-                                    <div key={i} className="px-4 py-2 bg-emerald-500/5 border border-emerald-500/20 text-white text-[10px] font-bold uppercase tracking-tight rounded-xl">
+                                    <div key={i} className="px-4 py-2 bg-[var(--color-primary)]/5 border border-[var(--color-primary)]/20 text-white text-[10px] font-bold uppercase tracking-tight rounded-xl">
                                         {s}
                                     </div>
                                 ))}
                             </div>
                         </div>
-                        <button onClick={() => setAnalysis(null)} className="w-full py-3 border border-white/10 text-slate-600 hover:text-white text-[9px] font-black uppercase tracking-widest transition-all">Re-Calibrate</button>
+                        <button onClick={() => setAnalysis(null)} className="w-full py-3 border border-white/10 text-[var(--color-text-secondary)] hover:text-white text-[9px] font-black uppercase tracking-widest transition-all">Re-Calibrate</button>
                     </motion.div>
 
                     {/* Column 2: The Bridge */}
                     <motion.div
                         initial={{ y: 20, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
-                        className="bg-emerald-600 border-4 border-white rounded-[2rem] p-8 flex flex-col space-y-6 shadow-[0_0_50px_rgba(16,185,129,0.2)]"
+                        className="bg-[var(--color-primary)] border-4 border-white rounded-[2rem] p-8 flex flex-col space-y-6 shadow-[0_0_50px_rgba(16,185,129,0.2)]"
                     >
                         <div className="flex items-center justify-between">
                             <h3 className="text-[10px] font-black text-emerald-100 uppercase tracking-[0.3em]">The Sequence</h3>
-                            <div className="px-3 py-1 bg-white text-emerald-600 text-[8px] font-black uppercase rounded-full">Gap: {100 - analysis.matchScore}%</div>
+                            <div className="px-3 py-1 bg-white text-[var(--color-primary)] text-[8px] font-black uppercase rounded-full">Gap: {100 - analysis.matchScore}%</div>
                         </div>
                         <div className="flex-1 space-y-4 overflow-y-auto custom-scrollbar pr-2">
                             {analysis.missingSkills.map((item, i) => (
@@ -215,23 +215,23 @@ const SkillGapBridge = () => {
                         className="bg-[#0A0E12] border border-white/5 rounded-[2rem] p-8 flex flex-col space-y-6"
                     >
                         <div className="flex items-center justify-between">
-                            <h3 className="text-[10px] font-black text-slate-500 uppercase tracking-[0.3em]">Target Node</h3>
-                            <div className="px-3 py-1 bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 text-[8px] font-black uppercase rounded-full">Unlocked</div>
+                            <h3 className="text-[10px] font-black text-[var(--color-text-tertiary)] uppercase tracking-[0.3em]">Target Node</h3>
+                            <div className="px-3 py-1 bg-[var(--color-primary)]/10 border border-[var(--color-primary)]/20 text-[var(--color-primary)] text-[8px] font-black uppercase rounded-full">Unlocked</div>
                         </div>
                         <div className="flex-1 space-y-6">
                             <div>
-                                <p className="text-[9px] font-black text-emerald-500/50 uppercase tracking-[0.2em] mb-4">Role Manifest</p>
+                                <p className="text-[9px] font-black text-[var(--color-primary)]/50 uppercase tracking-[0.2em] mb-4">Role Manifest</p>
                                 <h4 className="text-2xl font-black text-white uppercase italic tracking-tighter mb-2">{formData.targetRole}</h4>
                                 <div className="text-7xl font-black text-white/10 tracking-tighter leading-none italic">{analysis.matchScore}<span className="text-xl">%</span></div>
                             </div>
                             <div className="p-6 bg-black/40 border border-white/5 rounded-2xl">
-                                <p className="text-[9px] font-black text-emerald-500 uppercase tracking-[0.2em] mb-4">Neural Learning Plan</p>
+                                <p className="text-[9px] font-black text-[var(--color-primary)] uppercase tracking-[0.2em] mb-4">Neural Learning Plan</p>
                                 <div className="text-[11px] text-slate-400 font-medium leading-relaxed italic prose prose-invert max-h-48 overflow-y-auto custom-scrollbar">
                                     {analysis.learningPlan}
                                 </div>
                             </div>
                         </div>
-                        <div className="text-[10px] font-black text-emerald-500/50 uppercase tracking-[0.4em] text-center italic">
+                        <div className="text-[10px] font-black text-[var(--color-primary)]/50 uppercase tracking-[0.4em] text-center italic">
                             Constructed via Matrix-01
                         </div>
                     </motion.div>
@@ -246,7 +246,7 @@ const SkillGapBridge = () => {
             subtitle="Matrix Mapping • 3-Column Synergy"
             headerActions={
                 <div className="flex items-center gap-4">
-                    <div className="px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] font-black uppercase flex items-center gap-2">
+                    <div className="px-4 py-1.5 rounded-full bg-[var(--color-primary)]/10 border border-[var(--color-primary)]/20 text-[var(--color-primary)] text-[10px] font-black uppercase flex items-center gap-2">
                         <Activity size={12} className="animate-pulse" />
                         Bridging Active
                     </div>

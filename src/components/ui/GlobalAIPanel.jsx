@@ -201,7 +201,7 @@ const GlobalAIPanel = () => {
               width: isMobile ? '100%' : (isExpanded ? '100vw' : panelWidth),
               height: isMobile ? '88dvh' : '100dvh' 
             }}
-            className={`fixed ${isMobile ? 'bottom-0 left-0 right-0' : 'top-0 bottom-0 right-0'} bg-white dark:bg-[#0A0E27] backdrop-blur-3xl z-[9999] shadow-[-1px_-10px_40px_rgba(0,0,0,0.08)] dark:shadow-[-5px_-20px_60px_rgba(0,0,0,0.4)] flex flex-col border-gray-100 dark:border-white/5 ${isMobile ? 'border-t rounded-t-[2.5rem]' : 'border-l rounded-l-[2.5rem]'} overflow-hidden ${
+            className={`fixed ${isMobile ? 'bottom-0 left-0 right-0' : 'top-0 bottom-0 right-0'} bg-white dark:bg-[var(--color-bg-dark)] backdrop-blur-3xl z-[9999] shadow-[-1px_-10px_40px_rgba(0,0,0,0.08)] dark:shadow-[-5px_-20px_60px_rgba(0,0,0,0.4)] flex flex-col border-gray-100 dark:border-white/5 ${isMobile ? 'border-t rounded-t-[2.5rem]' : 'border-l rounded-l-[2.5rem]'} overflow-hidden ${
               !isResizing && !isExpanded && 'transition-all duration-300'
             }`}
           >
@@ -215,14 +215,14 @@ const GlobalAIPanel = () => {
             {/* Resizer Handle */}
             {!isMobile && !isExpanded && (
               <div 
-                className="absolute top-0 left-0 w-2 h-full cursor-ew-resize hover:bg-emerald-500/20 active:bg-emerald-500/40 transition-colors z-[10000]"
+                className="absolute top-0 left-0 w-2 h-full cursor-ew-resize hover:bg-[var(--color-primary)]/20 active:bg-[var(--color-primary)]/40 transition-colors z-[10000]"
                 onMouseDown={startResizing}
               />
             )}
             {/* Header */}
             <div className="flex items-center justify-between px-6 py-5 border-b border-gray-100 dark:border-white/5 bg-transparent flex-shrink-0">
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 flex items-center justify-center rounded-xl bg-gradient-to-br from-emerald-400 to-teal-500 shadow-sm shadow-emerald-500/20">
+                <div className="w-8 h-8 flex items-center justify-center rounded-xl bg-gradient-to-br from-[var(--color-primary)] to-teal-500 shadow-sm shadow-[var(--color-primary)]/20">
                   <Sparkles className="w-4 h-4 text-white drop-shadow-sm" />
                 </div>
                 <div>
@@ -256,7 +256,7 @@ const GlobalAIPanel = () => {
             >
               {messages.length === 0 ? (
                 <div className="h-full flex flex-col items-center justify-center text-center p-6">
-                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center mb-6 shadow-lg shadow-emerald-500/20 relative">
+                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[var(--color-primary)] to-teal-500 flex items-center justify-center mb-6 shadow-lg shadow-[var(--color-primary)]/20 relative">
                     <div className="absolute inset-0 rounded-2xl border border-white/20"></div>
                     <Sparkles className="w-8 h-8 text-white drop-shadow-sm" />
                   </div>
@@ -279,7 +279,7 @@ const GlobalAIPanel = () => {
                             )}
                           </div>
                         ) : (
-                          <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center shadow-sm shadow-emerald-500/20 relative">
+                          <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-[var(--color-primary)] to-teal-500 flex items-center justify-center shadow-sm shadow-[var(--color-primary)]/20 relative">
                             <div className="absolute inset-0 rounded-xl border border-white/20"></div>
                             <Sparkles className="w-4 h-4 text-white drop-shadow-sm" />
                           </div>
@@ -293,7 +293,7 @@ const GlobalAIPanel = () => {
                         
                         <div className={`p-4 rounded-2xl shadow-sm ${
                           msg.role === 'user' 
-                            ? 'bg-emerald-600 text-white rounded-tr-sm' 
+                            ? 'bg-[var(--color-primary)] text-white rounded-tr-sm' 
                             : 'bg-white dark:bg-slate-800/80 border border-gray-100 dark:border-white/5 text-gray-800 dark:text-gray-200 prose prose-sm dark:prose-invert prose-p:leading-relaxed max-w-none rounded-tl-sm'
                         }`}>
                           {msg.role === 'user' ? (
@@ -311,7 +311,7 @@ const GlobalAIPanel = () => {
                           <div className="mt-2 opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-2">
                             <button
                               onClick={() => handleCopyMessage(msg.content)}
-                              className="flex items-center gap-1.5 px-2 py-1 rounded-md bg-gray-50 dark:bg-slate-800/50 hover:bg-gray-100 dark:hover:bg-slate-800 border border-gray-100 dark:border-white/5 text-xs text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 transition-colors"
+                              className="flex items-center gap-1.5 px-2 py-1 rounded-md bg-gray-50 dark:bg-slate-800/50 hover:bg-gray-100 dark:hover:bg-slate-800 border border-gray-100 dark:border-white/5 text-xs text-[var(--color-text-tertiary)] hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 transition-colors"
                             >
                               {copied === msg.content ? <><Check className="w-3 h-3" /> Copied</> : <><Copy className="w-3 h-3" /> Copy</>}
                             </button>
@@ -323,14 +323,14 @@ const GlobalAIPanel = () => {
 
                   {loading && (
                     <div className="flex gap-4">
-                      <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center shadow-sm shadow-emerald-500/20 mt-1 shrink-0 relative">
+                      <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-[var(--color-primary)] to-teal-500 flex items-center justify-center shadow-sm shadow-[var(--color-primary)]/20 mt-1 shrink-0 relative">
                         <div className="absolute inset-0 rounded-xl border border-white/20"></div>
                         <Sparkles className="w-4 h-4 text-white drop-shadow-sm" />
                       </div>
-                      <div className="flex items-center gap-2 bg-slate-50 dark:bg-slate-800/80 border border-gray-100 dark:border-white/5 px-5 py-4 rounded-2xl rounded-tl-sm shadow-sm">
-                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-bounce [animation-delay:-0.3s]"></span>
-                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-bounce [animation-delay:-0.15s]"></span>
-                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-bounce"></span>
+                      <div className="flex items-center gap-2 bg-white dark:bg-slate-800/80 border border-gray-100 dark:border-white/5 px-5 py-4 rounded-2xl rounded-tl-sm shadow-sm">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-primary)] animate-bounce [animation-delay:-0.3s]"></span>
+                        <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-primary)] animate-bounce [animation-delay:-0.15s]"></span>
+                        <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-primary)] animate-bounce"></span>
                       </div>
                     </div>
                   )}
@@ -350,7 +350,7 @@ const GlobalAIPanel = () => {
                 </button>
               )}
               
-              <div className="relative flex items-end w-full px-3 py-2 bg-white dark:bg-slate-800/50 rounded-2xl border border-gray-200/60 dark:border-gray-700/50 focus-within:border-emerald-500/50 dark:focus-within:border-emerald-500/50 focus-within:ring-2 focus-within:ring-emerald-500/10 transition-all shadow-sm focus-within:shadow-md">
+              <div className="relative flex items-end w-full px-3 py-2 bg-white dark:bg-slate-800/50 rounded-2xl border border-gray-200/60 dark:border-gray-700/50 focus-within:border-[var(--color-primary)]/50 dark:focus-within:border-[var(--color-primary)]/50 focus-within:ring-2 focus-within:ring-[var(--color-primary)]/10 transition-all shadow-sm focus-within:shadow-md">
                 <textarea
                   ref={textareaRef}
                   value={input}
@@ -371,7 +371,7 @@ const GlobalAIPanel = () => {
                   disabled={loading || !input.trim()}
                   className={`absolute right-2 bottom-2.5 p-2 rounded-xl transition-all flex items-center justify-center ${
                     input.trim() && !loading
-                      ? 'bg-emerald-600 text-white hover:bg-emerald-700 shadow-sm hover:scale-105 active:scale-95' 
+                      ? 'bg-[var(--color-primary)] text-white hover:bg-[var(--color-primary-hover)] shadow-sm hover:scale-105 active:scale-95' 
                       : 'bg-gray-200 text-gray-400 dark:bg-slate-700 dark:text-gray-500 cursor-not-allowed'
                   }`}
                 >

@@ -66,7 +66,7 @@ const AdminDashboard = ({ dateRange }) => {
   return (
     <div className="space-y-6 md:space-y-8 pb-6 md:pb-8">
       {/* Welcome Message - Responsive */}
-      <div className="rounded-lg bg-gradient-to-r from-emerald-600 to-emerald-700 text-white p-6 md:p-8">
+      <div className="rounded-lg bg-gradient-to-r from-[var(--color-primary)] to-emerald-700 text-white p-6 md:p-8">
         <h2 className="text-2xl md:text-3xl font-bold mb-2">Welcome back, Admin!</h2>
         <p className="text-emerald-100 text-sm md:text-base">
           Here's what's happening on your platform today.

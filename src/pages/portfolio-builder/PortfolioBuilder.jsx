@@ -75,7 +75,7 @@ const PortfolioBuilder = () => {
     };
 
     return (
-        <div className="min-h-screen bg-zinc-50 dark:bg-[#0A0E27] p-6 pt-24 font-sans">
+        <div className="min-h-screen bg-zinc-50 dark:bg-[var(--color-bg-dark)] p-6 pt-24 font-sans">
             <div className="max-w-7xl mx-auto space-y-8">
 
                 <div className="text-center space-y-4">
@@ -116,7 +116,7 @@ const PortfolioBuilder = () => {
                                     value={formData.title}
                                     onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                                     placeholder="e.g. Neural Net Visualizer"
-                                    className="w-full p-4 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-[#0A0E27] text-zinc-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none font-bold transition-all"
+                                    className="w-full p-4 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-[var(--color-bg-dark)] text-zinc-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none font-bold transition-all"
                                 />
                             </div>
 
@@ -127,7 +127,7 @@ const PortfolioBuilder = () => {
                                     value={formData.techStack}
                                     onChange={(e) => setFormData({ ...formData, techStack: e.target.value })}
                                     placeholder="React, Three.js, Python..."
-                                    className="w-full p-4 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-[#0A0E27] text-zinc-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none font-medium transition-all"
+                                    className="w-full p-4 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-[var(--color-bg-dark)] text-zinc-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none font-medium transition-all"
                                 />
                             </div>
 
@@ -141,7 +141,7 @@ const PortfolioBuilder = () => {
                                             value={formData.githubUrl}
                                             onChange={(e) => setFormData({ ...formData, githubUrl: e.target.value })}
                                             placeholder="github.com/username/repo"
-                                            className="w-full pl-12 p-4 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-[#0A0E27] text-zinc-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none font-medium transition-all"
+                                            className="w-full pl-12 p-4 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-[var(--color-bg-dark)] text-zinc-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none font-medium transition-all"
                                         />
                                     </div>
                                 </div>
@@ -170,7 +170,7 @@ const PortfolioBuilder = () => {
                                     value={formData.description}
                                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                                     placeholder="Paste your rough notes or abstract here..."
-                                    className="w-full h-40 p-4 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-[#0A0E27] text-zinc-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none resize-none font-medium leading-relaxed"
+                                    className="w-full h-40 p-4 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-[var(--color-bg-dark)] text-zinc-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none resize-none font-medium leading-relaxed"
                                 />
                             </div>
                         </div>

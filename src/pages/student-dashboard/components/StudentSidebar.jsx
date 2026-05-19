@@ -23,7 +23,7 @@ const StudentSidebar = ({ activeTab, setActiveTab, userData }) => {
     <div className="bg-background rounded-lg shadow-sm border border-border p-6 sticky top-24">
       {/* Scholar Profile Section */}
       <div className="flex flex-col items-center text-center mb-6 pb-6 border-b border-border">
-        <div className="w-20 h-20 rounded-full overflow-hidden mb-4 border-2 border-emerald-500/20 shadow-lg">
+        <div className="w-20 h-20 rounded-full overflow-hidden mb-4 border-2 border-[var(--color-primary)]/20 shadow-lg">
           <Image 
             src={userData?.profileImage} 
             alt={userData?.name} 
@@ -32,13 +32,13 @@ const StudentSidebar = ({ activeTab, setActiveTab, userData }) => {
         </div>
         <h3 className="text-lg font-bold text-text-primary font-display">{userData?.name}</h3>
         <p className="text-xs text-text-secondary mt-1 font-medium">{userData?.email}</p>
-        <div className="mt-4 flex items-center gap-2 px-3 py-1 bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-100 dark:border-emerald-500/20 rounded-full">
-           <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-           <span className="text-[10px] font-bold text-emerald-700 dark:text-emerald-400 uppercase tracking-widest text-nowrap">Active Scholar</span>
+        <div className="mt-4 flex items-center gap-2 px-3 py-1 bg-[var(--color-primary-light)] dark:bg-[var(--color-primary)]/10 border border-[var(--color-border-secondary)] dark:border-[var(--color-primary)]/20 rounded-full">
+           <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-primary)] animate-pulse" />
+           <span className="text-[10px] font-bold text-[var(--color-primary)] dark:text-[var(--color-primary)] uppercase tracking-widest text-nowrap">Active Scholar</span>
         </div>
         <Link 
           to="/profile" 
-          className="mt-4 text-[10px] font-black uppercase tracking-[0.2em] text-emerald-600 flex items-center hover:text-emerald-700 transition-smooth"
+          className="mt-4 text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-primary)] flex items-center hover:text-[var(--color-primary)] transition-smooth"
         >
           <Icon name="Edit" size={12} className="mr-1.5" />
           Edit Profile
@@ -56,7 +56,7 @@ const StudentSidebar = ({ activeTab, setActiveTab, userData }) => {
                 onClick={() => setActiveTab(item?.id)}
                 className={`w-full flex items-center space-x-3 px-4 py-2.5 rounded-xl text-xs font-bold transition-all ${
                   activeTab === item?.id
-                    ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-500/20' :'text-text-secondary hover:text-text-primary hover:bg-surface'
+                    ? 'bg-[var(--color-primary)] text-white shadow-lg shadow-[var(--color-primary)]/20' :'text-text-secondary hover:text-text-primary hover:bg-surface'
                 }`}
               >
                 <Icon name={item?.icon} size={16} />

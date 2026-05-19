@@ -71,7 +71,7 @@ const CareerAdvisorChat = () => {
                         <p className="text-[9px] font-bold text-purple-400/60 uppercase tracking-widest">Astra Link Active</p>
                     </div>
                 </div>
-                <button onClick={() => setMessages([])} className="p-2 hover:bg-white/5 rounded-lg transition-colors text-slate-600 hover:text-white">
+                <button onClick={() => setMessages([])} className="p-2 hover:bg-white/5 rounded-lg transition-colors text-[var(--color-text-secondary)] hover:text-white">
                     <Trash2 size={16} />
                 </button>
             </div>
@@ -87,7 +87,7 @@ const CareerAdvisorChat = () => {
                             </div>
                         </div>
                         <h4 className="text-sm font-black text-white uppercase tracking-[0.3em] mb-3 italic">Consultation Required</h4>
-                        <p className="text-[10px] text-slate-500 font-bold max-w-[200px] leading-relaxed uppercase tracking-widest">
+                        <p className="text-[10px] text-[var(--color-text-tertiary)] font-bold max-w-[200px] leading-relaxed uppercase tracking-widest">
                             Outline your career trajectory to begin neural mapping
                         </p>
                     </div>

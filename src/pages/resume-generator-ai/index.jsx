@@ -611,7 +611,7 @@ const ResumeGeneratorAI = () => {
                 <Sparkles size={14} className="text-workflow-primary" />
                 Career Intel Strategist
               </span>
-              <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-slate-500">Neural Resume Optimization v3.0</span>
+              <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-[var(--color-text-tertiary)]">Neural Resume Optimization v3.0</span>
             </div>
           </div>
 
@@ -637,15 +637,15 @@ const ResumeGeneratorAI = () => {
             >
               <div className="p-6">
                 <div className="flex items-center justify-between mb-8">
-                  <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500">Resume Intel Hub</h3>
-                  <button onClick={() => setShowLibrary(false)} className="text-slate-500 hover:text-white transition-colors"><X size={16} /></button>
+                  <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-[var(--color-text-tertiary)]">Resume Intel Hub</h3>
+                  <button onClick={() => setShowLibrary(false)} className="text-[var(--color-text-tertiary)] hover:text-white transition-colors"><X size={16} /></button>
                 </div>
 
                 <div className="space-y-3">
                   {userResumes.length === 0 ? (
                     <div className="flex flex-col items-center justify-center p-8 text-center border border-dashed border-white/5 rounded-2xl">
                       <FileText size={24} className="text-slate-700 mb-3" />
-                      <p className="text-[10px] text-slate-600 uppercase font-black tracking-widest">No intelligence records found.</p>
+                      <p className="text-[10px] text-[var(--color-text-secondary)] uppercase font-black tracking-widest">No intelligence records found.</p>
                     </div>
                   ) : (
                     userResumes.map(res => (
@@ -655,10 +655,10 @@ const ResumeGeneratorAI = () => {
                         className={`w-full text-left p-4 rounded-2xl border transition-all group ${selectedResumeId === res.id ? 'bg-workflow-primary/10 border-workflow-primary text-white' : 'bg-white/5 border-white/5 text-slate-400 hover:bg-white/10'}`}
                       >
                         <div className="flex items-center gap-3 mb-2">
-                          <FileText size={14} className={selectedResumeId === res.id ? 'text-workflow-primary' : 'text-slate-600'} />
+                          <FileText size={14} className={selectedResumeId === res.id ? 'text-workflow-primary' : 'text-[var(--color-text-secondary)]'} />
                           <span className="text-xs font-bold truncate uppercase tracking-tight">{res.title}</span>
                         </div>
-                        <div className="flex justify-between items-center text-[9px] font-black text-slate-500 uppercase">
+                        <div className="flex justify-between items-center text-[9px] font-black text-[var(--color-text-tertiary)] uppercase">
                           <span>ATS: {res.ats_score || '00'}</span>
                           <span>{new Date(res.updated_at).toLocaleDateString()}</span>
                         </div>
@@ -716,7 +716,7 @@ const ResumeGeneratorAI = () => {
                           </div>
                         )}
                       </div>
-                      <span className="text-[9px] text-slate-600 mt-2 block px-1 uppercase font-bold tracking-widest">
+                      <span className="text-[9px] text-[var(--color-text-secondary)] mt-2 block px-1 uppercase font-bold tracking-widest">
                         {msg.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                       </span>
                     </div>
@@ -824,7 +824,7 @@ const ResumeGeneratorAI = () => {
                 <div className="flex items-end">
                   <button
                     onClick={() => fileInputRef.current?.click()}
-                    className="p-3 text-slate-500 hover:text-white transition-colors"
+                    className="p-3 text-[var(--color-text-tertiary)] hover:text-white transition-colors"
                     title="Upload Document"
                   >
                     <Paperclip size={18} />
@@ -844,7 +844,7 @@ const ResumeGeneratorAI = () => {
                     onChange={(e) => setInput(e.target.value)}
                     onKeyDown={(e) => e.key === 'Enter' && !e.shiftKey && (e.preventDefault(), generatedResumeJson ? handleEditWithAI(input) : handleSend())}
                     placeholder={generatedResumeJson ? "Collaborate on adjustments..." : "Message AI Career Strategist..."}
-                    className="flex-1 bg-transparent border-none focus:ring-0 text-white placeholder:text-slate-500 px-4 py-3 min-h-[50px] max-h-[150px] resize-none text-[13px] font-medium leading-relaxed"
+                    className="flex-1 bg-transparent border-none focus:ring-0 text-white placeholder:text-[var(--color-text-tertiary)] px-4 py-3 min-h-[50px] max-h-[150px] resize-none text-[13px] font-medium leading-relaxed"
                     rows={1}
                     disabled={isTyping || isStreaming}
                   />
@@ -888,7 +888,7 @@ const ResumeGeneratorAI = () => {
                     <button
                       key={tool.id}
                       onClick={() => setActiveTool(tool.id)}
-                      className={`px-2.5 py-1 rounded-md text-[9px] font-bold uppercase tracking-widest border transition-all flex items-center gap-1.5 ${activeTool === tool.id ? 'bg-workflow-primary text-white border-workflow-primary' : 'bg-white/5 border-white/5 text-slate-500 hover:text-white hover:bg-white/10'}`}
+                      className={`px-2.5 py-1 rounded-md text-[9px] font-bold uppercase tracking-widest border transition-all flex items-center gap-1.5 ${activeTool === tool.id ? 'bg-workflow-primary text-white border-workflow-primary' : 'bg-white/5 border-white/5 text-[var(--color-text-tertiary)] hover:text-white hover:bg-white/10'}`}
                     >
                       <tool.icon size={12} />
                       {tool.label}
@@ -964,7 +964,7 @@ const ResumeGeneratorAI = () => {
                         <FileText size={32} className="text-slate-800" />
                       </div>
                       <h3 className="text-xl font-black text-slate-700 uppercase tracking-tighter mb-4">Awaiting Intel Payload</h3>
-                      <p className="max-w-xs text-sm text-slate-600 leading-relaxed font-medium"> Describe your career goals on the left to initialize the neural document construction.</p>
+                      <p className="max-w-xs text-sm text-[var(--color-text-secondary)] leading-relaxed font-medium"> Describe your career goals on the left to initialize the neural document construction.</p>
 
                       <div className="mt-12 flex items-center gap-8 opacity-20 filter grayscale">
                         <Zap size={24} />
@@ -1028,7 +1028,7 @@ const ResumeGeneratorAI = () => {
                       >
                         <div className={`absolute inset-0 bg-gradient-to-br ${t.id === 'modern' ? 'from-slate-900 to-slate-800' : 'from-white to-slate-100'} flex items-center justify-center`}>
                           {/* Preview Placeholder */}
-                          <div className="text-xs font-black uppercase tracking-widest text-slate-500">{t.name} Preview</div>
+                          <div className="text-xs font-black uppercase tracking-widest text-[var(--color-text-tertiary)]">{t.name} Preview</div>
                         </div>
                         <div className="absolute inset-x-0 bottom-0 p-4 bg-black/80 backdrop-blur-sm">
                           <div className="flex items-center justify-between">
@@ -1086,7 +1086,7 @@ const ResumeGeneratorAI = () => {
                         </div>
                       </div>
                     )) : (
-                      <p className="text-[10px] text-slate-500 font-bold uppercase italic">No keyword intelligence found yet. Generate a resume first.</p>
+                      <p className="text-[10px] text-[var(--color-text-tertiary)] font-bold uppercase italic">No keyword intelligence found yet. Generate a resume first.</p>
                     )}
                   </div>
                 )}

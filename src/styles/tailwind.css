@@ -8,219 +8,271 @@
 
 @layer base {
   :root {
-    /* Hope Dawah Institute - Premium Sapphire Theme */
-    --workflow-primary: #0046FF; /* Sapphire Blue */
-    --workflow-accent: #D97706; /* Amber 600 (Gold) */
-    --workflow-glow: rgba(0, 70, 255, 0.4);
-    --grid-color: rgba(0, 70, 255, 0.05);
+    /* ═══════════════════════════════════════════════
+       HOPE DAWAH INSTITUTE — Microsoft-Inspired Theme
+       Clean, professional, high contrast, minimal.
+       ═══════════════════════════════════════════════ */
 
-    /* Light Theme - Clean Professional */
-    --color-bg-rgb: 248, 250, 252; /* Slate 50 */
-    --color-bg: #F8FAFC;
+    /* ── BACKGROUNDS ────────────────────────────── */
+    --color-bg-primary:      #FFFFFF;
+    --color-bg-secondary:    #F5F5F5;
+    --color-bg-tertiary:     #EFF6FF;
+    --color-bg-dark:         #0B1120;
+    --color-bg-sidebar:      #F8FAFF;
+
+    /* Legacy mappings for existing Tailwind tokens */
+    --color-bg-rgb: 255, 255, 255;
+    --color-bg: #FFFFFF;
     --color-surface-rgb: 255, 255, 255;
     --color-surface: #FFFFFF;
-    --color-surface-elevated-rgb: 241, 245, 249; /* Slate 100 */
-    --color-surface-elevated: #F1F5F9;
-    --color-border-rgb: 226, 232, 240; /* Slate 200 */
-    --color-border: #E2E8F0;
-    --color-text: #0F172A; /* Slate 900 */
-    --color-text-secondary: #334155; /* Slate 700 */
-    --color-text-muted: #64748B; /* Slate 500 */
+    --color-surface-elevated-rgb: 245, 245, 245;
+    --color-surface-elevated: #F5F5F5;
 
-    /* Glass Effects - Light */
-    --glass-bg: rgba(255, 255, 255, 0.7);
-    --glass-border: rgba(0, 70, 255, 0.08);
-    --glass-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    /* ── BRAND / ACCENT ─────────────────────────── */
+    --color-primary:         #0078D4;
+    --color-primary-hover:   #005A9E;
+    --color-primary-light:   #EFF6FF;
+    --color-primary-dark:    #003D6B;
+    --workflow-primary:      #0078D4;
+
+    /* ── TEXT ────────────────────────────────────── */
+    --color-text-primary:    #1A1A1A;
+    --color-text-secondary:  #444444;
+    --color-text-tertiary:   #767676;
+    --color-text-inverse:    #FFFFFF;
+    --color-text-link:       #0078D4;
+    --color-text-link-hover: #005A9E;
+
+    /* Legacy mappings */
+    --color-text: #1A1A1A;
+    --color-text-secondary-legacy: #444444;
+    --color-text-muted: #767676;
+
+    /* ── BORDERS ────────────────────────────────── */
+    --color-border-primary:  #E0E0E0;
+    --color-border-secondary:#C8D8F0;
+    --color-border-focus:    #0078D4;
+    --color-border-rgb: 224, 224, 224;
+    --color-border: #E0E0E0;
+
+    /* ── BUTTONS ────────────────────────────────── */
+    --color-btn-primary-bg:      #0078D4;
+    --color-btn-primary-text:    #FFFFFF;
+    --color-btn-primary-hover:   #005A9E;
+    --color-btn-secondary-bg:    #FFFFFF;
+    --color-btn-secondary-text:  #0078D4;
+    --color-btn-secondary-border:#0078D4;
+    --color-btn-secondary-hover: #EFF6FF;
+
+    /* ── STATUS / BADGES ────────────────────────── */
+    --color-success:         #107C10;
+    --color-success-bg:      #E6F4E6;
+    --color-warning:         #FF8C00;
+    --color-warning-bg:      #FFF4E5;
+    --color-error:           #D13438;
+    --color-error-bg:        #FDE7E9;
+    --color-info:            #0078D4;
+    --color-info-bg:         #EFF6FF;
+
+    /* ── SIDEBAR ────────────────────────────────── */
+    --color-sidebar-bg:          #F8FAFF;
+    --color-sidebar-text:        #444444;
+    --color-sidebar-text-active: #0078D4;
+    --color-sidebar-item-active: #EFF6FF;
+    --color-sidebar-item-hover:  #F0F4FF;
+    --color-sidebar-border:      #E0E8F5;
+    --color-sidebar-icon:        #767676;
+    --color-sidebar-icon-active: #0078D4;
+
+    /* ── NAVIGATION ─────────────────────────────── */
+    --color-nav-bg:          #FFFFFF;
+    --color-nav-text:        #1A1A1A;
+    --color-nav-text-hover:  #0078D4;
+    --color-nav-border:      #E0E0E0;
+    --color-nav-active:      #0078D4;
+
+    /* ── CARDS ──────────────────────────────────── */
+    --color-card-bg:         #FFFFFF;
+    --color-card-border:     #E0E0E0;
+    --color-card-shadow:     rgba(0, 120, 212, 0.08);
+    --color-card-hover-shadow: rgba(0, 120, 212, 0.16);
+
+    /* ── STAT CARDS ─────────────────────────────── */
+    --color-stat-border-1:   #0078D4;
+    --color-stat-border-2:   #107C10;
+    --color-stat-border-3:   #FF8C00;
+    --color-stat-border-4:   #8764B8;
+
+    /* ── SHADOWS ────────────────────────────────── */
+    --shadow-card:           0 2px 8px rgba(0, 0, 0, 0.06);
+    --shadow-card-hover:     0 4px 16px rgba(0, 120, 212, 0.12);
+    --shadow-nav:            0 1px 4px rgba(0, 0, 0, 0.08);
+    --shadow-modal:          0 8px 32px rgba(0, 0, 0, 0.16);
+
+    /* ── LAYOUT ─────────────────────────────────── */
+    --header-height: 72px;
+    --card-radius: 12px;
+
+    /* ── REMOVED/LEGACY ─────────────────────────── */
+    --glass-bg: rgba(255, 255, 255, 0.95);
+    --glass-border: #E0E0E0;
+    --glass-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    --grid-color: transparent;
+    --workflow-glow: rgba(0, 120, 212, 0.15);
   }
 
+  /* Dark theme - only used for explicitly dark sections */
   .dark {
-    /* Premium Sapphire Dark Theme - The "Beautiful BG" */
-    --color-bg-rgb: 10, 17, 32; /* Deep Navy #0A1120 */
-    --color-bg: #0A1120;
-    --color-surface-rgb: 19, 24, 46; /* #13182E */
-    --color-surface: #13182E;
-    --color-surface-elevated-rgb: 30, 41, 59; /* Slate 800 */
+    --color-bg-rgb: 11, 17, 32;
+    --color-bg: #0B1120;
+    --color-surface-rgb: 15, 23, 42;
+    --color-surface: #0F172A;
+    --color-surface-elevated-rgb: 30, 41, 59;
     --color-surface-elevated: #1E293B;
     --color-border-rgb: 255, 255, 255;
     --color-border: rgba(255, 255, 255, 0.08);
-    --color-text: #F8FAFC; /* Slate 50 */
-    --color-text-secondary: #CBD5E1; /* Slate 300 */
-    --color-text-muted: #94A3B8; /* Slate 400 */
+    --color-text: #F8FAFC;
+    --color-text-secondary-legacy: #CBD5E1;
+    --color-text-muted: #94A3B8;
 
-    /* Glass Effects - Dark */
-    --glass-bg: rgba(10, 17, 32, 0.6);
+    --glass-bg: rgba(11, 17, 32, 0.8);
     --glass-border: rgba(255, 255, 255, 0.08);
     --glass-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-
-    --grid-color: rgba(255, 255, 255, 0.04);
-    --workflow-glow: rgba(0, 70, 255, 0.35);
-
-    /* Premium Backgrounds */
-    --bg-public:
-      radial-gradient(at 0% 0%, hsla(225, 100%, 48%, 0.12) 0, transparent 50%),
-      radial-gradient(at 100% 0%, hsla(225, 100%, 48%, 0.1) 0, transparent 50%),
-      radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.01) 0%, transparent 100%);
-
-    --bg-private:
-      radial-gradient(circle at 50% 50%, #0A1120, #040914),
-      linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-  }
-
-  .bg-public {
-    background: var(--bg-public);
-    background-color: var(--color-bg);
-    background-size: 100% 100%, 100% 100%, 100% 100%, 40px 40px, 40px 40px;
-  }
-
-  .bg-private {
-    background: var(--bg-private);
-    background-size: cover, 60px 60px, 60px 60px;
-    background-color: var(--color-bg);
+    --grid-color: rgba(255, 255, 255, 0.03);
+    --workflow-glow: rgba(0, 120, 212, 0.3);
   }
 
   body {
-    @apply font-sans antialiased text-slate-900 dark:text-dark-text;
-    background-color: rgb(var(--color-bg-rgb));
-    background-attachment: fixed;
+    font-family: 'Inter', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: var(--color-bg-primary);
+    color: var(--color-text-primary);
     font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
-    transition: background-color 500ms ease;
     overflow-x: hidden;
   }
 
-  /* Global Blueprint Grid Overlay */
-  body::before {
-    content: "";
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image:
-      linear-gradient(var(--grid-color) 1px, transparent 1px),
-      linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
-    background-size: 40px 40px;
-    background-position: center center;
-    pointer-events: none;
-    z-index: -1;
-    opacity: 0.5;
-  }
-
-  /* Subtle Noise Texture */
-  .dark body::after {
-    content: "";
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: var(--bg-noise);
-    opacity: 0.03;
-    pointer-events: none;
-    z-index: -1;
-  }
-
-  /* Glassmorphism Classes */
-  .glass {
-    @apply backdrop-blur-xl bg-white/10 dark:bg-dark-surface/30 border border-white/20 dark:border-white/10 shadow-2xl;
-  }
-
-  .glass-card {
-    @apply glass rounded-2xl transition-all duration-300 hover:shadow-workflow-primary/10;
-  }
-
-  .glass-header {
-    @apply backdrop-blur-3xl bg-white/40 dark:bg-[#0A1628]/95 border-b border-slate-200/50 dark:border-white/5 shadow-2xl;
-  }
-
-  .glass-sidebar {
-    @apply backdrop-blur-3xl bg-white/80 dark:bg-[#0A1628]/95 border-r border-slate-200/50 dark:border-white/5;
-  }
-
-  /* Universal Dashboard Transparency Overrides */
-  .dashboard-container,
-  .admin-dashboard,
-  .talent-dashboard,
-  .recruiter-dashboard,
-  main.flex-1 {
-    @apply bg-transparent !important;
-  }
-
-  .glass-card-container {
-    background: var(--glass-bg);
-    backdrop-filter: blur(12px);
-    border: 1px solid var(--glass-border);
-    border-radius: var(--card-radius);
-    box-shadow: var(--glass-shadow);
-  }
-
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    @apply font-sans font-bold tracking-tight;
+  /* Typography - Microsoft-inspired hierarchy */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Inter', 'Segoe UI', -apple-system, sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--color-text-primary);
   }
 
   html {
     scroll-behavior: smooth;
   }
 
+  /* Focus states - accessibility */
+  *:focus-visible {
+    outline: 2px solid var(--color-border-focus);
+    outline-offset: 2px;
+  }
 }
 
 @layer components {
 
-  /* Cinematic Glassmorphism - Minimal Shadows */
-  .glass-panel {
-    background: var(--glass-bg);
-    backdrop-filter: blur(12px);
-    border: 1px solid var(--glass-border);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  /* ── Navigation Header ─────────────────────── */
+  .glass-header {
+    background: var(--color-nav-bg);
+    border-bottom: 1px solid var(--color-nav-border);
+    box-shadow: var(--shadow-nav);
   }
 
+  /* ── Sidebar ───────────────────────────────── */
+  .glass-sidebar {
+    background: var(--color-sidebar-bg);
+    border-right: 1px solid var(--color-sidebar-border);
+  }
+
+  /* ── Cards ─────────────────────────────────── */
   .glass-card {
-    @apply relative overflow-hidden bg-white/40 dark:bg-slate-900/50 backdrop-blur-md border border-white/20 dark:border-white/[0.05];
-    @apply transition-all duration-500 ease-out;
+    background: var(--color-card-bg);
+    border: 1px solid var(--color-card-border);
+    border-radius: var(--card-radius);
+    box-shadow: var(--shadow-card);
+    transition: all 0.15s ease;
   }
 
-  .glass-card::before {
-    content: '';
-    @apply absolute inset-0 bg-gradient-to-br from-white/10 to-transparent pointer-events-none;
+  .glass-card:hover {
+    box-shadow: var(--shadow-card-hover);
   }
 
-  /* Premium Buttons */
+  /* ── Panels ────────────────────────────────── */
+  .glass-panel {
+    background: var(--color-card-bg);
+    border: 1px solid var(--color-card-border);
+    box-shadow: var(--shadow-card);
+  }
+
+  .glass-card-container {
+    background: var(--color-card-bg);
+    border: 1px solid var(--color-card-border);
+    border-radius: var(--card-radius);
+    box-shadow: var(--shadow-card);
+  }
+
+  /* ── Primary Button ────────────────────────── */
   .btn-primary {
-    @apply relative overflow-hidden flex items-center justify-center px-8 py-4 rounded-full font-extrabold text-white;
-    @apply bg-workflow-primary hover:brightness-110 active:scale-[0.97];
-    @apply transition-all duration-300 ease-out;
-    @apply shadow-primary-glow hover:shadow-primary-glow-hover;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 24px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--color-btn-primary-text);
+    background: var(--color-btn-primary-bg);
+    border: none;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    box-shadow: none;
   }
 
+  .btn-primary:hover {
+    background: var(--color-btn-primary-hover);
+  }
+
+  .btn-primary:active {
+    transform: scale(0.98);
+  }
+
+  /* ── Secondary Button ──────────────────────── */
   .btn-secondary {
-    @apply bg-slate-100 dark:bg-white/[0.05] text-slate-900 dark:text-slate-100;
-    @apply border border-slate-200 dark:border-white/[0.1] px-6 py-2.5 rounded-full font-medium;
-    @apply hover:bg-slate-200 dark:hover:bg-white/[0.1] active:scale-[0.97];
-    @apply transition-all duration-300 ease-out;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 24px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--color-btn-secondary-text);
+    background: var(--color-btn-secondary-bg);
+    border: 1px solid var(--color-btn-secondary-border);
+    cursor: pointer;
+    transition: all 0.15s ease;
   }
 
-  /* Modern Transitions */
+  .btn-secondary:hover {
+    background: var(--color-btn-secondary-hover);
+  }
+
+  /* ── Transitions ───────────────────────────── */
   .transition-premium {
-    @apply transition-all duration-500;
-    transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+    transition: all 0.15s ease;
   }
 
-  /* Cinematic Gradients */
+  /* ── Gradient for dark sections ─────────────── */
   .gradient-hero {
-    @apply bg-gradient-to-br from-workflow-primary via-[#4F46E5] to-[#8B5CF6];
+    background: linear-gradient(135deg, var(--color-primary) 0%, #005A9E 100%);
   }
 
   .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-white via-white to-white/50;
-  }
-
-  .glow-box {
-    filter: drop-shadow(0 0 15px var(--workflow-glow));
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-image: linear-gradient(to right, var(--color-primary), var(--color-primary-dark));
   }
 }
 
@@ -238,18 +290,11 @@
   }
 
   @keyframes float {
-
-    0%,
-    100% {
+    0%, 100% {
       transform: translateY(0);
     }
-
     50% {
       transform: translateY(-20px);
     }
-  }
-
-  .border-glimmer {
-    border-image: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.3), transparent) 1;
   }
 }

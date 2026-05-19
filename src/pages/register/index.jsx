@@ -43,7 +43,7 @@ const Register = () => {
       title: 'Scholar',
       description: 'Share expert knowledge and grow your academic achievements',
       icon: UserCheck,
-      color: 'from-green-500 to-emerald-500',
+      color: 'from-green-500 to-[var(--color-primary)]',
       features: ['Host specialized seminars', 'Manage academic projects', 'Contribute research', 'Build your academic profile']
     }
   ];

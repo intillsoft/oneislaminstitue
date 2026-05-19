@@ -73,8 +73,8 @@ const PaymentHistory = () => {
 
   const getStatusBadge = (status) => {
     const statusStyles = {
-      paid: 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20',
-      active: 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20',
+      paid: 'bg-[var(--color-primary)]/10 text-[var(--color-primary)] border-[var(--color-primary)]/20',
+      active: 'bg-[var(--color-primary)]/10 text-[var(--color-primary)] border-[var(--color-primary)]/20',
       pending: 'bg-amber-500/10 text-amber-500 border-amber-500/20',
       failed: 'bg-rose-500/10 text-rose-500 border-rose-500/20',
       cancelled: 'bg-text-muted/10 text-text-muted border-text-muted/20',
@@ -106,7 +106,7 @@ const PaymentHistory = () => {
           <div className="flex-1 text-center sm:text-left">
             <div className="flex items-center justify-center sm:justify-start gap-3 mb-2">
               <h3 className="text-2xl font-black text-white uppercase tracking-tight">Pro Recruiter Plan</h3>
-              <span className="px-2 py-0.5 bg-emerald-500/10 text-emerald-500 text-[10px] font-black uppercase tracking-widest rounded-md border border-emerald-500/20">Active</span>
+              <span className="px-2 py-0.5 bg-[var(--color-primary)]/10 text-[var(--color-primary)] text-[10px] font-black uppercase tracking-widest rounded-md border border-[var(--color-primary)]/20">Active</span>
             </div>
             <p className="text-slate-400 text-sm font-medium mb-4">Your subscription renews on <span className="text-white font-bold">Feb 24, 2026</span></p>
             <div className="flex flex-wrap items-center justify-center sm:justify-start gap-4">
@@ -121,9 +121,9 @@ const PaymentHistory = () => {
         </EliteCard>
 
         <EliteCard className="p-8 border-white/5 bg-white/[0.02] flex flex-col justify-center text-center">
-          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 mb-2">Total Managed Spend</p>
+          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-text-tertiary)] mb-2">Total Managed Spend</p>
           <h3 className="text-4xl font-black text-white mb-1 tracking-tight">$2,450.00</h3>
-          <p className="text-[10px] font-medium text-emerald-500 uppercase tracking-widest">+12% from last quarter</p>
+          <p className="text-[10px] font-medium text-[var(--color-primary)] uppercase tracking-widest">+12% from last quarter</p>
         </EliteCard>
       </div>
 
@@ -131,7 +131,7 @@ const PaymentHistory = () => {
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-8 border-b border-white/5">
           <div>
             <h3 className="text-lg font-black text-white uppercase tracking-tight">Billing Ledger</h3>
-            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">Comprehensive Transaction History</p>
+            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-text-tertiary)]">Comprehensive Transaction History</p>
           </div>
           <div className="flex items-center gap-2 mt-4 sm:mt-0">
             <button
@@ -146,7 +146,7 @@ const PaymentHistory = () => {
             <button
               onClick={() => setViewMode('paid')}
               className={`px-4 py-2 text-[10px] font-black uppercase tracking-widest rounded-xl transition-all ${viewMode === 'paid'
-                  ? 'bg-emerald-500/10 text-emerald-500'
+                  ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)]'
                   : 'text-text-muted hover:bg-white/5 hover:text-text-primary'
                 }`}
             >
@@ -158,22 +158,22 @@ const PaymentHistory = () => {
           <table className="min-w-full divide-y divide-border dark:divide-white/5">
             <thead>
               <tr className="border-b border-white/5">
-                <th scope="col" className="px-8 py-4 text-left text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">
+                <th scope="col" className="px-8 py-4 text-left text-[10px] font-black text-[var(--color-text-tertiary)] uppercase tracking-[0.2em]">
                   Reference ID
                 </th>
-                <th scope="col" className="px-8 py-4 text-left text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">
+                <th scope="col" className="px-8 py-4 text-left text-[10px] font-black text-[var(--color-text-tertiary)] uppercase tracking-[0.2em]">
                   Timestamp
                 </th>
-                <th scope="col" className="px-8 py-4 text-left text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">
+                <th scope="col" className="px-8 py-4 text-left text-[10px] font-black text-[var(--color-text-tertiary)] uppercase tracking-[0.2em]">
                   Details
                 </th>
-                <th scope="col" className="px-8 py-4 text-left text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">
+                <th scope="col" className="px-8 py-4 text-left text-[10px] font-black text-[var(--color-text-tertiary)] uppercase tracking-[0.2em]">
                   Value
                 </th>
-                <th scope="col" className="px-8 py-4 text-left text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">
+                <th scope="col" className="px-8 py-4 text-left text-[10px] font-black text-[var(--color-text-tertiary)] uppercase tracking-[0.2em]">
                   Status
                 </th>
-                <th scope="col" className="px-8 py-4 text-right text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">
+                <th scope="col" className="px-8 py-4 text-right text-[10px] font-black text-[var(--color-text-tertiary)] uppercase tracking-[0.2em]">
                   Action
                 </th>
               </tr>
@@ -198,7 +198,7 @@ const PaymentHistory = () => {
                     </td>
                     <td className="px-8 py-6">
                       <div className="text-xs font-black text-white uppercase tracking-tight">{payment.description}</div>
-                      <div className="text-[10px] font-black text-slate-500 mt-1 uppercase tracking-widest">{payment.paymentMethod}</div>
+                      <div className="text-[10px] font-black text-[var(--color-text-tertiary)] mt-1 uppercase tracking-widest">{payment.paymentMethod}</div>
                     </td>
                     <td className="px-8 py-6 whitespace-nowrap">
                       <div className="text-sm font-black text-text-primary dark:text-white">
@@ -212,10 +212,10 @@ const PaymentHistory = () => {
                     </td>
                     <td className="px-8 py-6 whitespace-nowrap text-right">
                       <div className="flex items-center justify-end gap-3">
-                        <button className="p-2 text-slate-500 hover:text-white transition-colors bg-white/5 rounded-lg border border-white/5 hover:bg-white/10">
+                        <button className="p-2 text-[var(--color-text-tertiary)] hover:text-white transition-colors bg-white/5 rounded-lg border border-white/5 hover:bg-white/10">
                           <Icon name="FileText" size={14} />
                         </button>
-                        <button className="p-2 text-slate-500 hover:text-white transition-colors bg-white/5 rounded-lg border border-white/5 hover:bg-white/10">
+                        <button className="p-2 text-[var(--color-text-tertiary)] hover:text-white transition-colors bg-white/5 rounded-lg border border-white/5 hover:bg-white/10">
                           <Icon name="Download" size={14} />
                         </button>
                       </div>

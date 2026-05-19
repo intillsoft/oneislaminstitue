@@ -113,14 +113,14 @@ const SystemMonitoring = () => {
       {/* Performance Metrics */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         <EliteCard className="p-8 border-white/5 bg-white/[0.02] flex flex-col items-center text-center group hover:scale-[1.02] transition-all">
-          <div className="w-16 h-16 bg-emerald-500/10 rounded-2xl flex items-center justify-center mb-6 border border-emerald-500/20 group-hover:scale-110 transition-transform">
-            <Icon name="Activity" size={32} className="text-emerald-500" />
+          <div className="w-16 h-16 bg-[var(--color-primary)]/10 rounded-2xl flex items-center justify-center mb-6 border border-[var(--color-primary)]/20 group-hover:scale-110 transition-transform">
+            <Icon name="Activity" size={32} className="text-[var(--color-primary)]" />
           </div>
           <h4 className="text-3xl font-black text-white mb-1 tracking-tight">{performanceMetrics?.serverUptime}</h4>
-          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">Global System Uptime</p>
+          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-text-tertiary)]">Global System Uptime</p>
           <div className="mt-6 w-full pt-6 border-t border-white/5 flex items-center justify-center gap-2">
-            <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-            <span className="text-[9px] font-black uppercase tracking-widest text-emerald-500">Live & Operational</span>
+            <div className="w-2 h-2 rounded-full bg-[var(--color-primary)] animate-pulse" />
+            <span className="text-[9px] font-black uppercase tracking-widest text-[var(--color-primary)]">Live & Operational</span>
           </div>
         </EliteCard>
 
@@ -131,7 +131,7 @@ const SystemMonitoring = () => {
           <h4 className={`text-3xl font-black mb-1 tracking-tight ${getMetricColor(performanceMetrics?.cpuUsage, 'usage')}`}>
             {performanceMetrics?.cpuUsage}
           </h4>
-          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">CPU Compute Load</p>
+          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-text-tertiary)]">CPU Compute Load</p>
           <div className="mt-6 w-full h-1 bg-white/5 rounded-full overflow-hidden">
             <div
               className="h-full bg-blue-500 transition-all duration-1000"
@@ -147,7 +147,7 @@ const SystemMonitoring = () => {
           <h4 className={`text-3xl font-black mb-1 tracking-tight ${getMetricColor(performanceMetrics?.memoryUsage, 'usage')}`}>
             {performanceMetrics?.memoryUsage}
           </h4>
-          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">Memory Allocation</p>
+          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-text-tertiary)]">Memory Allocation</p>
           <div className="mt-6 w-full h-1 bg-white/5 rounded-full overflow-hidden">
             <div
               className="h-full bg-purple-500 transition-all duration-1000"
@@ -163,7 +163,7 @@ const SystemMonitoring = () => {
           <h4 className={`text-3xl font-black mb-1 tracking-tight ${getMetricColor(performanceMetrics?.diskSpace, 'usage')}`}>
             {performanceMetrics?.diskSpace}
           </h4>
-          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">Storage Capacity</p>
+          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-text-tertiary)]">Storage Capacity</p>
           <div className="mt-6 w-full h-1 bg-white/5 rounded-full overflow-hidden">
             <div
               className="h-full bg-amber-500 transition-all duration-1000"
@@ -177,15 +177,15 @@ const SystemMonitoring = () => {
             <Icon name="Clock" size={32} className="text-rose-500" />
           </div>
           <h4 className="text-3xl font-black text-white mb-1 tracking-tight">{performanceMetrics?.responseTime}</h4>
-          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">Avg Gateway Latency</p>
+          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-text-tertiary)]">Avg Gateway Latency</p>
           <div className="mt-6 w-full pt-6 border-t border-white/5 flex items-center justify-center gap-4">
             <div className="flex items-center gap-1">
-              <span className="text-[9px] font-black uppercase tracking-widest text-slate-500">p99</span>
+              <span className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-tertiary)]">p99</span>
               <span className="text-[9px] font-black text-white">450ms</span>
             </div>
             <div className="w-[1px] h-3 bg-white/10" />
             <div className="flex items-center gap-1">
-              <span className="text-[9px] font-black uppercase tracking-widest text-slate-500">p95</span>
+              <span className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-tertiary)]">p95</span>
               <span className="text-[9px] font-black text-white">220ms</span>
             </div>
           </div>
@@ -196,10 +196,10 @@ const SystemMonitoring = () => {
             <Icon name="TrendingUp" size={32} className="text-indigo-500" />
           </div>
           <h4 className="text-3xl font-black text-white mb-1 tracking-tight">{performanceMetrics?.throughput || '1.2k'}</h4>
-          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">Requests Per Second</p>
+          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-text-tertiary)]">Requests Per Second</p>
           <div className="mt-6 w-full pt-6 border-t border-white/5">
             <div className="flex items-center justify-between">
-              <span className="text-[9px] font-black uppercase tracking-widest text-slate-500">Peak Load</span>
+              <span className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-tertiary)]">Peak Load</span>
               <span className="text-[9px] font-black text-indigo-500 uppercase">Sustainable</span>
             </div>
           </div>
@@ -213,13 +213,13 @@ const SystemMonitoring = () => {
           </div>
           <div>
             <h3 className="text-lg font-black text-white uppercase tracking-tight">External Nexus Status</h3>
-            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">Third-Party Gateway Connectivity</p>
+            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-text-tertiary)]">Third-Party Gateway Connectivity</p>
           </div>
         </div>
 
         {integrationStatus.length === 0 ? (
           <EliteCard className="p-8 border-white/5 bg-white/[0.02] text-center">
-            <Icon name="Activity" size={48} className="mx-auto mb-4 opacity-20 text-slate-500" />
+            <Icon name="Activity" size={48} className="mx-auto mb-4 opacity-20 text-[var(--color-text-tertiary)]" />
             <p className="text-slate-400 font-black uppercase tracking-widest text-xs">No active integrations detected</p>
           </EliteCard>
         ) : (
@@ -234,20 +234,20 @@ const SystemMonitoring = () => {
                 </div>
                 <div className="space-y-4">
                   <div className="flex justify-between items-center">
-                    <span className="text-[10px] font-black uppercase tracking-widest text-slate-500">Response Latency</span>
+                    <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-tertiary)]">Response Latency</span>
                     <span className="text-xs font-black text-white">{integration?.responseTime}</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-[10px] font-black uppercase tracking-widest text-slate-500">Service Version</span>
+                    <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-tertiary)]">Service Version</span>
                     <span className="text-xs font-black text-slate-300 font-mono">{integration?.version}</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-[10px] font-black uppercase tracking-widest text-slate-500">Uptime Reliability</span>
-                    <span className="text-xs font-black text-emerald-500">{integration?.uptime}</span>
+                    <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-tertiary)]">Uptime Reliability</span>
+                    <span className="text-xs font-black text-[var(--color-primary)]">{integration?.uptime}</span>
                   </div>
                   <div className="flex justify-between items-center pt-4 border-t border-white/5">
-                    <span className="text-[9px] font-black uppercase tracking-widest text-slate-600">Last Telemetry Check</span>
-                    <span className="text-[10px] font-black text-slate-500">{integration?.lastCheck}</span>
+                    <span className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-secondary)]">Last Telemetry Check</span>
+                    <span className="text-[10px] font-black text-[var(--color-text-tertiary)]">{integration?.lastCheck}</span>
                   </div>
                 </div>
               </EliteCard>
@@ -266,7 +266,7 @@ const SystemMonitoring = () => {
               </div>
               <div>
                 <h3 className="text-lg font-black text-white uppercase tracking-tight">System Error Logs</h3>
-                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">Live Incident Monitoring</p>
+                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-text-tertiary)]">Live Incident Monitoring</p>
               </div>
             </div>
             <div className="flex flex-wrap items-center gap-3">
@@ -281,10 +281,10 @@ const SystemMonitoring = () => {
                   <option value="warning" className="bg-[#0A1628]">Warnings</option>
                   <option value="info" className="bg-[#0A1628]">Information</option>
                 </select>
-                <Icon name="ChevronDown" size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none group-hover:text-rose-500 transition-colors" />
+                <Icon name="ChevronDown" size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--color-text-tertiary)] pointer-events-none group-hover:text-rose-500 transition-colors" />
               </div>
               <button className="px-5 py-2.5 bg-white/5 text-white rounded-xl hover:bg-white/10 transition-all font-black uppercase tracking-widest text-[10px] border border-white/5 flex items-center gap-2 group">
-                <Icon name="Download" size={14} className="text-slate-500 group-hover:text-white transition-colors" />
+                <Icon name="Download" size={14} className="text-[var(--color-text-tertiary)] group-hover:text-white transition-colors" />
                 Export Archive
               </button>
             </div>
@@ -292,7 +292,7 @@ const SystemMonitoring = () => {
 
           {filteredLogs.length === 0 ? (
             <div className="text-center py-12 border border-dashed border-white/5 rounded-2xl">
-              <Icon name="CheckCircle" size={48} className="mx-auto mb-4 text-emerald-500/20" />
+              <Icon name="CheckCircle" size={48} className="mx-auto mb-4 text-[var(--color-primary)]/20" />
               <p className="text-slate-400 font-black uppercase tracking-widest text-xs">System Pulse Nominal: No Incidents</p>
             </div>
           ) : (
@@ -300,12 +300,12 @@ const SystemMonitoring = () => {
               <table className="min-w-full">
                 <thead>
                   <tr className="border-b border-white/5">
-                    <th className="text-left py-4 text-[10px] font-black uppercase tracking-widest text-slate-500">Timestamp</th>
-                    <th className="text-left py-4 text-[10px] font-black uppercase tracking-widest text-slate-500">Level</th>
-                    <th className="text-left py-4 text-[10px] font-black uppercase tracking-widest text-slate-500">Service Nexus</th>
-                    <th className="text-left py-4 text-[10px] font-black uppercase tracking-widest text-slate-500">Payload Message</th>
-                    <th className="text-left py-4 text-[10px] font-black uppercase tracking-widest text-slate-500">Status</th>
-                    <th className="text-left py-4 text-[10px] font-black uppercase tracking-widest text-slate-500">Governance</th>
+                    <th className="text-left py-4 text-[10px] font-black uppercase tracking-widest text-[var(--color-text-tertiary)]">Timestamp</th>
+                    <th className="text-left py-4 text-[10px] font-black uppercase tracking-widest text-[var(--color-text-tertiary)]">Level</th>
+                    <th className="text-left py-4 text-[10px] font-black uppercase tracking-widest text-[var(--color-text-tertiary)]">Service Nexus</th>
+                    <th className="text-left py-4 text-[10px] font-black uppercase tracking-widest text-[var(--color-text-tertiary)]">Payload Message</th>
+                    <th className="text-left py-4 text-[10px] font-black uppercase tracking-widest text-[var(--color-text-tertiary)]">Status</th>
+                    <th className="text-left py-4 text-[10px] font-black uppercase tracking-widest text-[var(--color-text-tertiary)]">Governance</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-white/[0.02]">
@@ -320,23 +320,23 @@ const SystemMonitoring = () => {
                       <td className="py-4 text-xs font-black text-white uppercase tracking-tight">{log?.service}</td>
                       <td className="py-4">
                         <div className="text-xs text-slate-300 font-medium max-w-md truncate">{log?.message}</div>
-                        {log?.details && <div className="text-[10px] text-slate-600 truncate max-w-md italic">{log?.details}</div>}
+                        {log?.details && <div className="text-[10px] text-[var(--color-text-secondary)] truncate max-w-md italic">{log?.details}</div>}
                       </td>
                       <td className="py-4">
                         <div className="flex items-center gap-2">
-                          <div className={`w-1.5 h-1.5 rounded-full ${log?.resolved ? 'bg-emerald-500' : 'bg-rose-500 animate-pulse'}`} />
-                          <span className={`text-[10px] font-black uppercase tracking-widest ${log?.resolved ? 'text-emerald-500/60' : 'text-rose-500'}`}>
+                          <div className={`w-1.5 h-1.5 rounded-full ${log?.resolved ? 'bg-[var(--color-primary)]' : 'bg-rose-500 animate-pulse'}`} />
+                          <span className={`text-[10px] font-black uppercase tracking-widest ${log?.resolved ? 'text-[var(--color-primary)]/60' : 'text-rose-500'}`}>
                             {log?.resolved ? 'Mitigated' : 'Active'}
                           </span>
                         </div>
                       </td>
                       <td className="py-4">
                         <div className="flex items-center gap-3">
-                          <button className="text-slate-500 hover:text-white transition-colors">
+                          <button className="text-[var(--color-text-tertiary)] hover:text-white transition-colors">
                             <Icon name="Eye" size={14} />
                           </button>
                           {!log?.resolved && (
-                            <button className="p-1 px-2 bg-emerald-500/10 text-emerald-500 rounded-md border border-emerald-500/20 hover:bg-emerald-500 hover:text-white transition-all text-[9px] font-black uppercase tracking-widest">
+                            <button className="p-1 px-2 bg-[var(--color-primary)]/10 text-[var(--color-primary)] rounded-md border border-[var(--color-primary)]/20 hover:bg-[var(--color-primary)] hover:text-white transition-all text-[9px] font-black uppercase tracking-widest">
                               Resolve
                             </button>
                           )}

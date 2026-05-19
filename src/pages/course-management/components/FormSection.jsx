@@ -3,7 +3,7 @@ import Icon from 'components/AppIcon';
 
 const FormSection = ({ title, icon, children, isExpanded, toggleExpanded }) => {
   return (
-    <div className="mb-6 bg-slate-50 dark:bg-white/[0.02] border border-slate-100 dark:border-white/5 rounded-3xl overflow-hidden transition-all duration-500">
+    <div className="mb-6 bg-white dark:bg-white/[0.02] border border-slate-100 dark:border-white/5 rounded-3xl overflow-hidden transition-all duration-500">
       <button
         type="button"
         onClick={toggleExpanded}
@@ -14,8 +14,8 @@ const FormSection = ({ title, icon, children, isExpanded, toggleExpanded }) => {
             <Icon name={icon} size={18} className="text-workflow-primary" />
           </div>
           <div>
-            <h3 className="text-xs font-black text-slate-900 dark:text-white uppercase tracking-widest">{title}</h3>
-            {!isExpanded && <p className="text-[10px] text-slate-500 font-bold uppercase tracking-tight mt-0.5">Click to configure section</p>}
+            <h3 className="text-xs font-black text-[var(--color-text-primary)] dark:text-white uppercase tracking-widest">{title}</h3>
+            {!isExpanded && <p className="text-[10px] text-[var(--color-text-tertiary)] font-bold uppercase tracking-tight mt-0.5">Click to configure section</p>}
           </div>
         </div>
         <div className={`transition-transform duration-500 ${isExpanded ? 'rotate-180' : ''}`}>

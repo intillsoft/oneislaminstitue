@@ -174,7 +174,7 @@ const CultureFit = () => {
     };
 
     return (
-        <div className="min-h-screen bg-neutral-50 dark:bg-[#0A0E27] p-6 pt-24 font-sans">
+        <div className="min-h-screen bg-neutral-50 dark:bg-[var(--color-bg-dark)] p-6 pt-24 font-sans">
             <div className="max-w-6xl mx-auto space-y-12">
 
                 {/* Header */}
@@ -213,13 +213,13 @@ const CultureFit = () => {
                                         value={formData.companyName}
                                         onChange={(e) => setFormData({ ...formData, companyName: e.target.value })}
                                         placeholder="Company Name (e.g. Netflix)"
-                                        className="w-full p-4 rounded-xl border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-[#0A0E27] text-neutral-900 dark:text-white focus:ring-2 focus:ring-pink-500 outline-none transition-all font-bold text-lg placeholder:font-medium"
+                                        className="w-full p-4 rounded-xl border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-[var(--color-bg-dark)] text-neutral-900 dark:text-white focus:ring-2 focus:ring-pink-500 outline-none transition-all font-bold text-lg placeholder:font-medium"
                                     />
                                     <textarea
                                         value={formData.jobDescription}
                                         onChange={(e) => setFormData({ ...formData, jobDescription: e.target.value })}
                                         placeholder="Paste Mission Statement or Values (Optional)..."
-                                        className="w-full h-24 p-4 rounded-xl border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-[#0A0E27] text-neutral-900 dark:text-white focus:ring-2 focus:ring-pink-500 outline-none resize-none text-sm font-medium"
+                                        className="w-full h-24 p-4 rounded-xl border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-[var(--color-bg-dark)] text-neutral-900 dark:text-white focus:ring-2 focus:ring-pink-500 outline-none resize-none text-sm font-medium"
                                     />
                                 </div>
                             </div>
@@ -235,7 +235,7 @@ const CultureFit = () => {
                                             onClick={() => handleToggleValue(key)}
                                             className={`px-4 py-3 rounded-xl text-sm font-bold flex items-center justify-between transition-all border-2 ${isActive
                                                 ? 'bg-pink-50 dark:bg-pink-900/20 text-pink-600 dark:text-pink-300 border-pink-500'
-                                                : 'bg-neutral-50 dark:bg-[#0A0E27] text-neutral-500 dark:text-neutral-400 border-transparent hover:border-neutral-200'
+                                                : 'bg-neutral-50 dark:bg-[var(--color-bg-dark)] text-neutral-500 dark:text-neutral-400 border-transparent hover:border-neutral-200'
                                                 }`}
                                         >
                                             <span className="capitalize">{key.replace(/([A-Z])/g, ' $1').trim()}</span>
@@ -294,7 +294,7 @@ const CultureFit = () => {
                                         </div>
                                     </div>
 
-                                    <div className="p-8 grid grid-cols-1 md:grid-cols-2 gap-4 bg-neutral-50/50 dark:bg-[#0A0E27]/50">
+                                    <div className="p-8 grid grid-cols-1 md:grid-cols-2 gap-4 bg-neutral-50/50 dark:bg-[var(--color-bg-dark)]/50">
                                         {report.breakdown.map((item, idx) => (
                                             <motion.div
                                                 key={idx}

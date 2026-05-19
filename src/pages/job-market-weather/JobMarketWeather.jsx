@@ -101,10 +101,10 @@ const JobMarketWeather = () => {
                 <div className="inline-flex p-4 rounded-full bg-white dark:bg-white/10 shadow-xl backdrop-blur-xl">
                     <CloudRain className="w-12 h-12 text-blue-500" />
                 </div>
-                <h1 className="text-4xl font-black text-slate-900 dark:text-white tracking-tight">
+                <h1 className="text-4xl font-black text-[var(--color-text-primary)] dark:text-white tracking-tight">
                     Market <span className="text-blue-500">Forecast</span>
                 </h1>
-                <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto font-medium">
+                <p className="text-lg text-[var(--color-text-secondary)] dark:text-slate-400 max-w-2xl mx-auto font-medium">
                     Don't get caught in the rain. Check the hiring climate before you apply.
                 </p>
             </div>
@@ -117,13 +117,13 @@ const JobMarketWeather = () => {
                         animate={{ opacity: 1, x: 0 }}
                         className="bg-white/80 dark:bg-[#13182E]/80 backdrop-blur-xl p-8 rounded-3xl shadow-2xl border border-white/20 dark:border-white/5 space-y-6"
                     >
-                        <h3 className="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                        <h3 className="text-xl font-bold text-[var(--color-text-primary)] dark:text-white flex items-center gap-2">
                             <Search className="w-5 h-5 text-blue-500" /> Regional Settings
                         </h3>
 
                         <div className="space-y-4">
                             <div>
-                                <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Role Title</label>
+                                <label className="block text-xs font-bold uppercase tracking-wider text-[var(--color-text-tertiary)] mb-2">Role Title</label>
                                 <div className="relative group">
                                     <Briefcase className="absolute left-4 top-3.5 w-4 h-4 text-slate-400 group-focus-within:text-blue-500 transition-colors" />
                                     <input
@@ -131,13 +131,13 @@ const JobMarketWeather = () => {
                                         value={formData.role}
                                         onChange={(e) => setFormData({ ...formData, role: e.target.value })}
                                         placeholder="e.g. Product Manager"
-                                        className="w-full pl-10 p-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#0A0E27] text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none font-bold text-sm transition-all"
+                                        className="w-full pl-10 p-3 rounded-xl border border-[var(--color-border-primary)] dark:border-slate-700 bg-white dark:bg-[var(--color-bg-dark)] text-[var(--color-text-primary)] dark:text-white focus:ring-2 focus:ring-blue-500 outline-none font-bold text-sm transition-all"
                                     />
                                 </div>
                             </div>
 
                             <div>
-                                <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Industry Sector</label>
+                                <label className="block text-xs font-bold uppercase tracking-wider text-[var(--color-text-tertiary)] mb-2">Industry Sector</label>
                                 <div className="relative group">
                                     <BarChart2 className="absolute left-4 top-3.5 w-4 h-4 text-slate-400 group-focus-within:text-blue-500 transition-colors" />
                                     <input
@@ -145,13 +145,13 @@ const JobMarketWeather = () => {
                                         value={formData.industry}
                                         onChange={(e) => setFormData({ ...formData, industry: e.target.value })}
                                         placeholder="e.g. SaaS"
-                                        className="w-full pl-10 p-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#0A0E27] text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none font-bold text-sm transition-all"
+                                        className="w-full pl-10 p-3 rounded-xl border border-[var(--color-border-primary)] dark:border-slate-700 bg-white dark:bg-[var(--color-bg-dark)] text-[var(--color-text-primary)] dark:text-white focus:ring-2 focus:ring-blue-500 outline-none font-bold text-sm transition-all"
                                     />
                                 </div>
                             </div>
 
                             <div>
-                                <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Location</label>
+                                <label className="block text-xs font-bold uppercase tracking-wider text-[var(--color-text-tertiary)] mb-2">Location</label>
                                 <div className="relative group">
                                     <MapPin className="absolute left-4 top-3.5 w-4 h-4 text-slate-400 group-focus-within:text-blue-500 transition-colors" />
                                     <input
@@ -159,7 +159,7 @@ const JobMarketWeather = () => {
                                         value={formData.location}
                                         onChange={(e) => setFormData({ ...formData, location: e.target.value })}
                                         placeholder="e.g. Remote"
-                                        className="w-full pl-10 p-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#0A0E27] text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none font-bold text-sm transition-all"
+                                        className="w-full pl-10 p-3 rounded-xl border border-[var(--color-border-primary)] dark:border-slate-700 bg-white dark:bg-[var(--color-bg-dark)] text-[var(--color-text-primary)] dark:text-white focus:ring-2 focus:ring-blue-500 outline-none font-bold text-sm transition-all"
                                     />
                                 </div>
                             </div>
@@ -239,7 +239,7 @@ const JobMarketWeather = () => {
                                                 <m.icon className={`w-6 h-6 ${m.color}`} />
                                             </div>
                                             <span className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">{m.label}</span>
-                                            <span className="text-lg font-black text-slate-900 dark:text-white">{m.value}</span>
+                                            <span className="text-lg font-black text-[var(--color-text-primary)] dark:text-white">{m.value}</span>
                                         </motion.div>
                                     ))}
                                 </div>
@@ -247,14 +247,14 @@ const JobMarketWeather = () => {
                                 {/* 5-Day Forecast (Skills) */}
                                 <div className="bg-white dark:bg-[#13182E] rounded-3xl shadow-xl border border-slate-100 dark:border-slate-800 p-8">
                                     <div className="flex items-center justify-between mb-6">
-                                        <h3 className="font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                                        <h3 className="font-bold text-[var(--color-text-primary)] dark:text-white flex items-center gap-2">
                                             <Sun className="w-5 h-5 text-amber-500" /> Hot Skills Forecast
                                         </h3>
                                         <span className="text-xs font-bold bg-amber-100 text-amber-700 px-3 py-1 rounded-full uppercase">Rising Trends</span>
                                     </div>
                                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                                         {forecast.hotSkills.map((skill, idx) => (
-                                            <div key={idx} className="bg-slate-50 dark:bg-[#1A2139] p-4 rounded-2xl text-center border border-slate-100 dark:border-slate-800 hover:border-blue-200 dark:hover:border-blue-800 transition-colors">
+                                            <div key={idx} className="bg-white dark:bg-[#1A2139] p-4 rounded-2xl text-center border border-slate-100 dark:border-slate-800 hover:border-blue-200 dark:hover:border-blue-800 transition-colors">
                                                 <p className="font-bold text-slate-700 dark:text-slate-200 text-sm">{skill}</p>
                                                 <div className="w-full bg-slate-200 dark:bg-slate-700 h-1.5 rounded-full mt-3 overflow-hidden">
                                                     <div className="bg-blue-500 h-full rounded-full" style={{ width: `${Math.random() * 40 + 60}%` }} />
@@ -270,14 +270,14 @@ const JobMarketWeather = () => {
                                 key="empty"
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
-                                className="h-full min-h-[500px] bg-white/50 dark:bg-[#13182E]/50 rounded-[2.5rem] border-2 border-dashed border-slate-200 dark:border-slate-800 flex flex-col items-center justify-center text-center p-12 space-y-6"
+                                className="h-full min-h-[500px] bg-white/50 dark:bg-[#13182E]/50 rounded-[2.5rem] border-2 border-dashed border-[var(--color-border-primary)] dark:border-slate-800 flex flex-col items-center justify-center text-center p-12 space-y-6"
                             >
                                 <div className="w-32 h-32 bg-white dark:bg-[#1E2640] rounded-full flex items-center justify-center shadow-xl animate-float">
                                     <Cloud className="w-16 h-16 text-blue-300 dark:text-blue-500/50" />
                                 </div>
                                 <div className="max-w-md space-y-2">
-                                    <h3 className="text-2xl font-black text-slate-900 dark:text-white">Awaiting Satellite Data</h3>
-                                    <p className="text-slate-500 dark:text-slate-400 font-medium">
+                                    <h3 className="text-2xl font-black text-[var(--color-text-primary)] dark:text-white">Awaiting Satellite Data</h3>
+                                    <p className="text-[var(--color-text-tertiary)] dark:text-slate-400 font-medium">
                                         Our sensors are ready. Enter your innovative career parameters to receive a real-time market forecast.
                                     </p>
                                 </div>

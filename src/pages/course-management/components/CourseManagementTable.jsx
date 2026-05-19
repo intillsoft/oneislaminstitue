@@ -129,13 +129,13 @@ const CourseManagementTable = ({ onEdit, onEditCurriculum, onDuplicate }) => {
       {/* Search and Control Matrix */}
       <div className="flex flex-col md:flex-row gap-4">
         <div className="flex-1 relative group">
-          <Icon name="Search" size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted group-focus-within:text-emerald-500 transition-colors" />
+          <Icon name="Search" size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted group-focus-within:text-[var(--color-primary)] transition-colors" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Query Registry..."
-            className="w-full bg-surface-elevated dark:bg-white/5 border border-border dark:border-white/10 rounded-2xl pl-12 pr-6 py-3.5 text-xs font-bold text-text-primary outline-none focus:ring-2 focus:ring-emerald-500/20 transition-all"
+            className="w-full bg-surface-elevated dark:bg-white/5 border border-border dark:border-white/10 rounded-2xl pl-12 pr-6 py-3.5 text-xs font-bold text-text-primary outline-none focus:ring-2 focus:ring-[var(--color-primary)]/20 transition-all"
           />
         </div>
         <select
@@ -179,18 +179,18 @@ const CourseManagementTable = ({ onEdit, onEditCurriculum, onDuplicate }) => {
                           initial={{ opacity: 0, y: 10 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ delay: idx * 0.05 }}
-                          className="group relative p-6 bg-surface-elevated dark:bg-white/5 border border-border dark:border-white/10 rounded-[2rem] hover:bg-white/10 hover:border-emerald-500/30 transition-all duration-300"
+                          className="group relative p-6 bg-surface-elevated dark:bg-white/5 border border-border dark:border-white/10 rounded-[2rem] hover:bg-white/10 hover:border-[var(--color-primary)]/30 transition-all duration-300"
                         >
                           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
                             <div className="flex items-center gap-5">
-                              <div {...providedDraggable.dragHandleProps} className="cursor-grab text-slate-500 hover:text-emerald-500 transition-colors p-1.5 opacity-30 group-hover:opacity-100 flex items-center justify-center">
+                              <div {...providedDraggable.dragHandleProps} className="cursor-grab text-[var(--color-text-tertiary)] hover:text-[var(--color-primary)] transition-colors p-1.5 opacity-30 group-hover:opacity-100 flex items-center justify-center">
                                 <Icon name="GripVertical" size={16} />
                               </div>
-                              <div className="w-14 h-14 rounded-2xl bg-emerald-600/10 flex items-center justify-center text-emerald-600 border border-emerald-600/20">
+                              <div className="w-14 h-14 rounded-2xl bg-[var(--color-primary)]/10 flex items-center justify-center text-[var(--color-primary)] border border-emerald-600/20">
                                 <Icon name="BookOpen" size={24} />
                               </div>
                               <div>
-                                <h3 className="text-base font-black text-text-primary group-hover:text-emerald-500 transition-colors uppercase tracking-tight">{job.title}</h3>
+                                <h3 className="text-base font-black text-text-primary group-hover:text-[var(--color-primary)] transition-colors uppercase tracking-tight">{job.title}</h3>
                                 <div className="flex flex-wrap items-center gap-4 mt-1">
                                   <span className="text-[10px] font-bold text-text-muted uppercase tracking-widest flex items-center gap-1.5">
                                     <Icon name="GraduationCap" size={12} /> {job.subject_area || job.industry || 'General Science'}
@@ -205,10 +205,10 @@ const CourseManagementTable = ({ onEdit, onEditCurriculum, onDuplicate }) => {
                             <div className="flex flex-wrap items-center gap-3 lg:justify-end">
                               <div className={`px-4 py-1.5 rounded-xl border text-[9px] font-black uppercase tracking-[0.2em] flex items-center gap-2 ${
                                 (job.status || 'published') === 'active' || job.status === 'published'
-                                  ? 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20'
+                                  ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)] border-[var(--color-primary)]/20'
                                   : 'bg-text-muted/10 text-text-muted border-text-muted/20'
                               }`}>
-                                <div className={`w-1 h-1 rounded-full animate-pulse ${ ((job.status || 'published') === 'active' || job.status === 'published') ? 'bg-emerald-500' : 'bg-slate-500'}`} />
+                                <div className={`w-1 h-1 rounded-full animate-pulse ${ ((job.status || 'published') === 'active' || job.status === 'published') ? 'bg-[var(--color-primary)]' : 'bg-slate-500'}`} />
                                 {job.status || 'published'}
                               </div>
 
@@ -218,7 +218,7 @@ const CourseManagementTable = ({ onEdit, onEditCurriculum, onDuplicate }) => {
                                   className={`p-3 bg-white dark:bg-white/5 rounded-xl transition-all border border-border dark:border-white/10 shadow-xl shadow-black/5 ${
                                     (job.status || 'published') === 'active' || job.status === 'published' 
                                       ? 'text-amber-500 hover:bg-amber-500 hover:text-white' 
-                                      : 'text-emerald-500 hover:bg-emerald-500 hover:text-white'
+                                      : 'text-[var(--color-primary)] hover:bg-[var(--color-primary)] hover:text-white'
                                   }`}
                                   title={(job.status || 'published') === 'active' || job.status === 'published' ? "Unpublish Course" : "Publish Course"}
                                 >
@@ -226,7 +226,7 @@ const CourseManagementTable = ({ onEdit, onEditCurriculum, onDuplicate }) => {
                                 </button>
                                 <button
                                   onClick={() => onEdit?.(job)}
-                                  className="p-3 bg-white dark:bg-white/5 text-text-muted rounded-xl hover:bg-emerald-600 hover:text-white transition-all border border-border dark:border-white/10 shadow-xl shadow-black/5"
+                                  className="p-3 bg-white dark:bg-white/5 text-text-muted rounded-xl hover:bg-[var(--color-primary)] hover:text-white transition-all border border-border dark:border-white/10 shadow-xl shadow-black/5"
                                   title="Edit Info"
                                 >
                                   <Icon name="Edit" size={14} />

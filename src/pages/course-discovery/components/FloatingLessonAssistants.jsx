@@ -24,7 +24,7 @@ const FloatingLessonAssistants = ({ courseId, lessonId, activeLesson }) => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setActiveMode('voice')}
-                className="w-14 h-14 rounded-full bg-gradient-to-br from-teal-500 to-emerald-600 text-white flex items-center justify-center shadow-lg shadow-emerald-500/30 border border-white/10 group relative"
+                className="w-14 h-14 rounded-full bg-gradient-to-br from-teal-500 to-[var(--color-primary)] text-white flex items-center justify-center shadow-lg shadow-emerald-500/30 border border-white/10 group relative"
               >
                 <div className="absolute inset-0 rounded-full bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity" />
                 <Mic className="w-6 h-6" />
@@ -38,7 +38,7 @@ const FloatingLessonAssistants = ({ courseId, lessonId, activeLesson }) => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setActiveMode('text')}
-                className="w-14 h-14 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 text-white flex items-center justify-center shadow-lg shadow-emerald-500/30 border border-white/10 group relative"
+                className="w-14 h-14 rounded-full bg-gradient-to-br from-[var(--color-primary)] to-teal-600 text-white flex items-center justify-center shadow-lg shadow-emerald-500/30 border border-white/10 group relative"
               >
                 <div className="absolute inset-0 rounded-full bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity" />
                 <MessageSquare className="w-6 h-6" />

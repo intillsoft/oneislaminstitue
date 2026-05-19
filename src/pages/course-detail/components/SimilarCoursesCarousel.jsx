@@ -40,14 +40,14 @@ const SimilarCoursesCarousel = ({ courses }) => {
       <div className="flex items-center justify-between mb-8">
         <div>
           <h2 className="text-xl font-black text-white uppercase tracking-tight">Academic matches</h2>
-          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 mt-1">Recommended Academic Seminars</p>
+          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-text-tertiary)] mt-1">Recommended Academic Seminars</p>
         </div>
         <Link
           to="/courses"
-          className="px-4 py-2 bg-emerald-600/5 border border-emerald-600/10 rounded-xl text-[9px] font-black uppercase tracking-widest text-emerald-400 hover:text-white hover:bg-emerald-600 transition-all flex items-center gap-2"
+          className="px-4 py-2 bg-[var(--color-primary)]/5 border border-emerald-600/10 rounded-xl text-[9px] font-black uppercase tracking-widest text-[var(--color-primary)] hover:text-white hover:bg-[var(--color-primary)] transition-all flex items-center gap-2"
         >
           View All Courses
-          <Icon name="ArrowRight" size={12} className="text-emerald-500" />
+          <Icon name="ArrowRight" size={12} className="text-[var(--color-primary)]" />
         </Link>
       </div>
 
@@ -92,7 +92,7 @@ const SimilarCoursesCarousel = ({ courses }) => {
           return (
           <div key={course?.id} className="group glass-panel border border-white/5 bg-white/[0.01] rounded-2xl overflow-hidden hover:border-emerald-600/30 hover:bg-white/[0.03] transition-all duration-500 flex cursor-pointer" onClick={handleCardClick}>
             {/* Thumbnail */}
-            <div className="relative w-40 h-40 flex-shrink-0 bg-gradient-to-br from-emerald-500 to-emerald-600 overflow-hidden">
+            <div className="relative w-40 h-40 flex-shrink-0 bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-primary)] overflow-hidden">
               {course?.thumbnail || course?.image || course?.featured_image ? (
                 <img
                   src={course?.thumbnail || course?.image || course?.featured_image}
@@ -101,7 +101,7 @@ const SimilarCoursesCarousel = ({ courses }) => {
                 />
               ) : (
                 <>
-                  <div className="w-full h-full bg-gradient-to-br from-emerald-500 via-emerald-600 to-emerald-700 group-hover:scale-110 transition-transform duration-500" />
+                  <div className="w-full h-full bg-gradient-to-br from-[var(--color-primary)] via-emerald-600 to-emerald-700 group-hover:scale-110 transition-transform duration-500" />
                   <div className="absolute inset-0 flex items-center justify-center">
                     <Icon name="BookOpen" size={24} className="text-white/30" />
                   </div>
@@ -115,17 +115,17 @@ const SimilarCoursesCarousel = ({ courses }) => {
               <div className="flex items-start justify-between mb-3">
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1">
-                    <h3 className="text-base font-black text-white hover:text-emerald-500 transition-colors line-clamp-1 uppercase tracking-tight">
+                    <h3 className="text-base font-black text-white hover:text-[var(--color-primary)] transition-colors line-clamp-1 uppercase tracking-tight">
                       {course?.title}
                     </h3>
                     {isSimilarEnrolled && (
-                      <span className="flex items-center gap-1 px-2 py-0.5 bg-emerald-500/20 border border-emerald-500/40 rounded text-emerald-400 text-[8px] font-bold uppercase tracking-wider flex-shrink-0">
+                      <span className="flex items-center gap-1 px-2 py-0.5 bg-[var(--color-primary)]/20 border border-[var(--color-primary)]/40 rounded text-[var(--color-primary)] text-[8px] font-bold uppercase tracking-wider flex-shrink-0">
                         <Icon name="CheckCircle" size={10} />
                         Enrolled
                       </span>
                     )}
                   </div>
-                  <p className="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-3">{course?.company}</p>
+                  <p className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-tertiary)] mb-3">{course?.company}</p>
                 </div>
                 <DepartmentAvatar
                   name={course?.company}
@@ -137,10 +137,10 @@ const SimilarCoursesCarousel = ({ courses }) => {
 
               <div className="flex flex-wrap items-center gap-3">
                 <span className="flex items-center gap-1.5 px-3 py-1.5 bg-white/[0.03] rounded-lg border border-white/5 text-[9px] font-bold text-slate-400 uppercase tracking-widest">
-                  <Icon name="MapPin" size={12} className="text-emerald-500" />
+                  <Icon name="MapPin" size={12} className="text-[var(--color-primary)]" />
                   {course?.location || 'Remote'}
                 </span>
-                <span className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-600/5 rounded-lg border border-emerald-600/10 text-[9px] font-bold text-emerald-400 uppercase tracking-widest">
+                <span className="flex items-center gap-1.5 px-3 py-1.5 bg-[var(--color-primary)]/5 rounded-lg border border-emerald-600/10 text-[9px] font-bold text-[var(--color-primary)] uppercase tracking-widest">
                   <Icon name="BookOpen" size={12} />
                   {course?.salary || 'Enrollment Open'}
                 </span>
@@ -148,7 +148,7 @@ const SimilarCoursesCarousel = ({ courses }) => {
             </div>
 
             <div className="flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity p-6 flex items-center">
-              <button className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-slate-500 hover:text-rose-500 hover:border-rose-500/30 transition-all">
+              <button className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-[var(--color-text-tertiary)] hover:text-rose-500 hover:border-rose-500/30 transition-all">
                 <Icon name="Bookmark" size={16} />
               </button>
             </div>
@@ -168,7 +168,7 @@ const SimilarCoursesCarousel = ({ courses }) => {
               <div key={course?.id} className="w-full flex-shrink-0">
                 <div className="glass-panel border border-white/10 rounded-3xl overflow-hidden mx-1">
                   {/* Thumbnail */}
-                  <div className="relative w-full h-40 bg-gradient-to-br from-emerald-500 to-emerald-600 overflow-hidden">
+                  <div className="relative w-full h-40 bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-primary)] overflow-hidden">
                     {course?.thumbnail || course?.image || course?.featured_image ? (
                       <img
                         src={course?.thumbnail || course?.image || course?.featured_image}
@@ -177,7 +177,7 @@ const SimilarCoursesCarousel = ({ courses }) => {
                       />
                     ) : (
                       <>
-                        <div className="w-full h-full bg-gradient-to-br from-emerald-500 via-emerald-600 to-emerald-700" />
+                        <div className="w-full h-full bg-gradient-to-br from-[var(--color-primary)] via-emerald-600 to-emerald-700" />
                         <div className="absolute inset-0 flex items-center justify-center">
                           <Icon name="BookOpen" size={24} className="text-white/30" />
                         </div>
@@ -196,7 +196,7 @@ const SimilarCoursesCarousel = ({ courses }) => {
                         >
                           {course?.title}
                         </Link>
-                        <p className="text-[10px] font-black text-slate-600 uppercase tracking-widest">{course?.company}</p>
+                        <p className="text-[10px] font-black text-[var(--color-text-secondary)] uppercase tracking-widest">{course?.company}</p>
                       </div>
                       <DepartmentAvatar
                         name={course?.company}
@@ -207,12 +207,12 @@ const SimilarCoursesCarousel = ({ courses }) => {
 
                     <div className="space-y-3">
                       <div className="flex items-center gap-3 px-4 py-3 bg-white/[0.03] rounded-2xl border border-white/5">
-                        <Icon name="MapPin" size={14} className="text-emerald-500" />
+                        <Icon name="MapPin" size={14} className="text-[var(--color-primary)]" />
                         <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{course?.location || 'Remote'}</span>
                       </div>
-                      <div className="flex items-center gap-3 px-4 py-3 bg-emerald-600/5 rounded-2xl border border-emerald-600/10">
-                        <Icon name="Zap" size={14} className="text-emerald-500" />
-                        <span className="text-[10px] font-bold text-emerald-400 uppercase tracking-widest">{course?.salary || 'Enrollment Open'}</span>
+                      <div className="flex items-center gap-3 px-4 py-3 bg-[var(--color-primary)]/5 rounded-2xl border border-emerald-600/10">
+                        <Icon name="Zap" size={14} className="text-[var(--color-primary)]" />
+                        <span className="text-[10px] font-bold text-[var(--color-primary)] uppercase tracking-widest">{course?.salary || 'Enrollment Open'}</span>
                       </div>
                     </div>
                   </div>
@@ -237,7 +237,7 @@ const SimilarCoursesCarousel = ({ courses }) => {
               <button
                 key={index}
                 onClick={() => goToSlide(index)}
-                className={`h-1 rounded-full transition-all duration-300 ${index === currentIndex ? 'w-6 bg-emerald-500 shadow-glow' : 'w-2 bg-slate-800'
+                className={`h-1 rounded-full transition-all duration-300 ${index === currentIndex ? 'w-6 bg-[var(--color-primary)] shadow-glow' : 'w-2 bg-slate-800'
                   }`}
               />
             ))}

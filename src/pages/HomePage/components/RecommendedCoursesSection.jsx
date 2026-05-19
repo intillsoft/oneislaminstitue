@@ -329,11 +329,11 @@ const RecommendedCoursesSection = () => {
         <div className="flex items-center justify-between px-4 md:px-0">
           <div className="flex flex-col gap-0.5">
             <div className="flex items-center gap-2">
-              {React.cloneElement(icon, { className: 'w-3.5 h-3.5 text-emerald-500', strokeWidth: 2.5 })}
-              <h2 className="text-base md:text-lg font-[900] text-slate-900 dark:text-white tracking-tight">{title}</h2>
+              {React.cloneElement(icon, { className: 'w-3.5 h-3.5 text-[var(--color-primary)]', strokeWidth: 2.5 })}
+              <h2 className="text-base md:text-lg font-[900] text-[var(--color-text-primary)] dark:text-white tracking-tight">{title}</h2>
             </div>
             {description && (
-              <p className="text-[10px] font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-[0.18em] pl-5">
+              <p className="text-[10px] font-semibold text-slate-400 dark:text-[var(--color-text-tertiary)] uppercase tracking-[0.18em] pl-5">
                 {description}
               </p>
             )}
@@ -345,7 +345,7 @@ const RecommendedCoursesSection = () => {
               disabled={!scrollState.canScrollLeft}
               className={`w-8 h-8 rounded-full flex items-center justify-center border transition-all ${
                 scrollState.canScrollLeft
-                  ? 'border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 text-slate-600 dark:text-white hover:border-emerald-400 hover:text-emerald-500'
+                  ? 'border-[var(--color-border-primary)] dark:border-white/10 bg-white dark:bg-white/5 text-[var(--color-text-secondary)] dark:text-white hover:border-emerald-400 hover:text-[var(--color-primary)]'
                   : 'border-slate-100 dark:border-white/5 text-slate-300 dark:text-white/20 cursor-not-allowed'
               }`}
             >
@@ -356,7 +356,7 @@ const RecommendedCoursesSection = () => {
               disabled={!scrollState.canScrollRight}
               className={`w-8 h-8 rounded-full flex items-center justify-center border transition-all ${
                 scrollState.canScrollRight
-                  ? 'border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 text-slate-600 dark:text-white hover:border-emerald-400 hover:text-emerald-500'
+                  ? 'border-[var(--color-border-primary)] dark:border-white/10 bg-white dark:bg-white/5 text-[var(--color-text-secondary)] dark:text-white hover:border-emerald-400 hover:text-[var(--color-primary)]'
                   : 'border-slate-100 dark:border-white/5 text-slate-300 dark:text-white/20 cursor-not-allowed'
               }`}
             >

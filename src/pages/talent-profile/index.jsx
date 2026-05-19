@@ -228,7 +228,7 @@ const TalentProfile = () => {
                   <h2 className="text-xl font-black text-white uppercase tracking-tight">
                     {isEditing ? 'Operational Parameters' : 'Initial Configuration'}
                   </h2>
-                  <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">
+                  <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-text-tertiary)]">
                     Required Data for Talent Indexing
                   </p>
                 </div>
@@ -237,7 +237,7 @@ const TalentProfile = () => {
               <form onSubmit={handleCreateProfile} className="space-y-8">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   <div className="space-y-2">
-                    <label className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] ml-1">
+                    <label className="text-[10px] font-black text-[var(--color-text-tertiary)] uppercase tracking-[0.2em] ml-1">
                       Professional Designation
                     </label>
                     <input
@@ -251,7 +251,7 @@ const TalentProfile = () => {
                   </div>
 
                   <div className="space-y-2">
-                    <label className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] ml-1">
+                    <label className="text-[10px] font-black text-[var(--color-text-tertiary)] uppercase tracking-[0.2em] ml-1">
                       Resource Rate ($/HR)
                     </label>
                     <div className="relative">
@@ -270,7 +270,7 @@ const TalentProfile = () => {
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] ml-1">
+                  <label className="text-[10px] font-black text-[var(--color-text-tertiary)] uppercase tracking-[0.2em] ml-1">
                     Biographic Data Stream
                   </label>
                   <textarea
@@ -284,7 +284,7 @@ const TalentProfile = () => {
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] ml-1">
+                  <label className="text-[10px] font-black text-[var(--color-text-tertiary)] uppercase tracking-[0.2em] ml-1">
                     Expertise Classification
                   </label>
                   <div className="grid grid-cols-3 gap-4">
@@ -430,7 +430,7 @@ const TalentProfile = () => {
                       {talent.user?.name || 'Talent'}
                     </h1>
                     {talent.is_verified && (
-                      <span className="p-1.5 bg-emerald-500/10 text-emerald-500 rounded-lg border border-emerald-500/20 shadow-sm" title="Verified Expert">
+                      <span className="p-1.5 bg-[var(--color-primary)]/10 text-[var(--color-primary)] rounded-lg border border-[var(--color-primary)]/20 shadow-sm" title="Verified Expert">
                         <Icon name="CheckCircle" size={16} />
                       </span>
                     )}
@@ -445,7 +445,7 @@ const TalentProfile = () => {
                       <span className="text-sm font-black text-white ml-1">
                         {talent.rating?.toFixed(1) || '0.0'}
                       </span>
-                      <span className="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-1">
+                      <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-tertiary)] ml-1">
                         ({talent.total_reviews || 0} reviews)
                       </span>
                     </div>
@@ -497,28 +497,28 @@ const TalentProfile = () => {
           {/* Stats Cards */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
             <EliteCard className="p-5 flex flex-col justify-between hover:scale-[1.02] transition-transform cursor-default bg-white/5 border-white/5">
-              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 mb-2">Total Hours</span>
+              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-text-tertiary)] mb-2">Total Hours</span>
               <div className="flex items-end gap-2 text-white">
                 <span className="text-2xl font-black">{talent.total_hours_worked || 0}</span>
-                <span className="text-[10px] font-black uppercase tracking-widest text-emerald-500 mb-1">Hrs</span>
+                <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-primary)] mb-1">Hrs</span>
               </div>
             </EliteCard>
             <EliteCard className="p-5 flex flex-col justify-between hover:scale-[1.02] transition-transform cursor-default bg-white/5 border-white/5">
-              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 mb-2">Earnings</span>
+              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-text-tertiary)] mb-2">Earnings</span>
               <div className="flex items-end gap-2 text-white">
                 <span className="text-2xl font-black">${talent.total_earnings?.toLocaleString() || '0'}</span>
-                {talent.total_earnings > 0 && <Icon name="TrendingUp" size={14} className="text-emerald-500 mb-1.5" />}
+                {talent.total_earnings > 0 && <Icon name="TrendingUp" size={14} className="text-[var(--color-primary)] mb-1.5" />}
               </div>
             </EliteCard>
             <EliteCard className="p-5 flex flex-col justify-between hover:scale-[1.02] transition-transform cursor-default bg-white/5 border-white/5">
-              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 mb-2">Hourly Rate</span>
+              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-text-tertiary)] mb-2">Hourly Rate</span>
               <div className="flex items-end gap-2 text-white">
                 <span className="text-2xl font-black">${talent.hourly_rate || '0'}</span>
-                <span className="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-1">/ hr</span>
+                <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-tertiary)] mb-1">/ hr</span>
               </div>
             </EliteCard>
             <EliteCard className="p-5 flex flex-col justify-between hover:scale-[1.02] transition-transform cursor-default bg-white/5 border-white/5">
-              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 mb-2">Member Since</span>
+              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-text-tertiary)] mb-2">Member Since</span>
               <div className="text-lg font-black text-white truncate">
                 {talent.created_at ? formatDistanceToNow(new Date(talent.created_at), { addSuffix: true }) : 'N/A'}
               </div>
@@ -532,7 +532,7 @@ const TalentProfile = () => {
                 <div className="space-y-6">
                   {/* Bio */}
                   <EliteCard className="p-8">
-                    <h2 className="text-sm font-black text-slate-500 uppercase tracking-[0.2em] mb-6 flex items-center gap-3">
+                    <h2 className="text-sm font-black text-[var(--color-text-tertiary)] uppercase tracking-[0.2em] mb-6 flex items-center gap-3">
                       <div className="w-1.5 h-1.5 rounded-full bg-blue-500" />
                       About
                     </h2>
@@ -543,8 +543,8 @@ const TalentProfile = () => {
 
                   {/* Skills */}
                   <EliteCard className="p-8">
-                    <h2 className="text-sm font-black text-slate-500 uppercase tracking-[0.2em] mb-6 flex items-center gap-3">
-                      <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                    <h2 className="text-sm font-black text-[var(--color-text-tertiary)] uppercase tracking-[0.2em] mb-6 flex items-center gap-3">
+                      <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-primary)]" />
                       Professional Skills
                     </h2>
                     <div className="flex flex-wrap gap-3">
@@ -557,7 +557,7 @@ const TalentProfile = () => {
                                 <Link
                                   to={`/talent/verify-skill?skill=${encodeURIComponent(skill)}`}
                                   title="Verify this skill with AI"
-                                  className="text-slate-600 hover:text-purple-500 transition-colors"
+                                  className="text-[var(--color-text-secondary)] hover:text-purple-500 transition-colors"
                                 >
                                   <Icon name="Shield" size={12} />
                                 </Link>
@@ -566,7 +566,7 @@ const TalentProfile = () => {
                           </div>
                         ))
                       ) : (
-                        <p className="text-slate-500 italic text-sm">No specific skills highlighted yet.</p>
+                        <p className="text-[var(--color-text-tertiary)] italic text-sm">No specific skills highlighted yet.</p>
                       )}
                     </div>
                   </EliteCard>
@@ -574,7 +574,7 @@ const TalentProfile = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {/* Experience Level */}
                     <EliteCard className="p-8">
-                      <h2 className="text-sm font-black text-slate-500 uppercase tracking-[0.2em] mb-4 flex items-center gap-3">
+                      <h2 className="text-sm font-black text-[var(--color-text-tertiary)] uppercase tracking-[0.2em] mb-4 flex items-center gap-3">
                         <div className="w-1.5 h-1.5 rounded-full bg-rose-500" />
                         Expertise
                       </h2>
@@ -586,7 +586,7 @@ const TalentProfile = () => {
                     {/* Languages */}
                     {talent.languages && talent.languages.length > 0 && (
                       <EliteCard className="p-8">
-                        <h2 className="text-sm font-black text-slate-500 uppercase tracking-[0.2em] mb-4 flex items-center gap-3">
+                        <h2 className="text-sm font-black text-[var(--color-text-tertiary)] uppercase tracking-[0.2em] mb-4 flex items-center gap-3">
                           <div className="w-1.5 h-1.5 rounded-full bg-amber-500" />
                           Languages
                         </h2>
@@ -600,7 +600,7 @@ const TalentProfile = () => {
                   {/* Certifications */}
                   {talent.certifications && talent.certifications.length > 0 && (
                     <EliteCard className="p-8">
-                      <h2 className="text-sm font-black text-slate-500 uppercase tracking-[0.2em] mb-6 flex items-center gap-3">
+                      <h2 className="text-sm font-black text-[var(--color-text-tertiary)] uppercase tracking-[0.2em] mb-6 flex items-center gap-3">
                         <div className="w-1.5 h-1.5 rounded-full bg-purple-500" />
                         Certifications
                       </h2>
@@ -613,7 +613,7 @@ const TalentProfile = () => {
                             <div>
                               <p className="font-black text-sm text-white uppercase tracking-tight">{cert.name || cert}</p>
                               {cert.issuer && (
-                                <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">{cert.issuer}</p>
+                                <p className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-tertiary)]">{cert.issuer}</p>
                               )}
                             </div>
                           </div>
@@ -647,7 +647,7 @@ const TalentProfile = () => {
                               {gig.description}
                             </p>
                             <div className="flex items-center justify-between pt-6 border-t border-white/5">
-                              <div className="flex items-center gap-4 text-[10px] font-black uppercase tracking-widest text-slate-500">
+                              <div className="flex items-center gap-4 text-[10px] font-black uppercase tracking-widest text-[var(--color-text-tertiary)]">
                                 <span className="flex items-center gap-1.5">
                                   <Icon name="Clock" size={14} className="text-workflow-primary" />
                                   {gig.delivery_time} Days
@@ -669,7 +669,7 @@ const TalentProfile = () => {
                     <div className="md:col-span-2">
                       <EliteCard className="text-center py-20 border-white/5">
                         <Icon name="Briefcase" className="w-16 h-16 text-slate-700 mx-auto mb-6" />
-                        <p className="text-slate-500 font-black uppercase tracking-widest text-sm">No Active Gigs Found</p>
+                        <p className="text-[var(--color-text-tertiary)] font-black uppercase tracking-widest text-sm">No Active Gigs Found</p>
                       </EliteCard>
                     </div>
                   )}
@@ -706,7 +706,7 @@ const TalentProfile = () => {
                                   {renderStars(review.rating)}
                                 </div>
                               </div>
-                              <span className="text-[10px] font-black uppercase tracking-widest text-slate-500">
+                              <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-tertiary)]">
                                 {formatDistanceToNow(new Date(review.created_at), { addSuffix: true })}
                               </span>
                             </div>
@@ -720,7 +720,7 @@ const TalentProfile = () => {
                   ) : (
                     <EliteCard className="text-center py-20 border-white/5">
                       <Icon name="Star" className="w-16 h-16 text-slate-700 mx-auto mb-6" />
-                      <p className="text-slate-500 font-black uppercase tracking-widest text-sm">No Client Testimonials Yet</p>
+                      <p className="text-[var(--color-text-tertiary)] font-black uppercase tracking-widest text-sm">No Client Testimonials Yet</p>
                     </EliteCard>
                   )}
                 </div>
@@ -771,7 +771,7 @@ const TalentProfile = () => {
                   ) : (
                     <EliteCard className="text-center py-20 border-white/5">
                       <Icon name="Image" className="w-16 h-16 text-slate-700 mx-auto mb-6" />
-                      <p className="text-slate-500 font-black uppercase tracking-widest text-sm">No Portfolio Showcase Available</p>
+                      <p className="text-[var(--color-text-tertiary)] font-black uppercase tracking-widest text-sm">No Portfolio Showcase Available</p>
                     </EliteCard>
                   )}
                 </div>
@@ -782,7 +782,7 @@ const TalentProfile = () => {
             <div className="space-y-6">
               {/* Quick Contact */}
               <EliteCard className="p-8">
-                <h3 className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] mb-6">Expert Engagement</h3>
+                <h3 className="text-[10px] font-black text-[var(--color-text-tertiary)] uppercase tracking-[0.2em] mb-6">Expert Engagement</h3>
                 <div className="space-y-3">
                   <Link
                     to={`/talent/gigs?talent=${id}`}
@@ -803,7 +803,7 @@ const TalentProfile = () => {
 
               {/* Rating Breakdown */}
               <EliteCard className="p-8">
-                <h3 className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] mb-6">Reputation Analytics</h3>
+                <h3 className="text-[10px] font-black text-[var(--color-text-tertiary)] uppercase tracking-[0.2em] mb-6">Reputation Analytics</h3>
                 <div className="space-y-5">
                   {[5, 4, 3, 2, 1].map((star) => {
                     const count = talent.reviews?.filter(r => Math.floor(r.rating) === star).length || 0;
@@ -815,13 +815,13 @@ const TalentProfile = () => {
                             <span className="text-[10px] font-black text-slate-400">{star}</span>
                             <Icon name="Star" size={10} className="text-yellow-500 fill-current" />
                           </div>
-                          <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
+                          <span className="text-[10px] font-black text-[var(--color-text-tertiary)] uppercase tracking-widest">
                             {count} Reviews
                           </span>
                         </div>
                         <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
                           <div
-                            className={`h-full transition-all duration-1000 ${star === 5 ? 'bg-emerald-500' :
+                            className={`h-full transition-all duration-1000 ${star === 5 ? 'bg-[var(--color-primary)]' :
                               star === 4 ? 'bg-workflow-primary' :
                                 star === 3 ? 'bg-amber-500' : 'bg-rose-500'
                               }`}

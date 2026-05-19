@@ -325,7 +325,7 @@ const ResumeBuilderAIEnhancement = () => {
 
   if (loading) {
     return (
-      <div className="bg-white dark:bg-[#0A0E27] min-h-screen flex items-center justify-center">
+      <div className="bg-white dark:bg-[var(--color-bg-dark)] min-h-screen flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-workflow-primary"></div>
       </div>
     );
@@ -337,7 +337,7 @@ const ResumeBuilderAIEnhancement = () => {
         <title>Resume Builder - Workflow</title>
         <meta name="description" content="Create professional resumes with drag-and-drop builder and AI-powered optimization." />
       </Helmet>
-      <div className="bg-white dark:bg-[#0A0E27] min-h-screen">
+      <div className="bg-white dark:bg-[var(--color-bg-dark)] min-h-screen">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <Breadcrumb />
           {!user && (

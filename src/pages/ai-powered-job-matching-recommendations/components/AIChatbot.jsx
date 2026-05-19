@@ -84,7 +84,7 @@ const AIChatbot = ({ onClose, userProfile }) => {
         initial={{ opacity: 0, scale: 0.95, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.95, y: 20 }}
-        className="bg-white dark:bg-[#0A0E27] rounded-[2rem] shadow-2xl overflow-hidden w-full max-w-2xl h-[700px] flex flex-col border border-slate-200 dark:border-white/10 relative"
+        className="bg-white dark:bg-[var(--color-bg-dark)] rounded-[2rem] shadow-2xl overflow-hidden w-full max-w-2xl h-[700px] flex flex-col border border-[var(--color-border-primary)] dark:border-white/10 relative"
       >
         {/* Elite Header */}
         <div className="flex items-center justify-between p-6 border-b border-slate-100 dark:border-white/5 bg-white/50 dark:bg-white/5 backdrop-blur-xl absolute top-0 left-0 right-0 z-10">
@@ -93,11 +93,11 @@ const AIChatbot = ({ onClose, userProfile }) => {
               <Icon name="Bot" size={24} className="text-workflow-primary" />
             </div>
             <div>
-              <h3 className="text-lg font-[900] text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
+              <h3 className="text-lg font-[900] text-[var(--color-text-primary)] dark:text-white tracking-tight flex items-center gap-2">
                 Neural Career Advisor
-                <span className="px-2 py-0.5 rounded text-[10px] bg-emerald-500/10 text-emerald-500 uppercase tracking-wider font-bold">Online</span>
+                <span className="px-2 py-0.5 rounded text-[10px] bg-[var(--color-primary)]/10 text-[var(--color-primary)] uppercase tracking-wider font-bold">Online</span>
               </h3>
-              <p className="text-xs font-medium text-slate-500 dark:text-slate-400">
+              <p className="text-xs font-medium text-[var(--color-text-tertiary)] dark:text-slate-400">
                 Connected to Job Market Matrix
               </p>
             </div>
@@ -123,7 +123,7 @@ const AIChatbot = ({ onClose, userProfile }) => {
                 <div
                   className={`rounded-2xl p-5 shadow-sm text-sm leading-relaxed whitespace-pre-line ${message?.role === 'user'
                       ? 'bg-workflow-primary text-white rounded-br-none'
-                      : 'bg-slate-100 dark:bg-white/5 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-white/5 rounded-tl-none'
+                      : 'bg-slate-100 dark:bg-white/5 text-slate-700 dark:text-slate-300 border border-[var(--color-border-primary)] dark:border-white/5 rounded-tl-none'
                     }`}
                 >
                   {message?.content}
@@ -137,7 +137,7 @@ const AIChatbot = ({ onClose, userProfile }) => {
 
           {isTyping && (
             <div className="flex justify-start">
-              <div className="bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/5 rounded-2xl rounded-tl-none p-5 flex items-center gap-2">
+              <div className="bg-slate-100 dark:bg-white/5 border border-[var(--color-border-primary)] dark:border-white/5 rounded-2xl rounded-tl-none p-5 flex items-center gap-2">
                 <div className="w-2 h-2 bg-workflow-primary rounded-full animate-bounce" />
                 <div className="w-2 h-2 bg-workflow-primary rounded-full animate-bounce delay-100" />
                 <div className="w-2 h-2 bg-workflow-primary rounded-full animate-bounce delay-200" />
@@ -157,7 +157,7 @@ const AIChatbot = ({ onClose, userProfile }) => {
                   <button
                     key={index}
                     onClick={() => handleQuickPrompt(prompt?.text)}
-                    className="flex-shrink-0 flex items-center gap-2 px-4 py-2 bg-slate-50 dark:bg-white/5 hover:bg-slate-100 dark:hover:bg-white/10 rounded-xl border border-slate-200 dark:border-white/5 transition-all text-xs font-bold text-slate-600 dark:text-slate-300 group whitespace-nowrap"
+                    className="flex-shrink-0 flex items-center gap-2 px-4 py-2 bg-white dark:bg-white/5 hover:bg-slate-100 dark:hover:bg-white/10 rounded-xl border border-[var(--color-border-primary)] dark:border-white/5 transition-all text-xs font-bold text-[var(--color-text-secondary)] dark:text-slate-300 group whitespace-nowrap"
                   >
                     <Icon name={prompt?.icon} size={14} className="text-workflow-primary" />
                     <span>{prompt?.text}</span>
@@ -174,7 +174,7 @@ const AIChatbot = ({ onClose, userProfile }) => {
               onChange={(e) => setInput(e?.target?.value)}
               onKeyPress={(e) => e?.key === 'Enter' && handleSend()}
               placeholder="Query neural network..."
-              className="w-full pl-5 pr-14 py-4 bg-white dark:bg-[#0f1429] rounded-2xl shadow-xl border border-slate-200 dark:border-white/10 text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-workflow-primary/50 transition-all font-medium"
+              className="w-full pl-5 pr-14 py-4 bg-white dark:bg-[#0f1429] rounded-2xl shadow-xl border border-[var(--color-border-primary)] dark:border-white/10 text-[var(--color-text-primary)] dark:text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-workflow-primary/50 transition-all font-medium"
             />
             <button
               onClick={() => handleSend()}

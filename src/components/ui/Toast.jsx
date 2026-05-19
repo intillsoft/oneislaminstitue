@@ -85,8 +85,8 @@ const Toast = React.forwardRef(({ toast, onRemove }, ref) => {
       case 'success':
         return {
           bg: 'bg-white/90 dark:bg-emerald-950/40',
-          border: 'border-emerald-500/30',
-          icon: 'text-emerald-500',
+          border: 'border-[var(--color-primary)]/30',
+          icon: 'text-[var(--color-primary)]',
           shadow: 'shadow-emerald-500/10'
         };
       case 'error':
@@ -134,13 +134,13 @@ const Toast = React.forwardRef(({ toast, onRemove }, ref) => {
       </div>
 
       <div className="flex-1 pr-6">
-        <p className="text-xs font-black uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-0.5">{toast.type}</p>
-        <p className="text-sm font-bold text-slate-900 dark:text-white leading-relaxed">{toast.message}</p>
+        <p className="text-xs font-black uppercase tracking-widest text-[var(--color-text-tertiary)] dark:text-slate-400 mb-0.5">{toast.type}</p>
+        <p className="text-sm font-bold text-[var(--color-text-primary)] dark:text-white leading-relaxed">{toast.message}</p>
       </div>
 
       <button
         onClick={() => onRemove(toast.id)}
-        className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:hover:text-white transition-colors"
+        className="absolute top-4 right-4 text-slate-400 hover:text-[var(--color-text-secondary)] dark:hover:text-white transition-colors"
       >
         <X size={16} />
       </button>

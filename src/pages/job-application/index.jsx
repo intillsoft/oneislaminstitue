@@ -290,7 +290,7 @@ const JobApplicationPage = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-white dark:bg-[#0A0E27] flex items-center justify-center">
+      <div className="min-h-screen bg-white dark:bg-[var(--color-bg-dark)] flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-workflow-primary"></div>
       </div>
     );
@@ -298,7 +298,7 @@ const JobApplicationPage = () => {
 
   if (!job) {
     return (
-      <div className="min-h-screen bg-white dark:bg-[#0A0E27] flex items-center justify-center">
+      <div className="min-h-screen bg-white dark:bg-[var(--color-bg-dark)] flex items-center justify-center">
         <div className="text-center">
           <Icon name="AlertCircle" className="w-16 h-16 text-[#64748B] dark:text-[#8B92A3] mx-auto mb-4" />
           <h2 className="text-xl font-semibold text-[#0F172A] dark:text-[#E8EAED] mb-2">Course not found</h2>
@@ -311,7 +311,7 @@ const JobApplicationPage = () => {
   }
 
   return (
-    <div className="bg-surface dark:bg-[#0A0E27] min-h-screen overflow-x-hidden">
+    <div className="bg-surface dark:bg-[var(--color-bg-dark)] min-h-screen overflow-x-hidden">
       {/* Unified Sidebar */}
       <UnifiedSidebar
         isCollapsed={isSidebarCollapsed}

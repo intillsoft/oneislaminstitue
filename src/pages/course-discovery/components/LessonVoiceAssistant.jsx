@@ -297,7 +297,7 @@ const LessonVoiceAssistant = ({ courseId, lessonId, activeLesson, onClose }) => 
             {!isFloating && (
               <div className="mb-8 text-center h-8">
                   {status === 'idle' && <h3 className="text-sm font-bold text-slate-400 uppercase tracking-widest">Voice Tutor Ready</h3>}
-                  {status === 'listening' && <h3 className="text-sm font-bold text-emerald-400 uppercase tracking-widest animate-pulse">Listening...</h3>}
+                  {status === 'listening' && <h3 className="text-sm font-bold text-[var(--color-primary)] uppercase tracking-widest animate-pulse">Listening...</h3>}
                   {status === 'processing' && <h3 className="text-sm font-bold text-purple-400 uppercase tracking-widest flex items-center justify-center gap-2"><Loader2 className="w-4 h-4 animate-spin" /> Thinking</h3>}
                   {status === 'speaking' && <h3 className="text-sm font-bold text-blue-400 uppercase tracking-widest">Speaking</h3>}
                   {status === 'error' && <h3 className="text-sm font-bold text-red-400 uppercase tracking-widest">Connection Failed</h3>}
@@ -314,7 +314,7 @@ const LessonVoiceAssistant = ({ courseId, lessonId, activeLesson, onClose }) => 
                       className={`w-1 rounded-full ${
                           status === 'speaking' ? 'bg-blue-500' 
                           : status === 'processing' ? 'bg-purple-500/50'
-                          : 'bg-emerald-500'
+                          : 'bg-[var(--color-primary)]'
                       }`}
                       style={{ 
                          opacity: status === 'idle' ? 0.3 : 1 
@@ -330,7 +330,7 @@ const LessonVoiceAssistant = ({ courseId, lessonId, activeLesson, onClose }) => 
                       <p className="text-sm font-medium text-slate-300">"{transcription}"</p>
                   )}
                   {assistantReply && (
-                      <p className="text-[13px] text-emerald-400">{assistantReply}</p>
+                      <p className="text-[13px] text-[var(--color-primary)]">{assistantReply}</p>
                   )}
               </div>
             )}

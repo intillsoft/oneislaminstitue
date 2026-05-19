@@ -84,7 +84,7 @@ const TalentEarnings = () => {
   }
 
   return (
-    <div className="min-h-screen bg-white dark:bg-[#0A0E27]">
+    <div className="min-h-screen bg-white dark:bg-[var(--color-bg-dark)]">
       <UnifiedSidebar />
       <div className="ml-0 lg:ml-64 min-h-screen">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -169,7 +169,7 @@ const TalentEarnings = () => {
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-text-secondary dark:text-slate-400">
                           {earning.buyer?.name || 'Unknown'}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-base font-black text-emerald-500">
+                        <td className="px-6 py-4 whitespace-nowrap text-base font-black text-[var(--color-primary)]">
                           +${parseFloat(earning.price || 0).toLocaleString()}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-[10px] font-black uppercase tracking-widest text-text-muted">

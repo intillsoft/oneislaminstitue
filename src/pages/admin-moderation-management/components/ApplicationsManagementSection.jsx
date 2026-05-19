@@ -65,9 +65,9 @@ const ApplicationsManagementSection = () => {
             case 'pending': return 'bg-amber-500/10 text-amber-500 border-amber-500/20';
             case 'reviewed': return 'bg-blue-500/10 text-blue-500 border-blue-500/20';
             case 'shortlisted': return 'bg-purple-500/10 text-purple-500 border-purple-500/20';
-            case 'accepted': return 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20';
+            case 'accepted': return 'bg-[var(--color-primary)]/10 text-[var(--color-primary)] border-[var(--color-primary)]/20';
             case 'rejected': return 'bg-rose-500/10 text-rose-500 border-rose-500/20';
-            default: return 'bg-slate-500/10 text-slate-500 border-slate-500/20';
+            default: return 'bg-slate-500/10 text-[var(--color-text-tertiary)] border-slate-500/20';
         }
     };
 
@@ -83,12 +83,12 @@ const ApplicationsManagementSection = () => {
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 px-4">
                 <div>
                     <h2 className="text-3xl font-black text-white uppercase tracking-tight font-display">Application Registry</h2>
-                    <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 mt-1">Global Candidate Engagement Matrix</p>
+                    <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-text-tertiary)] mt-1">Global Candidate Engagement Matrix</p>
                 </div>
 
                 <div className="flex flex-wrap items-center gap-3">
                     <div className="relative group">
-                        <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-600 group-focus-within:text-workflow-primary transition-colors" size={16} />
+                        <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--color-text-secondary)] group-focus-within:text-workflow-primary transition-colors" size={16} />
                         <input
                             type="text"
                             placeholder="Search engagement..."
@@ -106,11 +106,11 @@ const ApplicationsManagementSection = () => {
                     <table className="w-full text-left border-collapse">
                         <thead>
                             <tr className="border-b border-white/5 bg-white/[0.02]">
-                                <th className="px-8 py-6 text-[10px] font-black text-slate-500 uppercase tracking-widest">Candidate Info</th>
-                                <th className="px-8 py-6 text-[10px] font-black text-slate-500 uppercase tracking-widest">Target Engagement</th>
-                                <th className="px-8 py-6 text-[10px] font-black text-slate-500 uppercase tracking-widest">Status Matrix</th>
-                                <th className="px-8 py-6 text-[10px] font-black text-slate-500 uppercase tracking-widest">Intelligence</th>
-                                <th className="px-8 py-6 text-[10px] font-black text-slate-500 uppercase tracking-widest text-right">Clearance</th>
+                                <th className="px-8 py-6 text-[10px] font-black text-[var(--color-text-tertiary)] uppercase tracking-widest">Candidate Info</th>
+                                <th className="px-8 py-6 text-[10px] font-black text-[var(--color-text-tertiary)] uppercase tracking-widest">Target Engagement</th>
+                                <th className="px-8 py-6 text-[10px] font-black text-[var(--color-text-tertiary)] uppercase tracking-widest">Status Matrix</th>
+                                <th className="px-8 py-6 text-[10px] font-black text-[var(--color-text-tertiary)] uppercase tracking-widest">Intelligence</th>
+                                <th className="px-8 py-6 text-[10px] font-black text-[var(--color-text-tertiary)] uppercase tracking-widest text-right">Clearance</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-white/[0.02]">
@@ -124,9 +124,9 @@ const ApplicationsManagementSection = () => {
                                 <tr>
                                     <td colSpan="5" className="px-8 py-24 text-center">
                                         <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center mx-auto mb-4 border border-white/10">
-                                            <Icon name="Inbox" size={32} className="text-slate-500 opacity-30" />
+                                            <Icon name="Inbox" size={32} className="text-[var(--color-text-tertiary)] opacity-30" />
                                         </div>
-                                        <h3 className="text-sm font-black text-slate-600 uppercase tracking-widest">No Active Engagements Found</h3>
+                                        <h3 className="text-sm font-black text-[var(--color-text-secondary)] uppercase tracking-widest">No Active Engagements Found</h3>
                                         <p className="text-[10px] font-bold text-slate-700 uppercase tracking-widest mt-2">The registry is currently void of records matching your criteria.</p>
                                     </td>
                                 </tr>
@@ -140,7 +140,7 @@ const ApplicationsManagementSection = () => {
                                     >
                                         <td className="px-8 py-6">
                                             <div className="flex items-center gap-4">
-                                                <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-slate-500">
+                                                <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-[var(--color-text-tertiary)]">
                                                     {app.user?.avatar_url ? (
                                                         <img src={app.user.avatar_url} alt="" className="w-full h-full object-cover rounded-xl" />
                                                     ) : (
@@ -151,7 +151,7 @@ const ApplicationsManagementSection = () => {
                                                     <div className="text-sm font-black text-white uppercase tracking-tight group-hover:text-workflow-primary transition-colors">
                                                         {app.user?.name || 'Unknown Subject'}
                                                     </div>
-                                                    <div className="text-[9px] font-bold text-slate-600 uppercase tracking-widest mt-0.5">
+                                                    <div className="text-[9px] font-bold text-[var(--color-text-secondary)] uppercase tracking-widest mt-0.5">
                                                         {app.user?.email || 'N/A'}
                                                     </div>
                                                 </div>
@@ -163,8 +163,8 @@ const ApplicationsManagementSection = () => {
                                                     {app.job?.title || 'Unknown Position'}
                                                 </div>
                                                 <div className="flex items-center gap-2">
-                                                    <Briefcase size={10} className="text-slate-600" />
-                                                    <span className="text-[9px] font-bold text-slate-500 uppercase tracking-widest">
+                                                    <Briefcase size={10} className="text-[var(--color-text-secondary)]" />
+                                                    <span className="text-[9px] font-bold text-[var(--color-text-tertiary)] uppercase tracking-widest">
                                                         {app.company?.name || 'Independent Entity'}
                                                     </span>
                                                 </div>
@@ -176,7 +176,7 @@ const ApplicationsManagementSection = () => {
                                                     {app.status || 'NEUTRAL'}
                                                 </div>
                                                 <div className="h-1 w-1 rounded-full bg-slate-800"></div>
-                                                <div className="flex items-center gap-1.5 text-[9px] font-bold text-slate-600 uppercase tracking-widest">
+                                                <div className="flex items-center gap-1.5 text-[9px] font-bold text-[var(--color-text-secondary)] uppercase tracking-widest">
                                                     <Calendar size={10} />
                                                     {new Date(app.created_at).toLocaleDateString()}
                                                 </div>
@@ -186,12 +186,12 @@ const ApplicationsManagementSection = () => {
                                             <div className="flex items-center gap-4">
                                                 <div className="flex flex-col gap-1">
                                                     <div className="flex items-center gap-2">
-                                                        <Shield size={10} className="text-emerald-500" />
-                                                        <span className="text-[8px] font-black text-slate-600 uppercase tracking-widest">Identity Verified</span>
+                                                        <Shield size={10} className="text-[var(--color-primary)]" />
+                                                        <span className="text-[8px] font-black text-[var(--color-text-secondary)] uppercase tracking-widest">Identity Verified</span>
                                                     </div>
                                                     <div className="flex items-center gap-2">
                                                         <Zap size={10} className="text-blue-500" />
-                                                        <span className="text-[8px] font-black text-slate-600 uppercase tracking-widest">Match Prob: 84%</span>
+                                                        <span className="text-[8px] font-black text-[var(--color-text-secondary)] uppercase tracking-widest">Match Prob: 84%</span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -200,7 +200,7 @@ const ApplicationsManagementSection = () => {
                                             <div className="flex items-center justify-end gap-2">
                                                 <button
                                                     onClick={() => handleUpdateStatus(app.id, 'accepted')}
-                                                    className="p-2.5 rounded-lg bg-emerald-500/10 text-emerald-500 hover:bg-emerald-500/20 transition-all border border-emerald-500/20"
+                                                    className="p-2.5 rounded-lg bg-[var(--color-primary)]/10 text-[var(--color-primary)] hover:bg-[var(--color-primary)]/20 transition-all border border-[var(--color-primary)]/20"
                                                     title="Approve Implementation"
                                                 >
                                                     <CheckCircle size={14} />
@@ -215,7 +215,7 @@ const ApplicationsManagementSection = () => {
                                                 <div className="w-px h-6 bg-white/5 mx-1"></div>
                                                 <button
                                                     onClick={() => handleDeleteApplication(app.id)}
-                                                    className="p-2.5 rounded-lg bg-white/5 text-slate-600 hover:text-white hover:bg-white/10 transition-all"
+                                                    className="p-2.5 rounded-lg bg-white/5 text-[var(--color-text-secondary)] hover:text-white hover:bg-white/10 transition-all"
                                                     title="Purge Record"
                                                 >
                                                     <Trash2 size={14} />
@@ -233,11 +233,11 @@ const ApplicationsManagementSection = () => {
                 <div className="px-8 py-4 border-t border-white/5 bg-white/[0.01] flex items-center justify-between">
                     <div className="flex items-center gap-4">
                         <div className="flex items-center gap-2">
-                            <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></div>
-                            <span className="text-[8px] font-black text-slate-600 uppercase tracking-widest">Neural Link Latency: 42ms</span>
+                            <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-primary)] animate-pulse"></div>
+                            <span className="text-[8px] font-black text-[var(--color-text-secondary)] uppercase tracking-widest">Neural Link Latency: 42ms</span>
                         </div>
                     </div>
-                    <div className="text-[8px] font-black text-slate-600 uppercase tracking-widest">
+                    <div className="text-[8px] font-black text-[var(--color-text-secondary)] uppercase tracking-widest">
                         Records Processed: {applications.length} Engagement Units
                     </div>
                 </div>

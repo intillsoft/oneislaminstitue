@@ -66,13 +66,13 @@ const VerifyPayment = () => {
                 animate={{ opacity: 1, scale: 1 }}
                 className="max-w-md w-full bg-slate-900 border border-slate-800 rounded-3xl p-10 text-center shadow-2xl relative overflow-hidden"
             >
-                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-500 animate-pulse" />
+                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[var(--color-primary)] via-teal-500 to-[var(--color-primary)] animate-pulse" />
                 
                 <div className="relative z-10">
                     {status === 'verifying' && (
                         <div className="flex flex-col items-center">
-                            <div className="w-20 h-20 rounded-2xl bg-emerald-500/10 flex items-center justify-center mb-6">
-                                <Loader2 className="w-10 h-10 text-emerald-500 animate-spin" />
+                            <div className="w-20 h-20 rounded-2xl bg-[var(--color-primary)]/10 flex items-center justify-center mb-6">
+                                <Loader2 className="w-10 h-10 text-[var(--color-primary)] animate-spin" />
                             </div>
                             <h1 className="text-2xl font-bold text-white mb-2">Verifying Payment</h1>
                             <p className="text-slate-400">{message}</p>
@@ -81,14 +81,14 @@ const VerifyPayment = () => {
 
                     {status === 'success' && (
                         <div className="flex flex-col items-center">
-                            <div className="w-20 h-20 rounded-2xl bg-emerald-500/20 flex items-center justify-center mb-6">
-                                <CheckCircle2 className="w-10 h-10 text-emerald-500" />
+                            <div className="w-20 h-20 rounded-2xl bg-[var(--color-primary)]/20 flex items-center justify-center mb-6">
+                                <CheckCircle2 className="w-10 h-10 text-[var(--color-primary)]" />
                             </div>
                             <h1 className="text-2xl font-bold text-white mb-2">BarakAllah!</h1>
                             <p className="text-slate-400 mb-8">{message}</p>
                             <button 
                                 onClick={() => navigate(courseId ? `/courses/${courseId}/onboarding` : '/dashboard')}
-                                className="flex items-center gap-2 text-emerald-500 font-bold hover:text-emerald-400 transition-colors"
+                                className="flex items-center gap-2 text-[var(--color-primary)] font-bold hover:text-[var(--color-primary)] transition-colors"
                             >
                                 Start Onboarding <ArrowRight size={18} />
                             </button>

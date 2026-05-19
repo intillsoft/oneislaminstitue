@@ -68,8 +68,8 @@ const StudentRegistrationLogin = () => {
             <Link
               to="/login"
               className={`flex-1 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest text-center transition-all ${activeTab === 'login'
-                ? 'bg-emerald-600 text-white shadow-lg'
-                : 'text-slate-500 hover:text-white hover:bg-white/5'
+                ? 'bg-[var(--color-primary)] text-white shadow-lg'
+                : 'text-[var(--color-text-tertiary)] hover:text-white hover:bg-white/5'
                 }`}
             >
               Scholar Login
@@ -77,8 +77,8 @@ const StudentRegistrationLogin = () => {
             <Link
               to="/register"
               className={`flex-1 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest text-center transition-all ${activeTab === 'register'
-                ? 'bg-emerald-600 text-white shadow-lg'
-                : 'text-slate-500 hover:text-white hover:bg-white/5'
+                ? 'bg-[var(--color-primary)] text-white shadow-lg'
+                : 'text-[var(--color-text-tertiary)] hover:text-white hover:bg-white/5'
                 }`}
             >
               Enroll Now
@@ -87,7 +87,7 @@ const StudentRegistrationLogin = () => {
 
           {/* Form Container */}
           <div className="glass-elite rounded-3xl p-8 mb-8 relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-600/10 blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
+            <div className="absolute top-0 right-0 w-32 h-32 bg-[var(--color-primary)]/10 blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
 
             {/* Forms */}
             {activeTab === 'login' ? (
@@ -99,27 +99,27 @@ const StudentRegistrationLogin = () => {
 
           {/* Footer Links */}
           <div className="text-center space-y-6">
-            <div className="flex items-center justify-center space-x-6 text-[10px] font-black uppercase tracking-widest text-slate-500">
+            <div className="flex items-center justify-center space-x-6 text-[10px] font-black uppercase tracking-widest text-[var(--color-text-tertiary)]">
               <Link
                 to="/terms"
-                className="hover:text-emerald-500 transition-all"
+                className="hover:text-[var(--color-primary)] transition-all"
               >
                 Terms
               </Link>
               <span className="opacity-20">•</span>
               <Link
                 to="/privacy"
-                className="hover:text-emerald-500 transition-all"
+                className="hover:text-[var(--color-primary)] transition-all"
               >
                 Privacy
               </Link>
             </div>
 
-            <div className="text-[11px] font-bold text-slate-500">
+            <div className="text-[11px] font-bold text-[var(--color-text-tertiary)]">
               Passionate about scholarship?{' '}
               <Link
                 to="/recruiter/company"
-                className="text-white hover:text-emerald-500 transition-all"
+                className="text-white hover:text-[var(--color-primary)] transition-all"
               >
                 Become an Instructor
               </Link>

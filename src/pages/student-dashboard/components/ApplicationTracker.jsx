@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Icon from 'components/AppIcon';
 import Image from 'components/AppImage';
-import { EliteCard, EliteProgressBar } from '../../../components/ui/EliteCard';
 import { enrollmentService } from '../../../services/applicationService';
 import { progressService } from '../../../services/progressService';
 import { useAuthContext } from '../../../contexts/AuthContext';
@@ -55,30 +54,30 @@ const ApplicationTracker = () => {
 
   if (!user) {
     return (
-      <EliteCard>
+      <div className="bg-white border border-[var(--color-card-border)] rounded-xl p-6" style={{ boxShadow: 'var(--shadow-card)' }}>
         <div className="text-center py-12">
-          <div className="w-20 h-20 rounded-2xl bg-surface-elevated dark:bg-white/5 flex items-center justify-center mx-auto mb-4">
-            <Icon name="FileText" className="w-10 h-10 text-text-muted dark:text-slate-600 transition-colors" />
+          <div className="w-20 h-20 rounded-xl bg-[var(--color-bg-secondary)] flex items-center justify-center mx-auto mb-4">
+            <Icon name="FileText" className="w-10 h-10 text-[var(--color-text-tertiary)]" />
           </div>
-          <p className="text-text-secondary dark:text-slate-400 mb-6">Sign in to track your applications</p>
-          <Link to="/login" className="inline-flex items-center gap-2 px-6 py-3 bg-workflow-primary text-white rounded-xl hover:bg-workflow-primary/90 transition-all font-semibold shadow-lg shadow-workflow-primary/20">
+          <p className="text-[var(--color-text-secondary)] mb-6">Sign in to track your applications</p>
+          <Link to="/login" className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--color-primary)] text-white rounded-md hover:bg-[var(--color-primary-hover)] transition-all font-bold">
             <Icon name="LogIn" size={18} />
             Sign In
           </Link>
         </div>
-      </EliteCard>
+      </div>
     );
   }
 
   const getStatusInfo = (status) => {
     const statusMap = {
-      applied: { icon: 'BookOpen', color: 'text-emerald-500', bgColor: 'bg-emerald-500/10' },
-      enrolled: { icon: 'BookOpen', color: 'text-emerald-500', bgColor: 'bg-emerald-500/10' },
-      reviewed: { icon: 'CheckCircle', color: 'text-amber-500', bgColor: 'bg-amber-500/10' },
-      active: { icon: 'Zap', color: 'text-purple-500', bgColor: 'bg-purple-500/10' },
-      offer: { icon: 'Award', color: 'text-emerald-500', bgColor: 'bg-emerald-500/10' },
-      completed: { icon: 'Award', color: 'text-emerald-500', bgColor: 'bg-emerald-500/10' },
-      rejected: { icon: 'XCircle', color: 'text-slate-500', bgColor: 'bg-slate-500/10' },
+      applied:   { icon: 'BookOpen',     color: 'var(--color-primary)',  bgColor: 'var(--color-info-bg)' },
+      enrolled:  { icon: 'BookOpen',     color: 'var(--color-primary)',  bgColor: 'var(--color-info-bg)' },
+      reviewed:  { icon: 'CheckCircle',  color: 'var(--color-warning)', bgColor: 'var(--color-warning-bg)' },
+      active:    { icon: 'Zap',          color: 'var(--color-stat-border-4)', bgColor: '#F3EFFA' },
+      offer:     { icon: 'Award',        color: 'var(--color-success)', bgColor: 'var(--color-success-bg)' },
+      completed: { icon: 'Award',        color: 'var(--color-success)', bgColor: 'var(--color-success-bg)' },
+      rejected:  { icon: 'XCircle',      color: 'var(--color-text-tertiary)', bgColor: 'var(--color-bg-secondary)' },
     };
     return statusMap[status] || statusMap.applied;
   };
@@ -105,7 +104,7 @@ const ApplicationTracker = () => {
     return (
       <div className="space-y-4">
         {[1, 2, 3].map(i => (
-          <div key={i} className="animate-pulse h-32 bg-surface dark:bg-bg rounded-2xl border border-emerald-500/20"></div>
+          <div key={i} className="animate-pulse h-32 bg-white rounded-xl border border-[var(--color-card-border)]"></div>
         ))}
       </div>
     );
@@ -113,19 +112,19 @@ const ApplicationTracker = () => {
 
   if (applications.length === 0) {
     return (
-      <EliteCard>
+      <div className="bg-white border border-[var(--color-card-border)] rounded-xl p-6" style={{ boxShadow: 'var(--shadow-card)' }}>
         <div className="text-center py-12">
-          <div className="w-20 h-20 rounded-2xl bg-surface-elevated dark:bg-white/5 flex items-center justify-center mx-auto mb-4">
-            <Icon name="FileText" className="w-10 h-10 text-text-muted dark:text-slate-600 transition-colors" />
+          <div className="w-20 h-20 rounded-xl bg-[var(--color-bg-secondary)] flex items-center justify-center mx-auto mb-4">
+            <Icon name="FileText" className="w-10 h-10 text-[var(--color-text-tertiary)]" />
           </div>
-          <h3 className="text-xl font-black text-text-primary dark:text-white mb-2">No enrollments yet</h3>
-          <p className="text-text-secondary dark:text-slate-400 mb-6">Start enrolling in courses to track your progress</p>
-          <Link to="/courses" className="inline-flex items-center gap-2 px-6 py-3 bg-workflow-primary text-white rounded-xl hover:bg-workflow-primary/90 transition-all font-semibold shadow-lg shadow-workflow-primary/20">
+          <h3 className="text-xl font-bold text-[var(--color-text-primary)] mb-2">No enrollments yet</h3>
+          <p className="text-[var(--color-text-tertiary)] mb-6">Start enrolling in courses to track your progress</p>
+          <Link to="/courses" className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--color-primary)] text-white rounded-md hover:bg-[var(--color-primary-hover)] transition-all font-bold">
             <Icon name="Search" size={18} />
             Browse Courses
           </Link>
         </div>
-      </EliteCard>
+      </div>
     );
   }
 
@@ -156,9 +155,9 @@ const ApplicationTracker = () => {
           <button
             key={status}
             onClick={() => setFilter(status)}
-            className={`px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs font-bold transition-all border shadow-sm ${filter === status
-              ? 'bg-slate-900 dark:bg-emerald-600 text-white border-slate-900 dark:border-emerald-500/60 shadow-md'
-              : 'bg-white dark:bg-slate-900/60 text-slate-500 dark:text-slate-400 border-slate-200 dark:border-white/5 hover:bg-slate-50 dark:hover:bg-slate-800'
+            className={`px-5 py-2.5 rounded-full text-xs font-bold transition-all border ${filter === status
+              ? 'bg-[var(--color-primary)] text-white border-[var(--color-primary)]'
+              : 'bg-white text-[var(--color-text-tertiary)] border-[var(--color-card-border)] hover:bg-[var(--color-primary-light)] hover:text-[var(--color-primary)] hover:border-[var(--color-border-secondary)]'
               } tracking-wide`}
           >
             {status === 'all' ? 'All' : status === 'applied' ? 'Active' : status.charAt(0).toUpperCase() + status.slice(1)}
@@ -177,13 +176,14 @@ const ApplicationTracker = () => {
           return (
             <div
               key={application.id}
-              className="group relative overflow-hidden rounded-[2rem] bg-white dark:bg-slate-900 border border-slate-100 dark:border-white/5 hover:border-emerald-200 dark:hover:border-emerald-500/30 transition-all duration-500 shadow-sm hover:shadow-xl hover:-translate-y-1 p-6 sm:p-8"
+              className="group relative overflow-hidden rounded-xl bg-white border border-[var(--color-card-border)] hover:border-[var(--color-border-secondary)] transition-all duration-150 hover:-translate-y-0.5 p-6 sm:p-8"
+              style={{ boxShadow: 'var(--shadow-card)' }}
             >
               <div className="flex flex-col md:flex-row md:items-start justify-between gap-3 md:gap-4">
                 <div className="flex-1">
                   <div className="flex items-start gap-3">
                     {job.logo ? (
-                      <div className="w-11 h-11 rounded-lg border border-emerald-500/20 overflow-hidden flex-shrink-0">
+                      <div className="w-11 h-11 rounded-lg border border-[var(--color-card-border)] overflow-hidden flex-shrink-0">
                         <Image
                           src={job.logo}
                           alt={job.company}
@@ -191,25 +191,25 @@ const ApplicationTracker = () => {
                         />
                       </div>
                     ) : (
-                      <div className="w-11 h-11 rounded-lg bg-surface-elevated dark:bg-white/5 flex items-center justify-center flex-shrink-0">
-                        <Icon name="Briefcase" className="w-5 h-5 text-text-muted dark:text-slate-400" />
+                      <div className="w-11 h-11 rounded-lg bg-[var(--color-bg-secondary)] flex items-center justify-center flex-shrink-0">
+                        <Icon name="Briefcase" className="w-5 h-5 text-[var(--color-text-tertiary)]" />
                       </div>
                     )}
                     <div className="flex-1 min-w-0">
                       <Link
                         to={`/courses/detail/${job.id}`}
-                        className="text-base md:text-lg font-bold text-text-primary dark:text-white hover:text-emerald-600 transition-colors block truncate"
+                        className="text-base md:text-lg font-bold text-[var(--color-text-primary)] hover:text-[var(--color-primary)] transition-colors block truncate"
                       >
                         {job.title}
                       </Link>
-                      <p className="text-xs md:text-sm font-semibold text-text-muted dark:text-slate-400 mt-0.5">{job.company}</p>
-                      <div className="flex flex-wrap items-center gap-2 md:gap-3 mt-2 text-xs font-medium text-text-muted dark:text-slate-400">
-                        <span className="flex items-center gap-1.5 px-2 py-1 rounded-lg bg-surface-elevated dark:bg-white/5">
+                      <p className="text-xs md:text-sm font-medium text-[var(--color-text-tertiary)] mt-0.5">{job.company}</p>
+                      <div className="flex flex-wrap items-center gap-2 md:gap-3 mt-2 text-xs font-medium text-[var(--color-text-tertiary)]">
+                        <span className="flex items-center gap-1.5 px-2 py-1 rounded-md bg-[var(--color-bg-secondary)]">
                           <Icon name="MapPin" size={12} />
                           {job.location}
                         </span>
                         {application.applied_at && (
-                          <span className="flex items-center gap-1.5 px-2 py-1 rounded-lg bg-surface-elevated dark:bg-white/5">
+                          <span className="flex items-center gap-1.5 px-2 py-1 rounded-md bg-[var(--color-bg-secondary)]">
                             <Icon name="Clock" size={12} />
                             <span className="hidden sm:inline">Enrolled {formatDistanceToNow(new Date(application.applied_at), { addSuffix: true })}</span>
                             <span className="sm:hidden">{formatDistanceToNow(new Date(application.applied_at), { addSuffix: true })}</span>
@@ -217,26 +217,37 @@ const ApplicationTracker = () => {
                         )}
                       </div>
                       
+                      {/* Progress bar */}
                       <div className="mt-4 max-w-sm">
-                        <EliteProgressBar
-                          value={prog?.completion_percentage || 0}
-                          label={`${Math.round(prog?.completion_percentage || 0)}% Completed`}
-                          color={prog?.completion_percentage === 100 ? 'green' : 'emerald'}
-                        />
+                        <div className="flex items-center justify-between mb-1">
+                          <span className="text-[10px] font-medium text-[var(--color-text-tertiary)] uppercase tracking-wider">{Math.round(prog?.completion_percentage || 0)}% Completed</span>
+                        </div>
+                        <div className="h-1.5 rounded-full bg-[var(--color-bg-secondary)] overflow-hidden">
+                          <div 
+                            className="h-full rounded-full transition-all duration-500"
+                            style={{ 
+                              width: `${prog?.completion_percentage || 0}%`,
+                              backgroundColor: prog?.completion_percentage === 100 ? 'var(--color-success)' : 'var(--color-primary)'
+                            }}
+                          />
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
                 <div className="flex flex-col gap-2 md:items-end">
-                  <div className={`px-3 py-1.5 rounded-lg text-xs flex items-center gap-2 border ${statusInfo.bgColor} border-transparent`}>
-                    <Icon name={statusInfo.icon} size={12} className={statusInfo.color} />
-                    <span className={`font-bold uppercase tracking-wide ${statusInfo.color}`}>
+                  <div 
+                    className="px-3 py-1.5 rounded-md text-xs flex items-center gap-2 border border-transparent"
+                    style={{ backgroundColor: statusInfo.bgColor }}
+                  >
+                    <Icon name={statusInfo.icon} size={12} style={{ color: statusInfo.color }} />
+                    <span className="font-bold uppercase tracking-wide" style={{ color: statusInfo.color }}>
                       {getStatusText(application.status)}
                     </span>
                   </div>
                   <Link
                     to={application.status === 'completed' || application.status === 'offer' ? `/courses/detail/${job.id}` : hasStarted ? `/courses/${job.id}/learn` : `/courses/${job.id}/onboarding`}
-                    className="mt-2 px-4 py-2 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white flex items-center justify-center gap-2 transition-all shadow-md shadow-emerald-500/20 active:scale-95"
+                    className="mt-2 px-4 py-2 rounded-md text-xs font-bold bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white flex items-center justify-center gap-2 transition-all active:scale-95"
                   >
                     <span className="hidden sm:inline">{application.status === 'completed' || application.status === 'offer' ? 'Review Course' : hasStarted ? 'Continue Learning' : 'Start Learning'}</span>
                     <span className="sm:hidden">{application.status === 'completed' || application.status === 'offer' ? 'Review' : hasStarted ? 'Continue' : 'Start'}</span>
@@ -245,8 +256,8 @@ const ApplicationTracker = () => {
                 </div>
               </div>
               {application.notes && (
-                <div className="mt-4 pt-4 border-t border-slate-100 dark:border-white/5">
-                  <p className="text-[11px] md:text-sm italic font-medium text-slate-500 dark:text-slate-400 line-clamp-2">"{application.notes}"</p>
+                <div className="mt-4 pt-4 border-t border-[var(--color-card-border)]">
+                  <p className="text-[11px] md:text-sm italic font-medium text-[var(--color-text-tertiary)] line-clamp-2">"{application.notes}"</p>
                 </div>
               )}
             </div>

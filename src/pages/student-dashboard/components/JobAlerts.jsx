@@ -147,7 +147,7 @@ const JobAlerts = () => {
       <EliteCard>
         <div className="text-center py-12">
           <div className="w-20 h-20 rounded-2xl bg-surface-elevated dark:bg-white/5 flex items-center justify-center mx-auto mb-4">
-            <Icon name="Bell" className="w-10 h-10 text-text-muted dark:text-slate-600 transition-colors" />
+            <Icon name="Bell" className="w-10 h-10 text-text-muted dark:text-[var(--color-text-secondary)] transition-colors" />
           </div>
           <p className="text-text-secondary dark:text-slate-400 mb-6">Sign in to create job alerts</p>
           <button
@@ -272,7 +272,7 @@ const JobAlerts = () => {
                       key={type}
                       onClick={() => handleToggleNotificationType(type)}
                       className={`flex-1 h-full px-2 rounded-xl text-xs font-black uppercase tracking-wider border transition-all ${newAlert.notificationTypes.includes(type)
-                          ? 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20'
+                          ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)] border-[var(--color-primary)]/20'
                           : 'bg-surface-elevated dark:bg-white/5 text-text-muted dark:text-slate-400 border-transparent hover:border-border'
                         }`}
                     >
@@ -318,7 +318,7 @@ const JobAlerts = () => {
         {alerts.length === 0 ? (
           <EliteCard>
             <div className="text-center py-12">
-              <Icon name="BellOff" className="w-12 h-12 text-text-muted dark:text-slate-600 mx-auto mb-4 transition-colors" />
+              <Icon name="BellOff" className="w-12 h-12 text-text-muted dark:text-[var(--color-text-secondary)] mx-auto mb-4 transition-colors" />
               <p className="text-text-secondary dark:text-slate-400">No job alerts yet. Create one above!</p>
             </div>
           </EliteCard>
@@ -336,7 +336,7 @@ const JobAlerts = () => {
                         {alert.name}
                       </h4>
                       <span className={`px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider border transition-all ${alert.is_active
-                          ? 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20'
+                          ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)] border-[var(--color-primary)]/20'
                           : 'bg-surface-elevated dark:bg-white/5 text-text-muted dark:text-slate-400 border-transparent'
                         }`}>
                         {alert.is_active ? 'Active' : 'Paused'}

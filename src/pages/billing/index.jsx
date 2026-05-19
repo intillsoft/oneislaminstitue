@@ -105,7 +105,7 @@ const Billing = () => {
 
   if (loading && !subscription) {
     return (
-      <div className="min-h-screen bg-white dark:bg-[#0A0E27] flex items-center justify-center">
+      <div className="min-h-screen bg-white dark:bg-[var(--color-bg-dark)] flex items-center justify-center">
         <AILoader variant="pulse" text="Fetching billing data..." />
       </div>
     );
@@ -119,7 +119,7 @@ const Billing = () => {
       <Helmet>
         <title>Billing & Subscription - Hope Dawah Institute</title>
       </Helmet>
-      <div className="min-h-screen bg-white dark:bg-[#0A0E27]">
+      <div className="min-h-screen bg-white dark:bg-[var(--color-bg-dark)]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <Breadcrumb customItems={breadcrumbItems} />
 
@@ -248,15 +248,15 @@ const Billing = () => {
                   {currentTier === 'free' && (
                     <>
                       <li className="flex items-center text-[#0F172A] dark:text-[#E8EAED]">
-                        <Icon name="Check" size={16} className="mr-2 text-emerald-600" />
+                        <Icon name="Check" size={16} className="mr-2 text-[var(--color-primary)]" />
                         1 Academic Profile
                       </li>
                       <li className="flex items-center text-[#0F172A] dark:text-[#E8EAED]">
-                        <Icon name="Check" size={16} className="mr-2 text-emerald-600" />
+                        <Icon name="Check" size={16} className="mr-2 text-[var(--color-primary)]" />
                         10 Enrollments/month
                       </li>
                       <li className="flex items-center text-[#0F172A] dark:text-[#E8EAED]">
-                        <Icon name="Check" size={16} className="mr-2 text-emerald-600" />
+                        <Icon name="Check" size={16} className="mr-2 text-[var(--color-primary)]" />
                         Basic Progress Tracking
                       </li>
                     </>
@@ -264,19 +264,19 @@ const Billing = () => {
                   {currentTier === 'basic' && (
                     <>
                       <li className="flex items-center text-[#0F172A] dark:text-[#E8EAED]">
-                        <Icon name="Check" size={16} className="mr-2 text-emerald-600" />
+                        <Icon name="Check" size={16} className="mr-2 text-[var(--color-primary)]" />
                         3 Academic Profiles
                       </li>
                       <li className="flex items-center text-[#0F172A] dark:text-[#E8EAED]">
-                        <Icon name="Check" size={16} className="mr-2 text-emerald-600" />
+                        <Icon name="Check" size={16} className="mr-2 text-[var(--color-primary)]" />
                         50 Enrollments/month
                       </li>
                       <li className="flex items-center text-[#0F172A] dark:text-[#E8EAED]">
-                        <Icon name="Check" size={16} className="mr-2 text-emerald-600" />
+                        <Icon name="Check" size={16} className="mr-2 text-[var(--color-primary)]" />
                         AI Course Matching
                       </li>
                       <li className="flex items-center text-[#0F172A] dark:text-[#E8EAED]">
-                        <Icon name="Check" size={16} className="mr-2 text-emerald-600" />
+                        <Icon name="Check" size={16} className="mr-2 text-[var(--color-primary)]" />
                         Academic Alerts
                       </li>
                     </>
@@ -284,19 +284,19 @@ const Billing = () => {
                   {currentTier === 'premium' && (
                     <>
                       <li className="flex items-center text-[#0F172A] dark:text-[#E8EAED]">
-                        <Icon name="Check" size={16} className="mr-2 text-emerald-600" />
+                        <Icon name="Check" size={16} className="mr-2 text-[var(--color-primary)]" />
                         Unlimited Academic Profiles
                       </li>
                       <li className="flex items-center text-[#0F172A] dark:text-[#E8EAED]">
-                        <Icon name="Check" size={16} className="mr-2 text-emerald-600" />
+                        <Icon name="Check" size={16} className="mr-2 text-[var(--color-primary)]" />
                         Unlimited Enrollments/month
                       </li>
                       <li className="flex items-center text-[#0F172A] dark:text-[#E8EAED]">
-                        <Icon name="Check" size={16} className="mr-2 text-emerald-600" />
+                        <Icon name="Check" size={16} className="mr-2 text-[var(--color-primary)]" />
                         Advanced Academic Research
                       </li>
                       <li className="flex items-center text-[#0F172A] dark:text-[#E8EAED]">
-                        <Icon name="Check" size={16} className="mr-2 text-emerald-600" />
+                        <Icon name="Check" size={16} className="mr-2 text-[var(--color-primary)]" />
                         Priority Scholar Support
                       </li>
                     </>

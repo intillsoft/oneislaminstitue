@@ -288,7 +288,7 @@ const InstructorNotifications = () => {
                                         className={`h-11 px-6 rounded-xl flex items-center gap-3 transition-all duration-300 ${
                                             showComposer 
                                             ? 'bg-rose-500 text-white' 
-                                            : 'bg-emerald-600 text-white hover:bg-emerald-500'
+                                            : 'bg-[var(--color-primary)] text-white hover:bg-[var(--color-primary)]'
                                         }`}
                                     >
                                         <span className="text-[10px] font-bold uppercase tracking-widest">{showComposer ? 'Cancel' : 'Send Broadcast'}</span>
@@ -324,7 +324,7 @@ const InstructorNotifications = () => {
                                                                     className={`px-8 py-5 rounded-2xl border flex items-center gap-5 transition-all ${
                                                                         composerData.targetType === t.id
                                                                         ? 'bg-white text-black border-white shadow-xl'
-                                                                        : 'bg-white/5 border-white/5 text-slate-700 hover:text-slate-500'
+                                                                        : 'bg-white/5 border-white/5 text-slate-700 hover:text-[var(--color-text-tertiary)]'
                                                                     }`}
                                                                 >
                                                                     <t.icon size={16} />
@@ -340,13 +340,13 @@ const InstructorNotifications = () => {
                                                                 className="space-y-4 pt-4"
                                                             >
                                                                 <div className="relative group">
-                                                                    <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-800 transition-colors group-focus-within:text-emerald-500" />
+                                                                    <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-800 transition-colors group-focus-within:text-[var(--color-primary)]" />
                                                                     <input 
                                                                         type="text"
                                                                         placeholder="Search internal sectors..."
                                                                         value={courseSearch}
                                                                         onChange={(e) => setCourseSearch(e.target.value)}
-                                                                        className="w-full bg-white/5 border border-white/5 rounded-2xl pl-16 pr-6 py-5 text-[10px] font-black text-white placeholder-slate-900 transition-all focus:border-emerald-500/20 outline-none uppercase tracking-widest"
+                                                                        className="w-full bg-white/5 border border-white/5 rounded-2xl pl-16 pr-6 py-5 text-[10px] font-black text-white placeholder-slate-900 transition-all focus:border-[var(--color-primary)]/20 outline-none uppercase tracking-widest"
                                                                     />
                                                                 </div>
                                                                 <div className="max-h-48 overflow-y-auto custom-scrollbar space-y-2 p-1">
@@ -362,7 +362,7 @@ const InstructorNotifications = () => {
                                                                         >
                                                                             <div>
                                                                                 <p className="text-[10px] font-black uppercase tracking-widest truncate">{c.title}</p>
-                                                                                <p className={`text-[8px] uppercase tracking-[0.2em] font-black mt-1 ${composerData.courseId === c.id ? 'opacity-40' : 'text-slate-900'}`}>
+                                                                                <p className={`text-[8px] uppercase tracking-[0.2em] font-black mt-1 ${composerData.courseId === c.id ? 'opacity-40' : 'text-[var(--color-text-primary)]'}`}>
                                                                                     ID: {c.id.substring(0, 8)}
                                                                                 </p>
                                                                             </div>
@@ -388,15 +388,15 @@ const InstructorNotifications = () => {
                                                                     onClick={() => setComposerData({ ...composerData, [channel.id]: !composerData[channel.id] })}
                                                                     className={`w-full flex items-center justify-between p-5 rounded-2xl border transition-all ${
                                                                         composerData[channel.id]
-                                                                        ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-500'
+                                                                        ? 'bg-[var(--color-primary)]/10 border-[var(--color-primary)]/30 text-[var(--color-primary)]'
                                                                         : 'bg-white/5 border-white/5 text-slate-800 hover:text-white'
                                                                     }`}
                                                                 >
                                                                     <div className="flex items-center gap-5">
-                                                                         <channel.icon size={18} className={composerData[channel.id] ? 'text-emerald-500' : 'text-slate-900'} />
+                                                                         <channel.icon size={18} className={composerData[channel.id] ? 'text-[var(--color-primary)]' : 'text-[var(--color-text-primary)]'} />
                                                                          <span className="text-[10px] font-bold uppercase tracking-widest">{channel.label}</span>
                                                                      </div>
-                                                                    <div className={`w-10 h-1.5 rounded-full relative transition-all ${composerData[channel.id] ? 'bg-emerald-500' : 'bg-slate-900'}`}>
+                                                                    <div className={`w-10 h-1.5 rounded-full relative transition-all ${composerData[channel.id] ? 'bg-[var(--color-primary)]' : 'bg-slate-900'}`}>
                                                                         <div className={`absolute -top-1 w-3.5 h-3.5 rounded-full transition-all border-2 border-[#121214] ${composerData[channel.id] ? 'right-0 bg-white' : 'left-0 bg-slate-700'}`} />
                                                                     </div>
                                                                 </button>
@@ -414,7 +414,7 @@ const InstructorNotifications = () => {
                                                                 value={composerData.title}
                                                                 onChange={(e) => setComposerData({ ...composerData, title: e.target.value })}
                                                                 placeholder="Enter subject..."
-                                                                className="w-full px-5 py-3 bg-white/5 border border-white/5 rounded-xl text-sm font-bold text-white focus:outline-none focus:border-emerald-500/20 transition-all uppercase placeholder:text-slate-900 tracking-tight"
+                                                                className="w-full px-5 py-3 bg-white/5 border border-white/5 rounded-xl text-sm font-bold text-white focus:outline-none focus:border-[var(--color-primary)]/20 transition-all uppercase placeholder:text-[var(--color-text-primary)] tracking-tight"
                                                             />
                                                         </div>
                                                         <div className="space-y-4">
@@ -424,7 +424,7 @@ const InstructorNotifications = () => {
                                                                 onChange={(e) => setComposerData({ ...composerData, message: e.target.value })}
                                                                 placeholder="Type your message here..."
                                                                 rows="8"
-                                                                className="w-full px-6 py-4 bg-white/[0.02] border border-white/5 rounded-xl text-sm font-medium text-slate-400 focus:outline-none focus:border-emerald-500/20 transition-all resize-none leading-relaxed placeholder:text-slate-900"
+                                                                className="w-full px-6 py-4 bg-white/[0.02] border border-white/5 rounded-xl text-sm font-medium text-slate-400 focus:outline-none focus:border-[var(--color-primary)]/20 transition-all resize-none leading-relaxed placeholder:text-[var(--color-text-primary)]"
                                                             />
                                                         </div>
                                                     </div>
@@ -432,7 +432,7 @@ const InstructorNotifications = () => {
                                                     <button
                                                         onClick={sendNotification}
                                                         disabled={loading}
-                                                        className="w-full bg-emerald-600 text-white py-3.5 rounded-xl text-[10px] font-bold uppercase tracking-widest hover:bg-emerald-500 transition-all disabled:opacity-30 disabled:cursor-not-allowed flex items-center justify-center gap-3"
+                                                        className="w-full bg-[var(--color-primary)] text-white py-3.5 rounded-xl text-[10px] font-bold uppercase tracking-widest hover:bg-[var(--color-primary)] transition-all disabled:opacity-30 disabled:cursor-not-allowed flex items-center justify-center gap-3"
                                                     >
                                                         {loading ? <div className="w-4 h-4 border-[2px] border-white/20 border-t-white rounded-full animate-spin" /> : <Send size={14} />}
                                                         {loading ? 'Sending...' : 'Send Message'}
@@ -462,7 +462,7 @@ const InstructorNotifications = () => {
                                         >
                                             {tab.label}
                                             {activeTab === tab.id && (
-                                                <motion.div layoutId="instructor-tab-bridge" className="absolute bottom-[-1px] left-0 right-0 h-0.5 bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)]" />
+                                                <motion.div layoutId="instructor-tab-bridge" className="absolute bottom-[-1px] left-0 right-0 h-0.5 bg-[var(--color-primary)] shadow-[0_0_10px_rgba(16,185,129,0.5)]" />
                                             )}
                                         </button>
                                     ))}
@@ -481,7 +481,7 @@ const InstructorNotifications = () => {
                                             <div className="w-16 h-16 rounded-3xl bg-white/5 flex items-center justify-center mx-auto mb-10 border border-white/5">
                                                 <Bell className="text-slate-800 opacity-20" size={24} />
                                             </div>
-                                            <h3 className="text-[11px] font-black text-slate-900 uppercase tracking-[0.8em]">Registry Null</h3>
+                                            <h3 className="text-[11px] font-black text-[var(--color-text-primary)] uppercase tracking-[0.8em]">Registry Null</h3>
                                         </div>
                                     ) : (
                                         <div className="divide-y divide-white/5">
@@ -501,17 +501,17 @@ const InstructorNotifications = () => {
                                                             isUnread ? 'bg-white/[0.01] hover:bg-white/[0.03]' : 'bg-transparent opacity-60'
                                                         }`}
                                                     >
-                                                        <div className={`flex-shrink-0 w-2.5 h-2.5 rounded-full ${isUnread ? 'bg-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.5)]' : 'bg-slate-900'}`} />
+                                                        <div className={`flex-shrink-0 w-2.5 h-2.5 rounded-full ${isUnread ? 'bg-[var(--color-primary)] shadow-[0_0_15px_rgba(16,185,129,0.5)]' : 'bg-slate-900'}`} />
                                                         
                                                         <div className="w-48 lg:w-64 flex-shrink-0">
-                                                            <span className={`text-[11px] uppercase tracking-[0.2em] truncate block ${isUnread ? 'font-black text-white' : 'font-bold text-slate-600'}`}>
+                                                            <span className={`text-[11px] uppercase tracking-[0.2em] truncate block ${isUnread ? 'font-black text-white' : 'font-bold text-[var(--color-text-secondary)]'}`}>
                                                                 {senderName}
                                                             </span>
                                                         </div>
 
                                                         <div className="flex-1 min-w-0">
                                                             <div className="flex items-center gap-4">
-                                                                <span className={`text-[11px] uppercase tracking-widest truncate ${isUnread ? 'font-black text-white' : 'font-bold text-slate-500'}`}>
+                                                                <span className={`text-[11px] uppercase tracking-widest truncate ${isUnread ? 'font-black text-white' : 'font-bold text-[var(--color-text-tertiary)]'}`}>
                                                                     {notification.title}
                                                                 </span>
                                                                 <span className="text-slate-800 text-[10px] uppercase font-bold tracking-widest truncate opacity-20 group-hover:opacity-100 transition-opacity">
@@ -545,7 +545,7 @@ const InstructorNotifications = () => {
                             <div className="flex items-center justify-between mb-16 pt-4">
                                 <button
                                     onClick={() => setSelectedNotification(null)}
-                                    className="flex items-center gap-4 px-6 py-3 rounded-2xl bg-white/[0.03] border border-white/5 text-slate-600 hover:text-white transition-all active:scale-95 group"
+                                    className="flex items-center gap-4 px-6 py-3 rounded-2xl bg-white/[0.03] border border-white/5 text-[var(--color-text-secondary)] hover:text-white transition-all active:scale-95 group"
                                 >
                                     <X size={16} className="group-hover:rotate-90 transition-transform" />
                                     <span className="text-[10px] font-black uppercase tracking-[0.3em]">Close Transmission</span>
@@ -555,14 +555,14 @@ const InstructorNotifications = () => {
                                     {activeTab === 'received' && (
                                         <button
                                             onClick={() => markAsRead(selectedNotification.id, selectedNotification.is_read)}
-                                            className="p-4 rounded-2xl bg-white/[0.03] border border-white/5 text-slate-600 hover:text-emerald-500 transition-all active:scale-95"
+                                            className="p-4 rounded-2xl bg-white/[0.03] border border-white/5 text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] transition-all active:scale-95"
                                         >
                                             <Mail size={18} />
                                         </button>
                                     )}
                                     <button
                                         onClick={() => deleteNotification(selectedNotification.id)}
-                                        className="p-4 rounded-2xl bg-white/[0.03] border border-white/5 text-slate-600 hover:text-rose-500 transition-all active:scale-95"
+                                        className="p-4 rounded-2xl bg-white/[0.03] border border-white/5 text-[var(--color-text-secondary)] hover:text-rose-500 transition-all active:scale-95"
                                     >
                                         <Trash2 size={18} />
                                     </button>
@@ -576,11 +576,11 @@ const InstructorNotifications = () => {
                                 <div className="max-w-4xl mx-auto space-y-12">
                                     <div className="space-y-8">
                                         <div className="flex items-center gap-5">
-                                            <div className="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center border border-emerald-500/20">
-                                                <Send size={18} className="text-emerald-500" />
+                                            <div className="w-10 h-10 rounded-xl bg-[var(--color-primary)]/10 flex items-center justify-center border border-[var(--color-primary)]/20">
+                                                <Send size={18} className="text-[var(--color-primary)]" />
                                             </div>
                                             <div>
-                                                <p className="text-[10px] font-bold text-emerald-500 uppercase tracking-widest mb-1">Detailed Briefing</p>
+                                                <p className="text-[10px] font-bold text-[var(--color-primary)] uppercase tracking-widest mb-1">Detailed Briefing</p>
                                                 <h2 className="text-xl lg:text-2xl font-bold text-white uppercase tracking-tight leading-tight">
                                                     {selectedNotification.title}
                                                 </h2>
@@ -602,7 +602,7 @@ const InstructorNotifications = () => {
                                                 </div>
                                             </div>
                                             <div className="flex flex-col md:items-end gap-1">
-                                                <p className="text-[10px] font-black text-slate-600 uppercase tracking-widest">
+                                                <p className="text-[10px] font-black text-[var(--color-text-secondary)] uppercase tracking-widest">
                                                     {new Date(selectedNotification.created_at).toLocaleDateString()}
                                                 </p>
                                                 <p className="text-[9px] font-black text-slate-800 uppercase tracking-widest">
@@ -613,18 +613,18 @@ const InstructorNotifications = () => {
                                     </div>
 
                                     <div className="prose prose-invert max-w-none pt-4">
-                                        <p className="text-sm lg:text-base text-slate-400 font-medium leading-[1.8] whitespace-pre-wrap selection:bg-emerald-500/20 select-text">
+                                        <p className="text-sm lg:text-base text-slate-400 font-medium leading-[1.8] whitespace-pre-wrap selection:bg-[var(--color-primary)]/20 select-text">
                                             {selectedNotification.message}
                                         </p>
                                     </div>
 
                                     <div className="pt-12 border-t border-white/5 flex items-center justify-between">
-                                        <p className="text-[9px] font-black text-slate-900 uppercase tracking-[0.5em]">
+                                        <p className="text-[9px] font-black text-[var(--color-text-primary)] uppercase tracking-[0.5em]">
                                             Core Hash • {selectedNotification.id.substring(0, 16).toUpperCase()}
                                         </p>
                                         <button 
                                             onClick={() => setSelectedNotification(null)}
-                                            className="px-8 py-3 rounded-xl bg-white text-black text-[10px] font-bold uppercase tracking-widest hover:bg-emerald-500 hover:text-white transition-all active:scale-95"
+                                            className="px-8 py-3 rounded-xl bg-white text-black text-[10px] font-bold uppercase tracking-widest hover:bg-[var(--color-primary)] hover:text-white transition-all active:scale-95"
                                         >
                                             Dismiss View
                                         </button>

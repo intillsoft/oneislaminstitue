@@ -46,13 +46,13 @@ const EarningsForecaster = ({ earningsHistory, activeGigsValue, pipelineCount })
 
   return (
     <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-700">
-      <div className="p-6 bg-emerald-500/5 rounded-[2rem] border border-emerald-500/10">
-        <p className="text-[10px] uppercase font-black tracking-[0.2em] text-emerald-500 mb-2">Projected Alpha Stream</p>
+      <div className="p-6 bg-[var(--color-primary)]/5 rounded-[2rem] border border-[var(--color-primary)]/10">
+        <p className="text-[10px] uppercase font-black tracking-[0.2em] text-[var(--color-primary)] mb-2">Projected Alpha Stream</p>
         <div className="flex items-baseline gap-2">
           <p className="text-5xl font-black text-text-primary leading-none tracking-tighter">${forecast.predictedAmount?.toLocaleString()}</p>
-          <span className="text-xs font-black text-emerald-500 tracking-widest uppercase">Target</span>
+          <span className="text-xs font-black text-[var(--color-primary)] tracking-widest uppercase">Target</span>
         </div>
-        <div className="mt-6 flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-emerald-500 bg-emerald-500/10 px-4 py-2 rounded-xl border border-emerald-500/20 w-fit">
+        <div className="mt-6 flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-[var(--color-primary)] bg-[var(--color-primary)]/10 px-4 py-2 rounded-xl border border-[var(--color-primary)]/20 w-fit">
           Range: ${forecast.range?.min} - ${forecast.range?.max}
         </div>
       </div>
@@ -128,7 +128,7 @@ const TalentDashboard = () => {
             <div className="absolute inset-0 border-4 border-workflow-primary opacity-20 rounded-full"></div>
             <div className="absolute inset-0 border-4 border-t-workflow-primary rounded-full animate-spin"></div>
           </div>
-          <p className="text-slate-500 font-black uppercase tracking-[0.3em] text-[10px] animate-pulse">Initializing Hub...</p>
+          <p className="text-[var(--color-text-tertiary)] font-black uppercase tracking-[0.3em] text-[10px] animate-pulse">Initializing Hub...</p>
         </div>
       </div>
     );
@@ -288,7 +288,7 @@ const TalentDashboard = () => {
                         </div>
                         <div className="text-right flex-shrink-0 ml-4">
                           <p className="text-2xl font-black text-text-primary tracking-tighter mb-1">${order.price}</p>
-                          <span className={`px-2.5 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest ${order.status === 'completed' ? 'bg-emerald-500/10 text-emerald-500 border border-emerald-500/20' :
+                          <span className={`px-2.5 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest ${order.status === 'completed' ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)] border border-[var(--color-primary)]/20' :
                               order.status === 'in_progress' ? 'bg-workflow-primary/10 text-workflow-primary border border-workflow-primary/20' :
                                 'bg-amber-500/10 text-amber-500 border border-amber-500/20'
                             }`}>

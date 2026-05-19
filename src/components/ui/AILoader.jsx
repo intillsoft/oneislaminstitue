@@ -26,7 +26,7 @@ const AILoader = ({ size = 'default', text = 'Loading...', variant = 'pulse' }) 
           {/* Middle pulsing ring */}
           <div className={`${sizeClasses[size]} rounded-full border-4 border-workflow-primary/40 absolute animate-pulse`} style={{ animationDelay: '0.2s' }}></div>
           {/* Inner core with gradient */}
-          <div className={`${sizeClasses[size]} rounded-full bg-gradient-to-br from-emerald-600 via-emerald-500 to-teal-400 relative flex items-center justify-center shadow-lg shadow-emerald-500/20`}>
+          <div className={`${sizeClasses[size]} rounded-full bg-gradient-to-br from-[var(--color-primary)] via-[var(--color-primary)] to-teal-400 relative flex items-center justify-center shadow-lg shadow-[var(--color-primary)]/20`}>
             <BookOpen 
               size={size === 'small' ? 12 : size === 'large' ? 24 : 18} 
               className="text-white drop-shadow-sm" 
@@ -63,7 +63,7 @@ const AILoader = ({ size = 'default', text = 'Loading...', variant = 'pulse' }) 
               ></div>
             ))}
             {/* Center core */}
-            <div className={`${sizeClasses[size]} rounded-full bg-gradient-to-br from-emerald-600 to-teal-500 absolute top-0 left-0 animate-spin flex items-center justify-center`} style={{ animationDuration: '2s' }}>
+            <div className={`${sizeClasses[size]} rounded-full bg-gradient-to-br from-[var(--color-primary)] to-teal-500 absolute top-0 left-0 animate-spin flex items-center justify-center`} style={{ animationDuration: '2s' }}>
               <BookOpen 
                 size={size === 'small' ? 12 : size === 'large' ? 24 : 18} 
                 className="text-white" 
@@ -141,7 +141,7 @@ const AILoader = ({ size = 'default', text = 'Loading...', variant = 'pulse' }) 
               ></div>
             ))}
             {/* Center core */}
-            <div className={`${sizeClasses[size]} rounded-full bg-gradient-to-br from-emerald-600 via-emerald-500 to-teal-400 absolute top-0 left-0 flex items-center justify-center shadow-lg shadow-emerald-500/20`}>
+            <div className={`${sizeClasses[size]} rounded-full bg-gradient-to-br from-[var(--color-primary)] via-[var(--color-primary)] to-teal-400 absolute top-0 left-0 flex items-center justify-center shadow-lg shadow-[var(--color-primary)]/20`}>
               <BookOpen 
                 size={size === 'small' ? 12 : size === 'large' ? 24 : 18} 
                 className="text-white drop-shadow-sm" 

@@ -73,13 +73,13 @@ const FeaturedCourseCard = ({ job, index }) => {
       className="group relative h-full cursor-pointer select-none w-full max-w-[400px] mx-auto sm:max-w-none"
       onClick={handleCardClick}
     >
-      <div className="relative flex flex-col h-full rounded-[1.2rem] bg-white dark:bg-[#111827] border border-slate-200 dark:border-white/[0.05] shadow-[0_4px_20px_-4px_rgba(0,0,0,0.06)] dark:shadow-none hover:shadow-xl transition-all duration-500 overflow-hidden">
+      <div className="relative flex flex-col h-full rounded-[1.2rem] bg-white dark:bg-[#111827] border border-[var(--color-border-primary)] dark:border-white/[0.05] shadow-[0_4px_20px_-4px_rgba(0,0,0,0.06)] dark:shadow-none hover:shadow-xl transition-all duration-500 overflow-hidden">
         
         {/* Top Accent Line */}
         <div className="h-[2px] w-full" style={{ backgroundColor: accent }} />
 
         {/* Media Block - High Vibrancy */}
-        <div className="relative w-full h-32 sm:h-36 overflow-hidden bg-slate-50 dark:bg-slate-900/50">
+        <div className="relative w-full h-32 sm:h-36 overflow-hidden bg-white dark:bg-slate-900/50">
           {thumbSrc ? (
             <img 
               src={thumbSrc} 
@@ -87,19 +87,19 @@ const FeaturedCourseCard = ({ job, index }) => {
               className="w-full h-full object-cover group-hover:scale-105 transition-all duration-1000 ease-out"
             />
           ) : (
-            <div className="w-full h-full flex items-center justify-center bg-emerald-50/30 dark:bg-emerald-500/5">
-              <BookOpen className="w-8 h-8 text-emerald-500/20" />
+            <div className="w-full h-full flex items-center justify-center bg-[var(--color-primary-light)]/30 dark:bg-[var(--color-primary)]/5">
+              <BookOpen className="w-8 h-8 text-[var(--color-primary)]/20" />
             </div>
           )}
 
           {/* Badges */}
           <div className="absolute top-2.5 left-2.5 flex flex-col gap-1">
-            <div className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-white/95 dark:bg-slate-900/90 backdrop-blur-md border border-slate-100 dark:border-white/5 text-[8px] font-black uppercase tracking-wider text-slate-600 dark:text-slate-300 shadow-sm">
-              <Sparkles size={10} className="text-emerald-500" />
+            <div className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-white/95 dark:bg-slate-900/90 backdrop-blur-md border border-slate-100 dark:border-white/5 text-[8px] font-black uppercase tracking-wider text-[var(--color-text-secondary)] dark:text-slate-300 shadow-sm">
+              <Sparkles size={10} className="text-[var(--color-primary)]" />
               Recommended
             </div>
             {courseData.featured && (
-              <div className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-white/95 dark:bg-slate-900/90 backdrop-blur-md border border-slate-100 dark:border-white/5 text-[8px] font-black uppercase tracking-wider text-slate-600 dark:text-slate-300 shadow-sm">
+              <div className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-white/95 dark:bg-slate-900/90 backdrop-blur-md border border-slate-100 dark:border-white/5 text-[8px] font-black uppercase tracking-wider text-[var(--color-text-secondary)] dark:text-slate-300 shadow-sm">
                 <Star size={10} className="text-amber-500" />
                 Trending
               </div>
@@ -107,7 +107,7 @@ const FeaturedCourseCard = ({ job, index }) => {
           </div>
 
           {isEnrolled && (
-            <div className="absolute top-2.5 right-2.5 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-600 text-white text-[8px] font-black uppercase tracking-widest shadow-lg shadow-emerald-600/20">
+            <div className="absolute top-2.5 right-2.5 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[var(--color-primary)] text-white text-[8px] font-black uppercase tracking-widest shadow-lg shadow-[var(--color-primary)]/20">
               <CheckCircle2 size={10} />
               Enrolled
             </div>
@@ -119,10 +119,10 @@ const FeaturedCourseCard = ({ job, index }) => {
         {/* Content Section */}
         <div className="flex flex-col flex-1 p-5 pt-4">
           <div className="mb-4">
-            <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-slate-400 dark:text-slate-500 mb-1.5 block">
+            <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-slate-400 dark:text-[var(--color-text-tertiary)] mb-1.5 block">
               {provider}
             </span>
-            <h3 className="text-sm font-bold text-slate-900 dark:text-white leading-tight tracking-tight line-clamp-2">
+            <h3 className="text-sm font-bold text-[var(--color-text-primary)] dark:text-white leading-tight tracking-tight line-clamp-2">
               {title}
             </h3>
           </div>
@@ -133,15 +133,15 @@ const FeaturedCourseCard = ({ job, index }) => {
               <div className="space-y-2">
                 <div className="flex items-center justify-between text-[8px] font-bold uppercase tracking-widest text-slate-400">
                   <span>Current Progress</span>
-                  <span className="text-emerald-600">{pct}%</span>
+                  <span className="text-[var(--color-primary)]">{pct}%</span>
                 </div>
                 <div className="w-full h-1 rounded-full bg-slate-100 dark:bg-white/[0.05] overflow-hidden">
-                  <motion.div initial={{ width: 0 }} animate={{ width: `${pct}%` }} className="h-full rounded-full bg-emerald-600" />
+                  <motion.div initial={{ width: 0 }} animate={{ width: `${pct}%` }} className="h-full rounded-full bg-[var(--color-primary)]" />
                 </div>
               </div>
             ) : (
               <div className="flex items-center gap-2 group/btn">
-                <div className="flex-1 flex items-center justify-between py-2 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:scale-[0.98] transition-all shadow-lg shadow-emerald-600/20 group/action">
+                <div className="flex-1 flex items-center justify-between py-2 px-4 rounded-xl bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] active:scale-[0.98] transition-all shadow-lg shadow-[var(--color-primary)]/20 group/action">
                   <span className="text-[10px] font-bold uppercase tracking-[0.1em] text-white">
                     View Course Details
                   </span>

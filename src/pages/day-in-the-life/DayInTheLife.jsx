@@ -89,7 +89,7 @@ const DayInTheLife = () => {
     };
 
     return (
-        <div className="min-h-screen bg-slate-50 dark:bg-[#0A0E27] p-6 pt-24 font-sans">
+        <div className="min-h-screen bg-white dark:bg-[var(--color-bg-dark)] p-6 pt-24 font-sans">
             <div className="max-w-5xl mx-auto space-y-12">
 
                 {/* Header */}
@@ -102,10 +102,10 @@ const DayInTheLife = () => {
                         <Sun className="w-12 h-12 text-orange-500" />
                     </motion.div>
                     <div className="space-y-2">
-                        <h1 className="text-4xl font-black text-slate-900 dark:text-white tracking-tight">
+                        <h1 className="text-4xl font-black text-[var(--color-text-primary)] dark:text-white tracking-tight">
                             Day in the <span className="text-orange-500">Life</span>
                         </h1>
-                        <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
+                        <p className="text-lg text-[var(--color-text-secondary)] dark:text-slate-400 max-w-2xl mx-auto">
                             Step into the shoes of your future role. Experience the daily rhythm, responsibilities, and reality.
                         </p>
                     </div>
@@ -119,7 +119,7 @@ const DayInTheLife = () => {
                         className="md:col-span-4 space-y-6"
                     >
                         <div className="bg-white dark:bg-[#13182E] p-8 rounded-3xl shadow-xl border border-slate-100 dark:border-slate-800 space-y-6 sticky top-24">
-                            <h3 className="font-bold text-slate-900 dark:text-white flex items-center gap-2 text-lg">
+                            <h3 className="font-bold text-[var(--color-text-primary)] dark:text-white flex items-center gap-2 text-lg">
                                 <Briefcase className="w-5 h-5 text-orange-500" /> Role Configuration
                             </h3>
 
@@ -131,7 +131,7 @@ const DayInTheLife = () => {
                                         value={formData.jobTitle}
                                         onChange={(e) => setFormData({ ...formData, jobTitle: e.target.value })}
                                         placeholder="e.g. Senior Product Designer"
-                                        className="w-full p-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-[#0A0E27] text-slate-900 dark:text-white focus:ring-2 focus:ring-orange-500 outline-none font-medium"
+                                        className="w-full p-4 rounded-xl border border-[var(--color-border-primary)] dark:border-slate-700 bg-white dark:bg-[var(--color-bg-dark)] text-[var(--color-text-primary)] dark:text-white focus:ring-2 focus:ring-orange-500 outline-none font-medium"
                                     />
                                 </div>
                                 <div>
@@ -141,7 +141,7 @@ const DayInTheLife = () => {
                                         value={formData.company}
                                         onChange={(e) => setFormData({ ...formData, company: e.target.value })}
                                         placeholder="e.g. Spotify"
-                                        className="w-full p-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-[#0A0E27] text-slate-900 dark:text-white focus:ring-2 focus:ring-orange-500 outline-none font-medium"
+                                        className="w-full p-4 rounded-xl border border-[var(--color-border-primary)] dark:border-slate-700 bg-white dark:bg-[var(--color-bg-dark)] text-[var(--color-text-primary)] dark:text-white focus:ring-2 focus:ring-orange-500 outline-none font-medium"
                                     />
                                 </div>
                                 <div>
@@ -149,7 +149,7 @@ const DayInTheLife = () => {
                                     <select
                                         value={formData.industry}
                                         onChange={(e) => setFormData({ ...formData, industry: e.target.value })}
-                                        className="w-full p-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-[#0A0E27] text-slate-900 dark:text-white focus:ring-2 focus:ring-orange-500 outline-none font-medium appearance-none"
+                                        className="w-full p-4 rounded-xl border border-[var(--color-border-primary)] dark:border-slate-700 bg-white dark:bg-[var(--color-bg-dark)] text-[var(--color-text-primary)] dark:text-white focus:ring-2 focus:ring-orange-500 outline-none font-medium appearance-none"
                                     >
                                         <option value="">Select Industry...</option>
                                         <option value="tech">Technology & SaaS</option>
@@ -212,12 +212,12 @@ const DayInTheLife = () => {
                                                 {/* Content Card */}
                                                 <div className="flex-1 bg-white dark:bg-[#13182E] p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 hover:shadow-md transition-all hover:-translate-y-1">
                                                     <div className="flex justify-between items-start mb-2">
-                                                        <h4 className="font-bold text-slate-900 dark:text-white text-lg">{item.activity}</h4>
-                                                        <span className="px-3 py-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs font-bold rounded-full">
+                                                        <h4 className="font-bold text-[var(--color-text-primary)] dark:text-white text-lg">{item.activity}</h4>
+                                                        <span className="px-3 py-1 bg-slate-100 dark:bg-slate-800 text-[var(--color-text-secondary)] dark:text-slate-400 text-xs font-bold rounded-full">
                                                             {item.time}
                                                         </span>
                                                     </div>
-                                                    <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
+                                                    <p className="text-[var(--color-text-secondary)] dark:text-slate-400 leading-relaxed">
                                                         {item.description}
                                                     </p>
                                                     {item.type && (
@@ -230,20 +230,20 @@ const DayInTheLife = () => {
                                         ))}
 
                                         <div className="flex justify-center pt-8">
-                                            <button className="px-6 py-2 bg-slate-200 dark:bg-slate-800 rounded-full text-slate-500 font-bold text-sm hover:bg-slate-300 dark:hover:bg-slate-700 transition-colors">
+                                            <button className="px-6 py-2 bg-slate-200 dark:bg-slate-800 rounded-full text-[var(--color-text-tertiary)] font-bold text-sm hover:bg-slate-300 dark:hover:bg-slate-700 transition-colors">
                                                 End of Day
                                             </button>
                                         </div>
                                     </div>
                                 </motion.div>
                             ) : (
-                                <div className="h-full bg-slate-50 dark:bg-[#13182E]/50 rounded-3xl border-2 border-dashed border-slate-200 dark:border-slate-800 flex flex-col items-center justify-center text-center p-12 space-y-6 min-h-[500px]">
+                                <div className="h-full bg-white dark:bg-[#13182E]/50 rounded-3xl border-2 border-dashed border-[var(--color-border-primary)] dark:border-slate-800 flex flex-col items-center justify-center text-center p-12 space-y-6 min-h-[500px]">
                                     <div className="w-24 h-24 bg-white dark:bg-[#1E2640] rounded-full flex items-center justify-center shadow-sm">
-                                        <Clock className="w-10 h-10 text-slate-300 dark:text-slate-600" />
+                                        <Clock className="w-10 h-10 text-slate-300 dark:text-[var(--color-text-secondary)]" />
                                     </div>
                                     <div className="max-w-xs">
-                                        <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">Build Your Day</h3>
-                                        <p className="text-slate-500 dark:text-slate-400">
+                                        <h3 className="text-xl font-bold text-[var(--color-text-primary)] dark:text-white mb-2">Build Your Day</h3>
+                                        <p className="text-[var(--color-text-tertiary)] dark:text-slate-400">
                                             Enter a job title to generate a realistic, hour-by-hour schedule simulation.
                                         </p>
                                     </div>

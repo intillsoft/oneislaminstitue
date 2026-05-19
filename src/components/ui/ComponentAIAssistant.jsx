@@ -123,7 +123,7 @@ Provide helpful, actionable insights specific to this component. Be concise and 
                   onChange={(e) => setQuestion(e.target.value)}
                   onKeyPress={(e) => e.key === 'Enter' && handleAskAI()}
                   placeholder="Ask a question..."
-                  className="flex-1 px-2 py-1.5 text-xs border border-[#E2E8F0] dark:border-[#1E2640] rounded bg-background dark:bg-[#0A0E27] text-text-primary dark:text-[#E8EAED] focus:outline-none focus:ring-1 focus:ring-workflow-primary"
+                  className="flex-1 px-2 py-1.5 text-xs border border-[#E2E8F0] dark:border-[#1E2640] rounded bg-background dark:bg-[var(--color-bg-dark)] text-text-primary dark:text-[#E8EAED] focus:outline-none focus:ring-1 focus:ring-workflow-primary"
                 />
                 <button
                   onClick={() => handleAskAI()}
@@ -202,7 +202,7 @@ Provide helpful, actionable insights specific to this component. Be concise and 
                 onChange={(e) => setQuestion(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && handleAskAI()}
                 placeholder="Ask a question..."
-                className="flex-1 px-2 py-1.5 text-xs border border-[#E2E8F0] dark:border-[#1E2640] rounded bg-background dark:bg-[#0A0E27] text-text-primary dark:text-[#E8EAED] focus:outline-none focus:ring-1 focus:ring-workflow-primary"
+                className="flex-1 px-2 py-1.5 text-xs border border-[#E2E8F0] dark:border-[#1E2640] rounded bg-background dark:bg-[var(--color-bg-dark)] text-text-primary dark:text-[#E8EAED] focus:outline-none focus:ring-1 focus:ring-workflow-primary"
               />
               <button
                 onClick={() => handleAskAI()}

@@ -49,26 +49,26 @@ const LessonSidebar = ({
                         transition={{ duration: 0.4, ease: "circOut" }}
                         className={`fixed left-0 top-[var(--header-height)] z-50 w-[300px] flex flex-col pointer-events-auto transition-all duration-500 ease-in-out ${
                             isMobile 
-                            ? 'bottom-0 bg-[#0A0E27]/90 backdrop-blur-2xl border-r border-emerald-500/10 rounded-tr-[2.5rem]' 
+                            ? 'bottom-0 bg-[#0A0E27]/90 backdrop-blur-2xl border-r border-[var(--color-primary)]/10 rounded-tr-[2.5rem]' 
                             : 'h-[calc(100vh-calc(var(--header-height)+2rem))] mt-4 ml-4 rounded-3xl bg-[#090C22]/40 backdrop-blur-2xl border border-white/[0.04] shadow-2xl'
                         } overflow-hidden`}
                     >
                         {/* Decorative Background Glows */}
-                        <div className="absolute top-0 left-0 w-full h-64 bg-gradient-to-b from-emerald-500/5 to-transparent pointer-events-none" />
-                        <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-emerald-500/5 to-transparent pointer-events-none" />
+                        <div className="absolute top-0 left-0 w-full h-64 bg-gradient-to-b from-[var(--color-primary)]/5 to-transparent pointer-events-none" />
+                        <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-[var(--color-primary)]/5 to-transparent pointer-events-none" />
                         
                         {/* Sidebar Header - Navigation & Close */}
-                        <div className="flex-shrink-0 h-14 flex items-center justify-between px-6 border-b border-emerald-500/10 relative z-50">
+                        <div className="flex-shrink-0 h-14 flex items-center justify-between px-6 border-b border-[var(--color-primary)]/10 relative z-50">
                             <button 
                                 onClick={() => navigate(`/courses/${courseId}/learn`)}
-                                className="flex items-center gap-3 text-slate-300 hover:text-emerald-400 transition-all group"
+                                className="flex items-center gap-3 text-slate-300 hover:text-[var(--color-primary)] transition-all group"
                             >
-                                <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform text-emerald-500" />
+                                <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform text-[var(--color-primary)]" />
                                 <span className="text-[10px] font-black uppercase tracking-[0.2em]">Overview</span>
                             </button>
                             
                             {isMobile && (
-                                <button onClick={() => setSidebarOpen(false)} className="p-2 rounded-xl text-slate-500 hover:text-white transition-all">
+                                <button onClick={() => setSidebarOpen(false)} className="p-2 rounded-xl text-[var(--color-text-tertiary)] hover:text-white transition-all">
                                     <X size={18} />
                                 </button>
                             )}
@@ -76,21 +76,21 @@ const LessonSidebar = ({
 
                         {/* Module Selector - Simple Dropdown */}
                         <div className="px-5 py-6 relative z-40">
-                            <label className="block text-[8px] font-black text-emerald-500/60 uppercase tracking-[0.4em] mb-3 ml-1">Current Module</label>
+                            <label className="block text-[8px] font-black text-[var(--color-primary)]/60 uppercase tracking-[0.4em] mb-3 ml-1">Current Module</label>
                             
                             <div className="relative">
                                 <button 
                                     onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                                     className={`w-full flex items-center justify-between gap-3 px-4 py-3.5 rounded-2xl border transition-all duration-300 ${
                                         isDropdownOpen 
-                                        ? 'bg-emerald-500/10 border-emerald-500/30 text-white shadow-xl shadow-emerald-500/5' 
-                                        : 'bg-white/[0.03] border-white/[0.04] text-slate-300 hover:border-emerald-500/20 hover:bg-white/[0.06]'
+                                        ? 'bg-[var(--color-primary)]/10 border-[var(--color-primary)]/30 text-white shadow-xl shadow-emerald-500/5' 
+                                        : 'bg-white/[0.03] border-white/[0.04] text-slate-300 hover:border-[var(--color-primary)]/20 hover:bg-white/[0.06]'
                                     }`}
                                 >
                                     <span className="text-[10px] font-black uppercase tracking-widest truncate">
                                         {selectedModule?.title || 'Selecting...'}
                                     </span>
-                                    <ChevronDown size={14} className={`transition-transform duration-300 text-emerald-500 ${isDropdownOpen ? 'rotate-180' : ''}`} />
+                                    <ChevronDown size={14} className={`transition-transform duration-300 text-[var(--color-primary)] ${isDropdownOpen ? 'rotate-180' : ''}`} />
                                 </button>
 
                                 <AnimatePresence>
@@ -116,17 +116,17 @@ const LessonSidebar = ({
                                                             }}
                                                             className={`w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all ${
                                                                 isSelected 
-                                                                ? 'bg-emerald-500/10 text-emerald-400 font-bold' 
+                                                                ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)] font-bold' 
                                                                 : isLocked 
                                                                     ? 'opacity-20 pointer-events-none'
                                                                     : 'text-slate-400 hover:bg-white/[0.04] hover:text-white'
                                                             }`}
                                                         >
                                                             <div className="flex items-center gap-3">
-                                                                <span className="text-[9px] font-black opacity-30 text-emerald-500">{idx + 1}</span>
+                                                                <span className="text-[9px] font-black opacity-30 text-[var(--color-primary)]">{idx + 1}</span>
                                                                 <span className="text-[10px] font-bold uppercase tracking-wider truncate max-w-[160px]">{mod.title}</span>
                                                             </div>
-                                                            {isLocked ? <Lock size={10} /> : isSelected && <Check size={12} className="text-emerald-500" />}
+                                                            {isLocked ? <Lock size={10} /> : isSelected && <Check size={12} className="text-[var(--color-primary)]" />}
                                                         </button>
                                                     );
                                                 })}
@@ -139,7 +139,7 @@ const LessonSidebar = ({
 
                         {/* Lessons List */}
                         <div className="flex-1 overflow-y-auto px-5 pb-8 space-y-2 custom-scrollbar relative z-10">
-                            <label className="block text-[8px] font-black text-slate-500/40 uppercase tracking-[0.4em] mb-4 ml-1">Lessons</label>
+                            <label className="block text-[8px] font-black text-[var(--color-text-tertiary)]/40 uppercase tracking-[0.4em] mb-4 ml-1">Lessons</label>
                             
                             <AnimatePresence mode="wait">
                                 <motion.div
@@ -165,7 +165,7 @@ const LessonSidebar = ({
                                                 }}
                                                 className={`w-full flex items-center justify-between gap-4 px-4 py-3.5 rounded-2xl transition-all border relative group ${
                                                     isActive 
-                                                    ? 'bg-gradient-to-r from-emerald-500/10 to-transparent text-emerald-300 border-emerald-500/10 shadow-lg shadow-emerald-500/5' 
+                                                    ? 'bg-gradient-to-r from-[var(--color-primary)]/10 to-transparent text-[var(--color-primary)] border-[var(--color-primary)]/10 shadow-lg shadow-emerald-500/5' 
                                                     : isLocked 
                                                         ? 'opacity-20 border-transparent'
                                                         : 'text-slate-400 hover:text-white hover:bg-white/[0.03] border-transparent hover:border-white/[0.06]'
@@ -174,23 +174,23 @@ const LessonSidebar = ({
                                                 {isActive && (
                                                     <motion.div 
                                                         layoutId="activeLessonGlow"
-                                                        className="absolute left-2.5 w-1 h-3.5 bg-emerald-500 rounded-full"
+                                                        className="absolute left-2.5 w-1 h-3.5 bg-[var(--color-primary)] rounded-full"
                                                     />
                                                 )}
                                                 
                                                 <div className="flex items-center gap-3 min-w-0 pl-3">
                                                     <div className={`flex-shrink-0 w-5 h-5 flex items-center justify-center rounded-lg text-[8px] font-black border transition-all ${
-                                                        isActive ? 'bg-emerald-500 border-emerald-500/20 text-[#090C22] shadow-lg shadow-emerald-500/10' : 'bg-white/[0.03] border-white/[0.03] text-slate-500 group-hover:text-emerald-400 group-hover:border-emerald-500/20'
+                                                        isActive ? 'bg-[var(--color-primary)] border-[var(--color-primary)]/20 text-[#090C22] shadow-lg shadow-emerald-500/10' : 'bg-white/[0.03] border-white/[0.03] text-[var(--color-text-tertiary)] group-hover:text-[var(--color-primary)] group-hover:border-[var(--color-primary)]/20'
                                                     }`}>
                                                         {isLocked && !isActive ? <Lock size={8} /> : lIndex + 1}
                                                     </div>
-                                                    <span className={`text-[10px] font-black uppercase tracking-wider truncate transition-colors ${isActive ? 'text-emerald-400 animate-pulse-elite' : 'group-hover:text-emerald-500'}`}>
+                                                    <span className={`text-[10px] font-black uppercase tracking-wider truncate transition-colors ${isActive ? 'text-[var(--color-primary)] animate-pulse-elite' : 'group-hover:text-[var(--color-primary)]'}`}>
                                                         {lesson.title}
                                                     </span>
                                                 </div>
                                                 
                                                 {isPast && !isActive && (
-                                                    <div className="w-3.5 h-3.5 rounded-full bg-emerald-500/20 text-emerald-500 flex items-center justify-center">
+                                                    <div className="w-3.5 h-3.5 rounded-full bg-[var(--color-primary)]/20 text-[var(--color-primary)] flex items-center justify-center">
                                                         <Check size={10} strokeWidth={4} />
                                                     </div>
                                                 )}

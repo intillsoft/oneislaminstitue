@@ -38,7 +38,7 @@ const MobileBottomNav = ({ type = 'student' }) => {
         className="pointer-events-auto h-16 w-full max-w-md mx-auto rounded-2xl bg-[#0B0F29]/80 backdrop-blur-xl border border-white/[0.05] shadow-2xl flex items-center justify-around px-2 relative overflow-hidden"
       >
         {/* Soft immersive glow stream underneath */}
-        <div className="absolute inset-0 -z-10 bg-gradient-to-r from-emerald-500/5 via-violet-500/5 to-cyan-500/5 opacity-50" />
+        <div className="absolute inset-0 -z-10 bg-gradient-to-r from-[var(--color-primary)]/5 via-violet-500/5 to-cyan-500/5 opacity-50" />
 
         {items.map((item, idx) => {
           const isActive = location.pathname === item.path || (item.path !== '/' && location.pathname.startsWith(item.path));
@@ -55,18 +55,18 @@ const MobileBottomNav = ({ type = 'student' }) => {
                     whileTap={{ scale: 0.9 }}
                     className={`relative p-2 rounded-xl transition-all duration-300 ${
                       isActive 
-                        ? 'text-white bg-emerald-500/10' 
+                        ? 'text-white bg-[var(--color-primary)]/10' 
                         : 'text-white/40 group-hover:text-white/70'
                     }`}
                   >
                     {isActive && (
                       <motion.div
                         layoutId="activeNavBubble"
-                        className="absolute inset-0 rounded-xl bg-gradient-to-r from-emerald-500/20 to-cyan-500/10 -z-10 border border-emerald-500/30"
+                        className="absolute inset-0 rounded-xl bg-gradient-to-r from-[var(--color-primary)]/20 to-cyan-500/10 -z-10 border border-[var(--color-primary)]/30"
                         transition={{ type: 'spring', stiffness: 300, damping: 30 }}
                       />
                     )}
-                    <Icon name={item.icon} size={20} className={isActive ? 'text-emerald-400' : 'text-white/40'} />
+                    <Icon name={item.icon} size={20} className={isActive ? 'text-[var(--color-primary)]' : 'text-white/40'} />
                   </motion.div>
                   <span className={`text-[9px] font-black uppercase tracking-wider transition-all duration-200 ${
                     isActive ? 'text-white scale-95' : 'text-white/30'

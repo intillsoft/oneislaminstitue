@@ -26,7 +26,7 @@ const BottomNav = () => {
             { label: 'Dashboard', path: '/dashboard', icon: BarChart3, color: 'text-blue-500', bg: 'bg-blue-500/10' },
             { label: 'Applications', path: '/dashboard/applications', icon: 'FileText', color: 'text-indigo-500', bg: 'bg-indigo-500/10' },
             { label: 'Resume AI', path: '/dashboard/resumes', icon: Sparkles, color: 'text-purple-500', bg: 'bg-purple-500/10' },
-            { label: 'Training', path: '/training', icon: Briefcase, color: 'text-emerald-500', bg: 'bg-emerald-500/10' },
+            { label: 'Training', path: '/training', icon: Briefcase, color: 'text-[var(--color-primary)]', bg: 'bg-[var(--color-primary)]/10' },
             { label: 'Billing', path: '/billing', icon: CreditCard, color: 'text-amber-500', bg: 'bg-amber-500/10' },
             { label: 'Settings', path: '/talent/settings', icon: Settings, color: 'text-slate-400', bg: 'bg-slate-500/10' },
         ],
@@ -34,7 +34,7 @@ const BottomNav = () => {
             { label: 'Dashboard', path: '/recruiter/dashboard', icon: BarChart3, color: 'text-blue-500', bg: 'bg-blue-500/10' },
             { label: 'Post Job', path: '/recruiter/jobs', icon: 'Plus', color: 'text-indigo-500', bg: 'bg-indigo-500/10' },
             { label: 'Company', path: '/recruiter/company', icon: 'Building2', color: 'text-purple-500', bg: 'bg-purple-500/10' },
-            { label: 'Talent Hunt', path: '/talent/discover', icon: Search, color: 'text-emerald-500', bg: 'bg-emerald-500/10' },
+            { label: 'Talent Hunt', path: '/talent/discover', icon: Search, color: 'text-[var(--color-primary)]', bg: 'bg-[var(--color-primary)]/10' },
             { label: 'Billing', path: '/billing', icon: CreditCard, color: 'text-amber-500', bg: 'bg-amber-500/10' },
             { label: 'Settings', path: '/talent/settings', icon: Settings, color: 'text-slate-400', bg: 'bg-slate-500/10' },
         ],
@@ -42,7 +42,7 @@ const BottomNav = () => {
             { label: 'Dashboard', path: '/talent/dashboard', icon: BarChart3, color: 'text-blue-500', bg: 'bg-blue-500/10' },
             { label: 'My Gigs', path: '/talent/gigs', icon: Briefcase, color: 'text-indigo-500', bg: 'bg-indigo-500/10' },
             { label: 'Messages', path: '/messages', icon: 'MessageSquare', color: 'text-purple-500', bg: 'bg-purple-500/10' },
-            { label: 'Training', path: '/training', icon: Briefcase, color: 'text-emerald-500', bg: 'bg-emerald-500/10' },
+            { label: 'Training', path: '/training', icon: Briefcase, color: 'text-[var(--color-primary)]', bg: 'bg-[var(--color-primary)]/10' },
             { label: 'Billing', path: '/billing', icon: CreditCard, color: 'text-amber-500', bg: 'bg-amber-500/10' },
             { label: 'Settings', path: '/talent/settings', icon: Settings, color: 'text-slate-400', bg: 'bg-slate-500/10' },
         ],
@@ -95,7 +95,7 @@ const BottomNav = () => {
                         <div className="flex justify-between items-center mb-10">
                             <div>
                                 <h2 className="text-3xl font-[1000] tracking-tighter text-white">Menu</h2>
-                                <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">Navigation Hub</p>
+                                <p className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-tertiary)]">Navigation Hub</p>
                             </div>
                             <button
                                 onClick={() => setIsMenuOpen(false)}
@@ -153,7 +153,7 @@ const BottomNav = () => {
                         </div>
 
                         <div className="absolute bottom-10 left-6 right-6 text-center">
-                            <p className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-600">Workflow Enterprise OS v4.2</p>
+                            <p className="text-[10px] font-black uppercase tracking-[0.3em] text-[var(--color-text-secondary)]">Workflow Enterprise OS v4.2</p>
                         </div>
                     </motion.div>
                 )}

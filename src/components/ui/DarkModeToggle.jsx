@@ -16,7 +16,7 @@ const DarkModeToggle = () => {
       aria-label="Toggle dark mode"
     >
       <motion.div
-        className="absolute top-0.5 w-5 h-5 rounded-full bg-white dark:bg-dark-surface-elevated flex items-center justify-center shadow-md border border-slate-200 dark:border-dark-border"
+        className="absolute top-0.5 w-5 h-5 rounded-full bg-white dark:bg-dark-surface-elevated flex items-center justify-center shadow-md border border-[var(--color-border-primary)] dark:border-dark-border"
         animate={{
           x: isDark ? 20 : 0,
         }}

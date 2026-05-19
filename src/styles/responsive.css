@@ -48,7 +48,7 @@ a,
 }
 
 /* Native selection behavior */
-.selection\:bg-emerald-500\/30::selection {
+.selection\:bg-[var(--color-primary)]\/30::selection {
   background-color: rgb(16 185 129 / 0.3);
 }
 

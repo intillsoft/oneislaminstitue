@@ -13,7 +13,7 @@ const AutopilotLiveLogs = ({ logs = [] }) => {
         switch (type) {
             case 'info': return <Info className="w-3 h-3 text-blue-400" />;
             case 'warning': return <AlertTriangle className="w-3 h-3 text-amber-400" />;
-            case 'success': return <CheckCircle className="w-3 h-3 text-emerald-400" />;
+            case 'success': return <CheckCircle className="w-3 h-3 text-[var(--color-primary)]" />;
             case 'error': return <XCircle className="w-3 h-3 text-rose-400" />;
             default: return <Terminal className="w-3 h-3 text-slate-400" />;
         }
@@ -29,14 +29,14 @@ const AutopilotLiveLogs = ({ logs = [] }) => {
                 <div className="flex gap-1.5">
                     <div className="w-2.5 h-2.5 rounded-full bg-rose-500/20 border border-rose-500/40" />
                     <div className="w-2.5 h-2.5 rounded-full bg-amber-500/20 border border-amber-500/40" />
-                    <div className="w-2.5 h-2.5 rounded-full bg-emerald-500/20 border border-emerald-500/40" />
+                    <div className="w-2.5 h-2.5 rounded-full bg-[var(--color-primary)]/20 border border-[var(--color-primary)]/40" />
                 </div>
             </div>
 
             <div className="p-4 h-[300px] overflow-y-auto font-mono text-[11px] leading-relaxed scrollbar-hide">
                 <AnimatePresence initial={false}>
                     {logs.length === 0 ? (
-                        <div className="h-full flex items-center justify-center text-slate-600 italic">
+                        <div className="h-full flex items-center justify-center text-[var(--color-text-secondary)] italic">
                             Waiting for autopilot activity...
                         </div>
                     ) : (
@@ -47,12 +47,12 @@ const AutopilotLiveLogs = ({ logs = [] }) => {
                                 animate={{ opacity: 1, x: 0 }}
                                 className="flex gap-3 mb-1.5 group"
                             >
-                                <span className="text-slate-600 whitespace-nowrap opacity-50">
+                                <span className="text-[var(--color-text-secondary)] whitespace-nowrap opacity-50">
                                     [{new Date(log.timestamp).toLocaleTimeString([], { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' })}]
                                 </span>
                                 <div className="mt-0.5">{getLogIcon(log.type)}</div>
                                 <span className={`flex-1 ${log.type === 'error' ? 'text-rose-400' :
-                                        log.type === 'success' ? 'text-emerald-400' :
+                                        log.type === 'success' ? 'text-[var(--color-primary)]' :
                                             log.type === 'warning' ? 'text-amber-400' :
                                                 'text-slate-300'
                                     }`}>

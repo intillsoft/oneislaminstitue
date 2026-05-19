@@ -43,7 +43,7 @@ const AIMessageSuggestions = ({ conversationId, context, onSelect }) => {
         <div className="flex items-center gap-4 px-2">
             <div className="flex items-center gap-2 pr-4 border-r border-white/5 h-6">
                 <Icon name="Sparkles" className="w-3.5 h-3.5 text-blue-400" />
-                <span className="text-[10px] font-black uppercase tracking-widest text-slate-500 whitespace-nowrap">Neural Suggests</span>
+                <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-tertiary)] whitespace-nowrap">Neural Suggests</span>
             </div>
             <div className="flex gap-3 overflow-x-auto no-scrollbar py-1">
                 {suggestions.map((suggestion, index) => (
@@ -60,7 +60,7 @@ const AIMessageSuggestions = ({ conversationId, context, onSelect }) => {
                 ))}
                 <button
                     onClick={fetchSuggestions}
-                    className="p-2 text-slate-600 hover:text-blue-400 transition-colors"
+                    className="p-2 text-[var(--color-text-secondary)] hover:text-blue-400 transition-colors"
                     title="Regenerate"
                 >
                     <Icon name="RefreshCw" size={14} />

@@ -45,9 +45,9 @@ const StreakHeatmap = ({ streakData }) => (
         <motion.div key={day.date} initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1 + i * 0.05 }} className="text-center group">
           <div className={`aspect-square rounded-2xl flex flex-col items-center justify-center transition-all border ${day.active
                 ? day.minutes > 30 
-                    ? 'bg-gradient-to-br from-emerald-500 to-teal-600 shadow-lg shadow-emerald-500/20 border-transparent text-white' 
-                    : 'bg-emerald-500/10 border-emerald-500/20 text-emerald-600'
-                : 'bg-surface-elevated border-border text-text-muted group-hover:border-emerald-500/30'
+                    ? 'bg-gradient-to-br from-[var(--color-primary)] to-teal-600 shadow-lg shadow-[var(--color-primary)]/20 border-transparent text-white' 
+                    : 'bg-[var(--color-primary)]/10 border-[var(--color-primary)]/20 text-[var(--color-primary)]'
+                : 'bg-surface-elevated border-border text-text-muted group-hover:border-[var(--color-primary)]/30'
             }`}>
             <span className="text-[10px] font-bold uppercase tracking-wider mb-1 opacity-70">{day.day}</span>
             {day.active ? (
@@ -129,7 +129,7 @@ const StudyProgressTracker = () => {
                     className={`
                         px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all
                         ${activeTab === tab
-                            ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-500/20'
+                            ? 'bg-[var(--color-primary)] text-white shadow-lg shadow-[var(--color-primary)]/20'
                             : 'bg-surface border border-border text-text-muted hover:text-text-primary hover:bg-surface-elevated'
                         }
                     `}
@@ -186,12 +186,12 @@ const StudyProgressTracker = () => {
                                     key={entry.id}
                                     initial={{ opacity: 0, y: 10 }}
                                     animate={{ opacity: 1, y: 0 }}
-                                    className="p-4 rounded-2xl bg-bg border border-border hover:border-emerald-500/30 transition-all cursor-pointer group"
+                                    className="p-4 rounded-2xl bg-bg border border-border hover:border-[var(--color-primary)]/30 transition-all cursor-pointer group"
                                     onClick={() => navigate(`/courses/detail/${entry.course_id}`)}
                                 >
                                     <div className="flex justify-between items-start mb-3">
                                         <div>
-                                            <h4 className="font-bold text-text-primary group-hover:text-emerald-600 transition-colors">{entry.course?.title || 'Untitled Course'}</h4>
+                                            <h4 className="font-bold text-text-primary group-hover:text-[var(--color-primary)] transition-colors">{entry.course?.title || 'Untitled Course'}</h4>
                                             <p className="text-xs text-text-muted">{entry.course?.company || 'Hope Dawah Institute'}</p>
                                         </div>
                                         <div className="px-2 py-1 rounded-lg bg-surface-elevated border border-border">
@@ -215,7 +215,7 @@ const StudyProgressTracker = () => {
                                 <h3 className="text-sm font-bold text-text-muted">No courses started yet</h3>
                                 <button
                                     onClick={() => navigate('/courses')}
-                                    className="mt-4 text-xs font-black text-emerald-600 uppercase tracking-widest hover:underline"
+                                    className="mt-4 text-xs font-black text-[var(--color-primary)] uppercase tracking-widest hover:underline"
                                 >
                                     Browse Curriculum
                                 </button>
@@ -258,7 +258,7 @@ const StudyProgressTracker = () => {
                             cx="60" cy="60" r="54" fill="none" stroke="currentColor" strokeWidth="8"
                             strokeLinecap="round"
                             strokeDasharray={`${(stats?.avgCompletion || 0) * 3.39} 339.3`}
-                            className="text-emerald-500 transition-all duration-1000"
+                            className="text-[var(--color-primary)] transition-all duration-1000"
                           />
                         </svg>
                         <div className="absolute inset-0 flex flex-col items-center justify-center">

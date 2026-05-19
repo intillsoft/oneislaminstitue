@@ -18,50 +18,17 @@ import MobileBottomNav from '../../components/ui/MobileBottomNav';
 import { courseService } from '../../services/jobService';
 import AILoader from '../../components/ui/AILoader';
 
-/* ─── Ambient background pattern for student dashboard ─── */
-const StudentAmbient = () => (
-  <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
-    {/* Soft teal gradient pool - top left */}
-    <div className="absolute -top-32 -left-32 w-[500px] h-[500px] rounded-full bg-emerald-500/[0.06] blur-[100px]" />
-    {/* Cyan pool - bottom right */}
-    <div className="absolute -bottom-24 right-0 w-[400px] h-[400px] rounded-full bg-cyan-500/[0.05] blur-[90px]" />
-    {/* Very subtle grid */}
-    <div
-      className="absolute inset-0 opacity-[0.018]"
-      style={{
-        backgroundImage: `
-          linear-gradient(rgba(16,185,129,0.5) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(16,185,129,0.5) 1px, transparent 1px)
-        `,
-        backgroundSize: '48px 48px'
-      }}
-    />
-  </div>
-);
-
-/* ─── Quick-stat pill shown in greeting header ─── */
-const StatPill = ({ icon: Icon, value, label, color }) => (
-  <motion.div
-    whileHover={{ scale: 1.04 }}
-    className={`flex items-center gap-2 px-4 py-2 rounded-full border bg-white dark:bg-white/[0.03] shadow-sm dark:shadow-none ${color} backdrop-blur-sm`}
-  >
-    <Icon size={12} />
-    <span className="text-xs font-bold tracking-wide">{value}</span>
-    <span className="text-[10px] text-slate-500 dark:text-white/40 hidden sm:block">{label}</span>
-  </motion.div>
-);
-
 /* ─── Tab button ─── */
 const TabBtn = ({ active, onClick, icon: TabIcon, label }) => (
   <button
     onClick={onClick}
-    className={`relative flex items-center gap-2 px-4 py-2 rounded-xl text-[11px] font-bold uppercase tracking-widest transition-all duration-200 whitespace-nowrap ${
+    className={`relative flex items-center gap-2 px-5 py-2 rounded-full text-[12px] font-bold transition-all duration-150 whitespace-nowrap ${
       active
-        ? 'text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-500/20 shadow-sm dark:shadow-none'
-        : 'text-slate-400 dark:text-white/30 hover:text-slate-900 hover:bg-slate-100 dark:hover:text-white/70 dark:hover:bg-white/[0.04]'
+        ? 'text-white bg-[var(--color-primary)] shadow-sm'
+        : 'text-[var(--color-text-tertiary)] hover:text-[var(--color-primary)] hover:bg-[var(--color-primary-light)]'
     }`}
   >
-    <TabIcon size={13} />
+    <TabIcon size={14} />
     {label}
   </button>
 );
@@ -73,7 +40,6 @@ const TABS = [
 ];
 
 const StudentDashboard = () => {
-  // ─── Smartphone Detection ───
   const [isMobile, setIsMobile] = useState(false);
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 1024);
@@ -170,9 +136,9 @@ const StudentDashboard = () => {
         return <SavedCourses />;
       default:
         return (
-          <div className="text-center py-20 bg-white dark:bg-white/[0.02] shadow-sm dark:shadow-none rounded-2xl border border-slate-200 dark:border-emerald-500/10">
-            <Icon name="Search" size={48} className="mx-auto text-slate-300 dark:text-white/10 mb-4" />
-            <p className="text-slate-500 dark:text-white/30 font-bold text-sm">Content for this module is being curated.</p>
+          <div className="text-center py-20 bg-white rounded-xl border border-[var(--color-card-border)]" style={{ boxShadow: 'var(--shadow-card)' }}>
+            <Icon name="Search" size={48} className="mx-auto text-[var(--color-border-secondary)] mb-4" />
+            <p className="text-[var(--color-text-tertiary)] font-medium text-sm">Content for this module is being curated.</p>
           </div>
         );
     }
@@ -181,7 +147,7 @@ const StudentDashboard = () => {
   if (authLoading || loading) {
     return (
       <div className="flex flex-col items-center justify-center py-32">
-        <AILoader variant="pulse" text="Syncing Academic Profile..." />
+        <AILoader variant="pulse" text="Loading dashboard..." />
       </div>
     );
   }
@@ -190,17 +156,17 @@ const StudentDashboard = () => {
     return (
       <div className="flex items-center justify-center py-32">
         <div className="text-center">
-          <div className="w-20 h-20 rounded-2xl bg-white/5 flex items-center justify-center mx-auto mb-6 border border-white/10">
-            <Icon name="Lock" className="w-10 h-10 text-white/20" />
+          <div className="w-20 h-20 rounded-xl bg-[var(--color-bg-secondary)] flex items-center justify-center mx-auto mb-6 border border-[var(--color-card-border)]">
+            <Icon name="Lock" className="w-10 h-10 text-[var(--color-text-tertiary)]" />
           </div>
-          <h2 className="text-2xl font-black text-slate-900 dark:text-white mb-2">Sign in required</h2>
-          <p className="text-slate-500 dark:text-white/40 mb-8 font-medium">Please sign in to access your dashboard</p>
+          <h2 className="text-2xl font-bold text-[var(--color-text-primary)] mb-2">Sign in required</h2>
+          <p className="text-[var(--color-text-tertiary)] mb-8 font-medium">Please sign in to access your dashboard</p>
           <Link
             to="/login"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-emerald-600 text-white rounded-xl hover:bg-emerald-500 transition-all font-bold text-sm shadow-lg shadow-emerald-500/20"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--color-primary)] text-white rounded-md hover:bg-[var(--color-primary-hover)] transition-all font-bold text-sm"
           >
             <Icon name="LogIn" size={18} />
-            Secure Entry
+            Sign In
           </Link>
         </div>
       </div>
@@ -208,18 +174,17 @@ const StudentDashboard = () => {
   }
 
   const mobileActions = [
-    { label: 'My Courses', icon: BookOpen, path: '/dashboard/enrollments', color: 'text-emerald-500' },
-    { label: 'Saved', icon: Bookmark, path: '/dashboard/saved', color: 'text-cyan-500' },
-    { label: 'Certificates', icon: Award, path: '/dashboard/certificates', color: 'text-amber-500' },
-    { label: 'Browse', icon: Search, path: '/courses', color: 'text-sky-500' },
-    { label: 'Profile', icon: User, path: '/profile', color: 'text-violet-500' },
-    { label: 'AI Help', icon: Sparkles, path: '/ai-chat', color: 'text-fuchsia-500' },
+    { label: 'My Courses', icon: BookOpen, path: '/dashboard/enrollments', color: 'text-[var(--color-primary)]' },
+    { label: 'Saved', icon: Bookmark, path: '/dashboard/saved', color: 'text-[var(--color-stat-border-3)]' },
+    { label: 'Certificates', icon: Award, path: '/dashboard/certificates', color: 'text-[var(--color-stat-border-4)]' },
+    { label: 'Browse', icon: Search, path: '/courses', color: 'text-[var(--color-primary)]' },
+    { label: 'Profile', icon: User, path: '/profile', color: 'text-[var(--color-stat-border-4)]' },
+    { label: 'AI Help', icon: Sparkles, path: '/ai-chat', color: 'text-[var(--color-primary)]' },
   ];
 
   if (isMobile) {
     return (
-      <div className="relative pb-24 pt-6 px-4 min-h-screen bg-[#0A0E27] text-white selection:bg-emerald-500/30">
-        <StudentAmbient />
+      <div className="relative pb-24 pt-6 px-4 min-h-screen bg-[var(--color-bg-secondary)]">
         <DashboardAIAssistant
           dashboardType="student"
           contextData={{ metrics, profileCompletion: userData?.profileCompletion, activeTab }}
@@ -229,43 +194,42 @@ const StudentDashboard = () => {
         <header className="flex items-center justify-between mb-8 px-2">
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-              <span className="text-[9px] font-black text-emerald-400/70 uppercase tracking-widest leading-none">Scholar Account</span>
+              <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-primary)] animate-pulse" />
+              <span className="text-[9px] font-bold text-[var(--color-primary)] uppercase tracking-widest leading-none">Scholar Account</span>
             </div>
-            <h1 className="text-2xl font-black text-white tracking-tight">{getGreeting()}</h1>
+            <h1 className="text-2xl font-bold text-[var(--color-text-primary)] tracking-tight">{getGreeting()}</h1>
           </div>
-          <button onClick={() => navigate('/notifications')} className="w-10 h-10 rounded-xl bg-white/[0.03] border border-emerald-500/10 flex items-center justify-center text-emerald-400">
+          <button onClick={() => navigate('/notifications')} className="w-10 h-10 rounded-lg bg-white border border-[var(--color-card-border)] flex items-center justify-center text-[var(--color-text-tertiary)]">
             <Icon name="Bell" size={18} />
           </button>
         </header>
 
-        {/* 📊 Compact Stat Bubbles */}
+        {/* 📊 Compact Stat Cards */}
         <div className="grid grid-cols-2 gap-3 mb-8">
-          <div className="relative overflow-hidden rounded-2xl bg-white/[0.02] border border-emerald-500/10 p-4">
-            <div className="absolute top-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-orange-500 to-transparent" />
-            <p className="text-[8px] font-black text-orange-200/40 uppercase tracking-[0.2em] mb-1">Enrolled</p>
-            <p className="text-lg font-black text-white">{metrics.enrollmentsActive}</p>
+          <div className="relative overflow-hidden rounded-xl bg-white border border-[var(--color-card-border)] p-4" style={{ borderTopWidth: '3px', borderTopColor: 'var(--color-stat-border-1)' }}>
+            <p className="text-[10px] font-medium text-[var(--color-text-tertiary)] uppercase tracking-wider mb-1">Enrolled</p>
+            <p className="text-lg font-bold text-[var(--color-text-primary)]">{metrics.enrollmentsActive}</p>
           </div>
-          <div className="relative overflow-hidden rounded-2xl bg-white/[0.02] border border-emerald-500/10 p-4">
-            <div className="absolute top-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-amber-500 to-transparent" />
-            <p className="text-[8px] font-black text-amber-200/40 uppercase tracking-[0.2em] mb-1">Certificates</p>
-            <p className="text-lg font-black text-white">{metrics.certificatesEarned}</p>
+          <div className="relative overflow-hidden rounded-xl bg-white border border-[var(--color-card-border)] p-4" style={{ borderTopWidth: '3px', borderTopColor: 'var(--color-stat-border-4)' }}>
+            <p className="text-[10px] font-medium text-[var(--color-text-tertiary)] uppercase tracking-wider mb-1">Certificates</p>
+            <p className="text-lg font-bold text-[var(--color-text-primary)]">{metrics.certificatesEarned}</p>
           </div>
         </div>
 
-        {/* 📱 2x2 Dashboard App Navigation */}
-        <p className="px-2 mb-3 text-[9px] font-black text-emerald-200/40 uppercase tracking-[0.3em]">Quick Utilities</p>
+        {/* 📱 Quick Utilities */}
+        <p className="px-2 mb-3 text-[10px] font-medium text-[var(--color-text-tertiary)] uppercase tracking-wider">Quick Utilities</p>
         <div className="grid grid-cols-2 gap-4">
           {mobileActions.map((item, idx) => (
             <button
               key={idx}
               onClick={() => navigate(item.path)}
-              className="flex flex-col items-center justify-center p-6 bg-white/[0.03] border border-emerald-500/10 rounded-3xl aspect-square hover:bg-emerald-500/5 active:scale-95 transition-all duration-200"
+              className="flex flex-col items-center justify-center p-6 bg-white border border-[var(--color-card-border)] rounded-xl aspect-square hover:bg-[var(--color-primary-light)] active:scale-95 transition-all duration-150"
+              style={{ boxShadow: 'var(--shadow-card)' }}
             >
-              <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mb-4 text-emerald-400 shadow-md">
+              <div className="w-12 h-12 rounded-xl bg-[var(--color-primary-light)] border border-[var(--color-border-secondary)] flex items-center justify-center mb-4">
                 <item.icon size={24} className={item.color} />
               </div>
-              <span className="text-[11px] font-black uppercase tracking-[0.12em] text-slate-200">{item.label}</span>
+              <span className="text-[11px] font-bold uppercase tracking-wider text-[var(--color-text-secondary)]">{item.label}</span>
             </button>
           ))}
         </div>
@@ -275,50 +239,47 @@ const StudentDashboard = () => {
   }
 
   return (
-    <div className="relative pb-24 md:pb-16 min-h-screen bg-[#080B24] text-white selection:bg-emerald-500/30">
-      <StudentAmbient />
+    <div className="relative pb-16 min-h-screen">
       <DashboardAIAssistant
         dashboardType="student"
         contextData={{ metrics, profileCompletion: userData?.profileCompletion, activeTab }}
       />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <div className="flex flex-col gap-8">
+      <div className="relative z-10 max-w-7xl mx-auto py-6">
+        <div className="flex flex-col gap-6">
 
-          {/* 🌟 PREMIUM HEADER BENTO CAP */}
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 p-8 bg-[#0C1236]/30 backdrop-blur-xl border border-white/[0.04] rounded-3xl relative overflow-hidden shadow-2xl">
-            <div className="absolute top-0 right-0 w-80 h-80 bg-emerald-500/[0.04] blur-3xl rounded-full -z-10" />
-            
+          {/* 🌟 HEADER CARD */}
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 p-8 bg-white border border-[var(--color-card-border)] rounded-xl relative overflow-hidden" style={{ boxShadow: '0 2px 8px rgba(0,120,212,0.08)' }}>
             <div>
               <div className="flex items-center gap-2 mb-3">
-                <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                <span className="text-[10px] font-black text-emerald-400/70 uppercase tracking-[0.25em]">Scholar Space</span>
+                <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-primary)] animate-pulse" />
+                <span className="text-[10px] font-bold text-[var(--color-primary)] uppercase tracking-widest">Scholar Space</span>
               </div>
-              <h1 className="text-3xl sm:text-4xl font-black text-white leading-tight">
-                {getGreeting()}, <span className="text-emerald-400">{userData?.name}</span>
+              <h1 className="text-3xl sm:text-4xl font-bold text-[var(--color-text-primary)] leading-tight">
+                {getGreeting()}, <span className="text-[var(--color-primary)]">{userData?.name}</span>
               </h1>
-              <p className="text-white/40 text-sm font-medium mt-2">Manage your academic courses and progress tracker.</p>
+              <p className="text-[var(--color-text-tertiary)] text-sm font-medium mt-2">Manage your academic courses and progress tracker.</p>
             </div>
 
             <div className="flex items-center gap-3">
-              <Link to="/courses" className="flex items-center gap-2 px-5 py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-bold text-xs uppercase tracking-wider shadow-lg shadow-emerald-600/20 transition-all hover:scale-105">
+              <Link to="/courses" className="flex items-center gap-2 px-5 py-3 bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white rounded-md font-bold text-xs uppercase tracking-wider transition-all">
                 <Search size={13} /> Find Courses
               </Link>
-              <Link to="/profile" className="flex items-center gap-2 px-5 py-3 bg-white/[0.05] hover:bg-white/[0.08] text-white/80 rounded-xl font-bold text-xs uppercase tracking-wider border border-white/[0.05] transition-all">
+              <Link to="/profile" className="flex items-center gap-2 px-5 py-3 bg-white hover:bg-[var(--color-primary-light)] text-[var(--color-primary)] rounded-md font-bold text-xs uppercase tracking-wider border border-[var(--color-primary)] transition-all">
                 <User size={13} /> Profile
               </Link>
             </div>
           </div>
 
-          {/* 🍱 TAB NAVIGATION BENTO BRIDGE */}
-          <div className="flex items-center gap-2 p-1.5 bg-[#0C1236]/30 border border-white/[0.03] backdrop-blur-md rounded-2xl self-start">
+          {/* TAB NAVIGATION */}
+          <div className="flex items-center gap-2 p-1.5 bg-white border border-[var(--color-card-border)] rounded-full self-start" style={{ boxShadow: 'var(--shadow-card)' }}>
             {TABS.map(tab => (
               <TabBtn key={tab.id} active={activeTab === tab.id} onClick={() => setActiveTab(tab.id)} icon={tab.icon} label={tab.label} />
             ))}
           </div>
 
-          {/* 🍱 MAIN CONTENT BENTO WORKSPACE */}
-          <motion.div key={activeTab} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.25, ease: 'easeOut' }}>
+          {/* MAIN CONTENT */}
+          <motion.div key={activeTab} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.2, ease: 'easeOut' }}>
             {renderTabContent()}
           </motion.div>
 

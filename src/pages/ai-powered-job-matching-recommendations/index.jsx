@@ -104,7 +104,7 @@ const AIPoweredJobMatchingRecommendations = () => {
             <Icon name="Sparkles" className="animate-pulse text-workflow-primary" size={32} />
           </div>
         </div>
-        <p className="mt-8 text-slate-500 dark:text-slate-400 font-bold uppercase tracking-widest text-[10px]">
+        <p className="mt-8 text-[var(--color-text-tertiary)] dark:text-slate-400 font-bold uppercase tracking-widest text-[10px]">
           Synthesizing Neural Career Vectors...
         </p>
       </div>
@@ -135,22 +135,22 @@ const AIPoweredJobMatchingRecommendations = () => {
                 <span className="w-1 h-1 rounded-full bg-slate-300 dark:bg-slate-700" />
                 <span className="text-[10px] font-black uppercase tracking-widest text-slate-400"> Real-time Match Synchronization </span>
               </div>
-              <h1 className="text-4xl lg:text-5xl font-[950] tracking-[-0.05em] text-slate-900 dark:text-white mb-2">
+              <h1 className="text-4xl lg:text-5xl font-[950] tracking-[-0.05em] text-[var(--color-text-primary)] dark:text-white mb-2">
                 Match <span className="text-workflow-primary">Intelligence</span>
               </h1>
-              <p className="text-slate-500 dark:text-slate-400 font-medium max-w-2xl leading-relaxed">
+              <p className="text-[var(--color-text-tertiary)] dark:text-slate-400 font-medium max-w-2xl leading-relaxed">
                 {filteredJobs?.length || 0} high-fidelity career nodes analyzed against your elite profile architecture.
               </p>
             </div>
             <div className="flex gap-3">
               <button
                 onClick={() => setShowChatbot(true)}
-                className="h-14 px-8 rounded-2xl bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-900 dark:text-white flex items-center gap-3 font-black text-xs uppercase tracking-widest hover:border-workflow-primary/50 transition-all shadow-xl group"
+                className="h-14 px-8 rounded-2xl bg-white dark:bg-white/5 border border-[var(--color-border-primary)] dark:border-white/10 text-[var(--color-text-primary)] dark:text-white flex items-center gap-3 font-black text-xs uppercase tracking-widest hover:border-workflow-primary/50 transition-all shadow-xl group"
               >
                 <Icon name="MessageCircle" size={18} className="text-workflow-primary group-hover:scale-110 transition-transform" />
                 <span>AI Advisor</span>
               </button>
-              <Link to="/jobs" className="h-14 px-8 rounded-2xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 flex items-center gap-3 font-black text-xs uppercase tracking-widest hover:scale-[1.02] active:scale-[0.98] transition-all shadow-glow">
+              <Link to="/jobs" className="h-14 px-8 rounded-2xl bg-slate-900 dark:bg-white text-white dark:text-[var(--color-text-primary)] flex items-center gap-3 font-black text-xs uppercase tracking-widest hover:scale-[1.02] active:scale-[0.98] transition-all shadow-glow">
                 <Icon name="BarChart3" size={18} />
                 <span>Market Matrix</span>
               </Link>
@@ -171,8 +171,8 @@ const AIPoweredJobMatchingRecommendations = () => {
             label="Success Predictor"
             value="92%"
             icon="TrendingUp"
-            color="text-emerald-500"
-            bgColor="bg-emerald-500/10"
+            color="text-[var(--color-primary)]"
+            bgColor="bg-[var(--color-primary)]/10"
           />
           <StatCard
             label="Active Matches"
@@ -193,7 +193,7 @@ const AIPoweredJobMatchingRecommendations = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
           {/* Sidebar Controls */}
           <aside className="lg:col-span-3 space-y-8">
-            <div className="glass-panel p-8 rounded-[2rem] border border-slate-200 dark:border-white/5 bg-white/50 dark:bg-white/5 backdrop-blur-xl">
+            <div className="glass-panel p-8 rounded-[2rem] border border-[var(--color-border-primary)] dark:border-white/5 bg-white/50 dark:bg-white/5 backdrop-blur-xl">
               <SmartFilters
                 filters={filters}
                 onFilterChange={handleFilterChange}
@@ -201,7 +201,7 @@ const AIPoweredJobMatchingRecommendations = () => {
             </div>
 
             {userProfile && (
-              <div className="glass-panel p-8 rounded-[2rem] border border-slate-200 dark:border-white/5 bg-white/50 dark:bg-white/5 backdrop-blur-xl">
+              <div className="glass-panel p-8 rounded-[2rem] border border-[var(--color-border-primary)] dark:border-white/5 bg-white/50 dark:bg-white/5 backdrop-blur-xl">
                 <SkillMapping
                   userSkills={userProfile?.skills || []}
                   recommendedSkills={['GraphQL', 'System Design', 'Web3 Architecture']}
@@ -213,12 +213,12 @@ const AIPoweredJobMatchingRecommendations = () => {
           {/* Main Matches Feed */}
           <main className="lg:col-span-9 space-y-8">
             {filteredJobs?.length === 0 ? (
-              <div className="glass-panel py-32 rounded-[3rem] border border-slate-200 dark:border-white/5 bg-slate-50/50 dark:bg-white/5 flex flex-col items-center text-center">
+              <div className="glass-panel py-32 rounded-[3rem] border border-[var(--color-border-primary)] dark:border-white/5 bg-white/50 dark:bg-white/5 flex flex-col items-center text-center">
                 <div className="w-24 h-24 rounded-full bg-slate-100 dark:bg-white/5 flex items-center justify-center mb-8">
                   <Icon name="Search" size={40} className="text-slate-300" />
                 </div>
-                <h3 className="text-3xl font-black text-slate-900 dark:text-white mb-3 tracking-tighter">Zero Intelligence Matches</h3>
-                <p className="text-slate-500 dark:text-slate-400 max-w-sm mb-10 font-medium">
+                <h3 className="text-3xl font-black text-[var(--color-text-primary)] dark:text-white mb-3 tracking-tighter">Zero Intelligence Matches</h3>
+                <p className="text-[var(--color-text-tertiary)] dark:text-slate-400 max-w-sm mb-10 font-medium">
                   The neural engine found no nodes matching your current threshold. Consider lowering your precision filters.
                 </p>
                 <button
@@ -230,12 +230,12 @@ const AIPoweredJobMatchingRecommendations = () => {
               </div>
             ) : (
               <div className="space-y-8">
-                <div className="mb-8 border-b border-slate-200 dark:border-white/10 pb-6">
-                  <h2 className="text-2xl font-[950] text-slate-900 dark:text-white tracking-tighter uppercase mb-1 flex items-center gap-2">
+                <div className="mb-8 border-b border-[var(--color-border-primary)] dark:border-white/10 pb-6">
+                  <h2 className="text-2xl font-[950] text-[var(--color-text-primary)] dark:text-white tracking-tighter uppercase mb-1 flex items-center gap-2">
                     <Icon name="Zap" className="text-workflow-primary" size={24} />
                     AI Power Matches
                   </h2>
-                  <p className="text-xs font-bold text-slate-500 uppercase tracking-[0.2em] opacity-70">
+                  <p className="text-xs font-bold text-[var(--color-text-tertiary)] uppercase tracking-[0.2em] opacity-70">
                     Curated based on your elite profile architecture
                   </p>
                 </div>
@@ -267,7 +267,7 @@ const AIPoweredJobMatchingRecommendations = () => {
 
             {/* Market Insights at bottom of feed */}
             {userProfile && (
-              <div className="mt-16 pt-16 border-t border-slate-200 dark:border-white/10">
+              <div className="mt-16 pt-16 border-t border-[var(--color-border-primary)] dark:border-white/10">
                 <MarketInsights userProfile={userProfile} />
               </div>
             )}
@@ -296,7 +296,7 @@ const AIPoweredJobMatchingRecommendations = () => {
 };
 
 const StatCard = ({ label, value, icon, color, bgColor }) => (
-  <div className="glass-panel p-8 rounded-[2rem] border border-slate-200 dark:border-white/5 bg-white/50 dark:bg-white/5 backdrop-blur-xl flex items-center justify-between group hover:scale-[1.02] transition-all hover:shadow-2xl">
+  <div className="glass-panel p-8 rounded-[2rem] border border-[var(--color-border-primary)] dark:border-white/5 bg-white/50 dark:bg-white/5 backdrop-blur-xl flex items-center justify-between group hover:scale-[1.02] transition-all hover:shadow-2xl">
     <div>
       <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-2">{label}</p>
       <p className={`text-4xl font-[950] ${color} tracking-tighter leading-none`}>{value}</p>

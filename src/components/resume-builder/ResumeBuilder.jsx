@@ -268,7 +268,7 @@ const ResumeBuilder = ({ initialData = null, onSave, onExport }) => {
                           </span>
                         </div>
                         {exists && (
-                          <span className="text-[9px] font-black text-emerald-500 uppercase tracking-widest bg-emerald-500/10 px-2 py-0.5 rounded">
+                          <span className="text-[9px] font-black text-[var(--color-primary)] uppercase tracking-widest bg-[var(--color-primary)]/10 px-2 py-0.5 rounded">
                             Added
                           </span>
                         )}

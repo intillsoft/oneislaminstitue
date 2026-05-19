@@ -127,13 +127,13 @@ const DashboardMobileNav = () => {
                 <Link
                   to={item.path}
                   className={`flex flex-col items-center justify-center gap-1 px-3 py-1 rounded-xl transition-all ${
-                    active ? 'text-emerald-500' : 'text-text-muted hover:text-text-primary'
+                    active ? 'text-[var(--color-primary)]' : 'text-text-muted hover:text-text-primary'
                   }`}
                 >
                   <Icon
                     name={item.icon}
                     size={22}
-                    className={active ? 'text-emerald-500' : 'opacity-50'}
+                    className={active ? 'text-[var(--color-primary)]' : 'opacity-50'}
                   />
                   <span className={`text-[8px] font-black uppercase tracking-tighter whitespace-nowrap ${active ? 'opacity-100' : 'opacity-70'}`}>
                     {item.label}
@@ -151,7 +151,7 @@ const DashboardMobileNav = () => {
             <Icon
               name="MoreHorizontal"
               size={22}
-              className={showMore ? 'text-emerald-600' : 'opacity-50'}
+              className={showMore ? 'text-[var(--color-primary)]' : 'opacity-50'}
             />
             <span className="text-[8px] font-black uppercase tracking-tighter whitespace-nowrap opacity-70">
               More
@@ -177,44 +177,44 @@ const DashboardMobileNav = () => {
               className="fixed bottom-20 left-0 right-0 z-40"
             >
               <div className="max-w-6xl mx-auto px-4">
-                <div className="bg-surface dark:bg-emerald-950/95 backdrop-blur-xl rounded-2xl border border-emerald-500/20 shadow-2xl p-4 space-y-4">
+                <div className="bg-surface dark:bg-emerald-950/95 backdrop-blur-xl rounded-2xl border border-[var(--color-primary)]/20 shadow-2xl p-4 space-y-4">
                   
                   {/* Role Switcher Section - Only for Admin/Instructors */}
                   {(baseRole === 'admin' || baseRole === 'instructor') && (
-                    <div className="pb-4 border-b border-emerald-500/10">
-                      <p className="text-[10px] font-black text-emerald-500/50 uppercase tracking-[0.2em] mb-3">Academic Perspective</p>
+                    <div className="pb-4 border-b border-[var(--color-primary)]/10">
+                      <p className="text-[10px] font-black text-[var(--color-primary)]/50 uppercase tracking-[0.2em] mb-3">Academic Perspective</p>
                       <div className="grid grid-cols-1 gap-2">
                         {baseRole === 'admin' && (
                           <button
                             onClick={() => handleRoleSwitch('admin')}
-                            className={`flex items-center justify-between px-4 py-3 rounded-xl text-sm font-bold transition-all ${userRole === 'admin' ? 'bg-emerald-600/20 text-emerald-400 border border-emerald-500/20' : 'bg-white/5 text-text-secondary'}`}
+                            className={`flex items-center justify-between px-4 py-3 rounded-xl text-sm font-bold transition-all ${userRole === 'admin' ? 'bg-[var(--color-primary)]/20 text-[var(--color-primary)] border border-[var(--color-primary)]/20' : 'bg-white/5 text-text-secondary'}`}
                           >
                             <div className="flex items-center gap-3">
                               <Icon name="Shield" size={18} />
                               <span>Administrator</span>
                             </div>
-                            {userRole === 'admin' && <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)]" />}
+                            {userRole === 'admin' && <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-primary)] shadow-[0_0_8px_rgba(16,185,129,0.8)]" />}
                           </button>
                         )}
                         <button
                           onClick={() => handleRoleSwitch('instructor')}
-                          className={`flex items-center justify-between px-4 py-3 rounded-xl text-sm font-bold transition-all ${userRole === 'instructor' ? 'bg-emerald-600/20 text-emerald-400 border border-emerald-500/20' : 'bg-white/5 text-text-secondary'}`}
+                          className={`flex items-center justify-between px-4 py-3 rounded-xl text-sm font-bold transition-all ${userRole === 'instructor' ? 'bg-[var(--color-primary)]/20 text-[var(--color-primary)] border border-[var(--color-primary)]/20' : 'bg-white/5 text-text-secondary'}`}
                         >
                           <div className="flex items-center gap-3">
                             <Icon name="Workflow" size={18} />
                             <span>Instructor</span>
                           </div>
-                          {userRole === 'instructor' && <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)]" />}
+                          {userRole === 'instructor' && <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-primary)] shadow-[0_0_8px_rgba(16,185,129,0.8)]" />}
                         </button>
                         <button
                           onClick={() => handleRoleSwitch('student')}
-                          className={`flex items-center justify-between px-4 py-3 rounded-xl text-sm font-bold transition-all ${userRole === 'student' ? 'bg-emerald-600/20 text-emerald-400 border border-emerald-500/20' : 'bg-white/5 text-text-secondary'}`}
+                          className={`flex items-center justify-between px-4 py-3 rounded-xl text-sm font-bold transition-all ${userRole === 'student' ? 'bg-[var(--color-primary)]/20 text-[var(--color-primary)] border border-[var(--color-primary)]/20' : 'bg-white/5 text-text-secondary'}`}
                         >
                           <div className="flex items-center gap-3">
                             <Icon name="Users" size={18} />
                             <span>Scholar</span>
                           </div>
-                          {userRole === 'student' && <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)]" />}
+                          {userRole === 'student' && <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-primary)] shadow-[0_0_8px_rgba(16,185,129,0.8)]" />}
                         </button>
                       </div>
                     </div>
@@ -234,7 +234,7 @@ const DashboardMobileNav = () => {
                             onClick={() => setShowMore(false)}
                             className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all font-bold text-sm ${
                               active
-                                ? 'bg-emerald-600/10 text-emerald-600 border border-emerald-600/20'
+                                ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)] border border-emerald-600/20'
                                 : 'text-text-secondary hover:text-text-primary hover:bg-surface-elevated dark:hover:bg-white/5'
                             }`}
                           >

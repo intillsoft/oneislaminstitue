@@ -23,7 +23,7 @@ const UpgradeModal = ({ isOpen, onClose, featureName, requiredPlan = 'Profession
                     initial={{ scale: 0.95, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
                     exit={{ scale: 0.95, opacity: 0 }}
-                    className="relative bg-white dark:bg-slate-900 w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden border border-slate-200 dark:border-white/10"
+                    className="relative bg-white dark:bg-slate-900 w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden border border-[var(--color-border-primary)] dark:border-white/10"
                 >
                     <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-br from-workflow-primary to-workflow-accent opacity-20" />
 
@@ -31,7 +31,7 @@ const UpgradeModal = ({ isOpen, onClose, featureName, requiredPlan = 'Profession
                         onClick={onClose}
                         className="absolute top-4 right-4 p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/5 transition-colors z-20"
                     >
-                        <X size={20} className="text-slate-500" />
+                        <X size={20} className="text-[var(--color-text-tertiary)]" />
                     </button>
 
                     <div className="relative p-8 pt-10 text-center z-10">
@@ -39,16 +39,16 @@ const UpgradeModal = ({ isOpen, onClose, featureName, requiredPlan = 'Profession
                             <Crown size={32} className="text-white" />
                         </div>
 
-                        <h2 className="text-2xl font-black text-slate-900 dark:text-white mb-2">
+                        <h2 className="text-2xl font-black text-[var(--color-text-primary)] dark:text-white mb-2">
                             Unlock {featureName}
                         </h2>
-                        <p className="text-slate-500 dark:text-slate-400 mb-8">
+                        <p className="text-[var(--color-text-tertiary)] dark:text-slate-400 mb-8">
                             You've reached the limit for your current plan. Upgrade to
                             <span className="font-bold text-workflow-primary"> {requiredPlan} </span>
                             to continue using this advanced AI tool.
                         </p>
 
-                        <div className="space-y-3 mb-8 text-left bg-slate-50 dark:bg-white/5 p-6 rounded-xl border border-slate-100 dark:border-white/5">
+                        <div className="space-y-3 mb-8 text-left bg-white dark:bg-white/5 p-6 rounded-xl border border-slate-100 dark:border-white/5">
                             <div className="flex items-center gap-3">
                                 <Check size={16} className="text-green-500" />
                                 <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Unlimited Career Simulations</span>
@@ -66,7 +66,7 @@ const UpgradeModal = ({ isOpen, onClose, featureName, requiredPlan = 'Profession
                         <div className="flex gap-3">
                             <button
                                 onClick={onClose}
-                                className="flex-1 py-3 rounded-xl font-bold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-white/5 transition-colors"
+                                className="flex-1 py-3 rounded-xl font-bold text-[var(--color-text-secondary)] dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-white/5 transition-colors"
                             >
                                 Maybe Later
                             </button>

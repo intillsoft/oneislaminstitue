@@ -25,7 +25,7 @@ const TrainingHub = () => {
             title: 'Stipend & Scholarship Negotiator',
             description: 'Pratice high-stakes scholarship and stipend discussions with an AI financial aid strategist.',
             icon: DollarSign,
-            color: 'from-emerald-500 to-green-600',
+            color: 'from-[var(--color-primary)] to-green-600',
             route: '/dashboard/negotiation',
             features: ['Tuition Grant Intelligence', 'Stipend Counter-offers', 'Funding Confidence Training']
         },
@@ -63,7 +63,7 @@ const TrainingHub = () => {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
                 <button
                     onClick={() => navigate('/dashboard')}
-                    className="mb-6 flex items-center gap-2 text-slate-500 hover:text-white transition-colors text-sm font-bold uppercase tracking-widest"
+                    className="mb-6 flex items-center gap-2 text-[var(--color-text-tertiary)] hover:text-white transition-colors text-sm font-bold uppercase tracking-widest"
                 >
                     <ArrowRight className="rotate-180" size={16} />
                     Back to Dashboard
@@ -110,7 +110,7 @@ const TrainingHub = () => {
                                     {tool.features.map((feature, i) => (
                                         <div key={i} className="flex items-center gap-3">
                                             <div className={`w-1.5 h-1.5 rounded-full bg-gradient-to-r ${tool.color}`} />
-                                            <span className="text-xs font-bold uppercase tracking-wider text-slate-500 group-hover:text-slate-400 transition-colors">
+                                            <span className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-tertiary)] group-hover:text-slate-400 transition-colors">
                                                 {feature}
                                             </span>
                                         </div>
@@ -129,7 +129,7 @@ const TrainingHub = () => {
                         </div>
                         <div>
                             <div className="text-3xl font-black text-white">0</div>
-                            <div className="text-xs font-bold uppercase tracking-widest text-slate-500">Mock Interviews</div>
+                            <div className="text-xs font-bold uppercase tracking-widest text-[var(--color-text-tertiary)]">Mock Interviews</div>
                         </div>
                     </EliteCard>
                     <EliteCard variant="glass" className="p-8 flex items-center gap-6">
@@ -138,7 +138,7 @@ const TrainingHub = () => {
                         </div>
                         <div>
                             <div className="text-3xl font-black text-white">$0k</div>
-                            <div className="text-xs font-bold uppercase tracking-widest text-slate-500">Salary Negotiated</div>
+                            <div className="text-xs font-bold uppercase tracking-widest text-[var(--color-text-tertiary)]">Salary Negotiated</div>
                         </div>
                     </EliteCard>
                     <EliteCard variant="glass" className="p-8 flex items-center gap-6">
@@ -147,7 +147,7 @@ const TrainingHub = () => {
                         </div>
                         <div>
                             <div className="text-3xl font-black text-white">Lvl 1</div>
-                            <div className="text-xs font-bold uppercase tracking-widest text-slate-500">Readiness Score</div>
+                            <div className="text-xs font-bold uppercase tracking-widest text-[var(--color-text-tertiary)]">Readiness Score</div>
                         </div>
                     </EliteCard>
                 </div>

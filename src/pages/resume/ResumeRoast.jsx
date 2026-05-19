@@ -128,7 +128,7 @@ const ResumeRoast = () => {
 
                         {/* History Feed - Brutalist Style */}
                         <div className="space-y-4">
-                            <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-500">Previous File Scans</h3>
+                            <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-[var(--color-text-tertiary)]">Previous File Scans</h3>
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 {history.map(session => (
                                     <div
@@ -143,9 +143,9 @@ const ResumeRoast = () => {
                                     >
                                         <div className="overflow-hidden">
                                             <p className="text-[10px] font-black text-white uppercase truncate">{session.title}</p>
-                                            <p className="text-[9px] text-slate-600 font-bold uppercase tracking-widest">{new Date(session.created_at).toLocaleDateString()}</p>
+                                            <p className="text-[9px] text-[var(--color-text-secondary)] font-bold uppercase tracking-widest">{new Date(session.created_at).toLocaleDateString()}</p>
                                         </div>
-                                        <div className={`text-xl font-black ${session.score < 50 ? 'text-red-600' : 'text-emerald-500'}`}>
+                                        <div className={`text-xl font-black ${session.score < 50 ? 'text-red-600' : 'text-[var(--color-primary)]'}`}>
                                             {session.score}
                                         </div>
                                     </div>
@@ -197,13 +197,13 @@ const ResumeRoast = () => {
                             </div>
 
                             <div className="space-y-4">
-                                <h4 className="text-[12px] font-black uppercase tracking-[0.3em] text-emerald-500 flex items-center gap-3">
+                                <h4 className="text-[12px] font-black uppercase tracking-[0.3em] text-[var(--color-primary)] flex items-center gap-3">
                                     <Target size={16} /> Priority Fixes
                                 </h4>
                                 <div className="divide-y-2 divide-white/10 bg-black border-4 border-white">
                                     {roastResult.improvements.map((imp, i) => (
-                                        <div key={i} className="p-6 group hover:bg-emerald-600 transition-colors">
-                                            <div className="text-[10px] font-black text-emerald-500 group-hover:text-white mb-2 uppercase tracking-widest">RECOVERY.0{i + 1}</div>
+                                        <div key={i} className="p-6 group hover:bg-[var(--color-primary)] transition-colors">
+                                            <div className="text-[10px] font-black text-[var(--color-primary)] group-hover:text-white mb-2 uppercase tracking-widest">RECOVERY.0{i + 1}</div>
                                             <p className="text-sm font-bold text-white uppercase group-hover:text-white tracking-tight">{imp}</p>
                                         </div>
                                     ))}

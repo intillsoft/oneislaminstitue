@@ -79,7 +79,7 @@ const ApplicationsChart = () => {
     if (active && payload && payload.length) {
       return (
         <div className="bg-bg/95 backdrop-blur-xl p-4 border border-border dark:border-white/10 rounded-2xl shadow-2xl">
-          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-text-muted dark:text-slate-500 mb-3">{label}</p>
+          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-text-muted dark:text-[var(--color-text-tertiary)] mb-3">{label}</p>
           <div className="space-y-2">
             <div className="flex items-center justify-between gap-8">
               <div className="flex items-center gap-2">

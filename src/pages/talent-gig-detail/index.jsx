@@ -79,7 +79,7 @@ const GigDetail = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-white dark:bg-[#0A0E27]">
+      <div className="min-h-screen bg-white dark:bg-[var(--color-bg-dark)]">
         <UnifiedSidebar />
         <div className="ml-0 lg:ml-64 min-h-screen flex items-center justify-center">
           <div className="text-center">
@@ -93,7 +93,7 @@ const GigDetail = () => {
 
   if (!gig) {
     return (
-      <div className="min-h-screen bg-white dark:bg-[#0A0E27]">
+      <div className="min-h-screen bg-white dark:bg-[var(--color-bg-dark)]">
         <UnifiedSidebar />
         <div className="ml-0 lg:ml-64 min-h-screen flex items-center justify-center">
           <div className="text-center">
@@ -120,7 +120,7 @@ const GigDetail = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white dark:bg-[#0A0E27]">
+    <div className="min-h-screen bg-white dark:bg-[var(--color-bg-dark)]">
       <UnifiedSidebar />
       <div className="ml-0 lg:ml-64 min-h-screen">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">

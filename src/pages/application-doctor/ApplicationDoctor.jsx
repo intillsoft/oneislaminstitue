@@ -79,7 +79,7 @@ const ApplicationDoctor = () => {
     };
 
     return (
-        <div className="min-h-screen bg-slate-50 dark:bg-[#0A0E27] p-6 pt-24 relative overflow-hidden">
+        <div className="min-h-screen bg-white dark:bg-[var(--color-bg-dark)] p-6 pt-24 relative overflow-hidden">
             {/* Background Decoration */}
             <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-red-500/5 rounded-full blur-[120px] pointer-events-none" />
             <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-blue-500/5 rounded-full blur-[120px] pointer-events-none" />
@@ -99,10 +99,10 @@ const ApplicationDoctor = () => {
                     </motion.div>
 
                     <div className="space-y-2">
-                        <h1 className="text-4xl font-black text-slate-900 dark:text-white tracking-tight">
+                        <h1 className="text-4xl font-black text-[var(--color-text-primary)] dark:text-white tracking-tight">
                             Application <span className="text-red-500">Doctor</span>
                         </h1>
-                        <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto font-medium">
+                        <p className="text-lg text-[var(--color-text-secondary)] dark:text-slate-400 max-w-2xl mx-auto font-medium">
                             Get a critical "health check" for your job application before you hit send.
                             Identify <span className="text-red-500 font-bold">risks</span>, fix <span className="text-amber-500 font-bold">gaps</span>, and boost acceptance.
                         </p>
@@ -130,11 +130,11 @@ const ApplicationDoctor = () => {
                             onClick={() => analysis && setActiveTab('report')}
                             disabled={!analysis}
                             className={`flex-1 py-5 text-sm font-bold flex items-center justify-center gap-3 transition-all ${activeTab === 'report'
-                                ? 'bg-white/50 dark:bg-[#1E2640]/50 text-emerald-600 dark:text-emerald-400 border-b-4 border-emerald-600 dark:border-emerald-400'
+                                ? 'bg-white/50 dark:bg-[#1E2640]/50 text-[var(--color-primary)] dark:text-[var(--color-primary)] border-b-4 border-emerald-600 dark:border-emerald-400'
                                 : 'text-gray-300 dark:text-gray-600 cursor-not-allowed'
                                 }`}
                         >
-                            <div className={`p-2 rounded-lg ${activeTab === 'report' ? 'bg-emerald-100 dark:bg-emerald-900/30' : 'bg-transparent'}`}>
+                            <div className={`p-2 rounded-lg ${activeTab === 'report' ? 'bg-[var(--color-primary-light)] dark:bg-emerald-900/30' : 'bg-transparent'}`}>
                                 <TrendingUp className="w-5 h-5" />
                             </div>
                             Diagnosis Report
@@ -177,7 +177,7 @@ const ApplicationDoctor = () => {
                                                 value={formData.jobDescription}
                                                 onChange={(e) => setFormData({ ...formData, jobDescription: e.target.value })}
                                                 placeholder="Paste the full job description here..."
-                                                className="flex-1 min-h-[300px] w-full p-5 rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-[#0F1325] text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm resize-none shadow-inner transition-all"
+                                                className="flex-1 min-h-[300px] w-full p-5 rounded-2xl border border-[var(--color-border-primary)] dark:border-slate-700 bg-white dark:bg-[#0F1325] text-[var(--color-text-primary)] dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm resize-none shadow-inner transition-all"
                                             />
                                         </div>
 
@@ -185,7 +185,7 @@ const ApplicationDoctor = () => {
                                             <div className="flex-1 flex flex-col space-y-3">
                                                 <div className="flex items-center justify-between">
                                                     <label className="text-sm font-bold text-slate-700 dark:text-slate-300 flex items-center gap-2">
-                                                        <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+                                                        <span className="w-2 h-2 rounded-full bg-[var(--color-primary)]"></span>
                                                         Your Resume
                                                     </label>
                                                     <span className="text-xs font-semibold text-red-500 bg-red-50 dark:bg-red-900/20 px-2 py-1 rounded">Required</span>
@@ -194,7 +194,7 @@ const ApplicationDoctor = () => {
                                                     value={formData.resumeText}
                                                     onChange={(e) => setFormData({ ...formData, resumeText: e.target.value })}
                                                     placeholder="Paste your resume content here..."
-                                                    className="flex-1 w-full p-5 rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-[#0F1325] text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent text-sm resize-none shadow-inner transition-all"
+                                                    className="flex-1 w-full p-5 rounded-2xl border border-[var(--color-border-primary)] dark:border-slate-700 bg-white dark:bg-[#0F1325] text-[var(--color-text-primary)] dark:text-white focus:ring-2 focus:ring-[var(--color-primary)] focus:border-transparent text-sm resize-none shadow-inner transition-all"
                                                 />
                                             </div>
 
@@ -207,7 +207,7 @@ const ApplicationDoctor = () => {
                                                     value={formData.coverLetter}
                                                     onChange={(e) => setFormData({ ...formData, coverLetter: e.target.value })}
                                                     placeholder="Paste cover letter text..."
-                                                    className="flex-1 w-full p-5 rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-[#0F1325] text-slate-900 dark:text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm resize-none shadow-inner transition-all"
+                                                    className="flex-1 w-full p-5 rounded-2xl border border-[var(--color-border-primary)] dark:border-slate-700 bg-white dark:bg-[#0F1325] text-[var(--color-text-primary)] dark:text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm resize-none shadow-inner transition-all"
                                                 />
                                             </div>
                                         </div>
@@ -245,21 +245,21 @@ const ApplicationDoctor = () => {
                                     className="space-y-8"
                                 >
                                     {/* Prescription Header */}
-                                    <div className="bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 p-8 rounded-3xl border border-emerald-100 dark:border-emerald-800 flex items-center gap-6 relative overflow-hidden">
-                                        <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+                                    <div className="bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 p-8 rounded-3xl border border-[var(--color-border-secondary)] dark:border-emerald-800 flex items-center gap-6 relative overflow-hidden">
+                                        <div className="absolute top-0 right-0 w-64 h-64 bg-[var(--color-primary)]/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
                                         <div className="p-4 bg-white dark:bg-emerald-900 rounded-2xl shadow-lg z-10">
-                                            <CheckCircle className="w-10 h-10 text-emerald-500" />
+                                            <CheckCircle className="w-10 h-10 text-[var(--color-primary)]" />
                                         </div>
                                         <div className="z-10">
                                             <h3 className="text-2xl font-bold text-emerald-900 dark:text-emerald-100">Diagnosis Report Ready</h3>
-                                            <p className="text-emerald-700 dark:text-emerald-300 font-medium mt-1">
+                                            <p className="text-[var(--color-primary)] dark:text-[var(--color-primary)] font-medium mt-1">
                                                 We've analyzed your probability of success and identified key improvements.
                                             </p>
                                         </div>
                                     </div>
 
                                     <div className="prose prose-lg dark:prose-invert max-w-none text-slate-800 dark:text-slate-200">
-                                        <div className="bg-white dark:bg-[#1A2139] p-8 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm leading-relaxed whitespace-pre-line">
+                                        <div className="bg-white dark:bg-[#1A2139] p-8 rounded-2xl border border-[var(--color-border-primary)] dark:border-slate-700 shadow-sm leading-relaxed whitespace-pre-line">
                                             {analysis}
                                         </div>
                                     </div>
@@ -267,12 +267,12 @@ const ApplicationDoctor = () => {
                                     <div className="flex justify-between items-center pt-6 border-t border-slate-100 dark:border-slate-800">
                                         <button
                                             onClick={() => setActiveTab('input')}
-                                            className="px-6 py-3 text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white font-semibold transition-colors flex items-center gap-2"
+                                            className="px-6 py-3 text-[var(--color-text-tertiary)] hover:text-[var(--color-text-primary)] dark:text-slate-400 dark:hover:text-white font-semibold transition-colors flex items-center gap-2"
                                         >
                                             <AlertCircle className="w-5 h-5" />
                                             Update Data & Re-Scan
                                         </button>
-                                        <button className="px-8 py-3 bg-slate-900 dark:bg-white hover:bg-slate-800 dark:hover:bg-gray-200 text-white dark:text-slate-900 rounded-xl font-bold shadow-lg transition-all flex items-center gap-2">
+                                        <button className="px-8 py-3 bg-slate-900 dark:bg-white hover:bg-slate-800 dark:hover:bg-gray-200 text-white dark:text-[var(--color-text-primary)] rounded-xl font-bold shadow-lg transition-all flex items-center gap-2">
                                             <FileText className="w-5 h-5" />
                                             Save Full Report
                                         </button>

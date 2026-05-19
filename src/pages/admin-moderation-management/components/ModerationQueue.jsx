@@ -98,7 +98,7 @@ const ModerationQueue = () => {
       <div className="flex flex-col xl:flex-row items-start xl:items-center justify-between gap-6 px-4">
         <div>
           <h2 className="text-xl font-bold text-white uppercase tracking-tight">Accreditation Queue</h2>
-          <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-500 mt-1">
+          <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--color-text-tertiary)] mt-1">
             Governance Oversight: Curriculum Verification Matrix
           </p>
         </div>
@@ -133,11 +133,11 @@ const ModerationQueue = () => {
                     className="w-4 h-4 rounded border-white/10 bg-white/5 text-blue-600 focus:ring-0"
                   />
                 </th>
-                <th className="py-6 pr-6 text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">Classification</th>
-                <th className="py-6 pr-6 text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">Entity Metadata</th>
-                <th className="py-6 pr-6 text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">Priority Level</th>
-                <th className="py-6 pr-6 text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">Origins</th>
-                <th className="py-6 text-right text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">Action Matrix</th>
+                <th className="py-6 pr-6 text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-text-tertiary)]">Classification</th>
+                <th className="py-6 pr-6 text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-text-tertiary)]">Entity Metadata</th>
+                <th className="py-6 pr-6 text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-text-tertiary)]">Priority Level</th>
+                <th className="py-6 pr-6 text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-text-tertiary)]">Origins</th>
+                <th className="py-6 text-right text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-text-tertiary)]">Action Matrix</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-white/[0.03]">
@@ -151,9 +151,9 @@ const ModerationQueue = () => {
                 <tr>
                   <td colSpan="6" className="py-24 text-center">
                     <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center mx-auto mb-6">
-                      <Icon name="ShieldCheck" size={32} className="text-emerald-500/40" />
+                      <Icon name="ShieldCheck" size={32} className="text-[var(--color-primary)]/40" />
                     </div>
-                    <h3 className="text-sm font-black text-slate-500 uppercase tracking-[0.2em]">Queue Fully Sanitized</h3>
+                    <h3 className="text-sm font-black text-[var(--color-text-tertiary)] uppercase tracking-[0.2em]">Queue Fully Sanitized</h3>
                   </td>
                 </tr>
               ) : (
@@ -181,7 +181,7 @@ const ModerationQueue = () => {
                       </td>
                       <td className="py-6 pr-6">
                         <div className="text-sm font-black text-white uppercase tracking-tight group-hover:text-blue-500 transition-colors uppercase">{item.title}</div>
-                        <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mt-0.5">{item.company}</div>
+                        <div className="text-[10px] font-bold text-[var(--color-text-tertiary)] uppercase tracking-widest mt-0.5">{item.company}</div>
                       </td>
                       <td className="py-6 pr-6">
                         <div className={`inline-flex px-3 py-1 rounded-lg text-[9px] font-black tracking-widest border ${config.bg} ${config.color} ${config.border}`}>
@@ -190,7 +190,7 @@ const ModerationQueue = () => {
                       </td>
                       <td className="py-6 pr-6">
                         <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{item.submittedBy}</div>
-                        <div className="text-[8px] font-black text-slate-600 uppercase tracking-widest mt-1">
+                        <div className="text-[8px] font-black text-[var(--color-text-secondary)] uppercase tracking-widest mt-1">
                           {item.submittedAt ? formatDistanceToNow(new Date(item.submittedAt), { addSuffix: true }).toUpperCase() : 'UNKNOWN'}
                         </div>
                       </td>
@@ -198,7 +198,7 @@ const ModerationQueue = () => {
                         <div className="flex items-center justify-end gap-3 opacity-0 group-hover:opacity-100 transition-all translate-x-4 group-hover:translate-x-0">
                           <button
                             onClick={() => handleItemAction(item.id, 'approve')}
-                            className="px-4 py-2 bg-emerald-600 text-white rounded-xl text-[9px] font-black uppercase tracking-widest hover:bg-emerald-700 shadow-lg shadow-emerald-500/20"
+                            className="px-4 py-2 bg-[var(--color-primary)] text-white rounded-xl text-[9px] font-black uppercase tracking-widest hover:bg-[var(--color-primary-hover)] shadow-lg shadow-[var(--color-primary)]/20"
                           >
                             Authorize
                           </button>

@@ -367,7 +367,7 @@ Generate professional content. Return only the content, no explanations.`;
                       onChange={(e) => setPrompt(e.target.value)}
                       placeholder="e.g., Emphasize my leadership experience and technical skills..."
                       rows={4}
-                      className="w-full px-4 py-3 border border-[#E2E8F0] dark:border-[#1E2640] rounded-lg bg-background dark:bg-[#0A0E27] text-text-primary dark:text-[#E8EAED] focus:outline-none focus:ring-2 focus:ring-workflow-primary resize-none"
+                      className="w-full px-4 py-3 border border-[#E2E8F0] dark:border-[#1E2640] rounded-lg bg-background dark:bg-[var(--color-bg-dark)] text-text-primary dark:text-[#E8EAED] focus:outline-none focus:ring-2 focus:ring-workflow-primary resize-none"
                     />
                   </div>
 
@@ -408,7 +408,7 @@ Generate professional content. Return only the content, no explanations.`;
                       onChange={(e) => setQuestion(e.target.value)}
                       placeholder="e.g., What should I include in this field? How long should it be?"
                       rows={3}
-                      className="w-full px-4 py-3 border border-[#E2E8F0] dark:border-[#1E2640] rounded-lg bg-background dark:bg-[#0A0E27] text-text-primary dark:text-[#E8EAED] focus:outline-none focus:ring-2 focus:ring-workflow-primary resize-none"
+                      className="w-full px-4 py-3 border border-[#E2E8F0] dark:border-[#1E2640] rounded-lg bg-background dark:bg-[var(--color-bg-dark)] text-text-primary dark:text-[#E8EAED] focus:outline-none focus:ring-2 focus:ring-workflow-primary resize-none"
                     />
                   </div>
 

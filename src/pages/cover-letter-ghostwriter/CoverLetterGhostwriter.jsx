@@ -81,7 +81,7 @@ const CoverLetterGhostwriter = () => {
     };
 
     return (
-        <div className="min-h-screen bg-neutral-100 dark:bg-[#0A0E27] p-6 pt-24 font-sans">
+        <div className="min-h-screen bg-neutral-100 dark:bg-[var(--color-bg-dark)] p-6 pt-24 font-sans">
             <div className="max-w-7xl mx-auto h-[85vh] flex gap-6">
 
                 {/* Left Controls */}
@@ -113,14 +113,14 @@ const CoverLetterGhostwriter = () => {
                                             value={formData.companyName}
                                             onChange={(e) => setFormData({ ...formData, companyName: e.target.value })}
                                             placeholder="Company Name"
-                                            className="w-full p-3 rounded-lg border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-[#0A0E27] text-neutral-900 dark:text-white focus:ring-2 focus:ring-teal-500 outline-none font-bold text-sm"
+                                            className="w-full p-3 rounded-lg border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-[var(--color-bg-dark)] text-neutral-900 dark:text-white focus:ring-2 focus:ring-teal-500 outline-none font-bold text-sm"
                                         />
                                         <input
                                             type="text"
                                             value={formData.roleTitle}
                                             onChange={(e) => setFormData({ ...formData, roleTitle: e.target.value })}
                                             placeholder="Role Title"
-                                            className="w-full p-3 rounded-lg border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-[#0A0E27] text-neutral-900 dark:text-white focus:ring-2 focus:ring-teal-500 outline-none font-bold text-sm"
+                                            className="w-full p-3 rounded-lg border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-[var(--color-bg-dark)] text-neutral-900 dark:text-white focus:ring-2 focus:ring-teal-500 outline-none font-bold text-sm"
                                         />
                                     </div>
                                 </div>
@@ -133,7 +133,7 @@ const CoverLetterGhostwriter = () => {
                                                 onClick={() => setFormData({ ...formData, tone: t })}
                                                 className={`px-3 py-2 rounded-lg text-xs font-bold uppercase tracking-wide transition-all border-2 ${formData.tone === t
                                                     ? 'bg-teal-50 dark:bg-teal-900/20 text-teal-600 dark:text-teal-300 border-teal-500'
-                                                    : 'bg-neutral-50 dark:bg-[#0A0E27] text-neutral-500 dark:text-neutral-400 border-transparent hover:border-neutral-200'
+                                                    : 'bg-neutral-50 dark:bg-[var(--color-bg-dark)] text-neutral-500 dark:text-neutral-400 border-transparent hover:border-neutral-200'
                                                     }`}
                                             >
                                                 {t}
@@ -152,7 +152,7 @@ const CoverLetterGhostwriter = () => {
                                         value={formData.jobDescription}
                                         onChange={(e) => setFormData({ ...formData, jobDescription: e.target.value })}
                                         placeholder="Paste JD details..."
-                                        className="w-full h-32 p-4 rounded-xl border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-[#0A0E27] text-neutral-900 dark:text-white focus:ring-2 focus:ring-teal-500 outline-none resize-none text-xs font-medium leading-relaxed"
+                                        className="w-full h-32 p-4 rounded-xl border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-[var(--color-bg-dark)] text-neutral-900 dark:text-white focus:ring-2 focus:ring-teal-500 outline-none resize-none text-xs font-medium leading-relaxed"
                                     />
                                 </div>
                                 <div>
@@ -163,7 +163,7 @@ const CoverLetterGhostwriter = () => {
                                         value={formData.resumeText}
                                         onChange={(e) => setFormData({ ...formData, resumeText: e.target.value })}
                                         placeholder="Paste resume content..."
-                                        className="w-full h-32 p-4 rounded-xl border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-[#0A0E27] text-neutral-900 dark:text-white focus:ring-2 focus:ring-teal-500 outline-none resize-none text-xs font-medium leading-relaxed"
+                                        className="w-full h-32 p-4 rounded-xl border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-[var(--color-bg-dark)] text-neutral-900 dark:text-white focus:ring-2 focus:ring-teal-500 outline-none resize-none text-xs font-medium leading-relaxed"
                                     />
                                 </div>
                             </div>
@@ -220,7 +220,7 @@ const CoverLetterGhostwriter = () => {
                     </div>
 
                     {/* Paper Area */}
-                    <div className="flex-1 bg-neutral-100 dark:bg-[#0A0E27] p-8 overflow-y-auto flex justify-center">
+                    <div className="flex-1 bg-neutral-100 dark:bg-[var(--color-bg-dark)] p-8 overflow-y-auto flex justify-center">
                         <div className="w-full max-w-[210mm] bg-white dark:bg-white text-neutral-900 shadow-xl min-h-full p-[20mm]">
                             {coverLetter ? (
                                 <div className="prose max-w-none font-serif whitespace-pre-wrap text-sm leading-loose">

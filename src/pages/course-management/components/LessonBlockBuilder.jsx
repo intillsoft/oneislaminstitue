@@ -4,19 +4,19 @@ import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import Icon from '../../../components/AppIcon';
 
 const BLOCK_TYPES = [
-    { type: 'text', icon: 'Type', label: 'Rich Text', color: 'text-emerald-500', bg: 'bg-emerald-500/10' },
-    { type: 'hadith', icon: 'MessageSquare', label: 'Hadith Flip', color: 'text-emerald-500', bg: 'bg-emerald-500/10' },
-    { type: 'quran', icon: 'Book', label: 'Quran Verse', color: 'text-emerald-500', bg: 'bg-emerald-500/10' },
-    { type: 'scripture', icon: 'BookOpen', label: 'Scripture', color: 'text-emerald-500', bg: 'bg-emerald-500/10' },
-    { type: 'design_markdown', icon: 'Layout', label: 'Styled Block', color: 'text-emerald-500', bg: 'bg-emerald-500/10' },
-    { type: 'video', icon: 'Video', label: 'Video Embed', color: 'text-emerald-500', bg: 'bg-emerald-500/10' },
-    { type: 'image', icon: 'Image', label: 'Image URL', color: 'text-emerald-500', bg: 'bg-emerald-500/10' },
-    { type: 'audio', icon: 'Music', label: 'Audio', color: 'text-emerald-500', bg: 'bg-emerald-500/10' },
-    { type: 'document', icon: 'FileText', label: 'Document', color: 'text-emerald-500', bg: 'bg-emerald-500/10' },
-    { type: 'key_summary', icon: 'CheckSquare', label: 'Key Summary', color: 'text-emerald-500', bg: 'bg-emerald-500/10' },
-    { type: 'summary', icon: 'Target', label: 'Core Summary', color: 'text-emerald-500', bg: 'bg-emerald-500/10' },
-    { type: 'quiz', icon: 'HelpCircle', label: 'Knowledge Quiz', color: 'text-emerald-500', bg: 'bg-emerald-500/10' },
-    { type: 'accordion', icon: 'ChevronDown', label: 'Collapsible', color: 'text-emerald-500', bg: 'bg-emerald-500/10' }
+    { type: 'text', icon: 'Type', label: 'Rich Text', color: 'text-[var(--color-primary)]', bg: 'bg-[var(--color-primary)]/10' },
+    { type: 'hadith', icon: 'MessageSquare', label: 'Hadith Flip', color: 'text-[var(--color-primary)]', bg: 'bg-[var(--color-primary)]/10' },
+    { type: 'quran', icon: 'Book', label: 'Quran Verse', color: 'text-[var(--color-primary)]', bg: 'bg-[var(--color-primary)]/10' },
+    { type: 'scripture', icon: 'BookOpen', label: 'Scripture', color: 'text-[var(--color-primary)]', bg: 'bg-[var(--color-primary)]/10' },
+    { type: 'design_markdown', icon: 'Layout', label: 'Styled Block', color: 'text-[var(--color-primary)]', bg: 'bg-[var(--color-primary)]/10' },
+    { type: 'video', icon: 'Video', label: 'Video Embed', color: 'text-[var(--color-primary)]', bg: 'bg-[var(--color-primary)]/10' },
+    { type: 'image', icon: 'Image', label: 'Image URL', color: 'text-[var(--color-primary)]', bg: 'bg-[var(--color-primary)]/10' },
+    { type: 'audio', icon: 'Music', label: 'Audio', color: 'text-[var(--color-primary)]', bg: 'bg-[var(--color-primary)]/10' },
+    { type: 'document', icon: 'FileText', label: 'Document', color: 'text-[var(--color-primary)]', bg: 'bg-[var(--color-primary)]/10' },
+    { type: 'key_summary', icon: 'CheckSquare', label: 'Key Summary', color: 'text-[var(--color-primary)]', bg: 'bg-[var(--color-primary)]/10' },
+    { type: 'summary', icon: 'Target', label: 'Core Summary', color: 'text-[var(--color-primary)]', bg: 'bg-[var(--color-primary)]/10' },
+    { type: 'quiz', icon: 'HelpCircle', label: 'Knowledge Quiz', color: 'text-[var(--color-primary)]', bg: 'bg-[var(--color-primary)]/10' },
+    { type: 'accordion', icon: 'ChevronDown', label: 'Collapsible', color: 'text-[var(--color-primary)]', bg: 'bg-[var(--color-primary)]/10' }
 ];
 
 const WIDTH_OPTIONS = [
@@ -208,21 +208,21 @@ const LessonBlockBuilder = ({ blocks = [], onChange, initialPage = 1 }) => {
     return (
         <div className="flex flex-col xl:flex-row gap-4 xl:gap-8 items-start h-full w-full">
             {/* Left Workspace Panel - Page Selection Navigation Rails Workflow Stream Frame */}
-            <div className="w-full xl:w-72 space-y-3 shrink-0 xl:sticky top-6 p-3 sm:p-4 bg-white/2 rounded-3xl border border-emerald-500/10 backdrop-blur-3xl">
-                <span className="text-[9px] font-black uppercase text-emerald-500 tracking-[0.2em] mb-2 block px-2">Workspace Desk Pages</span>
+            <div className="w-full xl:w-72 space-y-3 shrink-0 xl:sticky top-6 p-3 sm:p-4 bg-white/2 rounded-3xl border border-[var(--color-primary)]/10 backdrop-blur-3xl">
+                <span className="text-[9px] font-black uppercase text-[var(--color-primary)] tracking-[0.2em] mb-2 block px-2">Workspace Desk Pages</span>
                 <div className="flex flex-row xl:flex-col gap-2 overflow-x-auto xl:overflow-visible no-scrollbar pb-2 xl:pb-0">
                     {PAGE_TEMPLATES.map((tpl, index) => (
                         <button 
                             key={tpl.number} 
                             onClick={() => setSelectedPageIdx(index)} 
-                            className={`flex-1 xl:w-full text-left flex items-center gap-4 p-3.5 rounded-2xl transition-all active:scale-98 ${selectedPageIdx === index ? 'bg-emerald-600 text-white shadow-xl shadow-emerald-500/10' : 'text-slate-400 hover:bg-white/5 hover:text-white'}`}
+                            className={`flex-1 xl:w-full text-left flex items-center gap-4 p-3.5 rounded-2xl transition-all active:scale-98 ${selectedPageIdx === index ? 'bg-[var(--color-primary)] text-white shadow-xl shadow-emerald-500/10' : 'text-slate-400 hover:bg-white/5 hover:text-white'}`}
                         >
                             <div className={`p-2 rounded-xl flex items-center justify-center transition-colors ${selectedPageIdx === index ? 'bg-white/20' : 'bg-white/5'}`}>
                                 <Icon name={tpl.icon} size={18} />
                             </div>
                             <div className="flex-1 min-w-0">
                                 <span className="text-[10px] font-black block uppercase tracking-wider truncate">{tpl.label.split('. ')[1]}</span>
-                                <span className={`text-[8px] font-bold block mt-0.5 ${selectedPageIdx === index ? 'text-emerald-100' : 'text-slate-500'}`}>
+                                <span className={`text-[8px] font-bold block mt-0.5 ${selectedPageIdx === index ? 'text-emerald-100' : 'text-[var(--color-text-tertiary)]'}`}>
                                      {pages[index]?.content?.length || 0} Block{pages[index]?.content?.length !== 1 ? 's' : ''}
                                 </span>
                             </div>
@@ -233,27 +233,27 @@ const LessonBlockBuilder = ({ blocks = [], onChange, initialPage = 1 }) => {
 
             {/* Center Main Workspace Canvas Blocks Setup Column setup desk */}
             <div className="flex-1 space-y-6 w-full">
-                <div className="p-4 sm:p-8 bg-white/2 rounded-3xl border border-emerald-500/10 backdrop-blur-3xl space-y-6">
-                    <div className="flex items-center justify-between border-b border-emerald-500/10 pb-4">
+                <div className="p-4 sm:p-8 bg-white/2 rounded-3xl border border-[var(--color-primary)]/10 backdrop-blur-3xl space-y-6">
+                    <div className="flex items-center justify-between border-b border-[var(--color-primary)]/10 pb-4">
                         <div>
                              <h4 className="text-base sm:text-lg font-black uppercase tracking-tight text-white mb-1">
                                  {PAGE_TEMPLATES[selectedPageIdx]?.label.split('. ')[1]} Canvas
                              </h4>
-                             <p className="text-xs text-slate-500 font-medium tracking-wide">Compose and arrange modular content blocks effortlessly grid viewport frame desk.</p>
+                             <p className="text-xs text-[var(--color-text-tertiary)] font-medium tracking-wide">Compose and arrange modular content blocks effortlessly grid viewport frame desk.</p>
                         </div>
                         <div className="flex items-center gap-2">
-                             <span className="text-[8px] font-black text-slate-500 uppercase tracking-widest bg-white/5 px-3 py-1.5 rounded-lg border border-emerald-500/10">Auto-Saved</span>
+                             <span className="text-[8px] font-black text-[var(--color-text-tertiary)] uppercase tracking-widest bg-white/5 px-3 py-1.5 rounded-lg border border-[var(--color-primary)]/10">Auto-Saved</span>
                         </div>
                     </div>
 
                     <div className="relative">
                         
                     {/* Floating Add Blocks Bar at the TOP of the Canvas node absolute flawlessly */}
-                    <div className="pb-6 mb-6 border-b border-emerald-500/10 flex flex-col items-center relative z-40">
+                    <div className="pb-6 mb-6 border-b border-[var(--color-primary)]/10 flex flex-col items-center relative z-40">
                         <motion.button 
                             whileTap={{ scale: 0.95 }}
                             onClick={() => setShowAddPanel(!showAddPanel)} 
-                            className={`flex items-center gap-2 px-5 py-3 rounded-xl shadow-xl transition-all font-black uppercase tracking-widest text-[9px] \${showAddPanel ? 'bg-rose-600 hover:bg-rose-500 shadow-rose-500/10 text-white' : 'bg-emerald-600 hover:bg-emerald-500 shadow-emerald-500/20 text-white'}`}
+                            className={`flex items-center gap-2 px-5 py-3 rounded-xl shadow-xl transition-all font-black uppercase tracking-widest text-[9px] \${showAddPanel ? 'bg-rose-600 hover:bg-rose-500 shadow-rose-500/10 text-white' : 'bg-[var(--color-primary)] hover:bg-[var(--color-primary)] shadow-[var(--color-primary)]/20 text-white'}`}
                         >
                             <Icon name={showAddPanel ? 'Minus' : 'Plus'} size={12} />
                             {showAddPanel ? 'Close Canvas Elements' : 'Insert Element Component'}
@@ -266,15 +266,15 @@ const LessonBlockBuilder = ({ blocks = [], onChange, initialPage = 1 }) => {
                                     animate={{ opacity: 1, y: 0, scale: 1 }}
                                     exit={{ opacity: 0, y: 10, scale: 0.95 }}
                                     transition={{ duration: 0.2, ease: "easeOut" }}
-                                    className="mt-4 p-3 bg-black/40 border border-emerald-500/10 rounded-2xl flex flex-wrap gap-2 justify-center max-w-3xl backdrop-blur-3xl"
+                                    className="mt-4 p-3 bg-black/40 border border-[var(--color-primary)]/10 rounded-2xl flex flex-wrap gap-2 justify-center max-w-3xl backdrop-blur-3xl"
                                 >
                                     {BLOCK_TYPES.map(type => (
                                         <button 
                                             key={type.type} 
                                             onClick={() => { addBlock(type.type); setShowAddPanel(false); }} 
-                                            className="flex items-center gap-2 px-3.5 py-2.5 bg-white/5 hover:bg-white/10 border border-emerald-500/10 rounded-xl text-[9px] font-bold uppercase tracking-widest text-emerald-500 hover:text-emerald-400 transition-all active:scale-95"
+                                            className="flex items-center gap-2 px-3.5 py-2.5 bg-white/5 hover:bg-white/10 border border-[var(--color-primary)]/10 rounded-xl text-[9px] font-bold uppercase tracking-widest text-[var(--color-primary)] hover:text-[var(--color-primary)] transition-all active:scale-95"
                                         >
-                                            <Icon name={type.icon} size={11} className="text-emerald-500" />
+                                            <Icon name={type.icon} size={11} className="text-[var(--color-primary)]" />
                                             {type.label}
                                         </button>
                                     ))}
@@ -306,7 +306,7 @@ const LessonBlockBuilder = ({ blocks = [], onChange, initialPage = 1 }) => {
                                                         >
                                                             <motion.div 
                                                                 layout 
-                                                                className={`bg-white/[0.03] border border-emerald-500/10 rounded-[1.5rem] relative transition-all block-inner-surface flex flex-col ${snapshot.isDragging ? 'ring-2 ring-emerald-500 bg-white/5 shadow-2x backdrop-blur-3xl' : 'hover:bg-white/[0.05] hover:border-white/10 scroll-mt-24'}`}
+                                                                className={`bg-white/[0.03] border border-[var(--color-primary)]/10 rounded-[1.5rem] relative transition-all block-inner-surface flex flex-col ${snapshot.isDragging ? 'ring-2 ring-[var(--color-primary)] bg-white/5 shadow-2x backdrop-blur-3xl' : 'hover:bg-white/[0.05] hover:border-white/10 scroll-mt-24'}`}
                                                                 style={{
                                                                     height: block.layoutSettings?.height || 'auto',
                                                                      padding: block.layoutSettings?.padding ? `${block.layoutSettings.padding}px` : undefined,
@@ -317,27 +317,27 @@ const LessonBlockBuilder = ({ blocks = [], onChange, initialPage = 1 }) => {
                                                                 {/* Absolute Resizing Handle Anchor support */}
                                                                 <div 
                                                                     onMouseDown={(e) => onResizeStart(e, block.id)}
-                                                                    className="absolute bottom-2 right-2 w-4 h-4 bg-emerald-500/20 hover:bg-emerald-500 cursor-se-resize rounded-lg opacity-0 group-hover/block:opacity-100 transition-all z-30 flex items-center justify-center p-0.5 border border-emerald-500/50"
+                                                                    className="absolute bottom-2 right-2 w-4 h-4 bg-[var(--color-primary)]/20 hover:bg-[var(--color-primary)] cursor-se-resize rounded-lg opacity-0 group-hover/block:opacity-100 transition-all z-30 flex items-center justify-center p-0.5 border border-[var(--color-primary)]/50"
                                                                 >
                                                                     <div className="w-1.5 h-1.5 border-r-2 border-b-2 border-white rounded-br-sm" />
                                                                 </div>
 
                                                                 {/* Absolute Floating Label Tag for CMS experience native stream setup flawless setup seamlessly */}
-                                                                <div className="absolute top-4 left-4 flex items-center gap-1.5 px-2 py-1 rounded-lg bg-emerald-500/10 border border-emerald-500/10 opacity-40 group-hover/block:opacity-100 transition-all z-10">
-                                                                     <Icon name={BLOCK_TYPES.find(t => t.type === block.type)?.icon} size={11} className="text-emerald-500" />
-                                                                     <span className="text-[8px] font-black uppercase tracking-[0.1em] text-emerald-500">{BLOCK_TYPES.find(t => t.type === block.type)?.label}</span>
+                                                                <div className="absolute top-4 left-4 flex items-center gap-1.5 px-2 py-1 rounded-lg bg-[var(--color-primary)]/10 border border-[var(--color-primary)]/10 opacity-40 group-hover/block:opacity-100 transition-all z-10">
+                                                                     <Icon name={BLOCK_TYPES.find(t => t.type === block.type)?.icon} size={11} className="text-[var(--color-primary)]" />
+                                                                     <span className="text-[8px] font-black uppercase tracking-[0.1em] text-[var(--color-primary)]">{BLOCK_TYPES.find(t => t.type === block.type)?.label}</span>
                                                                 </div>
 
                                                                 {/* Absolute Floating Webflow style CMS tools setups stream flawless setup natively setup streamline support frame flawlessly */}
                                                                 <div className="absolute top-3 right-3 opacity-0 group-hover/block:opacity-100 transition-all flex items-center gap-1 z-20 bg-black/80 backdrop-blur-xl p-1 rounded-xl border border-white/10 shadow-xl">
                                                                        {/* Width Options Presets for quick snap Cinema native Stream frame setup */}
-                                                                       <div className="flex items-center border-r border-emerald-500/10 pr-1 gap-0.5">
+                                                                       <div className="flex items-center border-r border-[var(--color-primary)]/10 pr-1 gap-0.5">
                                                                            {WIDTH_OPTIONS.map(opt => (
                                                                                <button 
                                                                                    key={opt.value}
                                                                                    title={opt.label}
                                                                                    onClick={() => updateBlock(block.id, { layoutSettings: { ...(block.layoutSettings || {}), width: opt.value } })}
-                                                                                   className={`p-1.5 rounded-lg transition-all ${block.layoutSettings?.width === opt.value ? 'bg-emerald-500 text-white' : 'text-slate-400 hover:text-emerald-400'}`}
+                                                                                   className={`p-1.5 rounded-lg transition-all ${block.layoutSettings?.width === opt.value ? 'bg-[var(--color-primary)] text-white' : 'text-slate-400 hover:text-[var(--color-primary)]'}`}
                                                                                >
                                                                                    <Icon name={opt.icon} size={10} />
                                                                                </button>
@@ -346,13 +346,13 @@ const LessonBlockBuilder = ({ blocks = [], onChange, initialPage = 1 }) => {
                                                                       <button onClick={() => setActiveBlockId(activeBlockId === block.id ? null : block.id)} className={`p-1.5 ${activeBlockId === block.id ? 'text-sky-500' : 'text-slate-400 hover:text-sky-400'} transition-colors`}>
                                                                            <Icon name="Settings" size={12} />
                                                                        </button>
-                                                                      <div {...provided.dragHandleProps} className="p-1.5 text-slate-500 hover:text-white transition-colors cursor-grab active:cursor-grabbing">
+                                                                      <div {...provided.dragHandleProps} className="p-1.5 text-[var(--color-text-tertiary)] hover:text-white transition-colors cursor-grab active:cursor-grabbing">
                                                                           <Icon name="GripVertical" size={12} />
                                                                       </div>
-                                                                      <button onClick={() => duplicateBlock(idx)} className="p-1.5 text-slate-400 hover:text-emerald-500 transition-colors">
+                                                                      <button onClick={() => duplicateBlock(idx)} className="p-1.5 text-slate-400 hover:text-[var(--color-primary)] transition-colors">
                                                                           <Icon name="Copy" size={12} />
                                                                       </button>
-                                                                      <button onClick={() => removeBlock(block.id)} className="p-1.5 text-slate-400 hover:text-rose-500 border-l border-emerald-500/10 pl-2 transition-colors">
+                                                                      <button onClick={() => removeBlock(block.id)} className="p-1.5 text-slate-400 hover:text-rose-500 border-l border-[var(--color-primary)]/10 pl-2 transition-colors">
                                                                           <Icon name="Trash2" size={12} />
                                                                       </button>
                                                                 </div>
@@ -363,13 +363,13 @@ const LessonBlockBuilder = ({ blocks = [], onChange, initialPage = 1 }) => {
                                                                            <input 
                                                                              value={block.content?.title || ''}
                                                                              onChange={e => updateBlockContent(block.id, { title: e.target.value })}
-                                                                             className="w-full bg-black/20 border border-emerald-500/10 rounded-xl px-4 py-2 text-sm font-black focus:outline-none text-white"
+                                                                             className="w-full bg-black/20 border border-[var(--color-primary)]/10 rounded-xl px-4 py-2 text-sm font-black focus:outline-none text-white"
                                                                              placeholder="Collapsible Title..."
                                                                            />
                                                                            <textarea 
                                                                              value={typeof block.content === 'string' ? block.content : block.content?.text || ''}
                                                                              onChange={e => updateBlockContent(block.id, { text: e.target.value })}
-                                                                             className="w-full h-32 bg-black/20 border border-emerald-500/10 rounded-2xl p-4 text-sm leading-relaxed focus:outline-none text-white"
+                                                                             className="w-full h-32 bg-black/20 border border-[var(--color-primary)]/10 rounded-2xl p-4 text-sm leading-relaxed focus:outline-none text-white"
                                                                              placeholder="Hidden content text (Markdown)..."
                                                                            />
                                                                          </div>
@@ -382,7 +382,7 @@ const LessonBlockBuilder = ({ blocks = [], onChange, initialPage = 1 }) => {
                                                                               onChange={e => updateBlockContent(block.id, { text: e.target.value })}
                                                                               placeholder="Write your lesson text here (Markdown supported)..."
                                                                               rows={4}
-                                                                              className="w-full bg-transparent border-none focus:ring-0 text-sm text-slate-300 placeholder:text-slate-600 resize-y min-h-[120px] leading-relaxed"
+                                                                              className="w-full bg-transparent border-none focus:ring-0 text-sm text-slate-300 placeholder:text-[var(--color-text-secondary)] resize-y min-h-[120px] leading-relaxed"
                                                                           />
                                                                         </div>
                                                                     )}
@@ -390,39 +390,39 @@ const LessonBlockBuilder = ({ blocks = [], onChange, initialPage = 1 }) => {
                                                                     {block.type === 'hadith' && (
                                                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                                                           <div className="space-y-3">
-                                                                            <span className="text-[10px] font-black uppercase text-emerald-600">English Text</span>
+                                                                            <span className="text-[10px] font-black uppercase text-[var(--color-primary)]">English Text</span>
                                                                             <textarea 
                                                                               value={block.content?.english || ''}
                                                                               onChange={e => updateBlockContent(block.id, { english: e.target.value })}
-                                                                              className="w-full h-32 bg-black/20 border border-emerald-500/10 rounded-2xl p-4 text-sm focus:outline-none focus:border-emerald-500/30 text-white placeholder:text-slate-600"
+                                                                              className="w-full h-32 bg-black/20 border border-[var(--color-primary)]/10 rounded-2xl p-4 text-sm focus:outline-none focus:border-[var(--color-primary)]/30 text-white placeholder:text-[var(--color-text-secondary)]"
                                                                               placeholder="Hadith English translation..."
                                                                             />
                                                                           </div>
                                                                           <div className="space-y-3">
-                                                                            <span className="text-[10px] font-black uppercase text-emerald-600">Arabic Text</span>
+                                                                            <span className="text-[10px] font-black uppercase text-[var(--color-primary)]">Arabic Text</span>
                                                                             <textarea 
                                                                               value={block.content?.arabic || ''}
                                                                               onChange={e => updateBlockContent(block.id, { arabic: e.target.value })}
-                                                                              className="w-full h-32 bg-black/20 border border-emerald-500/10 rounded-2xl p-4 text-lg font-arabic text-right focus:outline-none focus:border-emerald-500/30 text-white placeholder:text-slate-600"
+                                                                              className="w-full h-32 bg-black/20 border border-[var(--color-primary)]/10 rounded-2xl p-4 text-lg font-arabic text-right focus:outline-none focus:border-[var(--color-primary)]/30 text-white placeholder:text-[var(--color-text-secondary)]"
                                                                               dir="rtl"
                                                                               placeholder="النص العربي هنا..."
                                                                             />
                                                                           </div>
                                                                           <div className="space-y-3">
-                                                                            <span className="text-[10px] font-black uppercase text-emerald-600">Narrator</span>
+                                                                            <span className="text-[10px] font-black uppercase text-[var(--color-primary)]">Narrator</span>
                                                                             <input 
                                                                               value={block.content?.narrator || ''}
                                                                               onChange={e => updateBlockContent(block.id, { narrator: e.target.value })}
-                                                                              className="w-full bg-black/20 border border-emerald-500/10 rounded-xl px-4 py-2 text-xs focus:outline-none text-white"
+                                                                              className="w-full bg-black/20 border border-[var(--color-primary)]/10 rounded-xl px-4 py-2 text-xs focus:outline-none text-white"
                                                                               placeholder="e.g. Abu Huraira"
                                                                             />
                                                                           </div>
                                                                           <div className="space-y-3">
-                                                                            <span className="text-[10px] font-black uppercase text-emerald-600">Reference</span>
+                                                                            <span className="text-[10px] font-black uppercase text-[var(--color-primary)]">Reference</span>
                                                                             <input 
                                                                               value={block.content?.reference || ''}
                                                                               onChange={e => updateBlockContent(block.id, { reference: e.target.value })}
-                                                                              className="w-full bg-black/20 border border-emerald-500/10 rounded-xl px-4 py-2 text-xs focus:outline-none text-white"
+                                                                              className="w-full bg-black/20 border border-[var(--color-primary)]/10 rounded-xl px-4 py-2 text-xs focus:outline-none text-white"
                                                                               placeholder="e.g. Bukhari 1:1"
                                                                             />
                                                                           </div>
@@ -433,20 +433,20 @@ const LessonBlockBuilder = ({ blocks = [], onChange, initialPage = 1 }) => {
                                                                         <div className="space-y-6">
                                                                           <div className="grid grid-cols-2 gap-6">
                                                                             <div className="space-y-2">
-                                                                              <span className="text-[10px] font-black uppercase text-emerald-600">Surah</span>
+                                                                              <span className="text-[10px] font-black uppercase text-[var(--color-primary)]">Surah</span>
                                                                               <input 
                                                                                 value={block.content?.surah || ''}
                                                                                 onChange={e => updateBlockContent(block.id, { surah: e.target.value })}
-                                                                                className="w-full bg-black/20 border border-emerald-500/10 rounded-xl px-4 py-2 text-xs focus:outline-none text-white"
+                                                                                className="w-full bg-black/20 border border-[var(--color-primary)]/10 rounded-xl px-4 py-2 text-xs focus:outline-none text-white"
                                                                                 placeholder="Surah Al-Baqarah"
                                                                               />
                                                                             </div>
                                                                             <div className="space-y-2">
                                                                               <div className="flex items-center justify-between">
-                                                                                 <span className="text-[10px] font-black uppercase text-emerald-600">Verse Number</span>
+                                                                                 <span className="text-[10px] font-black uppercase text-[var(--color-primary)]">Verse Number</span>
                                                                                  <button 
                                                                                      onClick={() => fetchQuranVerse(block.id, block.content?.verse)}
-                                                                                     className="px-2 py-1 bg-emerald-500/10 hover:bg-emerald-500 text-emerald-400 hover:text-white rounded-lg text-[9px] font-black uppercase tracking-widest flex items-center gap-1 border border-emerald-500/20 transition-all active:scale-95"
+                                                                                     className="px-2 py-1 bg-[var(--color-primary)]/10 hover:bg-[var(--color-primary)] text-[var(--color-primary)] hover:text-white rounded-lg text-[9px] font-black uppercase tracking-widest flex items-center gap-1 border border-[var(--color-primary)]/20 transition-all active:scale-95"
                                                                                  >
                                                                                      <Icon name="Zap" size={10} /> Fetch
                                                                                  </button>
@@ -454,7 +454,7 @@ const LessonBlockBuilder = ({ blocks = [], onChange, initialPage = 1 }) => {
                                                                               <input 
                                                                                 value={block.content?.verse || ''}
                                                                                 onChange={e => updateBlockContent(block.id, { verse: e.target.value })}
-                                                                                className="w-full bg-black/20 border border-emerald-500/10 rounded-xl px-4 py-2 text-xs focus:outline-none text-white"
+                                                                                className="w-full bg-black/20 border border-[var(--color-primary)]/10 rounded-xl px-4 py-2 text-xs focus:outline-none text-white"
                                                                                 placeholder="e.g. 2:255"
                                                                               />
                                                                             </div>
@@ -462,14 +462,14 @@ const LessonBlockBuilder = ({ blocks = [], onChange, initialPage = 1 }) => {
                                                                           <textarea 
                                                                             value={block.content?.arabic || ''}
                                                                             onChange={e => updateBlockContent(block.id, { arabic: e.target.value })}
-                                                                            className="w-full h-24 bg-black/20 border border-emerald-500/10 rounded-2xl p-4 text-xl font-arabic text-right focus:outline-none text-white"
+                                                                            className="w-full h-24 bg-black/20 border border-[var(--color-primary)]/10 rounded-2xl p-4 text-xl font-arabic text-right focus:outline-none text-white"
                                                                             dir="rtl"
                                                                             placeholder="Quranic text in Arabic..."
                                                                           />
                                                                           <textarea 
                                                                             value={block.content?.translation || ''}
                                                                             onChange={e => updateBlockContent(block.id, { translation: e.target.value })}
-                                                                            className="w-full h-24 bg-black/20 border border-emerald-500/10 rounded-2xl p-4 text-sm italic focus:outline-none text-white"
+                                                                            className="w-full h-24 bg-black/20 border border-[var(--color-primary)]/10 rounded-2xl p-4 text-sm italic focus:outline-none text-white"
                                                                             placeholder="Translation..."
                                                                           />
                                                                         </div>
@@ -480,20 +480,20 @@ const LessonBlockBuilder = ({ blocks = [], onChange, initialPage = 1 }) => {
                                                                           <textarea 
                                                                             value={block.content?.arabic || ''}
                                                                             onChange={e => updateBlockContent(block.id, { arabic: e.target.value })}
-                                                                            className="w-full h-24 bg-black/20 border border-emerald-500/10 rounded-2xl p-4 text-xl font-arabic text-right focus:outline-none text-white"
+                                                                            className="w-full h-24 bg-black/20 border border-[var(--color-primary)]/10 rounded-2xl p-4 text-xl font-arabic text-right focus:outline-none text-white"
                                                                             dir="rtl"
                                                                             placeholder="Arabic text..."
                                                                           />
                                                                           <textarea 
                                                                             value={block.content?.translation || ''}
                                                                             onChange={e => updateBlockContent(block.id, { translation: e.target.value })}
-                                                                            className="w-full h-24 bg-black/20 border border-emerald-500/10 rounded-2xl p-4 text-sm focus:outline-none text-white"
+                                                                            className="w-full h-24 bg-black/20 border border-[var(--color-primary)]/10 rounded-2xl p-4 text-sm focus:outline-none text-white"
                                                                             placeholder="Translation..."
                                                                           />
                                                                           <input 
                                                                             value={block.content?.reference || ''}
                                                                             onChange={e => updateBlockContent(block.id, { reference: e.target.value })}
-                                                                            className="w-full bg-black/20 border border-emerald-500/10 rounded-xl px-4 py-2 text-xs focus:outline-none text-white"
+                                                                            className="w-full bg-black/20 border border-[var(--color-primary)]/10 rounded-xl px-4 py-2 text-xs focus:outline-none text-white"
                                                                             placeholder="Reference"
                                                                           />
                                                                         </div>
@@ -504,19 +504,19 @@ const LessonBlockBuilder = ({ blocks = [], onChange, initialPage = 1 }) => {
                                                                           <input 
                                                                             value={block.content?.title || ''}
                                                                             onChange={e => updateBlockContent(block.id, { title: e.target.value })}
-                                                                            className="w-full bg-black/20 border border-emerald-500/10 rounded-xl px-4 py-2 text-sm font-black focus:outline-none text-white"
+                                                                            className="w-full bg-black/20 border border-[var(--color-primary)]/10 rounded-xl px-4 py-2 text-sm font-black focus:outline-none text-white"
                                                                             placeholder="Styled Block Title"
                                                                           />
                                                                           <textarea 
                                                                             value={typeof block.content === 'string' ? block.content : block.content?.text || ''}
                                                                             onChange={e => updateBlockContent(block.id, { text: e.target.value })}
-                                                                            className="w-full h-40 bg-black/20 border border-emerald-500/10 rounded-2xl p-4 text-sm leading-relaxed focus:outline-none text-white"
+                                                                            className="w-full h-40 bg-black/20 border border-[var(--color-primary)]/10 rounded-2xl p-4 text-sm leading-relaxed focus:outline-none text-white"
                                                                             placeholder="Content text..."
                                                                           />
                                                                           <input 
                                                                             value={block.content?.footer || ''}
                                                                             onChange={e => updateBlockContent(block.id, { footer: e.target.value })}
-                                                                            className="w-full bg-black/20 border border-emerald-500/10 rounded-xl px-4 py-2 text-[10px] focus:outline-none opacity-60 text-white"
+                                                                            className="w-full bg-black/20 border border-[var(--color-primary)]/10 rounded-xl px-4 py-2 text-[10px] focus:outline-none opacity-60 text-white"
                                                                             placeholder="Footer text (optional)"
                                                                           />
                                                                         </div>
@@ -529,7 +529,7 @@ const LessonBlockBuilder = ({ blocks = [], onChange, initialPage = 1 }) => {
                                                                                 value={block.content?.url || ''}
                                                                                 onChange={e => updateBlockContent(block.id, { url: e.target.value }) }
                                                                                 placeholder="Paste YouTube or Vimeo URL..."
-                                                                                className="w-full bg-black/20 border border-emerald-500/10 rounded-xl px-5 py-4 text-sm text-white focus:outline-none"
+                                                                                className="w-full bg-black/20 border border-[var(--color-primary)]/10 rounded-xl px-5 py-4 text-sm text-white focus:outline-none"
                                                                             />
                                                                         </div>
                                                                     )}
@@ -539,20 +539,20 @@ const LessonBlockBuilder = ({ blocks = [], onChange, initialPage = 1 }) => {
                                                                           <input 
                                                                             value={block.content?.title || ''}
                                                                             onChange={e => updateBlockContent(block.id, { title: e.target.value })}
-                                                                            className="w-full bg-black/20 border border-emerald-500/10 rounded-xl px-4 py-2 text-sm font-bold focus:outline-none text-white"
+                                                                            className="w-full bg-black/20 border border-[var(--color-primary)]/10 rounded-xl px-4 py-2 text-sm font-bold focus:outline-none text-white"
                                                                             placeholder="Audio Title"
                                                                           />
                                                                           <div className="grid grid-cols-2 gap-4">
                                                                             <input 
                                                                               value={block.content?.url || ''}
                                                                               onChange={e => updateBlockContent(block.id, { url: e.target.value })}
-                                                                              className="w-full bg-black/20 border border-emerald-500/10 rounded-xl px-4 py-2 text-xs focus:outline-none text-white"
+                                                                              className="w-full bg-black/20 border border-[var(--color-primary)]/10 rounded-xl px-4 py-2 text-xs focus:outline-none text-white"
                                                                               placeholder="Audio File URL"
                                                                             />
                                                                             <input 
                                                                               value={block.content?.duration || ''}
                                                                               onChange={e => updateBlockContent(block.id, { duration: e.target.value })}
-                                                                              className="w-full bg-black/20 border border-emerald-500/10 rounded-xl px-4 py-2 text-xs focus:outline-none text-white"
+                                                                              className="w-full bg-black/20 border border-[var(--color-primary)]/10 rounded-xl px-4 py-2 text-xs focus:outline-none text-white"
                                                                               placeholder="Duration (e.g. 15:30)"
                                                                             />
                                                                           </div>
@@ -566,14 +566,14 @@ const LessonBlockBuilder = ({ blocks = [], onChange, initialPage = 1 }) => {
                                                                                 value={block.content?.url || ''}
                                                                                 onChange={e => updateBlockContent(block.id, { url: e.target.value })}
                                                                                 placeholder="Image URL (HTTPS)..."
-                                                                                className="w-full bg-black/20 border border-emerald-500/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none"
+                                                                                className="w-full bg-black/20 border border-[var(--color-primary)]/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none"
                                                                             />
                                                                             <input
                                                                                 type="text"
                                                                                 value={block.content?.caption || ''}
                                                                                 onChange={e => updateBlockContent(block.id, { caption: e.target.value })}
                                                                                 placeholder="Illustration Caption..."
-                                                                                className="w-full bg-black/20 border border-emerald-500/10 rounded-xl px-4 py-2 text-xs focus:outline-none text-white"
+                                                                                className="w-full bg-black/20 border border-[var(--color-primary)]/10 rounded-xl px-4 py-2 text-xs focus:outline-none text-white"
                                                                             />
                                                                         </div>
                                                                     )}
@@ -584,11 +584,11 @@ const LessonBlockBuilder = ({ blocks = [], onChange, initialPage = 1 }) => {
                                                                                 <input 
                                                                                     value={block.content?.title || ''}
                                                                                     onChange={e => updateBlockContent(block.id, { title: e.target.value })}
-                                                                                    className="flex-1 bg-black/20 border border-emerald-500/10 rounded-xl px-4 py-2.5 text-sm font-black focus:outline-none text-white"
+                                                                                    className="flex-1 bg-black/20 border border-[var(--color-primary)]/10 rounded-xl px-4 py-2.5 text-sm font-black focus:outline-none text-white"
                                                                                     placeholder="Summary Header Title..."
                                                                                 />
-                                                                                <div className="flex items-center gap-2 bg-black/20 p-2 rounded-xl border border-emerald-500/10">
-                                                                                    <span className="text-[9px] font-black uppercase text-slate-500">Color</span>
+                                                                                <div className="flex items-center gap-2 bg-black/20 p-2 rounded-xl border border-[var(--color-primary)]/10">
+                                                                                    <span className="text-[9px] font-black uppercase text-[var(--color-text-tertiary)]">Color</span>
                                                                                     <input 
                                                                                         type="color"
                                                                                         value={block.content?.color || '#10b981'}
@@ -610,7 +610,7 @@ const LessonBlockBuilder = ({ blocks = [], onChange, initialPage = 1 }) => {
                                                                                                     newItems[iIdx] = { ...item, keyword: e.target.value };
                                                                                                     updateBlockContent(block.id, { items: newItems });
                                                                                                 }}
-                                                                                                className="flex-1 bg-transparent border-b border-white/10 text-sm font-black focus:outline-none placeholder:text-slate-600 text-white"
+                                                                                                className="flex-1 bg-transparent border-b border-white/10 text-sm font-black focus:outline-none placeholder:text-[var(--color-text-secondary)] text-white"
                                                                                                 placeholder="Key Phrase / Keyword..."
                                                                                                 style={{ color: block.content?.color || '#10b981' }}
                                                                                             />
@@ -631,7 +631,7 @@ const LessonBlockBuilder = ({ blocks = [], onChange, initialPage = 1 }) => {
                                                                                                 newItems[iIdx] = { ...item, explanation: e.target.value };
                                                                                                 updateBlockContent(block.id, { items: newItems });
                                                                                             }}
-                                                                                            className="w-full bg-black/20 border border-white/5 rounded-xl p-3 text-xs leading-relaxed focus:outline-none placeholder:text-slate-600 text-slate-300 resize-none h-16"
+                                                                                            className="w-full bg-black/20 border border-white/5 rounded-xl p-3 text-xs leading-relaxed focus:outline-none placeholder:text-[var(--color-text-secondary)] text-slate-300 resize-none h-16"
                                                                                             placeholder="Detailed explanation..."
                                                                                         />
                                                                                     </div>
@@ -643,7 +643,7 @@ const LessonBlockBuilder = ({ blocks = [], onChange, initialPage = 1 }) => {
                                                                                     const newItems = [...(block.content?.items || []), { keyword: '', explanation: '' }];
                                                                                     updateBlockContent(block.id, { items: newItems });
                                                                                 }}
-                                                                                className="w-full py-2.5 rounded-xl border border-dashed border-emerald-500/20 hover:border-emerald-500/40 text-emerald-500 hover:text-emerald-400 text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-2 transition-all hover:bg-emerald-500/5"
+                                                                                className="w-full py-2.5 rounded-xl border border-dashed border-[var(--color-primary)]/20 hover:border-[var(--color-primary)]/40 text-[var(--color-primary)] hover:text-[var(--color-primary)] text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-2 transition-all hover:bg-[var(--color-primary)]/5"
                                                                             >
                                                                                 <Icon name="Plus" size={12} /> Add Point
                                                                             </button>
@@ -654,7 +654,7 @@ const LessonBlockBuilder = ({ blocks = [], onChange, initialPage = 1 }) => {
                                                                         <div className="space-y-4">
                                                                             {(block.content?.points || ['', '', '']).map((pt, pIdx) => (
                                                                                 <div key={pIdx} className="flex gap-3">
-                                                                                    <div className="w-6 h-6 rounded-full bg-emerald-500/10 text-emerald-500 flex flex-shrink-0 items-center justify-center text-[10px] font-black">{pIdx + 1}</div>
+                                                                                    <div className="w-6 h-6 rounded-full bg-[var(--color-primary)]/10 text-[var(--color-primary)] flex flex-shrink-0 items-center justify-center text-[10px] font-black">{pIdx + 1}</div>
                                                                                     <input 
                                                                                       value={pt}
                                                                                       onChange={e => {
@@ -662,7 +662,7 @@ const LessonBlockBuilder = ({ blocks = [], onChange, initialPage = 1 }) => {
                                                                                           newPts[pIdx] = e.target.value;
                                                                                           updateBlockContent(block.id, { points: newPts });
                                                                                       }}
-                                                                                      className="flex-1 bg-transparent border-b border-white/10 text-sm focus:outline-none focus:border-emerald-500/30 text-white"
+                                                                                      className="flex-1 bg-transparent border-b border-white/10 text-sm focus:outline-none focus:border-[var(--color-primary)]/30 text-white"
                                                                                       placeholder={`Learning objective point ${pIdx + 1}`}
                                                                                     />
                                                                                 </div>
@@ -681,18 +681,18 @@ const LessonBlockBuilder = ({ blocks = [], onChange, initialPage = 1 }) => {
                                                                                  <textarea 
                                                                                      value={block.content}
                                                                                      onChange={e => updateBlock(block.id, { content: e.target.value })}
-                                                                                     className="w-full bg-black/20 border border-emerald-500/10 rounded-xl p-4 text-xs focus:outline-none text-white leading-relaxed resize-y"
+                                                                                     className="w-full bg-black/20 border border-[var(--color-primary)]/10 rounded-xl p-4 text-xs focus:outline-none text-white leading-relaxed resize-y"
                                                                                      rows={6}
                                                                                  />
                                                                              ) : typeof block.content === 'object' && block.content !== null && Object.entries(block.content || {}).map(([key, value]) => {
                                                                                  if (typeof value === 'string') {
                                                                                      return (
                                                                                          <div key={key} className="space-y-1">
-                                                                                             <span className="text-[9px] font-black uppercase text-emerald-500">{key}</span>
+                                                                                             <span className="text-[9px] font-black uppercase text-[var(--color-primary)]">{key}</span>
                                                                                              <textarea 
                                                                                                  value={value}
                                                                                                  onChange={e => updateBlockContent(block.id, { [key]: e.target.value })}
-                                                                                                 className="w-full bg-black/20 border border-emerald-500/10 rounded-xl p-3 text-xs focus:outline-none text-white leading-relaxed resize-y"
+                                                                                                 className="w-full bg-black/20 border border-[var(--color-primary)]/10 rounded-xl p-3 text-xs focus:outline-none text-white leading-relaxed resize-y"
                                                                                                  rows={Math.min(10, Math.max(2, value.length / 50))}
                                                                                              />
                                                                                          </div>
@@ -701,7 +701,7 @@ const LessonBlockBuilder = ({ blocks = [], onChange, initialPage = 1 }) => {
                                                                                  if (Array.isArray(value) && typeof value[0] === 'string') {
                                                                                      return (
                                                                                          <div key={key} className="space-y-1">
-                                                                                             <span className="text-[9px] font-black uppercase text-emerald-500">{key}</span>
+                                                                                             <span className="text-[9px] font-black uppercase text-[var(--color-primary)]">{key}</span>
                                                                                              <div className="space-y-2">
                                                                                                  {value.map((item, i) => (
                                                                                                      <input 
@@ -712,7 +712,7 @@ const LessonBlockBuilder = ({ blocks = [], onChange, initialPage = 1 }) => {
                                                                                                              newArr[i] = e.target.value;
                                                                                                              updateBlockContent(block.id, { [key]: newArr });
                                                                                                          }}
-                                                                                                         className="w-full bg-black/20 border border-emerald-500/10 rounded-xl px-4 py-2 text-xs focus:outline-none text-white"
+                                                                                                         className="w-full bg-black/20 border border-[var(--color-primary)]/10 rounded-xl px-4 py-2 text-xs focus:outline-none text-white"
                                                                                                      />
                                                                                                  ))}
                                                                                              </div>
@@ -733,12 +733,12 @@ const LessonBlockBuilder = ({ blocks = [], onChange, initialPage = 1 }) => {
                                                                                 placeholder="Enter Question..."
                                                                                 className="w-full bg-transparent text-sm font-bold text-white focus:outline-none"
                                                                             />
-                                                                            <div className="space-y-2.5 pl-4 border-l-2 border-emerald-500/20">
+                                                                            <div className="space-y-2.5 pl-4 border-l-2 border-[var(--color-primary)]/20">
                                                                                 {(block.options || ['', '', '', '']).map((opt, oIdx) => (
                                                                                     <div key={oIdx} className="flex items-center gap-4">
                                                                                         <button 
                                                                                             onClick={() => updateBlock(block.id, { correctIndex: oIdx })}
-                                                                                            className={`w-5 h-5 rounded-full border-2 flex flex-shrink-0 items-center justify-center ${block.correctIndex === oIdx ? 'border-emerald-500 bg-emerald-500' : 'border-slate-700'}`}
+                                                                                            className={`w-5 h-5 rounded-full border-2 flex flex-shrink-0 items-center justify-center ${block.correctIndex === oIdx ? 'border-[var(--color-primary)] bg-[var(--color-primary)]' : 'border-slate-700'}`}
                                                                                         >
                                                                                             {block.correctIndex === oIdx && <div className="w-1.5 h-1.5 bg-white rounded-full" />}
                                                                                         </button>
@@ -751,7 +751,7 @@ const LessonBlockBuilder = ({ blocks = [], onChange, initialPage = 1 }) => {
                                                                                                 updateBlock(block.id, { options: newOpts });
                                                                                             }}
                                                                                             placeholder="Option text..."
-                                                                                            className={`flex-1 bg-transparent text-sm focus:outline-none ${block.correctIndex === oIdx ? 'text-emerald-500 font-bold' : 'text-slate-400'}`}
+                                                                                            className={`flex-1 bg-transparent text-sm focus:outline-none ${block.correctIndex === oIdx ? 'text-[var(--color-primary)] font-bold' : 'text-slate-400'}`}
                                                                                         />
                                                                                     </div>
                                                                                 ))}
@@ -773,11 +773,11 @@ const LessonBlockBuilder = ({ blocks = [], onChange, initialPage = 1 }) => {
                     </div>
 
                     {/* Add Blocks Bar */}
-                    <div className="pt-8 border-t border-emerald-500/10 flex flex-col items-center relative z-40">
+                    <div className="pt-8 border-t border-[var(--color-primary)]/10 flex flex-col items-center relative z-40">
                         <motion.button 
                             whileTap={{ scale: 0.95 }}
                             onClick={() => setShowAddPanel(!showAddPanel)} 
-                            className={`flex items-center gap-2 px-5 py-3 rounded-xl shadow-xl transition-all font-black uppercase tracking-widest text-[9px] ${showAddPanel ? 'bg-rose-600 hover:bg-rose-500 shadow-rose-500/10 text-white' : 'bg-emerald-600 hover:bg-emerald-500 shadow-emerald-500/20 text-white'}`}
+                            className={`flex items-center gap-2 px-5 py-3 rounded-xl shadow-xl transition-all font-black uppercase tracking-widest text-[9px] ${showAddPanel ? 'bg-rose-600 hover:bg-rose-500 shadow-rose-500/10 text-white' : 'bg-[var(--color-primary)] hover:bg-[var(--color-primary)] shadow-[var(--color-primary)]/20 text-white'}`}
                         >
                             <Icon name={showAddPanel ? 'Minus' : 'Plus'} size={12} />
                             {showAddPanel ? 'Close Canvas Elements' : 'Insert Element Component'}
@@ -790,15 +790,15 @@ const LessonBlockBuilder = ({ blocks = [], onChange, initialPage = 1 }) => {
                                     animate={{ opacity: 1, y: 0, scale: 1 }}
                                     exit={{ opacity: 0, y: 10, scale: 0.95 }}
                                     transition={{ duration: 0.2, ease: "easeOut" }}
-                                    className="mt-4 p-3 bg-black/40 border border-emerald-500/10 rounded-2xl flex flex-wrap gap-2 justify-center max-w-3xl backdrop-blur-3xl"
+                                    className="mt-4 p-3 bg-black/40 border border-[var(--color-primary)]/10 rounded-2xl flex flex-wrap gap-2 justify-center max-w-3xl backdrop-blur-3xl"
                                 >
                                     {BLOCK_TYPES.map(type => (
                                         <button 
                                             key={type.type} 
                                             onClick={() => { addBlock(type.type); setShowAddPanel(false); }} 
-                                            className="flex items-center gap-2 px-3.5 py-2.5 bg-white/5 hover:bg-white/10 border border-emerald-500/10 rounded-xl text-[9px] font-bold uppercase tracking-widest text-emerald-500 hover:text-emerald-400 transition-all active:scale-95"
+                                            className="flex items-center gap-2 px-3.5 py-2.5 bg-white/5 hover:bg-white/10 border border-[var(--color-primary)]/10 rounded-xl text-[9px] font-bold uppercase tracking-widest text-[var(--color-primary)] hover:text-[var(--color-primary)] transition-all active:scale-95"
                                         >
-                                            <Icon name={type.icon} size={11} className="text-emerald-500" />
+                                            <Icon name={type.icon} size={11} className="text-[var(--color-primary)]" />
                                             {type.label}
                                         </button>
                                     ))}
@@ -811,9 +811,9 @@ const LessonBlockBuilder = ({ blocks = [], onChange, initialPage = 1 }) => {
 
             {/* Right Side Frame: AI Workspace Copilot Workspace canvas stream layout side sheet widget natively on stream flawlessly */}
             <div className={`transition-all duration-300 grow-0 ${isAiExpanded ? 'w-full xl:w-80 opacity-100' : 'w-full xl:w-12 h-14 xl:h-auto overflow-hidden xl:opacity-60'} top-6 sticky space-y-4`}>
-                <motion.div layout className={`p-5 bg-white/2 rounded-3xl border border-emerald-500/10 backdrop-blur-3xl h-full flex flex-col justify-between transition-all duration-300 ${isAiExpanded ? '' : 'p-2 xl:px-0 items-center justify-center bg-emerald-600/5'}`}>
+                <motion.div layout className={`p-5 bg-white/2 rounded-3xl border border-[var(--color-primary)]/10 backdrop-blur-3xl h-full flex flex-col justify-between transition-all duration-300 ${isAiExpanded ? '' : 'p-2 xl:px-0 items-center justify-center bg-[var(--color-primary)]/5'}`}>
                     {!isAiExpanded ? (
-                        <button onClick={() => setIsAiExpanded(true)} className="flex items-center justify-center h-full xl:min-h-[300px] w-full text-emerald-500 hover:text-emerald-400 transition-all flex-row xl:flex-col gap-2">
+                        <button onClick={() => setIsAiExpanded(true)} className="flex items-center justify-center h-full xl:min-h-[300px] w-full text-[var(--color-primary)] hover:text-[var(--color-primary)] transition-all flex-row xl:flex-col gap-2">
                              <Icon name="Zap" size={16} className="animate-pulse" />
                              <span className="text-[8px] font-black uppercase tracking-widest xl:[writing-mode:vertical-lr] xl:rotate-180">Expand AI</span>
                         </button>
@@ -821,7 +821,7 @@ const LessonBlockBuilder = ({ blocks = [], onChange, initialPage = 1 }) => {
                         <>
                             <div>
                                 <div className="flex items-center justify-between mb-2">
-                                     <div className="flex items-center gap-2 text-emerald-400">
+                                     <div className="flex items-center gap-2 text-[var(--color-primary)]">
                                           <Icon name="Zap" size={16} />
                                           <span className="text-[10px] font-black uppercase tracking-[0.2em]">AI Copilot</span>
                                      </div>
@@ -829,28 +829,28 @@ const LessonBlockBuilder = ({ blocks = [], onChange, initialPage = 1 }) => {
                                           <Icon name="X" size={12} />
                                      </button>
                                 </div>
-                                <p className="text-[10px] text-slate-500 leading-relaxed">Auto-generate cinematic content scripts effortlessly based on your overview context triggers sidebar stream.</p>
+                                <p className="text-[10px] text-[var(--color-text-tertiary)] leading-relaxed">Auto-generate cinematic content scripts effortlessly based on your overview context triggers sidebar stream.</p>
                                 
                                 <div className="mt-4 space-y-3">
                                      <textarea 
-                                          className="w-full bg-black/30 border border-emerald-500/10 rounded-2xl p-4 text-xs text-white placeholder:text-slate-600 focus:outline-none focus:border-emerald-500/30 resize-none h-28"
+                                          className="w-full bg-black/30 border border-[var(--color-primary)]/10 rounded-2xl p-4 text-xs text-white placeholder:text-[var(--color-text-secondary)] focus:outline-none focus:border-[var(--color-primary)]/30 resize-none h-28"
                                           placeholder={`Ask AI to generate rich items for this ${PAGE_TEMPLATES[selectedPageIdx]?.label.split('. ')[1]} setup...`}
                                      />
-                                     <button className="w-full py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-[9px] font-black uppercase tracking-widest shadow-lg shadow-emerald-500/10 active:scale-95 transition-all flex items-center justify-center gap-2">
+                                     <button className="w-full py-3 bg-[var(--color-primary)] hover:bg-[var(--color-primary)] text-white rounded-xl text-[9px] font-black uppercase tracking-widest shadow-lg shadow-emerald-500/10 active:scale-95 transition-all flex items-center justify-center gap-2">
                                           <Icon name="Sparkles" size={12} /> Generate Content
                                      </button>
                                 </div>
                             </div>
                             
                             {/* Live Preview / Stats Box native in coping stream pane frame layout stream flawlessly */}
-                            <div className="pt-4 border-t border-emerald-500/10 space-y-3 mt-4">
+                            <div className="pt-4 border-t border-[var(--color-primary)]/10 space-y-3 mt-4">
                                 <div className="flex items-center justify-between">
-                                    <span className="text-[9px] font-black text-slate-500 uppercase">Page Blocks</span>
+                                    <span className="text-[9px] font-black text-[var(--color-text-tertiary)] uppercase">Page Blocks</span>
                                     <span className="text-xs font-black text-white">{activeBlocks.length}</span>
                                 </div>
                                 <div className="flex items-center justify-between">
-                                    <span className="text-[9px] font-black text-slate-500 uppercase">Est. Minutes</span>
-                                    <span className="text-xs font-black text-emerald-500">{activeBlocks.length * 2} m</span>
+                                    <span className="text-[9px] font-black text-[var(--color-text-tertiary)] uppercase">Est. Minutes</span>
+                                    <span className="text-xs font-black text-[var(--color-primary)]">{activeBlocks.length * 2} m</span>
                                 </div>
                             </div>
                         </>

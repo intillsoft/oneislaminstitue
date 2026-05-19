@@ -140,7 +140,7 @@ const GigCreate = () => {
 
   if (!user) {
     return (
-      <div className="min-h-screen bg-white dark:bg-[#0A0E27] flex items-center justify-center">
+      <div className="min-h-screen bg-white dark:bg-[var(--color-bg-dark)] flex items-center justify-center">
         <div className="text-center">
           <Icon name="Lock" className="w-16 h-16 text-[#64748B] dark:text-[#8B92A3] mx-auto mb-4" />
           <h2 className="text-xl font-semibold text-[#0F172A] dark:text-[#E8EAED] mb-2">Sign in required</h2>
@@ -151,7 +151,7 @@ const GigCreate = () => {
   }
 
   return (
-    <div className="min-h-screen bg-white dark:bg-[#0A0E27]">
+    <div className="min-h-screen bg-white dark:bg-[var(--color-bg-dark)]">
       <UnifiedSidebar />
       <div className="ml-0 lg:ml-64 min-h-screen">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">

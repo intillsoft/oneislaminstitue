@@ -179,7 +179,7 @@ const FAQAIAssistant = ({ question, answer }) => {
                     onChange={(e) => setUserQuestion(e.target.value)}
                     onKeyPress={(e) => e.key === 'Enter' && handleAskAI()}
                     placeholder="Ask Workflow AI..."
-                    className="flex-1 px-4 py-2 border border-[#E2E8F0] dark:border-[#1E2640] rounded-lg bg-background dark:bg-[#0A0E27] text-text-primary dark:text-[#E8EAED] focus:outline-none focus:ring-2 focus:ring-workflow-primary"
+                    className="flex-1 px-4 py-2 border border-[#E2E8F0] dark:border-[#1E2640] rounded-lg bg-background dark:bg-[var(--color-bg-dark)] text-text-primary dark:text-[#E8EAED] focus:outline-none focus:ring-2 focus:ring-workflow-primary"
                     disabled={isLoading}
                   />
                   <button

@@ -175,7 +175,7 @@ const InterviewPrep = () => {
                             </div>
 
                             <div className="space-y-4">
-                                <label className="block text-[10px] font-black uppercase tracking-widest text-slate-500">Target Objectives (Job Description)</label>
+                                <label className="block text-[10px] font-black uppercase tracking-widest text-[var(--color-text-tertiary)]">Target Objectives (Job Description)</label>
                                 <textarea
                                     value={jobDescription}
                                     onChange={(e) => setJobDescription(e.target.value)}
@@ -207,7 +207,7 @@ const InterviewPrep = () => {
                                         <div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
                                         Simulator Active
                                     </div>
-                                    <div className="text-[8px] font-bold text-slate-600 uppercase tracking-widest">Neural Link: 100% stable</div>
+                                    <div className="text-[8px] font-bold text-[var(--color-text-secondary)] uppercase tracking-widest">Neural Link: 100% stable</div>
                                 </div>
                                 <div className="flex gap-4">
                                     <div className="px-4 py-2 bg-black/40 border border-white/10 rounded-full flex items-center gap-3 backdrop-blur-xl">
@@ -269,7 +269,7 @@ const InterviewPrep = () => {
                                                 </button>
                                                 <div className="flex flex-col">
                                                     <span className="text-[10px] font-black text-white uppercase tracking-widest">{isRecording ? 'Recording Output' : 'Audio Input Off'}</span>
-                                                    <span className="text-[8px] font-bold text-slate-500 uppercase">{isRecording ? 'Capturing Neural Response' : 'Click to begin transmission'}</span>
+                                                    <span className="text-[8px] font-bold text-[var(--color-text-tertiary)] uppercase">{isRecording ? 'Capturing Neural Response' : 'Click to begin transmission'}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -289,7 +289,7 @@ const InterviewPrep = () => {
                                         <Zap className="text-blue-500/30" size={32} />
                                     </div>
                                     <div>
-                                        <h3 className="text-lg font-black text-slate-500 uppercase tracking-widest">Challenge Pending</h3>
+                                        <h3 className="text-lg font-black text-[var(--color-text-tertiary)] uppercase tracking-widest">Challenge Pending</h3>
                                         <p className="text-[10px] font-bold text-slate-700 uppercase tracking-widest mt-2">Select a neural node on the right to begin</p>
                                     </div>
                                 </div>
@@ -333,10 +333,10 @@ const InterviewPrep = () => {
                                         className={`w-full p-5 rounded-2xl border text-left transition-all group ${activeQuestion === idx ? 'bg-blue-600/10 border-blue-500/40' : 'bg-[#050714] border-white/5 hover:border-white/10'}`}
                                     >
                                         <div className="flex items-center gap-4">
-                                            <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-[10px] font-black ${activeQuestion === idx ? 'bg-blue-500 text-white' : 'bg-white/5 text-slate-600'}`}>
+                                            <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-[10px] font-black ${activeQuestion === idx ? 'bg-blue-500 text-white' : 'bg-white/5 text-[var(--color-text-secondary)]'}`}>
                                                 0{idx + 1}
                                             </div>
-                                            <p className={`text-[11px] font-bold leading-tight ${activeQuestion === idx ? 'text-white' : 'text-slate-500 group-hover:text-slate-400'}`}>
+                                            <p className={`text-[11px] font-bold leading-tight ${activeQuestion === idx ? 'text-white' : 'text-[var(--color-text-tertiary)] group-hover:text-slate-400'}`}>
                                                 {q.substring(0, 60)}...
                                             </p>
                                         </div>

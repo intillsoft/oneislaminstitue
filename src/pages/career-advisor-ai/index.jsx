@@ -87,7 +87,7 @@ const CareerAdvisorAI = () => {
                         <div className="w-1 h-1 rounded-full bg-purple-500" />
                         {trend.title}
                       </h4>
-                      <p className="text-[10px] text-slate-500 font-medium leading-relaxed uppercase">
+                      <p className="text-[10px] text-[var(--color-text-tertiary)] font-medium leading-relaxed uppercase">
                         {trend.description || trend.content}
                       </p>
                     </div>
@@ -95,7 +95,7 @@ const CareerAdvisorAI = () => {
                 </div>
               ) : (
                 <div className="p-8 bg-white/5 border border-dashed border-white/10 rounded-3xl text-center">
-                  <p className="text-[10px] text-slate-600 font-black uppercase tracking-widest">Awaiting Segment Data</p>
+                  <p className="text-[10px] text-[var(--color-text-secondary)] font-black uppercase tracking-widest">Awaiting Segment Data</p>
                 </div>
               )}
             </div>
@@ -144,7 +144,7 @@ const CareerAdvisorAI = () => {
                 </div>
               ) : (
                 <div className="p-8 bg-white/5 border border-dashed border-white/10 rounded-3xl text-center">
-                  <p className="text-[10px] text-slate-600 font-black uppercase tracking-widest">Neuro-profile Incomplete</p>
+                  <p className="text-[10px] text-[var(--color-text-secondary)] font-black uppercase tracking-widest">Neuro-profile Incomplete</p>
                 </div>
               )}
             </div>

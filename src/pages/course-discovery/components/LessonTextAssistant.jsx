@@ -187,19 +187,19 @@ Answer the user's question directly, strictly using the lesson context where app
       }}
       exit={{ y: 50, opacity: 0, scale: 0.95 }}
       transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-      className={`fixed ${isMinimized ? 'bottom-24 right-6' : 'bottom-24 right-6'} max-w-[420px] max-h-[calc(100dvh-120px)] bg-white/95 dark:bg-[#0B1221]/95 backdrop-blur-2xl rounded-[2rem] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] dark:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.8)] border border-slate-200/50 dark:border-white/10 flex flex-col z-[9995] overflow-hidden transition-all duration-300`}
+      className={`fixed ${isMinimized ? 'bottom-24 right-6' : 'bottom-24 right-6'} max-w-[420px] max-h-[calc(100dvh-120px)] bg-white/95 dark:bg-[var(--color-bg-dark)]/95 backdrop-blur-2xl rounded-[2rem] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] dark:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.8)] border border-[var(--color-border-primary)]/50 dark:border-white/10 flex flex-col z-[9995] overflow-hidden transition-all duration-300`}
     >
       {/* Header */}
       <div className="flex items-center justify-between px-5 py-4 border-b border-slate-100/50 dark:border-white/5 bg-transparent shrink-0">
         <div className="flex items-center gap-3">
           {isMinimized && <GripVertical className="text-slate-400 cursor-grab active:cursor-grabbing mr-1" size={16} />}
-          <div className="w-10 h-10 flex items-center justify-center rounded-[1rem] bg-gradient-to-br from-emerald-400 to-teal-500 shadow-sm shadow-emerald-500/20">
+          <div className="w-10 h-10 flex items-center justify-center rounded-[1rem] bg-gradient-to-br from-[var(--color-primary)] to-teal-500 shadow-sm shadow-[var(--color-primary)]/20">
             <Bot className="w-5 h-5 text-white drop-shadow-sm" />
           </div>
           {!isMinimized && (
             <div>
-              <h3 className="text-sm font-black text-slate-900 dark:text-white leading-tight">Lesson Assistant</h3>
-              <p className="text-[10px] text-emerald-600 dark:text-emerald-400 font-bold uppercase tracking-widest leading-tight flex items-center gap-1">
+              <h3 className="text-sm font-black text-[var(--color-text-primary)] dark:text-white leading-tight">Lesson Assistant</h3>
+              <p className="text-[10px] text-[var(--color-primary)] dark:text-[var(--color-primary)] font-bold uppercase tracking-widest leading-tight flex items-center gap-1">
                 <Info size={10} /> Has Lesson Context
               </p>
             </div>
@@ -208,14 +208,14 @@ Answer the user's question directly, strictly using the lesson context where app
         <div className="flex items-center gap-1">
           <button
             onClick={() => setIsMinimized(!isMinimized)}
-            className="p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-white/10 text-slate-500 transition-colors"
+            className="p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-white/10 text-[var(--color-text-tertiary)] transition-colors"
             title={isMinimized ? "Maximize" : "Minimize"}
           >
             {isMinimized ? <Maximize2 className="w-4 h-4" /> : <Minimize2 className="w-4 h-4" />}
           </button>
           <button
             onClick={onClose}
-            className="p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-white/10 text-slate-500 transition-colors"
+            className="p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-white/10 text-[var(--color-text-tertiary)] transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
@@ -229,15 +229,15 @@ Answer the user's question directly, strictly using the lesson context where app
             <div key={idx} className={`flex gap-3 group ${msg.role === 'user' ? 'flex-row-reverse' : ''}`}>
               <div className="shrink-0 mt-1">
                 {msg.role === 'user' ? (
-                  <div className="w-7 h-7 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center border border-slate-200 dark:border-slate-700 overflow-hidden">
+                  <div className="w-7 h-7 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center border border-[var(--color-border-primary)] dark:border-slate-700 overflow-hidden">
                     {profile?.avatar_url ? (
                       <img src={profile.avatar_url} alt="User" className="w-full h-full object-cover" />
                     ) : (
-                      <User className="w-3.5 h-3.5 text-slate-600 dark:text-slate-400" />
+                      <User className="w-3.5 h-3.5 text-[var(--color-text-secondary)] dark:text-slate-400" />
                     )}
                   </div>
                 ) : (
-                  <div className="w-8 h-8 rounded-[1rem] bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center shadow-sm shadow-emerald-500/20">
+                  <div className="w-8 h-8 rounded-[1rem] bg-gradient-to-br from-[var(--color-primary)] to-teal-500 flex items-center justify-center shadow-sm shadow-[var(--color-primary)]/20">
                     <Bot className="w-4 h-4 text-white drop-shadow-sm" />
                   </div>
                 )}
@@ -246,7 +246,7 @@ Answer the user's question directly, strictly using the lesson context where app
               <div className={`flex flex-col max-w-[85%] ${msg.role === 'user' ? 'items-end' : 'items-start'}`}>
                 <div className={`px-5 py-4 rounded-[1.5rem] shadow-sm text-sm ${
                   msg.role === 'user' 
-                    ? 'bg-emerald-600 text-white rounded-tr-sm' 
+                    ? 'bg-[var(--color-primary)] text-white rounded-tr-sm' 
                     : 'bg-white dark:bg-slate-800/80 border border-slate-100 dark:border-white/5 text-slate-800 dark:text-slate-200 prose prose-sm dark:prose-invert prose-p:leading-relaxed max-w-none rounded-tl-sm'
                 }`}>
                   {msg.role === 'user' ? (
@@ -260,7 +260,7 @@ Answer the user's question directly, strictly using the lesson context where app
                   <div className="mt-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
                     <button
                       onClick={() => handleCopyMessage(msg.content)}
-                      className="flex items-center gap-1.5 px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wide text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors"
+                      className="flex items-center gap-1.5 px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wide text-slate-400 hover:text-[var(--color-text-secondary)] dark:hover:text-slate-300 transition-colors"
                     >
                       {copied === msg.content ? <><Check className="w-3 h-3" /> Copied</> : <><Copy className="w-3 h-3" /> Copy</>}
                     </button>
@@ -272,13 +272,13 @@ Answer the user's question directly, strictly using the lesson context where app
 
           {loading && (
             <div className="flex gap-4">
-              <div className="w-8 h-8 rounded-[1rem] bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center shadow-sm shadow-emerald-500/20 mt-1 shrink-0">
+              <div className="w-8 h-8 rounded-[1rem] bg-gradient-to-br from-[var(--color-primary)] to-teal-500 flex items-center justify-center shadow-sm shadow-[var(--color-primary)]/20 mt-1 shrink-0">
                 <Bot className="w-4 h-4 text-white drop-shadow-sm" />
               </div>
               <div className="flex items-center gap-2 bg-white dark:bg-slate-800/80 border border-slate-100 dark:border-white/5 px-5 py-4 rounded-[1.5rem] rounded-tl-sm shadow-sm">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-[bounce_1s_infinite_0ms]"></span>
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-[bounce_1s_infinite_150ms]"></span>
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-[bounce_1s_infinite_300ms]"></span>
+                <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-primary)] animate-[bounce_1s_infinite_0ms]"></span>
+                <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-primary)] animate-[bounce_1s_infinite_150ms]"></span>
+                <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-primary)] animate-[bounce_1s_infinite_300ms]"></span>
               </div>
             </div>
           )}
@@ -288,7 +288,7 @@ Answer the user's question directly, strictly using the lesson context where app
 
       {/* Input Area */}
       <div className={`p-4 bg-white/50 dark:bg-slate-900/50 backdrop-blur-md border-t border-slate-100/50 dark:border-white/5 shrink-0 ${isMinimized ? 'p-1 border-t-0 bg-transparent' : ''}`}>
-        <div className={`relative flex items-end w-full bg-slate-50 dark:bg-slate-800/80 rounded-[1.5rem] border border-slate-200/60 dark:border-slate-700/50 focus-within:border-emerald-500/50 dark:focus-within:border-emerald-500/50 transition-all shadow-sm focus-within:shadow-md focus-within:ring-2 focus-within:ring-emerald-500/10 ${isMinimized ? 'px-3 py-1 rounded-full' : 'px-4 py-3'}`}>
+        <div className={`relative flex items-end w-full bg-white dark:bg-slate-800/80 rounded-[1.5rem] border border-[var(--color-border-primary)]/60 dark:border-slate-700/50 focus-within:border-[var(--color-primary)]/50 dark:focus-within:border-[var(--color-primary)]/50 transition-all shadow-sm focus-within:shadow-md focus-within:ring-2 focus-within:ring-[var(--color-primary)]/10 ${isMinimized ? 'px-3 py-1 rounded-full' : 'px-4 py-3'}`}>
           <textarea
             ref={textareaRef}
             value={input}
@@ -300,7 +300,7 @@ Answer the user's question directly, strictly using the lesson context where app
               }
             }}
             placeholder={isMinimized ? "Ask..." : "Ask a question about this lesson..."}
-            className={`m-0 w-full resize-none border-0 bg-transparent py-2.5 pr-10 pl-1 focus:ring-0 focus-visible:ring-0 overflow-y-auto text-sm text-slate-900 dark:text-white placeholder-slate-400 ${isMinimized ? 'py-1 text-xs' : 'max-h-[120px]'}`}
+            className={`m-0 w-full resize-none border-0 bg-transparent py-2.5 pr-10 pl-1 focus:ring-0 focus-visible:ring-0 overflow-y-auto text-sm text-[var(--color-text-primary)] dark:text-white placeholder-slate-400 ${isMinimized ? 'py-1 text-xs' : 'max-h-[120px]'}`}
             rows={1}
           />
           <button
@@ -308,7 +308,7 @@ Answer the user's question directly, strictly using the lesson context where app
             disabled={loading || !input.trim()}
             className={`absolute right-2 bottom-2 p-2 rounded-xl transition-all flex items-center justify-center ${
               input.trim() && !loading
-                ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/20 hover:scale-105 active:scale-95'
+                ? 'bg-[var(--color-primary)] text-white shadow-md shadow-[var(--color-primary)]/20 hover:scale-105 active:scale-95'
                 : 'bg-slate-200 text-slate-400 dark:bg-slate-700 cursor-not-allowed'
             } ${isMinimized ? 'p-1.5 bottom-1' : ''}`}
           >

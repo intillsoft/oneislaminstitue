@@ -66,7 +66,7 @@ const SourceAttribution = () => {
     if (active && payload && payload.length) {
       return (
         <div className="bg-bg/95 backdrop-blur-xl p-4 border border-border dark:border-white/10 rounded-2xl shadow-2xl">
-          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-text-muted dark:text-slate-500 mb-2">{payload[0].name}</p>
+          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-text-muted dark:text-[var(--color-text-tertiary)] mb-2">{payload[0].name}</p>
           <div className="flex items-center justify-between gap-8">
             <span className="text-xs font-black text-text-primary dark:text-white">{payload[0].value}%</span>
             <span className="text-[10px] font-bold text-text-muted dark:text-slate-400">({payload[0].payload.count} apps)</span>

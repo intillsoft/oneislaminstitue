@@ -64,24 +64,24 @@ Format as clear text paragraphs.`;
                     initial={{ opacity: 0, scale: 0.95, y: 20 }}
                     animate={{ opacity: 1, scale: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                    className="relative w-full max-w-lg bg-white dark:bg-slate-900 rounded-[2rem] shadow-2xl overflow-hidden border border-slate-200 dark:border-white/10"
+                    className="relative w-full max-w-lg bg-white dark:bg-slate-900 rounded-[2rem] shadow-2xl overflow-hidden border border-[var(--color-border-primary)] dark:border-white/10"
                 >
                     {/* Header */}
-                    <div className="px-8 py-6 border-b border-slate-200 dark:border-white/5 flex items-center justify-between bg-slate-50/50 dark:bg-white/[0.02]">
+                    <div className="px-8 py-6 border-b border-[var(--color-border-primary)] dark:border-white/5 flex items-center justify-between bg-white/50 dark:bg-white/[0.02]">
                         <div className="flex items-center gap-3">
                             <div className="w-10 h-10 rounded-xl bg-workflow-primary/10 flex items-center justify-center">
                                 <Brain className="w-5 h-5 text-workflow-primary" />
                             </div>
                             <div>
-                                <h3 className="text-lg font-black text-slate-900 dark:text-white tracking-tight">Success Path analysis</h3>
-                                <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Why this Course?</p>
+                                <h3 className="text-lg font-black text-[var(--color-text-primary)] dark:text-white tracking-tight">Success Path analysis</h3>
+                                <p className="text-[10px] font-bold text-[var(--color-text-tertiary)] uppercase tracking-widest">Why this Course?</p>
                             </div>
                         </div>
                         <button
                             onClick={onClose}
                             className="w-8 h-8 rounded-full bg-slate-100 dark:bg-white/5 flex items-center justify-center hover:bg-slate-200 dark:hover:bg-white/10 transition-colors"
                         >
-                            <X className="w-4 h-4 text-slate-500" />
+                            <X className="w-4 h-4 text-[var(--color-text-tertiary)]" />
                         </button>
                     </div>
 
@@ -94,16 +94,16 @@ Format as clear text paragraphs.`;
                             </div>
                         ) : (
                             <div className="prose prose-sm dark:prose-invert max-w-none">
-                                <div className="text-sm font-medium text-slate-600 dark:text-slate-300 leading-relaxed whitespace-pre-wrap">
+                                <div className="text-sm font-medium text-[var(--color-text-secondary)] dark:text-slate-300 leading-relaxed whitespace-pre-wrap">
                                     {explanation}
                                 </div>
 
                                 <div className="mt-8 flex gap-3">
-                                    <div className="flex-1 p-4 rounded-xl bg-emerald-500/5 border border-emerald-500/10 flex items-start gap-3">
-                                        <CheckCircle className="w-4 h-4 text-emerald-500 mt-0.5" />
+                                    <div className="flex-1 p-4 rounded-xl bg-[var(--color-primary)]/5 border border-[var(--color-primary)]/10 flex items-start gap-3">
+                                        <CheckCircle className="w-4 h-4 text-[var(--color-primary)] mt-0.5" />
                                         <div>
-                                            <p className="text-[10px] font-black text-emerald-500 uppercase tracking-widest mb-1">Top Match Factor</p>
-                                            <p className="text-xs font-bold text-slate-600 dark:text-slate-400">
+                                            <p className="text-[10px] font-black text-[var(--color-primary)] uppercase tracking-widest mb-1">Top Match Factor</p>
+                                            <p className="text-xs font-bold text-[var(--color-text-secondary)] dark:text-slate-400">
                                                 {job.matchedSkills?.[0] ? `Strong alignment with ${job.matchedSkills[0]}` : 'General profile alignment'}
                                             </p>
                                         </div>
@@ -114,10 +114,10 @@ Format as clear text paragraphs.`;
                     </div>
 
                     {/* Footer */}
-                    <div className="px-8 py-4 bg-slate-50 dark:bg-slate-900/50 border-t border-slate-200 dark:border-white/5 flex justify-end">
+                    <div className="px-8 py-4 bg-white dark:bg-slate-900/50 border-t border-[var(--color-border-primary)] dark:border-white/5 flex justify-end">
                         <button
                             onClick={onClose}
-                            className="px-6 py-2.5 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-xl text-xs font-black uppercase tracking-widest hover:scale-[1.02] transition-transform"
+                            className="px-6 py-2.5 bg-slate-900 dark:bg-white text-white dark:text-[var(--color-text-primary)] rounded-xl text-xs font-black uppercase tracking-widest hover:scale-[1.02] transition-transform"
                         >
                             Start Enrollment
                         </button>

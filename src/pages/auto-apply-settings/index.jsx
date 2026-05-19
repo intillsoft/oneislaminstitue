@@ -246,7 +246,7 @@ const AutoApplySettings = () => {
       <div className="min-h-screen bg-private flex items-center justify-center">
         <div className="text-center">
           <TypingIndicator />
-          <p className="mt-4 text-slate-500 font-black text-[10px] uppercase tracking-widest">Synchronizing Neural Config...</p>
+          <p className="mt-4 text-[var(--color-text-tertiary)] font-black text-[10px] uppercase tracking-widest">Synchronizing Neural Config...</p>
         </div>
       </div>
     );
@@ -270,7 +270,7 @@ const AutoApplySettings = () => {
                   <h2 className="text-lg font-bold text-white mb-1">
                     System Activation
                   </h2>
-                  <p className="text-xs text-slate-500 font-bold">
+                  <p className="text-xs text-[var(--color-text-tertiary)] font-bold">
                     Authorize autonomous submission engine
                   </p>
                 </div>
@@ -290,7 +290,7 @@ const AutoApplySettings = () => {
               <>
                 {/* Job Criteria */}
                 <div className="bg-[#13182E]/40 backdrop-blur-3xl border border-white/5 rounded-3xl p-8">
-                  <h2 className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 mb-8 flex items-center gap-3">
+                  <h2 className="text-[10px] font-black uppercase tracking-[0.3em] text-[var(--color-text-tertiary)] mb-8 flex items-center gap-3">
                     <Settings className="w-4 h-4 text-workflow-primary" />
                     Target Matrix Parameters
                   </h2>
@@ -528,7 +528,7 @@ const AutoApplySettings = () => {
                           />
                           <div>
                             <span className="text-sm font-bold text-white block mb-0.5">Neural Resume Selection</span>
-                            <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">
+                            <span className="text-[10px] text-[var(--color-text-tertiary)] font-bold uppercase tracking-wider">
                               AI will score ALL your resumes and pick the absolute best match for each job.
                             </span>
                           </div>
@@ -545,7 +545,7 @@ const AutoApplySettings = () => {
                           />
                           <div>
                             <span className="text-sm font-bold text-white block mb-0.5">AI Barrier Filter</span>
-                            <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">
+                            <span className="text-[10px] text-[var(--color-text-tertiary)] font-bold uppercase tracking-wider">
                               Only apply if match score exceeds {settings.min_match_score}%.
                             </span>
                           </div>
@@ -555,7 +555,7 @@ const AutoApplySettings = () => {
 
                     {/* Platform Targeting */}
                     <div>
-                      <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 mb-4">
+                      <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-text-tertiary)] mb-4">
                         Authorized Environments (Platforms)
                       </label>
                       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
@@ -564,7 +564,7 @@ const AutoApplySettings = () => {
                             key={platform}
                             className={`flex flex-col items-center justify-center p-4 rounded-2xl border transition-all cursor-pointer ${settings.allowed_platforms?.includes(platform)
                               ? 'bg-workflow-primary/10 border-workflow-primary/30 text-workflow-primary'
-                              : 'bg-white/[0.03] border-white/5 text-slate-500 hover:bg-white/[0.05]'
+                              : 'bg-white/[0.03] border-white/5 text-[var(--color-text-tertiary)] hover:bg-white/[0.05]'
                               }`}
                           >
                             <input
@@ -592,7 +592,7 @@ const AutoApplySettings = () => {
 
                 {/* Blacklist */}
                 <div className="bg-[#13182E]/40 backdrop-blur-3xl border border-white/5 rounded-3xl p-8">
-                  <h2 className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 mb-8">
+                  <h2 className="text-[10px] font-black uppercase tracking-[0.3em] text-[var(--color-text-tertiary)] mb-8">
                     Exclusion Protocol
                   </h2>
 
@@ -679,7 +679,7 @@ const AutoApplySettings = () => {
 
                 {/* Notification Preferences */}
                 <div className="bg-[#13182E]/40 backdrop-blur-3xl border border-white/5 rounded-3xl p-8">
-                  <h2 className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 mb-8 flex items-center gap-3">
+                  <h2 className="text-[10px] font-black uppercase tracking-[0.3em] text-[var(--color-text-tertiary)] mb-8 flex items-center gap-3">
                     <Bell className="w-4 h-4 text-workflow-primary" />
                     Alert Routing
                   </h2>

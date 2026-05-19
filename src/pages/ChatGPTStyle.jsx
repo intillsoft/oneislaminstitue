@@ -122,7 +122,7 @@ export default function ChatGPTStyle() {
             <div className="p-3 border-b border-gray-100 dark:border-gray-800">
               <button
                 onClick={handleNewChat}
-                className="w-full flex items-center justify-center gap-2 px-3 py-2 bg-emerald-600 hover:bg-emerald-650 text-white rounded-md font-semibold transition-colors"
+                className="w-full flex items-center justify-center gap-2 px-3 py-2 bg-[var(--color-primary)] hover:bg-emerald-650 text-white rounded-md font-semibold transition-colors"
               >
                 <Plus size={18} />
                 New Chat
@@ -142,7 +142,7 @@ export default function ChatGPTStyle() {
                     whileHover={{ x: 4 }}
                     className={`group flex items-center gap-2 p-2 rounded-md cursor-pointer transition-colors ${
                       currentChatId === chat.id
-                        ? 'bg-emerald-600/10 text-emerald-700 dark:text-emerald-300'
+                        ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)] dark:text-[var(--color-primary)]'
                         : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800/40'
                     }`}
                     onClick={() => selectChat(chat)}
@@ -213,9 +213,9 @@ export default function ChatGPTStyle() {
               className="h-full flex flex-col items-center justify-center text-center"
             >
               <div className="mb-6">
-                <div className="w-16 h-16 bg-emerald-600/20 rounded-full flex items-center justify-center mb-4">
+                <div className="w-16 h-16 bg-[var(--color-primary)]/20 rounded-full flex items-center justify-center mb-4">
                   <svg
-                    className="w-8 h-8 text-emerald-600"
+                    className="w-8 h-8 text-[var(--color-primary)]"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                   >
@@ -243,7 +243,7 @@ export default function ChatGPTStyle() {
                   <div
                     className={`max-w-[70%] p-3 rounded-md ${
                       message.role === 'user'
-                        ? 'bg-emerald-600 text-white rounded-br-none'
+                        ? 'bg-[var(--color-primary)] text-white rounded-br-none'
                         : 'bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-bl-none'
                     }`}
                   >
@@ -306,7 +306,7 @@ export default function ChatGPTStyle() {
             <button
               onClick={() => handleSendMessage()}
               disabled={!input.trim() || loading}
-              className="px-4 py-3 bg-emerald-600 hover:bg-emerald-700 disabled:bg-gray-300 dark:disabled:bg-gray-600 text-white rounded-lg transition-all font-medium flex items-center gap-2"
+              className="px-4 py-3 bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] disabled:bg-gray-300 dark:disabled:bg-gray-600 text-white rounded-lg transition-all font-medium flex items-center gap-2"
             >
               <Send size={18} />
             </button>

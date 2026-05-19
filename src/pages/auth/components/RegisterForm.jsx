@@ -273,7 +273,7 @@ const RegisterForm = ({ onSuccess, isLoading: externalLoading }) => {
                   style={{ width: `${(passwordStrength / 5) * 100}%` }}
                 />
               </div>
-              <span className="text-[9px] font-black uppercase tracking-widest text-slate-500">
+              <span className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-tertiary)]">
                 {getPasswordStrengthText(passwordStrength)}
               </span>
             </div>
@@ -339,7 +339,7 @@ const RegisterForm = ({ onSuccess, isLoading: externalLoading }) => {
             className="mt-1 h-4 w-4 text-workflow-primary focus:ring-workflow-primary/40 bg-white/5 border-white/10 rounded"
             disabled={loading}
           />
-          <span className="ml-3 text-[10px] font-bold uppercase tracking-widest text-slate-500 group-hover:text-slate-400">
+          <span className="ml-3 text-[10px] font-bold uppercase tracking-widest text-[var(--color-text-tertiary)] group-hover:text-slate-400">
             I agree to the{' '}
             <a href="/terms" className="text-workflow-primary hover:text-workflow-primary-400 underline underline-offset-4 decoration-workflow-primary/30">
               Terms of Service

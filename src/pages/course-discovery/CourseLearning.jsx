@@ -144,30 +144,30 @@ const CourseLearning = () => {
     };
     if (loading || !course) {
         return (
-            <div className="min-h-screen bg-slate-50 dark:bg-[#0A0E27] flex items-center justify-center">
+            <div className="min-h-screen bg-white dark:bg-[var(--color-bg-dark)] flex items-center justify-center">
                 <AILoader variant="pulse" text="Securing scholar content..." />
             </div>
         );
     }
 
     return (
-        <div className="min-h-screen bg-slate-50 dark:bg-[#0A0E27] py-6 sm:py-12 px-3 sm:px-6 lg:px-8 relative pt-[calc(var(--header-height)+1rem)]">
+        <div className="min-h-screen bg-white dark:bg-[var(--color-bg-dark)] py-6 sm:py-12 px-3 sm:px-6 lg:px-8 relative pt-[calc(var(--header-height)+1rem)]">
             {/* Admin Bypass Banner */}
             {isAdminOrInstructor && (
                 <div className="max-w-4xl mx-auto mb-8">
-                    <div className={`p-4 rounded-2xl flex items-center justify-between border shadow-lg ${adminBypass ? 'bg-amber-50 dark:bg-amber-500/10 border-amber-200 dark:border-amber-500/20' : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-white/10'}`}>
+                    <div className={`p-4 rounded-2xl flex items-center justify-between border shadow-lg ${adminBypass ? 'bg-amber-50 dark:bg-amber-500/10 border-amber-200 dark:border-amber-500/20' : 'bg-white dark:bg-slate-900 border-[var(--color-border-primary)] dark:border-white/10'}`}>
                         <div className="flex items-center gap-3">
-                            <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${adminBypass ? 'bg-amber-100 text-amber-600 dark:bg-amber-500/20 dark:text-amber-400' : 'bg-slate-100 text-slate-400 dark:bg-white/5 dark:text-slate-500'}`}>
+                            <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${adminBypass ? 'bg-amber-100 text-amber-600 dark:bg-amber-500/20 dark:text-amber-400' : 'bg-slate-100 text-slate-400 dark:bg-white/5 dark:text-[var(--color-text-tertiary)]'}`}>
                                 {adminBypass ? <ShieldAlert size={20} /> : <Shield size={20} />}
                             </div>
                             <div>
                                 <h3 className={`text-sm font-black uppercase tracking-widest ${adminBypass ? 'text-amber-800 dark:text-amber-400' : 'text-slate-700 dark:text-slate-300'}`}>Instructor Override</h3>
-                                <p className="text-xs text-slate-500 dark:text-slate-400">Enable full course access for review purposes. Overrides quizzes and locks.</p>
+                                <p className="text-xs text-[var(--color-text-tertiary)] dark:text-slate-400">Enable full course access for review purposes. Overrides quizzes and locks.</p>
                             </div>
                         </div>
                         <button
                             onClick={toggleAdminBypass}
-                            className={`px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all ${adminBypass ? 'bg-amber-500 text-white shadow-lg shadow-amber-500/30' : 'bg-slate-100 text-slate-600 dark:bg-white/5 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-white/10'}`}
+                            className={`px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all ${adminBypass ? 'bg-amber-500 text-white shadow-lg shadow-amber-500/30' : 'bg-slate-100 text-[var(--color-text-secondary)] dark:bg-white/5 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-white/10'}`}
                         >
                             {adminBypass ? 'Bypass Active' : 'Enable Bypass'}
                         </button>
@@ -186,36 +186,36 @@ const CourseLearning = () => {
                     <div className="space-y-4">
                         <Link 
                             to={`/courses/detail/${courseId}`} 
-                            className="inline-flex items-center gap-2 text-slate-500 hover:text-emerald-600 transition-colors bg-white dark:bg-slate-900 px-4 py-2 rounded-xl border border-slate-200 dark:border-white/10 w-fit"
+                            className="inline-flex items-center gap-2 text-[var(--color-text-tertiary)] hover:text-[var(--color-primary)] transition-colors bg-white dark:bg-slate-900 px-4 py-2 rounded-xl border border-[var(--color-border-primary)] dark:border-white/10 w-fit"
                         >
                             <ChevronLeft size={16} />
                             <span className="text-[10px] font-black uppercase tracking-widest">Course Detail</span>
                         </Link>
-                        <h1 className="text-2xl sm:text-3xl md:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight leading-tight">
+                        <h1 className="text-2xl sm:text-3xl md:text-5xl font-extrabold text-[var(--color-text-primary)] dark:text-white tracking-tight leading-tight">
                             {course?.title}
                         </h1>
-                        <p className="text-xs sm:text-sm font-bold text-slate-500 uppercase tracking-widest flex items-center gap-2">
-                            <BookOpen size={16} className="text-emerald-500" />
+                        <p className="text-xs sm:text-sm font-bold text-[var(--color-text-tertiary)] uppercase tracking-widest flex items-center gap-2">
+                            <BookOpen size={16} className="text-[var(--color-primary)]" />
                             {modules.length} Modules • {allLessons.length} Lessons
                         </p>
                     </div>
 
-                    <div className="w-full sm:w-auto bg-white dark:bg-slate-900 p-5 sm:p-6 rounded-3xl sm:rounded-[2rem] border border-slate-200 dark:border-slate-800 shadow-xl min-w-[280px]">
+                    <div className="w-full sm:w-auto bg-white dark:bg-slate-900 p-5 sm:p-6 rounded-3xl sm:rounded-[2rem] border border-[var(--color-border-primary)] dark:border-slate-800 shadow-xl min-w-[280px]">
                         <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4 flex justify-between items-end">
                             <span>Your Progress</span>
-                            <span className="text-xl text-emerald-500">{completionPercentage}%</span>
+                            <span className="text-xl text-[var(--color-primary)]">{completionPercentage}%</span>
                         </div>
                         <div className="w-full h-2 bg-slate-100 dark:bg-white/5 rounded-full overflow-hidden mb-6">
                             <motion.div 
                                 initial={{ width: 0 }}
                                 animate={{ width: `${completionPercentage}%` }}
                                 transition={{ duration: 1, ease: 'easeOut' }}
-                                className="h-full bg-emerald-600 rounded-full shadow-[0_0_15px_rgba(16,185,129,0.4)]"
+                                className="h-full bg-[var(--color-primary)] rounded-full shadow-[0_0_15px_rgba(16,185,129,0.4)]"
                             />
                         </div>
                         <button 
                             onClick={handleContinue}
-                            className="w-full py-4 bg-emerald-600 text-white rounded-xl text-[10px] font-bold uppercase tracking-[0.2em] shadow-md shadow-emerald-500/20 hover:bg-emerald-500 transition-all flex justify-center items-center gap-2 group"
+                            className="w-full py-4 bg-[var(--color-primary)] text-white rounded-xl text-[10px] font-bold uppercase tracking-[0.2em] shadow-md shadow-[var(--color-primary)]/20 hover:bg-[var(--color-primary)] transition-all flex justify-center items-center gap-2 group"
                         >
                             {(completedLessonIds?.length || 0) === 0 ? 'Start Learning' : 'Continue Learning'} 
                             <PlayCircle size={16} className="group-hover:scale-110 transition-transform" />
@@ -230,18 +230,18 @@ const CourseLearning = () => {
                             <button 
                                 onClick={() => setActiveModuleIndex(prev => Math.max(0, prev - 1))}
                                 disabled={activeModuleIndex === 0}
-                                className="p-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 text-slate-400 hover:text-emerald-600 disabled:opacity-20 transition-all"
+                                className="p-3 rounded-2xl bg-white dark:bg-slate-900 border border-[var(--color-border-primary)] dark:border-white/10 text-slate-400 hover:text-[var(--color-primary)] disabled:opacity-20 transition-all"
                             >
                                 <ChevronLeft size={20} />
                             </button>
                             <div className="flex flex-col">
-                                <span className="text-[9px] font-black text-emerald-600 uppercase tracking-widest leading-none mb-1">Module {activeModuleIndex + 1} of {modules.length}</span>
-                                <h2 className="text-xl font-black text-slate-900 dark:text-white tracking-tight leading-none uppercase">Navigation</h2>
+                                <span className="text-[9px] font-black text-[var(--color-primary)] uppercase tracking-widest leading-none mb-1">Module {activeModuleIndex + 1} of {modules.length}</span>
+                                <h2 className="text-xl font-black text-[var(--color-text-primary)] dark:text-white tracking-tight leading-none uppercase">Navigation</h2>
                             </div>
                             <button 
                                 onClick={() => setActiveModuleIndex(prev => Math.min(modules.length - 1, prev + 1))}
                                 disabled={activeModuleIndex === modules.length - 1}
-                                className="p-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 text-slate-400 hover:text-emerald-600 disabled:opacity-20 transition-all"
+                                className="p-3 rounded-2xl bg-white dark:bg-slate-900 border border-[var(--color-border-primary)] dark:border-white/10 text-slate-400 hover:text-[var(--color-primary)] disabled:opacity-20 transition-all"
                             >
                                 <ChevronDown size={20} className="-rotate-90" />
                             </button>
@@ -249,7 +249,7 @@ const CourseLearning = () => {
 
                         <button 
                             onClick={() => setShowJumpMenu(!showJumpMenu)}
-                            className="flex items-center gap-2 px-5 py-3 rounded-2xl bg-emerald-500/10 text-emerald-600 border border-emerald-500/20 text-[10px] font-black uppercase tracking-widest hover:bg-emerald-500 hover:text-white transition-all shadow-lg shadow-emerald-500/5 active:scale-95"
+                            className="flex items-center gap-2 px-5 py-3 rounded-2xl bg-[var(--color-primary)]/10 text-[var(--color-primary)] border border-[var(--color-primary)]/20 text-[10px] font-black uppercase tracking-widest hover:bg-[var(--color-primary)] hover:text-white transition-all shadow-lg shadow-emerald-500/5 active:scale-95"
                         >
                             Jump to Module <Grid size={14} />
                         </button>
@@ -262,7 +262,7 @@ const CourseLearning = () => {
                                 initial={{ opacity: 0, y: -10 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 exit={{ opacity: 0, y: -10 }}
-                                className="grid grid-cols-5 sm:grid-cols-10 gap-2 p-4 bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-white/10 shadow-2xl relative z-40"
+                                className="grid grid-cols-5 sm:grid-cols-10 gap-2 p-4 bg-white dark:bg-slate-900 rounded-3xl border border-[var(--color-border-primary)] dark:border-white/10 shadow-2xl relative z-40"
                             >
                                 {modules.map((m, idx) => {
                                     const isLocked = lockData.lockedModules[m.id];
@@ -276,10 +276,10 @@ const CourseLearning = () => {
                                             }}
                                             className={`aspect-square flex items-center justify-center rounded-xl text-[10px] font-black transition-all border ${
                                                 isActive 
-                                                    ? 'bg-emerald-600 border-emerald-500 text-white shadow-lg shadow-emerald-500/20' 
+                                                    ? 'bg-[var(--color-primary)] border-[var(--color-primary)] text-white shadow-lg shadow-[var(--color-primary)]/20' 
                                                     : isLocked
                                                         ? 'bg-slate-100 dark:bg-white/5 border-transparent text-slate-300'
-                                                        : 'bg-emerald-50 dark:bg-emerald-500/5 border-emerald-100 dark:border-emerald-500/10 text-emerald-600 hover:bg-emerald-600 hover:text-white'
+                                                        : 'bg-[var(--color-primary-light)] dark:bg-[var(--color-primary)]/5 border-[var(--color-border-secondary)] dark:border-[var(--color-primary)]/10 text-[var(--color-primary)] hover:bg-[var(--color-primary)] hover:text-white'
                                             }`}
                                         >
                                             {isLocked ? <Lock size={12} /> : idx + 1}
@@ -299,27 +299,27 @@ const CourseLearning = () => {
                                 animate={{ opacity: 1, x: 0 }}
                                 exit={{ opacity: 0, x: -20 }}
                                 transition={{ duration: 0.3 }}
-                                className="bg-white dark:bg-slate-900 rounded-[2.5rem] border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden"
+                                className="bg-white dark:bg-slate-900 rounded-[2.5rem] border border-[var(--color-border-primary)] dark:border-slate-800 shadow-sm overflow-hidden"
                             >
                                 {/* Module Header */}
-                                <div className="p-5 sm:p-8 lg:p-10 border-b border-slate-100 dark:border-white/5 bg-slate-50/50 dark:bg-white/[0.01]">
+                                <div className="p-5 sm:p-8 lg:p-10 border-b border-slate-100 dark:border-white/5 bg-white/50 dark:bg-white/[0.01]">
                                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 sm:gap-6">
                                         <div className="flex items-center gap-4 sm:gap-6 flex-wrap sm:flex-nowrap">
                                             <div className={`w-12 h-12 sm:w-16 sm:h-16 rounded-2xl sm:rounded-[2rem] flex items-center justify-center font-black text-xl sm:text-2xl flex-shrink-0 transition-all duration-500 shadow-xl sm:shadow-2xl ${
                                                 lockData.lockedModules[activeModule.id]
                                                 ? 'bg-slate-200 dark:bg-white/5 text-slate-400 border border-transparent'
-                                                : 'bg-emerald-600 text-white shadow-emerald-600/30'
+                                                : 'bg-[var(--color-primary)] text-white shadow-emerald-600/30'
                                             }`}>
                                                 {lockData.lockedModules[activeModule.id] ? <Lock size={24} className="sm:w-7 sm:h-7"/> : (activeModuleIndex + 1)}
                                             </div>
                                             <div>
-                                                <h2 className="text-lg sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight leading-tight sm:leading-none uppercase">
+                                                <h2 className="text-lg sm:text-2xl font-black text-[var(--color-text-primary)] dark:text-white tracking-tight leading-tight sm:leading-none uppercase">
                                                     {activeModule.title}
                                                 </h2>
                                                 <div className="flex items-center gap-3 mt-3">
                                                     <span className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">{activeModule.lessons?.length || 0} Lessons</span>
-                                                    <div className="w-1.5 h-1.5 rounded-full bg-emerald-500/30" />
-                                                    <p className="text-[10px] font-black uppercase tracking-[0.2em] text-emerald-600 dark:text-emerald-400">
+                                                    <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-primary)]/30" />
+                                                    <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-primary)] dark:text-[var(--color-primary)]">
                                                         {(activeModule.lessons || []).filter(l => completedLessonIds.includes(l.id)).length}/{activeModule.lessons?.length || 0} Completed
                                                     </p>
                                                 </div>
@@ -334,7 +334,7 @@ const CourseLearning = () => {
                                     </div>
                                     
                                     {activeModule.description && (
-                                        <p className="mt-8 text-sm font-medium text-slate-500 dark:text-slate-400 leading-relaxed max-w-2xl bg-white dark:bg-slate-800/20 p-4 rounded-2xl border border-slate-100 dark:border-white/5">
+                                        <p className="mt-8 text-sm font-medium text-[var(--color-text-tertiary)] dark:text-slate-400 leading-relaxed max-w-2xl bg-white dark:bg-slate-800/20 p-4 rounded-2xl border border-slate-100 dark:border-white/5">
                                             {activeModule.description}
                                         </p>
                                     )}
@@ -355,10 +355,10 @@ const CourseLearning = () => {
                                                 transition={{ delay: idx * 0.05 }}
                                                 className={`w-full p-4 sm:p-6 rounded-2xl sm:rounded-[2rem] border flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-all text-left relative group/lesson ${
                                                     isLocked
-                                                    ? 'bg-slate-50/50 dark:bg-white/[0.01] border-transparent opacity-60 cursor-not-allowed'
+                                                    ? 'bg-white/50 dark:bg-white/[0.01] border-transparent opacity-60 cursor-not-allowed'
                                                     : isCompleted
-                                                        ? 'bg-emerald-50/20 border-emerald-100/50 dark:bg-emerald-600/[0.01] dark:border-emerald-500/10'
-                                                        : 'bg-white dark:bg-slate-900 border-slate-100 dark:border-white/5 hover:border-emerald-500/30 hover:shadow-2xl hover:shadow-emerald-500/5 hover:-translate-y-1'
+                                                        ? 'bg-[var(--color-primary-light)]/20 border-[var(--color-border-secondary)]/50 dark:bg-[var(--color-primary)]/[0.01] dark:border-[var(--color-primary)]/10'
+                                                        : 'bg-white dark:bg-slate-900 border-slate-100 dark:border-white/5 hover:border-[var(--color-primary)]/30 hover:shadow-2xl hover:shadow-emerald-500/5 hover:-translate-y-1'
                                                 }`}
                                             >
                                                 <div className="flex items-center gap-4 sm:gap-6">
@@ -366,14 +366,14 @@ const CourseLearning = () => {
                                                         isLocked
                                                         ? 'bg-slate-100 dark:bg-white/5 text-slate-300'
                                                         : isCompleted 
-                                                            ? 'bg-emerald-500 text-white' 
-                                                            : 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 group-hover/lesson:bg-emerald-600 group-hover/lesson:text-white'
+                                                            ? 'bg-[var(--color-primary)] text-white' 
+                                                            : 'bg-[var(--color-primary-light)] dark:bg-[var(--color-primary)]/10 text-[var(--color-primary)] group-hover/lesson:bg-[var(--color-primary)] group-hover/lesson:text-white'
                                                     }`}>
                                                         {isLocked ? <Lock size={16} className="sm:w-[18px] sm:h-[18px]"/> : isCompleted ? <CheckCircle size={20} className="sm:w-[22px] sm:h-[22px]" /> : <PlayCircle size={20} className="sm:w-[22px] sm:h-[22px]" />}
                                                     </div>
                                                     <div>
                                                         <h3 className={`text-sm sm:text-base font-black tracking-tight uppercase transition-colors line-clamp-2 sm:line-clamp-none ${
-                                                            isLocked ? 'text-slate-400' : isCompleted ? 'text-emerald-700 dark:text-emerald-400' : 'text-slate-900 dark:text-white group-hover/lesson:text-emerald-500'
+                                                            isLocked ? 'text-slate-400' : isCompleted ? 'text-[var(--color-primary)] dark:text-[var(--color-primary)]' : 'text-[var(--color-text-primary)] dark:text-white group-hover/lesson:text-[var(--color-primary)]'
                                                         }`}>
                                                             {lesson.title}
                                                         </h3>
@@ -394,8 +394,8 @@ const CourseLearning = () => {
                                                     isLocked
                                                     ? 'bg-slate-100 dark:bg-white/5 text-slate-300 w-full sm:w-auto mt-2 sm:mt-0'
                                                     : isCompleted 
-                                                        ? 'bg-emerald-100 dark:bg-emerald-500/20 text-emerald-600 w-full sm:w-auto mt-2 sm:mt-0' 
-                                                        : 'bg-emerald-600 text-white shadow-xl shadow-emerald-500/20 w-full sm:w-auto mt-2 sm:mt-0'
+                                                        ? 'bg-[var(--color-primary-light)] dark:bg-[var(--color-primary)]/20 text-[var(--color-primary)] w-full sm:w-auto mt-2 sm:mt-0' 
+                                                        : 'bg-[var(--color-primary)] text-white shadow-xl shadow-[var(--color-primary)]/20 w-full sm:w-auto mt-2 sm:mt-0'
                                                 }`}>
                                                     {isLocked ? 'Locked' : isCompleted ? 'Re-Review' : 'Unlock Lesson'}
                                                     {!isLocked && !isCompleted && <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />}
@@ -425,19 +425,19 @@ const CourseLearning = () => {
                             initial={{ scale: 0.9, opacity: 0, y: 20 }}
                             animate={{ scale: 1, opacity: 1, y: 0 }}
                             exit={{ scale: 0.9, opacity: 0, y: 20 }}
-                            className="relative w-full max-w-md bg-white dark:bg-[#0A0E27] rounded-[3rem] border border-white/5 p-10 text-center shadow-2xl"
+                            className="relative w-full max-w-md bg-white dark:bg-[var(--color-bg-dark)] rounded-[3rem] border border-white/5 p-10 text-center shadow-2xl"
                         >
                             <div className="w-20 h-20 rounded-[2rem] bg-rose-500/10 flex items-center justify-center text-rose-500 mx-auto mb-8 shadow-xl">
                                 <Lock size={40} />
                             </div>
-                            <h2 className="text-2xl font-black text-slate-900 dark:text-white uppercase tracking-tight mb-4">{lockModal.title}</h2>
-                            <p className="text-sm font-medium text-slate-500 dark:text-slate-400 mb-10 leading-relaxed">
+                            <h2 className="text-2xl font-black text-[var(--color-text-primary)] dark:text-white uppercase tracking-tight mb-4">{lockModal.title}</h2>
+                            <p className="text-sm font-medium text-[var(--color-text-tertiary)] dark:text-slate-400 mb-10 leading-relaxed">
                                 {lockModal.reason}
                             </p>
                             <div className="flex flex-col gap-4">
                                 <button 
                                     onClick={handleContinue}
-                                    className="w-full py-5 bg-emerald-600 text-white rounded-[1.5rem] text-[11px] font-black uppercase tracking-widest shadow-2xl shadow-emerald-600/30 hover:bg-emerald-500 transition-all flex items-center justify-center gap-3"
+                                    className="w-full py-5 bg-[var(--color-primary)] text-white rounded-[1.5rem] text-[11px] font-black uppercase tracking-widest shadow-2xl shadow-emerald-600/30 hover:bg-[var(--color-primary)] transition-all flex items-center justify-center gap-3"
                                 >
                                     Resuming Latest Lesson <ArrowRight size={16} />
                                 </button>

@@ -1,6 +1,6 @@
 /**
- * Unified Sidebar Component - Academic Metamorphosis
- * Adapted for Hope Dawah Institute
+ * Unified Sidebar Component — Microsoft-Inspired Clean Design
+ * Hope Dawah Institute
  */
 
 import React, { useState, useEffect, useRef } from 'react';
@@ -26,19 +26,6 @@ const UnifiedSidebar = () => {
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showCustomizationModal, setShowCustomizationModal] = useState(false);
   const [customizedItems, setCustomizedItems] = useState(null);
-  
-  useEffect(() => {
-    const checkMobile = () => {
-      const isMobileNow = window.innerWidth < 1024;
-      setIsMobile(isMobileNow);
-      if (isMobileNow && !isMobile) {
-        setIsMobileOpen(false);
-      }
-    };
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
   
   useEffect(() => {
     const checkMobile = () => {
@@ -93,9 +80,8 @@ const UnifiedSidebar = () => {
 
   const allNavigationItems = [];
   
-  /* Role-based Navigation Logic (Active Role Based) */
   if (!loadingProfile) {
-    const roleLower = baseRole?.toLowerCase() || ''; // Use baseRole to lock Admin access unconditionally
+    const roleLower = baseRole?.toLowerCase() || '';
     if (roleLower === 'admin' || roleLower === 'system_admin') {
       allNavigationItems.push(...adminItems);
       allNavigationItems.push(...instructorItems);
@@ -103,7 +89,6 @@ const UnifiedSidebar = () => {
     } else if (roleLower === 'instructor') {
       allNavigationItems.push(...instructorItems);
     } else {
-      // Default to student items
       allNavigationItems.push(...mainItems);
       allNavigationItems.push(...studentItems);
     }
@@ -115,7 +100,6 @@ const UnifiedSidebar = () => {
         localStorage.getItem(`sidebar_preferences_${user.id}`) || '{}'
       );
       
-      // Only use customized items if they belong to the current role's navigation
       if (Object.keys(savedPreferences).length > 0) {
         const customized = allNavigationItems
           .map(item => ({
@@ -126,7 +110,6 @@ const UnifiedSidebar = () => {
           .filter(item => item.visible)
           .sort((a, b) => a.order - b.order);
         
-        // Safety check: if customized results in nothing while allNavigationItems has items, fallback
         if (customized.length > 0) {
           setCustomizedItems(customized);
         } else {
@@ -172,86 +155,83 @@ const UnifiedSidebar = () => {
   const sections = getSections();
 
   const sidebarContent = (
-    <div className={`flex flex-col relative overflow-hidden transition-all duration-500 ease-in-out pointer-events-auto ${
+    <div className={`flex flex-col h-full transition-all duration-300 ease-in-out pointer-events-auto ${
       isMobile 
-        ? 'h-full bg-[#0A0E27]/90 backdrop-blur-2xl border-r border-emerald-500/10' 
-        : `h-[calc(100vh-calc(var(--header-height)+2rem))] m-4 rounded-3xl bg-[#090C22]/40 backdrop-blur-2xl border border-white/[0.04] shadow-2xl`
+        ? 'bg-[var(--color-sidebar-bg)] border-r border-[var(--color-sidebar-border)]' 
+        : 'bg-[var(--color-sidebar-bg)] border-r border-[var(--color-sidebar-border)]'
     }`}>
-      {/* Decorative Gradient Backgrounds */}
-      <div className="absolute top-0 left-0 w-full h-64 bg-gradient-to-b from-emerald-500/5 to-transparent pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-emerald-500/5 to-transparent pointer-events-none" />
 
       {isMobile && (
-        <div className="flex items-center justify-between p-5 border-b border-emerald-500/10 relative z-50">
+        <div className="flex items-center justify-between p-5 border-b border-[var(--color-sidebar-border)]">
           <Logo size="sm" className="z-50" />
-          <button onClick={() => setIsMobileOpen(false)} className="p-2 rounded-xl hover:bg-emerald-500/10 transition-all text-text-muted">
+          <button onClick={() => setIsMobileOpen(false)} className="p-2 rounded-lg hover:bg-[var(--color-sidebar-item-hover)] transition-all text-[var(--color-text-tertiary)]">
             <Icon name="X" size={18} />
           </button>
         </div>
       )}
 
       {!isMobile && (
-        <div className={`flex items-center ${isCollapsed ? 'justify-center' : 'justify-between px-6'} border-b border-emerald-500/10 relative z-50 h-[var(--header-height)] transition-all duration-300`}>
+        <div className={`flex items-center ${isCollapsed ? 'justify-center' : 'justify-between px-6'} border-b border-[var(--color-sidebar-border)] h-[var(--header-height)] transition-all duration-300`}>
           {!isCollapsed && (
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-xl bg-emerald-600 flex items-center justify-center shadow-lg shadow-emerald-600/20">
+              <div className="w-8 h-8 rounded-lg bg-[var(--color-primary)] flex items-center justify-center">
                 <Icon name="GraduationCap" size={16} className="text-white" />
               </div>
-              <span className="text-[11px] font-black uppercase tracking-[0.2em] text-text-primary">Institute</span>
+              <span className="text-[11px] font-bold uppercase tracking-[0.15em] text-[var(--color-text-primary)]">Institute</span>
             </div>
           )}
           <button
             onClick={handleToggle}
-            className={`p-2 rounded-xl text-text-muted hover:text-emerald-600 hover:bg-emerald-600/10 transition-all border border-emerald-500/10 shadow-sm bg-surface-elevated/50 hover:scale-105 active:scale-95 group ${isCollapsed ? 'mx-auto' : ''}`}
+            className={`p-2 rounded-lg text-[var(--color-text-tertiary)] hover:text-[var(--color-primary)] hover:bg-[var(--color-sidebar-item-hover)] transition-all border border-[var(--color-border-primary)] ${isCollapsed ? 'mx-auto' : ''}`}
             title={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
           >
-            <Icon name={isCollapsed ? "PanelLeft" : "PanelLeftClose"} size={18} className="transition-transform group-hover:scale-110" />
+            <Icon name={isCollapsed ? "PanelLeft" : "PanelLeftClose"} size={18} />
           </button>
         </div>
       )}
 
-      <nav className={`flex-1 overflow-y-auto px-3 py-6 space-y-8 relative z-10 custom-scrollbar`}>
+      <nav className="flex-1 overflow-y-auto px-3 py-6 space-y-6 custom-scrollbar">
         {Object.entries(sections).map(([section, items]) => {
           if (items.length === 0) return null;
           return (
-            <div key={section} className="space-y-4">
+            <div key={section} className="space-y-1">
               {!isCollapsed && (
                 <div className="px-4 mb-2">
-                  <span className="text-[9px] font-black text-emerald-600/60 uppercase tracking-[0.4em]">{section}</span>
+                  <span className="text-[11px] font-medium text-[var(--color-text-tertiary)] uppercase tracking-[1.5px]">{section}</span>
                 </div>
               )}
-              <div className="space-y-1.5">
+              <div className="space-y-0.5">
                 {items.map((item) => {
                   const active = isActive(item.path);
                   return (
                     <motion.button
                       key={item.path}
                       onClick={() => handleNavClick(item.path)}
-                      className={`w-full flex items-center ${isCollapsed ? 'justify-center px-0' : 'justify-start px-4'} py-3.5 rounded-2xl text-[11px] font-bold transition-all relative group ${active
-                        ? 'bg-gradient-to-r from-emerald-500/10 to-transparent text-emerald-300 border border-emerald-500/10'
-                        : 'text-white/40 hover:text-white/80 hover:bg-white/[0.03]'
+                      className={`w-full flex items-center ${isCollapsed ? 'justify-center px-0' : 'justify-start px-4'} py-2.5 rounded-lg text-[13px] font-medium transition-all relative group ${active
+                        ? 'bg-[var(--color-sidebar-item-active)] text-[var(--color-primary)]'
+                        : 'text-[var(--color-sidebar-text)] hover:text-[var(--color-primary)] hover:bg-[var(--color-sidebar-item-hover)]'
                         }`}
-                      whileHover={{ x: isCollapsed ? 0 : 4 }}
+                      whileHover={{ x: isCollapsed ? 0 : 2 }}
                     >
                       {active && (
                         <motion.div 
                           layoutId="activeNav"
-                          className="absolute left-0 w-1 h-5 bg-emerald-600 rounded-full"
+                          className="absolute left-0 w-[3px] h-5 bg-[var(--color-primary)] rounded-r-full"
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
                         />
                       )}
                       <Icon 
                         name={item.icon} 
-                        size={isCollapsed ? 22 : 20} 
-                        className={`${active 
-                          ? 'text-emerald-500 animate-pulse-elite' 
-                          : `${isCollapsed ? 'text-slate-300 dark:text-slate-200' : 'text-slate-400 dark:text-slate-400'} group-hover:text-emerald-500 transition-colors`
+                        size={isCollapsed ? 20 : 18} 
+                        className={`flex-shrink-0 ${active 
+                          ? 'text-[var(--color-sidebar-icon-active)]' 
+                          : 'text-[var(--color-sidebar-icon)] group-hover:text-[var(--color-primary)] transition-colors'
                         }`} 
                       />
-                      {!isCollapsed && <span className="ml-4 truncate tracking-wide font-medium">{item.label}</span>}
+                      {!isCollapsed && <span className="ml-3 truncate">{item.label}</span>}
                       {isCollapsed && (
-                        <div className="absolute left-full ml-4 px-3 py-2 bg-text-primary text-bg text-[10px] font-black uppercase tracking-widest rounded-xl opacity-0 group-hover:opacity-100 transition-all scale-95 group-hover:scale-100 whitespace-nowrap z-[100] pointer-events-none shadow-2xl">
+                        <div className="absolute left-full ml-4 px-3 py-2 bg-[var(--color-text-primary)] text-white text-[11px] font-bold rounded-lg opacity-0 group-hover:opacity-100 transition-all scale-95 group-hover:scale-100 whitespace-nowrap z-[100] pointer-events-none shadow-modal">
                           {item.label}
                         </div>
                       )}
@@ -264,39 +244,35 @@ const UnifiedSidebar = () => {
         })}
       </nav>
 
-      <div className="p-4 border-t border-emerald-500/10 space-y-4 relative z-10 bg-[#0A0E27]/40 backdrop-blur-md">
-        {/* Appearance toggle removed for unified Dark Mode anchor flawslessly */}
-
+      <div className="p-4 border-t border-[var(--color-sidebar-border)] space-y-4 bg-[var(--color-primary-light)]">
         {user && (
           <div className="relative group">
             <button
               onClick={() => setShowUserMenu(!showUserMenu)}
-              className={`w-full flex items-center ${isCollapsed ? 'justify-center' : 'justify-between'} p-1.5 rounded-2xl bg-surface/50 hover:bg-surface border border-emerald-500/10 transition-all`}
+              className={`w-full flex items-center ${isCollapsed ? 'justify-center' : 'justify-between'} p-2 rounded-lg hover:bg-white transition-all`}
             >
               <div className="flex items-center space-x-3 min-w-0">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-emerald-700 flex items-center justify-center flex-shrink-0 shadow-lg relative overflow-hidden">
+                <div className="w-10 h-10 rounded-lg bg-[var(--color-primary)] flex items-center justify-center flex-shrink-0 overflow-hidden">
                   {profile?.avatar_url ? (
-                    <Image src={profile.avatar_url} className="w-full h-full rounded-xl object-cover" />
+                    <Image src={profile.avatar_url} className="w-full h-full rounded-lg object-cover" />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center bg-emerald-600">
-                      <span className="text-white font-black text-xs">
-                        {profile?.name ? profile.name.charAt(0).toUpperCase() : 'WF'}
+                    <div className="w-full h-full flex items-center justify-center bg-[var(--color-primary)]">
+                      <span className="text-white font-bold text-xs">
+                        {profile?.name ? profile.name.charAt(0).toUpperCase() : 'S'}
                       </span>
                     </div>
                   )}
-                  <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
                 </div>
                 {!isCollapsed && (
                   <div className="flex-1 min-w-0 text-left">
-                    <p className="text-[11px] font-black text-text-primary truncate uppercase tracking-tight">{profile?.name || user?.email?.split('@')[0] || 'Scholar'}</p>
+                    <p className="text-[12px] font-bold text-[var(--color-text-primary)] truncate">{profile?.name || user?.email?.split('@')[0] || 'Scholar'}</p>
                     <div className="flex items-center gap-1.5">
-                      <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                      <p className="text-[9px] text-emerald-600 font-black uppercase tracking-[0.1em] truncate">{userRole || 'Scholar'}</p>
+                      <span className="text-[10px] font-bold text-white bg-[var(--color-primary)] px-2 py-0.5 rounded uppercase tracking-wide">{userRole || 'Student'}</span>
                     </div>
                   </div>
                 )}
               </div>
-              {!isCollapsed && <Icon name="ChevronUp" size={14} className={`text-text-muted transition-transform duration-300 ${showUserMenu ? 'rotate-180' : ''}`} />}
+              {!isCollapsed && <Icon name="ChevronUp" size={14} className={`text-[var(--color-text-tertiary)] transition-transform duration-300 ${showUserMenu ? 'rotate-180' : ''}`} />}
             </button>
 
             <AnimatePresence>
@@ -305,14 +281,14 @@ const UnifiedSidebar = () => {
                   initial={{ opacity: 0, scale: 0.95, y: 10 }}
                   animate={{ opacity: 1, scale: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.95, y: 10 }}
-                  className={`absolute ${isCollapsed ? 'left-full bottom-0 ml-4' : 'bottom-full mb-3 left-0 right-0'} bg-white/95 dark:bg-[#0A0E27]/95 backdrop-blur-2xl rounded-2xl shadow-2xl border border-slate-200 dark:border-emerald-500/20 overflow-hidden z-[100] min-w-[220px] p-2`}
+                  className={`absolute ${isCollapsed ? 'left-full bottom-0 ml-4' : 'bottom-full mb-3 left-0 right-0'} bg-white rounded-xl shadow-modal border border-[var(--color-border-primary)] overflow-hidden z-[100] min-w-[220px] p-2`}
                 >
                   <Link
                     to="/profile"
                     onClick={() => setShowUserMenu(false)}
-                    className="flex items-center space-x-3 px-4 py-3 text-[11px] font-bold text-text-primary rounded-xl hover:bg-emerald-500/10 transition-all border border-transparent hover:border-emerald-500/10"
+                    className="flex items-center space-x-3 px-4 py-3 text-[12px] font-bold text-[var(--color-text-primary)] rounded-lg hover:bg-[var(--color-primary-light)] transition-all"
                   >
-                    <div className="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-600">
+                    <div className="w-8 h-8 rounded-lg bg-[var(--color-primary-light)] flex items-center justify-center text-[var(--color-primary)]">
                       <Icon name="User" size={16} />
                     </div>
                     <span>Scholar Profile</span>
@@ -320,23 +296,23 @@ const UnifiedSidebar = () => {
                   <Link
                     to="/billing"
                     onClick={() => setShowUserMenu(false)}
-                    className="flex items-center space-x-3 px-4 py-3 text-[11px] font-bold text-text-primary rounded-xl hover:bg-emerald-500/10 transition-all border border-transparent hover:border-emerald-500/10"
+                    className="flex items-center space-x-3 px-4 py-3 text-[12px] font-bold text-[var(--color-text-primary)] rounded-lg hover:bg-[var(--color-primary-light)] transition-all"
                   >
-                    <div className="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-600">
+                    <div className="w-8 h-8 rounded-lg bg-[var(--color-primary-light)] flex items-center justify-center text-[var(--color-primary)]">
                       <Icon name="Heart" size={16} />
                     </div>
                     <span>Impact & Support</span>
                   </Link>
-                  <div className="h-px bg-emerald-500/10 my-2 mx-2" />
+                  <div className="h-px bg-[var(--color-border-primary)] my-2 mx-2" />
                   <button
                     onClick={async () => {
                       setShowUserMenu(false);
                       await signOut();
                       navigate('/login');
                     }}
-                    className="w-full flex items-center space-x-3 px-4 py-3 text-[11px] font-bold text-rose-500 rounded-xl hover:bg-rose-500/10 transition-all"
+                    className="w-full flex items-center space-x-3 px-4 py-3 text-[12px] font-bold text-[var(--color-error)] rounded-lg hover:bg-[var(--color-error-bg)] transition-all"
                   >
-                    <div className="w-8 h-8 rounded-lg bg-rose-500/10 flex items-center justify-center">
+                    <div className="w-8 h-8 rounded-lg bg-[var(--color-error-bg)] flex items-center justify-center">
                       <Icon name="LogOut" size={16} />
                     </div>
                     <span>Sign Out</span>
@@ -358,26 +334,26 @@ const UnifiedSidebar = () => {
   return (
     <DndProvider backend={HTML5Backend}>
       {isMobile ? (
-        <div className="fixed bottom-6 left-5 right-5 z-[999] bg-[#090B1E]/60 backdrop-blur-2xl border border-white/[0.04] rounded-[1.8rem] p-2 flex justify-around items-center shadow-2xl shadow-emerald-500/5 hover:scale-[1.01] transition-all">
+        <div className="fixed bottom-6 left-5 right-5 z-[999] bg-white/95 backdrop-blur-lg border border-[var(--color-border-primary)] rounded-2xl p-2 flex justify-around items-center shadow-modal">
              {navigationItems.slice(0, 4).map((item, i) => {
                   const active = isActive(item.path);
                   return (
                       <button 
                          key={i} 
                          onClick={() => handleNavClick(item.path)} 
-                         className={`flex flex-col items-center gap-1 p-2.5 px-3.5 rounded-xl transition-all relative \${active ? 'text-emerald-400' : 'text-slate-400 hover:text-white/80'}`}
+                         className={`flex flex-col items-center gap-1 p-2.5 px-3.5 rounded-xl transition-all relative ${active ? 'text-[var(--color-primary)]' : 'text-[var(--color-text-tertiary)] hover:text-[var(--color-primary)]'}`}
                       >
                            {active && (
                                <motion.div 
                                   layoutId="mobileNav" 
-                                  className="absolute inset-0 bg-emerald-500/5 rounded-xl border border-emerald-500/10 shadow-sm" 
+                                  className="absolute inset-0 bg-[var(--color-primary-light)] rounded-xl border border-[var(--color-border-secondary)]" 
                                   transition={{ duration: 0.2 }}
                                />
                            )}
-                           <div className={`relative z-10 \${active ? 'scale-110' : ''} transition-transform`}>
-                               <Icon name={item.icon} size={18} className={active ? 'animate-pulse-elite text-emerald-500' : 'text-slate-400'} />
+                           <div className={`relative z-10 ${active ? 'scale-110' : ''} transition-transform`}>
+                               <Icon name={item.icon} size={18} className={active ? 'text-[var(--color-primary)]' : 'text-[var(--color-text-tertiary)]'} />
                            </div>
-                           <span className={`text-[7px] font-black uppercase tracking-[0.14em] relative z-10 \${active ? 'text-emerald-400' : 'text-slate-500'}`}>
+                           <span className={`text-[7px] font-bold uppercase tracking-[0.14em] relative z-10 ${active ? 'text-[var(--color-primary)]' : 'text-[var(--color-text-tertiary)]'}`}>
                                {item.label}
                            </span>
                       </button>
@@ -388,9 +364,9 @@ const UnifiedSidebar = () => {
         <>
           <motion.aside
             initial={false}
-            animate={{ width: isCollapsed ? 96 : 280 }}
+            animate={{ width: isCollapsed ? 80 : 260 }}
             transition={{ duration: 0.2 }}
-            className="fixed left-0 top-[var(--header-height)] bottom-0 z-[90] hidden lg:block bg-transparent pointer-events-none"
+            className="fixed left-0 top-[var(--header-height)] bottom-0 z-[90] hidden lg:block"
           >
             {sidebarContent}
           </motion.aside>

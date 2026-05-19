@@ -88,7 +88,7 @@ const CertificateDesigner = ({ courseId, courseTitle }) => {
   if (loading) {
     return (
       <div className="flex items-center justify-center p-20 animate-pulse">
-        <Award className="w-12 h-12 text-emerald-500/20" />
+        <Award className="w-12 h-12 text-[var(--color-primary)]/20" />
       </div>
     );
   }
@@ -97,7 +97,7 @@ const CertificateDesigner = ({ courseId, courseTitle }) => {
     <div className="flex flex-col xl:flex-row gap-6 items-start h-full w-full">
         {/* Left Workspace Panel - Configuration Tabs pane rail stream frame flawlessly */}
         <div className="w-full xl:w-64 space-y-2 shrink-0 p-3 bg-white/2 rounded-3xl border border-white/5 backdrop-blur-3xl top-6 sticky flex flex-row xl:flex-col overflow-x-auto xl:overflow-visible no-scrollbar pb-3 xl:pb-3">
-             <span className="text-[9px] font-black uppercase text-emerald-500 tracking-[0.2em] mb-4 block px-2 hidden xl:block">Studio Workspace</span>
+             <span className="text-[9px] font-black uppercase text-[var(--color-primary)] tracking-[0.2em] mb-4 block px-2 hidden xl:block">Studio Workspace</span>
              
              {[
                { id: 'aesthetics', label: 'Aesthetics', icon: Palette, desc: 'Layout & Colors' },
@@ -106,14 +106,14 @@ const CertificateDesigner = ({ courseId, courseTitle }) => {
                  <button 
                      key={tab.id}
                      onClick={() => setActiveTab(tab.id)} 
-                     className={`flex-1 xl:w-full text-left flex items-center gap-3 p-3 rounded-2xl transition-all active:scale-98 ${activeTab === tab.id ? 'bg-emerald-600 text-white shadow-xl shadow-emerald-500/10' : 'text-slate-400 hover:bg-white/5 hover:text-white'}`}
+                     className={`flex-1 xl:w-full text-left flex items-center gap-3 p-3 rounded-2xl transition-all active:scale-98 ${activeTab === tab.id ? 'bg-[var(--color-primary)] text-white shadow-xl shadow-emerald-500/10' : 'text-slate-400 hover:bg-white/5 hover:text-white'}`}
                  >
                      <div className={`p-2 rounded-xl flex items-center justify-center transition-colors ${activeTab === tab.id ? 'bg-white/20' : 'bg-white/5'}`}>
                          <tab.icon size={16} />
                      </div>
                      <div className="flex-1 min-w-0">
                          <span className="text-[10px] font-black block uppercase tracking-wider truncate">{tab.label}</span>
-                         <span className={`text-[8px] font-bold block mt-0.5 ${activeTab === tab.id ? 'text-emerald-100' : 'text-slate-500'}`}>
+                         <span className={`text-[8px] font-bold block mt-0.5 ${activeTab === tab.id ? 'text-emerald-100' : 'text-[var(--color-text-tertiary)]'}`}>
                               {tab.desc}
                          </span>
                      </div>
@@ -129,10 +129,10 @@ const CertificateDesigner = ({ courseId, courseTitle }) => {
                             <h4 className="text-lg font-black uppercase tracking-tight text-white mb-1">
                                 {courseTitle || 'Achievement Design'} Canvas
                             </h4>
-                            <p className="text-xs text-slate-500 font-medium tracking-wide">Customize layout presets, authority signing streams and real-time previews native stream desk.</p>
+                            <p className="text-xs text-[var(--color-text-tertiary)] font-medium tracking-wide">Customize layout presets, authority signing streams and real-time previews native stream desk.</p>
                        </div>
                        {lastSaved && (
-                            <span className="text-[8px] font-black uppercase text-slate-500 tracking-widest bg-white/5 px-3 py-1.5 rounded-lg border border-white/5">Auto-saved {lastSaved.toLocaleTimeString()}</span>
+                            <span className="text-[8px] font-black uppercase text-[var(--color-text-tertiary)] tracking-widest bg-white/5 px-3 py-1.5 rounded-lg border border-white/5">Auto-saved {lastSaved.toLocaleTimeString()}</span>
                        )}
                   </div>
 
@@ -141,7 +141,7 @@ const CertificateDesigner = ({ courseId, courseTitle }) => {
                        <div className="w-full lg:col-span-1 space-y-6">
                             {activeTab === 'aesthetics' && (
                                 <div className="space-y-6">
-                                     <div className="flex items-center gap-2 text-emerald-400 mb-2">
+                                     <div className="flex items-center gap-2 text-[var(--color-primary)] mb-2">
                                           <Palette size={16} />
                                           <span className="text-[10px] font-black uppercase tracking-widest">Core Aesthetics</span>
                                      </div>
@@ -151,19 +151,19 @@ const CertificateDesigner = ({ courseId, courseTitle }) => {
                                               <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-3 block">Color Theory palette</label>
                                               <div className="grid grid-cols-3 gap-3">
                                                 <div className="space-y-1.5">
-                                                  <span className="text-[8px] font-black text-slate-500 uppercase tracking-tighter block">Primary</span>
+                                                  <span className="text-[8px] font-black text-[var(--color-text-tertiary)] uppercase tracking-tighter block">Primary</span>
                                                   <div className="relative group overflow-hidden rounded-xl border border-white/5">
                                                       <input type="color" value={designData.primaryColor} onChange={(e) => updateField('primaryColor', e.target.value)} className="w-full h-10 cursor-pointer scale-150 border-none bg-black/0" />
                                                   </div>
                                                 </div>
                                                 <div className="space-y-1.5">
-                                                  <span className="text-[8px] font-black text-slate-500 uppercase tracking-tighter block">Secondary</span>
+                                                  <span className="text-[8px] font-black text-[var(--color-text-tertiary)] uppercase tracking-tighter block">Secondary</span>
                                                   <div className="relative group overflow-hidden rounded-xl border border-white/5">
                                                       <input type="color" value={designData.secondaryColor} onChange={(e) => updateField('secondaryColor', e.target.value)} className="w-full h-10 cursor-pointer scale-150 border-none bg-black/0" />
                                                   </div>
                                                 </div>
                                                 <div className="space-y-1.5">
-                                                  <span className="text-[8px] font-black text-slate-500 uppercase tracking-tighter block">Accent</span>
+                                                  <span className="text-[8px] font-black text-[var(--color-text-tertiary)] uppercase tracking-tighter block">Accent</span>
                                                   <div className="relative group overflow-hidden rounded-xl border border-white/5">
                                                       <input type="color" value={designData.accentColor} onChange={(e) => updateField('accentColor', e.target.value)} className="w-full h-10 cursor-pointer scale-150 border-none bg-black/0" />
                                                   </div>
@@ -180,7 +180,7 @@ const CertificateDesigner = ({ courseId, courseTitle }) => {
                                                     { id: 'modern', label: 'Modern', desc: 'Clean & minimal' },
                                                     { id: 'minimal', label: 'Gallery', desc: 'Artistic focus' }
                                                 ].map(l => (
-                                                    <button key={l.id} onClick={() => updateField('layout', l.id)} className={`p-3 rounded-xl border text-left transition-all ${designData.layout === l.id ? 'bg-emerald-600/10 border-emerald-500/30 text-emerald-500' : 'bg-black/20 border-white/5 text-slate-500 hover:bg-white/5'}`}>
+                                                    <button key={l.id} onClick={() => updateField('layout', l.id)} className={`p-3 rounded-xl border text-left transition-all ${designData.layout === l.id ? 'bg-[var(--color-primary)]/10 border-[var(--color-primary)]/30 text-[var(--color-primary)]' : 'bg-black/20 border-white/5 text-[var(--color-text-tertiary)] hover:bg-white/5'}`}>
                                                         <p className="text-[10px] font-black uppercase tracking-widest mb-0.5">{l.label}</p>
                                                         <p className="text-[8px] opacity-60 leading-tight">{l.desc}</p>
                                                     </button>
@@ -197,7 +197,7 @@ const CertificateDesigner = ({ courseId, courseTitle }) => {
                                                   { id: 'Playfair Display', label: 'Playfair', desc: 'Classical Authority' },
                                                   { id: 'Cormorant Garamond', label: 'Cormorant', desc: 'Artisanal Script' }
                                                 ].map(f => (
-                                                  <button key={f.id} onClick={() => updateField('fontFamily', f.id)} className={`flex items-center justify-between px-4 py-3 rounded-xl border transition-all ${designData.fontFamily === f.id ? 'bg-white/5 border-emerald-500/30 text-white' : 'bg-transparent border-white/5 text-slate-500 hover:bg-white/2'}`}>
+                                                  <button key={f.id} onClick={() => updateField('fontFamily', f.id)} className={`flex items-center justify-between px-4 py-3 rounded-xl border transition-all ${designData.fontFamily === f.id ? 'bg-white/5 border-[var(--color-primary)]/30 text-white' : 'bg-transparent border-white/5 text-[var(--color-text-tertiary)] hover:bg-white/2'}`}>
                                                     <span style={{ fontFamily: f.id }} className="text-sm">{f.label}</span>
                                                     <span className="text-[8px] font-black uppercase tracking-widest opacity-40">{f.desc}</span>
                                                   </button>
@@ -210,7 +210,7 @@ const CertificateDesigner = ({ courseId, courseTitle }) => {
 
                             {activeTab === 'content' && (
                                 <div className="space-y-6">
-                                     <div className="flex items-center gap-2 text-emerald-400 mb-2">
+                                     <div className="flex items-center gap-2 text-[var(--color-primary)] mb-2">
                                           <FileText size={16} />
                                           <span className="text-[10px] font-black uppercase tracking-widest">Authority Content</span>
                                      </div>
@@ -218,25 +218,25 @@ const CertificateDesigner = ({ courseId, courseTitle }) => {
                                      <div className="space-y-4 bg-black/20 p-5 rounded-2xl border border-white/5 shadow-inner">
                                           <div>
                                               <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-3 block">Achievement Statement</label>
-                                              <textarea value={designData.customText} onChange={(e) => updateField('customText', e.target.value)} rows={4} placeholder="Draft the certification text..." className="w-full bg-black/20 border border-white/5 rounded-2xl p-4 text-xs leading-relaxed text-white focus:outline-none focus:border-emerald-500/30 transition-all resize-none" />
+                                              <textarea value={designData.customText} onChange={(e) => updateField('customText', e.target.value)} rows={4} placeholder="Draft the certification text..." className="w-full bg-black/20 border border-white/5 rounded-2xl p-4 text-xs leading-relaxed text-white focus:outline-none focus:border-[var(--color-primary)]/30 transition-all resize-none" />
                                           </div>
 
                                           <div className="space-y-3">
                                               <div>
-                                                <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-1.5 block">Official Signatory</label>
+                                                <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-tertiary)] mb-1.5 block">Official Signatory</label>
                                                 <input type="text" value={designData.signatureName} onChange={(e) => updateField('signatureName', e.target.value)} className="w-full h-10 bg-black/20 border border-white/5 rounded-xl px-4 text-xs font-bold text-white focus:outline-none" />
                                               </div>
                                               <div>
-                                                <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-1.5 block">Signatory Title</label>
+                                                <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-tertiary)] mb-1.5 block">Signatory Title</label>
                                                 <input type="text" value={designData.signatureTitle} onChange={(e) => updateField('signatureTitle', e.target.value)} className="w-full h-10 bg-black/20 border border-white/5 rounded-xl px-4 text-xs font-bold text-white focus:outline-none" />
                                               </div>
                                           </div>
 
                                           <div className="grid grid-cols-2 gap-3 pt-2">
-                                              <button onClick={() => updateField('showLogo', !designData.showLogo)} className={`flex items-center gap-3 p-3.5 rounded-2xl border transition-all ${designData.showLogo ? 'bg-emerald-600/10 border-emerald-500/30 text-emerald-500' : 'bg-black/20 border-white/5 text-slate-500'}`}>
+                                              <button onClick={() => updateField('showLogo', !designData.showLogo)} className={`flex items-center gap-3 p-3.5 rounded-2xl border transition-all ${designData.showLogo ? 'bg-[var(--color-primary)]/10 border-[var(--color-primary)]/30 text-[var(--color-primary)]' : 'bg-black/20 border-white/5 text-[var(--color-text-tertiary)]'}`}>
                                                 <ImageIcon size={14} /> <span className="text-[9px] font-black uppercase tracking-widest">Logo</span>
                                               </button>
-                                              <button onClick={() => updateField('showSeal', !designData.showSeal)} className={`flex items-center gap-3 p-3.5 rounded-2xl border transition-all ${designData.showSeal ? 'bg-amber-600/10 border-amber-500/30 text-amber-500' : 'bg-black/20 border-white/5 text-slate-500'}`}>
+                                              <button onClick={() => updateField('showSeal', !designData.showSeal)} className={`flex items-center gap-3 p-3.5 rounded-2xl border transition-all ${designData.showSeal ? 'bg-amber-600/10 border-amber-500/30 text-amber-500' : 'bg-black/20 border-white/5 text-[var(--color-text-tertiary)]'}`}>
                                                 <Sparkles size={14} /> <span className="text-[9px] font-black uppercase tracking-widest">Seal</span>
                                               </button>
                                           </div>
@@ -252,9 +252,9 @@ const CertificateDesigner = ({ courseId, courseTitle }) => {
 
                        {/* Right Real-time Workspace Canvas Cinematic Preview layout setup natively setups on stream flawlessly setup frame flawlessly flawlessly */}
                        <div className="w-full lg:col-span-2 space-y-4">
-                            <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-2 block">Achievement Canvas Frame Preview</label>
+                            <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-tertiary)] mb-2 block">Achievement Canvas Frame Preview</label>
                             
-                            <div className="aspect-[1.414/1] w-full bg-stone-50 rounded-[2.5rem] shadow-2xl overflow-hidden relative border border-slate-200" style={{ fontFamily: designData.fontFamily }}>
+                            <div className="aspect-[1.414/1] w-full bg-stone-50 rounded-[2.5rem] shadow-2xl overflow-hidden relative border border-[var(--color-border-primary)]" style={{ fontFamily: designData.fontFamily }}>
                               {/* Ornate Layered Border cinematic frames native setups stream flawlessly setup flawless style streamline layout flawles native frame flawlessly flawlessly setups stream seamlessly flawlessly flawlessly flawlessly setups stream effortlessly */}
                               <div className="absolute inset-4 border-[2px] border-stone-200" />
                               <div className="absolute inset-6 border-[8px] border-double" style={{ borderColor: designData.primaryColor + '30' }} />

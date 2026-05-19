@@ -30,17 +30,17 @@ const AIServiceControl = () => {
 
                 <EliteCard className="p-8 border-white/5 bg-white/[0.02]">
                     <div className="flex items-center gap-4 mb-6">
-                        <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 flex items-center justify-center border border-emerald-500/20">
-                            <Icon name="Activity" size={24} className="text-emerald-500" />
+                        <div className="w-12 h-12 rounded-2xl bg-[var(--color-primary)]/10 flex items-center justify-center border border-[var(--color-primary)]/20">
+                            <Icon name="Activity" size={24} className="text-[var(--color-primary)]" />
                         </div>
                         <div>
-                            <h3 className="text-xs font-black text-slate-500 uppercase tracking-[0.2em] mb-1">Global Latency</h3>
+                            <h3 className="text-xs font-black text-[var(--color-text-tertiary)] uppercase tracking-[0.2em] mb-1">Global Latency</h3>
                             <h2 className="text-2xl font-black text-white uppercase tracking-tight">142ms</h2>
                         </div>
                     </div>
                     <div className="flex items-center gap-1">
                         {[...Array(10)].map((_, i) => (
-                            <div key={i} className={`flex-1 h-6 rounded-sm ${i > 7 ? 'bg-emerald-500' : 'bg-emerald-500/20'}`} />
+                            <div key={i} className={`flex-1 h-6 rounded-sm ${i > 7 ? 'bg-[var(--color-primary)]' : 'bg-[var(--color-primary)]/20'}`} />
                         ))}
                     </div>
                 </EliteCard>
@@ -51,11 +51,11 @@ const AIServiceControl = () => {
                             <Icon name="Zap" size={24} className="text-purple-500" />
                         </div>
                         <div>
-                            <h3 className="text-xs font-black text-slate-500 uppercase tracking-[0.2em] mb-1">Token Velocity</h3>
+                            <h3 className="text-xs font-black text-[var(--color-text-tertiary)] uppercase tracking-[0.2em] mb-1">Token Velocity</h3>
                             <h2 className="text-2xl font-black text-white uppercase tracking-tight">8.5M/Hr</h2>
                         </div>
                     </div>
-                    <div className="text-[10px] font-black text-slate-500 uppercase tracking-widest flex items-center gap-2">
+                    <div className="text-[10px] font-black text-[var(--color-text-tertiary)] uppercase tracking-widest flex items-center gap-2">
                         <div className="w-2 h-2 rounded-full bg-purple-500 animate-pulse" />
                         Real-time processing active
                     </div>
@@ -70,11 +70,11 @@ const AIServiceControl = () => {
                     <table className="w-full text-left">
                         <thead>
                             <tr className="bg-white/[0.02]">
-                                <th className="px-8 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">Service Identifier</th>
-                                <th className="px-8 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">Current Status</th>
-                                <th className="px-8 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">Pressure Load</th>
-                                <th className="px-8 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">Latency Profile</th>
-                                <th className="px-8 py-4 text-right text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">Governance</th>
+                                <th className="px-8 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-text-tertiary)]">Service Identifier</th>
+                                <th className="px-8 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-text-tertiary)]">Current Status</th>
+                                <th className="px-8 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-text-tertiary)]">Pressure Load</th>
+                                <th className="px-8 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-text-tertiary)]">Latency Profile</th>
+                                <th className="px-8 py-4 text-right text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-text-tertiary)]">Governance</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-white/[0.03]">
@@ -82,14 +82,14 @@ const AIServiceControl = () => {
                                 <tr key={service.id} className="group hover:bg-white/[0.02] transition-colors">
                                     <td className="px-8 py-6">
                                         <div className="text-sm font-black text-white uppercase tracking-tight">{service.name}</div>
-                                        <div className="text-[9px] font-bold text-slate-500 uppercase tracking-widest">{service.id}</div>
+                                        <div className="text-[9px] font-bold text-[var(--color-text-tertiary)] uppercase tracking-widest">{service.id}</div>
                                     </td>
                                     <td className="px-8 py-6">
                                         <div className={`inline-flex items-center px-3 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest border ${service.status === 'operational'
-                                                ? 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20'
+                                                ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)] border-[var(--color-primary)]/20'
                                                 : 'bg-amber-500/10 text-amber-500 border-amber-500/20'
                                             }`}>
-                                            <div className={`w-1.5 h-1.5 rounded-full mr-2 ${service.status === 'operational' ? 'bg-emerald-500 animate-pulse' : 'bg-amber-500'}`} />
+                                            <div className={`w-1.5 h-1.5 rounded-full mr-2 ${service.status === 'operational' ? 'bg-[var(--color-primary)] animate-pulse' : 'bg-amber-500'}`} />
                                             {service.status}
                                         </div>
                                     </td>

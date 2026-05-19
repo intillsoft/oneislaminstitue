@@ -69,21 +69,21 @@ const FlipCard = ({ children }) => {
                 {/* Front */}
                 <div
                     style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden', transform: 'rotateX(0deg) translateZ(1px)' }}
-                    className={`w-full rounded-[1.5rem] bg-white dark:bg-slate-900 px-6 py-5 flex items-center gap-5 border border-slate-200/60 dark:border-white/10 hover:border-emerald-500/20 transition-all duration-500 group/flip`}
+                    className={`w-full rounded-[1.5rem] bg-white dark:bg-slate-900 px-6 py-5 flex items-center gap-5 border border-[var(--color-border-primary)]/60 dark:border-white/10 hover:border-[var(--color-primary)]/20 transition-all duration-500 group/flip`}
                 >
-                    <div className="w-10 h-10 rounded-[1rem] bg-emerald-50 dark:bg-emerald-500/10 flex items-center justify-center flex-shrink-0 group-hover/flip:scale-110 transition-transform duration-500">
-                        <Lightbulb size={18} className="text-emerald-500" />
+                    <div className="w-10 h-10 rounded-[1rem] bg-[var(--color-primary-light)] dark:bg-[var(--color-primary)]/10 flex items-center justify-center flex-shrink-0 group-hover/flip:scale-110 transition-transform duration-500">
+                        <Lightbulb size={18} className="text-[var(--color-primary)]" />
                     </div>
                     <div className="flex-1">
-                        <p className="text-[10px] font-black uppercase tracking-[0.2em] text-emerald-600 dark:text-emerald-400 mb-1">Key Insight</p>
-                        <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">Click to reveal deeper understanding</p>
+                        <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-primary)] dark:text-[var(--color-primary)] mb-1">Key Insight</p>
+                        <p className="text-xs text-[var(--color-text-tertiary)] dark:text-slate-400 font-medium">Click to reveal deeper understanding</p>
                     </div>
-                    <RefreshCw size={14} className="text-slate-300 dark:text-slate-600 flex-shrink-0 group-hover/flip:rotate-90 transition-transform duration-500" />
+                    <RefreshCw size={14} className="text-slate-300 dark:text-[var(--color-text-secondary)] flex-shrink-0 group-hover/flip:rotate-90 transition-transform duration-500" />
                 </div>
                 {/* Back */}
                 <div
                     style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden', transform: 'rotateX(180deg) translateZ(1px)', position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
-                    className="rounded-[1.5rem] bg-slate-50 dark:bg-slate-800 px-6 py-5 border border-emerald-500/20 flex flex-col justify-center"
+                    className="rounded-[1.5rem] bg-white dark:bg-slate-800 px-6 py-5 border border-[var(--color-primary)]/20 flex flex-col justify-center"
                 >
                     <div className="text-emerald-900 dark:text-emerald-100 text-sm md:text-base font-medium leading-[1.7]">
                         {children}
@@ -104,9 +104,9 @@ const InteractiveSacredCard = ({ type, front, back }) => {
             icon: <Sparkles size={16} />, 
             color: 'emerald',
             accent: 'emerald-500',
-            accentBorder: 'hover:border-emerald-500/30',
-            bg: 'bg-emerald-50/60 dark:bg-emerald-500/5',
-            tabBg: 'bg-emerald-500'
+            accentBorder: 'hover:border-[var(--color-primary)]/30',
+            bg: 'bg-[var(--color-primary-light)]/60 dark:bg-[var(--color-primary)]/5',
+            tabBg: 'bg-[var(--color-primary)]'
         },
         H: { 
             name: 'Prophetic Tradition (Hadith)', 
@@ -150,7 +150,7 @@ const InteractiveSacredCard = ({ type, front, back }) => {
             color: 'slate',
             accent: 'slate-500',
             accentBorder: 'hover:border-slate-500/30',
-            bg: 'bg-slate-50/60 dark:bg-slate-500/5',
+            bg: 'bg-white/60 dark:bg-slate-500/5',
             tabBg: 'bg-slate-500'
         }
     };
@@ -159,7 +159,7 @@ const InteractiveSacredCard = ({ type, front, back }) => {
 
     return (
         <div className="my-8 relative group w-full">
-            <div className={`relative px-8 py-10 rounded-[2.5rem] bg-white dark:bg-slate-900/40 border border-slate-200/60 dark:border-white/10 ${config.accentBorder} backdrop-blur-3xl transition-all duration-500 flex flex-col gap-8 shadow-sm hover:shadow-xl hover:shadow-${config.color}-500/[0.02]`}>
+            <div className={`relative px-8 py-10 rounded-[2.5rem] bg-white dark:bg-slate-900/40 border border-[var(--color-border-primary)]/60 dark:border-white/10 ${config.accentBorder} backdrop-blur-3xl transition-all duration-500 flex flex-col gap-8 shadow-sm hover:shadow-xl hover:shadow-${config.color}-500/[0.02]`}>
                 
                 {/* Header Container: Icon/Title and Sleek Slider Tabs */}
                 <div className="flex flex-col sm:flex-row items-center justify-between w-full gap-4 z-10">
@@ -167,18 +167,18 @@ const InteractiveSacredCard = ({ type, front, back }) => {
                         <div className={`w-8 h-8 rounded-full ${config.bg} flex items-center justify-center text-${config.color}-600 dark:text-${config.color}-400 ring-1 ring-${config.color}-500/20 shadow-inner`}>
                             {config.icon}
                         </div>
-                        <p className="text-[9px] font-black uppercase tracking-[0.25em] text-slate-500 dark:text-slate-400">
+                        <p className="text-[9px] font-black uppercase tracking-[0.25em] text-[var(--color-text-tertiary)] dark:text-slate-400">
                             {config.name}
                         </p>
                     </div>
 
                     {/* Segmented Controller Tab Bar */}
-                    <div className="bg-slate-100/80 dark:bg-slate-800/80 p-0.5 rounded-full flex items-center relative gap-0.5 backdrop-blur-md border border-slate-200/30 dark:border-white/5">
+                    <div className="bg-slate-100/80 dark:bg-slate-800/80 p-0.5 rounded-full flex items-center relative gap-0.5 backdrop-blur-md border border-[var(--color-border-primary)]/30 dark:border-white/5">
                         {['english', 'arabic'].map((tab) => (
                             <button
                                 key={tab}
                                 onClick={(e) => { e.stopPropagation(); setActiveTab(tab); }}
-                                className={`relative z-10 px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider transition-all duration-300 ${activeTab === tab ? 'text-white' : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200'}`}
+                                className={`relative z-10 px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider transition-all duration-300 ${activeTab === tab ? 'text-white' : 'text-[var(--color-text-tertiary)] dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200'}`}
                             >
                                 {activeTab === tab && (
                                     <motion.div
@@ -220,7 +220,7 @@ const InteractiveSacredCard = ({ type, front, back }) => {
                                 transition={{ duration: 0.3 }}
                                 className="w-full flex justify-center px-4"
                             >
-                                <div className={`text-2xl md:text-3xl font-arabic leading-[2.3] text-slate-900 dark:text-white text-center ${type === 'Q' ? 'font-arabic-bold' : ''} prose-p:my-0`}>
+                                <div className={`text-2xl md:text-3xl font-arabic leading-[2.3] text-[var(--color-text-primary)] dark:text-white text-center ${type === 'Q' ? 'font-arabic-bold' : ''} prose-p:my-0`}>
                                     <ReactMarkdown components={markdownComponents}>
                                         {typeof back === 'string' ? back.replace(/undefined/g, '') : ''}
                                     </ReactMarkdown>
@@ -282,8 +282,8 @@ const markdownComponents = {
         return <FlipCard>{children}</FlipCard>;
     },
     p: ({ node, children, ...props }) => <p className="mb-6 last:mb-0 text-slate-700 dark:text-slate-300 leading-[1.9] text-[15px]" {...props}>{children}</p>,
-    h1: ({ node, children, ...props }) => <h1 className="text-3xl font-black text-slate-900 dark:text-white mb-8 mt-14 first:mt-0 tracking-tight" {...props}>{children}</h1>,
-    h2: ({ node, children, ...props }) => <h2 className="text-2xl font-extrabold text-slate-900 dark:text-white mb-6 mt-12 first:mt-0 tracking-tight" {...props}>{children}</h2>,
+    h1: ({ node, children, ...props }) => <h1 className="text-3xl font-black text-[var(--color-text-primary)] dark:text-white mb-8 mt-14 first:mt-0 tracking-tight" {...props}>{children}</h1>,
+    h2: ({ node, children, ...props }) => <h2 className="text-2xl font-extrabold text-[var(--color-text-primary)] dark:text-white mb-6 mt-12 first:mt-0 tracking-tight" {...props}>{children}</h2>,
     h3: ({ node, children, ...props }) => <h3 className="text-xl font-bold text-slate-800 dark:text-white mb-4 mt-10 first:mt-0" {...props}>{children}</h3>,
     ul: ({ node, children, ...props }) => <ul className="mb-8 space-y-4 pl-2" {...props}>{children}</ul>,
     ol: ({ node, children, ...props }) => <ol className="mb-8 space-y-4 pl-2 list-decimal" {...props}>{children}</ol>,
@@ -293,9 +293,9 @@ const markdownComponents = {
         return (
             <li className="text-slate-700 dark:text-slate-300 flex gap-4 items-start group list-none">
                 {!isOrdered ? (
-                    <span className="mt-2.5 w-1.5 h-1.5 rounded-full bg-emerald-500 group-hover:scale-125 transition-transform flex-shrink-0" />
+                    <span className="mt-2.5 w-1.5 h-1.5 rounded-full bg-[var(--color-primary)] group-hover:scale-125 transition-transform flex-shrink-0" />
                 ) : (
-                    <span className="mt-1.5 font-black text-emerald-600 dark:text-emerald-400 w-5 text-xs text-right shrink-0">
+                    <span className="mt-1.5 font-black text-[var(--color-primary)] dark:text-[var(--color-primary)] w-5 text-xs text-right shrink-0">
                         {/* The index is available in props but let the browser handle it if possible or pass it down */}
                         {props.index !== undefined ? `${props.index + 1}.` : '•'}
                     </span>
@@ -304,11 +304,11 @@ const markdownComponents = {
             </li>
         );
     },
-    strong: ({ node, children, ...props }) => <strong className="font-bold text-emerald-700 dark:text-emerald-400 bg-emerald-50/50 dark:bg-emerald-500/5 px-1.5 py-0.5 rounded shadow-sm border border-emerald-100/50 dark:border-emerald-500/10" {...props}>{children}</strong>,
-    em: ({ node, children, ...props }) => <em className="italic text-slate-600 dark:text-slate-400" {...props}>{children}</em>,
+    strong: ({ node, children, ...props }) => <strong className="font-bold text-[var(--color-primary)] dark:text-[var(--color-primary)] bg-[var(--color-primary-light)]/50 dark:bg-[var(--color-primary)]/5 px-1.5 py-0.5 rounded shadow-sm border border-[var(--color-border-secondary)]/50 dark:border-[var(--color-primary)]/10" {...props}>{children}</strong>,
+    em: ({ node, children, ...props }) => <em className="italic text-[var(--color-text-secondary)] dark:text-slate-400" {...props}>{children}</em>,
     code: ({ node, children, inline, ...props }) => inline
-        ? <code className="px-2 py-0.5 rounded-lg bg-slate-100 dark:bg-white/5 text-emerald-600 dark:text-emerald-400 text-[13px] font-mono border border-slate-200 dark:border-white/10" {...props}>{children}</code>
-        : <pre className="my-8 p-6 rounded-[1.5rem] bg-slate-950 dark:bg-black/40 text-emerald-300 text-[13px] font-mono overflow-x-auto border border-white/5 shadow-2xl"><code {...props}>{children}</code></pre>,
+        ? <code className="px-2 py-0.5 rounded-lg bg-slate-100 dark:bg-white/5 text-[var(--color-primary)] dark:text-[var(--color-primary)] text-[13px] font-mono border border-[var(--color-border-primary)] dark:border-white/10" {...props}>{children}</code>
+        : <pre className="my-8 p-6 rounded-[1.5rem] bg-slate-950 dark:bg-black/40 text-[var(--color-primary)] text-[13px] font-mono overflow-x-auto border border-white/5 shadow-2xl"><code {...props}>{children}</code></pre>,
 };
 
 // ─── Video Block ────────────────────────────────────────────
@@ -317,7 +317,7 @@ const VideoBlock = ({ block }) => {
     const [focused, setFocused] = useState(false);
     return (
         <div className="w-full max-w-4xl mx-auto">
-            <div className={`relative rounded-[1.5rem] overflow-hidden border border-emerald-100/20 dark:border-emerald-500/10 shadow-xl transition-all duration-700 ${focused ? 'shadow-emerald-500/20' : ''}`}>
+            <div className={`relative rounded-[1.5rem] overflow-hidden border border-[var(--color-border-secondary)]/20 dark:border-[var(--color-primary)]/10 shadow-xl transition-all duration-700 ${focused ? 'shadow-[var(--color-primary)]/20' : ''}`}>
                 <button onClick={() => setFocused(f => !f)} className="absolute top-4 right-4 z-10 p-2.5 rounded-xl bg-black/40 text-white hover:bg-black/60 backdrop-blur-md transition-all sm:opacity-0 group-hover:opacity-100">
                     {focused ? <Minimize2 size={18} /> : <Maximize2 size={18} />}
                 </button>
@@ -330,14 +330,14 @@ const VideoBlock = ({ block }) => {
                                href={block.content?.url || block.url} 
                                target="_blank" 
                                rel="noopener noreferrer" 
-                               className="flex items-center gap-1.5 px-3.5 py-2 bg-black/60 hover:bg-black/80 backdrop-blur-md border border-white/10 rounded-xl text-[9px] font-black uppercase tracking-wider text-white hover:text-emerald-400 transition-all shadow-xl"
+                               className="flex items-center gap-1.5 px-3.5 py-2 bg-black/60 hover:bg-black/80 backdrop-blur-md border border-white/10 rounded-xl text-[9px] font-black uppercase tracking-wider text-white hover:text-[var(--color-primary)] transition-all shadow-xl"
                              >
-                                  <AlertCircle size={11} className="text-emerald-500" /> Watch on YouTube
+                                  <AlertCircle size={11} className="text-[var(--color-primary)]" /> Watch on YouTube
                              </a>
                         </div>
                     </div>
                 ) : (
-                    <div className="aspect-video flex flex-col items-center justify-center text-emerald-400 bg-slate-50 dark:bg-slate-900 font-serif">
+                    <div className="aspect-video flex flex-col items-center justify-center text-[var(--color-primary)] bg-white dark:bg-slate-900 font-serif">
                         <PlayCircle className="w-16 h-16 mb-4 opacity-20 animate-pulse" />
                         <span className="text-[10px] font-black uppercase tracking-[0.4em] opacity-40">Scholar Visual Archive Locked</span>
                     </div>
@@ -360,25 +360,25 @@ const InfographicBlock = ({ block }) => {
                 {items.map((item, i) => (
                     <div key={i} className="group relative">
                         {isStepLayout && i < items.length - 1 && (
-                            <div className="absolute left-[31px] top-16 bottom-[-32px] w-0.5 bg-gradient-to-b from-emerald-500/20 to-transparent hidden md:block" />
+                            <div className="absolute left-[31px] top-16 bottom-[-32px] w-0.5 bg-gradient-to-b from-[var(--color-primary)]/20 to-transparent hidden md:block" />
                         )}
                         <div className={`flex ${isStepLayout ? 'flex-row gap-8 items-start' : 'flex-col'} p-6 rounded-[1.5rem] bg-white dark:bg-slate-900 border border-slate-100 dark:border-white/5 shadow-md transition-all duration-500 hover:shadow-emerald-500/10 hover:-translate-y-1`}>
                             <div className="relative shrink-0">
-                                <div className="absolute inset-0 bg-emerald-500/20 blur-xl scale-0 group-hover:scale-100 transition-transform duration-700 rounded-full" />
-                                <div className="relative w-16 h-16 rounded-2xl bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 flex items-center justify-center border border-emerald-100/50 dark:border-emerald-500/10 shadow-inner group-hover:bg-emerald-600 group-hover:text-white transition-all duration-500">
+                                <div className="absolute inset-0 bg-[var(--color-primary)]/20 blur-xl scale-0 group-hover:scale-100 transition-transform duration-700 rounded-full" />
+                                <div className="relative w-16 h-16 rounded-2xl bg-[var(--color-primary-light)] dark:bg-[var(--color-primary)]/10 text-[var(--color-primary)] flex items-center justify-center border border-[var(--color-border-secondary)]/50 dark:border-[var(--color-primary)]/10 shadow-inner group-hover:bg-[var(--color-primary)] group-hover:text-white transition-all duration-500">
                                     <Icon name={item.icon || 'Star'} size={32} />
                                 </div>
                                 {isStepLayout && (
-                                    <div className="absolute -top-2 -left-2 w-6 h-6 rounded-full bg-slate-900 dark:bg-emerald-500 text-white text-[10px] font-black flex items-center justify-center border-2 border-white dark:border-slate-900">
+                                    <div className="absolute -top-2 -left-2 w-6 h-6 rounded-full bg-slate-900 dark:bg-[var(--color-primary)] text-white text-[10px] font-black flex items-center justify-center border-2 border-white dark:border-slate-900">
                                         {i + 1}
                                     </div>
                                 )}
                             </div>
                             <div className={isStepLayout ? 'flex-1 pt-2' : 'mt-6'}>
-                                <h4 className="text-lg font-black text-slate-900 dark:text-white mb-2 tracking-tight group-hover:text-emerald-600 transition-colors">
+                                <h4 className="text-lg font-black text-[var(--color-text-primary)] dark:text-white mb-2 tracking-tight group-hover:text-[var(--color-primary)] transition-colors">
                                     {item.title}
                                 </h4>
-                                <p className="text-sm text-slate-500 dark:text-slate-400 font-medium leading-relaxed">
+                                <p className="text-sm text-[var(--color-text-tertiary)] dark:text-slate-400 font-medium leading-relaxed">
                                     {item.description}
                                 </p>
                             </div>
@@ -483,9 +483,9 @@ const LessonBlockRenderer = ({ blocks = [], onQuizPassed }) => {
 
     if (!blocks || blocks.length === 0) {
         return (
-            <div className="text-center py-20 bg-emerald-50/10 dark:bg-emerald-500/5 rounded-[3rem] border-2 border-dashed border-emerald-100 dark:border-emerald-500/10 max-w-5xl mx-auto">
-                <Icon name="Inbox" size={48} className="mx-auto text-emerald-200 dark:text-emerald-500/20 mb-6" />
-                <p className="text-emerald-600/60 dark:text-emerald-400/40 font-black uppercase tracking-[0.4em] text-[11px]">Vault Currently Vacant</p>
+            <div className="text-center py-20 bg-[var(--color-primary-light)]/10 dark:bg-[var(--color-primary)]/5 rounded-[3rem] border-2 border-dashed border-[var(--color-border-secondary)] dark:border-[var(--color-primary)]/10 max-w-5xl mx-auto">
+                <Icon name="Inbox" size={48} className="mx-auto text-emerald-200 dark:text-[var(--color-primary)]/20 mb-6" />
+                <p className="text-[var(--color-primary)]/60 dark:text-[var(--color-primary)]/40 font-black uppercase tracking-[0.4em] text-[11px]">Vault Currently Vacant</p>
             </div>
         );
     }
@@ -541,8 +541,8 @@ const LessonBlockRenderer = ({ blocks = [], onQuizPassed }) => {
                                                     disabled={!allQuizzesAnswered}
                                                     className={`group inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full font-semibold text-[9px] uppercase tracking-[0.22em] transition-all duration-200 border ${
                                                         allQuizzesAnswered 
-                                                        ? 'bg-slate-900 dark:bg-emerald-600 text-white border-slate-900/80 dark:border-emerald-500/60 hover:bg-slate-800 dark:hover:bg-emerald-500'
-                                                        : 'bg-slate-50 dark:bg-white/5 text-slate-400 border-slate-100 dark:border-white/10 cursor-not-allowed opacity-40'
+                                                        ? 'bg-slate-900 dark:bg-[var(--color-primary)] text-white border-slate-900/80 dark:border-[var(--color-primary)]/60 hover:bg-slate-800 dark:hover:bg-[var(--color-primary)]'
+                                                        : 'bg-white dark:bg-white/5 text-slate-400 border-slate-100 dark:border-white/10 cursor-not-allowed opacity-40'
                                                     }`}
                                                     style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                                                 >
@@ -565,7 +565,7 @@ const LessonBlockRenderer = ({ blocks = [], onQuizPassed }) => {
                                             <motion.div
                                                 initial={{ scale: 0.9, opacity: 0 }}
                                                 animate={{ scale: 1, opacity: 1 }}
-                                                className="bg-emerald-500 text-white px-4 py-1.5 rounded-full font-semibold text-[9px] uppercase tracking-[0.22em] flex items-center gap-1.5 shadow-md shadow-emerald-500/25"
+                                                className="bg-[var(--color-primary)] text-white px-4 py-1.5 rounded-full font-semibold text-[9px] uppercase tracking-[0.22em] flex items-center gap-1.5 shadow-md shadow-emerald-500/25"
                                                 style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                                             >
                                                 <CheckCircle size={14} className="animate-bounce" />
@@ -674,7 +674,7 @@ const BlockRenderer = ({ block, index, quizAnswer, onAnswerChange, isVerified, s
                     <details className="group">
                         <summary className="flex items-center justify-between p-5 cursor-pointer list-none [&::-webkit-details-marker]:hidden">
                             <h3 className="text-sm font-black text-slate-800 dark:text-white uppercase tracking-wider flex items-center gap-2">
-                                <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                                <div className="w-2 h-2 rounded-full bg-[var(--color-primary)] animate-pulse" />
                                 {b.title || 'Accordion Item'}
                             </h3>
                             <div className="text-slate-400 group-open:rotate-180 transition-transform duration-300">
@@ -682,7 +682,7 @@ const BlockRenderer = ({ block, index, quizAnswer, onAnswerChange, isVerified, s
                             </div>
                         </summary>
                         <div className="px-5 pb-5 border-t border-slate-100 dark:border-white/[0.03] pt-4">
-                            <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                            <p className="text-xs text-[var(--color-text-secondary)] dark:text-slate-300 leading-relaxed">
                                 {b.text || 'Hidden details.'}
                             </p>
                         </div>
@@ -705,7 +705,7 @@ const BlockRenderer = ({ block, index, quizAnswer, onAnswerChange, isVerified, s
                     {b.url ? (
                         <img src={b.url} alt="Educational Resource" className="w-full h-auto object-cover transition-transform duration-[1.5s] group-hover:scale-105" loading="lazy" />
                     ) : (
-                        <div className="aspect-video bg-slate-50 dark:bg-slate-900 flex flex-col items-center justify-center text-emerald-500/20">
+                        <div className="aspect-video bg-white dark:bg-slate-900 flex flex-col items-center justify-center text-[var(--color-primary)]/20">
                             <ImageIcon size={64} className="mb-6 opacity-10" />
                             <span className="text-[11px] font-black uppercase tracking-[0.3em]">Archive Link Severed</span>
                         </div>
@@ -716,31 +716,31 @@ const BlockRenderer = ({ block, index, quizAnswer, onAnswerChange, isVerified, s
             return (
                 <div className="group relative overflow-hidden rounded-2xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-white/5 shadow-sm hover:shadow-xl transition-all duration-500 ring-1 ring-slate-100/50 dark:ring-white/5 max-w-4xl mx-auto w-full">
                     <div className="p-5 md:p-6 flex flex-col md:flex-row items-center gap-6">
-                        <div className="w-14 h-14 rounded-2xl bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 flex items-center justify-center border border-emerald-100/30 dark:border-emerald-500/10 shadow-inner shrink-0 group-hover:bg-emerald-600 group-hover:text-white transition-all duration-500">
+                        <div className="w-14 h-14 rounded-2xl bg-[var(--color-primary-light)] dark:bg-[var(--color-primary)]/10 text-[var(--color-primary)] flex items-center justify-center border border-[var(--color-border-secondary)]/30 dark:border-[var(--color-primary)]/10 shadow-inner shrink-0 group-hover:bg-[var(--color-primary)] group-hover:text-white transition-all duration-500">
                             <FileText size={24} />
                         </div>
                         <div className="flex-1 min-w-0 text-center md:text-left">
                             <div className="flex flex-wrap items-center justify-center md:justify-start gap-3 mb-2">
-                                <span className="text-[9px] font-black text-emerald-600 uppercase tracking-widest px-2.5 py-1 bg-emerald-50 dark:bg-emerald-500/10 rounded-full border border-emerald-100/50 dark:border-emerald-500/10">Official Archive</span>
+                                <span className="text-[9px] font-black text-[var(--color-primary)] uppercase tracking-widest px-2.5 py-1 bg-[var(--color-primary-light)] dark:bg-[var(--color-primary)]/10 rounded-full border border-[var(--color-border-secondary)]/50 dark:border-[var(--color-primary)]/10">Official Archive</span>
                                 <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">{b.platform || 'General Archive'}</span>
                             </div>
-                            <h3 className="text-base font-black text-slate-900 dark:text-white mb-1 truncate">
+                            <h3 className="text-base font-black text-[var(--color-text-primary)] dark:text-white mb-1 truncate">
                                 {b.title || 'Deep Dive Resource'}
                             </h3>
-                            <p className="text-[11px] text-slate-500 dark:text-slate-400 line-clamp-1 font-medium italic opacity-80">
+                            <p className="text-[11px] text-[var(--color-text-tertiary)] dark:text-slate-400 line-clamp-1 font-medium italic opacity-80">
                                 {b.description || 'Access verified scholarly analysis and foundational proofs.'}
                             </p>
                         </div>
                         <div className="flex items-center gap-6 shrink-0 w-full md:w-auto justify-center md:justify-end border-t md:border-t-0 md:border-l border-slate-100 dark:border-white/5 pt-4 md:pt-0 md:pl-6 transition-all">
                             <div className="hidden lg:flex -space-x-2">
-                                {[1, 2, 3].map(i => <div key={i} className="w-7 h-7 rounded-full border-2 border-white dark:border-slate-800 bg-emerald-100 dark:bg-slate-800" />)}
+                                {[1, 2, 3].map(i => <div key={i} className="w-7 h-7 rounded-full border-2 border-white dark:border-slate-800 bg-[var(--color-primary-light)] dark:bg-slate-800" />)}
                             </div>
                             {b.url && (
                                 <a 
                                     href={b.url} 
                                     target="_blank" 
                                     rel="noopener noreferrer" 
-                                    className="flex items-center gap-2 px-6 py-3 rounded-xl bg-slate-900 dark:bg-emerald-600 text-white text-[10px] font-black uppercase tracking-[0.2em] hover:bg-emerald-700 dark:hover:bg-emerald-500 transition-all shadow-lg active:scale-95 whitespace-nowrap group-hover:shadow-emerald-500/20"
+                                    className="flex items-center gap-2 px-6 py-3 rounded-xl bg-slate-900 dark:bg-[var(--color-primary)] text-white text-[10px] font-black uppercase tracking-[0.2em] hover:bg-[var(--color-primary-hover)] dark:hover:bg-[var(--color-primary)] transition-all shadow-lg active:scale-95 whitespace-nowrap group-hover:shadow-[var(--color-primary)]/20"
                                 >
                                     Access Archive <ChevronRight size={14} />
                                 </a>
@@ -776,11 +776,11 @@ const BlockRenderer = ({ block, index, quizAnswer, onAnswerChange, isVerified, s
              return <InteractiveSacredCard type="L" front={getFront(block)} back={getBack(block)} />;
         case 'callout':
             return (
-                <div className="bg-gradient-to-br from-emerald-600 to-emerald-900 dark:from-emerald-600/20 dark:to-emerald-950/60 rounded-[3rem] p-10 md:p-14 text-white dark:text-emerald-50 shadow-[0_30px_60px_-15px_rgba(16,185,129,0.3)] border border-emerald-400/20 dark:border-emerald-500/10 mb-16 overflow-hidden relative group max-w-5xl mx-auto">
+                <div className="bg-gradient-to-br from-[var(--color-primary)] to-emerald-900 dark:from-[var(--color-primary)]/20 dark:to-emerald-950/60 rounded-[3rem] p-10 md:p-14 text-white dark:text-emerald-50 shadow-[0_30px_60px_-15px_rgba(16,185,129,0.3)] border border-emerald-400/20 dark:border-[var(--color-primary)]/10 mb-16 overflow-hidden relative group max-w-5xl mx-auto">
                     <div className="absolute inset-0 opacity-[0.05] pointer-events-none mix-blend-overlay" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0l15 15-15 15-15-15zM0 30l15 15-15 15-15-15zM60 30l15 15-15 15-15-15zM30 60l15 15-15 15-15-15z' fill='%23ffffff' fill-opacity='1' fill-rule='evenodd'/%3E%3C/svg%3E")`, backgroundSize: '40px 40px' }} />
                     <div className="absolute -top-20 -right-20 w-60 h-60 bg-white/10 rounded-full blur-[100px] group-hover:bg-white/20 transition-all duration-1000" />
                     <div className="relative z-10 flex flex-col items-center text-center max-w-3xl mx-auto">
-                        <Sparkles size={32} className="text-emerald-300/40 mb-8 animate-pulse" />
+                        <Sparkles size={32} className="text-[var(--color-primary)]/40 mb-8 animate-pulse" />
                         <blockquote className="text-2xl md:text-3xl font-serif italic font-light leading-[1.7] tracking-wide mb-10 drop-shadow-xl selection:bg-white selection:text-emerald-900">
                             "{typeof b.content === 'string' ? b.content : (b.text || '')}"
                         </blockquote>
@@ -796,23 +796,23 @@ const BlockRenderer = ({ block, index, quizAnswer, onAnswerChange, isVerified, s
         case 'objectives':
             return (
                 <div className="w-full mb-12 max-w-6xl mx-auto">
-                    <EliteCard className="p-8 sm:p-10 rounded-[2rem] border-0 bg-slate-50/60 dark:bg-slate-900/40 relative overflow-hidden shadow-sm backdrop-blur-3xl ring-1 ring-slate-200 dark:ring-white/5">
+                    <EliteCard className="p-8 sm:p-10 rounded-[2rem] border-0 bg-white/60 dark:bg-slate-900/40 relative overflow-hidden shadow-sm backdrop-blur-3xl ring-1 ring-slate-200 dark:ring-white/5">
                         <div className="flex flex-col md:flex-row md:items-center justify-between gap-8 mb-12">
                             <div>
-                                <h4 className="text-[11px] font-black uppercase tracking-[0.5em] text-emerald-600 dark:text-emerald-400 mb-3 flex items-center gap-3">
+                                <h4 className="text-[11px] font-black uppercase tracking-[0.5em] text-[var(--color-primary)] dark:text-[var(--color-primary)] mb-3 flex items-center gap-3">
                                     <Target size={16} className="animate-pulse" /> Session Objectives
                                 </h4>
-                                <div className="flex items-center gap-4 text-slate-500 dark:text-slate-400 text-sm font-bold opacity-70">
+                                <div className="flex items-center gap-4 text-[var(--color-text-tertiary)] dark:text-slate-400 text-sm font-bold opacity-70">
                                     <span>Foundational concepts we will master</span>
                                     <div className="w-1 h-1 rounded-full bg-slate-300" />
-                                    <span className="text-emerald-600 dark:text-emerald-400">Estimated Study Time: 20 Minutes</span>
+                                    <span className="text-[var(--color-primary)] dark:text-[var(--color-primary)]">Estimated Study Time: 20 Minutes</span>
                                 </div>
                             </div>
                         </div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                             {b.items?.map((item, i) => (
-                                <motion.div key={i} whileHover={{ scale: 1.02 }} className="flex flex-col gap-4 p-6 rounded-[1.5rem] bg-white dark:bg-slate-900 border border-slate-100 dark:border-white/5 shadow-md shadow-emerald-500/[0.02] hover:shadow-emerald-500/[0.05] hover:border-emerald-300 dark:hover:border-emerald-500/20 transition-all duration-500">
-                                    <div className="w-8 h-8 rounded-xl bg-emerald-500 text-white flex items-center justify-center font-black text-[10px] shadow-lg shadow-emerald-500/20">
+                                <motion.div key={i} whileHover={{ scale: 1.02 }} className="flex flex-col gap-4 p-6 rounded-[1.5rem] bg-white dark:bg-slate-900 border border-slate-100 dark:border-white/5 shadow-md shadow-emerald-500/[0.02] hover:shadow-emerald-500/[0.05] hover:border-emerald-300 dark:hover:border-[var(--color-primary)]/20 transition-all duration-500">
+                                    <div className="w-8 h-8 rounded-xl bg-[var(--color-primary)] text-white flex items-center justify-center font-black text-[10px] shadow-lg shadow-[var(--color-primary)]/20">
                                         {String(i + 1).padStart(2, '0')}
                                     </div>
                                     <span className="text-[12px] font-bold text-slate-800 dark:text-slate-200 leading-relaxed">{item}</span>
@@ -825,12 +825,12 @@ const BlockRenderer = ({ block, index, quizAnswer, onAnswerChange, isVerified, s
         case 'key_summary':
             return (
                 <div className="w-full my-8 max-w-4xl mx-auto">
-                    <div className="p-8 rounded-[2rem] bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-white/10 shadow-lg relative overflow-hidden backdrop-blur-3xl">
+                    <div className="p-8 rounded-[2rem] bg-white dark:bg-slate-900 border border-[var(--color-border-primary)]/60 dark:border-white/10 shadow-lg relative overflow-hidden backdrop-blur-3xl">
                         <div className="absolute top-0 right-0 w-64 h-64 blur-[80px] rounded-full -translate-y-1/2 translate-x-1/2 opacity-5" style={{ backgroundColor: b.content?.color || '#10b981' }} />
                         <div className="relative z-10 space-y-6">
                             <div className="flex items-center gap-3">
                                 <div className="w-1.5 h-6 rounded-full" style={{ backgroundColor: b.content?.color || '#10b981' }} />
-                                <h4 className="text-xl font-black tracking-tight text-slate-900 dark:text-white">
+                                <h4 className="text-xl font-black tracking-tight text-[var(--color-text-primary)] dark:text-white">
                                     {b.content?.title || 'Key Takeaways'}
                                 </h4>
                             </div>
@@ -842,7 +842,7 @@ const BlockRenderer = ({ block, index, quizAnswer, onAnswerChange, isVerified, s
                                         whileInView={{ opacity: 1, y: 0 }}
                                         viewport={{ once: true }}
                                         transition={{ delay: iIdx * 0.1 }}
-                                        className="p-4 rounded-xl bg-slate-50/50 dark:bg-slate-800/40 border border-slate-100 dark:border-white/5 flex gap-4 transition-all"
+                                        className="p-4 rounded-xl bg-white/50 dark:bg-slate-800/40 border border-slate-100 dark:border-white/5 flex gap-4 transition-all"
                                     >
                                         <div className="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-black mt-0.5 shadow-sm" style={{ backgroundColor: b.content?.color || '#10b981' }}>
                                             {iIdx + 1}
@@ -851,7 +851,7 @@ const BlockRenderer = ({ block, index, quizAnswer, onAnswerChange, isVerified, s
                                             <span className="text-base font-bold tracking-tight block mb-1" style={{ color: b.content?.color || '#10b981' }}>
                                                 {item.keyword}
                                             </span>
-                                            <p className="text-sm font-medium leading-relaxed text-slate-600 dark:text-slate-300">
+                                            <p className="text-sm font-medium leading-relaxed text-[var(--color-text-secondary)] dark:text-slate-300">
                                                 {item.explanation}
                                             </p>
                                         </div>
@@ -870,9 +870,9 @@ const BlockRenderer = ({ block, index, quizAnswer, onAnswerChange, isVerified, s
                         whileInView={{ opacity: 1, scale: 1 }}
                         className="p-8 md:p-12 rounded-[2.5rem] bg-gradient-to-br from-slate-900 to-slate-800 dark:from-emerald-950/20 dark:to-slate-900 text-white relative overflow-hidden border border-white/5 shadow-2xl"
                     >
-                        <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 blur-[100px] rounded-full -translate-y-1/2 translate-x-1/2" />
+                        <div className="absolute top-0 right-0 w-64 h-64 bg-[var(--color-primary)]/10 blur-[100px] rounded-full -translate-y-1/2 translate-x-1/2" />
                         <div className="relative z-10">
-                            <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-emerald-400 mb-6 flex items-center gap-3">
+                            <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-[var(--color-primary)] mb-6 flex items-center gap-3">
                                 <Sparkles size={14} /> Lesson Synthesis
                             </h4>
                             <p className="text-lg md:text-xl font-serif italic leading-relaxed text-emerald-50/90 mb-0">
@@ -901,29 +901,29 @@ const QuizBlock = ({ block, selectedOption, onAnswerChange, isVerified, shake })
                 }
                 .pulse-rose { animation: pulse-rose 2s infinite; }
             `}} />
-            <div className={`absolute top-0 left-0 w-1 h-full transition-all duration-700 ${isVerified ? (isCorrect ? 'bg-emerald-500' : 'bg-rose-500 animate-pulse') : 'bg-slate-200'}`} />
+            <div className={`absolute top-0 left-0 w-1 h-full transition-all duration-700 ${isVerified ? (isCorrect ? 'bg-[var(--color-primary)]' : 'bg-rose-500 animate-pulse') : 'bg-slate-200'}`} />
             <div className="p-6 md:p-8 relative z-10">
                 <div className="flex items-center justify-between mb-6">
-                    <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-[8px] font-black uppercase tracking-[0.3em] border shadow-sm transition-colors duration-500 ${showIncorrect ? 'bg-rose-50 dark:bg-rose-500/10 text-rose-600 border-rose-100/50' : 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-100/50'}`}>
+                    <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-[8px] font-black uppercase tracking-[0.3em] border shadow-sm transition-colors duration-500 ${showIncorrect ? 'bg-rose-50 dark:bg-rose-500/10 text-rose-600 border-rose-100/50' : 'bg-[var(--color-primary-light)] dark:bg-[var(--color-primary)]/10 text-[var(--color-primary)] dark:text-[var(--color-primary)] border-[var(--color-border-secondary)]/50'}`}>
                         {showIncorrect ? <Target size={12} className="opacity-50" /> : <HelpCircle size={12} className="opacity-50" />}
                         {showIncorrect ? 'Review Required' : 'Knowledge Check'}
                     </div>
                 </div>
-                <h3 className="text-base md:text-lg font-bold text-slate-900 dark:text-white leading-[1.4] mb-8 tracking-tight">
+                <h3 className="text-base md:text-lg font-bold text-[var(--color-text-primary)] dark:text-white leading-[1.4] mb-8 tracking-tight">
                     {block.question}
                 </h3>
                 <motion.div animate={showIncorrect ? { x: [-2, 2, -1, 1, 0] } : {}} className="space-y-2.5">
                     {options.map((opt, i) => {
                         if (!opt?.trim()) return null;
                         const isSelected = selectedOption === i;
-                        let stateClass = 'border-slate-100 dark:border-white/5 text-slate-600 dark:text-slate-400 hover:border-emerald-200 hover:bg-emerald-50/20';
+                        let stateClass = 'border-slate-100 dark:border-white/5 text-[var(--color-text-secondary)] dark:text-slate-400 hover:border-[var(--color-border-secondary)] hover:bg-[var(--color-primary-light)]/20';
                         let dotClass = 'bg-slate-200 dark:bg-white/10';
 
                         if (isVerified) {
                             if (isSelected) {
                                 if (isCorrect) {
-                                    stateClass = 'border-emerald-500 bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-white';
-                                    dotClass = 'bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.3)]';
+                                    stateClass = 'border-[var(--color-primary)] bg-[var(--color-primary-light)] dark:bg-[var(--color-primary)]/10 text-[var(--color-primary)] dark:text-white';
+                                    dotClass = 'bg-[var(--color-primary)] shadow-[0_0_10px_rgba(16,185,129,0.3)]';
                                 } else {
                                     stateClass = 'border-rose-400 bg-rose-50 dark:bg-rose-500/10 text-rose-700 dark:text-rose-400 ring-1 ring-rose-200';
                                     dotClass = 'bg-rose-400';
@@ -932,8 +932,8 @@ const QuizBlock = ({ block, selectedOption, onAnswerChange, isVerified, shake })
                                 stateClass = 'border-transparent opacity-30 grayscale blur-[0.2px]';
                             }
                         } else if (isSelected) {
-                            stateClass = 'border-emerald-500 bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 shadow-md ring-2 ring-emerald-500/10';
-                            dotClass = 'bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.3)] scale-110';
+                            stateClass = 'border-[var(--color-primary)] bg-[var(--color-primary-light)] dark:bg-[var(--color-primary)]/10 text-[var(--color-primary)] dark:text-[var(--color-primary)] shadow-md ring-2 ring-[var(--color-primary)]/10';
+                            dotClass = 'bg-[var(--color-primary)] shadow-[0_0_10px_rgba(16,185,129,0.3)] scale-110';
                         }
 
                         return (
@@ -944,7 +944,7 @@ const QuizBlock = ({ block, selectedOption, onAnswerChange, isVerified, shake })
                             >
                                 <div className={`w-1 h-1 rounded-full transition-all duration-500 flex-shrink-0 ${dotClass}`} />
                                 <span className="leading-snug flex-1">{opt}</span>
-                                {isVerified && isSelected && isCorrect && <CheckCircle size={16} className="text-emerald-500" />}
+                                {isVerified && isSelected && isCorrect && <CheckCircle size={16} className="text-[var(--color-primary)]" />}
                             </button>
                         );
                     })}
@@ -954,7 +954,7 @@ const QuizBlock = ({ block, selectedOption, onAnswerChange, isVerified, shake })
                         <motion.div initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} className="mt-6 pt-6 border-t border-rose-100/50 dark:border-white/5">
                             <div className="bg-amber-50 dark:bg-white/5 p-4 rounded-xl flex gap-3 border border-amber-100/50 dark:border-white/10">
                                 <Lightbulb size={16} className="text-amber-500 shrink-0" />
-                                <p className="text-[11px] font-medium text-slate-600 dark:text-slate-400 leading-relaxed italic">
+                                <p className="text-[11px] font-medium text-[var(--color-text-secondary)] dark:text-slate-400 leading-relaxed italic">
                                     {block.hint || "Review the previous section's core arguments. Reflection often reveals what hasty reading obscures."}
                                 </p>
                             </div>

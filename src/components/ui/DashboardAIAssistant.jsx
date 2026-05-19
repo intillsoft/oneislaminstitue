@@ -157,7 +157,7 @@ Provide helpful, actionable insights and recommendations. Be specific and data-d
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.9 }}
-              className="bg-white dark:bg-[#0a0f1d] rounded-2xl shadow-2xl max-w-2xl w-full h-[600px] flex flex-col"
+              className="bg-white dark:bg-[var(--color-bg-dark)] rounded-2xl shadow-2xl max-w-2xl w-full h-[600px] flex flex-col"
             >
               {/* Header */}
               <div className="flex items-center justify-between p-6 border-b border-[#E2E8F0] dark:border-[#1E2640]">
@@ -229,7 +229,7 @@ Provide helpful, actionable insights and recommendations. Be specific and data-d
                     onChange={(e) => setInput(e.target.value)}
                     onKeyPress={(e) => e.key === 'Enter' && handleSend()}
                     placeholder="Ask workflowAI..."
-                    className="flex-1 px-4 py-2 border border-[#E2E8F0] dark:border-[#1E2640] rounded-lg bg-background dark:bg-[#0A0E27] text-text-primary dark:text-[#E8EAED] focus:outline-none focus:ring-2 focus:ring-workflow-primary"
+                    className="flex-1 px-4 py-2 border border-[#E2E8F0] dark:border-[#1E2640] rounded-lg bg-background dark:bg-[var(--color-bg-dark)] text-text-primary dark:text-[#E8EAED] focus:outline-none focus:ring-2 focus:ring-workflow-primary"
                     disabled={isTyping}
                   />
                   <button

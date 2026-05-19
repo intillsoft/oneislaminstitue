@@ -37,9 +37,9 @@ const MessageImprovement = ({ originalMessage, onImproved, onClose }) => {
                                 <Icon name="Sparkles" className="text-blue-500" size={24} />
                                 Neural Enhancement
                             </h3>
-                            <p className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] mt-1">Refining semantic precision via LLM protocol</p>
+                            <p className="text-[10px] font-black text-[var(--color-text-tertiary)] uppercase tracking-[0.2em] mt-1">Refining semantic precision via LLM protocol</p>
                         </div>
-                        <button onClick={onClose} className="p-2 hover:bg-white/5 rounded-xl text-slate-500 hover:text-white transition-all">
+                        <button onClick={onClose} className="p-2 hover:bg-white/5 rounded-xl text-[var(--color-text-tertiary)] hover:text-white transition-all">
                             <Icon name="X" size={20} />
                         </button>
                     </div>
@@ -47,7 +47,7 @@ const MessageImprovement = ({ originalMessage, onImproved, onClose }) => {
                     <div className="p-8 space-y-8">
                         {/* Original */}
                         <div>
-                            <label className="text-[10px] font-black text-slate-600 uppercase tracking-[0.2em] mb-3 block">Input Protocol</label>
+                            <label className="text-[10px] font-black text-[var(--color-text-secondary)] uppercase tracking-[0.2em] mb-3 block">Input Protocol</label>
                             <div className="p-5 bg-white/5 border border-white/5 rounded-2xl text-slate-400 text-sm italic">
                                 "{originalMessage}"
                             </div>
@@ -57,7 +57,7 @@ const MessageImprovement = ({ originalMessage, onImproved, onClose }) => {
                         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                             {[
                                 { id: 'professional', label: 'CORPORATE', icon: 'Briefcase', color: 'text-blue-400' },
-                                { id: 'friendly', label: 'SOCIAL', icon: 'Smile', color: 'text-emerald-400' },
+                                { id: 'friendly', label: 'SOCIAL', icon: 'Smile', color: 'text-[var(--color-primary)]' },
                                 { id: 'concise', label: 'EFFICIENT', icon: 'Zap', color: 'text-amber-400' },
                                 { id: 'clear', label: 'DIRECT', icon: 'Target', color: 'text-rose-400' }
                             ].map(opt => (
@@ -68,7 +68,7 @@ const MessageImprovement = ({ originalMessage, onImproved, onClose }) => {
                                     className="flex flex-col items-center gap-3 p-4 bg-white/5 border border-white/5 rounded-2xl hover:bg-blue-600/10 hover:border-blue-500/30 transition-all group"
                                 >
                                     <Icon name={opt.icon} size={20} className={`${opt.color} group-hover:scale-110 transition-transform`} />
-                                    <span className="text-[9px] font-black tracking-widest text-slate-500 group-hover:text-white">{opt.label}</span>
+                                    <span className="text-[9px] font-black tracking-widest text-[var(--color-text-tertiary)] group-hover:text-white">{opt.label}</span>
                                 </button>
                             ))}
                         </div>

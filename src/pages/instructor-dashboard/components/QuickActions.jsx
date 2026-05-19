@@ -77,7 +77,7 @@ const QuickActions = () => {
       blue: { bg: 'bg-workflow-primary/10', text: 'text-workflow-primary', border: 'border-workflow-primary/20' },
       amber: { bg: 'bg-amber-500/10', text: 'text-amber-500', border: 'border-amber-500/20' },
       purple: { bg: 'bg-workflow-accent/10', text: 'text-workflow-accent', border: 'border-workflow-accent/20' },
-      emerald: { bg: 'bg-emerald-500/10', text: 'text-emerald-500', border: 'border-emerald-500/20' },
+      emerald: { bg: 'bg-[var(--color-primary)]/10', text: 'text-[var(--color-primary)]', border: 'border-[var(--color-primary)]/20' },
     };
     return configs[color] || configs.blue;
   };

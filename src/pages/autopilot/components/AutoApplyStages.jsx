@@ -26,7 +26,7 @@ const AutoApplyStages = ({ status = 'idle', currentStage = 0 }) => {
                         className={`relative p-6 rounded-2xl border transition-all duration-300 ${isActive
                                 ? 'bg-workflow-primary/10 border-workflow-primary/50 shadow-[0_0_20px_rgba(0,70,255,0.1)]'
                                 : isCompleted
-                                    ? 'bg-emerald-500/10 border-emerald-500/30'
+                                    ? 'bg-[var(--color-primary)]/10 border-[var(--color-primary)]/30'
                                     : 'bg-white/5 border-white/10'
                             }`}
                     >
@@ -34,8 +34,8 @@ const AutoApplyStages = ({ status = 'idle', currentStage = 0 }) => {
                             <div className={`p-2 rounded-lg ${isActive
                                     ? 'bg-workflow-primary text-white animate-pulse'
                                     : isCompleted
-                                        ? 'bg-emerald-500 text-white'
-                                        : 'bg-slate-800 text-slate-500'
+                                        ? 'bg-[var(--color-primary)] text-white'
+                                        : 'bg-slate-800 text-[var(--color-text-tertiary)]'
                                 }`}>
                                 <Icon className="w-5 h-5" />
                             </div>
@@ -43,7 +43,7 @@ const AutoApplyStages = ({ status = 'idle', currentStage = 0 }) => {
                                 {stage.title}
                             </h4>
                         </div>
-                        <p className="text-xs text-slate-500 leading-relaxed">
+                        <p className="text-xs text-[var(--color-text-tertiary)] leading-relaxed">
                             {stage.description}
                         </p>
 
@@ -52,7 +52,7 @@ const AutoApplyStages = ({ status = 'idle', currentStage = 0 }) => {
                         )}
                         {isCompleted && (
                             <div className="absolute top-2 right-2">
-                                <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                                <CheckCircle2 className="w-4 h-4 text-[var(--color-primary)]" />
                             </div>
                         )}
                     </motion.div>

@@ -63,13 +63,13 @@ const CourseCard = ({ job: course, isSaved, onSave, index = 0 }) => {
       className="group relative flex flex-col h-full cursor-pointer select-none w-full max-w-[400px] mx-auto sm:max-w-none"
       onClick={handleCardClick}
     >
-      <div className="relative flex flex-col h-full rounded-[1.2rem] overflow-hidden bg-white dark:bg-[#111827] border border-slate-200 dark:border-white/[0.05] shadow-[0_4px_20px_-4px_rgba(0,0,0,0.06)] dark:shadow-none hover:shadow-xl transition-all duration-500">
+      <div className="relative flex flex-col h-full rounded-[1.2rem] overflow-hidden bg-white dark:bg-[#111827] border border-[var(--color-border-primary)] dark:border-white/[0.05] shadow-[0_4px_20px_-4px_rgba(0,0,0,0.06)] dark:shadow-none hover:shadow-xl transition-all duration-500">
         
         {/* Top Accent line */}
         <div className="h-[2px] w-full" style={{ backgroundColor: accent }} />
 
         {/* Media Block */}
-        <div className="relative w-full h-40 overflow-hidden bg-slate-50 dark:bg-slate-900/50">
+        <div className="relative w-full h-40 overflow-hidden bg-white dark:bg-slate-900/50">
           {thumbSrc ? (
             <img 
               src={thumbSrc} 
@@ -77,22 +77,22 @@ const CourseCard = ({ job: course, isSaved, onSave, index = 0 }) => {
               className="w-full h-full object-cover group-hover:scale-105 transition-all duration-700 ease-out"
             />
           ) : (
-            <div className="w-full h-full flex items-center justify-center bg-emerald-50/20 dark:bg-emerald-500/5">
-              <BookOpen className="w-8 h-8 text-emerald-500/20" />
+            <div className="w-full h-full flex items-center justify-center bg-[var(--color-primary-light)]/20 dark:bg-[var(--color-primary)]/5">
+              <BookOpen className="w-8 h-8 text-[var(--color-primary)]/20" />
             </div>
           )}
 
           {/* Floating Labels */}
           <div className="absolute top-3 left-3 flex flex-col gap-1.5">
             {courseData.featured && (
-              <div className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-white/95 dark:bg-slate-900/90 backdrop-blur-md border border-slate-100 dark:border-white/5 text-[8px] font-black uppercase tracking-wider text-slate-600 dark:text-slate-300 shadow-sm">
-                <Sparkles size={8} className="text-emerald-500" />
+              <div className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-white/95 dark:bg-slate-900/90 backdrop-blur-md border border-slate-100 dark:border-white/5 text-[8px] font-black uppercase tracking-wider text-[var(--color-text-secondary)] dark:text-slate-300 shadow-sm">
+                <Sparkles size={8} className="text-[var(--color-primary)]" />
                 Featured
               </div>
             )}
             {courseData.matchScore && (
-              <div className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-white/95 dark:bg-slate-900/90 backdrop-blur-md border border-slate-100 dark:border-white/5 text-[8px] font-black uppercase tracking-wider text-slate-600 dark:text-slate-300 shadow-sm">
-                <Star size={8} className="text-emerald-500 fill-emerald-500" />
+              <div className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-white/95 dark:bg-slate-900/90 backdrop-blur-md border border-slate-100 dark:border-white/5 text-[8px] font-black uppercase tracking-wider text-[var(--color-text-secondary)] dark:text-slate-300 shadow-sm">
+                <Star size={8} className="text-[var(--color-primary)] fill-[var(--color-primary)]" />
                 {courseData.matchScore}% Match
               </div>
             )}
@@ -100,13 +100,13 @@ const CourseCard = ({ job: course, isSaved, onSave, index = 0 }) => {
 
           <div className="absolute top-3 right-3 flex flex-col items-end gap-1.5">
             {isEnrolled && (
-              <div className="px-2.5 py-1 rounded-full bg-emerald-600 text-white text-[8px] font-bold uppercase tracking-widest shadow-lg flex items-center gap-1">
+              <div className="px-2.5 py-1 rounded-full bg-[var(--color-primary)] text-white text-[8px] font-bold uppercase tracking-widest shadow-lg flex items-center gap-1">
                 <CheckCircle2 size={9} />
                 Enrolled
               </div>
             )}
             {!isEnrolled && courseData.salary_min > 0 && (
-              <div className="px-2.5 py-1 rounded-full bg-emerald-600 text-white text-[8px] font-black uppercase tracking-widest shadow-lg flex items-center gap-1">
+              <div className="px-2.5 py-1 rounded-full bg-[var(--color-primary)] text-white text-[8px] font-black uppercase tracking-widest shadow-lg flex items-center gap-1">
                 <Sparkles size={9} />
                 ${courseData.salary_min} Donation
               </div>
@@ -132,7 +132,7 @@ const CourseCard = ({ job: course, isSaved, onSave, index = 0 }) => {
             <span className="text-[8px] font-bold uppercase tracking-[0.2em] text-slate-400 mb-1 block">
               {provider}
             </span>
-            <h3 className="text-sm font-bold text-slate-900 dark:text-white leading-snug tracking-tight line-clamp-2">
+            <h3 className="text-sm font-bold text-[var(--color-text-primary)] dark:text-white leading-snug tracking-tight line-clamp-2">
               {title}
             </h3>
           </div>
@@ -143,14 +143,14 @@ const CourseCard = ({ job: course, isSaved, onSave, index = 0 }) => {
               <div className="space-y-1.5">
                 <div className="flex items-center justify-between text-[8px] font-bold uppercase text-slate-400 tracking-widest">
                   <span>Progress</span>
-                  <span className="text-emerald-600">{pct}%</span>
+                  <span className="text-[var(--color-primary)]">{pct}%</span>
                 </div>
                 <div className="w-full h-[2px] rounded-full bg-slate-100 dark:bg-white/[0.05] overflow-hidden">
-                  <motion.div initial={{ width: 0 }} animate={{ width: `${pct}%` }} className="h-full rounded-full bg-emerald-600" />
+                  <motion.div initial={{ width: 0 }} animate={{ width: `${pct}%` }} className="h-full rounded-full bg-[var(--color-primary)]" />
                 </div>
               </div>
             ) : (
-              <div className="flex items-center justify-between bg-emerald-600 hover:bg-emerald-700 py-1.5 px-4 rounded-xl transition-all group/cta shadow-lg shadow-emerald-600/10">
+              <div className="flex items-center justify-between bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] py-1.5 px-4 rounded-xl transition-all group/cta shadow-lg shadow-emerald-600/10">
                 <span className="text-[10px] font-bold uppercase tracking-[0.1em] text-white">
                   {isEnrolled ? 'Open Course' : 'Enroll Now'}
                 </span>

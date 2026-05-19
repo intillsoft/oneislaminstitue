@@ -46,7 +46,7 @@ const DepartmentProfileCard = ({ company }) => {
             name={company?.name}
             logo={company?.logo}
             size="24"
-            className="ring-4 ring-emerald-500/10 shadow-2xl transform group-hover:scale-105 transition-transform duration-500"
+            className="ring-4 ring-[var(--color-primary)]/10 shadow-2xl transform group-hover:scale-105 transition-transform duration-500"
           />
         </div>
         <h3 className="text-2xl font-black text-white uppercase tracking-tight mb-2">{company?.name}</h3>
@@ -60,15 +60,15 @@ const DepartmentProfileCard = ({ company }) => {
           <div className="flex items-center gap-2">
             <span className="text-white font-black text-sm">{company?.glassdoorRating || '4.5'}</span>
             <span className="w-1 h-1 rounded-full bg-slate-600" />
-            <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">{company?.reviewCount || '1.2k'} Curator Team Reviews</span>
+            <span className="text-[10px] font-bold text-[var(--color-text-tertiary)] uppercase tracking-widest">{company?.reviewCount || '1.2k'} Curator Team Reviews</span>
           </div>
         </div>
 
         <Link
           to={`/department-profile/${company?.id || company?.name?.toLowerCase().replace(/\s+/g, '-')}`}
-          className="w-full flex items-center justify-center gap-3 py-4 bg-emerald-600/5 border border-emerald-600/10 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] text-emerald-400 hover:text-white hover:bg-emerald-600 transition-all shadow-lg shadow-emerald-900/10"
+          className="w-full flex items-center justify-center gap-3 py-4 bg-[var(--color-primary)]/5 border border-emerald-600/10 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-primary)] hover:text-white hover:bg-[var(--color-primary)] transition-all shadow-lg shadow-emerald-900/10"
         >
-          <Icon name="GraduationCap" size={14} className="text-emerald-500" />
+          <Icon name="GraduationCap" size={14} className="text-[var(--color-primary)]" />
           View Department Profile
         </Link>
       </div>
@@ -84,7 +84,7 @@ const DepartmentProfileCard = ({ company }) => {
               <Icon name={item.icon} size={16} className="text-workflow-primary" />
             </div>
             <div>
-              <p className="text-[8px] font-black text-slate-600 uppercase tracking-widest leading-none mb-1">{item.label}</p>
+              <p className="text-[8px] font-black text-[var(--color-text-secondary)] uppercase tracking-widest leading-none mb-1">{item.label}</p>
               <p className="text-[11px] font-bold text-slate-300 uppercase truncate">{item.value}</p>
             </div>
           </div>
@@ -101,7 +101,7 @@ const DepartmentProfileCard = ({ company }) => {
               <Icon name="Globe" size={16} className="text-slate-400 group-hover/link:text-workflow-primary transition-colors" />
             </div>
             <div>
-              <p className="text-[8px] font-black text-slate-600 uppercase tracking-widest leading-none mb-1">LEARNING PORTAL</p>
+              <p className="text-[8px] font-black text-[var(--color-text-secondary)] uppercase tracking-widest leading-none mb-1">LEARNING PORTAL</p>
               <p className="text-[11px] font-bold text-workflow-primary-400 group-hover/link:text-workflow-primary transition-colors uppercase">Visit Curator Team Site</p>
             </div>
           </a>
@@ -110,7 +110,7 @@ const DepartmentProfileCard = ({ company }) => {
 
       {/* Company Description */}
       <div className="mb-8 p-6 rounded-2xl bg-white/[0.01] border border-white/5">
-        <h4 className="text-[9px] font-black text-slate-500 uppercase tracking-[0.3em] mb-4 flex items-center gap-2">
+        <h4 className="text-[9px] font-black text-[var(--color-text-tertiary)] uppercase tracking-[0.3em] mb-4 flex items-center gap-2">
           <div className="w-1 h-1 rounded-full bg-workflow-primary" />
           Executive Summary
         </h4>
@@ -122,7 +122,7 @@ const DepartmentProfileCard = ({ company }) => {
       {/* Culture Section */}
       {company?.culturePhotos?.length > 0 && (
         <div className="space-y-4">
-          <h4 className="text-[9px] font-black text-slate-500 uppercase tracking-[0.3em] pl-1">Culture Visualization</h4>
+          <h4 className="text-[9px] font-black text-[var(--color-text-tertiary)] uppercase tracking-[0.3em] pl-1">Culture Visualization</h4>
           <div className="grid grid-cols-2 gap-3">
             {company?.culturePhotos?.slice(0, showAllPhotos ? company?.culturePhotos?.length : 4)?.map((photo, index) => (
               <div key={index} className="aspect-square overflow-hidden rounded-2xl border border-white/10 group/img">
@@ -137,7 +137,7 @@ const DepartmentProfileCard = ({ company }) => {
           {company?.culturePhotos?.length > 4 && (
               <button
                 onClick={() => setShowAllPhotos(!showAllPhotos)}
-                className="w-full py-3 text-[9px] font-black text-slate-500 hover:text-emerald-500 uppercase tracking-widest transition-colors"
+                className="w-full py-3 text-[9px] font-black text-[var(--color-text-tertiary)] hover:text-[var(--color-primary)] uppercase tracking-widest transition-colors"
               >
                 [ {showAllPhotos ? 'COLLAPSE EXHIBIT' : `VIEW ${company?.culturePhotos?.length - 4} MORE ARCHIVES`} ]
               </button>
@@ -148,10 +148,10 @@ const DepartmentProfileCard = ({ company }) => {
       {/* Footer Branding */}
       <div className="mt-8 pt-8 border-t border-white/5 flex items-center justify-between">
         <div className="flex gap-4">
-          <button className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-slate-500 hover:text-rose-500 hover:border-rose-500/30 transition-all">
+          <button className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-[var(--color-text-tertiary)] hover:text-rose-500 hover:border-rose-500/30 transition-all">
             <Icon name="Heart" size={16} />
           </button>
-          <button className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-slate-500 hover:text-workflow-primary hover:border-workflow-primary/30 transition-all">
+          <button className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-[var(--color-text-tertiary)] hover:text-workflow-primary hover:border-workflow-primary/30 transition-all">
             <Icon name="Share2" size={16} />
           </button>
         </div>

@@ -99,7 +99,7 @@ const EnrollmentSuccessModal = ({ isOpen, onClose, course, courseId }) => {
             className="relative w-full max-w-md overflow-hidden"
           >
             {/* Card */}
-            <div className="relative bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-2xl">
+            <div className="relative bg-white dark:bg-slate-900 rounded-3xl border border-[var(--color-border-primary)] dark:border-slate-800 shadow-2xl">
               
               {/* Particle field */}
               <div className="absolute inset-0 overflow-hidden rounded-3xl pointer-events-none">
@@ -109,7 +109,7 @@ const EnrollmentSuccessModal = ({ isOpen, onClose, course, courseId }) => {
               </div>
 
               {/* Top Gradient Banner */}
-              <div className="relative h-32 bg-gradient-to-br from-emerald-500 via-emerald-600 to-teal-700 flex items-center justify-center overflow-hidden">
+              <div className="relative h-32 bg-gradient-to-br from-[var(--color-primary)] via-emerald-600 to-teal-700 flex items-center justify-center overflow-hidden">
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(255,255,255,0.15),transparent)]" />
                 
                 {/* Success checkmark */}
@@ -153,17 +153,17 @@ const EnrollmentSuccessModal = ({ isOpen, onClose, course, courseId }) => {
                           initial={{ opacity: 0, y: 10 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ delay: 0.2 }}
-                          className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-100 dark:border-emerald-500/20 mb-3"
+                          className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[var(--color-primary-light)] dark:bg-[var(--color-primary)]/10 border border-[var(--color-border-secondary)] dark:border-[var(--color-primary)]/20 mb-3"
                         >
-                          <Sparkles size={12} className="text-emerald-600 dark:text-emerald-400" />
-                          <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-700 dark:text-emerald-400">Enrollment Confirmed</span>
+                          <Sparkles size={12} className="text-[var(--color-primary)] dark:text-[var(--color-primary)]" />
+                          <span className="text-[10px] font-bold uppercase tracking-widest text-[var(--color-primary)] dark:text-[var(--color-primary)]">Enrollment Confirmed</span>
                         </motion.div>
 
                         <motion.h2
                           initial={{ opacity: 0, y: 10 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ delay: 0.3 }}
-                          className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight mb-2"
+                          className="text-2xl font-bold text-[var(--color-text-primary)] dark:text-white tracking-tight mb-2"
                         >
                           You're In! 🎉
                         </motion.h2>
@@ -172,7 +172,7 @@ const EnrollmentSuccessModal = ({ isOpen, onClose, course, courseId }) => {
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
                           transition={{ delay: 0.4 }}
-                          className="text-sm text-slate-500 dark:text-slate-400"
+                          className="text-sm text-[var(--color-text-tertiary)] dark:text-slate-400"
                         >
                           You've successfully enrolled in
                         </motion.p>
@@ -198,10 +198,10 @@ const EnrollmentSuccessModal = ({ isOpen, onClose, course, courseId }) => {
                           { icon: Star, label: 'Certificate', desc: 'Included' },
                           { icon: Sparkles, label: 'Full Access', desc: 'Granted' },
                         ].map((item, i) => (
-                          <div key={i} className="text-center p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-700/50">
-                            <item.icon size={16} className="mx-auto text-emerald-500 mb-1.5" />
+                          <div key={i} className="text-center p-3 rounded-xl bg-white dark:bg-slate-800/50 border border-slate-100 dark:border-slate-700/50">
+                            <item.icon size={16} className="mx-auto text-[var(--color-primary)] mb-1.5" />
                             <p className="text-[10px] font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">{item.label}</p>
-                            <p className="text-[9px] text-slate-400 dark:text-slate-500">{item.desc}</p>
+                            <p className="text-[9px] text-slate-400 dark:text-[var(--color-text-tertiary)]">{item.desc}</p>
                           </div>
                         ))}
                       </motion.div>
@@ -215,7 +215,7 @@ const EnrollmentSuccessModal = ({ isOpen, onClose, course, courseId }) => {
                       >
                         <button
                           onClick={handleStartCourse}
-                          className="w-full py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold transition-all shadow-lg shadow-emerald-600/25 active:scale-[0.98] flex items-center justify-center gap-2 text-sm group"
+                          className="w-full py-3.5 bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white rounded-xl font-bold transition-all shadow-lg shadow-emerald-600/25 active:scale-[0.98] flex items-center justify-center gap-2 text-sm group"
                         >
                           Start Learning
                           <ArrowRight size={16} className="group-hover:translate-x-0.5 transition-transform" />
@@ -223,7 +223,7 @@ const EnrollmentSuccessModal = ({ isOpen, onClose, course, courseId }) => {
                         
                         <button
                           onClick={handleGoToDashboard}
-                          className="w-full py-3 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 rounded-xl font-medium hover:bg-slate-50 dark:hover:bg-slate-700 transition-all flex items-center justify-center gap-2 text-sm"
+                          className="w-full py-3 bg-slate-100 dark:bg-slate-800 text-[var(--color-text-secondary)] dark:text-slate-300 border border-[var(--color-border-primary)] dark:border-slate-700 rounded-xl font-medium hover:bg-white dark:hover:bg-slate-700 transition-all flex items-center justify-center gap-2 text-sm"
                         >
                           <LayoutDashboard size={15} />
                           Go to Dashboard

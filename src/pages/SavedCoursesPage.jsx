@@ -17,7 +17,7 @@ const SavedCoursesPage = () => {
                         className="flex flex-col gap-3"
                     >
                         <div className="flex items-center gap-2">
-                            <Bookmark size={16} className="text-emerald-500" />
+                            <Bookmark size={16} className="text-[var(--color-primary)]" />
                             <span className="text-sm font-semibold text-slate-400">Bookmarked Courses</span>
                         </div>
                         <h1 className="text-3xl md:text-4xl text-white uppercase font-black tracking-tighter leading-none">

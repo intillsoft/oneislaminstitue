@@ -8,103 +8,146 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // Workflow Brand Colors
-        'accent': '#0046FF', // Standardized to Blue
-        'sapphire': '#0046FF',
-        'ink': '#0A1324',
-        'ink-light': '#1e293b',
-        'accent-50': '#F5F9FF',
-        'accent-100': '#E6F0FF',
-        'accent-200': '#CCE0FF',
-        'accent-300': '#B3D1FF',
-        'accent-400': '#99C2FF',
-        'accent-500': '#80B3FF',
-        'accent-600': '#66A4FF',
-        'accent-700': '#4D95FF',
-        'accent-800': '#3386FF',
-        'accent-900': '#1A77FF',
-        'workflow-primary': '#0046FF',
-        'workflow-primary-50': '#F5F9FF',
-        'workflow-primary-100': '#E6F0FF',
-        'workflow-primary-200': '#CCE0FF',
-        'workflow-primary-300': '#B3D1FF',
-        'workflow-primary-400': '#99C2FF',
-        'workflow-primary-500': '#80B3FF',
-        'workflow-primary-600': '#0038CC', // Darker shade for hover
-        'workflow-primary-700': '#4D95FF',
-        'workflow-primary-800': '#3386FF',
-        'workflow-primary-900': '#1A77FF',
-        'workflow-accent': '#8B5CF6',
+        /* ── Brand / Primary ─────────────────────── */
+        'primary': 'var(--color-primary)',
+        'primary-hover': 'var(--color-primary-hover)',
+        'primary-light': 'var(--color-primary-light)',
+        'primary-dark': 'var(--color-primary-dark)',
+
+        /* Legacy aliases for existing component references */
+        'accent': 'var(--color-primary)',
+        'workflow-primary': 'var(--color-primary)',
+        'workflow-primary-600': 'var(--color-primary-hover)',
+        'sapphire': 'var(--color-primary)',
+
+        /* ── Backgrounds ─────────────────────────── */
+        'bg': 'var(--color-bg-primary)',
+        'bg-secondary': 'var(--color-bg-secondary)',
+        'bg-tertiary': 'var(--color-bg-tertiary)',
+        'surface': 'var(--color-card-bg)',
+        'surface-elevated': 'var(--color-bg-secondary)',
+        'private': 'var(--color-bg-primary)',
         'white': '#FFFFFF',
-        'private': 'rgb(var(--color-bg-rgb) / <alpha-value>)',
-        // Primary Theme Colors (Linked to CSS Variables)
-        'bg': 'rgb(var(--color-bg-rgb) / <alpha-value>)',
-        'surface': 'rgb(var(--color-surface-rgb) / <alpha-value>)',
-        'surface-elevated': 'rgb(var(--color-surface-elevated-rgb) / <alpha-value>)',
-        'border': 'rgb(var(--color-border-rgb) / <alpha-value>)',
-        'text-primary': 'var(--color-text)',
+
+        /* ── Text ────────────────────────────────── */
+        'text-primary': 'var(--color-text-primary)',
         'text-secondary': 'var(--color-text-secondary)',
-        'text-muted': 'var(--color-text-muted)',
-        // Dark mode colors
-        'dark': {
-          'bg': 'rgb(var(--color-bg-rgb) / <alpha-value>)',
-          'surface': 'rgb(var(--color-surface-rgb) / <alpha-value>)',
-          'surface-elevated': 'rgb(var(--color-surface-elevated-rgb) / <alpha-value>)',
-          'border': 'var(--color-border)',
-          'text': 'var(--color-text)',
-          'text-secondary': 'var(--color-text-secondary)',
-          'text-muted': 'var(--color-text-muted)',
-          'accent': 'var(--workflow-primary)',
-        },
+        'text-muted': 'var(--color-text-tertiary)',
+
+        /* ── Borders ─────────────────────────────── */
+        'border': 'var(--color-border-primary)',
+        'border-primary': 'var(--color-border-primary)',
+        'border-secondary': 'var(--color-border-secondary)',
+        'border-focus': 'var(--color-border-focus)',
+
+        /* ── Status / Semantic ────────────────────── */
         'success': {
-          '50': '#F0F7FF',
-          '100': '#E0EFFF',
-          '500': '#0046FF',
-          '600': '#0038CC',
+          DEFAULT: 'var(--color-success)',
+          'bg': 'var(--color-success-bg)',
+          '50': '#E6F4E6',
+          '100': '#CCE9CC',
+          '500': '#107C10',
+          '600': '#0B5A0B',
         },
         'error': {
-          '50': '#F9FAFB',
-          '100': '#F3F4F6',
-          '500': '#0F172A',
-          '600': '#030712',
+          DEFAULT: 'var(--color-error)',
+          'bg': 'var(--color-error-bg)',
+          '50': '#FDE7E9',
+          '100': '#FBCFD2',
+          '500': '#D13438',
+          '600': '#A52729',
         },
         'warning': {
-          '50': '#FFFFFF',
-          '100': '#E2E8F0',
-          '500': '#64748B',
-          '600': '#475569',
+          DEFAULT: 'var(--color-warning)',
+          'bg': 'var(--color-warning-bg)',
+          '50': '#FFF4E5',
+          '100': '#FFE9CC',
+          '500': '#FF8C00',
+          '600': '#CC7000',
         },
+        'info': {
+          DEFAULT: 'var(--color-info)',
+          'bg': 'var(--color-info-bg)',
+        },
+
+        /* ── Sidebar ─────────────────────────────── */
+        'sidebar': {
+          'bg': 'var(--color-sidebar-bg)',
+          'text': 'var(--color-sidebar-text)',
+          'active': 'var(--color-sidebar-text-active)',
+          'item-active': 'var(--color-sidebar-item-active)',
+          'item-hover': 'var(--color-sidebar-item-hover)',
+          'border': 'var(--color-sidebar-border)',
+          'icon': 'var(--color-sidebar-icon)',
+          'icon-active': 'var(--color-sidebar-icon-active)',
+        },
+
+        /* ── Nav ─────────────────────────────────── */
+        'nav': {
+          'bg': 'var(--color-nav-bg)',
+          'text': 'var(--color-nav-text)',
+          'hover': 'var(--color-nav-text-hover)',
+          'border': 'var(--color-nav-border)',
+          'active': 'var(--color-nav-active)',
+        },
+
+        /* ── Cards ───────────────────────────────── */
+        'card': {
+          'bg': 'var(--color-card-bg)',
+          'border': 'var(--color-card-border)',
+        },
+
+        /* ── Stat card borders ───────────────────── */
+        'stat': {
+          'blue': 'var(--color-stat-border-1)',
+          'green': 'var(--color-stat-border-2)',
+          'amber': 'var(--color-stat-border-3)',
+          'purple': 'var(--color-stat-border-4)',
+        },
+
+        /* ── Secondary shades (used in some components) */
         'secondary': {
-          '100': '#F1F5F9',
-          '200': '#E2E8F0',
-          '300': '#CBD5E1',
-          '400': '#94A3B8',
-          '500': '#64748B',
-          '600': '#475569',
+          '100': '#F5F5F5',
+          '200': '#E0E0E0',
+          '300': '#C8C8C8',
+          '400': '#A0A0A0',
+          '500': '#767676',
+          '600': '#444444',
         },
-        // Global Theme Variables (Internal Mappings)
-        'bg-bg': 'rgb(var(--color-bg-rgb) / <alpha-value>)',
-        'bg-elevated': 'rgb(var(--color-surface-elevated-rgb) / <alpha-value>)',
-        'border-primary': 'rgb(var(--color-border-rgb) / <alpha-value>)',
+
+        /* ── Dark section colors ─────────────────── */
+        'dark': {
+          'bg': '#0B1120',
+          'surface': '#0F172A',
+          'surface-elevated': '#1E293B',
+          'border': 'rgba(255, 255, 255, 0.08)',
+          'text': '#F8FAFC',
+          'text-secondary': '#CBD5E1',
+          'text-muted': '#94A3B8',
+          'accent': 'var(--color-primary)',
+        },
+
+        'ink': '#1A1A1A',
+        'ink-light': '#444444',
+        'bg-bg': 'var(--color-bg-primary)',
+        'bg-elevated': 'var(--color-bg-secondary)',
       },
       fontFamily: {
-        'sans': ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
-        'display': ['Outfit', 'SF Pro Display', 'Inter', 'sans-serif'],
+        'sans': ['Inter', 'Segoe UI', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+        'display': ['Inter', 'Segoe UI', 'sans-serif'],
         'mono': ['JetBrains Mono', 'SF Mono', 'Monaco', 'monospace'],
       },
       fontSize: {
-        'xs': ['0.75rem', { lineHeight: '1rem', letterSpacing: '0.05em' }],
-        'sm': ['0.875rem', { lineHeight: '1.25rem', letterSpacing: '0.025em' }],
+        'xs': ['0.75rem', { lineHeight: '1rem', letterSpacing: '0.02em' }],
+        'sm': ['0.875rem', { lineHeight: '1.25rem', letterSpacing: '0' }],
         'base': ['1rem', { lineHeight: '1.5rem', letterSpacing: '0' }],
         'lg': ['1.125rem', { lineHeight: '1.75rem', letterSpacing: '-0.01em' }],
         'xl': ['1.25rem', { lineHeight: '1.75rem', letterSpacing: '-0.02em' }],
-        '2xl': ['1.5rem', { lineHeight: '2rem', letterSpacing: '-0.032em' }],
-        '3xl': ['1.875rem', { lineHeight: '2.25rem', letterSpacing: '-0.035em' }],
-        '4xl': ['2.25rem', { lineHeight: '2.5rem', letterSpacing: '-0.04em' }],
-        '5xl': ['3rem', { lineHeight: '1', letterSpacing: '-0.05em' }],
-        '6xl': ['3.75rem', { lineHeight: '1', letterSpacing: '-0.06em' }],
-        'huge': ['5rem', { lineHeight: '1', letterSpacing: '-0.07em' }],
-        'mega': ['8rem', { lineHeight: '1', letterSpacing: '-0.08em' }],
+        '2xl': ['1.5rem', { lineHeight: '2rem', letterSpacing: '-0.02em' }],
+        '3xl': ['1.875rem', { lineHeight: '2.25rem', letterSpacing: '-0.025em' }],
+        '4xl': ['2.25rem', { lineHeight: '2.5rem', letterSpacing: '-0.03em' }],
+        '5xl': ['3rem', { lineHeight: '1.1', letterSpacing: '-0.035em' }],
+        '6xl': ['3.75rem', { lineHeight: '1.1', letterSpacing: '-0.04em' }],
       },
       spacing: {
         '18': '4.5rem',
@@ -114,31 +157,27 @@ module.exports = {
       },
       borderRadius: {
         'none': '0',
-        'sm': '0.125rem',
-        'DEFAULT': '0.5rem',
-        'md': '0.5rem',
-        'lg': '0.75rem',
-        'xl': '1rem',
-        '2xl': '1.5rem',
-        '3xl': '2rem',
+        'sm': '4px',
+        'DEFAULT': '6px',
+        'md': '6px',
+        'lg': '8px',
+        'xl': '12px',
+        '2xl': '16px',
+        '3xl': '20px',
         'full': '9999px',
       },
       boxShadow: {
-        'soft': '0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px 0 rgba(0, 0, 0, 0.1)',
-        'card': '0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
-        'card-hover': '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
-        'modal': '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
-        'glass': '0 8px 32px 0 rgba(31, 38, 135, 0.37)',
-        'glow': '0 0 20px rgba(0, 70, 255, 0.3)',
-        'glow-lg': '0 0 40px rgba(0, 70, 255, 0.4)',
-        'primary-glow': '0 0 20px rgba(0, 70, 255, 0.3)',
-        'primary-glow-hover': '0 0 30px rgba(0, 70, 255, 0.5)',
-        'inner': 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.06)',
-        'neumorphism': '8px 8px 16px #d1d9e6, -8px -8px 16px #ffffff',
-        'neumorphism-inset': 'inset 8px 8px 16px #d1d9e6, inset -8px -8px 16px #ffffff',
-      },
-      backdropBlur: {
-        'xs': '2px',
+        'soft': '0 1px 3px rgba(0, 0, 0, 0.04)',
+        'card': '0 2px 8px rgba(0, 0, 0, 0.06)',
+        'card-hover': '0 4px 16px rgba(0, 120, 212, 0.12)',
+        'modal': '0 8px 32px rgba(0, 0, 0, 0.16)',
+        'nav': '0 1px 4px rgba(0, 0, 0, 0.08)',
+        'inner': 'inset 0 2px 4px rgba(0, 0, 0, 0.04)',
+        'glow': '0 0 20px rgba(0, 120, 212, 0.15)',
+        'glow-lg': '0 0 40px rgba(0, 120, 212, 0.2)',
+        'primary-glow': '0 0 20px rgba(0, 120, 212, 0.15)',
+        'primary-glow-hover': '0 0 30px rgba(0, 120, 212, 0.25)',
+        'glass': '0 2px 8px rgba(0, 0, 0, 0.06)',
       },
       animation: {
         'fade-in': 'fadeIn 0.3s ease-in-out',
@@ -153,15 +192,6 @@ module.exports = {
         'spin-slow': 'spin 3s linear infinite',
         'bounce-subtle': 'bounceSubtle 2s ease-in-out infinite',
         'shimmer': 'shimmer 2s linear infinite',
-        'mesh-glow': 'meshGlow 10s ease-in-out infinite alternate',
-      },
-      backgroundImage: {
-        'public-mesh': "radial-gradient(at 0% 0%, hsla(225,100%,48%,0.15) 0, transparent 50%), radial-gradient(at 50% 0%, hsla(225,100%,48%,0.1) 0, transparent 50%), radial-gradient(at 100% 0%, hsla(225,100%,48%,0.15) 0, transparent 50%)",
-        'private-grid': "linear-gradient(to right, rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.02) 1px, transparent 1px)",
-      },
-      backgroundSize: {
-        'grid-20': '20px 20px',
-        'grid-40': '40px 40px',
       },
       keyframes: {
         fadeIn: {
@@ -204,21 +234,15 @@ module.exports = {
           '0%': { backgroundPosition: '-1000px 0' },
           '100%': { backgroundPosition: '1000px 0' },
         },
-        meshGlow: {
-          '0%': { transform: 'scale(1) translate(0, 0)' },
-          '100%': { transform: 'scale(1.1) translate(2%, 2%)' },
-        },
       },
       transitionDuration: {
+        '150': '150ms',
         '200': '200ms',
         '300': '300ms',
-        '400': '400ms',
-        '600': '600ms',
       },
       transitionTimingFunction: {
         'ease-out': 'cubic-bezier(0, 0, 0.2, 1)',
         'ease-in-out': 'cubic-bezier(0.4, 0, 0.2, 1)',
-        'bounce-in': 'cubic-bezier(0.68, -0.55, 0.265, 1.55)',
       },
       minHeight: {
         'touch': '44px',

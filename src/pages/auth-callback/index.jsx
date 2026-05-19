@@ -80,7 +80,7 @@ const AuthCallback = () => {
   }, [navigate, searchParams, success, showError]);
 
   return (
-    <div className="min-h-screen bg-white dark:bg-[#0A0E27] flex items-center justify-center">
+    <div className="min-h-screen bg-white dark:bg-[var(--color-bg-dark)] flex items-center justify-center">
       <AILoader variant="pulse" text="Completing authentication..." />
     </div>
   );

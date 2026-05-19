@@ -111,7 +111,7 @@ const DemographicInsights = () => {
     if (active && payload && payload.length) {
       return (
         <div className="bg-bg/95 backdrop-blur-xl p-4 border border-border dark:border-white/10 rounded-2xl shadow-2xl">
-          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-text-muted dark:text-slate-500 mb-2">{label}</p>
+          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-text-muted dark:text-[var(--color-text-tertiary)] mb-2">{label}</p>
           <div className="flex items-center justify-between gap-8">
             <span className="text-xs font-black text-text-primary dark:text-white">{payload[0].value}%</span>
             <span className="text-[10px] font-bold text-text-muted dark:text-slate-400">({payload[0].payload.count} users)</span>
@@ -141,7 +141,7 @@ const DemographicInsights = () => {
       <div className="relative z-10">
         <div className="flex flex-col xl:flex-row items-start xl:items-center justify-between gap-8 mb-12">
           <div>
-            <h3 className="text-xs font-black text-slate-500 uppercase tracking-[0.2em] mb-1">Human Capital Meta-Data</h3>
+            <h3 className="text-xs font-black text-[var(--color-text-tertiary)] uppercase tracking-[0.2em] mb-1">Human Capital Meta-Data</h3>
             <h2 className="text-2xl font-black text-white uppercase tracking-tight">Candidate Demographics</h2>
           </div>
           <div className="flex flex-wrap p-1.5 bg-white/5 rounded-2xl border border-white/5 backdrop-blur-md">
@@ -162,7 +162,7 @@ const DemographicInsights = () => {
         </div>
 
         {data.length === 0 ? (
-          <div className="h-72 flex items-center justify-center text-slate-500 border border-dashed border-white/10 rounded-3xl">
+          <div className="h-72 flex items-center justify-center text-[var(--color-text-tertiary)] border border-dashed border-white/10 rounded-3xl">
             <p className="text-[10px] font-black uppercase tracking-[0.2em]">Awaiting Demographic Synthesis</p>
           </div>
         ) : (
@@ -212,7 +212,7 @@ const DemographicInsights = () => {
             <div className="w-8 h-8 rounded-lg bg-workflow-primary/10 flex items-center justify-center">
               <Icon name="ShieldCheck" className="w-4 h-4 text-workflow-primary" />
             </div>
-            <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest leading-tight">
+            <p className="text-[10px] font-bold text-[var(--color-text-tertiary)] uppercase tracking-widest leading-tight">
               Anonymized data stream protected by <br /><span className="text-white">Workflow Encryption Standards</span>
             </p>
           </div>
@@ -220,7 +220,7 @@ const DemographicInsights = () => {
             {data.map((item, idx) => (
               <div key={idx} className="flex items-center gap-1.5">
                 <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: item.color }} />
-                <span className="text-[9px] font-black text-slate-500 uppercase tracking-widest">{item.name}</span>
+                <span className="text-[9px] font-black text-[var(--color-text-tertiary)] uppercase tracking-widest">{item.name}</span>
               </div>
             ))}
           </div>

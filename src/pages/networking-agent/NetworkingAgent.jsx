@@ -96,10 +96,10 @@ const NetworkingAgent = () => {
                         >
                             <Share2 className="w-8 h-8 text-white" />
                         </motion.div>
-                        <h1 className="text-4xl font-black text-slate-900 dark:text-white tracking-tight">
+                        <h1 className="text-4xl font-black text-[var(--color-text-primary)] dark:text-white tracking-tight">
                             Networking <span className="text-purple-600 dark:text-purple-400">Agent</span>
                         </h1>
-                        <p className="text-lg text-slate-600 dark:text-slate-400 font-medium">
+                        <p className="text-lg text-[var(--color-text-secondary)] dark:text-slate-400 font-medium">
                             Generate high-conversion outreach messages tailored for any platform.
                         </p>
                     </div>
@@ -123,14 +123,14 @@ const NetworkingAgent = () => {
                                         value={formData.recipientName}
                                         onChange={(e) => setFormData({ ...formData, recipientName: e.target.value })}
                                         placeholder="Name (e.g. Jane)"
-                                        className="w-full p-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-[#0A0E27] text-slate-900 dark:text-white focus:ring-2 focus:ring-purple-500 outline-none transition-all font-medium"
+                                        className="w-full p-4 rounded-xl border border-[var(--color-border-primary)] dark:border-slate-700 bg-white dark:bg-[var(--color-bg-dark)] text-[var(--color-text-primary)] dark:text-white focus:ring-2 focus:ring-purple-500 outline-none transition-all font-medium"
                                     />
                                     <input
                                         type="text"
                                         value={formData.roleCompany}
                                         onChange={(e) => setFormData({ ...formData, roleCompany: e.target.value })}
                                         placeholder="Role @ Company"
-                                        className="w-full p-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-[#0A0E27] text-slate-900 dark:text-white focus:ring-2 focus:ring-purple-500 outline-none transition-all font-medium"
+                                        className="w-full p-4 rounded-xl border border-[var(--color-border-primary)] dark:border-slate-700 bg-white dark:bg-[var(--color-bg-dark)] text-[var(--color-text-primary)] dark:text-white focus:ring-2 focus:ring-purple-500 outline-none transition-all font-medium"
                                     />
                                 </div>
                             </div>
@@ -148,7 +148,7 @@ const NetworkingAgent = () => {
                                             onClick={() => setFormData({ ...formData, platform: p.id })}
                                             className={`py-4 rounded-2xl border-2 flex flex-col items-center justify-center gap-2 transition-all duration-200 ${formData.platform === p.id
                                                 ? `border-current ${p.color} ${p.bg} shadow-md scale-105`
-                                                : `border-transparent bg-slate-50 dark:bg-[#1A2139] text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 ${p.border}`
+                                                : `border-transparent bg-white dark:bg-[#1A2139] text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 ${p.border}`
                                                 }`}
                                         >
                                             <p.icon className={`w-6 h-6 ${formData.platform === p.id ? 'current-color' : ''}`} />
@@ -164,7 +164,7 @@ const NetworkingAgent = () => {
                                     <select
                                         value={formData.goal}
                                         onChange={(e) => setFormData({ ...formData, goal: e.target.value })}
-                                        className="w-full p-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-[#0A0E27] text-slate-900 dark:text-white focus:ring-2 focus:ring-purple-500 outline-none appearance-none font-medium text-sm"
+                                        className="w-full p-4 rounded-xl border border-[var(--color-border-primary)] dark:border-slate-700 bg-white dark:bg-[var(--color-bg-dark)] text-[var(--color-text-primary)] dark:text-white focus:ring-2 focus:ring-purple-500 outline-none appearance-none font-medium text-sm"
                                     >
                                         <option value="advice">Seek Career Advice</option>
                                         <option value="referral">Request a Referral</option>
@@ -177,7 +177,7 @@ const NetworkingAgent = () => {
                                     <select
                                         value={formData.tone}
                                         onChange={(e) => setFormData({ ...formData, tone: e.target.value })}
-                                        className="w-full p-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-[#0A0E27] text-slate-900 dark:text-white focus:ring-2 focus:ring-purple-500 outline-none appearance-none font-medium text-sm"
+                                        className="w-full p-4 rounded-xl border border-[var(--color-border-primary)] dark:border-slate-700 bg-white dark:bg-[var(--color-bg-dark)] text-[var(--color-text-primary)] dark:text-white focus:ring-2 focus:ring-purple-500 outline-none appearance-none font-medium text-sm"
                                     >
                                         <option value="professional">Professional</option>
                                         <option value="casual">Friendly & Casual</option>
@@ -193,7 +193,7 @@ const NetworkingAgent = () => {
                                     value={formData.context}
                                     onChange={(e) => setFormData({ ...formData, context: e.target.value })}
                                     placeholder="Examples: We met at X event, I read your article on Y, simple introduction..."
-                                    className="w-full h-32 p-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-[#0A0E27] text-slate-900 dark:text-white focus:ring-2 focus:ring-purple-500 outline-none text-sm resize-none font-medium"
+                                    className="w-full h-32 p-4 rounded-xl border border-[var(--color-border-primary)] dark:border-slate-700 bg-white dark:bg-[var(--color-bg-dark)] text-[var(--color-text-primary)] dark:text-white focus:ring-2 focus:ring-purple-500 outline-none text-sm resize-none font-medium"
                                 />
                             </div>
                         </div>
@@ -231,7 +231,7 @@ const NetworkingAgent = () => {
                         {/* Preview Header */}
                         <div className="absolute -top-12 left-0 flex items-center gap-2">
                             <div className={`w-3 h-3 rounded-full ${message ? 'bg-green-500' : 'bg-slate-300 dark:bg-slate-700'}`}></div>
-                            <span className="text-sm font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                            <span className="text-sm font-bold text-[var(--color-text-tertiary)] dark:text-slate-400 uppercase tracking-wider">
                                 {message ? 'Live Preview' : 'Waiting for input'}
                             </span>
                         </div>
@@ -277,17 +277,17 @@ const NetworkingAgent = () => {
                                             <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center text-white font-bold text-lg shadow-lg">
                                                 ME
                                             </div>
-                                            <div className="flex-1 bg-slate-50 dark:bg-[#0A0E27] p-6 rounded-2xl rounded-tl-none border border-slate-100 dark:border-slate-700 shadow-sm relative group/msg">
+                                            <div className="flex-1 bg-white dark:bg-[var(--color-bg-dark)] p-6 rounded-2xl rounded-tl-none border border-slate-100 dark:border-slate-700 shadow-sm relative group/msg">
                                                 <div className="prose dark:prose-invert max-w-none text-slate-800 dark:text-slate-200 whitespace-pre-wrap leading-7">
                                                     {message}
                                                 </div>
 
                                                 <button
                                                     onClick={copyToClipboard}
-                                                    className="absolute top-4 right-4 p-2 bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 opacity-0 group-hover/msg:opacity-100 transition-all hover:bg-slate-50 dark:hover:bg-slate-700"
+                                                    className="absolute top-4 right-4 p-2 bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-[var(--color-border-primary)] dark:border-slate-700 opacity-0 group-hover/msg:opacity-100 transition-all hover:bg-white dark:hover:bg-slate-700"
                                                     title="Copy"
                                                 >
-                                                    {copied ? <CheckCircle className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4 text-slate-500" />}
+                                                    {copied ? <CheckCircle className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4 text-[var(--color-text-tertiary)]" />}
                                                 </button>
                                             </div>
                                         </div>
@@ -296,10 +296,10 @@ const NetworkingAgent = () => {
                             </div>
 
                             {/* Action Bar */}
-                            <div className="p-6 bg-slate-50 dark:bg-[#0F1325] border-t border-slate-100 dark:border-slate-800 flex justify-end gap-3">
+                            <div className="p-6 bg-white dark:bg-[#0F1325] border-t border-slate-100 dark:border-slate-800 flex justify-end gap-3">
                                 {message && (
                                     <>
-                                        <button className="px-6 py-2 text-slate-600 dark:text-slate-400 font-bold hover:text-slate-900 dark:hover:text-white transition-colors">
+                                        <button className="px-6 py-2 text-[var(--color-text-secondary)] dark:text-slate-400 font-bold hover:text-[var(--color-text-primary)] dark:hover:text-white transition-colors">
                                             Refine Draft
                                         </button>
                                         <button
@@ -308,7 +308,7 @@ const NetworkingAgent = () => {
                                                     formData.platform === 'twitter' ? 'https://twitter.com/compose/tweet' : 'mailto:';
                                                 window.open(url, '_blank');
                                             }}
-                                            className="px-8 py-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-xl font-bold hover:scale-105 transition-all flex items-center gap-2 shadow-lg"
+                                            className="px-8 py-3 bg-slate-900 dark:bg-white text-white dark:text-[var(--color-text-primary)] rounded-xl font-bold hover:scale-105 transition-all flex items-center gap-2 shadow-lg"
                                         >
                                             <Send className="w-4 h-4" />
                                             Send Now

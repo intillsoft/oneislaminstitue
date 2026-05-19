@@ -64,7 +64,7 @@ const ResumeBuilderPage = () => {
       {/* Save Indicator */}
       {lastSaved && (
         <div className="fixed bottom-4 right-4 z-50 flex items-center gap-2 px-4 py-2 bg-surface border border-border rounded-xl shadow-lg backdrop-blur-md">
-          <Save className="w-4 h-4 text-emerald-500" />
+          <Save className="w-4 h-4 text-[var(--color-primary)]" />
           <span className="text-[10px] font-black uppercase tracking-widest text-text-muted">
             Saved {lastSaved.toLocaleTimeString()}
           </span>

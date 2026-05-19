@@ -88,7 +88,7 @@ const SalaryIntelligence = () => {
 
                 <div className="space-y-5">
                     <div className="group/field">
-                        <label className="block text-[10px] font-black uppercase tracking-widest text-slate-600 mb-2 group-focus-within/field:text-indigo-400 transition-colors">Job Designation</label>
+                        <label className="block text-[10px] font-black uppercase tracking-widest text-[var(--color-text-secondary)] mb-2 group-focus-within/field:text-indigo-400 transition-colors">Job Designation</label>
                         <input
                             type="text"
                             value={formData.jobTitle}
@@ -99,7 +99,7 @@ const SalaryIntelligence = () => {
                     </div>
 
                     <div className="group/field">
-                        <label className="block text-[10px] font-black uppercase tracking-widest text-slate-600 mb-2 group-focus-within/field:text-indigo-400 transition-colors">Geographic Zone</label>
+                        <label className="block text-[10px] font-black uppercase tracking-widest text-[var(--color-text-secondary)] mb-2 group-focus-within/field:text-indigo-400 transition-colors">Geographic Zone</label>
                         <input
                             type="text"
                             value={formData.location}
@@ -111,7 +111,7 @@ const SalaryIntelligence = () => {
 
                     <div className="grid grid-cols-2 gap-4">
                         <div className="group/field">
-                            <label className="block text-[10px] font-black uppercase tracking-widest text-slate-600 mb-2 group-focus-within/field:text-indigo-400 transition-colors">Seniority</label>
+                            <label className="block text-[10px] font-black uppercase tracking-widest text-[var(--color-text-secondary)] mb-2 group-focus-within/field:text-indigo-400 transition-colors">Seniority</label>
                             <select
                                 value={formData.experienceLevel}
                                 onChange={(e) => setFormData({ ...formData, experienceLevel: e.target.value })}
@@ -126,7 +126,7 @@ const SalaryIntelligence = () => {
                         </div>
 
                         <div className="group/field">
-                            <label className="block text-[10px] font-black uppercase tracking-widest text-slate-600 mb-2 group-focus-within/field:text-indigo-400 transition-colors">Industry</label>
+                            <label className="block text-[10px] font-black uppercase tracking-widest text-[var(--color-text-secondary)] mb-2 group-focus-within/field:text-indigo-400 transition-colors">Industry</label>
                             <select
                                 value={formData.industry}
                                 onChange={(e) => setFormData({ ...formData, industry: e.target.value })}
@@ -155,7 +155,7 @@ const SalaryIntelligence = () => {
                     <Sparkles className="w-3 h-3 text-indigo-400" />
                     <p className="text-[9px] font-black text-indigo-400 uppercase tracking-widest">Neural Tip</p>
                 </div>
-                <p className="text-slate-500 text-[10px] leading-relaxed font-medium">
+                <p className="text-[var(--color-text-tertiary)] text-[10px] leading-relaxed font-medium">
                     The electric blue bars represent the core volatility zones. Aim for the "90th" percentile by mastering Niche Skills.
                 </p>
             </div>
@@ -191,7 +191,7 @@ const SalaryIntelligence = () => {
                                 <div className="px-6 py-2 bg-indigo-500/10 rounded-full text-indigo-400 font-black text-[10px] uppercase tracking-widest border border-indigo-500/20 shadow-inner">
                                     Mapping Fidelity: {Math.round(prediction.confidence_score)}%
                                 </div>
-                                <div className="px-6 py-2 bg-emerald-500/10 rounded-full text-emerald-400 font-black text-[10px] uppercase tracking-widest border border-emerald-500/20 flex items-center gap-2">
+                                <div className="px-6 py-2 bg-[var(--color-primary)]/10 rounded-full text-[var(--color-primary)] font-black text-[10px] uppercase tracking-widest border border-[var(--color-primary)]/20 flex items-center gap-2">
                                     <TrendingUp size={12} /> Positive Trend
                                 </div>
                             </div>
@@ -222,7 +222,7 @@ const SalaryIntelligence = () => {
                         {/* Technical Breakdown */}
                         <div className="grid grid-cols-3 border-t border-white/5 divide-x divide-white/5 -mx-10 -mb-10 bg-black/40">
                             <div className="p-8 text-center hover:bg-white/5 transition-colors group">
-                                <p className="text-[9px] font-black uppercase tracking-[0.2em] text-slate-600 mb-2 group-hover:text-slate-400 transition-colors">Floor Intel</p>
+                                <p className="text-[9px] font-black uppercase tracking-[0.2em] text-[var(--color-text-secondary)] mb-2 group-hover:text-slate-400 transition-colors">Floor Intel</p>
                                 <p className="text-2xl font-black text-slate-400">{formatCurrency(prediction.salary_range.min)}</p>
                             </div>
                             <div className="p-8 text-center bg-indigo-500/[0.02] group">
@@ -230,7 +230,7 @@ const SalaryIntelligence = () => {
                                 <p className="text-2xl font-black text-white">{formatCurrency(prediction.salary_range.median)}</p>
                             </div>
                             <div className="p-8 text-center hover:bg-white/5 transition-colors group">
-                                <p className="text-[9px] font-black uppercase tracking-[0.2em] text-slate-600 mb-2 group-hover:text-slate-400 transition-colors">Ceiling Limit</p>
+                                <p className="text-[9px] font-black uppercase tracking-[0.2em] text-[var(--color-text-secondary)] mb-2 group-hover:text-slate-400 transition-colors">Ceiling Limit</p>
                                 <p className="text-2xl font-black text-slate-400">{formatCurrency(prediction.salary_range.max)}</p>
                             </div>
                         </div>
@@ -239,7 +239,7 @@ const SalaryIntelligence = () => {
                     {/* Secondary Intel */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <EliteCard className="p-8 bg-transparent border-white/5 relative overflow-hidden">
-                            <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-500 mb-8 flex items-center gap-3">
+                            <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-[var(--color-text-tertiary)] mb-8 flex items-center gap-3">
                                 <Target className="w-4 h-4 text-indigo-500" />
                                 Strategic Offense
                             </h3>
@@ -267,7 +267,7 @@ const SalaryIntelligence = () => {
                                 <div className="px-4 py-2 bg-black/40 rounded-full text-[9px] font-black text-indigo-300 uppercase tracking-widest border border-white/5">
                                     Volatility: Low
                                 </div>
-                                <div className="px-4 py-2 bg-black/40 rounded-full text-[9px] font-black text-emerald-400 uppercase tracking-widest border border-white/5">
+                                <div className="px-4 py-2 bg-black/40 rounded-full text-[9px] font-black text-[var(--color-primary)] uppercase tracking-widest border border-white/5">
                                     Growth: {prediction.market_trends?.yoy_growth || "+4.8%"}
                                 </div>
                             </div>
@@ -284,7 +284,7 @@ const SalaryIntelligence = () => {
                     </div>
                     <div className="max-w-xs space-y-2">
                         <h3 className="text-sm font-black text-white uppercase tracking-[0.4em]">Engine Standby</h3>
-                        <p className="text-[10px] text-slate-600 font-black uppercase tracking-[0.2em] leading-relaxed">
+                        <p className="text-[10px] text-[var(--color-text-secondary)] font-black uppercase tracking-[0.2em] leading-relaxed">
                             Awaiting market parameters to initialize neural mapping
                         </p>
                     </div>
@@ -300,8 +300,8 @@ const SalaryIntelligence = () => {
             headerActions={
                 <div className="flex items-center gap-4">
                     <div className="flex items-center gap-2">
-                        <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_#10b981]" />
-                        <span className="text-[9px] font-black text-emerald-500 uppercase tracking-widest">Neural Link Active</span>
+                        <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-primary)] shadow-[0_0_8px_#10b981]" />
+                        <span className="text-[9px] font-black text-[var(--color-primary)] uppercase tracking-widest">Neural Link Active</span>
                     </div>
                 </div>
             }

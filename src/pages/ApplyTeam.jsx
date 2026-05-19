@@ -48,9 +48,9 @@ const ApplyTeam = () => {
                 <motion.div 
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    className="max-w-md w-full bg-slate-900 border border-emerald-500/30 p-10 rounded-[3rem] text-center shadow-2xl"
+                    className="max-w-md w-full bg-slate-900 border border-[var(--color-primary)]/30 p-10 rounded-[3rem] text-center shadow-2xl"
                 >
-                    <div className="w-20 h-20 bg-emerald-500/20 rounded-full flex items-center justify-center mx-auto mb-8 text-emerald-500">
+                    <div className="w-20 h-20 bg-[var(--color-primary)]/20 rounded-full flex items-center justify-center mx-auto mb-8 text-[var(--color-primary)]">
                         <CheckCircle2 size={48} />
                     </div>
                     <h2 className="text-3xl font-black text-white mb-4 uppercase italic">JazakAllah Khair</h2>
@@ -59,7 +59,7 @@ const ApplyTeam = () => {
                     </p>
                     <button 
                         onClick={() => navigate('/')}
-                        className="w-full py-4 bg-emerald-600 hover:bg-emerald-500 text-white rounded-2xl font-black uppercase tracking-widest transition-all"
+                        className="w-full py-4 bg-[var(--color-primary)] hover:bg-[var(--color-primary)] text-white rounded-2xl font-black uppercase tracking-widest transition-all"
                     >
                         Back to Home
                     </button>
@@ -69,9 +69,9 @@ const ApplyTeam = () => {
     }
 
     return (
-        <div className="min-h-screen bg-[#0A1120] text-white selection:bg-emerald-500/30">
+        <div className="min-h-screen bg-[#0A1120] text-white selection:bg-[var(--color-primary)]/30">
             <section className="relative pt-32 pb-20 px-4">
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-emerald-600/10 rounded-full blur-[128px] pointer-events-none" />
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-[var(--color-primary)]/10 rounded-full blur-[128px] pointer-events-none" />
                 
                 <div className="max-w-4xl mx-auto">
                     <div className="text-center mb-16">
@@ -79,11 +79,11 @@ const ApplyTeam = () => {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                         >
-                            <span className="inline-block px-4 py-1.5 rounded-full bg-emerald-500/10 text-emerald-400 text-[10px] font-bold uppercase tracking-widest mb-6 border border-emerald-500/20">
+                            <span className="inline-block px-4 py-1.5 rounded-full bg-[var(--color-primary)]/10 text-[var(--color-primary)] text-[10px] font-bold uppercase tracking-widest mb-6 border border-[var(--color-primary)]/20">
                                 Join the Mission
                             </span>
                             <h1 className="text-4xl md:text-5xl font-black mb-6 tracking-tight uppercase font-display italic">
-                                Curator Team <span className="text-emerald-500">Application</span>
+                                Curator Team <span className="text-[var(--color-primary)]">Application</span>
                             </h1>
                             <p className="text-slate-400 max-w-xl mx-auto">
                                 Help us curate and structure the world's most authentic knowledge for the next generation of seekers.
@@ -100,9 +100,9 @@ const ApplyTeam = () => {
                         <form onSubmit={handleSubmit} className="space-y-8">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                                 <div className="space-y-2">
-                                    <label className="text-xs font-black uppercase tracking-[0.2em] text-slate-500 ml-4">Full Name</label>
+                                    <label className="text-xs font-black uppercase tracking-[0.2em] text-[var(--color-text-tertiary)] ml-4">Full Name</label>
                                     <div className="relative">
-                                        <User className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
+                                        <User className="absolute left-5 top-1/2 -translate-y-1/2 text-[var(--color-text-tertiary)]" size={18} />
                                         <input 
                                             required
                                             type="text"
@@ -110,14 +110,14 @@ const ApplyTeam = () => {
                                             value={formData.name}
                                             onChange={handleChange}
                                             placeholder="Abdullah ibn Masud"
-                                            className="w-full bg-slate-800 border border-slate-700 rounded-2xl py-4 pl-14 pr-6 focus:border-emerald-500 outline-none transition-all font-bold placeholder:text-slate-600"
+                                            className="w-full bg-slate-800 border border-slate-700 rounded-2xl py-4 pl-14 pr-6 focus:border-[var(--color-primary)] outline-none transition-all font-bold placeholder:text-[var(--color-text-secondary)]"
                                         />
                                     </div>
                                 </div>
                                 <div className="space-y-2">
-                                    <label className="text-xs font-black uppercase tracking-[0.2em] text-slate-500 ml-4">Email Address</label>
+                                    <label className="text-xs font-black uppercase tracking-[0.2em] text-[var(--color-text-tertiary)] ml-4">Email Address</label>
                                     <div className="relative">
-                                        <Mail className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
+                                        <Mail className="absolute left-5 top-1/2 -translate-y-1/2 text-[var(--color-text-tertiary)]" size={18} />
                                         <input 
                                             required
                                             type="email"
@@ -125,16 +125,16 @@ const ApplyTeam = () => {
                                             value={formData.email}
                                             onChange={handleChange}
                                             placeholder="abdullah@example.com"
-                                            className="w-full bg-slate-800 border border-slate-700 rounded-2xl py-4 pl-14 pr-6 focus:border-emerald-500 outline-none transition-all font-bold placeholder:text-slate-600"
+                                            className="w-full bg-slate-800 border border-slate-700 rounded-2xl py-4 pl-14 pr-6 focus:border-[var(--color-primary)] outline-none transition-all font-bold placeholder:text-[var(--color-text-secondary)]"
                                         />
                                     </div>
                                 </div>
                             </div>
 
                             <div className="space-y-2">
-                                <label className="text-xs font-black uppercase tracking-[0.2em] text-slate-500 ml-4">Area of Expertise / Interest</label>
+                                <label className="text-xs font-black uppercase tracking-[0.2em] text-[var(--color-text-tertiary)] ml-4">Area of Expertise / Interest</label>
                                 <div className="relative">
-                                    <Book className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
+                                    <Book className="absolute left-5 top-1/2 -translate-y-1/2 text-[var(--color-text-tertiary)]" size={18} />
                                     <input 
                                         required
                                         type="text"
@@ -142,13 +142,13 @@ const ApplyTeam = () => {
                                         value={formData.specialization}
                                         onChange={handleChange}
                                         placeholder="e.g. Fiqh, Seerah, Modern Islamic Finance, Curriculum Design"
-                                        className="w-full bg-slate-800 border border-slate-700 rounded-2xl py-4 pl-14 pr-6 focus:border-emerald-500 outline-none transition-all font-bold placeholder:text-slate-600"
+                                        className="w-full bg-slate-800 border border-slate-700 rounded-2xl py-4 pl-14 pr-6 focus:border-[var(--color-primary)] outline-none transition-all font-bold placeholder:text-[var(--color-text-secondary)]"
                                     />
                                 </div>
                             </div>
 
                             <div className="space-y-2">
-                                <label className="text-xs font-black uppercase tracking-[0.2em] text-slate-500 ml-4">Select Experience Level</label>
+                                <label className="text-xs font-black uppercase tracking-[0.2em] text-[var(--color-text-tertiary)] ml-4">Select Experience Level</label>
                                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                                     {['Academic', 'Teacher', 'Researcher', 'Creative'].map((type) => (
                                         <button
@@ -156,8 +156,8 @@ const ApplyTeam = () => {
                                             type="button"
                                             onClick={() => setFormData({ ...formData, experience: type.toLowerCase() })}
                                             className={`py-3 rounded-xl font-bold text-xs uppercase tracking-widest border transition-all ${formData.experience === type.toLowerCase() 
-                                                ? 'bg-emerald-500 border-emerald-500 text-white' 
-                                                : 'bg-slate-800 border-slate-700 text-slate-400 hover:border-emerald-500/50'}`}
+                                                ? 'bg-[var(--color-primary)] border-[var(--color-primary)] text-white' 
+                                                : 'bg-slate-800 border-slate-700 text-slate-400 hover:border-[var(--color-primary)]/50'}`}
                                         >
                                             {type}
                                         </button>
@@ -166,9 +166,9 @@ const ApplyTeam = () => {
                             </div>
 
                             <div className="space-y-2">
-                                <label className="text-xs font-black uppercase tracking-[0.2em] text-slate-500 ml-4">Why do you want to join us?</label>
+                                <label className="text-xs font-black uppercase tracking-[0.2em] text-[var(--color-text-tertiary)] ml-4">Why do you want to join us?</label>
                                 <div className="relative">
-                                    <MessageSquare className="absolute left-5 top-5 text-slate-500" size={18} />
+                                    <MessageSquare className="absolute left-5 top-5 text-[var(--color-text-tertiary)]" size={18} />
                                     <textarea 
                                         required
                                         name="motivation"
@@ -176,7 +176,7 @@ const ApplyTeam = () => {
                                         onChange={handleChange}
                                         rows="4"
                                         placeholder="Tell us about your background and how you want to contribute to our methodology..."
-                                        className="w-full bg-slate-800 border border-slate-700 rounded-2xl py-4 pl-14 pr-6 focus:border-emerald-500 outline-none transition-all font-bold placeholder:text-slate-600 resize-none"
+                                        className="w-full bg-slate-800 border border-slate-700 rounded-2xl py-4 pl-14 pr-6 focus:border-[var(--color-primary)] outline-none transition-all font-bold placeholder:text-[var(--color-text-secondary)] resize-none"
                                     ></textarea>
                                 </div>
                             </div>
@@ -185,7 +185,7 @@ const ApplyTeam = () => {
                                 <button 
                                     disabled={isSubmitting}
                                     type="submit"
-                                    className="w-full py-5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-2xl font-black uppercase tracking-[0.3em] transition-all flex items-center justify-center gap-3 shadow-xl shadow-emerald-600/20 disabled:opacity-50"
+                                    className="w-full py-5 bg-[var(--color-primary)] hover:bg-[var(--color-primary)] text-white rounded-2xl font-black uppercase tracking-[0.3em] transition-all flex items-center justify-center gap-3 shadow-xl shadow-[var(--color-primary)]/20 disabled:opacity-50"
                                 >
                                     {isSubmitting ? <span className="animate-pulse">Processing...</span> : (
                                         <>
@@ -194,7 +194,7 @@ const ApplyTeam = () => {
                                         </>
                                     )}
                                 </button>
-                                <p className="text-center text-[10px] text-slate-500 mt-6 uppercase font-bold tracking-widest">
+                                <p className="text-center text-[10px] text-[var(--color-text-tertiary)] mt-6 uppercase font-bold tracking-widest">
                                     By submitting, you agree to our Terms of Curation and Peer Review.
                                 </p>
                             </div>

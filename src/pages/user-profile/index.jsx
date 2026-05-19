@@ -354,10 +354,10 @@ const UserProfile = () => {
             <div className="mt-12 grid grid-cols-1 lg:grid-cols-12 gap-12">
               {/* Sidebar Navigation */}
               <div className="lg:col-span-4">
-                <EliteCard className="p-10 sticky top-24 border-border/50 dark:border-emerald-500/10 shadow-3xl bg-surface-elevated/50 backdrop-blur-xl rounded-[40px]">
+                <EliteCard className="p-10 sticky top-24 border-border/50 dark:border-[var(--color-primary)]/10 shadow-3xl bg-surface-elevated/50 backdrop-blur-xl rounded-[40px]">
                   <div className="relative mb-8 flex flex-col items-center">
                     <div className="relative group">
-                      <div className="w-32 h-32 rounded-3xl overflow-hidden border border-white/5 p-1 bg-bg group-hover:border-emerald-500/30 transition-all duration-700 shadow-2xl relative z-10">
+                      <div className="w-32 h-32 rounded-3xl overflow-hidden border border-white/5 p-1 bg-bg group-hover:border-[var(--color-primary)]/30 transition-all duration-700 shadow-2xl relative z-10">
                         <Image
                           src={getAvatarUrl(user, profile)}
                           alt={profileData.name || 'User'}
@@ -366,18 +366,18 @@ const UserProfile = () => {
                         />
                       </div>
                       
-                      <div className="absolute -top-4 -left-4 w-20 h-20 bg-emerald-500/5 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                      <div className="absolute -top-4 -left-4 w-20 h-20 bg-[var(--color-primary)]/5 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
 
                       <div className="absolute -bottom-2 -right-2 flex gap-3 z-50">
                         <button 
                           onClick={() => setShowAvatarSelector(true)}
-                          className="p-2.5 bg-emerald-600 text-white rounded-xl shadow-xl shadow-emerald-600/20 hover:bg-emerald-700 transition-all active:scale-95 flex items-center justify-center"
+                          className="p-2.5 bg-[var(--color-primary)] text-white rounded-xl shadow-xl shadow-[var(--color-primary)]/20 hover:bg-[var(--color-primary-hover)] transition-all active:scale-95 flex items-center justify-center"
                           title="Select Scholarly Avatar"
                         >
                           <Icon name="UserCircle" size={16} />
                         </button>
                         <label 
-                          className="p-2.5 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-xl text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-700 cursor-pointer transition-all active:scale-95 flex items-center justify-center" 
+                          className="p-2.5 bg-white dark:bg-slate-800 rounded-xl border border-[var(--color-border-primary)] dark:border-slate-700 shadow-xl text-[var(--color-text-tertiary)] hover:bg-white dark:hover:bg-slate-700 cursor-pointer transition-all active:scale-95 flex items-center justify-center" 
                           title="Upload Custom Identity"
                         >
                           <Icon name="Camera" size={16} />
@@ -395,7 +395,7 @@ const UserProfile = () => {
                       </p>
                       
                       <div className="flex justify-center gap-2 mt-4">
-                        <div className="px-3 py-1 bg-white/5 border border-white/5 text-slate-500 text-[8px] font-black uppercase tracking-widest rounded-lg">
+                        <div className="px-3 py-1 bg-white/5 border border-white/5 text-[var(--color-text-tertiary)] text-[8px] font-black uppercase tracking-widest rounded-lg">
                             {scholarLevel}
                         </div>
                       </div>
@@ -413,11 +413,11 @@ const UserProfile = () => {
                         key={tab.id}
                         onClick={() => setActiveTab(tab.id)}
                         className={`w-full flex items-center gap-5 px-6 py-4 rounded-[20px] text-[10px] font-black uppercase tracking-widest transition-all duration-500 group ${activeTab === tab.id
-                          ? 'bg-emerald-600 text-white shadow-xl shadow-emerald-500/20 translate-x-1'
-                          : 'text-text-muted hover:bg-emerald-500/5 hover:text-emerald-500'
+                          ? 'bg-[var(--color-primary)] text-white shadow-xl shadow-[var(--color-primary)]/20 translate-x-1'
+                          : 'text-text-muted hover:bg-[var(--color-primary)]/5 hover:text-[var(--color-primary)]'
                           }`}
                       >
-                        <div className={`p-2 rounded-xl transition-colors ${activeTab === tab.id ? 'bg-white/20' : 'bg-surface group-hover:bg-emerald-500/10'}`}>
+                        <div className={`p-2 rounded-xl transition-colors ${activeTab === tab.id ? 'bg-white/20' : 'bg-surface group-hover:bg-[var(--color-primary)]/10'}`}>
                             <Icon name={tab.icon} size={16} />
                         </div>
                         {tab.label}
@@ -430,28 +430,28 @@ const UserProfile = () => {
               {/* Main Content Area */}
               <div className="lg:col-span-8">
                 {activeTab === 'profile' && (
-                  <EliteCard className="p-10 border-border dark:border-emerald-500/10 shadow-3xl bg-surface-elevated/50 backdrop-blur-xl rounded-[40px]">
+                  <EliteCard className="p-10 border-border dark:border-[var(--color-primary)]/10 shadow-3xl bg-surface-elevated/50 backdrop-blur-xl rounded-[40px]">
                     <div className="flex items-center gap-5 mb-12 pb-8 border-b border-border/50">
-                      <div className="w-1.5 h-10 bg-emerald-600 rounded-full shadow-glow-emerald" />
+                      <div className="w-1.5 h-10 bg-[var(--color-primary)] rounded-full shadow-glow-emerald" />
                       <h2 className="text-2xl font-black text-white uppercase tracking-tight">Identity Registry</h2>
                     </div>
 
                     {/* Academic Snapshot */}
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
-                        <div className="p-6 bg-white/[0.01] border border-white/5 rounded-3xl group hover:border-emerald-500/20 transition-all">
-                            <p className="text-[9px] font-black text-slate-500 uppercase tracking-widest mb-1.5">Scholar Level</p>
+                        <div className="p-6 bg-white/[0.01] border border-white/5 rounded-3xl group hover:border-[var(--color-primary)]/20 transition-all">
+                            <p className="text-[9px] font-black text-[var(--color-text-tertiary)] uppercase tracking-widest mb-1.5">Scholar Level</p>
                             <h4 className="text-sm font-black text-white uppercase tracking-tight">{scholarLevel}</h4>
                         </div>
-                        <div className="p-6 bg-white/[0.01] border border-white/5 rounded-3xl group hover:border-emerald-500/20 transition-all">
-                            <p className="text-[9px] font-black text-slate-500 uppercase tracking-widest mb-1.5">Certificates</p>
+                        <div className="p-6 bg-white/[0.01] border border-white/5 rounded-3xl group hover:border-[var(--color-primary)]/20 transition-all">
+                            <p className="text-[9px] font-black text-[var(--color-text-tertiary)] uppercase tracking-widest mb-1.5">Certificates</p>
                             <h4 className="text-xl font-black text-white">{studentStats?.certificates || 0}</h4>
                         </div>
-                        <div className="p-6 bg-white/[0.01] border border-white/5 rounded-3xl group hover:border-emerald-500/20 transition-all">
-                            <p className="text-[9px] font-black text-slate-500 uppercase tracking-widest mb-1.5">Study Streak</p>
+                        <div className="p-6 bg-white/[0.01] border border-white/5 rounded-3xl group hover:border-[var(--color-primary)]/20 transition-all">
+                            <p className="text-[9px] font-black text-[var(--color-text-tertiary)] uppercase tracking-widest mb-1.5">Study Streak</p>
                             <h4 className="text-xl font-black text-white">{studentStats?.streak || 0}d</h4>
                         </div>
-                        <div className="p-6 bg-white/[0.01] border border-white/5 rounded-3xl group hover:border-emerald-500/20 transition-all">
-                            <p className="text-[9px] font-black text-slate-500 uppercase tracking-widest mb-1.5">Avg Score</p>
+                        <div className="p-6 bg-white/[0.01] border border-white/5 rounded-3xl group hover:border-[var(--color-primary)]/20 transition-all">
+                            <p className="text-[9px] font-black text-[var(--color-text-tertiary)] uppercase tracking-widest mb-1.5">Avg Score</p>
                             <h4 className="text-xl font-black text-white">{studentStats?.avgScore || 0}%</h4>
                         </div>
                     </div>
@@ -463,7 +463,7 @@ const UserProfile = () => {
                             type="text"
                             value={profileData.name}
                             onChange={(e) => setProfileData({ ...profileData, name: e.target.value })}
-                            className="w-full px-5 py-4 bg-white dark:bg-slate-900/50 border border-slate-100 dark:border-slate-800/50 rounded-2xl text-slate-900 dark:text-white text-sm font-medium tracking-tight focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500/50 transition-all outline-none placeholder:text-slate-300 dark:placeholder:text-white/10"
+                            className="w-full px-5 py-4 bg-white dark:bg-slate-900/50 border border-slate-100 dark:border-slate-800/50 rounded-2xl text-[var(--color-text-primary)] dark:text-white text-sm font-medium tracking-tight focus:ring-2 focus:ring-[var(--color-primary)]/20 focus:border-[var(--color-primary)]/50 transition-all outline-none placeholder:text-slate-300 dark:placeholder:text-white/10"
                             required
                           />
                         </div>
@@ -473,7 +473,7 @@ const UserProfile = () => {
                             type="email"
                             value={profileData.email}
                             disabled
-                            className="w-full px-5 py-4 bg-slate-50 dark:bg-slate-900/30 border border-slate-100 dark:border-slate-800/30 rounded-2xl text-slate-400 dark:text-slate-500 text-sm font-medium tracking-tight cursor-not-allowed outline-none"
+                            className="w-full px-5 py-4 bg-white dark:bg-slate-900/30 border border-slate-100 dark:border-slate-800/30 rounded-2xl text-slate-400 dark:text-[var(--color-text-tertiary)] text-sm font-medium tracking-tight cursor-not-allowed outline-none"
                           />
                         </div>
                         <div className="space-y-3">
@@ -482,7 +482,7 @@ const UserProfile = () => {
                             type="tel"
                             value={profileData.phone}
                             onChange={(e) => setProfileData({ ...profileData, phone: e.target.value })}
-                            className="w-full px-5 py-4 bg-white dark:bg-slate-900/50 border border-slate-100 dark:border-slate-800/50 rounded-2xl text-slate-900 dark:text-white text-sm font-medium tracking-tight focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500/50 transition-all outline-none"
+                            className="w-full px-5 py-4 bg-white dark:bg-slate-900/50 border border-slate-100 dark:border-slate-800/50 rounded-2xl text-[var(--color-text-primary)] dark:text-white text-sm font-medium tracking-tight focus:ring-2 focus:ring-[var(--color-primary)]/20 focus:border-[var(--color-primary)]/50 transition-all outline-none"
                             placeholder="+0 (000) 000-0000"
                           />
                         </div>
@@ -492,7 +492,7 @@ const UserProfile = () => {
                             type="text"
                             value={profileData.location}
                             onChange={(e) => setProfileData({ ...profileData, location: e.target.value })}
-                            className="w-full px-5 py-4 bg-white dark:bg-slate-900/50 border border-slate-100 dark:border-slate-800/50 rounded-2xl text-slate-900 dark:text-white text-sm font-medium tracking-tight focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500/50 transition-all outline-none"
+                            className="w-full px-5 py-4 bg-white dark:bg-slate-900/50 border border-slate-100 dark:border-slate-800/50 rounded-2xl text-[var(--color-text-primary)] dark:text-white text-sm font-medium tracking-tight focus:ring-2 focus:ring-[var(--color-primary)]/20 focus:border-[var(--color-primary)]/50 transition-all outline-none"
                             placeholder="City, Nation"
                           />
                         </div>
@@ -501,7 +501,7 @@ const UserProfile = () => {
                           <textarea
                             value={profileData.bio}
                             onChange={(e) => setProfileData({ ...profileData, bio: e.target.value })}
-                            className="w-full px-5 py-5 bg-white dark:bg-slate-900/50 border border-slate-100 dark:border-slate-800/50 rounded-2xl text-slate-900 dark:text-white text-sm font-medium tracking-tight focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500/50 transition-all outline-none min-h-[160px] resize-none"
+                            className="w-full px-5 py-5 bg-white dark:bg-slate-900/50 border border-slate-100 dark:border-slate-800/50 rounded-2xl text-[var(--color-text-primary)] dark:text-white text-sm font-medium tracking-tight focus:ring-2 focus:ring-[var(--color-primary)]/20 focus:border-[var(--color-primary)]/50 transition-all outline-none min-h-[160px] resize-none"
                             placeholder="Detail your academic expertise and scholar trajectory..."
                           />
                         </div>
@@ -509,7 +509,7 @@ const UserProfile = () => {
                           <button
                             type="submit"
                             disabled={isLoading}
-                            className="px-10 py-4 bg-emerald-600 text-white rounded-[20px] hover:bg-emerald-500 active:scale-95 transition-all font-black text-[10px] uppercase tracking-[0.2em] shadow-2xl shadow-emerald-600/30 disabled:opacity-50 flex items-center gap-3"
+                            className="px-10 py-4 bg-[var(--color-primary)] text-white rounded-[20px] hover:bg-[var(--color-primary)] active:scale-95 transition-all font-black text-[10px] uppercase tracking-[0.2em] shadow-2xl shadow-emerald-600/30 disabled:opacity-50 flex items-center gap-3"
                           >
                             {isLoading ? (
                               <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -525,7 +525,7 @@ const UserProfile = () => {
                 )}
 
                 {activeTab === 'settings' && (
-                  <EliteCard className="p-10 border-border dark:border-emerald-500/10 shadow-3xl bg-surface-elevated/50 backdrop-blur-xl rounded-[40px]">
+                  <EliteCard className="p-10 border-border dark:border-[var(--color-primary)]/10 shadow-3xl bg-surface-elevated/50 backdrop-blur-xl rounded-[40px]">
                     <div className="flex items-center gap-5 mb-12 pb-8 border-b border-border/50">
                       <div className="w-1.5 h-10 bg-blue-600 rounded-full shadow-glow-blue" />
                       <h2 className="text-2xl font-black text-white uppercase tracking-tight">Environmental Control</h2>
@@ -565,7 +565,7 @@ const UserProfile = () => {
                           <select
                             value={settings.theme}
                             onChange={(e) => setSettings({ ...settings, theme: e.target.value })}
-                            className="w-full px-6 py-4 bg-surface border border-border/50 rounded-[20px] text-white font-bold tracking-tight focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-500/50 transition-all outline-none appearance-none"
+                            className="w-full px-6 py-4 bg-surface border border-border/50 rounded-[20px] text-white font-bold tracking-tight focus:ring-4 focus:ring-[var(--color-primary)]/10 focus:border-[var(--color-primary)]/50 transition-all outline-none appearance-none"
                           >
                             <option value="dark" className="bg-bg-elevated">Emerald Night (Premium)</option>
                             <option value="light" className="bg-bg-elevated">Academic Light</option>
@@ -590,7 +590,7 @@ const UserProfile = () => {
                                     onChange={(e) => setSettings({ ...settings, [notif.key]: e.target.checked })}
                                     className="sr-only peer"
                                   />
-                                  <div className="w-12 h-6 bg-border/50 rounded-full peer peer-checked:bg-emerald-600 transition-all after:content-[''] after:absolute after:top-1 after:left-1 after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:after:translate-x-6 shadow-inner"></div>
+                                  <div className="w-12 h-6 bg-border/50 rounded-full peer peer-checked:bg-[var(--color-primary)] transition-all after:content-[''] after:absolute after:top-1 after:left-1 after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:after:translate-x-6 shadow-inner"></div>
                                 </div>
                               </label>
                             ))}
@@ -603,7 +603,7 @@ const UserProfile = () => {
                       <button
                         onClick={handleSettingsUpdate}
                         disabled={isLoading}
-                        className="px-10 py-4 bg-emerald-600 text-white rounded-[20px] hover:bg-emerald-500 active:scale-95 transition-all font-black text-[10px] uppercase tracking-[0.2em] shadow-xl shadow-emerald-600/20"
+                        className="px-10 py-4 bg-[var(--color-primary)] text-white rounded-[20px] hover:bg-[var(--color-primary)] active:scale-95 transition-all font-black text-[10px] uppercase tracking-[0.2em] shadow-xl shadow-[var(--color-primary)]/20"
                       >
                         Synchronize Environment
                       </button>
@@ -612,7 +612,7 @@ const UserProfile = () => {
                 )}
 
                 {activeTab === 'security' && (
-                  <EliteCard className="p-10 border-border dark:border-emerald-500/10 shadow-3xl bg-surface-elevated/50 backdrop-blur-xl rounded-[40px]">
+                  <EliteCard className="p-10 border-border dark:border-[var(--color-primary)]/10 shadow-3xl bg-surface-elevated/50 backdrop-blur-xl rounded-[40px]">
                     <div className="flex items-center gap-5 mb-12 pb-8 border-b border-border/50">
                       <div className="w-1.5 h-10 bg-amber-600 rounded-full shadow-glow-amber" />
                       <h2 className="text-2xl font-black text-white uppercase tracking-tight">Security Protocols</h2>
@@ -620,9 +620,9 @@ const UserProfile = () => {
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                       <div className="space-y-8">
-                        <div className="bg-surface/30 p-8 rounded-[32px] border border-border/50 group hover:border-emerald-500/30 transition-all shadow-xl">
+                        <div className="bg-surface/30 p-8 rounded-[32px] border border-border/50 group hover:border-[var(--color-primary)]/30 transition-all shadow-xl">
                           <div className="flex items-start gap-4 mb-8">
-                            <div className="p-3 bg-emerald-500/10 rounded-2xl text-emerald-500">
+                            <div className="p-3 bg-[var(--color-primary)]/10 rounded-2xl text-[var(--color-primary)]">
                               <Icon name="Key" size={24} />
                             </div>
                             <div>
@@ -648,12 +648,12 @@ const UserProfile = () => {
                               <p className="text-[9px] text-text-muted mt-1 uppercase tracking-widest font-black opacity-60">Verified Gateways</p>
                             </div>
                           </div>
-                          <div className="flex items-center justify-between p-5 bg-emerald-500/5 border border-emerald-500/10 rounded-2xl">
-                            <span className="text-[9px] font-black text-emerald-500 uppercase tracking-widest flex items-center gap-2">
-                              <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse shadow-glow-emerald" />
+                          <div className="flex items-center justify-between p-5 bg-[var(--color-primary)]/5 border border-[var(--color-primary)]/10 rounded-2xl">
+                            <span className="text-[9px] font-black text-[var(--color-primary)] uppercase tracking-widest flex items-center gap-2">
+                              <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-primary)] animate-pulse shadow-glow-emerald" />
                               Primary Scholarly Identity
                             </span>
-                            <Icon name="Check" size={14} className="text-emerald-500 stroke-[3px]" />
+                            <Icon name="Check" size={14} className="text-[var(--color-primary)] stroke-[3px]" />
                           </div>
                         </div>
                       </div>
@@ -687,7 +687,7 @@ const UserProfile = () => {
                 )}
 
                 {activeTab === 'privacy' && (
-                  <EliteCard className="p-10 border-border dark:border-emerald-500/10 shadow-3xl bg-surface-elevated/50 backdrop-blur-xl rounded-[40px]">
+                  <EliteCard className="p-10 border-border dark:border-[var(--color-primary)]/10 shadow-3xl bg-surface-elevated/50 backdrop-blur-xl rounded-[40px]">
                     <div className="flex items-center gap-5 mb-12 pb-8 border-b border-border/50">
                       <div className="w-1.5 h-10 bg-purple-600 rounded-full shadow-glow-purple" />
                       <h2 className="text-2xl font-black text-white uppercase tracking-tight">Data Governance</h2>
@@ -752,7 +752,7 @@ const UserProfile = () => {
           isOpen={showChangePasswordModal}
           onClose={() => setShowChangePasswordModal(false)}
           title="Security Update: Password"
-          className="bg-surface-elevated/90 backdrop-blur-2xl border-emerald-500/20"
+          className="bg-surface-elevated/90 backdrop-blur-2xl border-[var(--color-primary)]/20"
         >
           <form onSubmit={handleChangePassword} className="space-y-6 p-2">
             <div className="space-y-2">
@@ -763,7 +763,7 @@ const UserProfile = () => {
                 type="password"
                 value={passwordData.currentPassword}
                 onChange={(e) => setPasswordData({ ...passwordData, currentPassword: e.target.value })}
-                className="w-full px-6 py-4 bg-surface border border-border/50 rounded-[20px] text-white font-bold tracking-tight focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-500/50 transition-all outline-none"
+                className="w-full px-6 py-4 bg-surface border border-border/50 rounded-[20px] text-white font-bold tracking-tight focus:ring-4 focus:ring-[var(--color-primary)]/10 focus:border-[var(--color-primary)]/50 transition-all outline-none"
                 required
               />
             </div>
@@ -775,7 +775,7 @@ const UserProfile = () => {
                 type="password"
                 value={passwordData.newPassword}
                 onChange={(e) => setPasswordData({ ...passwordData, newPassword: e.target.value })}
-                className="w-full px-6 py-4 bg-surface border border-border/50 rounded-[20px] text-white font-bold tracking-tight focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-500/50 transition-all outline-none"
+                className="w-full px-6 py-4 bg-surface border border-border/50 rounded-[20px] text-white font-bold tracking-tight focus:ring-4 focus:ring-[var(--color-primary)]/10 focus:border-[var(--color-primary)]/50 transition-all outline-none"
                 required
                 minLength={8}
               />
@@ -788,7 +788,7 @@ const UserProfile = () => {
                 type="password"
                 value={passwordData.confirmPassword}
                 onChange={(e) => setPasswordData({ ...passwordData, confirmPassword: e.target.value })}
-                className="w-full px-6 py-4 bg-surface border border-border/50 rounded-[20px] text-white font-bold tracking-tight focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-500/50 transition-all outline-none"
+                className="w-full px-6 py-4 bg-surface border border-border/50 rounded-[20px] text-white font-bold tracking-tight focus:ring-4 focus:ring-[var(--color-primary)]/10 focus:border-[var(--color-primary)]/50 transition-all outline-none"
                 required
                 minLength={8}
               />
@@ -797,7 +797,7 @@ const UserProfile = () => {
               <button type="button" onClick={() => setShowChangePasswordModal(false)} className="px-6 py-3 text-[10px] font-black uppercase tracking-widest text-text-muted hover:text-white transition-colors">
                 Abort
               </button>
-              <button type="submit" disabled={isLoading} className="px-8 py-3 bg-emerald-600 text-white rounded-xl font-black uppercase tracking-widest text-[10px] shadow-lg shadow-emerald-600/20 active:scale-95">
+              <button type="submit" disabled={isLoading} className="px-8 py-3 bg-[var(--color-primary)] text-white rounded-xl font-black uppercase tracking-widest text-[10px] shadow-lg shadow-[var(--color-primary)]/20 active:scale-95">
                 {isLoading ? 'Encrypting...' : 'Update Key'}
               </button>
             </div>
@@ -835,7 +835,7 @@ const UserProfile = () => {
             onClose={() => setShowAvatarSelector(false)}
             title="Registry: Avatar Selection"
             size="lg"
-            className="bg-surface-elevated/90 backdrop-blur-2xl border-emerald-500/20"
+            className="bg-surface-elevated/90 backdrop-blur-2xl border-[var(--color-primary)]/20"
           >
             <div className="space-y-6 p-2">
               <p className="text-[10px] font-black text-text-muted uppercase tracking-widest ml-1 opacity-60">
@@ -846,14 +846,14 @@ const UserProfile = () => {
                   <button
                     key={avatar.id}
                     onClick={() => handleSelectDefaultAvatar(avatar.url)}
-                    className="relative group rounded-[24px] overflow-hidden border-2 border-transparent hover:border-emerald-500/50 transition-all aspect-square p-1 bg-surface shadow-xl"
+                    className="relative group rounded-[24px] overflow-hidden border-2 border-transparent hover:border-[var(--color-primary)]/50 transition-all aspect-square p-1 bg-surface shadow-xl"
                   >
                     <img
                       src={avatar.url}
                       alt={avatar.name}
                       className="w-full h-full object-cover rounded-[18px]"
                     />
-                    <div className="absolute inset-0 bg-emerald-600/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <div className="absolute inset-0 bg-[var(--color-primary)]/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                       <Icon name="Check" size={24} className="text-white" />
                     </div>
                   </button>

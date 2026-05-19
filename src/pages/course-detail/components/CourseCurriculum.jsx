@@ -147,10 +147,10 @@ const CourseCurriculum = ({ courseId, courseTitle }) => {
 
   if (modules.length === 0) {
     return (
-      <div className="py-8 bg-slate-50 dark:bg-slate-900/50 rounded-md border border-dashed border-slate-200 dark:border-slate-800 flex flex-col items-center justify-center text-center px-4">
+      <div className="py-8 bg-white dark:bg-slate-900/50 rounded-md border border-dashed border-[var(--color-border-primary)] dark:border-slate-800 flex flex-col items-center justify-center text-center px-4">
           <BookOpen className="w-9 h-9 text-slate-300 dark:text-slate-700 mb-3" />
-          <h3 className="text-sm font-semibold text-slate-900 dark:text-white mb-1">Curriculum coming soon</h3>
-          <p className="text-xs text-slate-500 dark:text-slate-400 max-w-xs">The modules and lessons for this course are currently being finalized.</p>
+          <h3 className="text-sm font-semibold text-[var(--color-text-primary)] dark:text-white mb-1">Curriculum coming soon</h3>
+          <p className="text-xs text-[var(--color-text-tertiary)] dark:text-slate-400 max-w-xs">The modules and lessons for this course are currently being finalized.</p>
         </div>
     );
   }
@@ -164,8 +164,8 @@ const CourseCurriculum = ({ courseId, courseTitle }) => {
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h2 className="text-lg font-semibold text-slate-900 dark:text-white tracking-tight">Course Curriculum</h2>
-          <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
+          <h2 className="text-lg font-semibold text-[var(--color-text-primary)] dark:text-white tracking-tight">Course Curriculum</h2>
+          <p className="text-sm text-[var(--color-text-tertiary)] dark:text-slate-400 mt-1">
             {modules.length} module{modules.length !== 1 ? 's' : ''} · {totalLessons} lesson{totalLessons !== 1 ? 's' : ''}
             {totalDuration > 0 && ` · ${Math.round(totalDuration / 60)}h ${totalDuration % 60}m`}
           </p>
@@ -190,15 +190,15 @@ const CourseCurriculum = ({ courseId, courseTitle }) => {
             exit={{ opacity: 0, height: 0 }}
             className="mb-6 overflow-hidden"
           >
-            <div className="bg-slate-50 dark:bg-slate-900 rounded-md border border-slate-100 dark:border-slate-800 p-4">
+            <div className="bg-white dark:bg-slate-900 rounded-md border border-slate-100 dark:border-slate-800 p-4">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
                   <div className="w-8 h-8 rounded-sm bg-violet-600 flex items-center justify-center">
                     <Sparkles size={14} className="text-white" />
                   </div>
                   <div>
-                    <h4 className="text-sm font-bold text-slate-900 dark:text-white">AI Course Advisor</h4>
-                    <p className="text-[10px] text-slate-500 dark:text-slate-400">Ask about topics, difficulty, or what you'll learn</p>
+                    <h4 className="text-sm font-bold text-[var(--color-text-primary)] dark:text-white">AI Course Advisor</h4>
+                    <p className="text-[10px] text-[var(--color-text-tertiary)] dark:text-slate-400">Ask about topics, difficulty, or what you'll learn</p>
                   </div>
                 </div>
                 <button onClick={() => setAiOpen(false)} className="p-1.5 rounded-lg hover:bg-violet-100 dark:hover:bg-violet-900/30 transition-colors">
@@ -238,7 +238,7 @@ const CourseCurriculum = ({ courseId, courseTitle }) => {
                   onChange={e => setAiQuery(e.target.value)}
                   onKeyDown={e => e.key === 'Enter' && handleAskAI()}
                   placeholder="e.g. What will I learn in Module 2?"
-                  className="flex-1 px-4 py-2.5 rounded-xl bg-white dark:bg-slate-800 border border-violet-200 dark:border-violet-800/50 text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-violet-500/30"
+                  className="flex-1 px-4 py-2.5 rounded-xl bg-white dark:bg-slate-800 border border-violet-200 dark:border-violet-800/50 text-sm text-[var(--color-text-primary)] dark:text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-violet-500/30"
                   disabled={aiLoading}
                 />
                 <button
@@ -272,21 +272,21 @@ const CourseCurriculum = ({ courseId, courseTitle }) => {
                 className="w-full flex items-center justify-between p-4 text-left group"
               >
                 <div className="flex items-center gap-4">
-                  <div className="w-8 h-8 rounded-sm bg-emerald-50 flex items-center justify-center text-emerald-600 text-xs font-semibold flex-shrink-0">
+                  <div className="w-8 h-8 rounded-sm bg-[var(--color-primary-light)] flex items-center justify-center text-[var(--color-primary)] text-xs font-semibold flex-shrink-0">
                     {mIndex + 1}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h3 className="font-bold text-slate-900 dark:text-white text-sm group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors break-words">
+                    <h3 className="font-bold text-[var(--color-text-primary)] dark:text-white text-sm group-hover:text-[var(--color-primary)] dark:group-hover:text-[var(--color-primary)] transition-colors break-words">
                       {mod.title}
                     </h3>
                     {mod.description && (
-                      <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5 line-clamp-1">{mod.description}</p>
+                      <p className="text-xs text-[var(--color-text-tertiary)] dark:text-slate-400 mt-0.5 line-clamp-1">{mod.description}</p>
                     )}
                   </div>
                 </div>
 
                 <div className="flex items-center gap-4 flex-shrink-0">
-                  <span className="text-xs text-slate-400 dark:text-slate-500 font-medium hidden sm:block">
+                  <span className="text-xs text-slate-400 dark:text-[var(--color-text-tertiary)] font-medium hidden sm:block">
                     {lessonCount} lesson{lessonCount !== 1 ? 's' : ''}
                     {modDuration > 0 && ` · ${modDuration}m`}
                   </span>
@@ -313,11 +313,11 @@ const CourseCurriculum = ({ courseId, courseTitle }) => {
                         return (
                           <div
                             key={lesson.id}
-                            className="flex items-center gap-4 px-5 py-3.5 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors group/lesson"
+                            className="flex items-center gap-4 px-5 py-3.5 hover:bg-white dark:hover:bg-slate-800/50 transition-colors group/lesson"
                           >
                             {/* Icon */}
                             <div className="w-7 h-7 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center flex-shrink-0">
-                              <LessonIcon size={13} className="text-slate-400 dark:text-slate-500" />
+                              <LessonIcon size={13} className="text-slate-400 dark:text-[var(--color-text-tertiary)]" />
                             </div>
 
                             {/* Title & Description */}
@@ -327,25 +327,25 @@ const CourseCurriculum = ({ courseId, courseTitle }) => {
                                   {lesson.title}
                                 </span>
                                 {lesson.is_free_preview && (
-                                  <span className="px-1.5 py-0.5 bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-[9px] font-bold uppercase tracking-wider rounded-md border border-emerald-100 dark:border-emerald-500/20 flex items-center gap-1 flex-shrink-0">
+                                  <span className="px-1.5 py-0.5 bg-[var(--color-primary-light)] dark:bg-[var(--color-primary)]/10 text-[var(--color-primary)] dark:text-[var(--color-primary)] text-[9px] font-bold uppercase tracking-wider rounded-md border border-[var(--color-border-secondary)] dark:border-[var(--color-primary)]/20 flex items-center gap-1 flex-shrink-0">
                                     <Eye size={9} /> Preview
                                   </span>
                                 )}
                                 {completedLessonIds.includes(lesson.id) && (
-                                  <div className="flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400 font-bold text-[10px] uppercase tracking-widest ml-auto px-2 py-1 rounded-full bg-emerald-50 dark:bg-emerald-500/10">
+                                  <div className="flex items-center gap-1.5 text-[var(--color-primary)] dark:text-[var(--color-primary)] font-bold text-[10px] uppercase tracking-widest ml-auto px-2 py-1 rounded-full bg-[var(--color-primary-light)] dark:bg-[var(--color-primary)]/10">
                                     <CheckCircle size={10} className="stroke-[3px]" />
                                     Done
                                   </div>
                                 )}
                               </div>
                               {lesson.description && (
-                                <p className="text-xs text-slate-400 dark:text-slate-500 mt-0.5 line-clamp-1">{lesson.description}</p>
+                                <p className="text-xs text-slate-400 dark:text-[var(--color-text-tertiary)] mt-0.5 line-clamp-1">{lesson.description}</p>
                               )}
                             </div>
 
                             {/* Duration */}
                             {lesson.duration_minutes > 0 && (
-                              <span className="text-xs text-slate-400 dark:text-slate-500 flex items-center gap-1 flex-shrink-0">
+                              <span className="text-xs text-slate-400 dark:text-[var(--color-text-tertiary)] flex items-center gap-1 flex-shrink-0">
                                 <Clock size={11} /> {lesson.duration_minutes}m
                               </span>
                             )}

@@ -45,7 +45,7 @@ const Pricing = () => {
       id: 'professional',
       name: 'Intensive',
       icon: Zap,
-      gradient: 'from-emerald-500 to-emerald-600',
+      gradient: 'from-[var(--color-primary)] to-[var(--color-primary)]',
       price: 19.99,
       priceAnnual: 199.99,
       description: 'Deep dive into specialized subjects',
@@ -66,7 +66,7 @@ const Pricing = () => {
       id: 'premium',
       name: 'Elite',
       icon: Sparkles,
-      gradient: 'from-emerald-600 to-emerald-700',
+      gradient: 'from-[var(--color-primary)] to-emerald-700',
       price: 39.99,
       priceAnnual: 399.99,
       description: 'The complete academic experience',
@@ -148,7 +148,7 @@ const Pricing = () => {
         <title>Academic Plans - Hope Dawah Institute</title>
         <meta name="description" content="Choose the perfect study plan for your Islamic learning journey" />
       </Helmet>
-      <div className="min-h-screen bg-slate-50 dark:bg-[#0A1120] pt-20">
+      <div className="min-h-screen bg-white dark:bg-[var(--color-bg-dark)] pt-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <Breadcrumb customItems={breadcrumbItems} />
 
@@ -164,16 +164,16 @@ const Pricing = () => {
               transition={{ delay: 0.2 }}
               className="inline-block mb-3"
             >
-              <span className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-500/10 text-emerald-600 rounded-full text-sm font-medium">
+              <span className="inline-flex items-center gap-2 px-4 py-2 bg-[var(--color-primary)]/10 text-[var(--color-primary)] rounded-full text-sm font-medium">
                 <Star className="w-4 h-4" />
                 Trusted by 10,000+ students worldwide
               </span>
             </motion.div>
-            <h1 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-4">
+            <h1 className="text-4xl md:text-5xl font-bold text-[var(--color-text-primary)] dark:text-white mb-4">
               Flexible Study Plans
             </h1>
-            <p className="text-lg md:text-xl text-slate-600 dark:text-slate-400 mb-6 max-w-2xl mx-auto">
-              Choose the depth of study that fits your schedule. All plans support our <span className="font-semibold text-emerald-600">Global Scholarship Fund</span>.
+            <p className="text-lg md:text-xl text-[var(--color-text-secondary)] dark:text-slate-400 mb-6 max-w-2xl mx-auto">
+              Choose the depth of study that fits your schedule. All plans support our <span className="font-semibold text-[var(--color-primary)]">Global Scholarship Fund</span>.
             </p>
 
             {/* Enhanced Billing Toggle */}
@@ -183,12 +183,12 @@ const Pricing = () => {
               transition={{ delay: 0.3 }}
               className="flex items-center justify-center gap-4 mb-8"
             >
-              <span className={`text-base font-semibold transition-colors ${billingCycle === 'monthly' ? 'text-text-primary dark:text-white' : 'text-text-secondary dark:text-slate-500'}`}>
+              <span className={`text-base font-semibold transition-colors ${billingCycle === 'monthly' ? 'text-text-primary dark:text-white' : 'text-text-secondary dark:text-[var(--color-text-tertiary)]'}`}>
                 Monthly
               </span>
               <button
                 onClick={() => setBillingCycle(billingCycle === 'monthly' ? 'annual' : 'monthly')}
-                className="relative inline-flex h-7 w-14 items-center rounded-full bg-emerald-600 transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 shadow-lg"
+                className="relative inline-flex h-7 w-14 items-center rounded-full bg-[var(--color-primary)] transition-colors focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:ring-offset-2 shadow-lg"
               >
                 <motion.span
                   layout
@@ -199,12 +199,12 @@ const Pricing = () => {
                   transition={{ type: 'spring', stiffness: 500, damping: 30 }}
                 />
               </button>
-              <span className={`text-base font-semibold transition-colors ${billingCycle === 'annual' ? 'text-text-primary dark:text-white' : 'text-text-secondary dark:text-slate-500'}`}>
+              <span className={`text-base font-semibold transition-colors ${billingCycle === 'annual' ? 'text-text-primary dark:text-white' : 'text-text-secondary dark:text-[var(--color-text-tertiary)]'}`}>
                 Annual
                 <motion.span
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
-                  className="ml-2 inline-block px-2 py-0.5 bg-emerald-600 text-white rounded-full text-xs font-bold"
+                  className="ml-2 inline-block px-2 py-0.5 bg-[var(--color-primary)] text-white rounded-full text-xs font-bold"
                 >
                   Save 15%
                 </motion.span>
@@ -242,7 +242,7 @@ const Pricing = () => {
                         transition={{ delay: 0.2 + index * 0.1 }}
                         className="absolute -top-5 left-1/2 transform -translate-x-1/2 z-20"
                       >
-                        <span className="inline-flex items-center gap-1 px-4 py-1.5 rounded-full text-sm font-bold text-white shadow-lg bg-emerald-600">
+                        <span className="inline-flex items-center gap-1 px-4 py-1.5 rounded-full text-sm font-bold text-white shadow-lg bg-[var(--color-primary)]">
                           {tier.popular && <TrendingUp className="w-4 h-4" />}
                           {tier.id === 'premium' && <Star className="w-4 h-4" />}
                           {tier.id === 'pro' && <Shield className="w-4 h-4" />}
@@ -254,21 +254,21 @@ const Pricing = () => {
                     <motion.div
                       whileHover={{ y: -8, scale: 1.02 }}
                       className={`relative bg-white dark:bg-slate-900 rounded-2xl shadow-xl border-2 overflow-visible transition-all duration-300 pt-6 ${tier.popular
-                        ? 'border-emerald-600 shadow-2xl shadow-emerald-600/20'
+                        ? 'border-emerald-600 shadow-2xl shadow-[var(--color-primary)]/20'
                         : hoveredTier === tier.id
-                          ? 'border-emerald-500/50 shadow-2xl'
-                          : 'border-slate-200 dark:border-slate-800'
+                          ? 'border-[var(--color-primary)]/50 shadow-2xl'
+                          : 'border-[var(--color-border-primary)] dark:border-slate-800'
                         }`}
                     >
                     {/* Gradient Background - Only emerald */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-emerald-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl"></div>
+                    <div className="absolute inset-0 bg-gradient-to-br from-[var(--color-primary)]/5 to-[var(--color-primary)]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl"></div>
 
                     <div className="p-8 relative z-10">
                       {/* Icon - Emerald only */}
                       <motion.div
                         whileHover={{ rotate: 360, scale: 1.1 }}
                         transition={{ duration: 0.5 }}
-                        className="w-16 h-16 rounded-2xl bg-emerald-600 flex items-center justify-center mb-6 shadow-lg shadow-emerald-600/20"
+                        className="w-16 h-16 rounded-2xl bg-[var(--color-primary)] flex items-center justify-center mb-6 shadow-lg shadow-[var(--color-primary)]/20"
                       >
                         <IconComponent className="w-8 h-8 text-white" />
                       </motion.div>
@@ -352,12 +352,12 @@ const Pricing = () => {
                                 <Check className="w-5 h-5 text-green-500 dark:text-green-400 mr-3 flex-shrink-0 mt-0.5" />
                               </motion.div>
                             ) : (
-                              <X className="w-5 h-5 text-text-muted dark:text-slate-600 mr-3 flex-shrink-0 mt-0.5" />
+                              <X className="w-5 h-5 text-text-muted dark:text-[var(--color-text-secondary)] mr-3 flex-shrink-0 mt-0.5" />
                             )}
                             <span
                               className={`text-sm ${feature.included
                                 ? 'text-text-primary dark:text-white font-medium'
-                                : 'text-text-muted dark:text-slate-500 line-through'
+                                : 'text-text-muted dark:text-[var(--color-text-tertiary)] line-through'
                                 }`}
                             >
                               {feature.text}
@@ -393,9 +393,9 @@ const Pricing = () => {
                   <tr className="border-b-2 border-border dark:border-white/10">
                     <th className="text-left py-4 px-6 font-bold text-text-primary dark:text-white">Academic Feature</th>
                     <th className="text-center py-4 px-6 font-bold text-text-primary dark:text-white">Foundational</th>
-                    <th className="text-center py-4 px-6 font-bold text-emerald-600">Intensive</th>
-                    <th className="text-center py-4 px-6 font-bold text-emerald-600">Scholar</th>
-                    <th className="text-center py-4 px-6 font-bold text-emerald-600">Instructor</th>
+                    <th className="text-center py-4 px-6 font-bold text-[var(--color-primary)]">Intensive</th>
+                    <th className="text-center py-4 px-6 font-bold text-[var(--color-primary)]">Scholar</th>
+                    <th className="text-center py-4 px-6 font-bold text-[var(--color-primary)]">Instructor</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -414,35 +414,35 @@ const Pricing = () => {
                       initial={{ opacity: 0, x: -10 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: 0.6 + index * 0.05 }}
-                      className="border-b border-border dark:border-white/5 hover:bg-slate-50 dark:hover:bg-white/[0.02] transition-colors"
+                      className="border-b border-border dark:border-white/5 hover:bg-white dark:hover:bg-white/[0.02] transition-colors"
                     >
                       <td className="py-4 px-6 text-text-primary dark:text-white font-semibold">{row.feature}</td>
                       <td className="py-4 px-6 text-center">
                         {typeof row.free === 'boolean' ? (
-                          row.free ? <Check className="w-5 h-5 text-emerald-600 mx-auto" /> : <X className="w-5 h-5 text-text-muted dark:text-slate-600 mx-auto" />
+                          row.free ? <Check className="w-5 h-5 text-[var(--color-primary)] mx-auto" /> : <X className="w-5 h-5 text-text-muted dark:text-[var(--color-text-secondary)] mx-auto" />
                         ) : (
                           <span className="text-text-primary dark:text-white font-medium">{row.free}</span>
                         )}
                       </td>
                       <td className="py-4 px-6 text-center">
                         {typeof row.basic === 'boolean' ? (
-                          row.basic ? <Check className="w-5 h-5 text-emerald-600 mx-auto" /> : <X className="w-5 h-5 text-text-muted dark:text-slate-600 mx-auto" />
+                          row.basic ? <Check className="w-5 h-5 text-[var(--color-primary)] mx-auto" /> : <X className="w-5 h-5 text-text-muted dark:text-[var(--color-text-secondary)] mx-auto" />
                         ) : (
-                          <span className="text-emerald-600 font-semibold">{row.basic}</span>
+                          <span className="text-[var(--color-primary)] font-semibold">{row.basic}</span>
                         )}
                       </td>
                       <td className="py-4 px-6 text-center">
                         {typeof row.premium === 'boolean' ? (
-                          row.premium ? <Check className="w-5 h-5 text-emerald-600 mx-auto" /> : <X className="w-5 h-5 text-text-muted dark:text-slate-600 mx-auto" />
+                          row.premium ? <Check className="w-5 h-5 text-[var(--color-primary)] mx-auto" /> : <X className="w-5 h-5 text-text-muted dark:text-[var(--color-text-secondary)] mx-auto" />
                         ) : (
-                          <span className="text-emerald-600 font-semibold">{row.premium}</span>
+                          <span className="text-[var(--color-primary)] font-semibold">{row.premium}</span>
                         )}
                       </td>
                       <td className="py-4 px-6 text-center">
                         {typeof row.pro === 'boolean' ? (
-                          row.pro ? <Check className="w-5 h-5 text-emerald-600 mx-auto" /> : <X className="w-5 h-5 text-text-muted dark:text-slate-600 mx-auto" />
+                          row.pro ? <Check className="w-5 h-5 text-[var(--color-primary)] mx-auto" /> : <X className="w-5 h-5 text-text-muted dark:text-[var(--color-text-secondary)] mx-auto" />
                         ) : (
-                          <span className="text-emerald-600 font-semibold">{row.pro}</span>
+                          <span className="text-[var(--color-primary)] font-semibold">{row.pro}</span>
                         )}
                       </td>
                     </motion.tr>
@@ -460,10 +460,10 @@ const Pricing = () => {
             className="mb-12"
           >
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-2">
+              <h2 className="text-3xl font-bold text-[var(--color-text-primary)] dark:text-white mb-2">
                 Frequently Asked Questions
               </h2>
-              <p className="text-slate-600 dark:text-slate-400">
+              <p className="text-[var(--color-text-secondary)] dark:text-slate-400">
                 Everything you need to know about our academic plans
               </p>
             </div>
@@ -500,13 +500,13 @@ const Pricing = () => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.8 + index * 0.1 }}
                   whileHover={{ y: -4, scale: 1.02 }}
-                  className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-6 shadow-lg hover:shadow-xl transition-all"
+                  className="bg-white dark:bg-slate-900 rounded-xl border border-[var(--color-border-primary)] dark:border-slate-800 p-6 shadow-lg hover:shadow-xl transition-all"
                 >
-                  <h3 className="font-bold text-lg text-slate-900 dark:text-white mb-3 flex items-center gap-2">
-                    <Sparkles className="w-5 h-5 text-emerald-600" />
+                  <h3 className="font-bold text-lg text-[var(--color-text-primary)] dark:text-white mb-3 flex items-center gap-2">
+                    <Sparkles className="w-5 h-5 text-[var(--color-primary)]" />
                     {faq.q}
                   </h3>
-                  <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-3">{faq.a}</p>
+                  <p className="text-sm text-[var(--color-text-secondary)] dark:text-slate-400 leading-relaxed mb-3">{faq.a}</p>
                   <FAQAIAssistant question={faq.q} answer={faq.a} />
                 </motion.div>
               ))}

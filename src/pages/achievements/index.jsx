@@ -97,7 +97,7 @@ const AchievementsPage = () => {
       />
 
       {loading ? (
-        <div className="p-20 text-center animate-pulse text-slate-500 uppercase tracking-widest text-[10px]">Syncing Knowledge Nodes...</div>
+        <div className="p-20 text-center animate-pulse text-[var(--color-text-tertiary)] uppercase tracking-widest text-[10px]">Syncing Knowledge Nodes...</div>
       ) : (
         <div className="space-y-8">
           
@@ -113,7 +113,7 @@ const AchievementsPage = () => {
                   </span>
                 </div>
                 <div className="space-y-2">
-                   <p className="text-[10px] border-b border-white/5 pb-2 font-black uppercase tracking-widest text-slate-500">Total Scholarly XP</p>
+                   <p className="text-[10px] border-b border-white/5 pb-2 font-black uppercase tracking-widest text-[var(--color-text-tertiary)]">Total Scholarly XP</p>
                    <p className="text-4xl font-black text-white">{stats.total_xp.toLocaleString()}</p>
                    
                    <div className="pt-4">
@@ -132,17 +132,17 @@ const AchievementsPage = () => {
                 </div>
              </EliteCard>
 
-             <EliteCard className="p-6 bg-gradient-to-br from-emerald-900/20 to-teal-900/20 border-emerald-500/20">
+             <EliteCard className="p-6 bg-gradient-to-br from-emerald-900/20 to-teal-900/20 border-[var(--color-primary)]/20">
                 <div className="flex items-center justify-between mb-4">
-                  <div className="w-12 h-12 rounded-2xl bg-emerald-500/20 flex items-center justify-center">
-                    <Icon name="Database" className="text-emerald-400" size={24} />
+                  <div className="w-12 h-12 rounded-2xl bg-[var(--color-primary)]/20 flex items-center justify-center">
+                    <Icon name="Database" className="text-[var(--color-primary)]" size={24} />
                   </div>
-                   <span className="text-[10px] font-black uppercase tracking-widest text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20">
+                   <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-primary)] bg-[var(--color-primary)]/10 px-3 py-1 rounded-full border border-[var(--color-primary)]/20">
                     Platform Currency
                   </span>
                 </div>
                 <div className="space-y-2">
-                   <p className="text-[10px] border-b border-white/5 pb-2 font-black uppercase tracking-widest text-slate-500">Dinar Tokens</p>
+                   <p className="text-[10px] border-b border-white/5 pb-2 font-black uppercase tracking-widest text-[var(--color-text-tertiary)]">Dinar Tokens</p>
                    <p className="text-4xl font-black text-white">{stats.coin_balance.toLocaleString()}</p>
                    <p className="text-[10px] text-slate-400 mt-2">Earned by completing rigorous academic modules.</p>
                 </div>
@@ -158,9 +158,9 @@ const AchievementsPage = () => {
                   </span>
                 </div>
                 <div className="space-y-2">
-                   <p className="text-[10px] border-b border-white/5 pb-2 font-black uppercase tracking-widest text-slate-500">Badges Unlocked</p>
+                   <p className="text-[10px] border-b border-white/5 pb-2 font-black uppercase tracking-widest text-[var(--color-text-tertiary)]">Badges Unlocked</p>
                    <p className="text-4xl font-black text-white">
-                      {userBadgeIds.size} <span className="text-lg text-slate-500">/ {allBadges.length}</span>
+                      {userBadgeIds.size} <span className="text-lg text-[var(--color-text-tertiary)]">/ {allBadges.length}</span>
                    </p>
                    <p className="text-[10px] text-slate-400 mt-2">Testaments to your dedication and mastery.</p>
                 </div>
@@ -176,7 +176,7 @@ const AchievementsPage = () => {
                       <button 
                         key={tab}
                         onClick={() => setActiveTab(tab)}
-                        className={\`px-4 py-2 rounded-lg text-[9px] font-black uppercase tracking-widest transition-all \${activeTab === tab ? 'bg-white/10 text-white shadow-sm' : 'text-slate-500 hover:text-slate-300'}\`}
+                        className={\`px-4 py-2 rounded-lg text-[9px] font-black uppercase tracking-widest transition-all \${activeTab === tab ? 'bg-white/10 text-white shadow-sm' : 'text-[var(--color-text-tertiary)] hover:text-slate-300'}\`}
                       >
                         {tab}
                       </button>
@@ -186,7 +186,7 @@ const AchievementsPage = () => {
 
              {filteredBadges.length === 0 ? (
                 <div className="p-12 text-center border-2 border-dashed border-white/5 rounded-3xl">
-                   <p className="text-sm font-black text-slate-500 uppercase tracking-widest">No badges found in this category.</p>
+                   <p className="text-sm font-black text-[var(--color-text-tertiary)] uppercase tracking-widest">No badges found in this category.</p>
                 </div>
              ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -205,24 +205,24 @@ const AchievementsPage = () => {
                                className={\`p-6 rounded-3xl border transition-all duration-300 \${isUnlocked ? 'bg-white/[0.02] border-white/10 hover:bg-white/[0.04]' : 'bg-black/20 border-transparent grayscale opacity-60'}\`}
                             >
                                <div className="flex items-start justify-between mb-6">
-                                  <div className={\`w-14 h-14 rounded-2xl flex items-center justify-center border shadow-lg \${isUnlocked ? rarityStyle : 'bg-white/5 border-white/10 text-slate-600'}\`}>
+                                  <div className={\`w-14 h-14 rounded-2xl flex items-center justify-center border shadow-lg \${isUnlocked ? rarityStyle : 'bg-white/5 border-white/10 text-[var(--color-text-secondary)]'}\`}>
                                      {badge.icon_url ? (
                                         <img src={badge.icon_url} alt={badge.name} className="w-8 h-8 object-contain" />
                                      ) : (
                                         <Icon name={isUnlocked ? 'Award' : 'Lock'} size={24} />
                                      )}
                                   </div>
-                                  <span className={\`text-[8px] font-black uppercase tracking-widest px-2 py-1 rounded-lg border \${isUnlocked ? rarityStyle : 'bg-white/5 border-white/10 text-slate-500'}\`}>
+                                  <span className={\`text-[8px] font-black uppercase tracking-widest px-2 py-1 rounded-lg border \${isUnlocked ? rarityStyle : 'bg-white/5 border-white/10 text-[var(--color-text-tertiary)]'}\`}>
                                      {badge.rarity}
                                   </span>
                                </div>
 
-                               <h4 className={\`text-sm font-black uppercase tracking-widest mb-2 \${isUnlocked ? 'text-white' : 'text-slate-500'}\`}>{badge.name}</h4>
+                               <h4 className={\`text-sm font-black uppercase tracking-widest mb-2 \${isUnlocked ? 'text-white' : 'text-[var(--color-text-tertiary)]'}\`}>{badge.name}</h4>
                                <p className="text-xs text-slate-400 leading-relaxed font-medium mb-4 min-h-[40px]">{badge.description}</p>
                                
                                <div className="flex items-center gap-2 mt-4 pt-4 border-t border-white/5">
-                                  <Icon name={badge.requirement_type === 'courses_completed' ? 'BookOpen' : 'Zap'} size={12} className="text-slate-600" />
-                                  <span className="text-[9px] font-bold text-slate-500 uppercase tracking-widest">
+                                  <Icon name={badge.requirement_type === 'courses_completed' ? 'BookOpen' : 'Zap'} size={12} className="text-[var(--color-text-secondary)]" />
+                                  <span className="text-[9px] font-bold text-[var(--color-text-tertiary)] uppercase tracking-widest">
                                      Requires {badge.requirement_value} {badge.requirement_type.replace('_', ' ')}
                                   </span>
                                </div>

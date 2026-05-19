@@ -275,11 +275,11 @@ const HomePage = () => {
           <meta name="description" content="Access a structured Islamic curriculum curated from verified sources. Hope Dawah Institute offers a comprehensive gateway to master sacred sciences with academic excellence." />
           <meta name="keywords" content="Islamic Courses, Authentic Islam, Quran, Hadith, Seerah, Fiqh, Islamic Research, Traditional Islamic Knowledge, Muslim Student Platform" />
         </Helmet>
-        <div className="min-h-screen bg-slate-50 dark:bg-[#0A1120] selection:bg-emerald-500/30">
+        <div className="min-h-screen bg-white selection:bg-blue-500/20">
           {/* Subtle Background - Professional Academic */}
           <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-7xl">
-              <div className="absolute top-[-10%] right-[-5%] w-[40%] h-[40%] bg-emerald-500/5 rounded-full blur-[120px]" />
+              <div className="absolute top-[-10%] right-[-5%] w-[40%] h-[40%] bg-blue-500/5 rounded-full blur-[120px]" />
               <div className="absolute top-[10%] left-[-5%] w-[30%] h-[30%] bg-blue-500/5 rounded-full blur-[100px]" />
             </div>
           </div>
@@ -292,31 +292,31 @@ const HomePage = () => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.8 }}
                 >
-                  <span className="inline-block px-4 py-1.5 rounded-full bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 text-[10px] font-bold uppercase tracking-widest mb-6 border border-emerald-100 dark:border-emerald-500/20">
+                  <span className="inline-block px-4 py-1.5 rounded-full bg-[var(--color-primary-light)] text-[var(--color-primary)] text-[10px] font-bold uppercase tracking-widest mb-6 border border-[var(--color-border-secondary)]">
                     Trusted by 10,000+ Students Worldwide
                   </span>
                   
-                  <h1 className="text-3xl sm:text-4xl md:text-6xl font-black text-slate-900 dark:text-white mb-4 sm:mb-6 tracking-tight leading-[1.2] sm:leading-[1.1]">
+                  <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold text-[var(--color-text-primary)] mb-4 sm:mb-6 tracking-tight leading-[1.2] sm:leading-[1.1]">
                     The Modern Gateway to <br className="hidden sm:block" />
-                    <span className="text-emerald-600 dark:text-emerald-500">Sacred Knowledge</span>
+                    <span className="text-[var(--color-primary)]">Sacred Knowledge</span>
                   </h1>
 
-                  <p className="text-base sm:text-lg text-slate-600 dark:text-slate-400 mb-8 sm:mb-10 max-w-2xl mx-auto leading-relaxed px-4">
+                  <p className="text-base sm:text-lg text-[var(--color-text-secondary)] mb-8 sm:mb-10 max-w-2xl mx-auto leading-relaxed px-4">
                     Access a structured curriculum curated by a team of learned Muslims from verified platforms like Yaqeen Institute and Towards Eternity. Master the sacred sciences through a cohesive, institutional approach.
                   </p>
 
                   <div className="flex flex-row items-center justify-center gap-2 sm:gap-4 w-full max-w-sm mx-auto sm:max-w-none">
                     <button 
                       onClick={() => navigate('/courses')}
-                      className="flex-1 sm:flex-none sm:w-auto px-2 sm:px-8 py-3.5 sm:py-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl sm:rounded-2xl font-black transition-all shadow-lg shadow-emerald-600/20 active:scale-[0.98] text-[10px] sm:text-sm uppercase tracking-wider sm:tracking-widest"
+                      className="flex-1 sm:flex-none sm:w-auto px-2 sm:px-8 py-3.5 sm:py-4 bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white rounded-md sm:rounded-lg font-bold transition-all active:scale-[0.98] text-[10px] sm:text-sm uppercase tracking-wider sm:tracking-widest"
                     >
                       Explore Courses
                     </button>
                     <button 
                       onClick={() => navigate('/team')}
-                      className="flex-1 sm:flex-none sm:w-auto px-2 sm:px-8 py-3.5 sm:py-4 bg-white dark:bg-slate-800 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700 rounded-xl sm:rounded-2xl font-black hover:bg-slate-50 dark:hover:bg-slate-700 transition-all flex items-center justify-center gap-1.5 sm:gap-2 text-[10px] sm:text-sm uppercase tracking-wider sm:tracking-widest"
+                      className="flex-1 sm:flex-none sm:w-auto px-2 sm:px-8 py-3.5 sm:py-4 bg-white text-[var(--color-text-primary)] border border-[var(--color-border-primary)] rounded-md sm:rounded-lg font-bold hover:bg-[var(--color-primary-light)] transition-all flex items-center justify-center gap-1.5 sm:gap-2 text-[10px] sm:text-sm uppercase tracking-wider sm:tracking-widest"
                     >
-                      <Users className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-500" />
+                      <Users className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[var(--color-primary)]" />
                       Join Team
                     </button>
                   </div>
@@ -330,9 +330,9 @@ const HomePage = () => {
                   className="max-w-2xl mx-auto"
                 >
                   <div className="relative mt-10 md:mt-16 group">
-                    <div className="absolute -inset-1 bg-emerald-500/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity rounded-3xl" />
-                    <div className="relative flex items-center bg-white dark:bg-slate-900/80 backdrop-blur-3xl border border-border dark:border-emerald-500/20 rounded-2xl md:rounded-3xl shadow-2xl transition-all p-1.5 sm:p-2">
-                    <div className="absolute left-4 sm:left-6 text-emerald-600">
+                    <div className="absolute -inset-1 bg-blue-500/10 blur-xl opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl" />
+                    <div className="relative flex items-center bg-white border border-[var(--color-border-primary)] rounded-xl md:rounded-2xl shadow-card transition-all p-1.5 sm:p-2">
+                    <div className="absolute left-4 sm:left-6 text-[var(--color-primary)]">
                       <Zap className="w-4 h-4 sm:w-6 sm:h-6 fill-current" />
                     </div>
                     <input
@@ -346,14 +346,14 @@ const HomePage = () => {
                         }
                       }}
                       placeholder="Ask the Assistant anything..."
-                      className="w-full pl-12 sm:pl-16 pr-16 sm:pr-32 py-3.5 sm:py-5 bg-transparent border-none rounded-2xl focus:ring-0 text-sm sm:text-lg text-slate-900 dark:text-white placeholder-slate-400 font-medium"
+                      className="w-full pl-12 sm:pl-16 pr-16 sm:pr-32 py-3.5 sm:py-5 bg-transparent border-none rounded-xl focus:ring-0 text-sm sm:text-lg text-[var(--color-text-primary)] placeholder-[var(--color-text-tertiary)] font-medium"
                     />
                     <button
                       onClick={() => {
                         const query = searchQuery;
                         openPanel(query);
                       }}
-                      className="absolute right-2 top-2 bottom-2 px-4 sm:px-6 flex items-center justify-center gap-2 bg-slate-900 dark:bg-emerald-600 text-white rounded-xl sm:rounded-2xl font-black text-[10px] sm:text-xs uppercase tracking-widest hover:bg-emerald-800 dark:hover:bg-emerald-500 transition-all active:scale-95 shadow-lg"
+                      className="absolute right-2 top-2 bottom-2 px-4 sm:px-6 flex items-center justify-center gap-2 bg-[var(--color-primary)] text-white rounded-lg sm:rounded-xl font-bold text-[10px] sm:text-xs uppercase tracking-widest hover:bg-[var(--color-primary-hover)] transition-all active:scale-95"
                     >
                       <ArrowRight className="w-4 h-4 md:w-5 md:h-5" />
                     </button>
@@ -370,7 +370,7 @@ const HomePage = () => {
                         onClick={() => { 
                           openPanel(tag.text); 
                         }}
-                        className="flex items-center gap-2 px-4 py-2.5 bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 text-slate-600 dark:text-slate-300 rounded-xl text-xs font-semibold hover:bg-emerald-50 dark:hover:bg-emerald-500/10 hover:border-emerald-200 dark:hover:border-emerald-500/30 hover:text-emerald-700 dark:hover:text-emerald-400 transition-all hover:-translate-y-0.5 shadow-sm"
+                        className="flex items-center gap-2 px-4 py-2.5 bg-white border border-[var(--color-border-primary)] text-[var(--color-text-secondary)] rounded-lg text-xs font-semibold hover:bg-[var(--color-primary-light)] hover:border-[var(--color-border-secondary)] hover:text-[var(--color-primary)] transition-all hover:-translate-y-0.5 shadow-sm"
                       >
                         <tag.icon className="w-4 h-4 opacity-70" />
                         {tag.text}
@@ -382,14 +382,14 @@ const HomePage = () => {
             </section>
 
             {/* NEW SECTION 1: THE ELITE STANDARD */}
-            <section className="py-16 sm:py-24 bg-white dark:bg-slate-900 border-y border-slate-200 dark:border-slate-800 relative overflow-hidden">
-               <div className="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-emerald-500/5 to-transparent pointer-events-none" />
+            <section className="py-16 sm:py-24 bg-white border-y border-[var(--color-border-primary)] relative overflow-hidden">
+               <div className="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-blue-500/5 to-transparent pointer-events-none" />
                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                  <div className="text-center mb-16 max-w-3xl mx-auto">
-                   <h2 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-4 tracking-tight">
-                     The Standard of <span className="text-emerald-600 dark:text-emerald-500">Authentic Synthesis</span>
+                   <h2 className="text-3xl md:text-4xl font-bold text-[var(--color-text-primary)] mb-4 tracking-tight">
+                     The Standard of <span className="text-[var(--color-primary)]">Authentic Synthesis</span>
                    </h2>
-                   <p className="text-lg text-slate-600 dark:text-slate-400 leading-relaxed">
+                   <p className="text-lg text-[var(--color-text-secondary)] leading-relaxed">
                      We aggregate the best of Islamic research and design it into a seamless learning experience.
                    </p>
                  </div>
@@ -400,7 +400,7 @@ const HomePage = () => {
                        icon: Shield,
                        title: "Verified Sources",
                        desc: "Our team sources content from authentic platforms including Yaqeen and Towards Eternity, ensuring every lesson is grounded in the Quran and Sunnah.",
-                       color: "emerald"
+                       color: "blue"
                      },
                      {
                        icon: Users,
@@ -421,15 +421,15 @@ const HomePage = () => {
                        whileInView={{ opacity: 1, y: 0 }}
                        viewport={{ once: true }}
                        transition={{ delay: idx * 0.2 }}
-                       className="group relative p-8 rounded-3xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-700/50 hover:bg-white dark:hover:bg-slate-800 hover:shadow-2xl hover:shadow-emerald-500/10 transition-all duration-500"
+                       className="group relative p-8 rounded-xl bg-[var(--color-bg-secondary)] border border-[var(--color-border-primary)] hover:bg-white hover:shadow-card-hover transition-all duration-300"
                      >
                        <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-6 bg-${item.color}-500/10 group-hover:scale-110 transition-transform duration-500`}>
                          <item.icon className={`w-7 h-7 text-${item.color}-600 dark:text-${item.color}-400`} />
                        </div>
-                       <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-3 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
+                       <h3 className="text-xl font-bold text-[var(--color-text-primary)] mb-3 group-hover:text-[var(--color-primary)] transition-colors">
                          {item.title}
                        </h3>
-                       <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
+                       <p className="text-[var(--color-text-secondary)] leading-relaxed">
                          {item.desc}
                        </p>
                      </motion.div>
@@ -441,12 +441,12 @@ const HomePage = () => {
             <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
               <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
                 <div>
-                  <h2 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white mb-2 tracking-tight">Recommended Courses</h2>
-                  <p className="text-slate-500 dark:text-slate-400">Handpicked curriculum based on your academic interests</p>
+                  <h2 className="text-2xl md:text-3xl font-bold text-[var(--color-text-primary)] mb-2 tracking-tight">Recommended Courses</h2>
+                  <p className="text-[var(--color-text-tertiary)]">Handpicked curriculum based on your academic interests</p>
                 </div>
                 <button 
                   onClick={() => navigate('/courses')} 
-                  className="text-emerald-600 dark:text-emerald-500 font-bold flex items-center gap-2 group text-sm"
+                  className="text-[var(--color-primary)] font-bold flex items-center gap-2 group text-sm"
                 >
                   Browse all modules <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </button>
@@ -459,24 +459,24 @@ const HomePage = () => {
             </section>
 
             {/* NEW SECTION 2: STRUCTURED KNOWLEDGE PATHS */}
-            <section className="py-16 sm:py-24 bg-slate-50 dark:bg-[#0B1221] relative">
+            <section className="py-16 sm:py-24 bg-[var(--color-bg-secondary)] relative">
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                  <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
                     <div className="max-w-2xl">
-                       <span className="text-emerald-600 dark:text-emerald-500 font-bold tracking-widest uppercase text-xs mb-2 block">Curriculum Roadmap</span>
-                       <h2 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-4">Structured Knowledge Paths</h2>
-                       <p className="text-slate-600 dark:text-slate-400 text-lg">
+                       <span className="text-[var(--color-primary)] font-bold tracking-widest uppercase text-xs mb-2 block">Curriculum Roadmap</span>
+                       <h2 className="text-3xl md:text-4xl font-bold text-[var(--color-text-primary)] mb-4">Structured Knowledge Paths</h2>
+                       <p className="text-[var(--color-text-secondary)] text-lg">
                          Stop guessing where to start. Follow a clear, scholar-designed roadmap from basics to mastery.
                        </p>
                     </div>
-                    <button onClick={() => navigate('/courses')} className="px-6 py-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl font-bold text-slate-900 dark:text-white hover:bg-slate-50 dark:hover:bg-slate-700 transition-all shadow-sm">
+                    <button onClick={() => navigate('/courses')} className="px-6 py-3 bg-white border border-[var(--color-border-primary)] rounded-lg font-bold text-[var(--color-text-primary)] hover:bg-[var(--color-primary-light)] transition-all shadow-sm">
                       View All Paths
                     </button>
                  </div>
 
                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative">
                     {/* Connecting Line (Desktop) */}
-                    <div className="hidden md:block absolute top-1/2 left-0 w-full h-0.5 bg-gradient-to-r from-emerald-500/20 via-blue-500/20 to-amber-500/20 -translate-y-1/2 z-0" />
+                    <div className="hidden md:block absolute top-1/2 left-0 w-full h-0.5 bg-gradient-to-r from-blue-500/20 via-blue-500/20 to-amber-500/20 -translate-y-1/2 z-0" />
                     
                     {[
                       {
@@ -485,7 +485,7 @@ const HomePage = () => {
                         subtitle: "Fard 'Ayn",
                         desc: "Essential knowledge every believer must know. covering purity, prayer, and basic creed.",
                         icon: BookOpen,
-                        color: "emerald",
+                        color: "blue",
                         status: "Open"
                       },
                       {
@@ -509,7 +509,7 @@ const HomePage = () => {
                     ].map((path, idx) => (
                       <motion.div
                         key={idx}
-                        className="relative z-10 bg-white dark:bg-slate-900 p-8 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xl shadow-slate-200/50 dark:shadow-none flex flex-col items-start h-full hover:-translate-y-2 transition-transform duration-300"
+                        className="relative z-10 bg-white p-8 rounded-xl border border-[var(--color-border-primary)] shadow-card flex flex-col items-start h-full hover:-translate-y-2 transition-transform duration-300"
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
@@ -518,14 +518,14 @@ const HomePage = () => {
                          <span className={`inline-block px-3 py-1 rounded-full bg-${path.color}-50 dark:bg-${path.color}-500/10 text-${path.color}-700 dark:text-${path.color}-400 text-[10px] font-bold uppercase tracking-widest mb-4 border border-${path.color}-100 dark:border-${path.color}-500/20`}>
                            {path.level}
                          </span>
-                         <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-1">{path.title}</h3>
+                         <h3 className="text-2xl font-bold text-[var(--color-text-primary)] mb-1">{path.title}</h3>
                          <p className={`text-sm font-bold text-${path.color}-600 dark:text-${path.color}-500 uppercase tracking-wider mb-4`}>{path.subtitle}</p>
-                         <p className="text-slate-500 dark:text-slate-400 mb-8 leading-relaxed flex-grow">
+                         <p className="text-[var(--color-text-tertiary)] mb-8 leading-relaxed flex-grow">
                            {path.desc}
                          </p>
-                         <div className="w-full mt-auto pt-6 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                         <div className="w-full mt-auto pt-6 border-t border-[var(--color-border-primary)] flex items-center justify-between">
                             <path.icon className={`text-${path.color}-500`} size={20} />
-                            <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">{path.status}</span>
+                            <span className="text-xs font-bold text-[var(--color-text-tertiary)] uppercase tracking-widest">{path.status}</span>
                          </div>
                       </motion.div>
                     ))}
@@ -533,7 +533,7 @@ const HomePage = () => {
               </div>
             </section>
 
-            <section className="py-12 sm:py-20 bg-white dark:bg-slate-900/50 border-y border-slate-200 dark:border-slate-800/50">
+            <section className="py-12 sm:py-20 bg-white border-y border-[var(--color-border-primary)]">
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 md:gap-12">
                   {[
@@ -543,10 +543,10 @@ const HomePage = () => {
                     { number: 98, suffix: "%", label: "Course Completion" }
                   ].map((stat, index) => (
                     <div key={index} className="text-center">
-                      <div className="text-2xl sm:text-3xl md:text-4xl font-black text-slate-900 dark:text-white mb-1 sm:mb-2">
+                      <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-[var(--color-text-primary)] mb-1 sm:mb-2">
                         <AnimatedCounter value={stat.number} suffix={stat.suffix} />
                       </div>
-                      <p className="text-[10px] sm:text-sm text-slate-500 dark:text-slate-400 font-bold uppercase tracking-widest sm:tracking-wider">{stat.label}</p>
+                      <p className="text-[10px] sm:text-sm text-[var(--color-text-tertiary)] font-bold uppercase tracking-widest sm:tracking-wider">{stat.label}</p>
                     </div>
                   ))}
                 </div>
@@ -554,8 +554,8 @@ const HomePage = () => {
             </section>
 
             <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 text-center">
-              <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-emerald-50 dark:bg-emerald-500/10 mb-8 border border-emerald-100 dark:border-emerald-500/20">
-                <Sparkles className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
+              <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-[var(--color-primary-light)] mb-8 border border-[var(--color-border-secondary)]">
+                <Sparkles className="w-6 h-6 text-[var(--color-primary)]" />
               </div>
               <AnimatePresence mode="wait">
                 <motion.div
@@ -565,16 +565,16 @@ const HomePage = () => {
                   exit={{ opacity: 0, y: -10 }}
                   className="space-y-8"
                 >
-                  <blockquote className="text-lg sm:text-xl md:text-3xl font-medium text-slate-900 dark:text-white leading-relaxed tracking-tight max-w-2xl mx-auto px-4 italic">
+                  <blockquote className="text-lg sm:text-xl md:text-3xl font-medium text-[var(--color-text-primary)] leading-relaxed tracking-tight max-w-2xl mx-auto px-4 italic">
                     "{testimonials[testimonialIndex].quote}"
                   </blockquote>
                   <div className="flex items-center justify-center gap-4">
-                    <div className="w-10 h-10 rounded-full bg-slate-200 dark:bg-slate-800 flex items-center justify-center font-bold text-slate-700 dark:text-slate-300">
+                    <div className="w-10 h-10 rounded-full bg-[var(--color-primary)] flex items-center justify-center font-bold text-white">
                       {testimonials[testimonialIndex].avatar}
                     </div>
                     <div className="text-left">
-                      <p className="text-slate-900 dark:text-white font-bold text-sm">{testimonials[testimonialIndex].author}</p>
-                      <p className="text-slate-500 dark:text-slate-400 text-xs">{testimonials[testimonialIndex].role}</p>
+                      <p className="text-[var(--color-text-primary)] font-bold text-sm">{testimonials[testimonialIndex].author}</p>
+                      <p className="text-[var(--color-text-tertiary)] text-xs">{testimonials[testimonialIndex].role}</p>
                     </div>
                   </div>
                 </motion.div>
@@ -585,7 +585,7 @@ const HomePage = () => {
             <section className="py-16 sm:py-24 bg-slate-900 text-white relative overflow-hidden">
                {/* Decorative background elements */}
                <div className="absolute inset-0 z-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] bg-fixed" />
-               <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-emerald-600/20 rounded-full blur-[128px] pointer-events-none" />
+               <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-600/20 rounded-full blur-[128px] pointer-events-none" />
                <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-blue-600/20 rounded-full blur-[128px] pointer-events-none" />
 
                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -598,7 +598,7 @@ const HomePage = () => {
                         >
                            <h2 className="text-3xl md:text-5xl font-black mb-6 leading-tight tracking-tight">
                               Join a Global <br className="hidden sm:block" />
-                              <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-emerald-200">Network of Seekers</span>
+                              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-blue-200">Network of Seekers</span>
                            </h2>
                            <p className="text-slate-400 text-lg mb-8 leading-relaxed max-w-lg">
                               Knowledge increases when shared. Connect with students from over 40 countries, participate in live colloquiums, and contribute to the revival of Islamic intellectual tradition.
@@ -607,7 +607,7 @@ const HomePage = () => {
                            <div className="flex flex-col sm:flex-row gap-4">
                               <button 
                                 onClick={() => navigate('/register')}
-                                className="px-8 py-4 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-bold transition-all shadow-lg shadow-emerald-600/20 flex items-center justify-center gap-2"
+                                className="px-8 py-4 bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white rounded-lg font-bold transition-all flex items-center justify-center gap-2"
                               >
                                 Join the Institute <ArrowUpRight size={18} />
                               </button>
@@ -646,8 +646,8 @@ const HomePage = () => {
                                  <h3 className="text-xl font-bold mb-1">Global Reach</h3>
                                  <p className="text-sm text-slate-400">Students accessing knowledge from 6 continents.</p>
                               </div>
-                              <div className="p-6 bg-emerald-600/10 backdrop-blur-md rounded-2xl border border-emerald-500/20">
-                                 <Award className="w-8 h-8 text-emerald-400 mb-4" />
+                              <div className="p-6 bg-blue-600/10 backdrop-blur-md rounded-2xl border border-blue-500/20">
+                                 <Award className="w-8 h-8 text-blue-400 mb-4" />
                                  <h3 className="text-xl font-bold mb-1">Accredited</h3>
                                  <p className="text-sm text-slate-400">Recognized certifications upon course completion.</p>
                               </div>

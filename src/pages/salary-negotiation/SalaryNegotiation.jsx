@@ -119,11 +119,11 @@ const SalaryNegotiation = () => {
                     <div className="flex gap-8 border-l border-white/5 pl-8">
                         {[
                             { label: 'Base Salary', val: offer.base, color: 'text-amber-400' },
-                            { label: 'Sign-on Bonus', val: offer.bonus, color: 'text-emerald-400' },
+                            { label: 'Sign-on Bonus', val: offer.bonus, color: 'text-[var(--color-primary)]' },
                             { label: 'Equity Pack', val: offer.equity, color: 'text-purple-400' }
                         ].map((stat, i) => (
                             <div key={i} className="text-center">
-                                <p className="text-[9px] font-black text-slate-500 uppercase tracking-widest mb-1">{stat.label}</p>
+                                <p className="text-[9px] font-black text-[var(--color-text-tertiary)] uppercase tracking-widest mb-1">{stat.label}</p>
                                 <p className={`text-xl font-black ${stat.color} italic tracking-tight`}>${(stat.val / 1000).toFixed(0)}k</p>
                             </div>
                         ))}
@@ -159,7 +159,7 @@ const SalaryNegotiation = () => {
                                             {msg.content}
                                         </div>
                                         <div className="flex items-center gap-2 px-3">
-                                            <span className="text-[8px] font-black text-slate-600 uppercase tracking-[0.2em]">
+                                            <span className="text-[8px] font-black text-[var(--color-text-secondary)] uppercase tracking-[0.2em]">
                                                 {msg.role === 'user' ? 'Lead Candidate' : 'Sarah • Executive HR'}
                                             </span>
                                         </div>
@@ -175,7 +175,7 @@ const SalaryNegotiation = () => {
                                         <div className="w-1 h-1 bg-amber-500 rounded-full animate-bounce" style={{ animationDelay: '200ms' }} />
                                         <div className="w-1 h-1 bg-amber-500 rounded-full animate-bounce" style={{ animationDelay: '400ms' }} />
                                     </div>
-                                    <span className="text-[9px] font-black text-slate-500 uppercase tracking-widest">Compensating Options...</span>
+                                    <span className="text-[9px] font-black text-[var(--color-text-tertiary)] uppercase tracking-widest">Compensating Options...</span>
                                 </div>
                             </div>
                         )}
@@ -236,7 +236,7 @@ const SalaryNegotiation = () => {
                                 <div key={i} className="p-4 bg-white/5 rounded-2xl border border-white/5 space-y-2">
                                     <div className="text-amber-500">{item.icon}</div>
                                     <div>
-                                        <p className="text-[8px] font-black text-slate-500 uppercase tracking-tighter">{item.t}</p>
+                                        <p className="text-[8px] font-black text-[var(--color-text-tertiary)] uppercase tracking-tighter">{item.t}</p>
                                         <p className="text-[10px] font-black text-white uppercase">{item.v}</p>
                                     </div>
                                 </div>
@@ -251,7 +251,7 @@ const SalaryNegotiation = () => {
                             <Calculator size={60} className="text-amber-500" />
                         </div>
                         <h4 className="text-[9px] font-black text-amber-500 uppercase tracking-widest mb-3">Negotiation Tip</h4>
-                        <p className="text-[10px] text-slate-500 font-medium leading-relaxed uppercase italic">
+                        <p className="text-[10px] text-[var(--color-text-tertiary)] font-medium leading-relaxed uppercase italic">
                             The highest stakes are not about the numbers, but the perceived value you bring to the matrix. Stay focused on impact.
                         </p>
                     </div>

@@ -208,7 +208,7 @@ const AIAgentBuilder = () => {
                                             <Bot size={48} className="text-slate-700" />
                                         </div>
                                         <h3 className="text-2xl font-black text-white uppercase tracking-tighter mb-2">No Intelligence Agents Found</h3>
-                                        <p className="text-slate-500 font-medium max-w-sm mx-auto mb-10 text-sm">Deploy your first AI agent to start automonous market research and job hunting.</p>
+                                        <p className="text-[var(--color-text-tertiary)] font-medium max-w-sm mx-auto mb-10 text-sm">Deploy your first AI agent to start automonous market research and job hunting.</p>
                                         <button
                                             onClick={() => setActiveView('create')}
                                             className="px-8 py-3 border border-workflow-primary/30 text-workflow-primary rounded-xl font-black uppercase tracking-widest hover:bg-workflow-primary/10 transition-all"
@@ -243,7 +243,7 @@ const AIAgentBuilder = () => {
                                 <div>
                                     <button
                                         onClick={() => setActiveView('list')}
-                                        className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 hover:text-workflow-primary flex items-center gap-2 mb-4 group transition-colors"
+                                        className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-text-tertiary)] hover:text-workflow-primary flex items-center gap-2 mb-4 group transition-colors"
                                     >
                                         <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
                                         Back to Control Panel
@@ -258,7 +258,7 @@ const AIAgentBuilder = () => {
                                 <EliteCard title="Primary Identity" icon={Fingerprint}>
                                     <div className="space-y-6">
                                         <div className="space-y-2">
-                                            <label className="text-[10px] font-black uppercase tracking-widest text-slate-500">Agent Designation</label>
+                                            <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-tertiary)]">Agent Designation</label>
                                             <input
                                                 type="text"
                                                 required
@@ -270,7 +270,7 @@ const AIAgentBuilder = () => {
                                         </div>
 
                                         <div className="space-y-2">
-                                            <label className="text-[10px] font-black uppercase tracking-widest text-slate-500">Operational Brief</label>
+                                            <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-tertiary)]">Operational Brief</label>
                                             <textarea
                                                 required
                                                 value={agentConfig.description}
@@ -299,7 +299,7 @@ const AIAgentBuilder = () => {
                                                         <span className="text-[11px] font-black uppercase tracking-tight text-white">{goal.label}</span>
                                                         {agentConfig.goal === goal.id && <CheckCircle size={14} className="text-workflow-primary" />}
                                                     </div>
-                                                    <p className="text-[10px] text-slate-500 font-bold uppercase">{goal.desc}</p>
+                                                    <p className="text-[10px] text-[var(--color-text-tertiary)] font-bold uppercase">{goal.desc}</p>
                                                 </div>
                                             ))}
                                         </div>
@@ -321,7 +321,7 @@ const AIAgentBuilder = () => {
                                                         <span className="text-[11px] font-black uppercase tracking-tight text-white">{freq.label}</span>
                                                         {agentConfig.schedule.frequency === freq.id && <CheckCircle size={14} className="text-workflow-primary" />}
                                                     </div>
-                                                    <p className="text-[10px] text-slate-500 font-bold uppercase">{freq.desc}</p>
+                                                    <p className="text-[10px] text-[var(--color-text-tertiary)] font-bold uppercase">{freq.desc}</p>
                                                 </div>
                                             ))}
                                         </div>
@@ -372,36 +372,36 @@ const AgentCard = ({ agent, onEdit, onDelete, onToggle, onRun }) => {
             <div className="absolute top-0 right-0 p-4 opacity-0 group-hover:opacity-100 transition-opacity">
                 <button
                     onClick={onEdit}
-                    className="p-2 text-slate-500 hover:text-white transition-colors"
+                    className="p-2 text-[var(--color-text-tertiary)] hover:text-white transition-colors"
                 >
                     <Settings size={18} />
                 </button>
             </div>
 
             <div className="flex items-center justify-between mb-8">
-                <div className="w-14 h-14 rounded-2xl bg-white/[0.03] border border-white/5 flex items-center justify-center text-slate-500 group-hover:bg-workflow-primary/20 group-hover:text-workflow-primary transition-all shadow-inner">
+                <div className="w-14 h-14 rounded-2xl bg-white/[0.03] border border-white/5 flex items-center justify-center text-[var(--color-text-tertiary)] group-hover:bg-workflow-primary/20 group-hover:text-workflow-primary transition-all shadow-inner">
                     <Bot size={28} />
                 </div>
                 <div
                     onClick={onToggle}
-                    className={`px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest cursor-pointer transition-all ${agent.status === 'active' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-slate-500/10 text-slate-500 border border-slate-500/20'}`}
+                    className={`px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest cursor-pointer transition-all ${agent.status === 'active' ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)] border border-[var(--color-primary)]/20' : 'bg-slate-500/10 text-[var(--color-text-tertiary)] border border-slate-500/20'}`}
                 >
                     {agent.status === 'active' ? 'Operational' : 'Paused'}
                 </div>
             </div>
 
             <h3 className="text-xl font-bold mb-3 text-white truncate group-hover:text-workflow-primary transition-colors">{agent.name}</h3>
-            <p className="text-xs text-slate-500 font-medium line-clamp-2 mb-10 leading-relaxed italic">
+            <p className="text-xs text-[var(--color-text-tertiary)] font-medium line-clamp-2 mb-10 leading-relaxed italic">
                 {agent.description || 'No operational brief provided.'}
             </p>
 
             <div className="grid grid-cols-2 gap-4 mb-8">
                 <div className="p-3 bg-white/[0.02] border border-white/5 rounded-2xl">
-                    <span className="text-[8px] font-black uppercase tracking-widest text-slate-600 block mb-1">Total Cycles</span>
+                    <span className="text-[8px] font-black uppercase tracking-widest text-[var(--color-text-secondary)] block mb-1">Total Cycles</span>
                     <span className="text-sm font-black text-white">{agent.runs_count || 0}</span>
                 </div>
                 <div className="p-3 bg-white/[0.02] border border-white/5 rounded-2xl">
-                    <span className="text-[8px] font-black uppercase tracking-widest text-slate-600 block mb-1">Sync Goal</span>
+                    <span className="text-[8px] font-black uppercase tracking-widest text-[var(--color-text-secondary)] block mb-1">Sync Goal</span>
                     <span className="text-[9px] font-black text-white uppercase truncate">{agent.goal?.replace('_', ' ') || 'FIND JOBS'}</span>
                 </div>
             </div>
@@ -415,7 +415,7 @@ const AgentCard = ({ agent, onEdit, onDelete, onToggle, onRun }) => {
                 </button>
                 <button
                     onClick={onDelete}
-                    className="p-2.5 rounded-xl bg-white/[0.04] text-slate-600 hover:text-red-400 hover:bg-red-400/10 transition-all border border-white/5"
+                    className="p-2.5 rounded-xl bg-white/[0.04] text-[var(--color-text-secondary)] hover:text-red-400 hover:bg-red-400/10 transition-all border border-white/5"
                 >
                     <Trash2 size={16} />
                 </button>

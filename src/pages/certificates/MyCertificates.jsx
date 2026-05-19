@@ -19,12 +19,12 @@ import AILoader from '../../components/ui/AILoader';
 const CertificateCard = ({ cert, index, onShare, onDownload }) => {
   const gradeColors = {
     'Distinction': 'from-amber-500 to-yellow-500',
-    'Merit': 'from-emerald-500 to-teal-500',
+    'Merit': 'from-[var(--color-primary)] to-teal-500',
     'Pass': 'from-blue-500 to-indigo-500',
   };
   const gradeBg = {
     'Distinction': 'bg-amber-500/10 text-amber-600 border-amber-500/20',
-    'Merit': 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20',
+    'Merit': 'bg-[var(--color-primary)]/10 text-[var(--color-primary)] border-[var(--color-primary)]/20',
     'Pass': 'bg-blue-500/10 text-blue-600 border-blue-500/20',
   };
 
@@ -34,7 +34,7 @@ const CertificateCard = ({ cert, index, onShare, onDownload }) => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.12 }}
     >
-      <EliteCard className="p-0 overflow-hidden relative group h-full flex flex-col hover:border-emerald-500/30 transition-all duration-300">
+      <EliteCard className="p-0 overflow-hidden relative group h-full flex flex-col hover:border-[var(--color-primary)]/30 transition-all duration-300">
         <div className={`h-1.5 w-full bg-gradient-to-r ${gradeColors[cert.grade] || gradeColors['Pass']}`} />
         
         <div className="p-6 flex-1 flex flex-col">
@@ -63,7 +63,7 @@ const CertificateCard = ({ cert, index, onShare, onDownload }) => {
                     <span className="text-[9px] text-text-muted uppercase tracking-widest font-bold absolute bottom-0 left-0 right-0">Issued</span>
                 </div>
                  <div className="text-center border-l border-border relative">
-                    <span className="block text-emerald-600 font-bold text-sm flex items-center justify-center gap-1 mt-1.5"><Shield size={12}/> Verified</span>
+                    <span className="block text-[var(--color-primary)] font-bold text-sm flex items-center justify-center gap-1 mt-1.5"><Shield size={12}/> Verified</span>
                     <span className="text-[9px] text-text-muted uppercase tracking-widest font-bold absolute bottom-0 left-0 right-0">Status</span>
                 </div>
             </div>
@@ -81,10 +81,10 @@ const CertificateCard = ({ cert, index, onShare, onDownload }) => {
             <div className="flex justify-between items-center pt-2">
                 <span className="font-mono text-[10px] text-text-muted tracking-wider">{cert.certificate_number}</span>
                 <div className="flex gap-2">
-                    <button onClick={() => onShare(cert)} className="p-2 hover:bg-surface-elevated rounded-xl text-text-muted hover:text-emerald-500 transition-colors" title="Share">
+                    <button onClick={() => onShare(cert)} className="p-2 hover:bg-surface-elevated rounded-xl text-text-muted hover:text-[var(--color-primary)] transition-colors" title="Share">
                         <Share2 size={16}/>
                     </button>
-                    <button onClick={() => onDownload(cert)} className="p-2 hover:bg-surface-elevated rounded-xl text-text-muted hover:text-emerald-500 transition-colors" title="Download">
+                    <button onClick={() => onDownload(cert)} className="p-2 hover:bg-surface-elevated rounded-xl text-text-muted hover:text-[var(--color-primary)] transition-colors" title="Download">
                         <Download size={16}/>
                     </button>
                 </div>
@@ -255,7 +255,7 @@ const MyCertificates = () => {
                         {!searchQuery && (
                             <button
                                 onClick={() => navigate('/courses')}
-                                className="px-8 py-3 bg-emerald-600 text-white rounded-xl text-xs font-black uppercase tracking-widest hover:bg-emerald-700 transition-all shadow-lg hover:shadow-emerald-500/30"
+                                className="px-8 py-3 bg-[var(--color-primary)] text-white rounded-xl text-xs font-black uppercase tracking-widest hover:bg-[var(--color-primary-hover)] transition-all shadow-lg hover:shadow-emerald-500/30"
                             >
                                 Browse Courses
                             </button>
@@ -267,9 +267,9 @@ const MyCertificates = () => {
 
         {certificates.length > 0 && (
              <div className="mt-8 flex justify-center">
-                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/5 border border-emerald-500/10">
-                    <Shield size={14} className="text-emerald-600" />
-                    <span className="text-[10px] font-bold text-emerald-700 uppercase tracking-wide">Securely Verified on Blockchain</span>
+                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--color-primary)]/5 border border-[var(--color-primary)]/10">
+                    <Shield size={14} className="text-[var(--color-primary)]" />
+                    <span className="text-[10px] font-bold text-[var(--color-primary)] uppercase tracking-wide">Securely Verified on Blockchain</span>
                 </div>
              </div>
         )}

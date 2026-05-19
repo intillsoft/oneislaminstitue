@@ -136,7 +136,7 @@ const AutopilotDashboard = () => {
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-surface dark:bg-[#0A0E27] flex items-center justify-center">
+            <div className="min-h-screen bg-surface dark:bg-[var(--color-bg-dark)] flex items-center justify-center">
                 <div className="text-center">
                     <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-workflow-primary mx-auto mb-4"></div>
                     <p className="text-text-secondary">Loading dashboard...</p>
@@ -179,12 +179,12 @@ const AutopilotDashboard = () => {
                     {/* Control Panel */}
                     <div className="bg-[#13182E]/40 backdrop-blur-3xl border border-white/5 rounded-3xl p-8 mb-8 flex flex-col md:flex-row items-center justify-between gap-6">
                         <div className="flex items-center gap-6">
-                            <div className={`w-16 h-16 rounded-2xl flex items-center justify-center transition-all duration-500 ${settings?.enabled ? 'bg-emerald-500/20 text-emerald-400 shadow-[0_0_30px_rgba(16,185,129,0.2)]' : 'bg-slate-500/20 text-slate-400'}`}>
+                            <div className={`w-16 h-16 rounded-2xl flex items-center justify-center transition-all duration-500 ${settings?.enabled ? 'bg-[var(--color-primary)]/20 text-[var(--color-primary)] shadow-[0_0_30px_rgba(16,185,129,0.2)]' : 'bg-slate-500/20 text-slate-400'}`}>
                                 {settings?.enabled ? <Activity size={32} className="animate-pulse" /> : <Pause size={32} />}
                             </div>
                             <div>
                                 <div className="flex items-center gap-3 mb-1">
-                                    <div className={`w-2 h-2 rounded-full ${settings?.enabled ? 'bg-emerald-500 animate-pulse' : 'bg-slate-500'}`} />
+                                    <div className={`w-2 h-2 rounded-full ${settings?.enabled ? 'bg-[var(--color-primary)] animate-pulse' : 'bg-slate-500'}`} />
                                     <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
                                         System {settings?.enabled ? 'Active' : 'Standby'}
                                     </span>
@@ -270,7 +270,7 @@ const AutopilotDashboard = () => {
                     {/* Charts Section */}
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
                         <EliteCard variant="glass" className="p-8">
-                            <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 mb-8 flex items-center gap-3">
+                            <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-[var(--color-text-tertiary)] mb-8 flex items-center gap-3">
                                 <BarChart3 className="w-4 h-4 text-workflow-primary" />
                                 Growth Trajectory
                             </h3>
@@ -301,7 +301,7 @@ const AutopilotDashboard = () => {
                                         </BarChart>
                                     </ResponsiveContainer>
                                 ) : (
-                                    <div className="flex items-center justify-center h-full text-slate-500 text-sm">
+                                    <div className="flex items-center justify-center h-full text-[var(--color-text-tertiary)] text-sm">
                                         No trend data available yet
                                     </div>
                                 )}
@@ -309,7 +309,7 @@ const AutopilotDashboard = () => {
                         </EliteCard>
 
                         <EliteCard variant="glass" className="p-8">
-                            <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 mb-8 flex items-center gap-3">
+                            <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-[var(--color-text-tertiary)] mb-8 flex items-center gap-3">
                                 <PieChartIcon className="w-4 h-4 text-workflow-primary" />
                                 Distribution Matrix
                             </h3>
@@ -347,7 +347,7 @@ const AutopilotDashboard = () => {
                                         </PieChart>
                                     </ResponsiveContainer>
                                 ) : (
-                                    <div className="flex items-center justify-center h-full text-slate-500 text-sm">
+                                    <div className="flex items-center justify-center h-full text-[var(--color-text-tertiary)] text-sm">
                                         No data available
                                     </div>
                                 )}
@@ -372,7 +372,7 @@ const AutopilotDashboard = () => {
                                 {recentActivity.filter(a => a.status === 'manual_apply').length === 0 ? (
                                     <div className="flex flex-col items-center justify-center py-12 px-6 text-center">
                                         <Target className="w-8 h-8 text-slate-700 mb-3 opacity-20" />
-                                        <p className="text-[10px] text-slate-500 font-black uppercase tracking-widest">
+                                        <p className="text-[10px] text-[var(--color-text-tertiary)] font-black uppercase tracking-widest">
                                             No pending matches
                                         </p>
                                     </div>
@@ -390,7 +390,7 @@ const AutopilotDashboard = () => {
                                                     <h4 className="text-sm font-bold text-white mb-1 line-clamp-1">
                                                         {activity.job_title || activity.jobs?.title}
                                                     </h4>
-                                                    <p className="text-[10px] text-slate-500 font-bold uppercase tracking-wider line-clamp-1">
+                                                    <p className="text-[10px] text-[var(--color-text-tertiary)] font-bold uppercase tracking-wider line-clamp-1">
                                                         {activity.company || activity.jobs?.company}
                                                     </p>
                                                 </div>
@@ -399,7 +399,7 @@ const AutopilotDashboard = () => {
                                                 </div>
                                             </div>
                                             <div className="flex items-center justify-between">
-                                                <span className="text-[9px] text-slate-600 font-bold uppercase italic">
+                                                <span className="text-[9px] text-[var(--color-text-secondary)] font-bold uppercase italic">
                                                     {activity.platform || activity.jobs?.source || 'external'}
                                                 </span>
                                                 <button
@@ -419,22 +419,22 @@ const AutopilotDashboard = () => {
                         {/* Transmission Protocol (Auto-applied) */}
                         <EliteCard variant="glass" className="lg:col-span-2 p-0 overflow-hidden border-indigo-500/20">
                             <div className="p-6 border-b border-white/5 flex items-center justify-between bg-white/5">
-                                <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 flex items-center gap-3">
+                                <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-[var(--color-text-tertiary)] flex items-center gap-3">
                                     <Activity className="w-4 h-4 text-indigo-500" />
                                     Transmission Protocol
                                 </h3>
                                 <div className="flex gap-2">
                                     <div className="flex items-center gap-1">
-                                        <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                                        <span className="text-[8px] font-black text-slate-600 uppercase">Neural Auto</span>
+                                        <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-primary)]" />
+                                        <span className="text-[8px] font-black text-[var(--color-text-secondary)] uppercase">Neural Auto</span>
                                     </div>
                                     <div className="flex items-center gap-1">
                                         <div className="w-1.5 h-1.5 rounded-full bg-amber-500" />
-                                        <span className="text-[8px] font-black text-slate-600 uppercase">Strategic Manual</span>
+                                        <span className="text-[8px] font-black text-[var(--color-text-secondary)] uppercase">Strategic Manual</span>
                                     </div>
                                     <div className="flex items-center gap-1">
                                         <div className="w-1.5 h-1.5 rounded-full bg-red-500" />
-                                        <span className="text-[8px] font-black text-slate-600 uppercase">Blocked</span>
+                                        <span className="text-[8px] font-black text-[var(--color-text-secondary)] uppercase">Blocked</span>
                                     </div>
                                 </div>
                             </div>
@@ -442,7 +442,7 @@ const AutopilotDashboard = () => {
                                 {recentActivity.filter(a => a.status !== 'manual_apply').length === 0 ? (
                                     <div className="flex flex-col items-center justify-center py-20 text-center">
                                         <Zap className="w-12 h-12 text-slate-800 mb-4 opacity-10" />
-                                        <p className="text-slate-500 font-medium">Listening for portal activity...</p>
+                                        <p className="text-[var(--color-text-tertiary)] font-medium">Listening for portal activity...</p>
                                     </div>
                                 ) : (
                                     recentActivity.filter(a => a.status !== 'manual_apply').map((activity, index) => (
@@ -452,10 +452,10 @@ const AutopilotDashboard = () => {
                                             animate={{ opacity: 1, y: 0 }}
                                             className="p-6 flex items-center gap-6 hover:bg-white/[0.01] transition-colors"
                                         >
-                                            <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${activity.status === 'success' ? 'bg-emerald-500/10 text-emerald-500' :
+                                            <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${activity.status === 'success' ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)]' :
                                                 activity.status === 'manual_applied' ? 'bg-amber-500/10 text-amber-500' :
                                                     activity.status === 'failed' ? 'bg-red-500/10 text-red-500' :
-                                                        'bg-slate-500/10 text-slate-500'
+                                                        'bg-slate-500/10 text-[var(--color-text-tertiary)]'
                                                 }`}>
                                                 {activity.status === 'success' ? <CheckCircle2 size={18} /> :
                                                     activity.status === 'manual_applied' ? <ArrowUpRight size={18} /> :
@@ -464,11 +464,11 @@ const AutopilotDashboard = () => {
                                             </div>
                                             <div className="flex-1">
                                                 <h4 className="text-sm font-bold text-white mb-0.5">{activity.job_title || activity.jobs?.title}</h4>
-                                                <p className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">{activity.company || activity.jobs?.company}</p>
+                                                <p className="text-[10px] text-[var(--color-text-tertiary)] font-bold uppercase tracking-wider">{activity.company || activity.jobs?.company}</p>
                                             </div>
                                             <div className="text-right flex flex-col items-end gap-1">
                                                 <div className="text-[11px] font-black text-white mb-0.5">{activity.match_score || activity.matchScore}% Quality</div>
-                                                <div className="text-[9px] text-slate-600 font-bold uppercase mb-1">{new Date(activity.applied_at || activity.created_at).toLocaleDateString()}</div>
+                                                <div className="text-[9px] text-[var(--color-text-secondary)] font-bold uppercase mb-1">{new Date(activity.applied_at || activity.created_at).toLocaleDateString()}</div>
 
                                                 {(activity.status === 'failed' || activity.status === 'skipped' || activity.status === 'processing') && (
                                                     <button

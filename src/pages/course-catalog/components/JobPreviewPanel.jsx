@@ -46,14 +46,14 @@ const JobPreviewPanel = ({ job, onClose, isSaved, onSave }) => {
               onClick={onSave}
               className={`p-2.5 rounded-xl transition-all ${isSaved
                   ? 'bg-rose-500/20 text-rose-500 border border-rose-500/30'
-                  : 'bg-white/5 text-slate-500 hover:text-white border border-white/5'
+                  : 'bg-white/5 text-[var(--color-text-tertiary)] hover:text-white border border-white/5'
                 }`}
             >
               <Heart className={`w-5 h-5 ${isSaved ? 'fill-rose-500' : ''}`} />
             </button>
             <button
               onClick={onClose}
-              className="p-2.5 rounded-xl bg-white/5 text-slate-500 hover:text-white border border-white/5 transition-all"
+              className="p-2.5 rounded-xl bg-white/5 text-[var(--color-text-tertiary)] hover:text-white border border-white/5 transition-all"
             >
               <X className="w-5 h-5" />
             </button>
@@ -77,19 +77,19 @@ const JobPreviewPanel = ({ job, onClose, isSaved, onSave }) => {
 
         <div className="grid grid-cols-2 gap-4 pb-6 border-b border-white/5">
           <div className="flex items-center gap-3 text-sm text-slate-400">
-            <MapPin className="w-4 h-4 text-slate-600" />
+            <MapPin className="w-4 h-4 text-[var(--color-text-secondary)]" />
             {job?.location || 'Remote'}
           </div>
           <div className="flex items-center gap-3 text-sm text-slate-400">
-            <Clock className="w-4 h-4 text-slate-600" />
+            <Clock className="w-4 h-4 text-[var(--color-text-secondary)]" />
             {job?.employmentType || 'Full-time'}
           </div>
-          <div className="flex items-center gap-3 text-sm text-emerald-400 font-bold">
-            <DollarSign className="w-4 h-4 text-emerald-600" />
+          <div className="flex items-center gap-3 text-sm text-[var(--color-primary)] font-bold">
+            <DollarSign className="w-4 h-4 text-[var(--color-primary)]" />
             {job?.salaryRange || 'Competitive'}
           </div>
           <div className="flex items-center gap-3 text-sm text-slate-400">
-            <Calendar className="w-4 h-4 text-slate-600" />
+            <Calendar className="w-4 h-4 text-[var(--color-text-secondary)]" />
             {formatTimeAgo(job?.postedDate)}
           </div>
         </div>
@@ -98,36 +98,36 @@ const JobPreviewPanel = ({ job, onClose, isSaved, onSave }) => {
       {/* Body Content */}
       <div className="p-6 space-y-8 max-h-[400px] overflow-y-auto custom-scrollbar">
         <section>
-          <h4 className="text-xs font-black text-slate-500 uppercase tracking-widest mb-4">Briefing</h4>
+          <h4 className="text-xs font-black text-[var(--color-text-tertiary)] uppercase tracking-widest mb-4">Briefing</h4>
           <div className="text-sm text-slate-400 leading-relaxed space-y-4">
             {job?.description ? (
               job.description.split('\n\n').map((p, i) => <p key={i}>{p}</p>)
             ) : (
-              <p className="italic text-slate-600">No mission details provided.</p>
+              <p className="italic text-[var(--color-text-secondary)]">No mission details provided.</p>
             )}
           </div>
         </section>
 
         <section>
-          <h4 className="text-xs font-black text-slate-500 uppercase tracking-widest mb-4">Required Arsenal</h4>
+          <h4 className="text-xs font-black text-[var(--color-text-tertiary)] uppercase tracking-widest mb-4">Required Arsenal</h4>
           <div className="space-y-3">
             {requirements.length > 0 ? requirements.map((req, i) => (
               <div key={i} className="flex gap-3 text-sm text-slate-400">
                 <CheckCircle2 className="w-4 h-4 text-workflow-primary flex-shrink-0 mt-0.5" />
                 <span>{typeof req === 'string' ? req : 'Specialized Skill'}</span>
               </div>
-            )) : <p className="text-sm text-slate-600 italic">Open requirements.</p>}
+            )) : <p className="text-sm text-[var(--color-text-secondary)] italic">Open requirements.</p>}
           </div>
         </section>
 
         <section className="bg-white/[0.02] border border-white/5 p-4 rounded-2xl">
           <div className="flex items-center gap-4 text-sm text-slate-400">
             <div className="flex items-center gap-2">
-              <Users className="w-4 h-4 text-slate-600" />
+              <Users className="w-4 h-4 text-[var(--color-text-secondary)]" />
               <span>{job?.companySize || '10-50'} members</span>
             </div>
             <div className="flex items-center gap-2">
-              <TrendingUp className="w-4 h-4 text-slate-600" />
+              <TrendingUp className="w-4 h-4 text-[var(--color-text-secondary)]" />
               <span>{job?.experienceLevel || 'Mid'} Level</span>
             </div>
           </div>

@@ -98,7 +98,7 @@ const RecommendedTalentSection = () => {
                     <Star size={12} className="fill-amber-400" />
                     <span className="text-sm font-bold">{talent.rating || '5.0'}</span>
                 </div>
-                <span className="text-[10px] text-slate-600 font-bold uppercase tracking-tighter">
+                <span className="text-[10px] text-[var(--color-text-secondary)] font-bold uppercase tracking-tighter">
                     {talent.total_reviews || 0} Reviews
                 </span>
             </div>
@@ -112,7 +112,7 @@ const RecommendedTalentSection = () => {
             </div>
 
             <div className="flex items-center justify-between mt-auto pt-6 border-t border-border">
-                <div className="flex items-center gap-1.5 text-emerald-500 font-black text-sm tracking-tighter">
+                <div className="flex items-center gap-1.5 text-[var(--color-primary)] font-black text-sm tracking-tighter">
                     <DollarSign size={16} />
                     {talent.hourly_rate}
                     <span className="text-[9px] uppercase tracking-widest opacity-60 text-text-muted ml-0.5">/hr</span>

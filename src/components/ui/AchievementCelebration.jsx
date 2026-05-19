@@ -40,7 +40,7 @@ const AchievementCelebration = ({ achievement, onComplete }) => {
       icon: CheckCircle2,
       title: 'Application Sent!',
       message: 'Your application has been submitted successfully!',
-      color: 'from-green-400 to-emerald-500',
+      color: 'from-green-400 to-[var(--color-primary)]',
       flowers: true,
     },
     'profile_complete': {
@@ -214,7 +214,7 @@ const AchievementCelebration = ({ achievement, onComplete }) => {
                 >
                   <div
                     className={`w-3 h-3 rounded-full bg-gradient-to-br ${
-                      ['from-yellow-400 to-orange-500', 'from-pink-400 to-rose-500', 'from-purple-400 to-indigo-500', 'from-blue-400 to-cyan-500', 'from-green-400 to-emerald-500'][i % 5]
+                      ['from-yellow-400 to-orange-500', 'from-pink-400 to-rose-500', 'from-purple-400 to-indigo-500', 'from-blue-400 to-cyan-500', 'from-green-400 to-[var(--color-primary)]'][i % 5]
                     }`}
                     style={{
                       boxShadow: '0 0 10px currentColor',

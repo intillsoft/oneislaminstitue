@@ -378,7 +378,7 @@ const CourseManagementPage = ({ activeTab: initialTab = 'create' }) => {
         </div>
         <div className="p-6 bg-surface-elevated dark:bg-white/5 border border-border dark:border-white/10 rounded-3xl sm:col-span-2 lg:col-span-1">
           <span className="text-[10px] font-black uppercase tracking-widest text-text-muted mb-2 block">Avg. Completion</span>
-          <span className="text-3xl font-black text-emerald-600">
+          <span className="text-3xl font-black text-[var(--color-primary)]">
             {loadingMetrics ? '...' : metrics.completionRate}%
           </span>
         </div>
@@ -396,7 +396,7 @@ const CourseManagementPage = ({ activeTab: initialTab = 'create' }) => {
               key={tab.id}
               onClick={() => setActiveTab(tab.id === 'studio' ? 'create' : tab.id)}
               className={`relative py-2 text-[11px] font-black uppercase tracking-widest transition-all ${((activeTab === 'create' || activeTab === 'curriculum' || activeTab === 'certificates') && tab.id === 'studio') || activeTab === tab.id
-                ? 'text-emerald-600'
+                ? 'text-[var(--color-primary)]'
                 : 'text-text-muted hover:text-text-primary'
                 }`}
             >
@@ -407,7 +407,7 @@ const CourseManagementPage = ({ activeTab: initialTab = 'create' }) => {
               {(((activeTab === 'create' || activeTab === 'curriculum' || activeTab === 'certificates') && tab.id === 'studio') || activeTab === tab.id) && (
                 <motion.div
                   layoutId="activeTabUnderline"
-                  className="absolute -bottom-[17px] left-0 right-0 h-1 bg-emerald-600 rounded-t-full"
+                  className="absolute -bottom-[17px] left-0 right-0 h-1 bg-[var(--color-primary)] rounded-t-full"
                 />
               )}
             </button>
@@ -420,7 +420,7 @@ const CourseManagementPage = ({ activeTab: initialTab = 'create' }) => {
          <div className="flex items-center gap-4 mb-8 bg-surface-elevated dark:bg-white/5 p-1.5 rounded-2xl border border-border dark:border-white/10 w-fit shadow-sm overflow-x-auto no-scrollbar">
             <button 
                 onClick={() => setActiveTab('create')}
-                className={`px-5 py-2.5 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all flex items-center gap-2 min-w-max ${activeTab === 'create' ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-500/20' : 'text-slate-500 hover:text-white'}`}
+                className={`px-5 py-2.5 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all flex items-center gap-2 min-w-max ${activeTab === 'create' ? 'bg-[var(--color-primary)] text-white shadow-lg shadow-[var(--color-primary)]/20' : 'text-[var(--color-text-tertiary)] hover:text-white'}`}
             >
                 <div className={`w-1.5 h-1.5 rounded-full ${activeTab === 'create' ? 'bg-white' : 'bg-slate-700'}`} />
                 1. Identity & Narrative
@@ -430,7 +430,7 @@ const CourseManagementPage = ({ activeTab: initialTab = 'create' }) => {
                     if (selectedJob?.id) setActiveTab('curriculum');
                     else showError('Please save the course foundation before building the curriculum.');
                 }}
-                className={`px-5 py-2.5 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all flex items-center gap-2 min-w-max ${activeTab === 'curriculum' ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-500/20' : 'text-slate-500 hover:text-white'}`}
+                className={`px-5 py-2.5 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all flex items-center gap-2 min-w-max ${activeTab === 'curriculum' ? 'bg-[var(--color-primary)] text-white shadow-lg shadow-[var(--color-primary)]/20' : 'text-[var(--color-text-tertiary)] hover:text-white'}`}
             >
                 <div className={`w-1.5 h-1.5 rounded-full ${activeTab === 'curriculum' ? 'bg-white' : 'bg-slate-700'}`} />
                 2. Curriculum Builder
@@ -440,7 +440,7 @@ const CourseManagementPage = ({ activeTab: initialTab = 'create' }) => {
                     if (selectedJob?.id) setActiveTab('certificates');
                     else showError('Please save the course foundation before designing the certificate.');
                 }}
-                className={`px-5 py-2.5 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all flex items-center gap-2 min-w-max ${activeTab === 'certificates' ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-500/20' : 'text-slate-500 hover:text-white'}`}
+                className={`px-5 py-2.5 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all flex items-center gap-2 min-w-max ${activeTab === 'certificates' ? 'bg-[var(--color-primary)] text-white shadow-lg shadow-[var(--color-primary)]/20' : 'text-[var(--color-text-tertiary)] hover:text-white'}`}
             >
                 <div className={`w-1.5 h-1.5 rounded-full ${activeTab === 'certificates' ? 'bg-white' : 'bg-slate-700'}`} />
                 3. Certificate Designer

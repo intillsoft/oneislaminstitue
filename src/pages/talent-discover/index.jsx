@@ -86,7 +86,7 @@ const TalentDiscover = () => {
           <Star
             key={i}
             size={12}
-            className={`${i < Math.floor(rating) ? 'text-amber-400 fill-amber-400' : 'text-slate-600'}`}
+            className={`${i < Math.floor(rating) ? 'text-amber-400 fill-amber-400' : 'text-[var(--color-text-secondary)]'}`}
           />
         ))}
       </div>
@@ -114,7 +114,7 @@ const TalentDiscover = () => {
             {/* Premium Search Box */}
             <div className="max-w-2xl">
               <div className="glass-panel p-2 rounded-2xl flex items-center gap-2 group focus-within:border-workflow-primary/50 transition-all duration-500 shadow-2xl bg-bg-elevated border border-border dark:border-white/10">
-                <div className="pl-4 text-slate-500 group-focus-within:text-workflow-primary transition-colors">
+                <div className="pl-4 text-[var(--color-text-tertiary)] group-focus-within:text-workflow-primary transition-colors">
                   <Search className="w-5 h-5" />
                 </div>
                 <input
@@ -328,7 +328,7 @@ const TalentDiscover = () => {
                             </div>
                           )}
                         </div>
-                        <div className={`absolute -bottom-1 -right-1 w-5 h-5 rounded-full border-[3px] border-bg-elevated ${talent.availability === 'available' ? 'bg-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.5)]' : 'bg-slate-700'}`} />
+                        <div className={`absolute -bottom-1 -right-1 w-5 h-5 rounded-full border-[3px] border-bg-elevated ${talent.availability === 'available' ? 'bg-[var(--color-primary)] shadow-[0_0_15px_rgba(16,185,129,0.5)]' : 'bg-slate-700'}`} />
                       </Link>
 
                       <div className="flex-1 min-w-0 w-full">
@@ -338,13 +338,13 @@ const TalentDiscover = () => {
                               {talent.user?.name || 'Elite Talent'}
                             </h3>
                           </Link>
-                          <div className="flex items-center gap-1.5 text-xs font-black text-emerald-500 bg-emerald-500/10 px-3 py-1.5 rounded-xl border border-emerald-500/20 w-fit">
+                          <div className="flex items-center gap-1.5 text-xs font-black text-[var(--color-primary)] bg-[var(--color-primary)]/10 px-3 py-1.5 rounded-xl border border-[var(--color-primary)]/20 w-fit">
                             <DollarSign className="w-3.5 h-3.5" />
                             {talent.hourly_rate}/hr
                           </div>
                         </div>
 
-                        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mb-4 text-xs font-bold text-slate-500 uppercase tracking-widest">
+                        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mb-4 text-xs font-bold text-[var(--color-text-tertiary)] uppercase tracking-widest">
                           <span className="flex items-center gap-1.5 text-slate-300">
                             <Briefcase className="w-3.5 h-3.5 text-workflow-primary" />
                             {talent.title || 'Specialist'}
@@ -360,7 +360,7 @@ const TalentDiscover = () => {
                           <div className="bg-amber-500/10 px-2 py-1 rounded-lg flex items-center gap-1.5">
                             {renderStars(talent.rating || 5)}
                           </div>
-                          <span className="text-[10px] font-black text-slate-600 uppercase tracking-widest">({talent.total_reviews || 0} Reviews)</span>
+                          <span className="text-[10px] font-black text-[var(--color-text-secondary)] uppercase tracking-widest">({talent.total_reviews || 0} Reviews)</span>
                         </div>
 
                         <div className="flex flex-wrap gap-2 items-center">
@@ -370,7 +370,7 @@ const TalentDiscover = () => {
                             </span>
                           ))}
                           {talent.skills?.length > 4 && (
-                            <span className="text-[9px] font-black text-slate-600">+{talent.skills.length - 4}</span>
+                            <span className="text-[9px] font-black text-[var(--color-text-secondary)]">+{talent.skills.length - 4}</span>
                           )}
                         </div>
                       </div>

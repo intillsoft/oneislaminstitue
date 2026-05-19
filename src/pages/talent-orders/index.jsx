@@ -61,11 +61,11 @@ const TalentOrders = () => {
     const colors = {
       pending: 'bg-amber-500/10 text-amber-500 border-amber-500/20',
       in_progress: 'bg-blue-500/10 text-blue-500 border-blue-500/20',
-      completed: 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20',
+      completed: 'bg-[var(--color-primary)]/10 text-[var(--color-primary)] border-[var(--color-primary)]/20',
       cancelled: 'bg-rose-500/10 text-rose-500 border-rose-500/20',
       disputed: 'bg-orange-500/10 text-orange-500 border-orange-500/20',
     };
-    return colors[status] || 'bg-slate-500/10 text-slate-500 border-white/10';
+    return colors[status] || 'bg-slate-500/10 text-[var(--color-text-tertiary)] border-white/10';
   };
 
   if (loading) {
@@ -163,7 +163,7 @@ const TalentOrders = () => {
                                   <Icon name="User" size={14} className="text-workflow-primary" />
                                 </div>
                               )}
-                              <div className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-emerald-500 border-2 border-[#0A1628] rounded-full"></div>
+                              <div className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-[var(--color-primary)] border-2 border-[#0A1628] rounded-full"></div>
                             </div>
                             <span className="text-sm font-bold text-text-primary dark:text-white group-hover:text-workflow-primary transition-colors">
                               {order.buyer?.name || 'Unknown Entity'}
@@ -224,7 +224,7 @@ const TalentOrders = () => {
                 setSelectedOrder(null);
                 setDeliveryFiles([]);
               }}
-              className="absolute top-6 right-6 p-2 bg-white/5 text-slate-500 hover:text-white hover:bg-white/10 rounded-xl transition-all"
+              className="absolute top-6 right-6 p-2 bg-white/5 text-[var(--color-text-tertiary)] hover:text-white hover:bg-white/10 rounded-xl transition-all"
             >
               <Icon name="X" size={18} />
             </button>
@@ -238,7 +238,7 @@ const TalentOrders = () => {
 
             <div className="space-y-8">
               <div className="p-6 bg-white/5 rounded-2xl border border-white/5">
-                <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-4">Buyer Entity</p>
+                <p className="text-[10px] font-black text-[var(--color-text-tertiary)] uppercase tracking-widest mb-4">Buyer Entity</p>
                 <div className="flex items-center gap-4">
                   {selectedOrder.buyer?.avatar_url ? (
                     <img
@@ -266,14 +266,14 @@ const TalentOrders = () => {
               </div>
 
               <div>
-                <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2 px-1">Active Gig</p>
+                <p className="text-[10px] font-black text-[var(--color-text-tertiary)] uppercase tracking-widest mb-2 px-1">Active Gig</p>
                 <div className="p-4 bg-bg-elevated rounded-2xl border border-border dark:border-white/5 text-sm font-bold text-text-primary dark:text-white">
                   {selectedOrder.gig?.title || selectedOrder.title || 'N/A'}
                 </div>
               </div>
 
               <div>
-                <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2 px-1">Protocol Objectives</p>
+                <p className="text-[10px] font-black text-[var(--color-text-tertiary)] uppercase tracking-widest mb-2 px-1">Protocol Objectives</p>
                 <div className="p-4 bg-bg-elevated rounded-2xl border border-border dark:border-white/5 text-xs text-text-muted dark:text-slate-400 leading-relaxed font-medium">
                   {selectedOrder.description || 'No objectives specified.'}
                 </div>

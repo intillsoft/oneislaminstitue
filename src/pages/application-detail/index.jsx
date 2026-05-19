@@ -185,7 +185,7 @@ const ApplicationDetail = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-white dark:bg-[#0A0E27] flex items-center justify-center">
+      <div className="min-h-screen bg-white dark:bg-[var(--color-bg-dark)] flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-workflow-primary"></div>
       </div>
     );
@@ -209,7 +209,7 @@ const ApplicationDetail = () => {
       <Helmet>
         <title>Application Detail - Workflow</title>
       </Helmet>
-      <div className="min-h-screen bg-white dark:bg-[#0A0E27]">
+      <div className="min-h-screen bg-white dark:bg-[var(--color-bg-dark)]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <Breadcrumb customItems={breadcrumbItems} />
 

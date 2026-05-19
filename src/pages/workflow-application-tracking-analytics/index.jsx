@@ -152,7 +152,7 @@ const WorkflowApplicationTrackingAnalytics = () => {
                     onClick={() => setFilterStatus(filter?.value)}
                     className={`flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-xs whitespace-nowrap transition-all duration-300 ${filterStatus === filter?.value
                       ? 'bg-workflow-primary/20 text-workflow-primary border border-workflow-primary/30'
-                      : 'text-slate-500 hover:text-slate-200 hover:bg-white/5'
+                      : 'text-[var(--color-text-tertiary)] hover:text-slate-200 hover:bg-white/5'
                       }`}
                   >
                     {filter?.label}
@@ -173,7 +173,7 @@ const WorkflowApplicationTrackingAnalytics = () => {
               ) : !user ? (
                 <div className="text-center py-20 bg-white/5 rounded-3xl border border-dashed border-white/10">
                   <h3 className="text-xl font-bold text-white mb-2">Sign in required</h3>
-                  <p className="text-slate-500">Please sign in to access your tracking command center</p>
+                  <p className="text-[var(--color-text-tertiary)]">Please sign in to access your tracking command center</p>
                 </div>
               ) : (
                 <div className="animate-in fade-in slide-in-from-bottom-4 duration-700">

@@ -65,7 +65,7 @@ const BoltChat = ({ onNewChat, searchHistory = [], onHistoryClick }) => {
       icon: TrendingUp,
       title: 'Application Tracking',
       description: 'Track all your applications with real-time updates',
-      color: 'from-green-500 to-emerald-500',
+      color: 'from-green-500 to-[var(--color-primary)]',
       link: '/workflow-application-tracking-analytics'
     },
     {
@@ -527,7 +527,7 @@ const BoltChat = ({ onNewChat, searchHistory = [], onHistoryClick }) => {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -10 }}
                         transition={{ duration: 0.2 }}
-                        className="absolute top-full left-0 right-0 mt-3 bg-white/95 dark:bg-dark-surface/95 backdrop-blur-xl rounded-2xl shadow-2xl max-h-[300px] overflow-auto z-50 border border-slate-200/50 dark:border-dark-border"
+                        className="absolute top-full left-0 right-0 mt-3 bg-white/95 dark:bg-dark-surface/95 backdrop-blur-xl rounded-2xl shadow-2xl max-h-[300px] overflow-auto z-50 border border-[var(--color-border-primary)]/50 dark:border-dark-border"
                       >
                         {searchHistory.slice(0, 5).map((item, index) => (
                           <div
@@ -569,7 +569,7 @@ const BoltChat = ({ onNewChat, searchHistory = [], onHistoryClick }) => {
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.3 + index * 0.05 }}
                       onClick={() => handleQuickSearch(suggestion)}
-                      className="group p-4 text-left bg-white/60 dark:bg-dark-surface/60 backdrop-blur-sm rounded-xl hover:bg-white/80 dark:hover:bg-dark-surface/80 transition-all duration-300 border border-slate-200/50 dark:border-dark-border hover:border-workflow-primary/50 hover:shadow-lg"
+                      className="group p-4 text-left bg-white/60 dark:bg-dark-surface/60 backdrop-blur-sm rounded-xl hover:bg-white/80 dark:hover:bg-dark-surface/80 transition-all duration-300 border border-[var(--color-border-primary)]/50 dark:border-dark-border hover:border-workflow-primary/50 hover:shadow-lg"
                     >
                       <div className="flex items-center gap-3">
                         <div className="w-8 h-8 rounded-lg bg-workflow-primary/10 dark:bg-purple-500/20 flex items-center justify-center group-hover:bg-workflow-primary/20 dark:group-hover:bg-purple-500/30 transition-colors">
@@ -604,7 +604,7 @@ const BoltChat = ({ onNewChat, searchHistory = [], onHistoryClick }) => {
                         transition={{ delay: 0.6 + index * 0.1 }}
                         whileHover={{ scale: 1.05, y: -4 }}
                         whileTap={{ scale: 0.98 }}
-                        className="bg-white/60 dark:bg-dark-surface/60 backdrop-blur-sm rounded-xl p-6 hover:bg-white/80 dark:hover:bg-dark-surface/80 transition-all duration-300 border border-slate-200/50 dark:border-dark-border hover:border-workflow-primary/50 hover:shadow-xl h-full"
+                        className="bg-white/60 dark:bg-dark-surface/60 backdrop-blur-sm rounded-xl p-6 hover:bg-white/80 dark:hover:bg-dark-surface/80 transition-all duration-300 border border-[var(--color-border-primary)]/50 dark:border-dark-border hover:border-workflow-primary/50 hover:shadow-xl h-full"
                       >
                         <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${feature.color} p-3 mb-4 group-hover:scale-110 transition-transform shadow-lg`}>
                           <IconComponent className="w-6 h-6 text-white" />
@@ -697,7 +697,7 @@ const BoltChat = ({ onNewChat, searchHistory = [], onHistoryClick }) => {
                             setInput(message.content);
                             inputRef.current?.focus();
                           }}
-                          className="p-1.5 text-slate-400 hover:text-workflow-primary hover:bg-slate-50 dark:hover:bg-dark-surface-elevated rounded-md transition-all"
+                          className="p-1.5 text-slate-400 hover:text-workflow-primary hover:bg-white dark:hover:bg-dark-surface-elevated rounded-md transition-all"
                           title="Edit message"
                         >
                           <Edit2 className="w-3.5 h-3.5" />
@@ -731,7 +731,7 @@ const BoltChat = ({ onNewChat, searchHistory = [], onHistoryClick }) => {
                 <Sparkles className="w-4 h-4 text-white" />
               </div>
               <div className="flex-1 max-w-4xl">
-                <div className="rounded-2xl p-4 bg-slate-100 dark:bg-dark-surface text-slate-900 dark:text-dark-text">
+                <div className="rounded-2xl p-4 bg-slate-100 dark:bg-dark-surface text-[var(--color-text-primary)] dark:text-dark-text">
                   <div className="flex items-center gap-2">
                     <div className="flex gap-1.5">
                       <div className="w-2 h-2 bg-workflow-primary rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
@@ -756,7 +756,7 @@ const BoltChat = ({ onNewChat, searchHistory = [], onHistoryClick }) => {
                 <Sparkles className="w-4 h-4 text-white" />
               </div>
               <div className="flex-1 max-w-4xl">
-                <div className="rounded-2xl p-4 bg-slate-100 dark:bg-dark-surface text-slate-900 dark:text-dark-text">
+                <div className="rounded-2xl p-4 bg-slate-100 dark:bg-dark-surface text-[var(--color-text-primary)] dark:text-dark-text">
                   <p className="whitespace-pre-wrap text-sm leading-relaxed">
                     {currentStream}
                     <span className="inline-block w-2 h-4 bg-workflow-primary dark:bg-purple-500 animate-pulse ml-1" />
@@ -829,7 +829,7 @@ const BoltChat = ({ onNewChat, searchHistory = [], onHistoryClick }) => {
               </div>
             )}
 
-            <div className="flex items-end gap-3 bg-white dark:bg-dark-surface rounded-2xl px-4 py-3 border border-slate-200 dark:border-dark-border focus-within:border-workflow-primary transition-all shadow-lg hover:shadow-xl">
+            <div className="flex items-end gap-3 bg-white dark:bg-dark-surface rounded-2xl px-4 py-3 border border-[var(--color-border-primary)] dark:border-dark-border focus-within:border-workflow-primary transition-all shadow-lg hover:shadow-xl">
               {/* Attachment Button */}
               <button
                 type="button"

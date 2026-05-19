@@ -80,23 +80,23 @@ const JobsManagementSection = () => {
       <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-8">
         <div>
           <h2 className="text-2xl font-bold text-white uppercase tracking-tight">Academic Governance</h2>
-          <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-500 mt-1">Curator Team Access & Authorization Registry</p>
+          <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--color-text-tertiary)] mt-1">Curator Team Access & Authorization Registry</p>
         </div>
         
         <div className="flex flex-col sm:flex-row gap-4">
           <div className="relative">
-            <Icon name="Search" size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
+            <Icon name="Search" size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--color-text-tertiary)]" />
             <input 
               type="text"
               placeholder="Query Curriculum..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="h-12 pl-12 pr-6 rounded-2xl bg-white/5 border border-white/10 text-[11px] font-bold text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/20 w-full sm:w-72 transition-all"
+              className="h-12 pl-12 pr-6 rounded-2xl bg-white/5 border border-white/10 text-[11px] font-bold text-white focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/20 w-full sm:w-72 transition-all"
             />
           </div>
           <button 
             onClick={() => navigate('/instructor/courses/new')}
-            className="h-12 px-8 bg-emerald-600 rounded-2xl text-[10px] font-black uppercase tracking-widest text-white hover:bg-emerald-500 transition-all flex items-center justify-center gap-3 shadow-xl shadow-emerald-500/10"
+            className="h-12 px-8 bg-[var(--color-primary)] rounded-2xl text-[10px] font-black uppercase tracking-widest text-white hover:bg-[var(--color-primary)] transition-all flex items-center justify-center gap-3 shadow-xl shadow-emerald-500/10"
           >
             <Icon name="Plus" size={16} />
             Architect Course
@@ -110,11 +110,11 @@ const JobsManagementSection = () => {
           <table className="w-full text-left">
             <thead>
               <tr className="border-b border-white/5 bg-white/[0.01]">
-                <th className="px-8 py-6 text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">Academic Structure</th>
-                <th className="px-8 py-6 text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">Pedagogy</th>
-                <th className="px-8 py-6 text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">State Control</th>
-                <th className="px-8 py-6 text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">Deployment</th>
-                <th className="px-8 py-6 text-right text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">Actions</th>
+                <th className="px-8 py-6 text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-text-tertiary)]">Academic Structure</th>
+                <th className="px-8 py-6 text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-text-tertiary)]">Pedagogy</th>
+                <th className="px-8 py-6 text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-text-tertiary)]">State Control</th>
+                <th className="px-8 py-6 text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-text-tertiary)]">Deployment</th>
+                <th className="px-8 py-6 text-right text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-text-tertiary)]">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-white/[0.03]">
@@ -128,9 +128,9 @@ const JobsManagementSection = () => {
                 <tr>
                    <td colSpan="5" className="px-8 py-24 text-center">
                     <div className="w-16 h-16 rounded-3xl bg-white/5 border border-white/5 flex items-center justify-center mx-auto mb-6">
-                      <Icon name="FileQuestion" size={32} className="text-slate-600" />
+                      <Icon name="FileQuestion" size={32} className="text-[var(--color-text-secondary)]" />
                     </div>
-                    <h3 className="text-sm font-black text-slate-600 uppercase tracking-widest italic">Curriculum Matrix is Empty</h3>
+                    <h3 className="text-sm font-black text-[var(--color-text-secondary)] uppercase tracking-widest italic">Curriculum Matrix is Empty</h3>
                   </td>
                 </tr>
               ) : (
@@ -138,12 +138,12 @@ const JobsManagementSection = () => {
                   <tr key={course.id} className="group hover:bg-white/[0.02] transition-premium">
                     <td className="px-8 py-8">
                       <div className="flex items-center gap-5">
-                        <div className="w-14 h-14 rounded-[1.25rem] bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-500 shrink-0">
+                        <div className="w-14 h-14 rounded-[1.25rem] bg-[var(--color-primary)]/10 border border-[var(--color-primary)]/20 flex items-center justify-center text-[var(--color-primary)] shrink-0">
                           <Icon name="Book" size={24} />
                         </div>
                         <div className="min-w-0">
-                          <div className="text-sm font-bold text-white group-hover:text-emerald-500 transition-colors uppercase tracking-tight truncate">{course.title}</div>
-                          <div className="text-[10px] font-semibold text-slate-500 uppercase tracking-widest mt-1">{course.company || 'Hope Dawah Institute'} • {course.industry || 'Sacred Knowledge'}</div>
+                          <div className="text-sm font-bold text-white group-hover:text-[var(--color-primary)] transition-colors uppercase tracking-tight truncate">{course.title}</div>
+                          <div className="text-[10px] font-semibold text-[var(--color-text-tertiary)] uppercase tracking-widest mt-1">{course.company || 'Hope Dawah Institute'} • {course.industry || 'Sacred Knowledge'}</div>
                         </div>
                       </div>
                     </td>
@@ -157,7 +157,7 @@ const JobsManagementSection = () => {
                         value={course.status || 'active'}
                         onChange={(e) => handleStatusChange(course.id, e.target.value)}
                         className={`text-[10px] font-black uppercase tracking-widest bg-transparent focus:outline-none cursor-pointer pb-1 border-b border-white/5
-                          ${course.status === 'active' || course.status === 'published' ? 'text-emerald-500/80' : 'text-slate-500'}`}
+                          ${course.status === 'active' || course.status === 'published' ? 'text-[var(--color-primary)]/80' : 'text-[var(--color-text-tertiary)]'}`}
                       >
                         <option value="active">Active</option>
                         <option value="published">Published</option>
@@ -166,7 +166,7 @@ const JobsManagementSection = () => {
                       </select>
                     </td>
                     <td className="px-8 py-8">
-                      <div className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
+                      <div className="text-[10px] font-black text-[var(--color-text-tertiary)] uppercase tracking-widest">
                         {course.created_at ? formatDistanceToNow(new Date(course.created_at), { addSuffix: true }).toUpperCase() : 'UNKNOWN'}
                       </div>
                     </td>
@@ -180,7 +180,7 @@ const JobsManagementSection = () => {
                         </button>
                         <button 
                           onClick={() => handleStatusChange(course.id, course.status === 'active' ? 'draft' : 'active')}
-                          className="p-3 bg-white/5 border border-white/5 rounded-2xl text-slate-400 hover:text-emerald-500 hover:bg-emerald-500/10 transition-all"
+                          className="p-3 bg-white/5 border border-white/5 rounded-2xl text-slate-400 hover:text-[var(--color-primary)] hover:bg-[var(--color-primary)]/10 transition-all"
                         >
                           <Icon name="Power" size={18} />
                         </button>

@@ -73,8 +73,8 @@ const ComprehensiveCourseStudio = ({
   const prevStep = () => setActiveStep(prev => Math.max(prev - 1, 0));
 
   const InputLabel = ({ children, required }) => (
-    <label className="text-xs font-semibold tracking-wide text-slate-500 mb-2 block">
-      {children} {required && <span className="text-emerald-500">*</span>}
+    <label className="text-xs font-semibold tracking-wide text-[var(--color-text-tertiary)] mb-2 block">
+      {children} {required && <span className="text-[var(--color-primary)]">*</span>}
     </label>
   );
 
@@ -90,18 +90,18 @@ const ComprehensiveCourseStudio = ({
           <div className={`
             w-6 h-6 rounded-lg flex items-center justify-center transition-all duration-300 text-[10px] font-black
             ${activeStep === idx 
-              ? 'bg-emerald-600 text-white' 
+              ? 'bg-[var(--color-primary)] text-white' 
               : idx < activeStep 
-              ? 'bg-emerald-600/10 text-emerald-500'
-              : 'bg-white/5 text-slate-500 hover:text-slate-400'}
+              ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)]'
+              : 'bg-white/5 text-[var(--color-text-tertiary)] hover:text-slate-400'}
           `}>
             {idx < activeStep ? <Icon name="Check" size={12} /> : idx + 1}
           </div>
           <div className="text-left hidden sm:block">
-            <h4 className={`text-[10px] font-black uppercase tracking-widest ${activeStep === idx ? 'text-white' : 'text-slate-500'}`}>{step.label}</h4>
+            <h4 className={`text-[10px] font-black uppercase tracking-widest ${activeStep === idx ? 'text-white' : 'text-[var(--color-text-tertiary)]'}`}>{step.label}</h4>
           </div>
           {activeStep === idx && (
-             <motion.div layoutId="stepIndicator" className="absolute -bottom-px left-0 right-0 h-0.5 bg-emerald-600" />
+             <motion.div layoutId="stepIndicator" className="absolute -bottom-px left-0 right-0 h-0.5 bg-[var(--color-primary)]" />
           )}
         </button>
       ))}
@@ -123,7 +123,7 @@ const ComprehensiveCourseStudio = ({
                     render={({ field }) => (
                       <input
                         {...field}
-                        className="w-full bg-white dark:bg-white/5 border border-border dark:border-white/10 rounded-lg px-4 py-4 text-base font-semibold text-text-primary focus:outline-none focus:ring-2 focus:ring-emerald-500/40 transition-all placeholder:text-text-muted"
+                        className="w-full bg-white dark:bg-white/5 border border-border dark:border-white/10 rounded-lg px-4 py-4 text-base font-semibold text-text-primary focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/40 transition-all placeholder:text-text-muted"
                         placeholder="e.g. Masterclass in Web Development"
                       />
                     )}
@@ -139,7 +139,7 @@ const ComprehensiveCourseStudio = ({
                       control={control}
                       rules={{ required: 'Category is required' }}
                       render={({ field }) => (
-                        <select {...field} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm font-bold text-white focus:outline-none focus:ring-1 focus:ring-emerald-500/40 transition-all appearance-none">
+                        <select {...field} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm font-bold text-white focus:outline-none focus:ring-1 focus:ring-[var(--color-primary)]/40 transition-all appearance-none">
                           <option value="">Select Category</option>
                           {departments.map(d => <option key={d.value} value={d.value} className="bg-slate-900">{d.label}</option>)}
                         </select>
@@ -153,7 +153,7 @@ const ComprehensiveCourseStudio = ({
                       control={control}
                       rules={{ required: 'Difficulty is required' }}
                       render={({ field }) => (
-                        <select {...field} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm font-bold text-white focus:outline-none focus:ring-1 focus:ring-emerald-500/40 transition-all appearance-none">
+                        <select {...field} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm font-bold text-white focus:outline-none focus:ring-1 focus:ring-[var(--color-primary)]/40 transition-all appearance-none">
                           <option value="">Select Level</option>
                           {academicDepths.map(d => <option key={d.value} value={d.value} className="bg-slate-900">{d.label}</option>)}
                         </select>
@@ -182,7 +182,7 @@ const ComprehensiveCourseStudio = ({
                            name="salary_min"
                            control={control}
                            render={({ field }) => (
-                             <input type="number" min="0" step="0.01" {...field} className="w-full bg-white dark:bg-white/5 border border-border dark:border-white/10 rounded-lg pl-8 pr-3 py-3 text-lg font-bold text-emerald-600 focus:outline-none" placeholder="5" />
+                             <input type="number" min="0" step="0.01" {...field} className="w-full bg-white dark:bg-white/5 border border-border dark:border-white/10 rounded-lg pl-8 pr-3 py-3 text-lg font-bold text-[var(--color-primary)] focus:outline-none" placeholder="5" />
                            )}
                          />
                        </div>
@@ -195,7 +195,7 @@ const ComprehensiveCourseStudio = ({
                            name="salary_max"
                            control={control}
                            render={({ field }) => (
-                             <input type="number" min="0" step="0.01" {...field} className="w-full bg-white dark:bg-white/5 border border-border dark:border-white/10 rounded-lg pl-8 pr-3 py-3 text-lg font-bold text-emerald-600 focus:outline-none" placeholder="Any" />
+                             <input type="number" min="0" step="0.01" {...field} className="w-full bg-white dark:bg-white/5 border border-border dark:border-white/10 rounded-lg pl-8 pr-3 py-3 text-lg font-bold text-[var(--color-primary)] focus:outline-none" placeholder="Any" />
                            )}
                          />
                        </div>
@@ -219,7 +219,7 @@ const ComprehensiveCourseStudio = ({
                       <textarea
                         {...field}
                         rows={8}
-                        className="w-full bg-white dark:bg-white/5 border border-border dark:border-white/10 rounded-lg px-4 py-4 text-base font-medium text-text-primary focus:outline-none focus:ring-2 focus:ring-emerald-500/40 transition-all resize-none leading-relaxed"
+                        className="w-full bg-white dark:bg-white/5 border border-border dark:border-white/10 rounded-lg px-4 py-4 text-base font-medium text-text-primary focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/40 transition-all resize-none leading-relaxed"
                         placeholder="Provide a compelling description of what this course offers..."
                       />
                     )}
@@ -234,7 +234,7 @@ const ComprehensiveCourseStudio = ({
                       <textarea
                         {...field}
                         rows={4}
-                        className="w-full bg-white dark:bg-white/5 border border-border dark:border-white/10 rounded-lg px-4 py-4 text-base font-medium text-text-primary focus:outline-none focus:ring-2 focus:ring-emerald-500/40 transition-all resize-none"
+                        className="w-full bg-white dark:bg-white/5 border border-border dark:border-white/10 rounded-lg px-4 py-4 text-base font-medium text-text-primary focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/40 transition-all resize-none"
                         placeholder="Tell students about your background and expertise..."
                       />
                     )}
@@ -278,9 +278,9 @@ const ComprehensiveCourseStudio = ({
                 </div>
 
                 <div className="space-y-6 md:border-l border-border dark:border-white/5 md:pl-8">
-                  <div className="p-5 bg-emerald-50 dark:bg-emerald-600/5 rounded-xl border border-emerald-100 dark:border-emerald-500/10">
+                  <div className="p-5 bg-[var(--color-primary-light)] dark:bg-[var(--color-primary)]/5 rounded-xl border border-[var(--color-border-secondary)] dark:border-[var(--color-primary)]/10">
                     <div className="flex items-center gap-3 mb-4">
-                      <Icon name="Target" className="text-emerald-500" size={18} />
+                      <Icon name="Target" className="text-[var(--color-primary)]" size={18} />
                       <h4 className="text-sm font-bold text-text-primary dark:text-white">Rewards & Gamification</h4>
                     </div>
                     
@@ -302,13 +302,13 @@ const ComprehensiveCourseStudio = ({
                              name="difficulty_rating"
                              control={control}
                              render={({ field }) => (
-                               <input type="number" step="0.1" max="5" min="0" {...field} className="w-full bg-transparent text-2xl font-black text-emerald-600 focus:outline-none" />
+                               <input type="number" step="0.1" max="5" min="0" {...field} className="w-full bg-transparent text-2xl font-black text-[var(--color-primary)] focus:outline-none" />
                              )}
                            />
                         </div>
                         <div className="p-3 bg-white dark:bg-white/5 rounded-lg border border-border dark:border-white/5 space-y-1 flex flex-col justify-center">
                            <p className="text-[10px] font-bold text-text-muted uppercase tracking-widest">XP Multiplier</p>
-                           <p className="text-lg font-bold text-emerald-500">x1.2</p>
+                           <p className="text-lg font-bold text-[var(--color-primary)]">x1.2</p>
                         </div>
                       </div>
                     </div>
@@ -394,7 +394,7 @@ const ComprehensiveCourseStudio = ({
                 exit={{ opacity: 0 }}
                 className="flex items-center gap-2 px-3 py-1.5 bg-surface rounded-lg border border-border"
               >
-                <div className={`w-2 h-2 rounded-full ${saveStatus === 'saving' ? 'bg-amber-500 animate-pulse' : 'bg-emerald-500'}`} />
+                <div className={`w-2 h-2 rounded-full ${saveStatus === 'saving' ? 'bg-amber-500 animate-pulse' : 'bg-[var(--color-primary)]'}`} />
                 <span className="text-xs font-semibold text-text-secondary">
                   {saveStatus === 'saving' ? 'Saving...' : 'Saved'}
                 </span>
@@ -437,7 +437,7 @@ const ComprehensiveCourseStudio = ({
                 <button
                     type="button"
                     onClick={nextStep}
-                    className="flex-1 sm:flex-none px-5 py-2 bg-emerald-600 text-white rounded-lg text-sm font-semibold active:scale-[0.98] transition-all"
+                    className="flex-1 sm:flex-none px-5 py-2 bg-[var(--color-primary)] text-white rounded-lg text-sm font-semibold active:scale-[0.98] transition-all"
                 >
                     Continue
                 </button>
@@ -463,7 +463,7 @@ const ComprehensiveCourseStudio = ({
                             handleSubmit((data) => onSubmit(data, false))();
                         }}
                         disabled={!isValid || saveStatus === 'saving'}
-                        className="flex-1 sm:flex-none px-6 py-2 bg-emerald-600 text-white rounded-lg text-sm font-bold hover:bg-emerald-700 active:scale-[0.98] disabled:opacity-50 transition-all"
+                        className="flex-1 sm:flex-none px-6 py-2 bg-[var(--color-primary)] text-white rounded-lg text-sm font-bold hover:bg-[var(--color-primary-hover)] active:scale-[0.98] disabled:opacity-50 transition-all"
                     >
                         {formMode === 'create' ? 'Publish & Open Modules' : 'Publish Changes'}
                     </button>

@@ -18,7 +18,7 @@ import AILoader from '../../components/ui/AILoader';
 
 const EVENT_CONFIG = {
   lesson: { icon: BookOpen, color: 'from-blue-500 to-indigo-600', bg: 'bg-blue-500/10', text: 'text-blue-600', border: 'border-blue-500/20', label: 'Lesson' },
-  live_session: { icon: Video, color: 'from-emerald-500 to-teal-600', bg: 'bg-emerald-500/10', text: 'text-emerald-600', border: 'border-emerald-500/20', label: 'Live Session' },
+  live_session: { icon: Video, color: 'from-[var(--color-primary)] to-teal-600', bg: 'bg-[var(--color-primary)]/10', text: 'text-[var(--color-primary)]', border: 'border-[var(--color-primary)]/20', label: 'Live Session' },
   assignment_due: { icon: FileText, color: 'from-orange-500 to-red-500', bg: 'bg-orange-500/10', text: 'text-orange-600', border: 'border-orange-500/20', label: 'Assignment' },
   quiz: { icon: CheckSquare, color: 'from-violet-500 to-purple-600', bg: 'bg-violet-500/10', text: 'text-violet-600', border: 'border-violet-500/20', label: 'Quiz' },
   exam: { icon: AlertTriangle, color: 'from-red-500 to-rose-600', bg: 'bg-red-500/10', text: 'text-red-600', border: 'border-red-500/20', label: 'Exam' },
@@ -46,14 +46,14 @@ const EventCard = ({ event, index, onPrepTips }) => {
       animate={{ opacity: 1, x: 0 }}
       transition={{ delay: index * 0.06 }}
     >
-        <EliteCard className={`p-0 relative overflow-hidden group hover:border-emerald-500/30 transition-all duration-300 ${today ? 'border-emerald-500/40 shadow-lg shadow-emerald-500/5' : ''}`}>
+        <EliteCard className={`p-0 relative overflow-hidden group hover:border-[var(--color-primary)]/30 transition-all duration-300 ${today ? 'border-[var(--color-primary)]/40 shadow-lg shadow-emerald-500/5' : ''}`}>
              <div className={`absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b ${config.color || 'from-slate-400 to-slate-500'}`}/>
              
              <div className="p-5 pl-7">
                 {(today || tomorrow) && (
                     <div className="absolute top-4 right-4">
                         <span className={`px-2 py-0.5 text-[9px] font-black uppercase tracking-widest rounded-full shadow-lg ${
-                            today ? 'bg-emerald-600 text-white shadow-emerald-600/20' : 'bg-blue-500 text-white shadow-blue-500/20'
+                            today ? 'bg-[var(--color-primary)] text-white shadow-[var(--color-primary)]/20' : 'bg-blue-500 text-white shadow-blue-500/20'
                         }`}>
                             {today ? 'Today' : 'Tomorrow'}
                         </span>
@@ -93,7 +93,7 @@ const EventCard = ({ event, index, onPrepTips }) => {
                         <div className="flex items-center gap-2 mt-4 pt-3 border-t border-border">
                             {event.meeting_url && (
                                 <a href={event.meeting_url} target="_blank" rel="noopener noreferrer"
-                                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-600 text-white text-[10px] font-black uppercase tracking-wider hover:bg-emerald-700 transition-all shadow-lg shadow-emerald-600/20">
+                                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[var(--color-primary)] text-white text-[10px] font-black uppercase tracking-wider hover:bg-[var(--color-primary-hover)] transition-all shadow-lg shadow-[var(--color-primary)]/20">
                                     <Video size={11} /> Join Class
                                 </a>
                             )}
@@ -180,7 +180,7 @@ const PrepTipsModal = ({ event, onClose }) => {
                 )}
              </div>
 
-             <button onClick={onClose} className="w-full py-3 rounded-xl bg-emerald-600 text-white text-xs font-black uppercase tracking-widest hover:bg-emerald-700 transition-all shadow-lg shadow-emerald-600/20">
+             <button onClick={onClose} className="w-full py-3 rounded-xl bg-[var(--color-primary)] text-white text-xs font-black uppercase tracking-widest hover:bg-[var(--color-primary-hover)] transition-all shadow-lg shadow-[var(--color-primary)]/20">
                 Mark as Prepared
              </button>
         </div>
@@ -289,7 +289,7 @@ const ClassSchedule = () => {
                 <EliteCard className={`
                     ${dailySummary.priority === 'high' ? 'bg-gradient-to-r from-red-500/5 to-orange-500/5 border-orange-500/20' : 
                       dailySummary.priority === 'medium' ? 'bg-gradient-to-r from-blue-500/5 to-indigo-500/5 border-blue-500/20' : 
-                      'bg-gradient-to-r from-emerald-500/5 to-teal-500/5 border-emerald-500/20'}
+                      'bg-gradient-to-r from-[var(--color-primary)]/5 to-teal-500/5 border-[var(--color-primary)]/20'}
                 `}>
                     <div className="flex items-start gap-4">
                         <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-600 to-indigo-600 flex items-center justify-center shadow-lg shadow-violet-500/20 flex-shrink-0">
@@ -320,8 +320,8 @@ const ClassSchedule = () => {
                 groupedEvents.map(([dateKey, dayEvents], gi) => (
                     <motion.div key={dateKey} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: gi * 0.1 }}>
                         <div className="flex items-center gap-3 mb-4 pl-1">
-                            <div className={`w-2.5 h-2.5 rounded-full ${isToday(dayEvents[0].start_time) ? 'bg-emerald-500 shadow-lg shadow-emerald-500/50' : 'bg-text-muted/30'}`} />
-                            <h2 className={`text-sm font-black uppercase tracking-widest ${isToday(dayEvents[0].start_time) ? 'text-emerald-600' : 'text-text-muted'}`}>
+                            <div className={`w-2.5 h-2.5 rounded-full ${isToday(dayEvents[0].start_time) ? 'bg-[var(--color-primary)] shadow-lg shadow-emerald-500/50' : 'bg-text-muted/30'}`} />
+                            <h2 className={`text-sm font-black uppercase tracking-widest ${isToday(dayEvents[0].start_time) ? 'text-[var(--color-primary)]' : 'text-text-muted'}`}>
                                 {isToday(dayEvents[0].start_time) ? 'Today' : isTomorrow(dayEvents[0].start_time) ? 'Tomorrow' : formatDate(dayEvents[0].start_time)}
                             </h2>
                             <div className="flex-1 h-px bg-border/50" />
@@ -341,7 +341,7 @@ const ClassSchedule = () => {
                     <p className="text-sm text-text-muted mb-6 max-w-md mx-auto">
                         No upcoming classes or deadlines found. This is a great time to browse new courses or review past material.
                     </p>
-                    <button onClick={() => navigate('/courses')} className="px-8 py-3 bg-emerald-600 text-white rounded-xl text-xs font-black uppercase tracking-widest hover:bg-emerald-700 transition-all shadow-lg hover:shadow-emerald-500/30">
+                    <button onClick={() => navigate('/courses')} className="px-8 py-3 bg-[var(--color-primary)] text-white rounded-xl text-xs font-black uppercase tracking-widest hover:bg-[var(--color-primary-hover)] transition-all shadow-lg hover:shadow-emerald-500/30">
                         Explore Courses
                     </button>
                 </EliteCard>

@@ -78,7 +78,7 @@ const AdvancedRecommendations = () => {
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-surface dark:bg-[#0A0E27] flex items-center justify-center">
+            <div className="min-h-screen bg-surface dark:bg-[var(--color-bg-dark)] flex items-center justify-center">
                 <div className="text-center">
                     <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-workflow-primary mx-auto mb-4"></div>
                     <p className="text-text-secondary">Loading AI-powered recommendations...</p>
@@ -90,7 +90,7 @@ const AdvancedRecommendations = () => {
     return (
         <>
             <Header />
-            <div className="advanced-recommendations min-h-screen bg-surface dark:bg-[#0A0E27] pt-20 pb-12">
+            <div className="advanced-recommendations min-h-screen bg-surface dark:bg-[var(--color-bg-dark)] pt-20 pb-12">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     {/* Header */}
                     <div className="page-header mb-8">

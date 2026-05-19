@@ -86,7 +86,7 @@ const RecommendedCourseCard = ({ course, index }) => {
         />
 
         {/* Thumbnail or icon block */}
-        <div className="relative w-full h-[150px] overflow-hidden bg-slate-50 dark:bg-white/[0.02] flex-shrink-0">
+        <div className="relative w-full h-[150px] overflow-hidden bg-white dark:bg-white/[0.02] flex-shrink-0">
           {hasThumb ? (
             <img
               src={thumbSrc}
@@ -118,7 +118,7 @@ const RecommendedCourseCard = ({ course, index }) => {
 
           {/* Enrolled badge */}
           {isEnrolled && (
-            <div className="absolute top-3 right-3 flex items-center gap-1 px-2 py-1 rounded-full bg-white/90 dark:bg-black/70 backdrop-blur-sm border border-emerald-200 dark:border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-[8px] font-black uppercase tracking-widest shadow">
+            <div className="absolute top-3 right-3 flex items-center gap-1 px-2 py-1 rounded-full bg-white/90 dark:bg-black/70 backdrop-blur-sm border border-[var(--color-border-secondary)] dark:border-[var(--color-primary)]/20 text-[var(--color-primary)] dark:text-[var(--color-primary)] text-[8px] font-black uppercase tracking-widest shadow">
               <CheckCircle2 size={9} />
               Enrolled
             </div>
@@ -137,7 +137,7 @@ const RecommendedCourseCard = ({ course, index }) => {
           </span>
 
           {/* Title */}
-          <h3 className="text-[13px] font-[900] text-slate-900 dark:text-white leading-snug tracking-tight line-clamp-2 group-hover:opacity-80 transition-opacity">
+          <h3 className="text-[13px] font-[900] text-[var(--color-text-primary)] dark:text-white leading-snug tracking-tight line-clamp-2 group-hover:opacity-80 transition-opacity">
             {title}
           </h3>
 
@@ -146,7 +146,7 @@ const RecommendedCourseCard = ({ course, index }) => {
             {isEnrolled && progress ? (
               <div className="space-y-1.5">
                 <div className="flex items-center justify-between">
-                  <span className="text-[9px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Progress</span>
+                  <span className="text-[9px] font-bold text-slate-400 dark:text-[var(--color-text-tertiary)] uppercase tracking-wider">Progress</span>
                   <span className="text-[9px] font-black" style={{ color: accentStart }}>{pct}%</span>
                 </div>
                 <div className="w-full h-1.5 rounded-full bg-slate-100 dark:bg-white/[0.05] overflow-hidden">
@@ -161,7 +161,7 @@ const RecommendedCourseCard = ({ course, index }) => {
               </div>
             ) : (
               <div className="flex items-center justify-between group/cta">
-                <span className="text-[9px] font-black uppercase tracking-[0.15em] text-slate-400 dark:text-slate-500 group-hover/cta:text-slate-700 dark:group-hover/cta:text-white transition-colors">
+                <span className="text-[9px] font-black uppercase tracking-[0.15em] text-slate-400 dark:text-[var(--color-text-tertiary)] group-hover/cta:text-slate-700 dark:group-hover/cta:text-white transition-colors">
                   Explore Curriculum
                 </span>
                 <div

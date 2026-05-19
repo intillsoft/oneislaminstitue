@@ -235,13 +235,13 @@ const ResumeEditor = () => {
                 <div className="w-12 h-12 rounded-2xl bg-workflow-primary/10 flex items-center justify-center animate-pulse">
                     <Zap className="text-workflow-primary animate-bounce" />
                 </div>
-                <span className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 dark:text-slate-500">Initializing Engine</span>
+                <span className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 dark:text-[var(--color-text-tertiary)]">Initializing Engine</span>
             </div>
         </div>
     );
 
     return (
-        <div className="fixed inset-0 z-[100] flex flex-col bg-slate-50 dark:bg-dark-bg text-slate-900 dark:text-dark-text font-sans overflow-hidden selection:bg-workflow-primary/30">
+        <div className="fixed inset-0 z-[100] flex flex-col bg-white dark:bg-dark-bg text-[var(--color-text-primary)] dark:text-dark-text font-sans overflow-hidden selection:bg-workflow-primary/30">
 
             {/* Header: Global Control Bar */}
             {/* Sub-Header / Toolbar */}
@@ -268,7 +268,7 @@ const ResumeEditor = () => {
                             />
                             {saving && <Zap className="w-3 h-3 text-workflow-primary animate-pulse" />}
                         </div>
-                        <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-slate-500">
+                        <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-[var(--color-text-tertiary)]">
                             {saving ? 'Synchronizing Neural Link...' : 'AI-Enhanced Career Architect'}
                         </span>
                     </div>
@@ -279,14 +279,14 @@ const ResumeEditor = () => {
                         <button
                             onClick={undo}
                             disabled={historyIndex <= 0}
-                            className="p-2 rounded-xl text-slate-500 hover:text-white hover:bg-white/5 disabled:opacity-20 transition-all"
+                            className="p-2 rounded-xl text-[var(--color-text-tertiary)] hover:text-white hover:bg-white/5 disabled:opacity-20 transition-all"
                         >
                             <ChevronLeft size={18} />
                         </button>
                         <button
                             onClick={redo}
                             disabled={historyIndex >= history.length - 1}
-                            className="p-2 rounded-xl text-slate-500 hover:text-white hover:bg-white/5 disabled:opacity-20 transition-all"
+                            className="p-2 rounded-xl text-[var(--color-text-tertiary)] hover:text-white hover:bg-white/5 disabled:opacity-20 transition-all"
                         >
                             <ChevronRight size={18} />
                         </button>
@@ -303,7 +303,7 @@ const ResumeEditor = () => {
                 <div className="flex items-center gap-3">
                     <button
                         onClick={() => setShowVersions(!showVersions)}
-                        className={`p-2.5 rounded-xl transition-all ${showVersions ? 'bg-workflow-primary/20 text-workflow-primary border border-workflow-primary/30' : 'text-slate-500 hover:text-white hover:bg-white/5'}`}
+                        className={`p-2.5 rounded-xl transition-all ${showVersions ? 'bg-workflow-primary/20 text-workflow-primary border border-workflow-primary/30' : 'text-[var(--color-text-tertiary)] hover:text-white hover:bg-white/5'}`}
                         title="Neural Snapshots"
                     >
                         <Layout size={18} />
@@ -354,7 +354,7 @@ const ResumeEditor = () => {
                     {/* MIDDLE: AI INTERFACE */}
                     {panels.chat && (
                         <>
-                            <Panel defaultSize={35} minSize={25} className="flex flex-col bg-slate-50/50 dark:bg-dark-surface/10 backdrop-blur-3xl">
+                            <Panel defaultSize={35} minSize={25} className="flex flex-col bg-white/50 dark:bg-dark-surface/10 backdrop-blur-3xl">
                                 <PanelHeader icon={Sparkles} title="AI Analysis & Chat" onHide={() => togglePanel('chat')} />
                                 <AIChatPanel
                                     ref={chatPanelRef}
@@ -376,7 +376,7 @@ const ResumeEditor = () => {
                                 onHide={() => togglePanel('preview')}
                                 utility={(
                                     <div className="flex gap-2">
-                                        <button onClick={() => setShowVisuals(s => ({ ...s, ats: !s.ats }))} className={`p-1 rounded ${showVisuals.ats ? 'bg-emerald-500 text-white' : 'text-slate-400'}`}>
+                                        <button onClick={() => setShowVisuals(s => ({ ...s, ats: !s.ats }))} className={`p-1 rounded ${showVisuals.ats ? 'bg-[var(--color-primary)] text-white' : 'text-slate-400'}`}>
                                             <CheckCircle2 size={14} />
                                         </button>
                                         <button onClick={() => setShowVisuals(s => ({ ...s, heatmap: !s.heatmap }))} className={`p-1 rounded ${showVisuals.heatmap ? 'bg-indigo-500 text-white' : 'text-slate-400'}`}>
@@ -399,13 +399,13 @@ const ResumeEditor = () => {
 
                             {/* Score Overlay - Fixed to bottom of panel */}
                             <div className="absolute bottom-6 right-6 z-20">
-                                <div className="bg-white/95 dark:bg-[#1E293B]/95 backdrop-blur-xl px-4 py-2 rounded-2xl border border-slate-200 dark:border-white/10 shadow-2xl flex items-center gap-3">
+                                <div className="bg-white/95 dark:bg-[#1E293B]/95 backdrop-blur-xl px-4 py-2 rounded-2xl border border-[var(--color-border-primary)] dark:border-white/10 shadow-2xl flex items-center gap-3">
                                     <div className="flex flex-col">
-                                        <span className="text-[8px] font-black uppercase text-slate-500 tracking-widest">ATS Grade</span>
-                                        <span className={`text-lg font-black ${atsScore >= 80 ? 'text-emerald-500' : 'text-workflow-primary'}`}>{atsScore}%</span>
+                                        <span className="text-[8px] font-black uppercase text-[var(--color-text-tertiary)] tracking-widest">ATS Grade</span>
+                                        <span className={`text-lg font-black ${atsScore >= 80 ? 'text-[var(--color-primary)]' : 'text-workflow-primary'}`}>{atsScore}%</span>
                                     </div>
-                                    <div className={`w-8 h-8 rounded-full border-2 flex items-center justify-center ${atsScore >= 80 ? 'border-emerald-500' : 'border-workflow-primary'}`}>
-                                        <div className={`w-2 h-2 rounded-full animate-pulse ${atsScore >= 80 ? 'bg-emerald-500' : 'bg-workflow-primary'}`} />
+                                    <div className={`w-8 h-8 rounded-full border-2 flex items-center justify-center ${atsScore >= 80 ? 'border-[var(--color-primary)]' : 'border-workflow-primary'}`}>
+                                        <div className={`w-2 h-2 rounded-full animate-pulse ${atsScore >= 80 ? 'bg-[var(--color-primary)]' : 'bg-workflow-primary'}`} />
                                     </div>
                                 </div>
                             </div>
@@ -421,10 +421,10 @@ const ResumeEditor = () => {
                             initial={{ x: '100%' }}
                             animate={{ x: 0 }}
                             exit={{ x: '100%' }}
-                            className="absolute inset-y-0 right-0 w-80 bg-white dark:bg-[#0F172A] border-l border-slate-200 dark:border-white/10 z-[110] shadow-2xl p-6 flex flex-col"
+                            className="absolute inset-y-0 right-0 w-80 bg-white dark:bg-[#0F172A] border-l border-[var(--color-border-primary)] dark:border-white/10 z-[110] shadow-2xl p-6 flex flex-col"
                         >
                             <div className="flex items-center justify-between mb-8">
-                                <h2 className="text-sm font-black uppercase tracking-widest text-slate-900 dark:text-white">Version History</h2>
+                                <h2 className="text-sm font-black uppercase tracking-widest text-[var(--color-text-primary)] dark:text-white">Version History</h2>
                                 <button onClick={() => setShowVersions(false)} className="text-slate-400 hover:text-white">
                                     <X size={20} />
                                 </button>
@@ -444,14 +444,14 @@ const ResumeEditor = () => {
                                     versions.map((v) => (
                                         <div
                                             key={v.id}
-                                            className="p-4 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/5 hover:border-workflow-primary/30 group cursor-pointer transition-all"
+                                            className="p-4 rounded-xl bg-white dark:bg-white/5 border border-[var(--color-border-primary)] dark:border-white/5 hover:border-workflow-primary/30 group cursor-pointer transition-all"
                                             onClick={() => restoreVersion(v)}
                                         >
                                             <div className="flex justify-between items-start mb-2">
-                                                <span className="text-[10px] font-black text-slate-900 dark:text-white uppercase tracking-tight">{v.label}</span>
+                                                <span className="text-[10px] font-black text-[var(--color-text-primary)] dark:text-white uppercase tracking-tight">{v.label}</span>
                                                 <span className="text-[8px] font-bold text-slate-400">{format(v.timestamp, 'HH:mm:ss')}</span>
                                             </div>
-                                            <p className="text-[9px] text-slate-500 uppercase tracking-widest">{format(v.timestamp, 'MMM d, yyyy')}</p>
+                                            <p className="text-[9px] text-[var(--color-text-tertiary)] uppercase tracking-widest">{format(v.timestamp, 'MMM d, yyyy')}</p>
                                         </div>
                                     ))
                                 )}
@@ -499,8 +499,8 @@ const PanelToggle = ({ active, onClick, icon: Icon, label }) => (
     <button
         onClick={onClick}
         className={`px-3 py-1.5 rounded-lg flex items-center gap-2 transition-all duration-300 ${active
-            ? 'bg-white dark:bg-white/10 text-slate-900 dark:text-white shadow-sm ring-1 ring-black/5 dark:ring-white/10'
-            : 'text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-black/5'
+            ? 'bg-white dark:bg-white/10 text-[var(--color-text-primary)] dark:text-white shadow-sm ring-1 ring-black/5 dark:ring-white/10'
+            : 'text-slate-400 hover:text-[var(--color-text-secondary)] dark:hover:text-slate-200 hover:bg-black/5'
             }`}
     >
         <Icon size={14} className={active ? 'text-workflow-primary' : ''} />
@@ -514,11 +514,11 @@ const PanelHeader = ({ icon: Icon, title, onHide, utility }) => (
             <div className="w-5 h-5 rounded bg-white/5 flex items-center justify-center">
                 <Icon size={12} className="text-workflow-primary" />
             </div>
-            <span className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">{title}</span>
+            <span className="text-[10px] font-black text-[var(--color-text-tertiary)] uppercase tracking-[0.2em]">{title}</span>
         </div>
         <div className="flex items-center gap-2">
             {utility}
-            <button onClick={onHide} className="p-1.5 hover:bg-white/10 rounded-lg transition-colors text-slate-500 hover:text-white">
+            <button onClick={onHide} className="p-1.5 hover:bg-white/10 rounded-lg transition-colors text-[var(--color-text-tertiary)] hover:text-white">
                 <PanelLeftClose size={14} />
             </button>
         </div>
@@ -550,7 +550,7 @@ const PanelFloatingToggle = ({ onClick, icon: Icon, label, position }) => {
 
 const VerticalHandle = () => (
     <PanelResizeHandle className="w-px bg-slate-200 dark:bg-white/5 hover:bg-workflow-primary transition-all cursor-col-resize group relative z-[50]">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-8 bg-white dark:bg-[#000d2b] border border-slate-200 dark:border-white/10 rounded flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-8 bg-white dark:bg-[#000d2b] border border-[var(--color-border-primary)] dark:border-white/10 rounded flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
             <div className="w-0.5 h-3 bg-slate-300 dark:bg-slate-700 rounded-full" />
         </div>
     </PanelResizeHandle>
@@ -582,7 +582,7 @@ const ExportModal = ({ isOpen, onClose, resumeData, title }) => {
                 className="bg-white dark:bg-[#0F172A] rounded-3xl p-8 max-w-lg w-full border border-white/10 shadow-2xl"
             >
                 <div className="flex justify-between items-center mb-8">
-                    <h2 className="text-2xl font-black uppercase tracking-tight text-slate-900 dark:text-white">Export Architect</h2>
+                    <h2 className="text-2xl font-black uppercase tracking-tight text-[var(--color-text-primary)] dark:text-white">Export Architect</h2>
                     <button onClick={onClose} className="p-2 hover:bg-slate-100 dark:hover:bg-white/5 rounded-xl transition-colors">
                         <X size={20} className="text-slate-400" />
                     </button>
@@ -592,14 +592,14 @@ const ExportModal = ({ isOpen, onClose, resumeData, title }) => {
                         <button
                             key={i}
                             onClick={() => { opt.action(); onClose(); }}
-                            className="flex items-center gap-6 p-6 rounded-2xl bg-slate-50 dark:bg-white/5 hover:bg-workflow-primary/5 hover:border-workflow-primary/30 border border-transparent transition-all group text-left"
+                            className="flex items-center gap-6 p-6 rounded-2xl bg-white dark:bg-white/5 hover:bg-workflow-primary/5 hover:border-workflow-primary/30 border border-transparent transition-all group text-left"
                         >
                             <div className="w-12 h-12 rounded-xl bg-white dark:bg-white/5 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
-                                <opt.icon className="text-slate-500 group-hover:text-workflow-primary" />
+                                <opt.icon className="text-[var(--color-text-tertiary)] group-hover:text-workflow-primary" />
                             </div>
                             <div>
-                                <h3 className="font-bold text-slate-900 dark:text-white">{opt.label}</h3>
-                                <p className="text-xs text-slate-500 font-medium">{opt.desc}</p>
+                                <h3 className="font-bold text-[var(--color-text-primary)] dark:text-white">{opt.label}</h3>
+                                <p className="text-xs text-[var(--color-text-tertiary)] font-medium">{opt.desc}</p>
                             </div>
                             <ArrowRight className="ml-auto text-slate-300 group-hover:text-workflow-primary group-hover:translate-x-1 transition-all" />
                         </button>

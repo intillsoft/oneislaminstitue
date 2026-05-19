@@ -7,7 +7,7 @@ const AIContextToolbar = ({ visible, position, onAction, onClose }) => {
 
     const tools = [
         { id: 'actionize', icon: Zap, label: 'Actionize', color: 'text-yellow-500' },
-        { id: 'quantify', icon: TrendingUp, label: 'Quantify', color: 'text-emerald-500' },
+        { id: 'quantify', icon: TrendingUp, label: 'Quantify', color: 'text-[var(--color-primary)]' },
         { id: 'tone', icon: ArrowRightLeft, label: 'Tone Shift', color: 'text-purple-500' },
         { id: 'rewrite', icon: RefreshCw, label: 'Rewrite', color: 'text-blue-500' },
     ];

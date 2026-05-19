@@ -39,7 +39,7 @@ const SkillMapping = ({ userSkills, recommendedSkills }) => {
 
   return (
     <div className="space-y-8">
-      <h3 className="text-xl font-black text-slate-900 dark:text-white flex items-center gap-3">
+      <h3 className="text-xl font-black text-[var(--color-text-primary)] dark:text-white flex items-center gap-3">
         <div className="p-2 rounded-lg bg-workflow-primary/10 text-workflow-primary">
           <Icon name="Award" size={20} />
         </div>
@@ -48,8 +48,8 @@ const SkillMapping = ({ userSkills, recommendedSkills }) => {
 
       {/* Current Skills */}
       <div className="space-y-4">
-        <h4 className="text-xs font-black uppercase tracking-widest text-slate-500 flex items-center gap-2">
-          <Icon name="CheckCircle" size={14} className="text-emerald-500" />
+        <h4 className="text-xs font-black uppercase tracking-widest text-[var(--color-text-tertiary)] flex items-center gap-2">
+          <Icon name="CheckCircle" size={14} className="text-[var(--color-primary)]" />
           <span>Your Skills</span>
         </h4>
         {loading ? (
@@ -62,12 +62,12 @@ const SkillMapping = ({ userSkills, recommendedSkills }) => {
             {currentSkills?.length > 0 ? currentSkills.map((skill, index) => (
               <span
                 key={index}
-                className="px-3 py-1.5 bg-emerald-500/5 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 rounded-xl text-xs font-bold border border-emerald-500/10 transition-all hover:bg-emerald-500/20"
+                className="px-3 py-1.5 bg-[var(--color-primary)]/5 dark:bg-[var(--color-primary)]/10 text-[var(--color-primary)] dark:text-[var(--color-primary)] rounded-xl text-xs font-bold border border-[var(--color-primary)]/10 transition-all hover:bg-[var(--color-primary)]/20"
               >
                 {typeof skill === 'string' ? skill : skill.skill || skill}
               </span>
             )) : (
-              <p className="text-sm text-slate-500 font-medium italic">No skills cataloged. Update your architecture.</p>
+              <p className="text-sm text-[var(--color-text-tertiary)] font-medium italic">No skills cataloged. Update your architecture.</p>
             )}
           </div>
         )}
@@ -75,7 +75,7 @@ const SkillMapping = ({ userSkills, recommendedSkills }) => {
 
       {/* Recommended Skills to Learn */}
       <div className="space-y-4">
-        <h4 className="text-xs font-black uppercase tracking-widest text-slate-500 flex items-center gap-2">
+        <h4 className="text-xs font-black uppercase tracking-widest text-[var(--color-text-tertiary)] flex items-center gap-2">
           <Icon name="Target" size={14} className="text-workflow-primary" />
           <span>Expansion Path</span>
         </h4>
@@ -95,11 +95,11 @@ const SkillMapping = ({ userSkills, recommendedSkills }) => {
               return (
                 <div
                   key={index}
-                  className="group flex items-center justify-between p-4 bg-white/50 dark:bg-white/5 rounded-2xl border border-slate-200/50 dark:border-white/5 hover:border-workflow-primary/30 transition-all hover:scale-[1.02]"
+                  className="group flex items-center justify-between p-4 bg-white/50 dark:bg-white/5 rounded-2xl border border-[var(--color-border-primary)]/50 dark:border-white/5 hover:border-workflow-primary/30 transition-all hover:scale-[1.02]"
                 >
                   <div className="flex-1 min-w-0 pr-3">
                     <div className="flex items-center gap-2 mb-1">
-                      <span className="text-sm font-black text-slate-900 dark:text-white truncate">{skillName}</span>
+                      <span className="text-sm font-black text-[var(--color-text-primary)] dark:text-white truncate">{skillName}</span>
                       <span className={`text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full ${importance === 'critical' ? 'bg-rose-500/10 text-rose-500' :
                           importance === 'high' ? 'bg-amber-500/10 text-amber-500' :
                             'bg-indigo-500/10 text-indigo-500'
@@ -108,7 +108,7 @@ const SkillMapping = ({ userSkills, recommendedSkills }) => {
                       </span>
                     </div>
                     {reason && (
-                      <p className="text-[10px] text-slate-500 font-medium line-clamp-1">{reason}</p>
+                      <p className="text-[10px] text-[var(--color-text-tertiary)] font-medium line-clamp-1">{reason}</p>
                     )}
                   </div>
                   <button className="text-[10px] font-black uppercase tracking-tighter text-workflow-primary hover:text-workflow-accent transition-colors">
@@ -117,16 +117,16 @@ const SkillMapping = ({ userSkills, recommendedSkills }) => {
                 </div>
               );
             }) : (
-              <p className="text-sm text-slate-500 font-medium italic">No expansion paths identified.</p>
+              <p className="text-sm text-[var(--color-text-tertiary)] font-medium italic">No expansion paths identified.</p>
             )}
           </div>
         )}
       </div>
 
       {/* Skill Coverage Progress */}
-      <div className="pt-6 border-t border-slate-200 dark:border-white/10">
+      <div className="pt-6 border-t border-[var(--color-border-primary)] dark:border-white/10">
         <div className="flex items-center justify-between mb-3">
-          <span className="text-xs font-black uppercase tracking-widest text-slate-500">Market Coverage</span>
+          <span className="text-xs font-black uppercase tracking-widest text-[var(--color-text-tertiary)]">Market Coverage</span>
           <span className="text-lg font-black text-workflow-primary">78%</span>
         </div>
         <div className="w-full h-3 bg-slate-100 dark:bg-white/5 rounded-full overflow-hidden shadow-inner">
@@ -136,7 +136,7 @@ const SkillMapping = ({ userSkills, recommendedSkills }) => {
             className="h-full bg-gradient-to-r from-workflow-primary to-workflow-accent rounded-full"
           />
         </div>
-        <p className="text-[10px] text-slate-500 font-bold mt-3 leading-relaxed">
+        <p className="text-[10px] text-[var(--color-text-tertiary)] font-bold mt-3 leading-relaxed">
           Mastering expansion path skills will achieve <span className="text-workflow-primary">95% Market Visibility</span>.
         </p>
       </div>

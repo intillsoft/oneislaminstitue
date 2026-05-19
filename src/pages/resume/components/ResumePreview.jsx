@@ -86,7 +86,7 @@ const ResumePreview = ({ data, resumeData, template = 'modern', isGenerating = f
 
     const renderTemplate = () => {
         if (!activeData) return (
-            <div className="h-full flex items-center justify-center p-12 text-center bg-slate-50">
+            <div className="h-full flex items-center justify-center p-12 text-center bg-white">
                 <div className="max-w-xs">
                     <div className="w-16 h-16 bg-slate-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
                         <X className="text-slate-300" />
@@ -157,8 +157,8 @@ const ResumePreview = ({ data, resumeData, template = 'modern', isGenerating = f
                                         <div className="absolute -top-1 -right-1 w-3 h-3 bg-indigo-400 rounded-full border-2 border-white animate-pulse" />
                                     </div>
                                     <div className="flex flex-col">
-                                        <span className="text-sm font-black text-slate-900 uppercase tracking-tight">AI Architect Active</span>
-                                        <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Constructing Layout...</span>
+                                        <span className="text-sm font-black text-[var(--color-text-primary)] uppercase tracking-tight">AI Architect Active</span>
+                                        <span className="text-[10px] font-bold text-[var(--color-text-tertiary)] uppercase tracking-widest">Constructing Layout...</span>
                                     </div>
                                 </div>
                             </motion.div>
@@ -308,12 +308,12 @@ const ModernTemplate = ({ data = {}, onEdit }) => {
                 )}
             </div>
             <div className="flex-1 p-8 bg-white text-slate-800 h-auto">
-                <header className="mb-6 pb-4 border-b border-slate-200">
+                <header className="mb-6 pb-4 border-b border-[var(--color-border-primary)]">
                     <EditableText
                         value={personalInfo?.name}
                         onChange={(v) => onEdit?.('personalInfo.name', v)}
                         tagName="h1"
-                        className="text-3xl font-extrabold text-slate-900 uppercase tracking-tight mb-1"
+                        className="text-3xl font-extrabold text-[var(--color-text-primary)] uppercase tracking-tight mb-1"
                         placeholder="YOUR NAME"
                     />
                     <EditableText
@@ -331,7 +331,7 @@ const ModernTemplate = ({ data = {}, onEdit }) => {
                             value={summary}
                             onChange={(v) => onEdit?.('summary', v)}
                             tagName="p"
-                            className="text-xs leading-relaxed text-slate-600 text-justify"
+                            className="text-xs leading-relaxed text-[var(--color-text-secondary)] text-justify"
                             placeholder="Summary of your professional background..."
                         />
                     </section>
@@ -341,17 +341,17 @@ const ModernTemplate = ({ data = {}, onEdit }) => {
                         <h2 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-4">Experience</h2>
                         <div className="space-y-6">
                             {experience.map((exp, i) => (
-                                <div key={i} className="relative pl-4 border-l-2 border-slate-200">
+                                <div key={i} className="relative pl-4 border-l-2 border-[var(--color-border-primary)]">
                                     <div className="absolute -left-[5px] top-1.5 w-2 h-2 rounded-full bg-teal-500 ring-2 ring-white"></div>
                                     <div className="flex justify-between items-baseline mb-0.5">
                                         <EditableText
                                             value={exp.company}
                                             onChange={(v) => onEdit?.(`experience.${i}.company`, v)}
                                             tagName="h3"
-                                            className="text-sm font-bold text-slate-900"
+                                            className="text-sm font-bold text-[var(--color-text-primary)]"
                                             placeholder="Company Name"
                                         />
-                                        <span className="text-[10px] font-bold text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded">{exp.startDate} – {exp.endDate || 'Present'}</span>
+                                        <span className="text-[10px] font-bold text-[var(--color-text-tertiary)] bg-slate-100 px-1.5 py-0.5 rounded">{exp.startDate} – {exp.endDate || 'Present'}</span>
                                     </div>
                                     <EditableText
                                         value={exp.title}
@@ -362,7 +362,7 @@ const ModernTemplate = ({ data = {}, onEdit }) => {
                                     />
                                     <ul className="list-disc ml-3 space-y-1 marker:text-slate-300">
                                         {(exp.bullets || []).map((b, idx) => (
-                                            <li key={idx} className="text-[11px] text-slate-600 leading-relaxed pl-1 text-justify">
+                                            <li key={idx} className="text-[11px] text-[var(--color-text-secondary)] leading-relaxed pl-1 text-justify">
                                                 <EditableText
                                                     value={b}
                                                     onChange={(v) => onEdit?.(`experience.${i}.bullets.${idx}`, v)}
@@ -385,8 +385,8 @@ const ExecutiveTemplate = ({ data = {} }) => (
     <div className="p-12 min-h-[297mm] h-auto bg-[#FAFAFA] font-serif text-[#1C1C1E] pb-20">
         <header className="text-center mb-8 relative">
             <h1 className="text-4xl font-serif font-bold mb-2 tracking-tight text-gray-900">{data.personalInfo?.name}</h1>
-            <p className="text-xs text-slate-500 uppercase tracking-widest font-sans">{data.personalInfo?.title}</p>
-            <div className="flex justify-center gap-4 mt-4 text-[10px] uppercase tracking-wide font-sans text-slate-500 border-t border-slate-200 pt-4 max-w-md mx-auto">
+            <p className="text-xs text-[var(--color-text-tertiary)] uppercase tracking-widest font-sans">{data.personalInfo?.title}</p>
+            <div className="flex justify-center gap-4 mt-4 text-[10px] uppercase tracking-wide font-sans text-[var(--color-text-tertiary)] border-t border-[var(--color-border-primary)] pt-4 max-w-md mx-auto">
                 <span>{data.personalInfo?.email}</span>
                 <span className="text-slate-300">•</span>
                 <span>{data.personalInfo?.phone}</span>
@@ -396,7 +396,7 @@ const ExecutiveTemplate = ({ data = {} }) => (
         </header>
         {data.summary && (
             <section className="mb-8 text-center max-w-xl mx-auto">
-                <p className="text-sm italic leading-relaxed text-slate-600">{data.summary}</p>
+                <p className="text-sm italic leading-relaxed text-[var(--color-text-secondary)]">{data.summary}</p>
             </section>
         )}
         {data.experience?.length > 0 && (
@@ -414,7 +414,7 @@ const ExecutiveTemplate = ({ data = {} }) => (
                             </div>
                             <div>
                                 <h3 className="text-lg font-bold mb-0.5 text-gray-900">{exp.company}</h3>
-                                <div className="text-slate-600 italic mb-2 text-xs">{exp.title}</div>
+                                <div className="text-[var(--color-text-secondary)] italic mb-2 text-xs">{exp.title}</div>
                                 <ul className="space-y-1.5">
                                     {(exp.bullets || []).map((b, idx) => (
                                         <li key={idx} className="text-[11px] leading-relaxed text-slate-700 font-sans relative pl-3 text-justify">
@@ -441,10 +441,10 @@ const CreativeTemplate = ({ data = {} }) => {
                 <p className="text-xl font-light opacity-80">{data.personalInfo?.title}</p>
             </div>
             <div className="flex flex-1">
-                <div className="w-1/3 p-8 bg-slate-50 border-r border-slate-100 flex flex-col gap-8">
+                <div className="w-1/3 p-8 bg-white border-r border-slate-100 flex flex-col gap-8">
                     <div className="space-y-3">
                         <h3 className="font-black text-indigo-600 uppercase tracking-widest text-[10px]">Contact</h3>
-                        <div className="flex flex-col gap-1.5 text-xs font-medium text-slate-600">
+                        <div className="flex flex-col gap-1.5 text-xs font-medium text-[var(--color-text-secondary)]">
                             <span className="truncate">{data.personalInfo?.email}</span>
                             <span>{data.personalInfo?.phone}</span>
                             <span>{data.personalInfo?.location}</span>
@@ -456,7 +456,7 @@ const CreativeTemplate = ({ data = {} }) => {
                             {data.education.map((e, i) => (
                                 <div key={i}>
                                     <div className="font-bold text-slate-800 text-xs">{e.institution}</div>
-                                    <div className="text-[10px] text-slate-500">{e.degree}</div>
+                                    <div className="text-[10px] text-[var(--color-text-tertiary)]">{e.degree}</div>
                                 </div>
                             ))}
                         </div>
@@ -474,16 +474,16 @@ const CreativeTemplate = ({ data = {} }) => {
                 </div>
                 <div className="w-2/3 p-8 space-y-8">
                     {data.summary && (
-                        <p className="text-sm font-medium leading-relaxed text-slate-700 border-l-4 border-indigo-500 pl-4 py-1 bg-slate-50/50">{data.summary}</p>
+                        <p className="text-sm font-medium leading-relaxed text-slate-700 border-l-4 border-indigo-500 pl-4 py-1 bg-white/50">{data.summary}</p>
                     )}
                     {data.experience?.map((exp, i) => (
                         <div key={i} className="space-y-1.5">
                             <div className="flex justify-between items-center group border-b border-indigo-100 pb-1 mb-2">
-                                <h3 className="text-xl font-black text-slate-900 group-hover:text-indigo-600 transition-colors">{exp.company}</h3>
+                                <h3 className="text-xl font-black text-[var(--color-text-primary)] group-hover:text-indigo-600 transition-colors">{exp.company}</h3>
                                 <span className="text-[10px] font-bold bg-slate-900 text-white px-2 py-0.5 rounded-full">{exp.startDate} - {exp.endDate}</span>
                             </div>
                             <div className="text-sm font-bold text-indigo-500">{exp.title}</div>
-                            <p className="text-[11px] text-slate-600 leading-relaxed text-justify">
+                            <p className="text-[11px] text-[var(--color-text-secondary)] leading-relaxed text-justify">
                                 {(exp.bullets || []).join(' ')}
                             </p>
                         </div>
@@ -590,9 +590,9 @@ const OpenAIMtemplate = ({ data = {} }) => {
     return (
         <div className="theme-openai min-h-[297mm] h-auto bg-white flex flex-col p-12 pb-20">
             <header className="mb-10 text-center">
-                <h1 className="text-4xl font-black tracking-[-0.05em] text-slate-900 mb-2">{personalInfo?.name}</h1>
+                <h1 className="text-4xl font-black tracking-[-0.05em] text-[var(--color-text-primary)] mb-2">{personalInfo?.name}</h1>
                 <p className="text-sm font-bold uppercase tracking-widest text-indigo-600 mb-4">{personalInfo?.title}</p>
-                <div className="flex justify-center gap-6 text-[10px] font-bold text-slate-500 uppercase tracking-tight opacity-70">
+                <div className="flex justify-center gap-6 text-[10px] font-bold text-[var(--color-text-tertiary)] uppercase tracking-tight opacity-70">
                     <span>{personalInfo?.email}</span>
                     <span>{personalInfo?.phone}</span>
                     <span>{personalInfo?.location}</span>
@@ -619,14 +619,14 @@ const OpenAIMtemplate = ({ data = {} }) => {
                                 <div key={i} className="group transition-all">
                                     <div className="flex justify-between items-baseline mb-2">
                                         <div className="flex flex-col">
-                                            <h3 className="text-lg font-[900] text-slate-900 leading-tight">{exp.company}</h3>
+                                            <h3 className="text-lg font-[900] text-[var(--color-text-primary)] leading-tight">{exp.company}</h3>
                                             <div className="text-xs font-black text-indigo-600 uppercase tracking-tight">{exp.title}</div>
                                         </div>
-                                        <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest bg-slate-50 px-2 py-1 rounded-md">{exp.startDate} — {exp.endDate || 'Current'}</div>
+                                        <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest bg-white px-2 py-1 rounded-md">{exp.startDate} — {exp.endDate || 'Current'}</div>
                                     </div>
                                     <ul className="space-y-2 mt-3">
                                         {(exp.bullets || []).map((b, idx) => (
-                                            <li key={idx} className="text-[11px] leading-relaxed text-slate-600 font-medium relative pl-4 text-justify">
+                                            <li key={idx} className="text-[11px] leading-relaxed text-[var(--color-text-secondary)] font-medium relative pl-4 text-justify">
                                                 <span className="absolute left-0 top-1.5 w-1 h-1 bg-indigo-500/30 rounded-full group-hover:bg-indigo-500 transition-colors"></span>
                                                 {b}
                                             </li>
@@ -647,8 +647,8 @@ const OpenAIMtemplate = ({ data = {} }) => {
                             <div className="space-y-4">
                                 {education.map((edu, i) => (
                                     <div key={i}>
-                                        <div className="text-sm font-black text-slate-900">{edu.institution}</div>
-                                        <div className="text-xs font-bold text-slate-500">{edu.degree}</div>
+                                        <div className="text-sm font-black text-[var(--color-text-primary)]">{edu.institution}</div>
+                                        <div className="text-xs font-bold text-[var(--color-text-tertiary)]">{edu.degree}</div>
                                         <div className="text-[10px] font-black text-indigo-500 mt-1 uppercase tracking-widest">{edu.year}</div>
                                     </div>
                                 ))}
@@ -663,7 +663,7 @@ const OpenAIMtemplate = ({ data = {} }) => {
                             </h2>
                             <div className="flex flex-wrap gap-2">
                                 {skillsList.map((s, i) => (
-                                    <span key={i} className="px-2 py-1 bg-slate-50 text-slate-700 rounded-md text-[10px] font-black uppercase tracking-tighter border border-slate-100 hover:border-indigo-500 transition-colors">
+                                    <span key={i} className="px-2 py-1 bg-white text-slate-700 rounded-md text-[10px] font-black uppercase tracking-tighter border border-slate-100 hover:border-indigo-500 transition-colors">
                                         {typeof s === 'string' ? s : s.name}
                                     </span>
                                 ))}
@@ -684,8 +684,8 @@ const GoogleTemplate = ({ data = {} }) => {
         <div className="theme-google min-h-[297mm] h-auto bg-white flex flex-col p-16 font-sans pb-20">
             <header className="mb-12">
                 <h1 className="text-5xl font-[300] tracking-tight text-slate-800 mb-3">{personalInfo?.name}</h1>
-                <div className="flex items-center gap-4 text-sm text-slate-500">
-                    <span className="font-bold text-slate-900 border-r border-slate-200 pr-4">{personalInfo?.title}</span>
+                <div className="flex items-center gap-4 text-sm text-[var(--color-text-tertiary)]">
+                    <span className="font-bold text-[var(--color-text-primary)] border-r border-[var(--color-border-primary)] pr-4">{personalInfo?.title}</span>
                     <span>{personalInfo?.email}</span>
                     <span className="w-1 h-1 bg-slate-200 rounded-full" />
                     <span>{personalInfo?.phone}</span>
@@ -695,7 +695,7 @@ const GoogleTemplate = ({ data = {} }) => {
             <div className="space-y-12">
                 {summary && (
                     <section>
-                        <p className="text-base text-slate-600 leading-relaxed font-[300] max-w-3xl text-justify">{summary}</p>
+                        <p className="text-base text-[var(--color-text-secondary)] leading-relaxed font-[300] max-w-3xl text-justify">{summary}</p>
                     </section>
                 )}
 
@@ -706,13 +706,13 @@ const GoogleTemplate = ({ data = {} }) => {
                             {experience.map((exp, i) => (
                                 <div key={i} className="flex flex-col gap-2">
                                     <div className="flex justify-between items-center">
-                                        <h3 className="text-xl font-medium text-slate-900">{exp.company}</h3>
+                                        <h3 className="text-xl font-medium text-[var(--color-text-primary)]">{exp.company}</h3>
                                         <span className="text-sm text-slate-400">{exp.startDate} — {exp.endDate || 'Present'}</span>
                                     </div>
                                     <div className="text-lg text-indigo-600 font-medium mb-2">{exp.title}</div>
                                     <ul className="space-y-3">
                                         {(exp.bullets || []).map((b, idx) => (
-                                            <li key={idx} className="text-[13px] leading-relaxed text-slate-500 font-[300] relative pl-6 text-justify">
+                                            <li key={idx} className="text-[13px] leading-relaxed text-[var(--color-text-tertiary)] font-[300] relative pl-6 text-justify">
                                                 <span className="absolute left-0 top-[10px] w-1.5 h-[1px] bg-indigo-200"></span>
                                                 {b}
                                             </li>
@@ -731,8 +731,8 @@ const GoogleTemplate = ({ data = {} }) => {
                             <div className="space-y-6">
                                 {education.map((edu, i) => (
                                     <div key={i}>
-                                        <div className="text-lg font-medium text-slate-900">{edu.institution}</div>
-                                        <div className="text-sm text-slate-500">{edu.degree} · {edu.year}</div>
+                                        <div className="text-lg font-medium text-[var(--color-text-primary)]">{edu.institution}</div>
+                                        <div className="text-sm text-[var(--color-text-tertiary)]">{edu.degree} · {edu.year}</div>
                                     </div>
                                 ))}
                             </div>

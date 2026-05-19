@@ -18,13 +18,13 @@ const InstructorSidebar = ({ isCollapsed, toggleCollapse, isMobile, closeMobileS
       label: 'Academic Catalog',
       path: '/instructor/courses',
       icon: 'BookOpen',
-      badge: { count: 6, color: 'bg-emerald-600 text-white' }
+      badge: { count: 6, color: 'bg-[var(--color-primary)] text-white' }
     },
     {
       label: 'Enrolled Students',
       path: '/instructor/dashboard', // Point to dashboard with students tab if possible, or leave as is
       icon: 'Users',
-      badge: { count: 12, color: 'bg-emerald-600 text-white' }
+      badge: { count: 12, color: 'bg-[var(--color-primary)] text-white' }
     },
     {
       label: 'Curator Team Profile',
@@ -61,7 +61,7 @@ const InstructorSidebar = ({ isCollapsed, toggleCollapse, isMobile, closeMobileS
         {!isMobile && (
           <button
             onClick={toggleCollapse}
-            className="text-text-muted hover:text-emerald-600 transition-colors p-1.5 hover:bg-surface-elevated rounded-lg"
+            className="text-text-muted hover:text-[var(--color-primary)] transition-colors p-1.5 hover:bg-surface-elevated rounded-lg"
           >
             <Icon name={isCollapsed ? "ChevronRight" : "ChevronLeft"} size={16} />
           </button>
@@ -80,18 +80,18 @@ const InstructorSidebar = ({ isCollapsed, toggleCollapse, isMobile, closeMobileS
       <div className={`p-4 border-b border-border ${isCollapsed ? 'items-center' : ''}`}>
         {isCollapsed ? (
           <div className="flex justify-center">
-            <div className="w-10 h-10 bg-emerald-600/10 border border-emerald-500/20 rounded-full flex items-center justify-center">
-              <Icon name="User" size={20} className="text-emerald-600" />
+            <div className="w-10 h-10 bg-[var(--color-primary)]/10 border border-[var(--color-primary)]/20 rounded-full flex items-center justify-center">
+              <Icon name="User" size={20} className="text-[var(--color-primary)]" />
             </div>
           </div>
         ) : (
           <div className="flex items-center space-x-3 bg-surface-elevated/50 p-3 rounded-2xl border border-border/50">
-            <div className="w-10 h-10 bg-emerald-600 rounded-full flex items-center justify-center shadow-md">
+            <div className="w-10 h-10 bg-[var(--color-primary)] rounded-full flex items-center justify-center shadow-md">
               <Icon name="User" size={20} className="text-white" />
             </div>
             <div className="min-w-0">
               <h3 className="text-sm font-bold text-text-primary truncate">Curator Team Member</h3>
-              <p className="text-[10px] font-black uppercase tracking-widest text-emerald-600 truncate">Academic Dept.</p>
+              <p className="text-[10px] font-black uppercase tracking-widest text-[var(--color-primary)] truncate">Academic Dept.</p>
             </div>
           </div>
         )}
@@ -104,17 +104,17 @@ const InstructorSidebar = ({ isCollapsed, toggleCollapse, isMobile, closeMobileS
               key={item?.path}
               to={item?.path}
               className={`flex items-center ${isCollapsed ? 'justify-center' : 'justify-between'} px-4 py-3 rounded-xl transition-all ${isActivePath(item?.path)
-                  ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-500/20 translate-x-1' : 'text-text-secondary hover:bg-surface-elevated hover:text-text-primary group'
+                  ? 'bg-[var(--color-primary)] text-white shadow-lg shadow-[var(--color-primary)]/20 translate-x-1' : 'text-text-secondary hover:bg-surface-elevated hover:text-text-primary group'
                 }`}
               onClick={isMobile ? closeMobileSidebar : undefined}
             >
               <div className="flex items-center">
-                <Icon name={item?.icon} size={18} className={`flex-shrink-0 ${isActivePath(item?.path) ? 'text-white' : 'text-emerald-600/60 group-hover:text-emerald-600 group-hover:scale-110 transition-all'}`} />
+                <Icon name={item?.icon} size={18} className={`flex-shrink-0 ${isActivePath(item?.path) ? 'text-white' : 'text-[var(--color-primary)]/60 group-hover:text-[var(--color-primary)] group-hover:scale-110 transition-all'}`} />
                 {!isCollapsed && <span className="ml-3 text-xs font-black uppercase tracking-widest">{item?.label}</span>}
               </div>
 
               {!isCollapsed && item?.badge && (
-                <span className={`inline-flex items-center justify-center px-1.5 py-0.5 rounded-full text-[9px] font-black ${isActivePath(item.path) ? 'bg-white text-emerald-600' : item?.badge?.color}`}>
+                <span className={`inline-flex items-center justify-center px-1.5 py-0.5 rounded-full text-[9px] font-black ${isActivePath(item.path) ? 'bg-white text-[var(--color-primary)]' : item?.badge?.color}`}>
                   {item?.badge?.count}
                 </span>
               )}
@@ -133,7 +133,7 @@ const InstructorSidebar = ({ isCollapsed, toggleCollapse, isMobile, closeMobileS
                 }`}
               onClick={isMobile ? closeMobileSidebar : undefined}
             >
-              <Icon name={item?.icon} size={16} className="flex-shrink-0 opacity-40 group-hover:opacity-100 group-hover:text-emerald-600 transition-all" />
+              <Icon name={item?.icon} size={16} className="flex-shrink-0 opacity-40 group-hover:opacity-100 group-hover:text-[var(--color-primary)] transition-all" />
               {!isCollapsed && <span className="ml-3 text-[10px] font-black uppercase tracking-[0.2em]">{item?.label}</span>}
             </Link>
           ))}

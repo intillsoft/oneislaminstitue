@@ -200,11 +200,11 @@ const MessagingPanel = () => {
                         </div>
                     </div>
                     <div className="relative">
-                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={16} />
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--color-text-tertiary)]" size={16} />
                         <input
                             type="text"
                             placeholder="Filter conversations..."
-                            className="w-full bg-white/5 border border-white/10 rounded-xl py-2.5 pl-10 pr-4 text-sm text-white placeholder:text-slate-600 focus:ring-2 focus:ring-workflow-primary/20 focus:border-workflow-primary/40 transition-all outline-none"
+                            className="w-full bg-white/5 border border-white/10 rounded-xl py-2.5 pl-10 pr-4 text-sm text-white placeholder:text-[var(--color-text-secondary)] focus:ring-2 focus:ring-workflow-primary/20 focus:border-workflow-primary/40 transition-all outline-none"
                         />
                     </div>
                 </div>
@@ -222,10 +222,10 @@ const MessagingPanel = () => {
                         ))
                     ) : conversations.length === 0 ? (
                         <div className="flex flex-col items-center justify-center p-12 text-center">
-                            <div className="w-16 h-16 rounded-2xl bg-white/[0.02] border border-white/5 flex items-center justify-center mb-4 text-slate-500">
+                            <div className="w-16 h-16 rounded-2xl bg-white/[0.02] border border-white/5 flex items-center justify-center mb-4 text-[var(--color-text-tertiary)]">
                                 <MessageSquare size={32} />
                             </div>
-                            <p className="text-sm font-bold uppercase tracking-widest text-slate-500 mb-2">No active signals</p>
+                            <p className="text-sm font-bold uppercase tracking-widest text-[var(--color-text-tertiary)] mb-2">No active signals</p>
                             <button
                                 onClick={() => setShowNewChatModal(true)}
                                 className="text-xs font-black text-workflow-primary uppercase tracking-wider hover:underline"
@@ -246,18 +246,18 @@ const MessagingPanel = () => {
                                         <div className="w-12 h-12 rounded-full bg-slate-800 border border-white/10 flex items-center justify-center text-slate-400">
                                             <User size={24} />
                                         </div>
-                                        <div className="absolute bottom-0 right-0 w-3 h-3 rounded-full bg-emerald-500 border-2 border-[#0F172A]" />
+                                        <div className="absolute bottom-0 right-0 w-3 h-3 rounded-full bg-[var(--color-primary)] border-2 border-[#0F172A]" />
                                     </div>
                                     <div className="flex-1 min-w-0">
                                         <div className="flex justify-between items-baseline mb-1">
                                             <span className="text-sm font-black text-white truncate uppercase tracking-tight">
                                                 {conv.metadata?.recipient_name || "Agent Connection"}
                                             </span>
-                                            <span className="text-[10px] font-bold text-slate-600 uppercase">
+                                            <span className="text-[10px] font-bold text-[var(--color-text-secondary)] uppercase">
                                                 {conv.last_message_at ? new Date(conv.last_message_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'NEW'}
                                             </span>
                                         </div>
-                                        <p className="text-xs text-slate-500 truncate font-medium">
+                                        <p className="text-xs text-[var(--color-text-tertiary)] truncate font-medium">
                                             {conv.last_message_text || "Initialize secure channel..."}
                                         </p>
                                     </div>
@@ -283,8 +283,8 @@ const MessagingPanel = () => {
                                         {selectedConversation.metadata?.recipient_name || "Intelligent Node"}
                                     </span>
                                     <div className="flex items-center gap-1.5">
-                                        <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                                        <span className="text-[9px] font-black text-slate-500 uppercase tracking-widest">Active Intelligence</span>
+                                        <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-primary)]" />
+                                        <span className="text-[9px] font-black text-[var(--color-text-tertiary)] uppercase tracking-widest">Active Intelligence</span>
                                     </div>
                                 </div>
                             </div>
@@ -302,7 +302,7 @@ const MessagingPanel = () => {
                                 <div className="h-full flex flex-col items-center justify-center text-center p-8">
                                     <Bot size={48} className="text-workflow-primary/20 mb-4" />
                                     <h4 className="text-lg font-black text-white uppercase tracking-wider mb-2">Secure Link Established</h4>
-                                    <p className="text-sm text-slate-500 max-w-xs mx-auto italic">Start the transmission below. AI Smart Suggestion will activate once the first signal is processed.</p>
+                                    <p className="text-sm text-[var(--color-text-tertiary)] max-w-xs mx-auto italic">Start the transmission below. AI Smart Suggestion will activate once the first signal is processed.</p>
                                 </div>
                             ) : (
                                 messages.map((msg, idx) => (
@@ -346,7 +346,7 @@ const MessagingPanel = () => {
                                     >
                                         <div className="w-full flex items-center gap-2 mb-1 px-1">
                                             <Sparkles size={12} className="text-workflow-primary" />
-                                            <span className="text-[9px] font-black text-slate-500 uppercase tracking-[0.2em]">AI Intelligence Suggestions</span>
+                                            <span className="text-[9px] font-black text-[var(--color-text-tertiary)] uppercase tracking-[0.2em]">AI Intelligence Suggestions</span>
                                         </div>
                                         {aiSuggestions.map((suggestion, i) => (
                                             <button
@@ -365,17 +365,17 @@ const MessagingPanel = () => {
                             <form onSubmit={handleSendMessage} className="relative group">
                                 <div className="absolute inset-0 bg-workflow-primary/5 rounded-[2rem] blur-2xl opacity-0 group-focus-within:opacity-100 transition-opacity" />
                                 <div className="relative bg-[#1E293B] border border-white/5 rounded-2xl shadow-2xl flex items-end p-2 transition-all focus-within:border-workflow-primary/40 focus-within:ring-4 focus-within:ring-workflow-primary/5">
-                                    <button type="button" className="p-3 text-slate-500 hover:text-white transition-colors"><Paperclip size={20} /></button>
+                                    <button type="button" className="p-3 text-[var(--color-text-tertiary)] hover:text-white transition-colors"><Paperclip size={20} /></button>
                                     <textarea
                                         value={newMessage}
                                         onChange={(e) => setNewMessage(e.target.value)}
                                         onKeyDown={(e) => e.key === 'Enter' && !e.shiftKey && (e.preventDefault(), handleSendMessage())}
                                         placeholder="Transmit strategic message..."
-                                        className="flex-1 bg-transparent border-none focus:ring-0 text-white placeholder:text-slate-600 px-4 py-3 min-h-[50px] max-h-[150px] resize-none text-[14px] font-medium leading-relaxed"
+                                        className="flex-1 bg-transparent border-none focus:ring-0 text-white placeholder:text-[var(--color-text-secondary)] px-4 py-3 min-h-[50px] max-h-[150px] resize-none text-[14px] font-medium leading-relaxed"
                                         rows={1}
                                     />
                                     <div className="flex items-center gap-1 mb-1 mr-1">
-                                        <button type="button" className="p-3 text-slate-500 hover:text-white transition-colors"><Smile size={20} /></button>
+                                        <button type="button" className="p-3 text-[var(--color-text-tertiary)] hover:text-white transition-colors"><Smile size={20} /></button>
                                         <button
                                             type="submit"
                                             disabled={!newMessage.trim()}
@@ -398,7 +398,7 @@ const MessagingPanel = () => {
                             <MessageSquare size={40} className="text-slate-800" />
                         </motion.div>
                         <h3 className="text-3xl font-black text-white uppercase tracking-tighter mb-4">Neural Communication Link</h3>
-                        <p className="max-w-md text-slate-500 font-medium text-sm leading-relaxed mb-10 italic"> Select an intelligence record from the inbox or start a new transmission to initialize a collaborative sequence.</p>
+                        <p className="max-w-md text-[var(--color-text-tertiary)] font-medium text-sm leading-relaxed mb-10 italic"> Select an intelligence record from the inbox or start a new transmission to initialize a collaborative sequence.</p>
 
                         <div className="flex gap-4 opacity-10 filter grayscale pointer-events-none">
                             <Bot size={24} />
@@ -429,32 +429,32 @@ const MessagingPanel = () => {
                                 <h3 className="text-lg font-black text-white uppercase tracking-tighter">Initialize New Link</h3>
                                 <button
                                     onClick={() => setShowNewChatModal(false)}
-                                    className="p-2 rounded-xl hover:bg-white/5 text-slate-500 hover:text-white transition-all"
+                                    className="p-2 rounded-xl hover:bg-white/5 text-[var(--color-text-tertiary)] hover:text-white transition-all"
                                 >
                                     <X size={20} />
                                 </button>
                             </div>
                             <div className="p-6">
                                 <div className="relative mb-6">
-                                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
+                                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--color-text-tertiary)]" size={18} />
                                     <input
                                         type="text"
                                         autoFocus
                                         value={searchQuery}
                                         onChange={(e) => setSearchQuery(e.target.value)}
                                         placeholder="Search for intelligence nodes (names, roles...)"
-                                        className="w-full bg-white/5 border border-white/10 rounded-xl py-3.5 pl-12 pr-4 text-white placeholder:text-slate-600 focus:ring-2 focus:ring-workflow-primary/20 focus:border-workflow-primary/40 transition-all outline-none"
+                                        className="w-full bg-white/5 border border-white/10 rounded-xl py-3.5 pl-12 pr-4 text-white placeholder:text-[var(--color-text-secondary)] focus:ring-2 focus:ring-workflow-primary/20 focus:border-workflow-primary/40 transition-all outline-none"
                                     />
                                 </div>
 
                                 <div className="space-y-2 max-h-80 overflow-y-auto custom-scrollbar">
                                     {isSearching ? (
-                                        <div className="flex flex-col items-center justify-center p-12 text-slate-600">
+                                        <div className="flex flex-col items-center justify-center p-12 text-[var(--color-text-secondary)]">
                                             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-workflow-primary mb-4" />
                                             <p className="text-xs font-bold uppercase tracking-widest">Scanning Grid...</p>
                                         </div>
                                     ) : searchResults.length === 0 ? (
-                                        <div className="flex flex-col items-center justify-center p-12 text-center text-slate-600 opacity-40">
+                                        <div className="flex flex-col items-center justify-center p-12 text-center text-[var(--color-text-secondary)] opacity-40">
                                             <User size={48} className="mb-4" />
                                             <p className="text-xs font-bold uppercase tracking-widest">No matching nodes discovered</p>
                                         </div>
@@ -470,7 +470,7 @@ const MessagingPanel = () => {
                                                 </div>
                                                 <div className="flex-1">
                                                     <h4 className="text-sm font-black text-white uppercase tracking-tight">{match.full_name}</h4>
-                                                    <p className="text-xs text-slate-500 font-bold uppercase tracking-widest">{match.role || 'Personnel'}</p>
+                                                    <p className="text-xs text-[var(--color-text-tertiary)] font-bold uppercase tracking-widest">{match.role || 'Personnel'}</p>
                                                 </div>
                                                 <ChevronLeft className="text-slate-700 rotate-180 group-hover:text-workflow-primary transition-all" size={20} />
                                             </button>
