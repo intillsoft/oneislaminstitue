@@ -49,8 +49,8 @@ const LessonSidebar = ({
                         transition={{ duration: 0.4, ease: "circOut" }}
                         className={`fixed left-0 top-[var(--header-height)] z-50 w-[300px] flex flex-col pointer-events-auto transition-all duration-500 ease-in-out ${
                             isMobile 
-                            ? 'bottom-0 bg-[#0A0E27]/90 backdrop-blur-2xl border-r border-[var(--color-primary)]/10 rounded-tr-[2.5rem]' 
-                            : 'h-[calc(100vh-calc(var(--header-height)+2rem))] mt-4 ml-4 rounded-3xl bg-[#090C22]/40 backdrop-blur-2xl border border-white/[0.04] shadow-2xl'
+                            ? 'bottom-0 bg-[#0B0F19] border-r border-[var(--color-primary)]/10 rounded-tr-[2.5rem]' 
+                            : 'h-[calc(100vh-calc(var(--header-height)+2rem))] mt-4 ml-4 rounded-3xl bg-[#0B0F19] border border-white/[0.08] shadow-2xl'
                         } overflow-hidden`}
                     >
                         {/* Decorative Background Glows */}
@@ -167,7 +167,7 @@ const LessonSidebar = ({
                                                     isActive 
                                                     ? 'bg-gradient-to-r from-[var(--color-primary)]/10 to-transparent text-[var(--color-primary)] border-[var(--color-primary)]/10 shadow-lg shadow-[var(--color-primary)]/5' 
                                                     : isLocked 
-                                                        ? 'opacity-55 border-transparent'
+                                                        ? 'opacity-55 text-slate-400 border-transparent'
                                                         : 'text-slate-300 hover:text-white hover:bg-white/[0.03] border-transparent hover:border-white/[0.06]'
                                                 }`}
                                             >
@@ -184,7 +184,7 @@ const LessonSidebar = ({
                                                     }`}>
                                                         {isLocked && !isActive ? <Lock size={8} /> : lIndex + 1}
                                                     </div>
-                                                    <span className={`text-[10px] font-black uppercase tracking-wider truncate transition-colors ${isActive ? 'text-[var(--color-primary)] animate-pulse-elite' : 'group-hover:text-[var(--color-primary)]'}`}>
+                                                    <span className={`text-[10px] font-black uppercase tracking-wider truncate transition-colors ${isActive ? 'text-[var(--color-primary)] animate-pulse-elite' : 'text-slate-300 group-hover:text-[var(--color-primary)]'}`}>
                                                         {lesson.title}
                                                     </span>
                                                 </div>
