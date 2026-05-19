@@ -41,7 +41,13 @@ const Mission = () => {
     ];
 
     return (
-        <div className="min-h-screen bg-white text-[#0F172A] overflow-x-hidden safe-area-inset">
+        <div 
+            className="min-h-screen bg-slate-50/40 text-[#0F172A] overflow-x-hidden safe-area-inset relative"
+            style={{
+                backgroundImage: 'radial-gradient(rgba(0, 120, 212, 0.04) 1.5px, transparent 1.5px)',
+                backgroundSize: '24px 24px'
+            }}
+        >
             
             {/* Hero Section */}
             <section className="relative pt-16 sm:pt-24 md:pt-32 pb-12 sm:pb-16 px-3 sm:px-4 md:px-6 overflow-hidden">
@@ -81,8 +87,11 @@ const Mission = () => {
             </section>
 
             {/* The Vision Logic */}
-            <section className="py-12 sm:py-16 md:py-20 bg-[#F8FAFC] border-y border-[#E2E8F0]">
-                <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
+            <section className="py-12 sm:py-16 md:py-20 bg-white/40 backdrop-blur-md border-y border-[#E2E8F0] relative">
+                <div className="absolute top-0 left-0 w-72 h-72 bg-blue-600/5 rounded-full blur-[80px] pointer-events-none" />
+                <div className="absolute bottom-0 right-0 w-72 h-72 bg-indigo-600/5 rounded-full blur-[80px] pointer-events-none" />
+                
+                <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 relative z-10">
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
                         {pillars.map((item, idx) => (
                             <motion.div
@@ -90,16 +99,16 @@ const Mission = () => {
                                 initial={{ opacity: 0, y: 20 }}
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
-                                transition={{ delay: idx * 0.2 }}
-                                className="text-center group p-4 sm:p-6 rounded-xl hover:bg-white transition-all border border-transparent hover:border-[#E2E8F0]" style={{ boxShadow: 'none' }}
+                                transition={{ delay: idx * 0.15 }}
+                                className="text-center group p-6 sm:p-8 rounded-2xl bg-white/80 backdrop-blur-md border border-[#E2E8F0] hover:border-[#0078D4]/20 hover:shadow-xl hover:shadow-[var(--color-primary)]/5 transition-all duration-300"
                             >
-                                <div className="w-12 sm:w-14 h-12 sm:h-14 rounded-xl bg-[#EFF6FF] flex items-center justify-center mb-3 sm:mb-4 mx-auto group-hover:bg-[#DEEEFF] transition-all border border-[#C8E0F4]">
+                                <div className="w-12 sm:w-14 h-12 sm:h-14 rounded-xl bg-[#EFF6FF] flex items-center justify-center mb-4 mx-auto group-hover:bg-[#DEEEFF] transition-all border border-[#C8E0F4]">
                                     <item.icon className="w-6 sm:w-7 h-6 sm:h-7 text-[var(--color-primary)]" />
                                 </div>
-                                <h3 className="text-base sm:text-lg font-extrabold text-[#0F172A] mb-2 uppercase tracking-tight">
+                                <h3 className="text-base sm:text-lg font-extrabold text-[#0F172A] mb-3 uppercase tracking-tight">
                                     {item.title}
                                 </h3>
-                                <p className="text-[#475569] leading-snug text-xs sm:text-sm">
+                                <p className="text-[#475569] leading-relaxed text-xs sm:text-sm">
                                     {item.desc}
                                 </p>
                             </motion.div>
@@ -109,7 +118,7 @@ const Mission = () => {
             </section>
 
             {/* The "Why" - Detailed */}
-            <section className="py-16 sm:py-20 md:py-24 bg-white relative">
+            <section className="py-16 sm:py-20 md:py-24 bg-white/30 backdrop-blur-md relative">
                 <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 md:gap-12 lg:gap-16 items-start lg:items-center">
                         <div className="relative">
@@ -149,7 +158,7 @@ const Mission = () => {
                 <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10" />
                 <div className="relative z-10 max-w-4xl mx-auto px-4 text-center">
                     <h2 className="text-3xl md:text-5xl font-black text-white mb-8 uppercase tracking-tighter">Support the Eternal Legacy</h2>
-                    <p className="text-emerald-100 text-lg mb-10 max-w-2xl mx-auto font-bold">
+                    <p className="text-blue-100 text-lg mb-10 max-w-2xl mx-auto font-bold">
                         We are a 100% donation-funded platform. Every contribution directly funds the curation and development of our curricula.
                     </p>
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-4">

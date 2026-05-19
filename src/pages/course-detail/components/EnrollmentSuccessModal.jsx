@@ -53,7 +53,7 @@ const EnrollmentSuccessModal = ({ isOpen, onClose, course, courseId }) => {
     x: Math.random() * 100,
     size: 4 + Math.random() * 8,
     color: [
-      'rgba(16, 185, 129, 0.6)',   // emerald
+      'rgba(59, 130, 246, 0.6)',   // blue
       'rgba(59, 130, 246, 0.5)',    // blue  
       'rgba(168, 85, 247, 0.4)',    // purple
       'rgba(251, 191, 36, 0.5)',    // amber
@@ -109,7 +109,7 @@ const EnrollmentSuccessModal = ({ isOpen, onClose, course, courseId }) => {
               </div>
 
               {/* Top Gradient Banner */}
-              <div className="relative h-32 bg-gradient-to-br from-[var(--color-primary)] via-emerald-600 to-teal-700 flex items-center justify-center overflow-hidden">
+              <div className="relative h-32 bg-gradient-to-br from-[var(--color-primary)] via-blue-600 to-[#003D6B] flex items-center justify-center overflow-hidden">
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(255,255,255,0.15),transparent)]" />
                 
                 {/* Success checkmark */}
@@ -215,7 +215,7 @@ const EnrollmentSuccessModal = ({ isOpen, onClose, course, courseId }) => {
                       >
                         <button
                           onClick={handleStartCourse}
-                          className="w-full py-3.5 bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white rounded-xl font-bold transition-all shadow-lg shadow-emerald-600/25 active:scale-[0.98] flex items-center justify-center gap-2 text-sm group"
+                          className="w-full py-3.5 bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white rounded-xl font-bold transition-all shadow-lg shadow-blue-600/25 active:scale-[0.98] flex items-center justify-center gap-2 text-sm group"
                         >
                           Start Learning
                           <ArrowRight size={16} className="group-hover:translate-x-0.5 transition-transform" />

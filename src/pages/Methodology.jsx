@@ -40,7 +40,13 @@ const Methodology = () => {
     ];
 
     return (
-        <div className="min-h-screen bg-white text-[#0F172A] overflow-x-hidden safe-area-inset">
+        <div 
+            className="min-h-screen bg-slate-50/40 text-[#0F172A] overflow-x-hidden safe-area-inset relative"
+            style={{
+                backgroundImage: 'radial-gradient(rgba(0, 120, 212, 0.04) 1.5px, transparent 1.5px)',
+                backgroundSize: '24px 24px'
+            }}
+        >
             
             {/* 1. HERO */}
             <section className="relative pt-16 sm:pt-24 md:pt-32 pb-12 sm:pb-16 px-3 sm:px-4 md:px-6 overflow-hidden">
@@ -80,8 +86,8 @@ const Methodology = () => {
             </section>
 
             {/* 2. THE CURATION PIPELINE */}
-            <section className="py-16 sm:py-20 px-4 relative overflow-hidden">
-                <div className="max-w-7xl mx-auto">
+            <section className="py-16 sm:py-20 px-4 relative overflow-hidden bg-white/40 backdrop-blur-md border-y border-[#E2E8F0]">
+                <div className="max-w-7xl mx-auto relative z-10">
                     <div className="text-center mb-12">
                         <h2 className="text-2xl font-extrabold uppercase tracking-tight mb-3 text-[#0F172A]">From Source to Student</h2>
                         <div className="h-1.5 w-24 bg-[#0078D4] mx-auto rounded-full" />
@@ -94,7 +100,7 @@ const Methodology = () => {
                                 initial={{ opacity: 0, x: idx % 2 === 0 ? -20 : 20 }}
                                 whileInView={{ opacity: 1, x: 0 }}
                                 transition={{ delay: idx * 0.1 }}
-                                className="p-8 rounded-2xl bg-white border border-[#E2E8F0] hover:border-[#0078D4]/30 transition-all group" style={{ boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}
+                                className="p-8 rounded-2xl bg-white border border-[#E2E8F0] hover:border-[#0078D4]/20 hover:shadow-xl hover:shadow-[var(--color-primary)]/5 transition-all duration-300 group"
                             >
                                 <div className="w-14 h-14 rounded-2xl bg-[#EFF6FF] flex items-center justify-center mb-4 border border-[#C8E0F4] group-hover:scale-110 transition-transform">
                                     <step.icon className="w-7 h-7 text-[#0078D4]" />
@@ -110,12 +116,12 @@ const Methodology = () => {
             </section>
 
             {/* 3. TRUSTED SOURCES DISPLAY */}
-            <section className="py-16 sm:py-20 bg-[#F8FAFC] border-y border-[#E2E8F0] relative">
+            <section className="py-16 sm:py-20 bg-white/40 backdrop-blur-md border-b border-[#E2E8F0] relative">
                 <div className="max-w-5xl mx-auto px-4 relative z-10 text-center">
                     <h3 className="text-xs font-bold text-[#0078D4] uppercase tracking-[0.3em] mb-8">Authorized Base Sources</h3>
                     <div className="flex flex-wrap justify-center gap-4">
                         {sources.map((source, idx) => (
-                            <div key={idx} className="px-6 py-3 rounded-xl bg-white border border-[#E2E8F0] font-bold text-[#475569] hover:text-[#0078D4] hover:border-[#0078D4] transition-all cursor-default" style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.05)' }}>
+                            <div key={idx} className="px-6 py-3 rounded-xl bg-white border border-[#E2E8F0] font-bold text-[#475569] hover:text-[#0078D4] hover:border-[#0078D4] hover:shadow-lg hover:shadow-[var(--color-primary)]/5 transition-all cursor-default duration-300">
                                 {source}
                             </div>
                         ))}

@@ -25,7 +25,7 @@ import {
   ShieldCheck,
   BarChart3
 } from 'lucide-react';
-import { formatRequirements, formatBenefits } from '../../utils/jobDataFormatter';
+import { formatRequirements, formatBenefits, formatLocation } from '../../utils/jobDataFormatter';
 
 import RelatedCourses from './components/RelatedCourses';
 import CourseFAQ from './components/CourseFAQ';
@@ -255,13 +255,15 @@ const CourseDetail = () => {
               <div className="flex flex-wrap items-center gap-2 sm:gap-4 mb-6 sm:mb-8">
                 <div className="flex items-center gap-1.5 sm:gap-2 px-3 py-1.5 bg-white dark:bg-slate-800 rounded-lg border border-[var(--color-border-primary)] dark:border-slate-700 mb-2 sm:mb-0">
                   <BookOpen className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[var(--color-primary)]" />
-                  <span className="text-[10px] sm:text-xs font-black uppercase tracking-widest text-slate-700 dark:text-slate-300">{course.company || 'Hope Dawah Institute'}</span>
+                  <span className="text-[10px] sm:text-xs font-black uppercase tracking-widest text-slate-700 dark:text-slate-300">
+                    {((course.company && (course.company.toLowerCase().includes('one islam') || course.company.toLowerCase().includes('workflow'))) ? 'Hope Dawah Institute' : (course.company || 'Hope Dawah Institute'))}
+                  </span>
                 </div>
                 <span className="text-[10px] sm:text-xs font-bold text-[var(--color-text-tertiary)] dark:text-slate-400 px-2 border-l border-[var(--color-border-primary)] dark:border-slate-700">
                   {course.experience_level || 'All Levels'}
                 </span>
                 <span className="flex items-center gap-1 text-[10px] sm:text-xs font-bold text-[var(--color-text-tertiary)] dark:text-slate-400 px-2 border-l border-[var(--color-border-primary)] dark:border-slate-700">
-                  <Globe className="w-3 h-3 sm:w-3.5 sm:h-3.5" /> {course.location || 'Online'}
+                  <Globe className="w-3 h-3 sm:w-3.5 sm:h-3.5" /> {formatLocation(course.location)}
                 </span>
               </div>
 

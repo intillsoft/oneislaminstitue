@@ -107,7 +107,7 @@ const CourseOnboarding = () => {
   if (loading) {
     return (
       <div className="min-h-screen bg-white dark:bg-[var(--color-bg-dark)] flex items-center justify-center">
-        <div className="w-10 h-10 border-2 border-[var(--color-border-primary)] dark:border-slate-700 border-t-emerald-500 rounded-full animate-spin" />
+        <div className="w-10 h-10 border-2 border-[var(--color-border-primary)] dark:border-slate-700 border-t-[var(--color-primary)] rounded-full animate-spin" />
       </div>
     );
   }
@@ -137,7 +137,7 @@ const CourseOnboarding = () => {
               <div key={step.id} className="flex items-center gap-2">
                 <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-300 ${
                   i <= currentStep
-                    ? 'bg-[var(--color-primary)] text-white shadow-lg shadow-emerald-600/25'
+                    ? 'bg-[var(--color-primary)] text-white shadow-lg shadow-blue-600/25'
                     : 'bg-slate-200 dark:bg-slate-800 text-slate-400 dark:text-[var(--color-text-tertiary)]'
                 }`}>
                   {i < currentStep ? (
@@ -186,7 +186,7 @@ const CourseOnboarding = () => {
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
                     transition={{ type: 'spring', delay: 0.1 }}
-                    className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-[var(--color-primary)] to-teal-600 flex items-center justify-center shadow-xl shadow-emerald-500/25"
+                    className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-[var(--color-primary)] to-blue-600 flex items-center justify-center shadow-xl shadow-blue-500/25"
                   >
                     <Sparkles className="w-9 h-9 text-white" />
                   </motion.div>
@@ -227,7 +227,7 @@ const CourseOnboarding = () => {
 
                 {/* What to expect */}
                 <div className="bg-[var(--color-primary-light)] dark:bg-[var(--color-primary)]/5 rounded-2xl border border-[var(--color-border-secondary)] dark:border-[var(--color-primary)]/10 p-5">
-                  <h4 className="text-sm font-bold text-emerald-800 dark:text-[var(--color-primary)] mb-3">What to Expect</h4>
+                  <h4 className="text-sm font-bold text-blue-800 dark:text-[var(--color-primary)] mb-3">What to Expect</h4>
                   <ul className="space-y-2.5">
                     {[
                       'Set your learning goals and preferred study pace',
@@ -275,7 +275,7 @@ const CourseOnboarding = () => {
                         onClick={() => toggleGoal(goal.id)}
                         className={`relative p-4 rounded-2xl border-2 text-left transition-all duration-200 ${
                           isSelected
-                            ? 'border-[var(--color-primary)] bg-[var(--color-primary-light)] dark:bg-[var(--color-primary)]/10 shadow-sm shadow-emerald-500/10'
+                            ? 'border-[var(--color-primary)] bg-[var(--color-primary-light)] dark:bg-[var(--color-primary)]/10 shadow-sm shadow-blue-500/10'
                             : 'border-[var(--color-border-primary)] dark:border-slate-700 bg-white dark:bg-slate-900 hover:border-slate-300 dark:hover:border-slate-600'
                         }`}
                       >
@@ -417,7 +417,7 @@ const CourseOnboarding = () => {
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
                     transition={{ type: 'spring', delay: 0.1 }}
-                    className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-[var(--color-primary)] to-teal-600 flex items-center justify-center shadow-xl shadow-emerald-500/25"
+                    className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-[var(--color-primary)] to-blue-600 flex items-center justify-center shadow-xl shadow-blue-500/25"
                   >
                     <Rocket className="w-9 h-9 text-white" />
                   </motion.div>
@@ -499,7 +499,7 @@ const CourseOnboarding = () => {
           {currentStep < STEPS.length - 1 ? (
             <button
               onClick={goNext}
-              className="px-6 py-3 bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white rounded-xl font-bold transition-all shadow-lg shadow-emerald-600/25 active:scale-[0.98] flex items-center gap-2 text-sm group"
+              className="px-6 py-3 bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white rounded-xl font-bold transition-all shadow-lg shadow-blue-600/25 active:scale-[0.98] flex items-center gap-2 text-sm group"
             >
               Continue
               <ArrowRight size={15} className="group-hover:translate-x-0.5 transition-transform" />
@@ -507,7 +507,7 @@ const CourseOnboarding = () => {
           ) : (
             <button
               onClick={handleComplete}
-              className="px-6 py-3 bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white rounded-xl font-bold transition-all shadow-lg shadow-emerald-600/25 active:scale-[0.98] flex items-center gap-2 text-sm group"
+              className="px-6 py-3 bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white rounded-xl font-bold transition-all shadow-lg shadow-blue-600/25 active:scale-[0.98] flex items-center gap-2 text-sm group"
             >
               <Play size={15} />
               Start Learning

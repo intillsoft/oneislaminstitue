@@ -292,9 +292,6 @@ const HomePage = () => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.8 }}
                 >
-                  <span className="inline-block px-4 py-1.5 rounded-full bg-[var(--color-primary-light)] text-[var(--color-primary)] text-[10px] font-bold uppercase tracking-widest mb-6 border border-[var(--color-border-secondary)]">
-                    Trusted by 10,000+ Students Worldwide
-                  </span>
                   
                   <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold text-[var(--color-text-primary)] mb-4 sm:mb-6 tracking-tight leading-[1.2] sm:leading-[1.1]">
                     The Modern Gateway to <br className="hidden sm:block" />
@@ -533,25 +530,7 @@ const HomePage = () => {
               </div>
             </section>
 
-            <section className="py-12 sm:py-20 bg-white border-y border-[var(--color-border-primary)]">
-              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 md:gap-12">
-                  {[
-                    { number: 50, suffix: "+", label: "Professional Courses" },
-                    { number: 12, suffix: "k", label: "Registered Students" },
-                    { number: 25, suffix: "+", label: "Curation Experts" },
-                    { number: 98, suffix: "%", label: "Course Completion" }
-                  ].map((stat, index) => (
-                    <div key={index} className="text-center">
-                      <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-[var(--color-text-primary)] mb-1 sm:mb-2">
-                        <AnimatedCounter value={stat.number} suffix={stat.suffix} />
-                      </div>
-                      <p className="text-[10px] sm:text-sm text-[var(--color-text-tertiary)] font-bold uppercase tracking-widest sm:tracking-wider">{stat.label}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </section>
+
 
             <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 text-center">
               <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-[var(--color-primary-light)] mb-8 border border-[var(--color-border-secondary)]">
@@ -581,100 +560,7 @@ const HomePage = () => {
               </AnimatePresence>
             </section>
 
-            {/* NEW SECTION 3: GLOBAL SCHOLARSHIP NETWORK */}
-            <section className="py-16 sm:py-24 bg-slate-900 text-white relative overflow-hidden">
-               {/* Decorative background elements */}
-               <div className="absolute inset-0 z-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] bg-fixed" />
-               <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-600/20 rounded-full blur-[128px] pointer-events-none" />
-               <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-blue-600/20 rounded-full blur-[128px] pointer-events-none" />
 
-               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-                     <div>
-                        <motion.div
-                           initial={{ opacity: 0, scale: 0.9 }}
-                           whileInView={{ opacity: 1, scale: 1 }}
-                           viewport={{ once: true }}
-                        >
-                           <h2 className="text-3xl md:text-5xl font-black mb-6 leading-tight tracking-tight">
-                              Join a Global <br className="hidden sm:block" />
-                              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-blue-200">Network of Seekers</span>
-                           </h2>
-                           <p className="text-slate-400 text-lg mb-8 leading-relaxed max-w-lg">
-                              Knowledge increases when shared. Connect with students from over 40 countries, participate in live colloquiums, and contribute to the revival of Islamic intellectual tradition.
-                           </p>
-                           
-                           <div className="flex flex-col sm:flex-row gap-4">
-                              <button 
-                                onClick={() => navigate('/register')}
-                                className="px-8 py-4 bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white rounded-lg font-bold transition-all flex items-center justify-center gap-2"
-                              >
-                                Join the Institute <ArrowUpRight size={18} />
-                              </button>
-                              <button 
-                                onClick={() => navigate('/community')}
-                                className="px-8 py-4 bg-white/5 hover:bg-white/10 text-white border border-white/10 rounded-xl font-bold transition-all flex items-center justify-center gap-2 backdrop-blur-sm"
-                              >
-                                <Globe size={18} className="text-blue-400" /> Explore Impact
-                              </button>
-                           </div>
-
-                           <div className="mt-12 flex items-center gap-4 text-sm font-medium text-slate-400">
-                              <div className="flex -space-x-3">
-                                 {[1,2,3,4].map((i) => (
-                                    <div key={i} className="w-10 h-10 rounded-full bg-slate-800 border-2 border-slate-900 flex items-center justify-center text-xs text-white box-content">
-                                       <Users size={14} />
-                                    </div>
-                                 ))}
-                              </div>
-                              <span>Joined by 500+ scholars this week</span>
-                           </div>
-                        </motion.div>
-                     </div>
-
-                     <div className="relative">
-                        <div className="grid grid-cols-2 gap-4">
-                           <motion.div 
-                              className="space-y-4 translate-y-8"
-                              initial={{ opacity: 0, y: 40 }}
-                              whileInView={{ opacity: 1, y: 32 }} // keep translate-y-8 (approx 32px)
-                              viewport={{ once: true }}
-                              transition={{ duration: 0.7 }}
-                           >
-                              <div className="p-6 bg-white/5 backdrop-blur-md rounded-2xl border border-white/10">
-                                 <Globe className="w-8 h-8 text-blue-400 mb-4" />
-                                 <h3 className="text-xl font-bold mb-1">Global Reach</h3>
-                                 <p className="text-sm text-slate-400">Students accessing knowledge from 6 continents.</p>
-                              </div>
-                              <div className="p-6 bg-blue-600/10 backdrop-blur-md rounded-2xl border border-blue-500/20">
-                                 <Award className="w-8 h-8 text-blue-400 mb-4" />
-                                 <h3 className="text-xl font-bold mb-1">Accredited</h3>
-                                 <p className="text-sm text-slate-400">Recognized certifications upon course completion.</p>
-                              </div>
-                           </motion.div>
-                           <motion.div 
-                              className="space-y-4"
-                              initial={{ opacity: 0, y: 40 }}
-                              whileInView={{ opacity: 1, y: 0 }}
-                              viewport={{ once: true }}
-                              transition={{ duration: 0.7, delay: 0.2 }}
-                           >
-                              <div className="p-6 bg-white/5 backdrop-blur-md rounded-2xl border border-white/10">
-                                 <MessageCircle className="w-8 h-8 text-amber-400 mb-4" />
-                                 <h3 className="text-xl font-bold mb-1">Community</h3>
-                                 <p className="text-sm text-slate-400">Vibrant discussion forums and study groups.</p>
-                              </div>
-                              <div className="p-6 bg-white/5 backdrop-blur-md rounded-2xl border border-white/10">
-                                 <PlayCircle className="w-8 h-8 text-rose-400 mb-4" />
-                                 <h3 className="text-xl font-bold mb-1">Live Events</h3>
-                                 <p className="text-sm text-slate-400">Weekly webinars with guest speakers.</p>
-                              </div>
-                           </motion.div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-            </section>
           </main>
           <Footer />
         </div>

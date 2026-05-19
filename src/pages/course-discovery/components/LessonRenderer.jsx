@@ -51,7 +51,7 @@ const LessonRenderer = ({ lessonData }) => {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
           <div className="space-y-4">
             <div className="flex items-center gap-3">
-              <span className="px-3 py-1 bg-[var(--color-primary)]/10 text-[var(--color-primary)] text-[10px] font-black uppercase tracking-widest rounded-full border border-emerald-600/20">
+              <span className="px-3 py-1 bg-[var(--color-primary)]/10 text-[var(--color-primary)] text-[10px] font-black uppercase tracking-widest rounded-full border border-[var(--color-primary)]/20">
                 {lessonData.moduleName}
               </span>
               <div className="flex items-center gap-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
@@ -139,7 +139,7 @@ const LessonRenderer = ({ lessonData }) => {
           >
             {!quizCompleted ? (
               <div className="bg-white dark:bg-[#13182E] rounded-[3rem] p-12 border border-slate-100 dark:border-[#1E2640] shadow-2xl text-center space-y-8">
-                <div className="w-24 h-24 bg-[var(--color-primary)]/10 rounded-full flex items-center justify-center mx-auto border border-emerald-600/20 text-[var(--color-primary)]">
+                <div className="w-24 h-24 bg-[var(--color-primary)]/10 rounded-full flex items-center justify-center mx-auto border border-[var(--color-primary)]/20 text-[var(--color-primary)]">
                    <Icon name="Zap" size={40} />
                 </div>
                 <div className="space-y-4">
@@ -169,14 +169,14 @@ const LessonRenderer = ({ lessonData }) => {
                </h3>
                <textarea 
                  placeholder="Draft your personal reflections or findings here..."
-                 className="w-full h-48 bg-white dark:bg-white/5 border border-[var(--color-border-primary)] dark:border-white/10 rounded-3xl p-6 text-sm font-medium text-slate-700 dark:text-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-600/40 transition-all resize-none shadow-inner"
+                 className="w-full h-48 bg-white dark:bg-white/5 border border-[var(--color-border-primary)] dark:border-white/10 rounded-3xl p-6 text-sm font-medium text-slate-700 dark:text-slate-300 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/40 transition-all resize-none shadow-inner"
                />
                <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
                   <button className="flex items-center gap-3 px-6 py-3 bg-white dark:bg-white/5 border border-[var(--color-border-primary)] dark:border-white/10 rounded-2xl text-[10px] font-black uppercase tracking-widest text-[var(--color-text-tertiary)] hover:text-[var(--color-primary)] transition-all">
                      <Icon name="Upload" size={14} />
                      Upload Evidence
                   </button>
-                  <button className="px-10 py-3 bg-slate-900 dark:bg-[var(--color-primary)]/10 border border-slate-800 dark:border-emerald-600/20 text-white dark:text-[var(--color-primary)] rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-lg transition-all">
+                  <button className="px-10 py-3 bg-slate-900 dark:bg-[var(--color-primary)]/10 border border-slate-800 dark:border-[var(--color-primary)]/20 text-white dark:text-[var(--color-primary)] rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-lg transition-all">
                      Commit Reflection
                   </button>
                </div>

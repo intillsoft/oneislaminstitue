@@ -607,7 +607,7 @@ const LessonView = () => {
                             disabled={isCompleteButtonDisabled}
                             className={`flex items-center gap-1.5 px-3 lg:px-4 py-2 rounded-xl text-[8px] font-semibold uppercase tracking-[0.18em] transition-all shadow-md active:scale-95 disabled:opacity-30 disabled:grayscale ${
                                 isAlreadyCompleted 
-                                ? 'bg-[var(--color-primary)] text-white shadow-emerald-500/10' 
+                                ? 'bg-[var(--color-primary)] text-white shadow-[var(--color-primary)]/10' 
                                 : nextLesson
                                     ? 'bg-[var(--color-primary)] text-white shadow-[var(--color-primary)]/20'
                                     : 'bg-amber-500 text-white shadow-amber-500/20'
@@ -642,11 +642,11 @@ const LessonView = () => {
                         </div>
                     ) : (
                         <div className="space-y-3 sm:space-y-4 mb-6 sm:mb-8">
-                            <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1 sm:py-1.5 rounded-full bg-[var(--color-primary)]/10 text-[var(--color-primary)] text-[9px] sm:text-[10px] font-bold uppercase tracking-widest border border-[var(--color-primary)]/20 shadow-sm shadow-emerald-500/5">
+                            <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1 sm:py-1.5 rounded-full bg-[var(--color-primary)]/10 text-[var(--color-primary)] text-[9px] sm:text-[10px] font-bold uppercase tracking-widest border border-[var(--color-primary)]/20 shadow-sm shadow-[var(--color-primary)]/5">
                                 <Sparkles size={12} className="animate-pulse" />
                                 Active Module
                             </div>
-                            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight text-emerald-950 dark:text-emerald-50 leading-tight">
+                            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight text-slate-900 dark:text-white leading-tight">
                                 {activeLesson.title}
                             </h1>
                             
@@ -658,7 +658,7 @@ const LessonView = () => {
 
                             <div className="flex items-center gap-4 text-xs font-semibold uppercase tracking-widest text-slate-400">
                                 <span className="flex items-center gap-1.5"><Clock size={14} /> {activeLesson.duration_minutes || 0} Minutes</span>
-                                {activeLesson.xp_reward > 0 && <span className="flex items-center gap-1.5 text-amber-500"><Award size={14} /> +{activeLesson.xp_reward} ONE COINS</span>}
+                                {activeLesson.xp_reward > 0 && <span className="flex items-center gap-1.5 text-amber-500"><Award size={14} /> +{activeLesson.xp_reward} COINS</span>}
                             </div>
                         </div>
                     )}

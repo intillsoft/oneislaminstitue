@@ -59,7 +59,10 @@ const FeaturedCourseCard = ({ job, index }) => {
   };
 
   const title = courseData?.title || 'Course';
-  const provider = courseData?.company || 'Hope Dawah Institute';
+  const rawProvider = courseData?.company || 'Hope Dawah Institute';
+  const provider = (rawProvider.toLowerCase().includes('one islam') || rawProvider.toLowerCase().includes('workflow'))
+    ? 'Hope Dawah Institute'
+    : rawProvider;
   const thumbSrc = courseData?.thumbnail || courseData?.thumbnail_url || courseData?.image || courseData?.featured_image || courseData?.logo;
   const pct = progress ? Math.round(((progress.lessons_completed || 0) / Math.max(progress.lessons_total || 1, 1)) * 100) : 0;
 

@@ -82,6 +82,51 @@ export function formatBenefits(benefits) {
 }
 
 /**
+ * Safely parse and format location field
+ * Handles: JSON string, plain text, object, null, undefined
+ */
+export function formatLocation(location) {
+  if (!location) return 'Online';
+  
+  // If it's already an object
+  if (typeof location === 'object') {
+    if (location.type === 'remote') return 'Online';
+    const parts = [location.city, location.state, location.country].filter(Boolean);
+    return parts.length > 0 ? parts.join(', ') : 'Online';
+  }
+
+  // If it's a string
+  if (typeof location === 'string') {
+    const trimmed = location.trim();
+    if (trimmed.startsWith('{')) {
+      try {
+        const parsed = JSON.parse(trimmed);
+        if (parsed.type === 'remote') return 'Online';
+        const parts = [parsed.city, parsed.state, parsed.country].filter(Boolean);
+        return parts.length > 0 ? parts.join(', ') : 'Online';
+      } catch (e) {
+        // Fall through to text checking if JSON parsing fails
+      }
+    }
+    
+    // Check for common remote/online words
+    const lower = trimmed.toLowerCase();
+    if (lower.includes('remote') || lower.includes('online')) {
+      return 'Online';
+    }
+    
+    // Check if it is a raw JSON string that somehow didn't start with '{' or is incomplete
+    if (lower.includes('"type":"remote"') || lower.includes('type:remote')) {
+      return 'Online';
+    }
+    
+    return trimmed;
+  }
+
+  return 'Online';
+}
+
+/**
  * Format job data for display
  * Ensures all fields are properly formatted
  */
@@ -93,7 +138,7 @@ export function formatJobData(job) {
     requirements: formatRequirements(job.requirements),
     benefits: formatBenefits(job.benefits),
     description: formatDetailedDescription(job.description),
-    location: job.location || 'Location not specified',
+    location: formatLocation(job.location),
     company: job.company || 'Company not specified',
     salaryRange: job.salary ||
       (job.salary_min && job.salary_max
@@ -154,6 +199,7 @@ export function formatDetailedDescription(description) {
 export default {
   formatRequirements,
   formatBenefits,
+  formatLocation,
   formatJobData,
 };
 

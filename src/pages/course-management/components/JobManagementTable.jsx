@@ -4,6 +4,7 @@ import { jobService } from '../../../services/jobService';
 import { useAuthContext } from '../../../contexts/AuthContext';
 import { useToast } from '../../../components/ui/Toast';
 import { formatDistanceToNow } from 'date-fns';
+import { formatLocation } from '../../../utils/jobDataFormatter';
 
 const JobManagementTable = ({ onEdit, onDuplicate }) => {
   const { user } = useAuthContext();
@@ -80,12 +81,6 @@ const JobManagementTable = ({ onEdit, onDuplicate }) => {
       setSortBy(column);
       setSortDirection('desc');
     }
-  };
-  
-  const formatLocation = (location) => {
-    if (!location) return 'Not specified';
-    if (location.toLowerCase().includes('remote')) return 'Remote';
-    return location;
   };
 
   if (!user) {

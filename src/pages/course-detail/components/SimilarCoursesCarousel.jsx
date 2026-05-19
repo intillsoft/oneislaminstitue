@@ -5,11 +5,28 @@ import Image from 'components/AppImage';
 import DepartmentAvatar from '../../../components/ui/CompanyAvatar';
 import { useAuthContext } from '../../../contexts/AuthContext';
 import { supabase } from '../../../lib/supabase';
+import { formatLocation } from '../../../utils/jobDataFormatter';
 
 const SimilarCoursesCarousel = ({ courses }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const { user } = useAuthContext();
   const navigate = useNavigate();
+
+  const formatCompany = (company) => {
+    if (!company) return 'Hope Dawah Institute';
+    if (company.toLowerCase().includes('one islam') || company.toLowerCase().includes('workflow')) {
+      return 'Hope Dawah Institute';
+    }
+    return company;
+  };
+
+  const formatCompany = (company) => {
+    if (!company) return 'Hope Dawah Institute';
+    if (company.toLowerCase().includes('one islam') || company.toLowerCase().includes('workflow')) {
+      return 'Hope Dawah Institute';
+    }
+    return company;
+  };
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -125,10 +142,10 @@ const SimilarCoursesCarousel = ({ courses }) => {
                       </span>
                     )}
                   </div>
-                  <p className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-tertiary)] mb-3">{course?.company}</p>
+                  <p className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-tertiary)] mb-3">{formatCompany(course?.company)}</p>
                 </div>
                 <DepartmentAvatar
-                  name={course?.company}
+                  name={formatCompany(course?.company)}
                   logo={course?.logo}
                   size="10"
                   className="flex-shrink-0 ring-2 ring-white/5 group-hover:ring-emerald-600/30 transition-all"
@@ -138,7 +155,7 @@ const SimilarCoursesCarousel = ({ courses }) => {
               <div className="flex flex-wrap items-center gap-3">
                 <span className="flex items-center gap-1.5 px-3 py-1.5 bg-white/[0.03] rounded-lg border border-white/5 text-[9px] font-bold text-slate-400 uppercase tracking-widest">
                   <Icon name="MapPin" size={12} className="text-[var(--color-primary)]" />
-                  {course?.location || 'Remote'}
+                  {formatLocation(course?.location)}
                 </span>
                 <span className="flex items-center gap-1.5 px-3 py-1.5 bg-[var(--color-primary)]/5 rounded-lg border border-emerald-600/10 text-[9px] font-bold text-[var(--color-primary)] uppercase tracking-widest">
                   <Icon name="BookOpen" size={12} />
@@ -196,10 +213,10 @@ const SimilarCoursesCarousel = ({ courses }) => {
                         >
                           {course?.title}
                         </Link>
-                        <p className="text-[10px] font-black text-[var(--color-text-secondary)] uppercase tracking-widest">{course?.company}</p>
+                         <p className="text-[10px] font-black text-[var(--color-text-secondary)] uppercase tracking-widest">{formatCompany(course?.company)}</p>
                       </div>
                       <DepartmentAvatar
-                        name={course?.company}
+                        name={formatCompany(course?.company)}
                         logo={course?.logo}
                         size="10"
                       />
@@ -208,7 +225,7 @@ const SimilarCoursesCarousel = ({ courses }) => {
                     <div className="space-y-3">
                       <div className="flex items-center gap-3 px-4 py-3 bg-white/[0.03] rounded-2xl border border-white/5">
                         <Icon name="MapPin" size={14} className="text-[var(--color-primary)]" />
-                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{course?.location || 'Remote'}</span>
+                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{formatLocation(course?.location)}</span>
                       </div>
                       <div className="flex items-center gap-3 px-4 py-3 bg-[var(--color-primary)]/5 rounded-2xl border border-emerald-600/10">
                         <Icon name="Zap" size={14} className="text-[var(--color-primary)]" />

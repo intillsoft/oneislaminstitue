@@ -55,37 +55,10 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="footer-container">
-      <div className="footer-content">
-        {footerColumns.map((column, index) => (
-          <motion.div
-            key={column.title}
-            className="footer-column"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: index * 0.1 }}
-          >
-            <h3 className="footer-title">{column.title}</h3>
-            <ul className="footer-links">
-              {column.links.map((link) => (
-                <li key={link.label}>
-                  <Link
-                    to={link.path}
-                    className="footer-link"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </motion.div>
-        ))}
-      </div>
-
-      <div className="footer-bottom">
+    <footer className="footer-container" style={{ padding: '24px 40px' }}>
+      <div className="footer-bottom" style={{ borderTop: 'none', paddingTop: 0 }}>
         <p className="copyright">
-          © {currentYear} Workflow. All rights reserved.
+          © {currentYear} Hope Dawah Institute. All rights reserved.
         </p>
         <div className="social-links">
           {socialLinks.map((social) => {
