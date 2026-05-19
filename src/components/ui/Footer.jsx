@@ -55,12 +55,12 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="footer-container" style={{ padding: '24px 40px' }}>
-      <div className="footer-bottom" style={{ borderTop: 'none', paddingTop: 0 }}>
-        <p className="copyright">
+    <footer className="footer-container" style={{ padding: '32px 40px', background: '#003D6B', color: '#FFFFFF', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+      <div className="footer-bottom" style={{ borderTop: 'none', paddingTop: 0, display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', maxWidth: '1400px', margin: '0 auto', flexWrap: 'wrap', gap: '20px' }}>
+        <p className="copyright" style={{ color: '#E2E8F0', fontSize: '13px', margin: 0, fontWeight: 500 }}>
           © {currentYear} Hope Dawah Institute. All rights reserved.
         </p>
-        <div className="social-links">
+        <div className="social-links" style={{ display: 'flex', gap: '16px' }}>
           {socialLinks.map((social) => {
             const IconComponent = social.icon;
             return (
@@ -70,7 +70,20 @@ const Footer = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="social-icon"
-                whileHover={{ scale: 1.1, y: -2 }}
+                style={{ 
+                  width: '40px', 
+                  height: '40px', 
+                  background: 'rgba(255,255,255,0.08)', 
+                  border: '1px solid rgba(255,255,255,0.15)', 
+                  borderRadius: '12px', 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justify-content: 'center', 
+                  color: '#F1F5F9', 
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease'
+                }}
+                whileHover={{ scale: 1.1, y: -2, background: 'rgba(255,255,255,0.15)', borderColor: 'rgba(255,255,255,0.3)' }}
                 whileTap={{ scale: 0.95 }}
                 aria-label={social.label}
               >
