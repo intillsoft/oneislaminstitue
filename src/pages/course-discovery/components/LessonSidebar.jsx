@@ -83,7 +83,7 @@ const LessonSidebar = ({
                                     onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                                     className={`w-full flex items-center justify-between gap-3 px-4 py-3.5 rounded-2xl border transition-all duration-300 ${
                                         isDropdownOpen 
-                                        ? 'bg-[var(--color-primary)]/10 border-[var(--color-primary)]/30 text-white shadow-xl shadow-emerald-500/5' 
+                                        ? 'bg-[var(--color-primary)]/10 border-[var(--color-primary)]/30 text-white shadow-xl shadow-[var(--color-primary)]/5' 
                                         : 'bg-white/[0.03] border-white/[0.04] text-slate-300 hover:border-[var(--color-primary)]/20 hover:bg-white/[0.06]'
                                     }`}
                                 >
@@ -165,10 +165,10 @@ const LessonSidebar = ({
                                                 }}
                                                 className={`w-full flex items-center justify-between gap-4 px-4 py-3.5 rounded-2xl transition-all border relative group ${
                                                     isActive 
-                                                    ? 'bg-gradient-to-r from-[var(--color-primary)]/10 to-transparent text-[var(--color-primary)] border-[var(--color-primary)]/10 shadow-lg shadow-emerald-500/5' 
+                                                    ? 'bg-gradient-to-r from-[var(--color-primary)]/10 to-transparent text-[var(--color-primary)] border-[var(--color-primary)]/10 shadow-lg shadow-[var(--color-primary)]/5' 
                                                     : isLocked 
-                                                        ? 'opacity-20 border-transparent'
-                                                        : 'text-slate-400 hover:text-white hover:bg-white/[0.03] border-transparent hover:border-white/[0.06]'
+                                                        ? 'opacity-55 border-transparent'
+                                                        : 'text-slate-300 hover:text-white hover:bg-white/[0.03] border-transparent hover:border-white/[0.06]'
                                                 }`}
                                             >
                                                 {isActive && (
@@ -180,7 +180,7 @@ const LessonSidebar = ({
                                                 
                                                 <div className="flex items-center gap-3 min-w-0 pl-3">
                                                     <div className={`flex-shrink-0 w-5 h-5 flex items-center justify-center rounded-lg text-[8px] font-black border transition-all ${
-                                                        isActive ? 'bg-[var(--color-primary)] border-[var(--color-primary)]/20 text-[#090C22] shadow-lg shadow-emerald-500/10' : 'bg-white/[0.03] border-white/[0.03] text-[var(--color-text-tertiary)] group-hover:text-[var(--color-primary)] group-hover:border-[var(--color-primary)]/20'
+                                                        isActive ? 'bg-[var(--color-primary)] border-[var(--color-primary)]/20 text-[#090C22] shadow-lg shadow-[var(--color-primary)]/10' : 'bg-white/[0.03] border-white/[0.03] text-slate-400 group-hover:text-[var(--color-primary)] group-hover:border-[var(--color-primary)]/20'
                                                     }`}>
                                                         {isLocked && !isActive ? <Lock size={8} /> : lIndex + 1}
                                                     </div>
