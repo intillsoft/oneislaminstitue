@@ -24,8 +24,8 @@ const TabBtn = ({ active, onClick, icon: TabIcon, label }) => (
     onClick={onClick}
     className={`relative flex items-center gap-2 px-5 py-2 rounded-full text-[12px] font-bold transition-all duration-150 whitespace-nowrap ${
       active
-        ? 'text-white bg-[var(--color-primary)] shadow-sm'
-        : 'text-[var(--color-text-tertiary)] hover:text-[var(--color-primary)] hover:bg-[var(--color-primary-light)]'
+        ? 'text-white bg-[#0078D4] shadow-sm'
+        : 'text-[#475569] hover:text-[#0078D4] hover:bg-[#EFF6FF]'
     }`}
   >
     <TabIcon size={14} />
@@ -248,31 +248,31 @@ const StudentDashboard = () => {
       <div className="relative z-10 max-w-7xl mx-auto py-6">
         <div className="flex flex-col gap-6">
 
-          {/* 🌟 HEADER CARD */}
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 p-8 bg-white border border-[var(--color-card-border)] rounded-xl relative overflow-hidden" style={{ boxShadow: '0 2px 8px rgba(0,120,212,0.08)' }}>
+          {/* 🌟 HEADER CARD — Bold blue gradient */}
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 p-8 rounded-2xl relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #0078D4 0%, #003D6B 100%)', boxShadow: '0 4px 20px rgba(0,61,107,0.25)' }}>
             <div>
               <div className="flex items-center gap-2 mb-3">
-                <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-primary)] animate-pulse" />
-                <span className="text-[10px] font-bold text-[var(--color-primary)] uppercase tracking-widest">Scholar Space</span>
+                <div className="w-1.5 h-1.5 rounded-full bg-[#4ADE80] animate-pulse" />
+                <span className="text-[10px] font-bold text-white/80 uppercase tracking-widest bg-white/15 px-2 py-0.5 rounded-full border border-white/30">Scholar Space</span>
               </div>
-              <h1 className="text-3xl sm:text-4xl font-bold text-[var(--color-text-primary)] leading-tight">
-                {getGreeting()}, <span className="text-[var(--color-primary)]">{userData?.name}</span>
+              <h1 className="text-3xl sm:text-4xl font-extrabold text-white leading-tight">
+                {getGreeting()}, <span className="text-white">{userData?.name}</span>
               </h1>
-              <p className="text-[var(--color-text-tertiary)] text-sm font-medium mt-2">Manage your academic courses and progress tracker.</p>
+              <p className="text-[#A8CAEC] text-sm font-medium mt-2">Manage your academic courses and progress tracker.</p>
             </div>
 
             <div className="flex items-center gap-3">
-              <Link to="/courses" className="flex items-center gap-2 px-5 py-3 bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white rounded-md font-bold text-xs uppercase tracking-wider transition-all">
+              <Link to="/courses" className="flex items-center gap-2 px-5 py-3 bg-white hover:bg-[#EFF6FF] text-[#0078D4] rounded-lg font-bold text-xs uppercase tracking-wider transition-all hover:scale-[1.02]">
                 <Search size={13} /> Find Courses
               </Link>
-              <Link to="/profile" className="flex items-center gap-2 px-5 py-3 bg-white hover:bg-[var(--color-primary-light)] text-[var(--color-primary)] rounded-md font-bold text-xs uppercase tracking-wider border border-[var(--color-primary)] transition-all">
+              <Link to="/profile" className="flex items-center gap-2 px-5 py-3 bg-white/15 hover:bg-white/25 text-white rounded-lg font-bold text-xs uppercase tracking-wider border border-white/40 transition-all">
                 <User size={13} /> Profile
               </Link>
             </div>
           </div>
 
           {/* TAB NAVIGATION */}
-          <div className="flex items-center gap-2 p-1.5 bg-white border border-[var(--color-card-border)] rounded-full self-start" style={{ boxShadow: 'var(--shadow-card)' }}>
+          <div className="flex items-center gap-2 p-1.5 bg-white border border-[#E2E8F0] rounded-full self-start" style={{ boxShadow: 'var(--shadow-card)' }}>
             {TABS.map(tab => (
               <TabBtn key={tab.id} active={activeTab === tab.id} onClick={() => setActiveTab(tab.id)} icon={tab.icon} label={tab.label} />
             ))}

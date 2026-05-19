@@ -9,24 +9,36 @@
 @layer base {
   :root {
     /* ═══════════════════════════════════════════════
-       HOPE DAWAH INSTITUTE — Microsoft-Inspired Theme
-       Clean, professional, high contrast, minimal.
+       HOPE DAWAH INSTITUTE — Bold Blue + White Theme
+       Blue surfaces for structure, white for content.
        ═══════════════════════════════════════════════ */
+
+    /* ── BLUE SCALE ─────────────────────────────── */
+    --blue-900:    #003D6B;
+    --blue-800:    #005A9E;
+    --blue-700:    #0067B8;
+    --blue-600:    #0078D4;
+    --blue-500:    #1B8FE0;
+    --blue-400:    #4BA8E8;
+    --blue-300:    #82C4F5;
+    --blue-200:    #C8E0F4;
+    --blue-100:    #DEEEFF;
+    --blue-50:     #EFF6FF;
 
     /* ── BACKGROUNDS ────────────────────────────── */
     --color-bg-primary:      #FFFFFF;
-    --color-bg-secondary:    #F5F5F5;
+    --color-bg-secondary:    #F8FAFC;
     --color-bg-tertiary:     #EFF6FF;
-    --color-bg-dark:         #0B1120;
-    --color-bg-sidebar:      #F8FAFF;
+    --color-bg-dark:         #0F172A;
+    --color-bg-sidebar:      #003D6B;
 
     /* Legacy mappings for existing Tailwind tokens */
     --color-bg-rgb: 255, 255, 255;
     --color-bg: #FFFFFF;
     --color-surface-rgb: 255, 255, 255;
     --color-surface: #FFFFFF;
-    --color-surface-elevated-rgb: 245, 245, 245;
-    --color-surface-elevated: #F5F5F5;
+    --color-surface-elevated-rgb: 248, 250, 252;
+    --color-surface-elevated: #F8FAFC;
 
     /* ── BRAND / ACCENT ─────────────────────────── */
     --color-primary:         #0078D4;
@@ -36,24 +48,27 @@
     --workflow-primary:      #0078D4;
 
     /* ── TEXT ────────────────────────────────────── */
-    --color-text-primary:    #1A1A1A;
-    --color-text-secondary:  #444444;
-    --color-text-tertiary:   #767676;
+    --color-text-primary:    #0F172A;
+    --color-text-secondary:  #475569;
+    --color-text-tertiary:   #94A3B8;
     --color-text-inverse:    #FFFFFF;
     --color-text-link:       #0078D4;
     --color-text-link-hover: #005A9E;
+    --color-text-blue-bold:  #003D6B;
+    --text-on-dark:          #FFFFFF;
+    --text-on-dark-dim:      #A8CAEC;
 
     /* Legacy mappings */
-    --color-text: #1A1A1A;
-    --color-text-secondary-legacy: #444444;
-    --color-text-muted: #767676;
+    --color-text: #0F172A;
+    --color-text-secondary-legacy: #475569;
+    --color-text-muted: #94A3B8;
 
     /* ── BORDERS ────────────────────────────────── */
-    --color-border-primary:  #E0E0E0;
-    --color-border-secondary:#C8D8F0;
+    --color-border-primary:  #E2E8F0;
+    --color-border-secondary:#C8E0F4;
     --color-border-focus:    #0078D4;
-    --color-border-rgb: 224, 224, 224;
-    --color-border: #E0E0E0;
+    --color-border-rgb: 226, 232, 240;
+    --color-border: #E2E8F0;
 
     /* ── BUTTONS ────────────────────────────────── */
     --color-btn-primary-bg:      #0078D4;
@@ -67,55 +82,64 @@
     /* ── STATUS / BADGES ────────────────────────── */
     --color-success:         #107C10;
     --color-success-bg:      #E6F4E6;
-    --color-warning:         #FF8C00;
-    --color-warning-bg:      #FFF4E5;
+    --color-success-text:    #107C10;
+    --color-warning:         #C05400;
+    --color-warning-bg:      #FFF4CE;
+    --color-warning-text:    #C05400;
     --color-error:           #D13438;
     --color-error-bg:        #FDE7E9;
+    --color-error-text:      #D13438;
     --color-info:            #0078D4;
     --color-info-bg:         #EFF6FF;
+    --color-purple:          #7B2FBE;
+    --color-purple-bg:       #F3ECFF;
 
-    /* ── SIDEBAR ────────────────────────────────── */
-    --color-sidebar-bg:          #F8FAFF;
-    --color-sidebar-text:        #444444;
-    --color-sidebar-text-active: #0078D4;
-    --color-sidebar-item-active: #EFF6FF;
-    --color-sidebar-item-hover:  #F0F4FF;
-    --color-sidebar-border:      #E0E8F5;
-    --color-sidebar-icon:        #767676;
-    --color-sidebar-icon-active: #0078D4;
+    /* ── SIDEBAR (Deep Blue) ────────────────────── */
+    --color-sidebar-bg:          #003D6B;
+    --color-sidebar-text:        #A8CAEC;
+    --color-sidebar-text-active: #FFFFFF;
+    --color-sidebar-item-active: rgba(255,255,255,0.15);
+    --color-sidebar-item-hover:  rgba(255,255,255,0.08);
+    --color-sidebar-border:      rgba(255,255,255,0.1);
+    --color-sidebar-icon:        #4BA8E8;
+    --color-sidebar-icon-active: #FFFFFF;
+    --color-sidebar-section:     #4BA8E8;
+    --color-sidebar-header-bg:   rgba(0,0,0,0.2);
 
-    /* ── NAVIGATION ─────────────────────────────── */
-    --color-nav-bg:          #FFFFFF;
-    --color-nav-text:        #1A1A1A;
-    --color-nav-text-hover:  #0078D4;
-    --color-nav-border:      #E0E0E0;
-    --color-nav-active:      #0078D4;
+    /* ── NAVIGATION (Blue) ──────────────────────── */
+    --color-nav-bg:          #0078D4;
+    --color-nav-text:        #FFFFFF;
+    --color-nav-text-hover:  #FFFFFF;
+    --color-nav-border:      transparent;
+    --color-nav-active:      #FFFFFF;
+    --color-nav-shadow:      0 2px 8px rgba(0,61,107,0.3);
 
     /* ── CARDS ──────────────────────────────────── */
     --color-card-bg:         #FFFFFF;
-    --color-card-border:     #E0E0E0;
-    --color-card-shadow:     rgba(0, 120, 212, 0.08);
-    --color-card-hover-shadow: rgba(0, 120, 212, 0.16);
+    --color-card-border:     #E2E8F0;
+    --color-card-shadow:     rgba(0, 0, 0, 0.08);
+    --color-card-hover-shadow: rgba(0, 120, 212, 0.15);
 
     /* ── STAT CARDS ─────────────────────────────── */
     --color-stat-border-1:   #0078D4;
     --color-stat-border-2:   #107C10;
-    --color-stat-border-3:   #FF8C00;
-    --color-stat-border-4:   #8764B8;
+    --color-stat-border-3:   #C05400;
+    --color-stat-border-4:   #7B2FBE;
 
     /* ── SHADOWS ────────────────────────────────── */
-    --shadow-card:           0 2px 8px rgba(0, 0, 0, 0.06);
-    --shadow-card-hover:     0 4px 16px rgba(0, 120, 212, 0.12);
-    --shadow-nav:            0 1px 4px rgba(0, 0, 0, 0.08);
+    --shadow-card:           0 2px 12px rgba(0, 0, 0, 0.08);
+    --shadow-card-hover:     0 6px 24px rgba(0, 120, 212, 0.15);
+    --shadow-nav:            0 2px 8px rgba(0, 61, 107, 0.3);
     --shadow-modal:          0 8px 32px rgba(0, 0, 0, 0.16);
+    --shadow-sidebar:        2px 0 8px rgba(0, 0, 0, 0.15);
 
     /* ── LAYOUT ─────────────────────────────────── */
-    --header-height: 72px;
+    --header-height: 64px;
     --card-radius: 12px;
 
-    /* ── REMOVED/LEGACY ─────────────────────────── */
+    /* ── LEGACY ─────────────────────────────────── */
     --glass-bg: rgba(255, 255, 255, 0.95);
-    --glass-border: #E0E0E0;
+    --glass-border: #E2E8F0;
     --glass-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
     --grid-color: transparent;
     --workflow-glow: rgba(0, 120, 212, 0.15);
@@ -176,14 +200,15 @@
   /* ── Navigation Header ─────────────────────── */
   .glass-header {
     background: var(--color-nav-bg);
-    border-bottom: 1px solid var(--color-nav-border);
+    border-bottom: none;
     box-shadow: var(--shadow-nav);
   }
 
   /* ── Sidebar ───────────────────────────────── */
   .glass-sidebar {
     background: var(--color-sidebar-bg);
-    border-right: 1px solid var(--color-sidebar-border);
+    border-right: none;
+    box-shadow: var(--shadow-sidebar);
   }
 
   /* ── Cards ─────────────────────────────────── */

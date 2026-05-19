@@ -1,17 +1,17 @@
-/* Footer Styles */
+/* Footer Styles — Deep Blue */
 .footer-container {
   width: 100%;
-  background: var(--color-bg);
-  color: var(--color-text);
+  background: #003D6B;
+  color: #A8CAEC;
   padding: 80px 40px 40px;
-  border-top: 1px solid var(--color-border);
+  border-top: 1px solid rgba(255,255,255,0.1);
   transition: all 0.3s ease;
 }
 
 .dark .footer-container {
-  background: var(--color-bg);
-  color: var(--color-text);
-  border-top-color: var(--color-border);
+  background: #003D6B;
+  color: #A8CAEC;
+  border-top-color: rgba(255,255,255,0.1);
 }
 
 .footer-content {
@@ -31,14 +31,14 @@
 .footer-title {
   font-size: 14px;
   font-weight: 700;
-  color: var(--color-text);
+  color: #FFFFFF;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   margin: 0;
 }
 
 .dark .footer-title {
-  color: var(--color-text);
+  color: #FFFFFF;
 }
 
 .footer-links {
@@ -53,23 +53,23 @@
 .footer-link {
   font-size: 14px;
   font-weight: 500;
-  color: var(--color-text-secondary);
+  color: #A8CAEC;
   text-decoration: none;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .dark .footer-link {
-  color: var(--color-text-secondary);
+  color: #A8CAEC;
 }
 
 .footer-link:hover {
-  color: var(--workflow-primary);
+  color: #FFFFFF;
   transform: translateX(4px);
 }
 
 .dark .footer-link:hover {
-  color: var(--workflow-primary);
+  color: #FFFFFF;
 }
 
 .footer-bottom {
@@ -77,7 +77,7 @@
   justify-content: space-between;
   align-items: center;
   padding-top: 40px;
-  border-top: 1px solid var(--color-border);
+  border-top: 1px solid rgba(255,255,255,0.1);
   flex-wrap: wrap;
   gap: 20px;
   max-width: 1400px;
@@ -85,18 +85,18 @@
 }
 
 .dark .footer-bottom {
-  border-top-color: var(--color-border);
+  border-top-color: rgba(255,255,255,0.1);
 }
 
 .copyright {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 400;
-  color: var(--color-text-muted);
+  color: #A8CAEC;
   margin: 0;
 }
 
 .dark .copyright {
-  color: var(--color-text-muted);
+  color: #A8CAEC;
 }
 
 .social_links {
@@ -107,37 +107,37 @@
 .social-icon {
   width: 40px;
   height: 40px;
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
   border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--color-text-secondary);
+  color: #A8CAEC;
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   text-decoration: none;
 }
 
 .dark .social-icon {
-  background: var(--glass-bg);
-  border-color: var(--glass-border);
-  color: var(--color-text-secondary);
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(255,255,255,0.15);
+  color: #A8CAEC;
 }
 
 .social-icon:hover {
-  background: var(--color-surface-elevated);
-  border-color: var(--workflow-primary);
-  color: var(--workflow-primary);
+  background: rgba(255,255,255,0.15);
+  border-color: rgba(255,255,255,0.3);
+  color: #FFFFFF;
   transform: translateY(-4px) scale(1.1);
-  box-shadow: var(--workflow-glow);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }
 
 .dark .social-icon:hover {
-  background: var(--color-surface-elevated);
-  border-color: var(--workflow-primary);
-  color: var(--workflow-primary);
-  box-shadow: var(--workflow-glow);
+  background: rgba(255,255,255,0.15);
+  border-color: rgba(255,255,255,0.3);
+  color: #FFFFFF;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }
 
 .social-icon .icon {
