@@ -132,37 +132,37 @@ const AchievementsPage = () => {
                 </div>
              </EliteCard>
 
-             <EliteCard className="p-6 bg-gradient-to-br from-emerald-900/20 to-teal-900/20 border-[var(--color-primary)]/20">
+             <EliteCard className="p-6">
                 <div className="flex items-center justify-between mb-4">
-                  <div className="w-12 h-12 rounded-2xl bg-[var(--color-primary)]/20 flex items-center justify-center">
-                    <Icon name="Database" className="text-[var(--color-primary)]" size={24} />
+                  <div className="w-12 h-12 rounded-2xl bg-[#E6F4E6] border border-[#B8E6B8] flex items-center justify-center">
+                    <Icon name="Database" className="text-[#107C10]" size={24} />
                   </div>
-                   <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-primary)] bg-[var(--color-primary)]/10 px-3 py-1 rounded-full border border-[var(--color-primary)]/20">
+                   <span className="text-[10px] font-bold uppercase tracking-widest text-[#107C10] bg-[#E6F4E6] px-3 py-1 rounded-full border border-[#B8E6B8]">
                     Platform Currency
                   </span>
                 </div>
                 <div className="space-y-2">
-                   <p className="text-[10px] border-b border-white/5 pb-2 font-black uppercase tracking-widest text-[var(--color-text-tertiary)]">Dinar Tokens</p>
-                   <p className="text-4xl font-black text-white">{stats.coin_balance.toLocaleString()}</p>
-                   <p className="text-[10px] text-slate-400 mt-2">Earned by completing rigorous academic modules.</p>
+                   <p className="text-[10px] border-b border-[#E2E8F0] pb-2 font-bold uppercase tracking-widest text-[#94A3B8]">Dinar Tokens</p>
+                   <p className="text-4xl font-extrabold text-[#0F172A]">{stats.coin_balance.toLocaleString()}</p>
+                   <p className="text-[10px] text-[#94A3B8] mt-2">Earned by completing rigorous academic modules.</p>
                 </div>
              </EliteCard>
 
-             <EliteCard className="p-6 bg-gradient-to-br from-amber-900/20 to-orange-900/20 border-amber-500/20 md:col-span-2 lg:col-span-1">
+             <EliteCard className="p-6 md:col-span-2 lg:col-span-1">
                 <div className="flex items-center justify-between mb-4">
-                  <div className="w-12 h-12 rounded-2xl bg-amber-500/20 flex items-center justify-center">
-                    <Icon name="Shield" className="text-amber-400" size={24} />
+                  <div className="w-12 h-12 rounded-2xl bg-[#FFF4CE] border border-[#FFE0A0] flex items-center justify-center">
+                    <Icon name="Shield" className="text-[#C05400]" size={24} />
                   </div>
-                   <span className="text-[10px] font-black uppercase tracking-widest text-amber-400 bg-amber-500/10 px-3 py-1 rounded-full border border-amber-500/20">
+                   <span className="text-[10px] font-bold uppercase tracking-widest text-[#C05400] bg-[#FFF4CE] px-3 py-1 rounded-full border border-[#FFE0A0]">
                     Collection
                   </span>
                 </div>
                 <div className="space-y-2">
-                   <p className="text-[10px] border-b border-white/5 pb-2 font-black uppercase tracking-widest text-[var(--color-text-tertiary)]">Badges Unlocked</p>
-                   <p className="text-4xl font-black text-white">
-                      {userBadgeIds.size} <span className="text-lg text-[var(--color-text-tertiary)]">/ {allBadges.length}</span>
+                   <p className="text-[10px] border-b border-[#E2E8F0] pb-2 font-bold uppercase tracking-widest text-[#94A3B8]">Badges Unlocked</p>
+                   <p className="text-4xl font-extrabold text-[#0F172A]">
+                      {userBadgeIds.size} <span className="text-lg text-[#94A3B8]">/ {allBadges.length}</span>
                    </p>
-                   <p className="text-[10px] text-slate-400 mt-2">Testaments to your dedication and mastery.</p>
+                   <p className="text-[10px] text-[#94A3B8] mt-2">Testaments to your dedication and mastery.</p>
                 </div>
              </EliteCard>
           </div>
@@ -185,8 +185,8 @@ const AchievementsPage = () => {
              </div>
 
              {filteredBadges.length === 0 ? (
-                <div className="p-12 text-center border-2 border-dashed border-white/5 rounded-3xl">
-                   <p className="text-sm font-black text-[var(--color-text-tertiary)] uppercase tracking-widest">No badges found in this category.</p>
+                <div className="p-12 text-center border-2 border-dashed border-[#E2E8F0] rounded-2xl">
+                   <p className="text-sm font-bold text-[#94A3B8] uppercase tracking-widest">No badges found in this category.</p>
                 </div>
              ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">

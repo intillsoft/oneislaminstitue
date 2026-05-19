@@ -30,75 +30,61 @@ export {
   RoleChangeRequestsSection, AIServiceControl, FinancialIntelligence
 };
 
-/* ─── Ambient: matches app's emerald-dark palette ─── */
-const AdminAmbient = () => (
-  <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
-    {/* Emerald bloom — top-right, same brand as rest of app */}
-    <div className="absolute -top-40 right-0 w-[600px] h-[450px] rounded-full bg-[var(--color-primary)]/[0.05] blur-[120px]" />
-    {/* Deeper green pool — bottom-left */}
-    <div className="absolute bottom-0 -left-24 w-[500px] h-[380px] rounded-full bg-emerald-900/30 blur-[90px]" />
-    {/* Subtle horizontal scan lines */}
-    <div
-      className="absolute inset-0 opacity-[0.01]"
-      style={{
-        backgroundImage:
-          'repeating-linear-gradient(0deg, rgba(16,185,129,0.4) 0px, rgba(16,185,129,0.4) 1px, transparent 1px, transparent 40px)',
-      }}
-    />
-  </div>
-);
+/* ─── No ambient overlay needed on white bg ─── */
+const AdminAmbient = () => null;
 
-/* ─── Stat card — accent line uses the icon's colour ─── */
+/* ─── Stat card — white bg, colored top accent, visible text ─── */
 const AdminStatCard = ({ label, value, icon, accentClass, loading }) => (
   <motion.div
-    whileHover={{ y: -2 }}
+    whileHover={{ y: -2, boxShadow: '0 6px 24px rgba(0,120,212,0.15)' }}
     transition={{ duration: 0.2 }}
-    className="group relative overflow-hidden rounded-2xl border border-[var(--color-primary)]/10 bg-[var(--color-primary)]/[0.02] p-6 hover:border-[var(--color-primary)]/25 hover:bg-[var(--color-primary)]/[0.04] transition-all duration-300"
+    className="group relative overflow-hidden rounded-xl bg-white border border-[#E2E8F0] p-6 transition-all duration-300"
+    style={{ boxShadow: '0 2px 12px rgba(0,0,0,0.08)' }}
   >
     {/* Thin top-accent stripe */}
-    <div className={`absolute top-0 left-0 right-0 h-[2px] ${accentClass}`} />
+    <div className={`absolute top-0 left-0 right-0 h-[3px] ${accentClass}`} />
 
     <div className="flex items-start justify-between mb-4">
-      <div className="w-9 h-9 rounded-xl bg-white/[0.04] border border-[var(--color-primary)]/10 flex items-center justify-center">
-        <Icon name={icon} size={16} className="text-[var(--color-primary)]/70" />
+      <div className="w-9 h-9 rounded-lg bg-[#EFF6FF] border border-[#C8E0F4] flex items-center justify-center">
+        <Icon name={icon} size={16} className="text-[#0078D4]" />
       </div>
     </div>
 
-    <p className="text-[10px] font-bold text-emerald-200/25 uppercase tracking-[0.2em] mb-1.5">{label}</p>
-    <p className="text-2xl font-black text-white/90 tracking-tight">
+    <p className="text-[10px] font-bold text-[#94A3B8] uppercase tracking-[0.15em] mb-1.5">{label}</p>
+    <p className="text-2xl font-extrabold text-[#0F172A] tracking-tight">
       {loading
-        ? <span className="inline-block w-12 h-6 bg-[var(--color-primary)]/10 rounded animate-pulse" />
+        ? <span className="inline-block w-12 h-6 bg-[#EFF6FF] rounded animate-pulse" />
         : value}
     </p>
   </motion.div>
 );
 
-/* ─── Sidebar nav group ─── */
+/* ─── Sidebar nav group — clean white ─── */
 const NavGroup = ({ title, items, activeTab, onSelect }) => (
   <div className="space-y-0.5">
-    <p className="px-3 mb-2 text-[9px] font-black text-emerald-200/20 uppercase tracking-[0.3em]">{title}</p>
+    <p className="px-3 mb-2 text-[9px] font-bold text-[#94A3B8] uppercase tracking-[0.2em]">{title}</p>
     {items.map(item => {
       const active = activeTab === item.id;
       return (
         <button
           key={item.id}
           onClick={() => onSelect(item.id)}
-          className={`w-full group flex items-center gap-3 px-3 py-2.5 rounded-xl text-left transition-all duration-200 ${
+          className={`w-full group flex items-center gap-3 px-3 py-2.5 rounded-lg text-left transition-all duration-200 ${
             active
-              ? 'bg-[var(--color-primary)]/15 text-[var(--color-primary)] border border-[var(--color-primary)]/20'
-              : 'text-emerald-200/30 hover:text-emerald-200/70 hover:bg-[var(--color-primary)]/[0.07]'
+              ? 'bg-[#EFF6FF] text-[#0078D4] border border-[#C8E0F4]'
+              : 'text-[#475569] hover:text-[#0078D4] hover:bg-[#F8FAFC]'
           }`}
         >
           <Icon
             name={item.icon}
             size={14}
             className={`flex-shrink-0 transition-colors ${
-              active ? item.color : 'text-emerald-200/25 group-hover:text-emerald-200/50'
+              active ? 'text-[#0078D4]' : 'text-[#94A3B8] group-hover:text-[#0078D4]'
             }`}
           />
           <span className="text-[11px] font-bold tracking-wide flex-1">{item.label}</span>
           {active && (
-            <div className="w-1 h-1 rounded-full bg-emerald-400 flex-shrink-0" />
+            <div className="w-1.5 h-1.5 rounded-full bg-[#0078D4] flex-shrink-0" />
           )}
         </button>
       );
@@ -254,7 +240,7 @@ const AcademicCentralCommand = () => {
 
   // ─── Standard Desktop View ───
   return (
-    <div className="relative min-h-screen bg-white dark:bg-[var(--color-bg-dark)] text-[var(--color-text-primary)] dark:text-white font-sans selection:bg-[var(--color-primary)]/30">
+    <div className="relative min-h-screen text-[#0F172A]">
       <DashboardAIAssistant dashboardType="admin" contextData={{ stats, activeTab }} />
 
       <div className="relative z-10 max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
@@ -268,20 +254,20 @@ const AcademicCentralCommand = () => {
                 Command Authority Active
               </span>
             </div>
-            <h1 className="text-3xl sm:text-4xl font-black text-[var(--color-text-primary)] dark:text-white tracking-tight leading-none mb-2">
-              Central <span className="text-[var(--color-primary)]">Command</span>
+            <h1 className="text-3xl sm:text-4xl font-extrabold text-[#0F172A] tracking-tight leading-none mb-2">
+              Central <span className="text-[#0078D4]">Command</span>
             </h1>
-            <p className="text-[11px] font-bold text-emerald-200/25 uppercase tracking-[0.18em]">
+            <p className="text-[11px] font-bold text-[#94A3B8] uppercase tracking-[0.18em]">
               Master Governance &amp; Academic Orchestration
             </p>
           </div>
 
           <div className="flex items-center gap-3">
-            <button className="flex items-center gap-2.5 h-10 px-5 rounded-xl bg-white/[0.03] border border-[var(--color-primary)]/15 text-[10px] font-bold uppercase tracking-widest text-emerald-200/40 hover:bg-[var(--color-primary)]/10 hover:text-[var(--color-primary)] hover:border-[var(--color-primary)]/30 transition-all">
-              <Icon name="Activity" size={14} className="text-[var(--color-primary)]/50" />
+            <button className="flex items-center gap-2.5 h-10 px-5 rounded-lg bg-white border border-[#E2E8F0] text-[10px] font-bold uppercase tracking-widest text-[#475569] hover:bg-[#EFF6FF] hover:text-[#0078D4] hover:border-[#C8E0F4] transition-all" style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.06)' }}>
+              <Icon name="Activity" size={14} className="text-[#0078D4]" />
               Platform Pulse
             </button>
-            <button className="flex items-center gap-2.5 h-10 px-5 rounded-xl bg-[var(--color-primary)] hover:bg-[var(--color-primary)] text-white text-[10px] font-bold uppercase tracking-widest transition-all shadow-lg shadow-[var(--color-primary)]/20">
+            <button className="flex items-center gap-2.5 h-10 px-5 rounded-lg bg-[#0078D4] hover:bg-[#005A9E] text-white text-[10px] font-bold uppercase tracking-widest transition-all" style={{ boxShadow: '0 2px 8px rgba(0,120,212,0.3)' }}>
               <Icon name="Shield" size={14} />
               Security Audit
             </button>
@@ -300,7 +286,7 @@ const AcademicCentralCommand = () => {
 
           {/* Sidebar */}
           <aside className="xl:w-[200px] flex-shrink-0">
-            <div className="xl:sticky xl:top-24 space-y-5 bg-[var(--color-primary)]/[0.02] border border-[var(--color-primary)]/10 rounded-2xl p-3">
+            <div className="xl:sticky xl:top-24 space-y-5 bg-white border border-[#E2E8F0] rounded-xl p-3" style={{ boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
               {navGroups.map(g => (
                 <NavGroup
                   key={g.title}
@@ -322,7 +308,8 @@ const AcademicCentralCommand = () => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.2, ease: 'easeOut' }}
-                className="bg-[var(--color-primary)]/[0.015] border border-[var(--color-primary)]/10 rounded-2xl p-6 sm:p-8 min-h-[700px] backdrop-blur-sm"
+                className="bg-white border border-[#E2E8F0] rounded-xl p-6 sm:p-8 min-h-[700px]"
+                style={{ boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}
               >
                 <Outlet />
               </motion.div>

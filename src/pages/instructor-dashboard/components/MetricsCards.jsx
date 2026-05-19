@@ -8,58 +8,35 @@ import { motion, useMotionValue, useTransform } from 'framer-motion';
 
 const StatCard = ({ icon: iconName, label, value, color }) => {
   const configs = {
-    primary:   { line: 'from-violet-500 to-indigo-500', icon: 'text-violet-400', bg: 'bg-violet-500/10' },
-    secondary: { line: 'from-cyan-500 to-sky-500', icon: 'text-cyan-400', bg: 'bg-cyan-500/10' },
-    accent:    { line: 'from-fuchsia-500 to-pink-500', icon: 'text-fuchsia-400', bg: 'bg-fuchsia-500/10' },
-    warning:   { line: 'from-amber-500 to-orange-500', icon: 'text-amber-400', bg: 'bg-amber-500/10' },
+    primary:   { border: '#0078D4', icon: '#0078D4', bg: '#EFF6FF' },
+    secondary: { border: '#4BA8E8', icon: '#4BA8E8', bg: '#EFF6FF' },
+    accent:    { border: '#7B2FBE', icon: '#7B2FBE', bg: '#F3EAFF' },
+    warning:   { border: '#C05400', icon: '#C05400', bg: '#FFF4CE' },
   };
   const cfg = configs[color] || configs.primary;
 
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-  const rotateX = useTransform(y, [-60, 60], [15, -15]);
-  const rotateY = useTransform(x, [-60, 60], [-15, 15]);
-
-  const handleMouseMove = (e) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    x.set(e.clientX - rect.left - rect.width / 2);
-    y.set(e.clientY - rect.top - rect.height / 2);
-  };
-
-  const handleMouseLeave = () => {
-    x.set(0);
-    y.set(0);
-  };
-
   return (
-    <div 
-      className="perspective-[1000px] overflow-visible"
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
+    <motion.div
+      whileHover={{ y: -4, boxShadow: '0 6px 24px rgba(0,120,212,0.15)' }}
+      transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+      className="relative h-36 overflow-hidden rounded-xl bg-white border border-[#E2E8F0] p-6 flex flex-col justify-between"
+      style={{ borderTopWidth: '4px', borderTopColor: cfg.border, boxShadow: '0 2px 12px rgba(0,0,0,0.08)' }}
     >
-      <motion.div
-        style={{ rotateX, rotateY, transformStyle: 'preserve-3d' }}
-        whileHover={{ scale: 1.05 }}
-        transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-        className="relative h-36 overflow-hidden rounded-3xl border border-white/[0.04] bg-[#0C1236]/40 backdrop-blur-xl p-6 group hover:border-white/[0.08] transition-all duration-300 shadow-2xl flex flex-col justify-between"
-      >
-        <div className={`absolute top-0 left-0 w-24 h-[1.5px] bg-gradient-to-r ${cfg.line}`} />
-        <div className="absolute inset-0 bg-gradient-to-br from-white/[0.02] to-transparent pointer-events-none" />
-
-        <div className="flex items-start justify-between" style={{ transform: 'translateZ(20px)' }}>
-          <div className="min-w-0 flex-1">
-            <p className="text-[10px] font-black text-white/30 uppercase tracking-[0.25em] mb-3">{label}</p>
-            <p className="text-3xl font-black text-white tracking-tight tabular-nums">
-              {value}
-            </p>
-          </div>
-
-          <div className={`w-11 h-11 rounded-2xl ${cfg.bg} flex items-center justify-center flex-shrink-0 border border-white/[0.03] group-hover:scale-110 group-hover:bg-white/5 transition-all duration-300 shadow-lg`} style={{ transform: 'translateZ(30px)' }}>
-            <Icon name={iconName} size={18} className={cfg.icon} />
-          </div>
+      <div className="flex items-start justify-between">
+        <div className="min-w-0 flex-1">
+          <p className="text-[10px] font-bold text-[#94A3B8] uppercase tracking-[0.15em] mb-3">{label}</p>
+          <p className="text-3xl font-extrabold text-[#0F172A] tracking-tight tabular-nums">
+            {value}
+          </p>
         </div>
-      </motion.div>
-    </div>
+
+        <div className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0"
+          style={{ backgroundColor: cfg.bg, border: '1px solid ' + cfg.border + '30' }}
+        >
+          <Icon name={iconName} size={18} style={{ color: cfg.icon }} />
+        </div>
+      </div>
+    </motion.div>
   );
 };
 
@@ -135,7 +112,7 @@ const MetricsCards = () => {
     return (
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {[1, 2, 3, 4].map((i) => (
-          <div key={i} className="animate-pulse h-36 bg-[#0C1236]/30 border border-white/[0.04] rounded-3xl" />
+          <div key={i} className="animate-pulse h-36 bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl" />
         ))}
       </div>
     );

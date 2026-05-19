@@ -19,32 +19,17 @@ import CompanyManagementSection from './components/CompanyManagementSection';
 import DashboardAIAssistant from '../../components/ui/DashboardAIAssistant';
 import MobileBottomNav from '../../components/ui/MobileBottomNav';
 import { courseService } from '../../services/jobService';
-/* ─── Instructor ambient: violet / indigo knowledge aesthetic ─── */
-const InstructorAmbient = () => (
-  <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
-    {/* Violet bloom top-right */}
-    <div className="absolute -top-40 right-0 w-[550px] h-[450px] rounded-full bg-violet-600/[0.06] blur-[110px]" />
-    {/* Indigo pool bottom-left */}
-    <div className="absolute bottom-0 -left-20 w-[450px] h-[350px] rounded-full bg-indigo-600/[0.05] blur-[90px]" />
-    {/* Subtle dot-matrix */}
-    <div
-      className="absolute inset-0 opacity-[0.015]"
-      style={{
-        backgroundImage: 'radial-gradient(circle, rgba(167,139,250,0.6) 1px, transparent 1px)',
-        backgroundSize: '32px 32px',
-      }}
-    />
-  </div>
-);
+/* ─── No ambient overlay on white bg ─── */
+const InstructorAmbient = () => null;
 
 /* ─── Tab button ─── */
 const InstructorTab = ({ active, onClick, icon, label }) => (
   <button
     onClick={onClick}
-    className={`flex-shrink-0 flex items-center gap-2 px-4 py-2 rounded-xl text-[11px] font-bold uppercase tracking-widest transition-all duration-200 whitespace-nowrap ${
+    className={`flex-shrink-0 flex items-center gap-2 px-4 py-2 rounded-full text-[11px] font-bold uppercase tracking-widest transition-all duration-200 whitespace-nowrap ${
       active
-        ? 'bg-violet-500/10 text-violet-300 border border-violet-500/25'
-        : 'text-white/30 hover:text-white/65 hover:bg-white/[0.04]'
+        ? 'bg-[#0078D4] text-white shadow-sm'
+        : 'text-[#475569] hover:text-[#0078D4] hover:bg-[#EFF6FF]'
     }`}
   >
     <Icon name={icon} size={13} />
@@ -54,10 +39,10 @@ const InstructorTab = ({ active, onClick, icon, label }) => (
 
 /* ─── Quick-info banner at the top of the page ─── */
 const InfoPill = ({ icon, label, value, color }) => (
-  <div className={`flex items-center gap-2 px-4 py-2 rounded-full border bg-white/[0.03] ${color}`}>
-    <Icon name={icon} size={12} />
-    <span className="text-[10px] font-bold text-white/50">{label}</span>
-    <span className="text-xs font-black text-white/80">{value}</span>
+  <div className={`flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-[#E2E8F0]`} style={{ boxShadow: '0 1px 4px rgba(0,0,0,0.04)' }}>
+    <Icon name={icon} size={12} className="text-[#0078D4]" />
+    <span className="text-[10px] font-bold text-[#94A3B8]">{label}</span>
+    <span className="text-xs font-bold text-[#0F172A]">{value}</span>
   </div>
 );
 
@@ -319,7 +304,7 @@ const InstructorPortal = () => {
   }
 
   return (
-    <div className="relative pb-24 md:pb-16 min-h-screen bg-[#080B24] text-white selection:bg-violet-500/30">
+    <div className="relative pb-24 md:pb-16 min-h-screen text-[#0F172A]">
       <InstructorAmbient />
       <DashboardAIAssistant
         dashboardType="instructor"
@@ -330,37 +315,35 @@ const InstructorPortal = () => {
         <div className="flex flex-col gap-8">
 
           {/* 🌟 PREMIUM HEADER BENTO CAP */}
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 p-8 bg-[#0C1236]/30 backdrop-blur-xl border border-white/[0.04] rounded-3xl relative overflow-hidden shadow-2xl">
-            <div className="absolute top-0 right-0 w-80 h-80 bg-violet-500/[0.04] blur-3xl rounded-full -z-10" />
-            
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 p-8 rounded-2xl relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #0078D4 0%, #003D6B 100%)', boxShadow: '0 4px 20px rgba(0,61,107,0.25)' }}>
             <div>
               <div className="flex items-center gap-2 mb-3">
-                <div className="w-1.5 h-1.5 rounded-full bg-violet-400 animate-pulse" />
-                <span className="text-[10px] font-black text-violet-400/60 uppercase tracking-[0.25em]">Instructor Central</span>
+                <div className="w-1.5 h-1.5 rounded-full bg-[#4ADE80] animate-pulse" />
+                <span className="text-[10px] font-bold text-white/80 uppercase tracking-[0.15em] bg-white/15 px-2 py-0.5 rounded-full border border-white/30">Instructor Central</span>
               </div>
-              <h1 className="text-3xl sm:text-4xl font-black text-white leading-tight">
+              <h1 className="text-3xl sm:text-4xl font-extrabold text-white leading-tight">
                 Faculty Portal
               </h1>
-              <p className="text-white/40 text-sm font-medium mt-2">Monitor course performance and student engagement.</p>
+              <p className="text-[#A8CAEC] text-sm font-medium mt-2">Monitor course performance and student engagement.</p>
               
               <div className="flex flex-wrap gap-2 mt-4">
-                <InfoPill icon="Building2" label="Institution" value={companyInfo.name} color="border-violet-500/20" />
-                <InfoPill icon="Award"     label="Tier"        value={companyInfo.subscription} color="border-indigo-500/20" />
+                <InfoPill icon="Building2" label="Institution" value={companyInfo.name} />
+                <InfoPill icon="Award"     label="Tier"        value={companyInfo.subscription} />
               </div>
             </div>
 
             <div className="flex items-center gap-3">
-              <button onClick={handleExport} className="flex items-center gap-2 px-5 py-3 bg-white/[0.05] hover:bg-white/[0.08] text-white/80 rounded-xl font-bold text-xs uppercase tracking-wider border border-white/[0.05] transition-all">
+              <button onClick={handleExport} className="flex items-center gap-2 px-5 py-3 bg-white/15 hover:bg-white/25 text-white rounded-lg font-bold text-xs uppercase tracking-wider border border-white/30 transition-all">
                 <Icon name="Download" size={13} /> Export
               </button>
-              <Link to="/instructor/courses/new" className="flex items-center gap-2 px-5 py-3 bg-violet-600 hover:bg-violet-500 text-white rounded-xl font-bold text-xs uppercase tracking-wider shadow-lg shadow-violet-600/20 transition-all hover:scale-105">
+              <Link to="/instructor/courses/new" className="flex items-center gap-2 px-5 py-3 bg-white hover:bg-[#EFF6FF] text-[#0078D4] rounded-lg font-bold text-xs uppercase tracking-wider transition-all hover:scale-[1.02]">
                 <Icon name="Plus" size={13} /> New Course
               </Link>
             </div>
           </div>
 
           {/* 🍱 TAB NAVIGATION BENTO BRIDGE */}
-          <div className="flex items-center gap-2 p-1.5 bg-[#0C1236]/30 border border-white/[0.03] backdrop-blur-md rounded-2xl self-start overflow-x-auto max-w-full scrollbar-hide">
+          <div className="flex items-center gap-2 p-1.5 bg-white border border-[#E2E8F0] rounded-full self-start overflow-x-auto max-w-full scrollbar-hide" style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.06)' }}>
             {TABS.map(tab => (
               <InstructorTab
                 key={tab.id}

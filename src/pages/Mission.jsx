@@ -41,12 +41,12 @@ const Mission = () => {
     ];
 
     return (
-        <div className="min-h-screen bg-[#0A1120] text-white selection:bg-[var(--color-primary)]/30 overflow-x-hidden safe-area-inset">
+        <div className="min-h-screen bg-white text-[#0F172A] overflow-x-hidden safe-area-inset">
             
             {/* Hero Section */}
             <section className="relative pt-16 sm:pt-24 md:pt-32 pb-12 sm:pb-16 px-3 sm:px-4 md:px-6 overflow-hidden">
                 {/* Background Gradient Orb */}
-                <div className="absolute top-4 sm:top-8 right-0 w-72 sm:w-96 md:w-[500px] h-72 sm:h-96 md:h-[500px] bg-[var(--color-primary)]/12 rounded-full blur-[90px] sm:blur-[100px] md:blur-[110px] pointer-events-none" />
+                <div className="absolute top-4 sm:top-8 right-0 w-72 sm:w-96 md:w-[500px] h-72 sm:h-96 md:h-[500px] bg-[#EFF6FF] rounded-full blur-[90px] sm:blur-[100px] md:blur-[110px] pointer-events-none" />
                 
                 <div className="max-w-5xl mx-auto relative z-10">
                     {/* Badge */}
@@ -56,7 +56,7 @@ const Mission = () => {
                         transition={{ duration: 0.5 }}
                         className="flex justify-center mb-3 sm:mb-4 md:mb-6"
                     >
-                        <span className="inline-block px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-[var(--color-primary)]/10 text-[var(--color-primary)] text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-widest border border-[var(--color-primary)]/20">
+                        <span className="inline-block px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-[#EFF6FF] text-[#0078D4] text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-widest border border-[#C8E0F4]">
                             ✦ Our Mission
                         </span>
                     </motion.div>
@@ -68,12 +68,12 @@ const Mission = () => {
                         transition={{ duration: 0.7, delay: 0.1 }}
                         className="text-center"
                     >
-                        <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black mb-2 sm:mb-3 md:mb-4 tracking-tight leading-tight uppercase font-display">
+                        <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-extrabold mb-2 sm:mb-3 md:mb-4 tracking-tight leading-tight uppercase font-display">
                             Structuring the <br className="hidden sm:block" />
-                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-primary)] via-cyan-400 to-emerald-300">Ummah's Wisdom</span>
+                            <span className="text-[#0078D4]">Ummah's Wisdom</span>
                         </h1>
                         
-                        <p className="text-xs sm:text-sm md:text-base lg:text-lg text-slate-400 leading-snug max-w-2xl mx-auto font-light px-2">
+                        <p className="text-xs sm:text-sm md:text-base lg:text-lg text-[#475569] leading-snug max-w-2xl mx-auto font-light px-2">
                             A global platform transforming verified Islamic research into structured, world-class education.
                         </p>
                     </motion.div>
@@ -81,7 +81,7 @@ const Mission = () => {
             </section>
 
             {/* The Vision Logic */}
-            <section className="py-12 sm:py-16 md:py-20 bg-slate-900/50 border-y border-slate-800/50">
+            <section className="py-12 sm:py-16 md:py-20 bg-[#F8FAFC] border-y border-[#E2E8F0]">
                 <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
                         {pillars.map((item, idx) => (
@@ -91,15 +91,15 @@ const Mission = () => {
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ delay: idx * 0.2 }}
-                                className="text-center group p-4 sm:p-6 rounded-lg hover:bg-slate-800/30 transition-all"
+                                className="text-center group p-4 sm:p-6 rounded-xl hover:bg-white transition-all border border-transparent hover:border-[#E2E8F0]" style={{ boxShadow: 'none' }}
                             >
-                                <div className="w-12 sm:w-14 h-12 sm:h-14 rounded-xl bg-[var(--color-primary)]/10 flex items-center justify-center mb-3 sm:mb-4 mx-auto group-hover:bg-[var(--color-primary)]/20 transition-all border border-[var(--color-primary)]/20">
+                                <div className="w-12 sm:w-14 h-12 sm:h-14 rounded-xl bg-[#EFF6FF] flex items-center justify-center mb-3 sm:mb-4 mx-auto group-hover:bg-[#DEEEFF] transition-all border border-[#C8E0F4]">
                                     <item.icon className="w-6 sm:w-7 h-6 sm:h-7 text-[var(--color-primary)]" />
                                 </div>
-                                <h3 className="text-base sm:text-lg font-black text-white mb-2 uppercase tracking-tight">
+                                <h3 className="text-base sm:text-lg font-extrabold text-[#0F172A] mb-2 uppercase tracking-tight">
                                     {item.title}
                                 </h3>
-                                <p className="text-slate-400 leading-snug text-xs sm:text-sm">
+                                <p className="text-[#475569] leading-snug text-xs sm:text-sm">
                                     {item.desc}
                                 </p>
                             </motion.div>
@@ -109,12 +109,12 @@ const Mission = () => {
             </section>
 
             {/* The "Why" - Detailed */}
-            <section className="py-16 sm:py-20 md:py-24 bg-[#0A1120] relative">
+            <section className="py-16 sm:py-20 md:py-24 bg-white relative">
                 <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 md:gap-12 lg:gap-16 items-start lg:items-center">
                         <div className="relative">
                             <div className="absolute -inset-4 bg-[var(--color-primary)]/10 blur-2xl rounded-[3rem] hidden sm:block" />
-                            <div className="relative aspect-[4/5] bg-slate-900 border border-slate-800 rounded-2xl sm:rounded-3xl md:rounded-[3rem] p-6 sm:p-8 md:p-12 flex flex-col justify-end overflow-hidden group">
+                            <div className="relative aspect-[4/5] bg-[#003D6B] border border-[#005A9E] rounded-2xl sm:rounded-3xl md:rounded-[3rem] p-6 sm:p-8 md:p-12 flex flex-col justify-end overflow-hidden group">
                                 <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-t from-black/80 to-transparent" />
                                 <div className="relative z-10">
                                     <Globe className="text-[var(--color-primary)] w-8 sm:w-10 md:w-12 h-8 sm:h-10 md:h-12 mb-4 sm:mb-6" />
@@ -127,14 +127,14 @@ const Mission = () => {
                         </div>
 
                         <div>
-                            <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-4 sm:mb-6 tracking-tighter uppercase italic">Solving the Knowledge Gap</h2>
+                            <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#0F172A] mb-4 sm:mb-6 tracking-tighter uppercase italic">Solving the Knowledge Gap</h2>
                             <div className="space-y-6">
                                 {visionPoints.map((point, idx) => (
                                     <div key={idx} className="flex gap-4">
-                                        <div className="text-[var(--color-primary)]/20 text-3xl font-black italic flex-shrink-0">0{idx + 1}</div>
+                                        <div className="text-[#C8E0F4] text-3xl font-extrabold italic flex-shrink-0">0{idx + 1}</div>
                                         <div>
-                                            <h4 className="text-lg font-black text-white mb-1 uppercase">{point.title}</h4>
-                                            <p className="text-slate-400 leading-snug text-sm">{point.desc}</p>
+                                            <h4 className="text-lg font-extrabold text-[#0F172A] mb-1 uppercase">{point.title}</h4>
+                                            <p className="text-[#475569] leading-snug text-sm">{point.desc}</p>
                                         </div>
                                     </div>
                                 ))}

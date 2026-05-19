@@ -1,6 +1,6 @@
 /**
- * Elite Card Component - Premium Dashboard UI Pattern
- * Matches the design aesthetic from the Elite Dashboard Metamorphosis
+ * Elite Card Component - Bold Blue + White Theme
+ * Clean white cards with blue accents for the Hope Dawah Institute platform
  */
 
 import React from 'react';
@@ -17,18 +17,16 @@ export const EliteCard = ({
         <motion.div
             onClick={onClick}
             className={`
-                bg-white 
-                dark:bg-white/[0.02]
-                border border-[var(--color-border-primary)] 
-                dark:border-white/10
-                shadow-sm dark:shadow-none
+                bg-white
+                border border-[#E2E8F0]
                 rounded-2xl 
                 p-4 sm:p-5
                 transition-all
                 duration-300
-                ${onClick ? 'cursor-pointer hover:border-[var(--color-primary)]/40 active:scale-[0.98]' : ''}
+                ${onClick ? 'cursor-pointer hover:border-[#0078D4]/40 active:scale-[0.98]' : ''}
                 ${className}
             `}
+            style={{ boxShadow: '0 2px 12px rgba(0,0,0,0.08)' }}
             {...props}
         >
             {children}
@@ -41,63 +39,48 @@ export const EliteStatCard = ({
     label,
     value,
     trend = null,
-    trendDirection = 'up', // 'up', 'down', 'neutral'
-    color = 'blue', // 'blue', 'green', 'amber', 'red'
+    trendDirection = 'up',
+    color = 'blue',
     className = '',
     ...props
 }) => {
-    const colorClasses = {
-        blue: {
-            bg: 'bg-workflow-primary/10 dark:bg-workflow-primary/20',
-            icon: 'text-workflow-primary',
-            text: 'text-workflow-primary dark:text-workflow-primary/80'
-        },
-        green: {
-            bg: 'bg-[var(--color-primary)]/10 dark:bg-[var(--color-primary)]/20',
-            icon: 'text-[var(--color-primary)]',
-            text: 'text-[var(--color-primary)] dark:text-[var(--color-primary)]'
-        },
-        amber: {
-            bg: 'bg-amber-500/10 dark:bg-amber-500/20',
-            icon: 'text-amber-500',
-            text: 'text-amber-500 dark:text-amber-400'
-        },
-        red: {
-            bg: 'bg-red-500/10 dark:bg-red-500/20',
-            icon: 'text-red-500',
-            text: 'text-red-500 dark:text-red-400'
-        }
+    const colorMap = {
+        blue:  { icon: '#0078D4', bg: '#EFF6FF', border: '#C8E0F4' },
+        green: { icon: '#107C10', bg: '#E6F4E6', border: '#B8E6B8' },
+        amber: { icon: '#C05400', bg: '#FFF4CE', border: '#FFE0A0' },
+        red:   { icon: '#D13438', bg: '#FDE7E9', border: '#F5C0C2' },
     };
 
-    const colors = colorClasses[color] || colorClasses.blue;
+    const colors = colorMap[color] || colorMap.blue;
     const displayLabel = label || props.title;
     const trendValue = typeof trend === 'object' ? trend?.value : trend;
     const trendIsPositive = typeof trend === 'object' ? trend?.isPositive === true : trendDirection === 'up';
     const trendIsNegative = typeof trend === 'object' ? trend?.isPositive === false : trendDirection === 'down';
 
     return (
-        <EliteCard className={`${className} border-[var(--color-primary)]/20 hover:border-[var(--color-primary)]/40`}>
+        <EliteCard className={className}>
             <div className="flex items-center justify-between">
                 <div className="flex-1">
-                    <p className="text-[10px] font-black text-[var(--color-text-tertiary)] uppercase tracking-[0.15em] mb-2 font-mono">
+                    <p className="text-[10px] font-bold text-[#94A3B8] uppercase tracking-[0.15em] mb-2">
                         {displayLabel}
                     </p>
-                    <p className="text-2xl font-black text-[var(--color-text-primary)] dark:text-white tracking-tighter">
+                    <p className="text-2xl font-extrabold text-[#0F172A] tracking-tighter">
                         {value}
                     </p>
                     {trend && (
-                        <p className={`text-[11px] font-black mt-2 flex items-center gap-1 uppercase tracking-wider ${trendIsPositive ? 'text-[var(--color-primary)]' :
-                                trendIsNegative ? 'text-rose-500' :
-                                    'text-[var(--color-text-tertiary)]'
-                            } `}>
-                            {trendIsPositive && <Icon name="TrendingUp" size={12} />}
-                            {trendIsNegative && <Icon name="TrendingDown" size={12} />}
+                        <p className={`text-[11px] font-bold mt-2 flex items-center gap-1 uppercase tracking-wider ${
+                            trendIsPositive ? 'text-[#107C10]' :
+                            trendIsNegative ? 'text-[#D13438]' :
+                            'text-[#94A3B8]'
+                        }`}>
                             {trendValue}
                         </p>
                     )}
                 </div>
-                <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-white dark:bg-white/5 border border-[var(--color-border-primary)] dark:border-white/10 flex items-center justify-center flex-shrink-0 transition-colors group-hover:border-[var(--color-primary)]/40`}>
-                    <Icon className={`${colors.icon}`} size={typeof window !== 'undefined' && window.innerWidth < 640 ? 18 : 20} />
+                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center flex-shrink-0"
+                    style={{ backgroundColor: colors.bg, border: `1px solid ${colors.border}` }}
+                >
+                    <Icon style={{ color: colors.icon }} size={typeof window !== 'undefined' && window.innerWidth < 640 ? 18 : 20} />
                 </div>
             </div>
         </EliteCard>
@@ -115,11 +98,11 @@ export const EliteProgressBar = ({
     const percentage = Math.round((value / max) * 100);
 
     const colorClasses = {
-        blue: 'bg-workflow-primary',
-        green: 'bg-[var(--color-primary)]',
-        amber: 'bg-amber-500',
-        red: 'bg-red-500',
-        gradient: 'bg-gradient-to-r from-workflow-primary via-workflow-accent to-workflow-accent'
+        blue: 'bg-[#0078D4]',
+        green: 'bg-[#107C10]',
+        amber: 'bg-[#C05400]',
+        red: 'bg-[#D13438]',
+        gradient: 'bg-gradient-to-r from-[#0078D4] to-[#4BA8E8]'
     };
 
     const bgColor = colorClasses[color] || colorClasses.blue;
@@ -127,16 +110,16 @@ export const EliteProgressBar = ({
     return (
         <div className={className}>
             <div className="flex items-center justify-between mb-2">
-                <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-tertiary)]">
+                <span className="text-[10px] font-bold uppercase tracking-widest text-[#94A3B8]">
                     {label}
                 </span>
                 {showPercentage && (
-                    <span className="text-[10px] font-black text-[var(--color-primary)] mb-0.5">
+                    <span className="text-[10px] font-bold text-[#0078D4]">
                         {percentage}%
                     </span>
                 )}
             </div>
-            <div className="h-1.5 bg-slate-100 dark:bg-white/5 rounded-full overflow-hidden border border-[var(--color-border-primary)] dark:border-white/10 shadow-inner">
+            <div className="h-1.5 bg-[#F1F5F9] rounded-full overflow-hidden border border-[#E2E8F0]">
                 <motion.div
                     className={`h-full ${bgColor} rounded-full`}
                     initial={{ width: 0 }}
@@ -162,16 +145,18 @@ export const ElitePageHeader = ({
         <div className="mb-8">
             <div className="flex items-center gap-3 mb-2">
                 {badge && (
-                    <span className="px-3 py-1 rounded-full bg-workflow-primary/10 border border-workflow-primary/20 text-xs font-black uppercase tracking-wider text-workflow-primary">
+                    <span className="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider"
+                        style={{ background: '#EFF6FF', color: '#0078D4', border: '1px solid #C8E0F4' }}
+                    >
                         {badge}
                     </span>
                 )}
             </div>
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-text-primary mb-2 tracking-tight">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#0F172A] mb-2 tracking-tight">
                 {mainTitle}
             </h1>
             {subTitle && (
-                <p className="text-text-secondary text-lg font-medium">
+                <p className="text-[#475569] text-lg font-medium">
                     {subTitle}
                 </p>
             )}
