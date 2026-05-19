@@ -49,26 +49,26 @@ const LessonSidebar = ({
                         transition={{ duration: 0.4, ease: "circOut" }}
                         className={`fixed left-0 top-[var(--header-height)] z-50 w-[300px] flex flex-col pointer-events-auto transition-all duration-500 ease-in-out ${
                             isMobile 
-                            ? 'bottom-0 bg-[#0B0F19] border-r border-[var(--color-primary)]/10 rounded-tr-[2.5rem]' 
-                            : 'h-[calc(100vh-calc(var(--header-height)+2rem))] mt-4 ml-4 rounded-3xl bg-[#0B0F19] border border-white/[0.08] shadow-2xl'
+                            ? 'bottom-0 bg-[#0078D4] border-r border-white/10 rounded-tr-[2.5rem]' 
+                            : 'h-[calc(100vh-calc(var(--header-height)+2rem))] mt-4 ml-4 rounded-3xl bg-[#0078D4] border border-white/10 shadow-2xl'
                         } overflow-hidden`}
                     >
                         {/* Decorative Background Glows */}
-                        <div className="absolute top-0 left-0 w-full h-64 bg-gradient-to-b from-[var(--color-primary)]/5 to-transparent pointer-events-none" />
-                        <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-[var(--color-primary)]/5 to-transparent pointer-events-none" />
+                        <div className="absolute top-0 left-0 w-full h-64 bg-gradient-to-b from-white/10 to-transparent pointer-events-none" />
+                        <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-white/10 to-transparent pointer-events-none" />
                         
                         {/* Sidebar Header - Navigation & Close */}
-                        <div className="flex-shrink-0 h-14 flex items-center justify-between px-6 border-b border-[var(--color-primary)]/10 relative z-50">
+                        <div className="flex-shrink-0 h-14 flex items-center justify-between px-6 border-b border-white/10 relative z-50">
                             <button 
                                 onClick={() => navigate(`/courses/${courseId}/learn`)}
-                                className="flex items-center gap-3 text-slate-300 hover:text-[var(--color-primary)] transition-all group"
+                                className="flex items-center gap-3 text-white hover:text-white/80 transition-all group"
                             >
-                                <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform text-[var(--color-primary)]" />
+                                <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform text-white" />
                                 <span className="text-[10px] font-black uppercase tracking-[0.2em]">Overview</span>
                             </button>
                             
                             {isMobile && (
-                                <button onClick={() => setSidebarOpen(false)} className="p-2 rounded-xl text-[var(--color-text-tertiary)] hover:text-white transition-all">
+                                <button onClick={() => setSidebarOpen(false)} className="p-2 rounded-xl text-white/70 hover:text-white transition-all">
                                     <X size={18} />
                                 </button>
                             )}
@@ -76,21 +76,21 @@ const LessonSidebar = ({
 
                         {/* Module Selector - Simple Dropdown */}
                         <div className="px-5 py-6 relative z-40">
-                            <label className="block text-[8px] font-black text-[var(--color-primary)]/60 uppercase tracking-[0.4em] mb-3 ml-1">Current Module</label>
+                            <label className="block text-[8px] font-black text-white/60 uppercase tracking-[0.4em] mb-3 ml-1">Current Module</label>
                             
                             <div className="relative">
                                 <button 
                                     onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                                     className={`w-full flex items-center justify-between gap-3 px-4 py-3.5 rounded-2xl border transition-all duration-300 ${
                                         isDropdownOpen 
-                                        ? 'bg-[var(--color-primary)]/10 border-[var(--color-primary)]/30 text-white shadow-xl shadow-[var(--color-primary)]/5' 
-                                        : 'bg-white/[0.03] border-white/[0.04] text-slate-300 hover:border-[var(--color-primary)]/20 hover:bg-white/[0.06]'
+                                        ? 'bg-white/20 border-white/30 text-white shadow-xl' 
+                                        : 'bg-white/10 border-white/10 text-white hover:border-white/20 hover:bg-white/15'
                                     }`}
                                 >
                                     <span className="text-[10px] font-black uppercase tracking-widest truncate">
                                         {selectedModule?.title || 'Selecting...'}
                                     </span>
-                                    <ChevronDown size={14} className={`transition-transform duration-300 text-[var(--color-primary)] ${isDropdownOpen ? 'rotate-180' : ''}`} />
+                                    <ChevronDown size={14} className="transition-transform duration-300 text-white" />
                                 </button>
 
                                 <AnimatePresence>
@@ -99,7 +99,7 @@ const LessonSidebar = ({
                                             initial={{ opacity: 0, y: 5, scale: 0.98 }}
                                             animate={{ opacity: 1, y: 0, scale: 1 }}
                                             exit={{ opacity: 0, y: 5, scale: 0.98 }}
-                                            className="absolute top-full left-0 right-0 mt-2 bg-[#080B19]/98 border border-white/[0.08] rounded-2xl shadow-3xl overflow-hidden z-50 backdrop-blur-3xl"
+                                            className="absolute top-full left-0 right-0 mt-2 bg-[#0078D4] border border-white/10 rounded-2xl shadow-3xl overflow-hidden z-50 backdrop-blur-3xl"
                                         >
                                             <div className="max-h-[300px] overflow-y-auto custom-scrollbar p-2 space-y-1">
                                                 {modules.map((mod, idx) => {
@@ -116,17 +116,17 @@ const LessonSidebar = ({
                                                             }}
                                                             className={`w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all ${
                                                                 isSelected 
-                                                                ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)] font-bold' 
+                                                                ? 'bg-white/20 text-white font-bold' 
                                                                 : isLocked 
                                                                     ? 'opacity-20 pointer-events-none'
-                                                                    : 'text-slate-400 hover:bg-white/[0.04] hover:text-white'
+                                                                    : 'text-white/80 hover:bg-white/10 hover:text-white'
                                                             }`}
                                                         >
                                                             <div className="flex items-center gap-3">
-                                                                <span className="text-[9px] font-black opacity-30 text-[var(--color-primary)]">{idx + 1}</span>
+                                                                <span className="text-[9px] font-black opacity-45 text-white">{idx + 1}</span>
                                                                 <span className="text-[10px] font-bold uppercase tracking-wider truncate max-w-[160px]">{mod.title}</span>
                                                             </div>
-                                                            {isLocked ? <Lock size={10} /> : isSelected && <Check size={12} className="text-[var(--color-primary)]" />}
+                                                            {isLocked ? <Lock size={10} /> : isSelected && <Check size={12} className="text-white" />}
                                                         </button>
                                                     );
                                                 })}
@@ -139,7 +139,7 @@ const LessonSidebar = ({
 
                         {/* Lessons List */}
                         <div className="flex-1 overflow-y-auto px-5 pb-8 space-y-2 custom-scrollbar relative z-10">
-                            <label className="block text-[8px] font-black text-[var(--color-text-tertiary)]/40 uppercase tracking-[0.4em] mb-4 ml-1">Lessons</label>
+                            <label className="block text-[8px] font-black text-white/50 uppercase tracking-[0.4em] mb-4 ml-1">Lessons</label>
                             
                             <AnimatePresence mode="wait">
                                 <motion.div
@@ -165,32 +165,32 @@ const LessonSidebar = ({
                                                 }}
                                                 className={`w-full flex items-center justify-between gap-4 px-4 py-3.5 rounded-2xl transition-all border relative group ${
                                                     isActive 
-                                                    ? 'bg-gradient-to-r from-[var(--color-primary)]/10 to-transparent text-[var(--color-primary)] border-[var(--color-primary)]/10 shadow-lg shadow-[var(--color-primary)]/5' 
+                                                    ? 'bg-white text-[#0078D4] border-white/20 shadow-lg' 
                                                     : isLocked 
-                                                        ? 'opacity-55 text-slate-400 border-transparent'
-                                                        : 'text-slate-300 hover:text-white hover:bg-white/[0.03] border-transparent hover:border-white/[0.06]'
+                                                        ? 'opacity-65 text-white/50 border-transparent'
+                                                        : 'text-white/90 hover:text-white hover:bg-white/10 border-transparent hover:border-white/10'
                                                 }`}
                                             >
                                                 {isActive && (
                                                     <motion.div 
                                                         layoutId="activeLessonGlow"
-                                                        className="absolute left-2.5 w-1 h-3.5 bg-[var(--color-primary)] rounded-full"
+                                                        className="absolute left-2.5 w-1 h-3.5 bg-[#0078D4] rounded-full"
                                                     />
                                                 )}
                                                 
                                                 <div className="flex items-center gap-3 min-w-0 pl-3">
                                                     <div className={`flex-shrink-0 w-5 h-5 flex items-center justify-center rounded-lg text-[8px] font-black border transition-all ${
-                                                        isActive ? 'bg-[var(--color-primary)] border-[var(--color-primary)]/20 text-[#090C22] shadow-lg shadow-[var(--color-primary)]/10' : 'bg-white/[0.03] border-white/[0.03] text-slate-400 group-hover:text-[var(--color-primary)] group-hover:border-[var(--color-primary)]/20'
+                                                        isActive ? 'bg-[#0078D4] border-[#0078D4]/20 text-white shadow-lg' : 'bg-white/10 border-white/10 text-white/80 group-hover:text-white group-hover:border-white/20'
                                                     }`}>
-                                                        {isLocked && !isActive ? <Lock size={8} /> : lIndex + 1}
+                                                        {isLocked && !isActive ? <Lock size={8} className="text-white/50" /> : lIndex + 1}
                                                     </div>
-                                                    <span className={`text-[10px] font-black uppercase tracking-wider truncate transition-colors ${isActive ? 'text-[var(--color-primary)] animate-pulse-elite' : 'text-slate-300 group-hover:text-[var(--color-primary)]'}`}>
+                                                    <span className={`text-[10px] font-black uppercase tracking-wider truncate transition-colors ${isActive ? 'text-[#0078D4]' : 'text-white group-hover:text-white'}`}>
                                                         {lesson.title}
                                                     </span>
                                                 </div>
                                                 
                                                 {isPast && !isActive && (
-                                                    <div className="w-3.5 h-3.5 rounded-full bg-[var(--color-primary)]/20 text-[var(--color-primary)] flex items-center justify-center">
+                                                    <div className="w-3.5 h-3.5 rounded-full bg-white/20 text-white flex items-center justify-center">
                                                         <Check size={10} strokeWidth={4} />
                                                     </div>
                                                 )}

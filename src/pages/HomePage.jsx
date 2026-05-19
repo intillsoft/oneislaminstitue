@@ -418,18 +418,18 @@ const HomePage = () => {
                        whileInView={{ opacity: 1, y: 0 }}
                        viewport={{ once: true }}
                        transition={{ delay: idx * 0.2 }}
-                       className="group relative p-8 rounded-xl bg-[var(--color-bg-secondary)] border border-[var(--color-border-primary)] hover:bg-white hover:shadow-card-hover transition-all duration-300"
-                     >
-                       <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-6 bg-${item.color}-500/10 group-hover:scale-110 transition-transform duration-500`}>
-                         <item.icon className={`w-7 h-7 text-${item.color}-600 dark:text-${item.color}-400`} />
-                       </div>
-                       <h3 className="text-xl font-bold text-[var(--color-text-primary)] mb-3 group-hover:text-[var(--color-primary)] transition-colors">
-                         {item.title}
-                       </h3>
-                       <p className="text-[var(--color-text-secondary)] leading-relaxed">
-                         {item.desc}
-                       </p>
-                     </motion.div>
+                       className="group relative p-8 rounded-2xl bg-gradient-to-br from-[#005A9E] to-[#0078D4] text-white border border-white/10 hover:shadow-2xl hover:shadow-blue-500/20 transition-all duration-300 hover:-translate-y-1.5 overflow-hidden"
+                      >
+                        <div className="w-14 h-14 rounded-2xl flex items-center justify-center mb-6 bg-white/15 group-hover:scale-110 transition-transform duration-500">
+                          <item.icon className="w-7 h-7 text-white" />
+                        </div>
+                        <h3 className="text-xl font-bold text-white mb-3 transition-colors">
+                          {item.title}
+                        </h3>
+                        <p className="text-blue-100 leading-relaxed">
+                          {item.desc}
+                        </p>
+                      </motion.div>
                    ))}
                  </div>
                </div>
@@ -456,24 +456,24 @@ const HomePage = () => {
             </section>
 
             {/* NEW SECTION 2: STRUCTURED KNOWLEDGE PATHS */}
-            <section className="py-16 sm:py-24 bg-[var(--color-bg-secondary)] relative">
+            <section className="py-16 sm:py-24 bg-gradient-to-br from-[#0B0F2A] via-[#005A9E] to-[#0078D4] text-white relative overflow-hidden">
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                  <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
                     <div className="max-w-2xl">
                        <span className="text-[var(--color-primary)] font-bold tracking-widest uppercase text-xs mb-2 block">Curriculum Roadmap</span>
-                       <h2 className="text-3xl md:text-4xl font-bold text-[var(--color-text-primary)] mb-4">Structured Knowledge Paths</h2>
-                       <p className="text-[var(--color-text-secondary)] text-lg">
+                       <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Structured Knowledge Paths</h2>
+                       <p className="text-blue-100 text-lg">
                          Stop guessing where to start. Follow a clear, scholar-designed roadmap from basics to mastery.
                        </p>
                     </div>
-                    <button onClick={() => navigate('/courses')} className="px-6 py-3 bg-white border border-[var(--color-border-primary)] rounded-lg font-bold text-[var(--color-text-primary)] hover:bg-[var(--color-primary-light)] transition-all shadow-sm">
+                    <button onClick={() => navigate('/courses')} className="px-6 py-3 bg-white border border-white/20 rounded-xl font-bold text-[var(--color-primary)] hover:bg-blue-50 transition-all shadow-xl hover:shadow-white/5">
                       View All Paths
                     </button>
                  </div>
 
                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative">
                     {/* Connecting Line (Desktop) */}
-                    <div className="hidden md:block absolute top-1/2 left-0 w-full h-0.5 bg-gradient-to-r from-blue-500/20 via-blue-500/20 to-amber-500/20 -translate-y-1/2 z-0" />
+                    <div className="hidden md:block absolute top-1/2 left-0 w-full h-0.5 bg-gradient-to-r from-white/10 via-white/20 to-white/10 -translate-y-1/2 z-0" />
                     
                     {[
                       {
@@ -506,7 +506,7 @@ const HomePage = () => {
                     ].map((path, idx) => (
                       <motion.div
                         key={idx}
-                        className="relative z-10 bg-white p-8 rounded-xl border border-[var(--color-border-primary)] shadow-card flex flex-col items-start h-full hover:-translate-y-2 transition-transform duration-300"
+                        className="relative z-10 bg-white/95 backdrop-blur-md p-8 rounded-2xl border border-white/10 shadow-xl flex flex-col items-start h-full hover:-translate-y-2 transition-all duration-300"
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
@@ -515,14 +515,14 @@ const HomePage = () => {
                          <span className={`inline-block px-3 py-1 rounded-full bg-${path.color}-50 dark:bg-${path.color}-500/10 text-${path.color}-700 dark:text-${path.color}-400 text-[10px] font-bold uppercase tracking-widest mb-4 border border-${path.color}-100 dark:border-${path.color}-500/20`}>
                            {path.level}
                          </span>
-                         <h3 className="text-2xl font-bold text-[var(--color-text-primary)] mb-1">{path.title}</h3>
+                         <h3 className="text-2xl font-bold text-slate-900 mb-1">{path.title}</h3>
                          <p className={`text-sm font-bold text-${path.color}-600 dark:text-${path.color}-500 uppercase tracking-wider mb-4`}>{path.subtitle}</p>
-                         <p className="text-[var(--color-text-tertiary)] mb-8 leading-relaxed flex-grow">
+                         <p className="text-slate-600 mb-8 leading-relaxed flex-grow">
                            {path.desc}
                          </p>
-                         <div className="w-full mt-auto pt-6 border-t border-[var(--color-border-primary)] flex items-center justify-between">
+                         <div className="w-full mt-auto pt-6 border-t border-slate-100 flex items-center justify-between">
                             <path.icon className={`text-${path.color}-500`} size={20} />
-                            <span className="text-xs font-bold text-[var(--color-text-tertiary)] uppercase tracking-widest">{path.status}</span>
+                            <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">{path.status}</span>
                          </div>
                       </motion.div>
                     ))}

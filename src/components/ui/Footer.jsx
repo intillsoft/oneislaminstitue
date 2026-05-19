@@ -78,7 +78,7 @@ const Footer = () => {
                   borderRadius: '12px', 
                   display: 'flex', 
                   alignItems: 'center', 
-                  justify-content: 'center', 
+                  justifyContent: 'center', 
                   color: '#F1F5F9', 
                   cursor: 'pointer',
                   transition: 'all 0.2s ease'

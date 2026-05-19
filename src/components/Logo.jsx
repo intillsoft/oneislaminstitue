@@ -49,14 +49,15 @@ const Logo = ({
   };
 
   const currentSize = sizeMap[size] || sizeMap.md;
-  const brandColor = darkBg ? '#93C5FD' : '#0078D4'; // Light sky-blue / Royal blue
+  const hopeColor = darkBg ? '#93C5FD' : '#0078D4'; // Light sky-blue / Royal blue
+  const dawahColor = darkBg ? '#FFFFFF' : '#0078D4'; // White on dark background, Royal blue on light background
   const textColor = darkBg ? 'text-white' : 'text-[#1A1A1A]';
 
   const logoContent = horizontal ? (
     <div className={`flex items-center gap-2 leading-none font-display ${className}`}>
       <div className={`flex items-baseline font-black ${currentSize.hSize} tracking-tighter`}>
-        <span style={{ color: brandColor }}>HOPE</span>
-        <span className={`${textColor} ml-1`}>DAWAH</span>
+        <span style={{ color: hopeColor }}>HOPE</span>
+        <span style={{ color: dawahColor }} className="ml-1">DAWAH</span>
       </div>
       <div className={`${textColor} font-black uppercase ${currentSize.hSize} tracking-tighter border-l ${darkBg ? 'border-white/20' : 'border-[#E0E0E0]'} pl-2 ml-1`}>
         INSTITUTE
@@ -65,8 +66,8 @@ const Logo = ({
   ) : (
     <div className={`flex flex-col items-center leading-[0.9] font-display ${className}`}>
       <div className={`flex items-baseline font-black ${currentSize.top} ${currentSize.spacing}`}>
-        <span style={{ color: brandColor }}>HOPE</span>
-        <span className={`${textColor} ml-1.5`}>DAWAH</span>
+        <span style={{ color: hopeColor }}>HOPE</span>
+        <span style={{ color: dawahColor }} className="ml-1.5">DAWAH</span>
       </div>
       <div className={`${textColor} font-black uppercase ${currentSize.bottom} ${currentSize.bottomSpacing} mt-1 text-center w-full`}>
         INSTITUTE
