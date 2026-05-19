@@ -9,7 +9,7 @@ async function testSave() {
     
     const testData = {
         title: 'Save Test Course ' + Date.now(),
-        company: 'One Islam Institute',
+        company: 'Hope Dawah Institute',
         salary_min: 19.99,
         salary_max: 49.99,
         price: 19.99,

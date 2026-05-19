@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS certificate_templates (
         "backgroundImage": null,
         "showLogo": true,
         "signatureUrl": null,
-        "signatureName": "One Islam Institute",
+        "signatureName": "Hope Dawah Institute",
         "signatureTitle": "Academic Director",
         "customText": "This is to certify that you have successfully completed the course requirements."
     }',
@@ -47,7 +47,7 @@ BEGIN
         "secondaryColor": "#10b981",
         "fontFamily": "Inter",
         "showLogo": true,
-        "signatureName": "One Islam Institute",
+        "signatureName": "Hope Dawah Institute",
         "signatureTitle": "Academic Director"
     }'::JSONB);
 END;

@@ -577,7 +577,7 @@ async function masterReseedCourse7() {
   
   const { data: nc, error: ce } = await supabase.from('jobs').insert({
     title: COURSE_TITLE,
-    company: 'One Islam Institute',
+    company: 'Hope Dawah Institute',
     location: 'Remote / Online',
     description: 'A 6-week premium relationship intelligence program. Master communication, compatibility, intimacy, and family legacy through modern psychology and Islamic wisdom.',
     course_level: 'advanced',

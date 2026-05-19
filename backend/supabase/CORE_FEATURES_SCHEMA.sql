@@ -1,5 +1,5 @@
 -- ==========================================
--- ONE ISLAM INSTITUTE: CORE SCHEMAS
+-- Hope Dawah INSTITUTE: CORE SCHEMAS
 -- Features: Faculty, Donations, Bookmarks
 -- ==========================================
 

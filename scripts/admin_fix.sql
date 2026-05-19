@@ -1,4 +1,4 @@
--- One Islam Institute Admin Fix
+-- Hope Dawah Institute Admin Fix
 -- Run this in your Supabase SQL Editor
 
 -- 1. Identify your user ID (or it will use your logged in email)
@@ -16,4 +16,4 @@ SELECT id, email, role FROM users WHERE email = 'yussifabduljalil601@gmail.com';
 UPDATE jobs SET status = 'published' WHERE status IS NULL OR status = 'active';
 
 -- Bonus: Fix any legacy branding in company names
-UPDATE jobs SET company = 'One Islam Institute' WHERE company = 'Legacy Academy' OR company = 'Workflow';
+UPDATE jobs SET company = 'Hope Dawah Institute' WHERE company = 'Legacy Academy' OR company = 'Workflow';

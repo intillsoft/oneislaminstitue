@@ -1,5 +1,5 @@
 -- ============================================================================
--- 🎓 ONE ISLAM INSTITUTE: COURSE SEED - Foundations of Islamic Faith
+-- 🎓 Hope Dawah INSTITUTE: COURSE SEED - Foundations of Islamic Faith
 -- Week 1-6 Full Curriculum (210 Lessons)
 -- ============================================================================
 
@@ -61,7 +61,7 @@ BEGIN
         status, price, featured
     ) VALUES (
         'Foundations of Islamic Faith', 
-        'One Islam Institute', 
+        'Hope Dawah Institute', 
         'Remote / Online', 
         'A comprehensive 6-week certificate program exploring the core tenets of Islamic belief, rational foundations, and spiritual growth.',
         v_faculty_id,

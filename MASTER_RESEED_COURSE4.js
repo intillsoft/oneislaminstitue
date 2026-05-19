@@ -558,7 +558,7 @@ async function masterReseedCourse4() {
   
   const { data: nc, error: ce } = await supabase.from('jobs').insert({
     title: COURSE_TITLE,
-    company: 'One Islam Institute',
+    company: 'Hope Dawah Institute',
     location: 'Remote / Online',
     description: 'A 6-week elite certificate program building a coherent Qur’anic worldview and intellectual leadership in the modern world.',
     course_level: 'advanced',

@@ -11,9 +11,9 @@ const COMPREHENSIVE_DATA = [
     title: 'Definition of Iman in Qur’an and Sunnah',
     blocks: [
       {
-        "id": "vid_1_1_1_oneislam",
+        "id": "vid_1_1_1_HopeDawah",
         "type": "video",
-        "url": "https://www.youtube.com/watch?v=kYI9g9d-xQk", // One Islam Productions - What is Iman?
+        "url": "https://www.youtube.com/watch?v=kYI9g9d-xQk", // Hope Dawah Productions - What is Iman?
         "order": 0
       },
       {
@@ -86,9 +86,9 @@ const COMPREHENSIVE_DATA = [
     title: 'Relationship Between Belief and Action',
     blocks: [
       {
-        "id": "vid_1_1_3_oneislam",
+        "id": "vid_1_1_3_HopeDawah",
         "type": "video",
-        "url": "https://www.youtube.com/watch?v=S7bW7gKz82Q", // One Islam productions - Faith and Deeds
+        "url": "https://www.youtube.com/watch?v=S7bW7gKz82Q", // Hope Dawah productions - Faith and Deeds
         "order": 0
       },
       {
@@ -155,9 +155,9 @@ const COMPREHENSIVE_DATA = [
     title: 'Signs of Strong Faith',
     blocks: [
       {
-        "id": "vid_1_1_5_oneislam",
+        "id": "vid_1_1_5_HopeDawah",
         "type": "video",
-        "url": "https://www.youtube.com/watch?v=8p_hS4o_7_k", // One Islam Productions - Prophetic Secret
+        "url": "https://www.youtube.com/watch?v=8p_hS4o_7_k", // Hope Dawah Productions - Prophetic Secret
         "order": 0
       },
       {

@@ -1,5 +1,5 @@
 -- ============================================================================
--- 🎓 ONE ISLAM INSTITUTE: ULTIMATE SCHEMA & OWNERSHIP STABILIZER
+-- 🎓 Hope Dawah INSTITUTE: ULTIMATE SCHEMA & OWNERSHIP STABILIZER
 -- Resolves donation saving bugs, relationship errors, and role sync issues.
 -- ============================================================================
 

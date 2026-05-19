@@ -1,4 +1,4 @@
--- ONE ISLAM INSTITUTE: PROFILE AUTOMATION
+-- Hope Dawah INSTITUTE: PROFILE AUTOMATION
 -- This script ensures that every new user registered in auth.users 
 -- automatically gets a matching record in the public profiles table.
 

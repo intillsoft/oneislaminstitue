@@ -20,7 +20,7 @@ DO $$
 BEGIN
     -- Core Columns
     IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'jobs' AND column_name = 'company') THEN
-        ALTER TABLE jobs ADD COLUMN company TEXT DEFAULT 'One Islam Institute';
+        ALTER TABLE jobs ADD COLUMN company TEXT DEFAULT 'Hope Dawah Institute';
     END IF;
 
     IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'jobs' AND column_name = 'location') THEN

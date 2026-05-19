@@ -1,4 +1,4 @@
--- ONE ISLAM INSTITUTE: RBAC SYNCHRONIZATION & TRIGGER FIX
+-- Hope Dawah INSTITUTE: RBAC SYNCHRONIZATION & TRIGGER FIX
 -- This script aligns the 'users' table with auth.users and fixes the automatic role assignment.
 
 -- 1. Harmonize Table Names: Ensure 'users' table exists with correct schema

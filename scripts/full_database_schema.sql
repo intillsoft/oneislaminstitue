@@ -1,4 +1,4 @@
--- ONE ISLAM INSTITUTE: COMPREHENSIVE DATABASE SCHEMA
+-- Hope Dawah INSTITUTE: COMPREHENSIVE DATABASE SCHEMA
 -- This script defines all necessary tables, columns, and security policies for the academic platform.
 
 -- 1. EXTENSIONS

@@ -1,5 +1,5 @@
 -- ============================================================================
--- 🎓 ONE ISLAM INSTITUTE: ULTIMATE ACADEMIC PROGRESSION SCHEMA
+-- 🎓 Hope Dawah INSTITUTE: ULTIMATE ACADEMIC PROGRESSION SCHEMA
 -- Fixes lesson completion, quiz tracking, coins awarding, and badges.
 -- Satisfies both the App Logic and User Expectations.
 -- ============================================================================

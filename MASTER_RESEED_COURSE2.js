@@ -558,7 +558,7 @@ async function masterReseedCourse2() {
       .from('jobs')
       .insert({
         title: COURSE_TITLE,
-        company: 'One Islam Institute',
+        company: 'Hope Dawah Institute',
         location: 'Remote / Online',
         description: 'A comprehensive 6-week certificate program focused on Tazkiyah — purification of the soul, emotional discipline, and spiritual growth.',
         course_level: 'intermediate',

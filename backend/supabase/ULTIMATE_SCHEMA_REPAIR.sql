@@ -1,5 +1,5 @@
 -- ============================================================================
--- 🎓 ONE ISLAM INSTITUTE: ULTIMATE SCHEMA REPAIR
+-- 🎓 Hope Dawah INSTITUTE: ULTIMATE SCHEMA REPAIR
 -- This script fixes core database issues including missing columns and constraints
 -- Handles: missing user_id, missing applied_at, missing roles
 -- ============================================================================

@@ -577,7 +577,7 @@ async function masterReseedCourse6() {
   
   const { data: nc, error: ce } = await supabase.from('jobs').insert({
     title: COURSE_TITLE,
-    company: 'One Islam Institute',
+    company: 'Hope Dawah Institute',
     location: 'Remote / Online',
     description: 'An elite 6-week premium program for trauma recovery, emotional mastery, and building psychological strength through a clinical and Islamic framework.',
     course_level: 'advanced',

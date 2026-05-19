@@ -1,5 +1,5 @@
 -- ============================================================================
--- 🎓 ONE ISLAM INSTITUTE: ENROLLMENT & ADMIN ROUTING RECOVERY
+-- 🎓 Hope Dawah INSTITUTE: ENROLLMENT & ADMIN ROUTING RECOVERY
 -- Fixes missing columns in applications table and ensures smooth administrative routing
 -- ============================================================================
 

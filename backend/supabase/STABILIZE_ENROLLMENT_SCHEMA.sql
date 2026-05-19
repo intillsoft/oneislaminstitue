@@ -1,5 +1,5 @@
 -- ============================================================================
--- 🎓 ONE ISLAM INSTITUTE: ENROLLMENT SCHEMA STABILIZATION
+-- 🎓 Hope Dawah INSTITUTE: ENROLLMENT SCHEMA STABILIZATION
 -- Fixes missing relationships and ensures course-student connectivity
 -- ============================================================================
 

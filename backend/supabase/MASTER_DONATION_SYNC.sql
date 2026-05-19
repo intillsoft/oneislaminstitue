@@ -1,6 +1,6 @@
 
 -- ============================================================================
--- 🎓 ONE ISLAM INSTITUTE: MASTER DONATION & OWNERSHIP SYNC
+-- 🎓 Hope Dawah INSTITUTE: MASTER DONATION & OWNERSHIP SYNC
 -- Ensuring min/max columns exist and RLS policies allow saving
 -- ============================================================================
 

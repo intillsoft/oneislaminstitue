@@ -2,9 +2,9 @@ import fs from 'fs';
 import path from 'path';
 
 const TARGETS = [
-    { regex: /One Islam Institute/g, replacement: 'Hope Dawah Institute' },
-    { regex: /One Islam/gi, replacement: 'Hope Dawah' },
-    { regex: /OneIslam/gi, replacement: 'HopeDawah' },
+    { regex: /Hope Dawah Institute/g, replacement: 'Hope Dawah Institute' },
+    { regex: /Hope Dawah/gi, replacement: 'Hope Dawah' },
+    { regex: /HopeDawah/gi, replacement: 'HopeDawah' },
 ];
 
 const TARGET_DIRS = ['src', 'public', 'api', 'backend', 'scripts'];

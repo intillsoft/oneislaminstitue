@@ -1,5 +1,5 @@
 -- ============================================================================
--- 🎓 ONE ISLAM INSTITUTE: GAMIFICATION & ADVANCED COURSE ECOSYSTEM
+-- 🎓 Hope Dawah INSTITUTE: GAMIFICATION & ADVANCED COURSE ECOSYSTEM
 -- Implements Coins, Badges, and Advanced Course Metadata
 -- ============================================================================
 
@@ -65,7 +65,7 @@ INSERT INTO badges (name, description, requirement_type, requirement_value, rari
 ('Curriculum Architect', 'Created your first course (Faculty only)', 'special', 1, 'epic'),
 ('Global Mentor', 'Taught 100 students', 'special', 100, 'legendary'),
 ('Legacy Builder', 'Founded a Faculty', 'special', 1, 'legendary'),
-('One Islam Fellow', 'Earned 10,000 XP', 'xp', 10000, 'legendary'),
+('Hope Dawah Fellow', 'Earned 10,000 XP', 'xp', 10000, 'legendary'),
 ('Divine Knowledge', 'Complete the Quranic Fundamentals Path', 'special', 1, 'divine'),
 ('Infinite Scholar', 'Maintain a 30-day streak', 'login_streak', 30, 'divine')
 ON CONFLICT (name) DO NOTHING;

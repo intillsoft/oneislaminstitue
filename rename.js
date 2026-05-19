@@ -2,9 +2,9 @@ const fs = require('fs');
 const path = require('path');
 
 const TARGETS = [
-    { regex: /One Islam Institute/g, replacement: 'Hope Dawah Institute' },
-    { regex: /One Islam/g, replacement: 'Hope Dawah Institute' },
-    { regex: /one islam/gi, replacement: 'Hope Dawah Institute' },
+    { regex: /Hope Dawah Institute/g, replacement: 'Hope Dawah Institute' },
+    { regex: /Hope Dawah/g, replacement: 'Hope Dawah Institute' },
+    { regex: /Hope Dawah/gi, replacement: 'Hope Dawah Institute' },
 ];
 
 function processDirectory(dir) {

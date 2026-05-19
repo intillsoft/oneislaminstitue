@@ -1,5 +1,5 @@
 -- ============================================================================
--- 🎓 ONE ISLAM INSTITUTE: CONTENT SEED - WEEK 1 (COMPREHENSIVE)
+-- 🎓 Hope Dawah INSTITUTE: CONTENT SEED - WEEK 1 (COMPREHENSIVE)
 -- Contains 20+ lessons with 10-min read depth, videos, and 5 quizzes each.
 -- ============================================================================
 

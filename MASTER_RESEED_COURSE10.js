@@ -557,7 +557,7 @@ async function masterReseedCourse10() {
   
   const { data: nc, error: ce } = await supabase.from('jobs').insert({
     title: COURSE_TITLE,
-    company: 'One Islam Institute',
+    company: 'Hope Dawah Institute',
     location: 'Remote / Online',
     description: 'A 6-week elite program for community leaders, organization builders, and public influencers. Master strategy, team building, institution governance, and public influence.',
     course_level: 'advanced',

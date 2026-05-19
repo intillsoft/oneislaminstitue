@@ -1,5 +1,5 @@
 -- ============================================================================
--- 🚀 ONE ISLAM INSTITUTE: ULTIMATE SYSTEM CONSOLIDATION
+-- 🚀 Hope Dawah INSTITUTE: ULTIMATE SYSTEM CONSOLIDATION
 -- Fixing Enrollment, Course Studio, and Gamification Data
 -- ============================================================================
 
@@ -75,7 +75,7 @@ CREATE TABLE IF NOT EXISTS badges (
 -- Reset and Insert 15 Scholar Badges
 TRUNCATE TABLE badges CASCADE;
 INSERT INTO badges (name, description, icon_name, requirement_type, requirement_value, rarity) VALUES
-('Faith Seeker', 'Enrolled in your first course at One Islam Institute.', 'Star', 'courses', 1, 'common'),
+('Faith Seeker', 'Enrolled in your first course at Hope Dawah Institute.', 'Star', 'courses', 1, 'common'),
 ('Disciplined Mind', 'Completed your first 5 lessons.', 'Zap', 'xp', 250, 'common'),
 ('Consistent Scholar', 'Logged in for 7 consecutive days.', 'Calendar', 'login_streak', 7, 'common'),
 ('Generous Giver', 'Earned your first 1,000 Dinar Tokens.', 'DollarSign', 'coins', 1000, 'rare'),

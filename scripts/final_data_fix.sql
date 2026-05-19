@@ -1,4 +1,4 @@
--- ONE ISLAM INSTITUTE: FINAL LESSON & STATUS FIX
+-- Hope Dawah INSTITUTE: FINAL LESSON & STATUS FIX
 -- Run this script in the Supabase SQL Editor to populate lessons and show courses.
 
 -- 1. Ensure all courses are published so they appear in the UI

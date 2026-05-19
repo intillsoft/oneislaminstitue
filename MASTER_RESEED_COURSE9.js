@@ -557,7 +557,7 @@ async function masterReseedCourse9() {
   
   const { data: nc, error: ce } = await supabase.from('jobs').insert({
     title: COURSE_TITLE,
-    company: 'One Islam Institute',
+    company: 'Hope Dawah Institute',
     location: 'Remote / Online',
     description: 'A 6-week digital lifestyle and identity protection program. Master your attention, secure your privacy, and gain technological literacy for the AI era.',
     course_level: 'advanced',

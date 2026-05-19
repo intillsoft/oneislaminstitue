@@ -1,5 +1,5 @@
 -- ============================================================================
--- 🎓 ONE ISLAM INSTITUTE: MASTER ACADEMIC ECOSYSTEM SCHEMA
+-- 🎓 Hope Dawah INSTITUTE: MASTER ACADEMIC ECOSYSTEM SCHEMA
 -- Comprehensive schema for Faculty, Courses, Enrollments, and Financials
 -- ============================================================================
 

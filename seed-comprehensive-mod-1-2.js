@@ -11,9 +11,9 @@ const COMPREHENSIVE_DATA = [
     title: 'The Hadith of Jibreel Explained',
     blocks: [
       {
-        "id": "vid_1_2_1_oneislam",
+        "id": "vid_1_2_1_HopeDawah",
         "type": "video",
-        "url": "https://www.youtube.com/watch?v=F7v8uY_5844", // One Islam Productions - Hadith Jibreel
+        "url": "https://www.youtube.com/watch?v=F7v8uY_5844", // Hope Dawah Productions - Hadith Jibreel
         "order": 0
       },
       {
@@ -51,9 +51,9 @@ const COMPREHENSIVE_DATA = [
     title: 'The Five Pillars of Islam',
     blocks: [
       {
-        "id": "vid_1_2_2_oneislam",
+        "id": "vid_1_2_2_HopeDawah",
         "type": "video",
-        "url": "https://www.youtube.com/watch?v=S7bW7gKz82Q", // One Islam - 5 Pillars
+        "url": "https://www.youtube.com/watch?v=S7bW7gKz82Q", // Hope Dawah - 5 Pillars
         "order": 0
       },
       {
@@ -91,9 +91,9 @@ const COMPREHENSIVE_DATA = [
     title: 'The Six Pillars of Iman',
     blocks: [
       {
-        "id": "vid_1_2_3_oneislam",
+        "id": "vid_1_2_3_HopeDawah",
         "type": "video",
-        "url": "https://www.youtube.com/watch?v=F07p1mU7-eU", // One Islam - 6 Pillars
+        "url": "https://www.youtube.com/watch?v=F07p1mU7-eU", // Hope Dawah - 6 Pillars
         "order": 0
       },
       {
@@ -131,9 +131,9 @@ const COMPREHENSIVE_DATA = [
     title: 'The Concept of Ihsan',
     blocks: [
       {
-        "id": "vid_1_2_4_oneislam",
+        "id": "vid_1_2_4_HopeDawah",
         "type": "video",
-        "url": "https://www.youtube.com/watch?v=8p_hS4o_7_k", // One Islam - Ihsan
+        "url": "https://www.youtube.com/watch?v=8p_hS4o_7_k", // Hope Dawah - Ihsan
         "order": 0
       },
       {
@@ -171,9 +171,9 @@ const COMPREHENSIVE_DATA = [
     title: 'Internal vs External Submission',
     blocks: [
       {
-        "id": "vid_1_2_5_oneislam",
+        "id": "vid_1_2_5_HopeDawah",
         "type": "video",
-        "url": "https://www.youtube.com/watch?v=x7W2Wp_F6q8", // One Islam productions - Heart vs Body
+        "url": "https://www.youtube.com/watch?v=x7W2Wp_F6q8", // Hope Dawah productions - Heart vs Body
         "order": 0
       },
       {
@@ -205,9 +205,9 @@ const COMPREHENSIVE_DATA = [
     title: 'Hypocrisy: Major and Minor',
     blocks: [
       {
-        "id": "vid_1_2_6_oneislam",
+        "id": "vid_1_2_6_HopeDawah",
         "type": "video",
-        "url": "https://www.youtube.com/watch?v=kYI9g9d-xQk", // One Islam - Hypocrisy
+        "url": "https://www.youtube.com/watch?v=kYI9g9d-xQk", // Hope Dawah - Hypocrisy
         "order": 0
       },
       {
