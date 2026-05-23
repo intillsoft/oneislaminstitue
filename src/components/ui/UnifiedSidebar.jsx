@@ -81,7 +81,7 @@ const UnifiedSidebar = () => {
   const allNavigationItems = [];
   
   if (!loadingProfile) {
-    const roleLower = baseRole?.toLowerCase() || '';
+    const roleLower = userRole?.toLowerCase() || '';
     if (roleLower === 'admin' || roleLower === 'system_admin') {
       allNavigationItems.push(...adminItems);
       allNavigationItems.push(...instructorItems);
@@ -207,11 +207,10 @@ const UnifiedSidebar = () => {
                       onClick={() => handleNavClick(item.path)}
                       className={`w-full flex items-center ${isCollapsed ? 'justify-center px-0' : 'justify-start px-4'} py-2.5 text-[13px] font-medium transition-all relative group`}
                       style={{
-                        borderRadius: active ? '0 8px 8px 0' : '8px',
+                        borderRadius: '10px',
                         background: active ? 'var(--sidebar-accent)' : 'transparent',
-                        color: active ? 'var(--sidebar-primary-foreground)' : 'var(--sidebar-foreground)',
+                        color: active ? 'var(--sidebar-primary)' : 'var(--sidebar-foreground)',
                         fontWeight: active ? 600 : 500,
-                        borderLeft: active ? '3px solid var(--sidebar-primary)' : '3px solid transparent',
                       }}
                       whileHover={{ x: isCollapsed ? 0 : 2 }}
                       onMouseEnter={(e) => { if (!active) { e.currentTarget.style.background = 'var(--sidebar-accent)'; e.currentTarget.style.color = 'var(--sidebar-foreground)'; }}}

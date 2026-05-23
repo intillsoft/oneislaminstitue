@@ -77,8 +77,8 @@ const JobPreviewPanel = ({ job, onClose, isSaved, onSave }) => {
 
         <div className="grid grid-cols-2 gap-4 pb-6 border-b border-white/5">
           <div className="flex items-center gap-3 text-sm text-slate-400">
-            <MapPin className="w-4 h-4 text-[var(--color-text-secondary)]" />
-            {job?.location || 'Remote'}
+            <Globe className="w-4 h-4 text-[var(--color-text-secondary)]" />
+            <span>Online Portal</span>
           </div>
           <div className="flex items-center gap-3 text-sm text-slate-400">
             <Clock className="w-4 h-4 text-[var(--color-text-secondary)]" />

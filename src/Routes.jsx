@@ -22,8 +22,7 @@ const AISearchResults = lazy(() => import("pages/ai-search-results"));
 const ForgotPassword = lazy(() => import("pages/forgot-password"));
 const ResetPassword = lazy(() => import("pages/reset-password"));
 const AuthCallback = lazy(() => import("pages/auth-callback"));
-const Mission = lazy(() => import("pages/Mission"));
-const Methodology = lazy(() => import("pages/Methodology"));
+const About = lazy(() => import("pages/About"));
 const Donate = lazy(() => import("pages/Donate"));
 const JoinTeam = lazy(() => import("pages/JoinTeam"));
 const ApplyTeam = lazy(() => import("pages/ApplyTeam"));
@@ -94,8 +93,9 @@ const AnimatedRoutes = () => {
         <Route path="/auth/reset-password" element={<ResetPassword />} />
 
         {/* Static Pages */}
-        <Route path="/mission" element={<Mission />} />
-        <Route path="/methodology" element={<Methodology />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/mission" element={<Navigate to="/about" replace />} />
+        <Route path="/methodology" element={<Navigate to="/about" replace />} />
         <Route path="/donate" element={<Donate />} />
         <Route path="/team" element={<JoinTeam />} />
         <Route path="/team/apply" element={<ApplyTeam />} />

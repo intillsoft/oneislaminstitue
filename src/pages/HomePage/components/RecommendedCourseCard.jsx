@@ -77,7 +77,7 @@ const RecommendedCourseCard = ({ course, index }) => {
       className="group relative flex-shrink-0 w-[260px] md:w-[280px] cursor-pointer select-none"
     >
       {/* Card shell */}
-      <div className="relative rounded-[1.6rem] overflow-hidden bg-white dark:bg-[#0d1025] border border-slate-100 dark:border-white/[0.06] shadow-sm group-hover:shadow-2xl transition-all duration-500 flex flex-col h-full">
+      <div className="relative rounded-[2rem] overflow-hidden bg-white dark:bg-[#0d1025] border border-slate-100 dark:border-white/[0.06] shadow-sm group-hover:shadow-2xl transition-all duration-500 flex flex-col h-full">
 
         {/* Colour accent strip at top */}
         <div

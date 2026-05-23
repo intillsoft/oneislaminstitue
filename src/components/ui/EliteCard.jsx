@@ -45,10 +45,10 @@ export const EliteStatCard = ({
     ...props
 }) => {
     const colorMap = {
-        blue:  { icon: 'var(--primary)', bg: 'var(--secondary)', border: 'var(--border)' },
-        green: { icon: '#107C10', bg: '#E6F4E6', border: '#B8E6B8' },
-        amber: { icon: '#C05400', bg: '#FFF4CE', border: '#FFE0A0' },
-        red:   { icon: '#D13438', bg: '#FDE7E9', border: '#F5C0C2' },
+        blue:  { icon: 'var(--primary)', bg: 'rgba(30, 120, 255, 0.08)', border: 'rgba(30, 120, 255, 0.18)' },
+        green: { icon: '#107C10', bg: 'rgba(16, 124, 16, 0.08)', border: 'rgba(16, 124, 16, 0.18)' },
+        amber: { icon: '#C05400', bg: 'rgba(192, 84, 0, 0.08)', border: 'rgba(192, 84, 0, 0.18)' },
+        red:   { icon: '#D13438', bg: 'rgba(209, 52, 56, 0.08)', border: 'rgba(209, 52, 56, 0.18)' },
     };
 
     const colors = colorMap[color] || colorMap.blue;

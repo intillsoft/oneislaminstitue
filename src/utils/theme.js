@@ -8,8 +8,8 @@ export const initTheme = () => {
   // Check localStorage first
   const savedTheme = localStorage.getItem('theme');
 
-  // Default to dark mode for Elite Metamorphosis
-  const shouldBeDark = savedTheme !== 'light';
+  // Default to light mode for a premium professional experience
+  const shouldBeDark = savedTheme === 'dark';
 
   if (shouldBeDark) {
     document.documentElement.classList.add('dark');

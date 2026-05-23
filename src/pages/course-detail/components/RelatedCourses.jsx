@@ -120,8 +120,8 @@ const RelatedCourses = ({ currentCourseId }) => {
                   
                   <div className="mt-auto pt-4 border-t border-slate-100 dark:border-white/5 flex items-center justify-between">
                     <div className="flex items-center gap-1.5 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                      <MapPin size={12} className="text-slate-300" />
-                      <span>{course.location || 'Online'}</span>
+                      <BookOpen size={12} className="text-slate-300" />
+                      <span>Online Portal</span>
                     </div>
                     <div className="flex items-center gap-1 px-2.5 py-1 bg-[var(--color-primary-light)] dark:bg-[var(--color-primary)]/10 rounded-lg border border-[var(--color-border-secondary)] dark:border-[var(--color-primary)]/20">
                       <Sparkles size={10} className="text-[var(--color-primary)]" />

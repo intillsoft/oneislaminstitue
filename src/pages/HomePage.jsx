@@ -20,6 +20,7 @@ import VoiceSearch from '../components/ui/VoiceSearch';
 import Footer from '../components/ui/Footer';
 import Image from '../components/AppImage';
 import FeaturedCourseCard from './HomePage/components/FeaturedCourseCard';
+import { EliteCard } from '../components/ui/EliteCard';
 import RecommendedCoursesSection from './HomePage/components/RecommendedCoursesSection';
 import RecommendedTalentSection from './HomePage/components/RecommendedTalentSection';
 import Header from '../components/ui/Header';
@@ -299,7 +300,7 @@ const HomePage = () => {
                   </h1>
 
                   <p className="text-base sm:text-lg text-muted-foreground mb-8 sm:mb-10 max-w-2xl mx-auto leading-relaxed px-4">
-                    Access a structured curriculum curated by a team of learned Muslims from verified platforms like Yaqeen Institute and Towards Eternity. Master the sacred sciences through a cohesive, institutional approach.
+                    Access a structured curriculum curated by a team of learned Muslims and academic designers. Master the sacred sciences through a cohesive, institutional, and traditional approach.
                   </p>
 
                   <div className="flex flex-row items-center justify-center gap-2 sm:gap-4 w-full max-w-sm mx-auto sm:max-w-none">
@@ -380,13 +381,13 @@ const HomePage = () => {
 
             {/* NEW SECTION 1: THE ELITE STANDARD */}
             <section className="py-16 sm:py-24 bg-card border-y border-border relative overflow-hidden transition-colors duration-200">
-               <div className="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-primary/5 to-transparent pointer-events-none" />
+               <div className="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-[var(--color-primary)]/5 to-transparent pointer-events-none" />
                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                  <div className="text-center mb-16 max-w-3xl mx-auto">
-                   <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4 tracking-tight">
-                     The Standard of <span className="text-primary">Authentic Synthesis</span>
+                   <h2 className="text-3xl md:text-4xl font-extrabold text-foreground mb-4 tracking-tight">
+                     The Standard of <span className="text-[var(--color-primary)]">Authentic Synthesis</span>
                    </h2>
-                   <p className="text-lg text-muted-foreground leading-relaxed">
+                   <p className="text-lg text-muted-foreground leading-relaxed font-light">
                      We aggregate the best of Islamic research and design it into a seamless learning experience.
                    </p>
                  </div>
@@ -395,21 +396,18 @@ const HomePage = () => {
                    {[
                      {
                        icon: Shield,
-                       title: "Verified Sources",
-                       desc: "Our team sources content from authentic platforms including Yaqeen and Towards Eternity, ensuring every lesson is grounded in the Quran and Sunnah.",
-                       color: "blue"
+                       title: "Verified Sourcing",
+                       desc: "Our team structures content from authentic traditional databases and classical text repositories, ensuring every lesson is grounded in the Quran and Sunnah."
                      },
                      {
                        icon: Users,
                        title: "Learned Curation",
-                       desc: "Managed by a dedicated team of learned Muslims who structure complex topics into digestible modules.",
-                       color: "blue"
+                       desc: "Managed by a dedicated team of learned Muslims who structure complex topics into digestible modules."
                      },
                      {
                        icon: Zap,
                        title: "Structured Navigation",
-                       desc: "A clear roadmap from foundations to mastery, with progress tracking.",
-                       color: "amber" // Changed to amber/gold for premium feel
+                       desc: "A clear roadmap from foundations to mastery, with progress tracking."
                      }
                    ].map((item, idx) => (
                      <motion.div
@@ -418,18 +416,18 @@ const HomePage = () => {
                        whileInView={{ opacity: 1, y: 0 }}
                        viewport={{ once: true }}
                        transition={{ delay: idx * 0.2 }}
-                       className="group relative p-8 rounded-2xl bg-gradient-to-br from-[#005A9E] to-[#0078D4] text-white border border-white/10 hover:shadow-2xl hover:shadow-blue-500/20 transition-all duration-300 hover:-translate-y-1.5 overflow-hidden"
-                      >
-                         <div className="w-14 h-14 rounded-2xl flex items-center justify-center mb-6 bg-white/15 group-hover:scale-110 transition-transform duration-500">
-                           <item.icon className="w-7 h-7 text-white" />
-                         </div>
-                         <h3 className="text-xl font-bold text-white mb-3 transition-colors">
-                           {item.title}
-                         </h3>
-                         <p className="text-blue-100 leading-relaxed">
-                           {item.desc}
-                         </p>
-                      </motion.div>
+                       className="group relative p-8 rounded-3xl bg-white/[0.02] dark:bg-white/[0.01] border border-border hover:border-[var(--color-primary)]/30 hover:shadow-2xl hover:shadow-emerald-500/5 transition-all duration-300 hover:-translate-y-1.5 overflow-hidden"
+                     >
+                        <div className="w-14 h-14 rounded-2xl flex items-center justify-center mb-6 bg-[var(--color-primary)]/10 group-hover:scale-110 transition-transform duration-500">
+                          <item.icon className="w-7 h-7 text-[var(--color-primary)]" />
+                        </div>
+                        <h3 className="text-xl font-bold text-foreground mb-3 transition-colors group-hover:text-[var(--color-primary)]">
+                          {item.title}
+                        </h3>
+                        <p className="text-muted-foreground leading-relaxed text-sm font-light">
+                          {item.desc}
+                        </p>
+                     </motion.div>
                    ))}
                  </div>
                </div>
@@ -456,33 +454,35 @@ const HomePage = () => {
             </section>
 
             {/* NEW SECTION 2: STRUCTURED KNOWLEDGE PATHS */}
-            <section className="py-16 sm:py-24 bg-gradient-to-br from-[#0B0F2A] via-[#005A9E] to-[#0078D4] text-white relative overflow-hidden">
+            <section className="py-16 sm:py-24 bg-muted/40 dark:bg-muted/10 border-y border-border/40 relative overflow-hidden transition-colors duration-300">
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                  <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
                     <div className="max-w-2xl">
-                       <span className="text-primary font-bold tracking-widest uppercase text-xs mb-2 block">Curriculum Roadmap</span>
-                       <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Structured Knowledge Paths</h2>
-                       <p className="text-blue-100 text-lg">
+                       <span className="text-[var(--color-primary)] font-bold tracking-[0.2em] uppercase text-[10px] mb-3 block">Curriculum Roadmap</span>
+                       <h2 className="text-3xl md:text-4xl font-extrabold text-foreground tracking-tight mb-4">Structured Knowledge Paths</h2>
+                       <p className="text-muted-foreground text-sm max-w-xl font-light">
                          Stop guessing where to start. Follow a clear, scholar-designed roadmap from basics to mastery.
                        </p>
                     </div>
-                    <button onClick={() => navigate('/courses')} className="px-6 py-3 bg-white border border-white/20 rounded-xl font-bold text-[#005A9E] hover:bg-blue-50 transition-all shadow-xl hover:shadow-white/5">
+                    <button 
+                      onClick={() => navigate('/courses')} 
+                      className="px-6 py-2.5 bg-[var(--color-primary)] hover:bg-[var(--color-primary)]/90 text-white rounded-full text-xs font-semibold shadow-soft hover:shadow-glow transition-all"
+                    >
                       View All Paths
                     </button>
                  </div>
 
                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative">
                     {/* Connecting Line (Desktop) */}
-                    <div className="hidden md:block absolute top-1/2 left-0 w-full h-0.5 bg-gradient-to-r from-white/10 via-white/20 to-white/10 -translate-y-1/2 z-0" />
+                    <div className="hidden md:block absolute top-1/2 left-0 w-full h-0.5 bg-gradient-to-r from-border/20 via-[var(--color-primary)]/20 to-border/20 -translate-y-1/2 z-0" />
                     
                     {[
                       {
                         level: "Level 1",
                         title: "The Foundations",
                         subtitle: "Fard 'Ayn",
-                        desc: "Essential knowledge every believer must know. covering purity, prayer, and basic creed.",
+                        desc: "Essential knowledge every believer must know, covering purity, prayer, and basic creed.",
                         icon: BookOpen,
-                        color: "blue",
                         status: "Open"
                       },
                       {
@@ -491,7 +491,6 @@ const HomePage = () => {
                         subtitle: "Intermediate Studies",
                         desc: "Deepen your understanding with Fiqh of transactions, Seerah analysis, and Quranic Arabic.",
                         icon: Layers,
-                        color: "blue",
                         status: "Requires Level 1"
                       },
                       {
@@ -500,37 +499,293 @@ const HomePage = () => {
                         subtitle: "Advanced Specialization",
                         desc: "Mastery modules in Usul al-Fiqh, Hadith sciences, and advanced theology.",
                         icon: GraduationCap,
-                        color: "amber",
                         status: "Locked"
                       }
                     ].map((path, idx) => (
                       <motion.div
                         key={idx}
-                        className="relative z-10 bg-card/95 backdrop-blur-md p-8 rounded-2xl border border-border/50 shadow-xl flex flex-col items-start h-full hover:-translate-y-2 transition-all duration-300"
+                        className="relative z-10 hover:-translate-y-2 transition-all duration-300 h-full group"
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        transition={{ delay: idx * 0.2 }}
+                        transition={{ delay: idx * 0.15 }}
                       >
-                         <span className="inline-block px-3 py-1 rounded-full bg-primary/10 text-primary text-[10px] font-bold uppercase tracking-widest mb-4 border border-primary/20">
-                           {path.level}
-                         </span>
-                         <h3 className="text-2xl font-bold text-foreground mb-1">{path.title}</h3>
-                         <p className="text-sm font-bold text-primary uppercase tracking-wider mb-4">{path.subtitle}</p>
-                         <p className="text-muted-foreground mb-8 leading-relaxed flex-grow">
-                           {path.desc}
-                         </p>
-                         <div className="w-full mt-auto pt-6 border-t border-border flex items-center justify-between">
-                            <path.icon className="text-primary" size={20} />
-                            <span className="text-xs font-bold text-muted-foreground uppercase tracking-widest">{path.status}</span>
-                         </div>
+                         <EliteCard className="h-full flex flex-col items-start p-8 border border-border hover:border-[var(--color-primary)]/30 transition-all relative overflow-hidden bg-card shadow-soft hover:shadow-glow duration-300">
+                           <span className="inline-block px-3 py-1 rounded-full bg-[var(--color-primary)]/10 text-[var(--color-primary)] text-[10px] font-bold uppercase tracking-widest mb-5 border border-[var(--color-primary)]/20">
+                             {path.level}
+                           </span>
+                           <h3 className="text-xl font-bold text-foreground mb-1 tracking-tight">{path.title}</h3>
+                           <p className="text-[11px] font-semibold text-[var(--color-primary)] uppercase tracking-wider mb-4">{path.subtitle}</p>
+                           <p className="text-sm text-muted-foreground mb-6 leading-relaxed flex-grow font-light">
+                             {path.desc}
+                           </p>
+                           {/* Status Badge */}
+                           <div className="mt-auto flex items-center justify-between w-full pt-4 border-t border-border">
+                             <div className="flex items-center gap-2">
+                               <div className={`w-2.5 h-2.5 rounded-full ${
+                                 path.status === 'Open' ? 'bg-emerald-500 animate-pulse' :
+                                 path.status.includes('Requires') ? 'bg-amber-500' : 'bg-muted-foreground/30'
+                                }`} />
+                               <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">{path.status}</span>
+                             </div>
+                             <div className="w-8 h-8 rounded-lg bg-[var(--color-primary)]/5 group-hover:bg-[var(--color-primary)]/10 flex items-center justify-center text-[var(--color-primary)] transition-all">
+                               <path.icon size={16} />
+                             </div>
+                           </div>
+                         </EliteCard>
                       </motion.div>
                     ))}
                  </div>
               </div>
             </section>
 
+            {/* NEW SECTION 3: CORE CURRICULUM PILLARS */}
+            <section className="py-16 sm:py-24 bg-background relative overflow-hidden transition-colors duration-300">
+              <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+                <div className="absolute top-[20%] right-0 w-80 h-80 bg-[var(--color-primary)]/5 blur-3xl translate-x-1/3 pointer-events-none" />
+              </div>
 
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div className="text-center max-w-3xl mx-auto mb-16">
+                  <span className="text-[var(--color-primary)] font-bold tracking-[0.2em] uppercase text-[10px] mb-3 block">Sacred Knowledge Core</span>
+                  <h2 className="text-3xl md:text-4xl font-extrabold text-foreground tracking-tight mb-4">Core Curriculum Pillars</h2>
+                  <p className="text-muted-foreground text-sm max-w-xl mx-auto font-light">
+                    Our aggregates are structured across four verified disciplines, empowering seekers with traditional academic depth.
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+                  {[
+                    {
+                      icon: Brain,
+                      title: "Creed & Theology (Aqeedah)",
+                      desc: "Exploring foundational beliefs, Prophetic teachings, divine attributes, and absolute realities of faith.",
+                      badge: "Foundations"
+                    },
+                    {
+                      icon: BookOpen,
+                      title: "Traditional Law (Fiqh)",
+                      desc: "Comprehending practical rulings of worship, daily transactions, ethical codes, and community guidelines.",
+                      badge: "Jurisprudence"
+                    },
+                    {
+                      icon: Users,
+                      title: "Prophetic Narrative (Seerah)",
+                      desc: "Internalizing character, life stages, historic achievements, and sublime guidance of the Messenger.",
+                      badge: "History & Character"
+                    },
+                    {
+                      icon: GraduationCap,
+                      title: "Quranic Sciences (Tafsir)",
+                      desc: "Engaging with preservation, correct recitation, linguistic miracles, and deep meanings of the Divine Word.",
+                      badge: "Scripture"
+                    }
+                  ].map((item, idx) => {
+                    const StepIcon = item.icon;
+                    return (
+                      <EliteCard key={idx} className="relative p-6 border border-border hover:border-[var(--color-primary)]/30 transition-all rounded-3xl overflow-hidden bg-card shadow-soft hover:shadow-glow duration-300 flex flex-col justify-between">
+                        <div>
+                          <div className="w-10 h-10 rounded-xl bg-[var(--color-primary)]/10 flex items-center justify-center text-[var(--color-primary)] mb-6">
+                            <StepIcon size={18} />
+                          </div>
+                          <span className="inline-block px-2.5 py-0.5 rounded-md bg-[var(--color-primary)]/10 text-[var(--color-primary)] text-[9px] font-black uppercase tracking-widest mb-3">
+                            {item.badge}
+                          </span>
+                          <h3 className="text-base font-bold text-foreground mb-2 tracking-tight group-hover:text-[var(--color-primary)]">{item.title}</h3>
+                          <p className="text-xs text-muted-foreground leading-relaxed font-light font-sans">
+                            {item.desc}
+                          </p>
+                        </div>
+                      </EliteCard>
+                    );
+                  })}
+                </div>
+              </div>
+            </section>
+
+            {/* NEW SECTION 4: THE DIGITAL KNOWLEDGE VAULT */}
+            <section className="py-16 sm:py-24 bg-muted/30 dark:bg-muted/10 border-t border-border/40 relative overflow-hidden transition-colors duration-300">
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                  
+                  {/* Left Column: Information */}
+                  <div className="lg:col-span-5 space-y-6">
+                    <span className="text-[var(--color-primary)] font-bold tracking-[0.2em] uppercase text-[10px] block">Resource Hub</span>
+                    <h2 className="text-3xl md:text-4xl font-extrabold text-foreground tracking-tight leading-tight">
+                      The Digital Knowledge Vault
+                    </h2>
+                    <p className="text-muted-foreground text-sm leading-relaxed font-light">
+                      True scholarship is empowered by verified references. Download custom-designed educational assets built by our curation team to enrich your study progress.
+                    </p>
+                    <div className="space-y-4 pt-4">
+                      {[
+                        { title: "Interactive Infographics & Mindmaps", desc: "Exquisite visual maps breaking down complex rulings and historical lineages." },
+                        { title: "Classical Text Translations", desc: "Bilingual, fully audited translations of foundational creed and legal texts." },
+                        { title: "Comprehensive Curated Study Guides", desc: "Structure your self-paced journey with vetted timelines, worksheets, and reference lists." }
+                      ].map((feat, idx) => (
+                        <div key={idx} className="flex gap-4">
+                          <div className="w-5 h-5 rounded-full bg-emerald-500/10 flex items-center justify-center text-emerald-500 flex-shrink-0 mt-0.5">
+                            <CheckCircle2 size={12} className="stroke-[3]" />
+                          </div>
+                          <div>
+                            <h4 className="text-xs font-bold text-foreground uppercase tracking-wider">{feat.title}</h4>
+                            <p className="text-xs text-muted-foreground leading-relaxed mt-1 font-light">{feat.desc}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Right Column: High Fidelity Mockup */}
+                  <div className="lg:col-span-7">
+                    <EliteCard className="w-full border border-border bg-card rounded-3xl shadow-xl overflow-hidden p-0 relative">
+                      {/* Mockup Header */}
+                      <div className="px-5 py-4 border-b border-border flex items-center justify-between bg-muted/20 dark:bg-card/85">
+                        <div className="flex items-center gap-3">
+                          <div className="w-2.5 h-2.5 rounded-full bg-[var(--color-primary)] animate-pulse" />
+                          <span className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground">Scholar Resource Library</span>
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                          <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase bg-[var(--color-primary)]/10 text-[var(--color-primary)] border border-[var(--color-primary)]/20">Active Modules</span>
+                        </div>
+                      </div>
+                      
+                      {/* Mockup Resources List */}
+                      <div className="p-6 space-y-4 h-80 overflow-y-auto custom-scrollbar">
+                        {[
+                          {
+                            title: "Level 1: Fiqh of Worship Mindmap",
+                            file: "PDF INFOGRAPHIC • 4.8 MB",
+                            downloads: "12,490 seekings",
+                            tag: "Infographic"
+                          },
+                          {
+                            title: "Aqeedah Al-Tahawiyyah Study Guide",
+                            file: "INTERACTIVE WORKSHEET • 2.1 MB",
+                            downloads: "8,920 seekings",
+                            tag: "Translation"
+                          },
+                          {
+                            title: "Prophetic Seerah Complete Journey Map",
+                            file: "TIMELINE SCHEMATIC • 12.5 MB",
+                            downloads: "15,200 seekings",
+                            tag: "Journey Map"
+                          }
+                        ].map((item, idx) => (
+                          <div key={idx} className="flex items-center justify-between p-4 bg-muted/20 dark:bg-white/[0.01] rounded-2xl border border-border/50 hover:border-[var(--color-primary)]/20 transition-all duration-300 group/item">
+                            <div className="flex items-start gap-4">
+                              <div className="w-10 h-10 rounded-xl bg-[var(--color-primary)]/5 group-hover/item:bg-[var(--color-primary)]/10 flex items-center justify-center text-[var(--color-primary)] flex-shrink-0">
+                                <FileText size={18} />
+                              </div>
+                              <div>
+                                <h4 className="text-xs font-bold text-foreground uppercase tracking-wide group-hover/item:text-[var(--color-primary)] transition-colors">{item.title}</h4>
+                                <div className="flex items-center gap-2 mt-1">
+                                  <span className="text-[9px] font-semibold text-muted-foreground uppercase tracking-wider">{item.file}</span>
+                                  <span className="w-1 h-1 rounded-full bg-slate-500" />
+                                  <span className="text-[9px] font-semibold text-muted-foreground uppercase tracking-wider">{item.downloads}</span>
+                                </div>
+                              </div>
+                            </div>
+                            <button className="px-4 py-2 bg-[var(--color-primary)]/5 hover:bg-[var(--color-primary)] hover:text-white border border-[var(--color-primary)]/20 hover:border-transparent text-[9px] font-black uppercase tracking-widest text-[var(--color-primary)] rounded-xl transition-all">
+                              Download
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Mockup Footer */}
+                      <div className="px-5 py-4 border-t border-border bg-muted/20 dark:bg-card/85 flex items-center justify-between">
+                        <span className="text-[9px] font-black uppercase tracking-widest text-muted-foreground">Vetted Academic Materials Only</span>
+                        <span className="text-[9px] font-black uppercase tracking-widest text-[var(--color-primary)] hover:underline cursor-pointer">View Complete Vault</span>
+                      </div>
+                    </EliteCard>
+                  </div>
+
+                </div>
+              </div>
+            </section>
+
+            {/* NEW SECTION 5: SCHOLARSHIP JOURNEY TIMELINE */}
+            <section className="py-16 sm:py-24 bg-background relative overflow-hidden transition-colors duration-300">
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="text-center max-w-3xl mx-auto mb-16">
+                  <span className="text-[var(--color-primary)] font-bold tracking-[0.2em] uppercase text-[10px] mb-3 block">Milestone Journey</span>
+                  <h2 className="text-3xl md:text-4xl font-extrabold text-foreground tracking-tight mb-4">Your Scholarship Journey Milestone</h2>
+                  <p className="text-muted-foreground text-sm max-w-xl mx-auto font-light">
+                    Track your growth as a seeker of knowledge. Celebrate every milestone from registration to certified academic credentials.
+                  </p>
+                </div>
+
+                <div className="relative max-w-3xl mx-auto">
+                  {/* Vertical line connector */}
+                  <div className="absolute top-0 bottom-0 left-[27px] w-0.5 bg-gradient-to-b from-[var(--color-primary)] via-[var(--color-primary)]/30 to-transparent pointer-events-none" />
+
+                  {[
+                    {
+                      title: "Enrollment & Core Setup",
+                      desc: "Start your journey, choose your primary courses, configure your academic profile, and meet your study peers.",
+                      icon: Users,
+                      status: "Completed"
+                    },
+                    {
+                      title: "Progress Trackers & Study Streaks",
+                      desc: "Complete lectures, participate in fellowship discussion circles, unlock knowledge checkpoints, and build study streaks.",
+                      icon: Brain,
+                      status: "In Progress"
+                    },
+                    {
+                      title: "Final Capstones & Vetting",
+                      desc: "Take comprehensive examinations and present research capstones designed by the academic curation committee.",
+                      icon: GraduationCap,
+                      status: "Pending"
+                    },
+                    {
+                      title: "Verified Credentials",
+                      desc: "Earn beautiful, cryptographic secure scholar certificates verifying your knowledge path accomplishments.",
+                      icon: Award,
+                      status: "Unlocked Milestone"
+                    }
+                  ].map((step, idx) => {
+                    const StepIcon = step.icon;
+                    return (
+                      <motion.div
+                        key={idx}
+                        className="relative pl-16 pb-12 last:pb-0"
+                        initial={{ opacity: 0, x: -20 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: idx * 0.15 }}
+                      >
+                        {/* Circle node connector */}
+                        <div className={`absolute left-0 w-14 h-14 rounded-2xl flex items-center justify-center border-[2px] transition-all z-10 shadow-lg ${
+                          step.status === "Completed" ? "bg-emerald-500/10 border-emerald-500 text-emerald-500 shadow-emerald-500/5" :
+                          step.status === "In Progress" ? "bg-[var(--color-primary)]/10 border-[var(--color-primary)] text-[var(--color-primary)] shadow-emerald-500/10" :
+                          "bg-muted border-border text-muted-foreground"
+                        }`}>
+                          <StepIcon size={18} />
+                        </div>
+
+                        <div className="bg-muted/10 dark:bg-white/[0.01] border border-border hover:border-[var(--color-primary)]/20 p-6 rounded-3xl transition-all duration-300 shadow-sm hover:shadow-md">
+                          <div className="flex items-center gap-2.5 mb-2 flex-wrap">
+                            <h3 className="text-base font-extrabold text-foreground tracking-tight leading-none uppercase">{step.title}</h3>
+                            <span className={`text-[8px] font-black uppercase tracking-widest px-2 py-0.5 rounded ${
+                              step.status === "Completed" ? "bg-emerald-500/10 text-emerald-500" :
+                              step.status === "In Progress" ? "bg-[var(--color-primary)]/10 text-[var(--color-primary)] animate-pulse" :
+                              "bg-muted text-muted-foreground"
+                            }`}>
+                              {step.status}
+                            </span>
+                          </div>
+                          <p className="text-xs text-muted-foreground leading-relaxed font-light">
+                            {step.desc}
+                          </p>
+                        </div>
+                      </motion.div>
+                    );
+                  })}
+                </div>
+              </div>
+            </section>
 
             <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 text-center">
               <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-secondary mb-8 border border-border">

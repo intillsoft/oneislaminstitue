@@ -146,7 +146,7 @@ const RegisterForm = ({ onSuccess, isLoading: externalLoading }) => {
   const loading = isLoading || externalLoading;
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-3.5">
+    <form onSubmit={handleSubmit} className="space-y-2.5">
       {/* General Error */}
       {errors?.general && (
         <div className="bg-error-50 dark:bg-error-900/20 border border-error-100 dark:border-error-800 rounded-md p-3">
@@ -158,7 +158,7 @@ const RegisterForm = ({ onSuccess, isLoading: externalLoading }) => {
       )}
 
       {/* Row 1: Full Name & Email */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         {/* Full Name Field */}
         <div>
           <label htmlFor="fullName" className="elite-label">
@@ -235,7 +235,7 @@ const RegisterForm = ({ onSuccess, isLoading: externalLoading }) => {
       </div>
 
       {/* Row 3: Password & Confirm Password */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         {/* Password Field */}
         <div>
           <label htmlFor="password" className="elite-label">

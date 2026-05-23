@@ -154,8 +154,8 @@ const SimilarCoursesCarousel = ({ courses }) => {
 
               <div className="flex flex-wrap items-center gap-3">
                 <span className="flex items-center gap-1.5 px-3 py-1.5 bg-white/[0.03] rounded-lg border border-white/5 text-[9px] font-bold text-slate-400 uppercase tracking-widest">
-                  <Icon name="MapPin" size={12} className="text-[var(--color-primary)]" />
-                  {formatLocation(course?.location)}
+                  <Icon name="Globe" size={12} className="text-[var(--color-primary)]" />
+                  Online Portal
                 </span>
                 <span className="flex items-center gap-1.5 px-3 py-1.5 bg-[var(--color-primary)]/5 rounded-lg border border-emerald-600/10 text-[9px] font-bold text-[var(--color-primary)] uppercase tracking-widest">
                   <Icon name="BookOpen" size={12} />
@@ -224,8 +224,8 @@ const SimilarCoursesCarousel = ({ courses }) => {
 
                     <div className="space-y-3">
                       <div className="flex items-center gap-3 px-4 py-3 bg-white/[0.03] rounded-2xl border border-white/5">
-                        <Icon name="MapPin" size={14} className="text-[var(--color-primary)]" />
-                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{formatLocation(course?.location)}</span>
+                        <Icon name="Globe" size={14} className="text-[var(--color-primary)]" />
+                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Online Portal</span>
                       </div>
                       <div className="flex items-center gap-3 px-4 py-3 bg-[var(--color-primary)]/5 rounded-2xl border border-emerald-600/10">
                         <Icon name="Zap" size={14} className="text-[var(--color-primary)]" />

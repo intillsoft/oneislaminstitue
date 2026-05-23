@@ -262,9 +262,6 @@ const CourseDetail = () => {
                 <span className="text-[10px] sm:text-xs font-bold text-[var(--color-text-tertiary)] dark:text-slate-400 px-2 border-l border-[var(--color-border-primary)] dark:border-slate-700">
                   {course.experience_level || 'All Levels'}
                 </span>
-                <span className="flex items-center gap-1 text-[10px] sm:text-xs font-bold text-[var(--color-text-tertiary)] dark:text-slate-400 px-2 border-l border-[var(--color-border-primary)] dark:border-slate-700">
-                  <Globe className="w-3 h-3 sm:w-3.5 sm:h-3.5" /> {formatLocation(course.location)}
-                </span>
               </div>
 
               <p className="text-sm sm:text-base md:text-lg text-[var(--color-text-secondary)] dark:text-slate-400 leading-relaxed max-w-2xl">
@@ -417,12 +414,14 @@ const CourseDetail = () => {
           <div className="grid lg:grid-cols-[1fr,380px] gap-12 lg:gap-16">
             <div className="space-y-16">
               {/* Highlights */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-4">
                 {courseHighlights.map((item, i) => (
-                  <div key={i} className="p-6 bg-white dark:bg-slate-900 rounded-2xl border border-[var(--color-border-primary)] dark:border-slate-800 shadow-sm">
-                    <item.icon size={20} className="text-[var(--color-primary)] mb-4" />
-                    <h4 className="text-sm font-bold text-[var(--color-text-primary)] dark:text-white mb-1">{item.label}</h4>
-                    <p className="text-xs text-[var(--color-text-tertiary)] dark:text-slate-400">{item.desc}</p>
+                  <div key={i} className="p-5 rounded-3xl bg-white/50 dark:bg-white/[0.01] border border-slate-100 dark:border-white/5 hover:border-[var(--color-primary)]/20 transition-all duration-300 shadow-sm hover:shadow-md flex flex-col items-start">
+                    <div className="w-10 h-10 rounded-2xl bg-[var(--color-primary)]/10 flex items-center justify-center text-[var(--color-primary)] mb-4">
+                      <item.icon size={16} />
+                    </div>
+                    <h4 className="text-xs font-bold text-[var(--color-text-primary)] dark:text-white mb-1 uppercase tracking-wider">{item.label}</h4>
+                    <p className="text-[10px] text-[var(--color-text-tertiary)] dark:text-slate-400 leading-normal font-light">{item.desc}</p>
                   </div>
                 ))}
               </div>

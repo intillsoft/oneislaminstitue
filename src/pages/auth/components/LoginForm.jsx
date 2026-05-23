@@ -92,7 +92,7 @@ const LoginForm = ({ onSuccess, isLoading: externalLoading }) => {
   const loading = isLoading || externalLoading;
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className="space-y-3">
       {/* General Error */}
       {errors?.general && (
         <div className="bg-error-50 dark:bg-error-900/20 border border-error-100 dark:border-error-800 rounded-md p-3">
@@ -180,14 +180,14 @@ const LoginForm = ({ onSuccess, isLoading: externalLoading }) => {
             name="rememberMe"
             checked={formData?.rememberMe}
             onChange={handleChange}
-            className="h-4 w-4 text-workflow-primary focus:ring-workflow-primary/40 bg-white/5 border-white/10 rounded"
+            className="h-4 w-4 text-primary focus:ring-primary/40 bg-muted/20 dark:bg-white/5 border-border/60 dark:border-white/10 rounded"
             disabled={loading}
           />
-          <span className="ml-2 text-[11px] font-bold uppercase tracking-wider text-[var(--color-text-tertiary)] group-hover:text-slate-400">Remember me</span>
+          <span className="ml-2 text-[11px] font-bold uppercase tracking-wider text-muted-foreground group-hover:text-foreground">Remember me</span>
         </label>
         <Link
           to="/forgot-password"
-          className="text-[11px] font-black uppercase tracking-widest text-workflow-primary hover:text-workflow-primary-400 transition-smooth"
+          className="text-[11px] font-black uppercase tracking-widest text-primary hover:text-accent transition-smooth"
         >
           Forgot password?
         </Link>
@@ -201,7 +201,7 @@ const LoginForm = ({ onSuccess, isLoading: externalLoading }) => {
       >
         {loading ? (
           <>
-            <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+            <div className="w-4 h-4 border-2 border-primary-foreground border-t-transparent rounded-full animate-spin"></div>
             <span>Signing in...</span>
           </>
         ) : (
@@ -213,12 +213,12 @@ const LoginForm = ({ onSuccess, isLoading: externalLoading }) => {
       </button>
 
       {/* Divider */}
-      <div className="relative my-4">
+      <div className="relative my-3">
         <div className="absolute inset-0 flex items-center">
-          <div className="w-full border-t border-white/10"></div>
+          <div className="w-full border-t border-border/40"></div>
         </div>
         <div className="relative flex justify-center text-sm">
-          <span className="px-2 bg-[var(--card)] text-[var(--muted-foreground)] text-[9px] font-black uppercase tracking-widest">Or continue with</span>
+          <span className="px-2 bg-card text-muted-foreground text-[9px] font-black uppercase tracking-widest">Or continue with</span>
         </div>
       </div>
 
@@ -228,10 +228,10 @@ const LoginForm = ({ onSuccess, isLoading: externalLoading }) => {
           type="button"
           onClick={() => handleOAuthLogin('google')}
           disabled={loading}
-          className="w-full flex items-center justify-center space-x-2.5 px-4 py-3 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 transition-all duration-200 disabled:opacity-50 font-bold uppercase tracking-widest text-[10px]"
+          className="w-full flex items-center justify-center space-x-2.5 px-4 py-3 bg-muted/20 hover:bg-muted/30 dark:bg-white/5 border border-border/40 dark:border-white/10 rounded-xl hover:dark:bg-white/10 transition-all duration-200 disabled:opacity-50 font-bold uppercase tracking-widest text-[10px]"
         >
           <Icon name="Chrome" size={14} className="text-primary" />
-          <span className="text-white">Google</span>
+          <span className="text-foreground">Google</span>
         </button>
       </div>
     </form>

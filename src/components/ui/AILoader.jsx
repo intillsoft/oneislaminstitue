@@ -1,162 +1,33 @@
 import React from 'react';
-import { BookOpen } from 'lucide-react';
 
 /**
- * Unique AI-themed loader with cutting-edge effects
+ * Premium, clean, and ultra-professional circular page loader spinner.
  */
 const AILoader = ({ size = 'default', text = 'Loading...', variant = 'pulse' }) => {
   const sizeClasses = {
-    small: 'w-8 h-8',
-    default: 'w-12 h-12',
-    large: 'w-16 h-16',
+    small: 'w-6 h-6',
+    default: 'w-10 h-10',
+    large: 'w-14 h-14',
   };
 
   const textSizeClasses = {
-    small: 'text-xs',
-    default: 'text-sm',
-    large: 'text-base',
+    small: 'text-[10px]',
+    default: 'text-[11px]',
+    large: 'text-xs',
   };
 
-  if (variant === 'pulse') {
-    return (
-      <div className="flex flex-col items-center justify-center space-y-4">
-        <div className="relative">
-          {/* Outer pulsing ring */}
-          <div className={`${sizeClasses[size]} rounded-full border-4 border-workflow-primary/20 absolute animate-ping`}></div>
-          {/* Middle pulsing ring */}
-          <div className={`${sizeClasses[size]} rounded-full border-4 border-workflow-primary/40 absolute animate-pulse`} style={{ animationDelay: '0.2s' }}></div>
-          {/* Inner core with gradient */}
-          <div className={`${sizeClasses[size]} rounded-full bg-gradient-to-br from-[var(--color-primary)] via-[var(--color-primary)] to-teal-400 relative flex items-center justify-center shadow-lg shadow-[var(--color-primary)]/20`}>
-            <BookOpen 
-              size={size === 'small' ? 12 : size === 'large' ? 24 : 18} 
-              className="text-white drop-shadow-sm" 
-              strokeWidth={2.5}
-            />
-          </div>
-        </div>
-        {text && (
-          <p className={`${textSizeClasses[size]} text-text-secondary dark:text-[#8B92A3] font-medium animate-pulse`}>
-            {text}
-          </p>
-        )}
-      </div>
-    );
-  }
-
-  if (variant === 'sparkles') {
-    return (
-      <div className="flex flex-col items-center justify-center space-y-4">
-        <div className="relative">
-          {/* Rotating sparkles */}
-          <div className={`${sizeClasses[size]} relative`}>
-            {[...Array(8)].map((_, i) => (
-              <div
-                key={i}
-                className="absolute w-2 h-2 bg-workflow-primary rounded-full animate-pulse"
-                style={{
-                  top: '50%',
-                  left: '50%',
-                  transform: `rotate(${i * 45}deg) translateY(-${size === 'small' ? '16px' : size === 'large' ? '32px' : '24px'})`,
-                  animationDelay: `${i * 0.1}s`,
-                  animationDuration: '1.5s',
-                }}
-              ></div>
-            ))}
-            {/* Center core */}
-            <div className={`${sizeClasses[size]} rounded-full bg-gradient-to-br from-[var(--color-primary)] to-teal-500 absolute top-0 left-0 animate-spin flex items-center justify-center`} style={{ animationDuration: '2s' }}>
-              <BookOpen 
-                size={size === 'small' ? 12 : size === 'large' ? 24 : 18} 
-                className="text-white" 
-                strokeWidth={2.5}
-              />
-            </div>
-          </div>
-        </div>
-        {text && (
-          <p className={`${textSizeClasses[size]} text-text-secondary dark:text-[#8B92A3] font-medium`}>
-            {text}
-          </p>
-        )}
-      </div>
-    );
-  }
-
-  if (variant === 'neural') {
-    return (
-      <div className="flex flex-col items-center justify-center space-y-4">
-        <div className="relative">
-          {/* Neural network nodes */}
-          <svg className={`${sizeClasses[size]} animate-spin`} style={{ animationDuration: '3s' }} viewBox="0 0 48 48">
-            <circle cx="24" cy="8" r="3" fill="currentColor" className="text-workflow-primary animate-pulse" style={{ animationDelay: '0s' }} />
-            <circle cx="8" cy="24" r="3" fill="currentColor" className="text-workflow-primary animate-pulse" style={{ animationDelay: '0.3s' }} />
-            <circle cx="40" cy="24" r="3" fill="currentColor" className="text-workflow-primary animate-pulse" style={{ animationDelay: '0.6s' }} />
-            <circle cx="24" cy="40" r="3" fill="currentColor" className="text-workflow-primary animate-pulse" style={{ animationDelay: '0.9s' }} />
-            {/* Connecting lines */}
-            <line x1="24" y1="8" x2="8" y2="24" stroke="currentColor" strokeWidth="1" className="text-workflow-primary/30" />
-            <line x1="24" y1="8" x2="40" y2="24" stroke="currentColor" strokeWidth="1" className="text-workflow-primary/30" />
-            <line x1="8" y1="24" x2="24" y2="40" stroke="currentColor" strokeWidth="1" className="text-workflow-primary/30" />
-            <line x1="40" y1="24" x2="24" y2="40" stroke="currentColor" strokeWidth="1" className="text-workflow-primary/30" />
-          </svg>
-        </div>
-        {text && (
-          <p className={`${textSizeClasses[size]} text-text-secondary dark:text-[#8B92A3] font-medium`}>
-            {text}
-          </p>
-        )}
-      </div>
-    );
-  }
-
-  // Default: Orbiting particles
-  const translateDistance = size === 'small' ? '14px' : size === 'large' ? '28px' : '20px';
-  
   return (
-    <>
-      <style>{`
-        @keyframes orbit {
-          from {
-            transform: rotate(0deg) translateY(-${translateDistance}) rotate(0deg);
-          }
-          to {
-            transform: rotate(360deg) translateY(-${translateDistance}) rotate(-360deg);
-          }
-        }
-      `}</style>
-      <div className="flex flex-col items-center justify-center space-y-4">
-        <div className="relative">
-          {/* Orbiting particles */}
-          <div className={`${sizeClasses[size]} relative`}>
-            {[...Array(6)].map((_, i) => (
-              <div
-                key={i}
-                className="absolute w-1.5 h-1.5 bg-workflow-primary rounded-full"
-                style={{
-                  top: '50%',
-                  left: '50%',
-                  transformOrigin: '0 0',
-                  transform: `rotate(${i * 60}deg) translateY(-${translateDistance})`,
-                  animation: `orbit 2s linear infinite`,
-                  animationDelay: `${i * 0.33}s`,
-                }}
-              ></div>
-            ))}
-            {/* Center core */}
-            <div className={`${sizeClasses[size]} rounded-full bg-gradient-to-br from-[var(--color-primary)] via-[var(--color-primary)] to-teal-400 absolute top-0 left-0 flex items-center justify-center shadow-lg shadow-[var(--color-primary)]/20`}>
-              <BookOpen 
-                size={size === 'small' ? 12 : size === 'large' ? 24 : 18} 
-                className="text-white drop-shadow-sm" 
-                strokeWidth={2.5}
-              />
-            </div>
-          </div>
-        </div>
-        {text && (
-          <p className={`${textSizeClasses[size]} text-text-secondary dark:text-[#8B92A3] font-medium`}>
-            {text}
-          </p>
-        )}
+    <div className="flex flex-col items-center justify-center space-y-3.5">
+      <div className="relative">
+        {/* Dynamic Minimalist Premium Spinner */}
+        <div className={`${sizeClasses[size]} rounded-full border-[2px] border-primary/10 border-t-primary animate-spin`} style={{ animationDuration: '0.85s' }} />
       </div>
-    </>
+      {text && (
+        <p className={`${textSizeClasses[size]} text-muted-foreground font-semibold uppercase tracking-[0.18em] animate-pulse`}>
+          {text}
+        </p>
+      )}
+    </div>
   );
 };
 

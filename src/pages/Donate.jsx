@@ -298,7 +298,7 @@ const Donate = () => {
                            <Globe size={28} className="text-[var(--color-primary)] mb-4" />
                            <h4 className="font-bold text-lg mb-2">Global Curation</h4>
                            <p className="text-slate-400 text-xs leading-relaxed">
-                               We don't claim to be primary scholars. We are learned curators who utilize verified work from established authorities like **Yaqeen Institute**, **Toward Eternity**, and high-level academic platforms.
+                               We do not claim to be primary scholars. We are learned curators who organize verified work from established traditional authorities, classical academic journals, and high-level scholarly platforms.
                            </p>
                         </div>
                         <div className="p-6 rounded-3xl bg-slate-900 border border-slate-800">

@@ -17,8 +17,7 @@ const useTheme = () => {
       if (saved === 'dark' || saved === 'light') {
         return saved;
       }
-      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-      return prefersDark ? 'dark' : 'light';
+      return 'light';
     }
     return 'light';
   });

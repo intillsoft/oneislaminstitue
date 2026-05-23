@@ -3,19 +3,18 @@ import { Link } from 'react-router-dom';
 
 /**
  * Logo Component - Displays the Hope Dawah Institute logo
+ * Automatically adapts and remains perfectly clear on both light and dark themes.
  * 
  * @param {string} size - Size: 'sm', 'md', 'lg', 'xl'
  * @param {string} className - Additional CSS classes
  * @param {boolean} link - Whether to wrap in a Link to /
  * @param {boolean} horizontal - Force horizontal layout for tight spaces
- * @param {boolean} darkBg - Whether the logo is on a dark background
  */
 const Logo = ({ 
   size = 'md',
   className = '',
   link = true,
-  horizontal = false,
-  darkBg = false
+  horizontal = false
 }) => {
   const sizeMap = {
     sm: {
@@ -49,27 +48,24 @@ const Logo = ({
   };
 
   const currentSize = sizeMap[size] || sizeMap.md;
-  const hopeColor = darkBg ? '#93C5FD' : '#0078D4'; // Light sky-blue / Royal blue
-  const dawahColor = darkBg ? '#FFFFFF' : '#0078D4'; // White on dark background, Royal blue on light background
-  const textColor = darkBg ? 'text-white' : 'text-[#1A1A1A]';
 
   const logoContent = horizontal ? (
     <div className={`flex items-center gap-2 leading-none font-display ${className}`}>
       <div className={`flex items-baseline font-black ${currentSize.hSize} tracking-tighter`}>
-        <span style={{ color: hopeColor }}>HOPE</span>
-        <span style={{ color: dawahColor }} className="ml-1">DAWAH</span>
+        <span className="text-[var(--color-primary)]">HOPE</span>
+        <span className="text-slate-800 dark:text-white ml-1 transition-colors duration-200">DAWAH</span>
       </div>
-      <div className={`${textColor} font-black uppercase ${currentSize.hSize} tracking-tighter border-l ${darkBg ? 'border-white/20' : 'border-[#E0E0E0]'} pl-2 ml-1`}>
+      <div className={`text-slate-900 dark:text-slate-100 font-black uppercase ${currentSize.hSize} tracking-tighter border-l border-slate-200 dark:border-white/20 pl-2 ml-1 transition-colors duration-200`}>
         INSTITUTE
       </div>
     </div>
   ) : (
     <div className={`flex flex-col items-center leading-[0.9] font-display ${className}`}>
       <div className={`flex items-baseline font-black ${currentSize.top} ${currentSize.spacing}`}>
-        <span style={{ color: hopeColor }}>HOPE</span>
-        <span style={{ color: dawahColor }} className="ml-1.5">DAWAH</span>
+        <span className="text-[var(--color-primary)]">HOPE</span>
+        <span className="text-slate-800 dark:text-white ml-1.5 transition-colors duration-200">DAWAH</span>
       </div>
-      <div className={`${textColor} font-black uppercase ${currentSize.bottom} ${currentSize.bottomSpacing} mt-1 text-center w-full`}>
+      <div className={`text-slate-900 dark:text-slate-100 font-black uppercase ${currentSize.bottom} ${currentSize.bottomSpacing} mt-1 text-center w-full transition-colors duration-200`}>
         INSTITUTE
       </div>
     </div>

@@ -10,7 +10,8 @@ const MobileBottomNav = ({ type = 'student' }) => {
     student: [
       { label: 'Home', icon: 'LayoutDashboard', path: '/dashboard/student' },
       { label: 'Learn', icon: 'BookOpen', path: '/courses' },
-      { label: 'Support', icon: 'Sparkles', path: '/ai-chat' },
+      { label: 'About', icon: 'Info', path: '/about' },
+      { label: 'Curators', icon: 'Award', path: '/team' },
       { label: 'Profile', icon: 'User', path: '/profile' },
     ],
     instructor: [

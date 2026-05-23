@@ -93,7 +93,7 @@ const ShareCourseModal = ({ course, onClose }) => {
           <div className="bg-surface rounded-2xl p-6 mb-8 border border-border">
             <h3 className="font-bold text-text-primary mb-2 uppercase tracking-tight">{course?.title}</h3>
             <p className="text-text-secondary text-[10px] font-black uppercase tracking-widest">{course?.department?.name}</p>
-            <p className="text-text-muted text-[10px] font-black uppercase tracking-widest mt-1">{course?.location}</p>
+            <p className="text-text-muted text-[10px] font-black uppercase tracking-widest mt-1">Online Academic Module</p>
           </div>
 
           {/* Copy Link */}

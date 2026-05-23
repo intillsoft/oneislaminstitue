@@ -14,8 +14,8 @@ export const ThemeProvider = ({ children }) => {
     if (savedTheme === 'dark' || savedTheme === 'light') {
       return savedTheme;
     }
-    // Default to dark mode for a premium experience
-    return 'dark';
+    // Default to light mode for a premium experience
+    return 'light';
   });
 
   useEffect(() => {

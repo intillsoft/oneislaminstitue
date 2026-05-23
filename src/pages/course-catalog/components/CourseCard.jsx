@@ -63,7 +63,7 @@ const CourseCard = ({ job: course, isSaved, onSave, index = 0 }) => {
       className="group relative flex flex-col h-full cursor-pointer select-none w-full max-w-[400px] mx-auto sm:max-w-none"
       onClick={handleCardClick}
     >
-      <div className="relative flex flex-col h-full rounded-[1.2rem] overflow-hidden bg-white dark:bg-[#111827] border border-[var(--color-border-primary)] dark:border-white/[0.05] shadow-[0_4px_20px_-4px_rgba(0,0,0,0.06)] dark:shadow-none hover:shadow-xl transition-all duration-500">
+      <div className="relative flex flex-col h-full rounded-[2rem] overflow-hidden bg-white dark:bg-[#111827] border border-[var(--color-border-primary)] dark:border-white/[0.05] shadow-[0_4px_20px_-4px_rgba(0,0,0,0.06)] dark:shadow-none hover:shadow-xl transition-all duration-500">
         
         {/* Top Accent line */}
         <div className="h-[2px] w-full" style={{ backgroundColor: accent }} />
@@ -150,8 +150,8 @@ const CourseCard = ({ job: course, isSaved, onSave, index = 0 }) => {
                 </div>
               </div>
             ) : (
-              <div className="flex items-center justify-between bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] py-1.5 px-4 rounded-xl transition-all group/cta shadow-lg shadow-emerald-600/10">
-                <span className="text-[10px] font-bold uppercase tracking-[0.1em] text-white">
+              <div className="flex items-center justify-between bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-primary-hover)] py-2 px-5 rounded-2xl transition-all group/cta shadow-md shadow-[var(--color-primary)]/15 hover:shadow-lg hover:shadow-[var(--color-primary)]/25 hover:scale-[1.02] active:scale-[0.98]">
+                <span className="text-[10px] font-black uppercase tracking-[0.15em] text-white">
                   {isEnrolled ? 'Open Course' : 'Enroll Now'}
                 </span>
                 <ArrowUpRight size={13} className="text-white group-hover/cta:translate-x-0.5 group-hover/cta:-translate-y-0.5 transition-transform" />

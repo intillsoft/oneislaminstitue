@@ -250,7 +250,7 @@ const ContentBlockEditor = ({ block, content, setContent, onSave, onCancel }) =>
               <input type="url" value={content.url || ''} onChange={(e) => setContent({ ...content, url: e.target.value })} className={inputClass} />
             </div>
             <div>
-              <label className={labelClass}>Platform (e.g. Yaqeen Institute)</label>
+              <label className={labelClass}>Platform (e.g. Scholarly Database)</label>
               <input type="text" value={content.platform || ''} onChange={(e) => setContent({ ...content, platform: e.target.value })} className={inputClass} />
             </div>
           </div>

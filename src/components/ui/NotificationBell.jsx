@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Bell, X, Check, Trash2, Zap, ChevronDown } from 'lucide-react';
+import { Bell, Zap, ChevronDown, X } from 'lucide-react';
 import { useAuthContext } from '../../contexts/AuthContext';
 import { apiService } from '../../lib/api';
 import { useToast } from './Toast';
@@ -14,15 +14,22 @@ const NotificationBell = () => {
   const [notifications, setNotifications] = useState([]);
   const [unreadCount, setUnreadCount] = useState(0);
   const [loading, setLoading] = useState(false);
-  const dropdownRef = useRef(null);
   const navigate = useNavigate();
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const bellRef = useRef(null);
 
+  // Close dropdown on outside click
   useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth < 768);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+    const handleClickOutside = (event) => {
+      if (bellRef.current && !bellRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => document.removeEventListener('mousedown', handleClickOutside);
+    }
+  }, [isOpen]);
 
   useEffect(() => {
     if (user) {
@@ -39,16 +46,6 @@ const NotificationBell = () => {
       return () => clearInterval(interval);
     }
   }, [user, isOpen]);
-
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setIsOpen(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
 
   const loadNotifications = async () => {
     try {
@@ -138,7 +135,7 @@ const NotificationBell = () => {
   if (!user) return null;
 
   return (
-    <div className="relative">
+    <div className="relative" ref={bellRef}>
       <button
         onClick={() => {
           setIsOpen(!isOpen);
@@ -160,143 +157,117 @@ const NotificationBell = () => {
 
       <AnimatePresence>
         {isOpen && (
-          <>
-            {/* Backdrop */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setIsOpen(false)}
-              className="fixed inset-0 bg-slate-900/30 dark:bg-black/40 backdrop-blur-sm z-[9998]"
-            />
-
-            <motion.div
-              initial={isMobile ? { y: '100%', opacity: 0 } : { x: '100%', opacity: 0 }}
-              animate={{ y: 0, x: 0, opacity: 1 }}
-              exit={isMobile ? { y: '100%', opacity: 0 } : { x: '100%', opacity: 0 }}
-              transition={{ type: 'spring', damping: 28, stiffness: 220 }}
-              drag={isMobile ? "y" : false}
-              dragConstraints={{ top: 0, bottom: 0 }}
-              dragElastic={0.2}
-              onDragEnd={(e, { offset, velocity }) => {
-                if (isMobile && (offset.y > 120 || velocity.y > 400)) {
-                  setIsOpen(false);
-                }
-              }}
-              style={{ 
-                width: isMobile ? '100%' : '380px',
-                height: isMobile ? '85dvh' : '100dvh' 
-              }}
-              className={`fixed ${isMobile ? 'bottom-0 left-0 right-0' : 'top-0 bottom-0 right-0'} bg-white dark:bg-[var(--color-bg-dark)] backdrop-blur-3xl z-[9999] shadow-[-1px_-10px_40px_rgba(0,0,0,0.08)] dark:shadow-[-5px_-20px_60px_rgba(0,0,0,0.4)] flex flex-col border-gray-100 dark:border-white/5 ${isMobile ? 'border-t rounded-t-[2.5rem]' : 'border-l rounded-l-[2.5rem]'} overflow-hidden transition-all duration-300`}
-            >
-              {/* Pull Handle for Mobile */}
-              {isMobile && (
-                <div className="flex justify-center p-3 cursor-grab flex-shrink-0 border-b border-gray-50 dark:border-white/[0.02]">
-                  <div className="w-12 h-1.5 rounded-full bg-slate-200 dark:bg-slate-700/80" />
+          <motion.div
+            initial={{ opacity: 0, y: 15, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 15, scale: 0.95 }}
+            transition={{ duration: 0.2, ease: 'easeOut' }}
+            className="absolute right-0 top-12 mt-2 w-[320px] bg-white dark:bg-[#0f152d] border border-slate-200/80 dark:border-white/10 rounded-[1.5rem] shadow-xl dark:shadow-[0_20px_50px_rgba(0,0,0,0.5)] z-[100] flex flex-col overflow-hidden backdrop-blur-xl"
+          >
+              {/* Header */}
+              <div className="flex items-center justify-between p-4 border-b border-slate-100 dark:border-white/5 bg-slate-50/50 dark:bg-white/[0.02] flex-shrink-0">
+                <div>
+                  <h3 className="text-[10px] font-black text-foreground dark:text-white uppercase tracking-[0.25em]">Notifications</h3>
+                  <p className="text-[9px] text-muted-foreground font-bold uppercase tracking-widest mt-1 flex items-center gap-1.5">
+                    {unreadCount > 0 && <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-primary)] shadow-[0_0_8px_rgba(16,185,129,0.5)] animate-pulse" />}
+                    {unreadCount > 0 ? `${unreadCount} New` : 'All Caught Up'}
+                  </p>
                 </div>
-              )}
-            {/* Header */}
-            <div className="flex items-center justify-between p-4 border-b border-slate-100 dark:border-white/5 bg-white dark:bg-white/[0.02] flex-shrink-0">
-              <div>
-                <h3 className="text-[10px] font-black text-[var(--color-text-primary)] dark:text-white uppercase tracking-[0.3em]">Notifications</h3>
-                <p className="text-[9px] text-[var(--color-text-tertiary)] font-bold uppercase tracking-widest mt-1 flex items-center gap-2">
-                  {unreadCount > 0 && <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-primary)] shadow-[0_0_8px_rgba(16,185,129,0.5)]" />}
-                  {unreadCount > 0 ? `${unreadCount} New` : 'All Caught Up'}
-                </p>
-              </div>
-              {unreadCount > 0 && (
-                <button
-                  onClick={handleMarkAllAsRead}
-                  className="text-[9px] font-black text-[var(--color-text-tertiary)] hover:text-[var(--color-text-primary)] dark:text-[var(--color-text-secondary)] dark:hover:text-white px-3 py-1.5 bg-slate-100 dark:bg-white/5 rounded-xl border border-[var(--color-border-primary)] dark:border-white/5 transition-all uppercase tracking-[0.1em]"
-                >
-                  Clear All
-                </button>
-              )}
-            </div>
-
-            {/* List */}
-            <div className="overflow-y-auto max-h-[60vh] md:max-h-[440px] custom-scrollbar">
-              {loading && !notifications.length ? (
-                <div className="p-12 flex flex-col items-center justify-center gap-4">
-                  <div className="w-6 h-6 border-2 border-[var(--color-border-primary)] dark:border-white/5 border-t-emerald-500 rounded-full animate-spin" />
-                </div>
-              ) : notifications.length === 0 ? (
-                <div className="p-12 text-center">
-                  <div className="w-14 h-14 rounded-2xl bg-white dark:bg-white/[0.01] border border-[var(--color-border-primary)] dark:border-white/5 flex items-center justify-center mx-auto mb-4 text-slate-400 dark:text-[var(--color-text-secondary)] shadow-sm">
-                    <Zap className="w-6 h-6" />
-                  </div>
-                  <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em]">No Messages</p>
-                </div>
-              ) : (
-                <div className="divide-y divide-slate-100 dark:divide-white/5">
-                  {notifications.map((notification) => (
-                    <div
-                      key={notification.id}
-                      onClick={(e) => handleNotificationClick(e, notification)}
-                      className={`block p-4 transition-all duration-500 hover:bg-slate-100/50 dark:hover:bg-white/[0.03] cursor-pointer group relative overflow-hidden ${
-                        !notification.is_read ? 'bg-[var(--color-primary-light)]/50 dark:bg-[var(--color-primary)]/[0.02]' : 'opacity-70 dark:opacity-40'
-                      }`}
+                <div className="flex items-center gap-2">
+                  {unreadCount > 0 && (
+                    <button
+                      onClick={handleMarkAllAsRead}
+                      className="text-[9px] font-black text-[var(--color-primary)] hover:text-[var(--color-primary)]/80 transition-colors uppercase tracking-[0.1em] px-2.5 py-1 bg-[var(--color-primary)]/10 dark:bg-[var(--color-primary)]/20 rounded-lg"
                     >
-                      <div className="flex items-start gap-6 relative z-10">
-                        <div className={`mt-2 w-2 h-2 rounded-full flex-shrink-0 transition-all ${
-                          !notification.is_read ? 'bg-[var(--color-primary)] shadow-[0_0_12px_rgba(16,185,129,0.8)]' : 'bg-slate-300 dark:bg-slate-800'
-                        }`} />
-                        
-                        <div className="flex-1 min-w-0">
-                          <div className="flex justify-between items-start gap-4 mb-1">
-                            <h4 className={`text-xs font-bold uppercase tracking-tight truncate transition-all ${!notification.is_read ? 'text-[var(--color-text-primary)] group-hover:text-[var(--color-primary)] dark:text-white dark:group-hover:text-[var(--color-primary)]' : 'text-slate-700 dark:text-[var(--color-text-tertiary)]'}`}>
-                              {notification.title}
-                            </h4>
-                            <span className="text-[8px] text-[var(--color-text-tertiary)] font-bold uppercase tracking-widest whitespace-nowrap mt-0.5 opacity-60">
-                                {formatDistanceToNow(new Date(notification.created_at), { addSuffix: true })}
-                            </span>
-                          </div>
-                          
-                          <p className={`text-[11px] leading-relaxed line-clamp-2 mb-2 font-medium transition-all ${
-                            !notification.is_read ? 'text-[var(--color-text-secondary)] group-hover:text-[var(--color-text-primary)] dark:text-slate-400 dark:group-hover:text-slate-200' : 'text-slate-400 dark:text-[var(--color-text-secondary)]'
-                          }`}>
-                            {notification.message || notification.description}
-                          </p>
+                      Clear All
+                    </button>
+                  )}
+                  <button
+                    onClick={() => setIsOpen(false)}
+                    className="p-1 rounded-lg text-slate-400 hover:text-foreground dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/10 transition-colors"
+                  >
+                    <X size={14} />
+                  </button>
+                </div>
+              </div>
 
-                          <div className="flex items-center gap-4 opacity-0 group-hover:opacity-100 transition-all translate-y-1 group-hover:translate-y-0">
-                              <span className="text-[9px] font-black text-[var(--color-primary)] dark:text-[var(--color-primary)] uppercase tracking-widest transition-colors flex items-center gap-1.5">
-                                View <ChevronDown className="-rotate-90 w-3 h-3" />
+              {/* List */}
+              <div className="overflow-y-auto max-h-[300px] custom-scrollbar">
+                {loading && !notifications.length ? (
+                  <div className="p-12 flex flex-col items-center justify-center gap-4">
+                    <div className="w-5 h-5 border-2 border-slate-200 dark:border-white/10 border-t-[var(--color-primary)] rounded-full animate-spin" />
+                  </div>
+                ) : notifications.length === 0 ? (
+                  <div className="p-10 text-center flex flex-col items-center justify-center gap-3">
+                    <div className="w-12 h-12 rounded-2xl bg-slate-50 dark:bg-white/[0.02] border border-slate-100 dark:border-white/5 flex items-center justify-center text-slate-400 dark:text-slate-500 shadow-sm">
+                      <Zap className="w-5 h-5" />
+                    </div>
+                    <p className="text-[9px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">No New Alerts</p>
+                  </div>
+                ) : (
+                  <div className="divide-y divide-slate-100 dark:divide-white/5">
+                    {notifications.map((notification) => (
+                      <div
+                        key={notification.id}
+                        onClick={(e) => handleNotificationClick(e, notification)}
+                        className={`block p-4 transition-all duration-300 hover:bg-slate-50 dark:hover:bg-white/[0.02] cursor-pointer group relative overflow-hidden ${
+                          !notification.is_read ? 'bg-[var(--color-primary-light)]/30 dark:bg-[var(--color-primary)]/[0.01]' : 'opacity-60'
+                        }`}
+                      >
+                        <div className="flex items-start gap-3 relative z-10">
+                          <div className={`mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0 transition-all ${
+                            !notification.is_read ? 'bg-[var(--color-primary)] shadow-[0_0_8px_rgba(16,185,129,0.8)]' : 'bg-slate-300 dark:bg-slate-700'
+                          }`} />
+                          
+                          <div className="flex-1 min-w-0">
+                            <div className="flex justify-between items-start gap-4 mb-0.5">
+                              <h4 className={`text-xs font-bold truncate transition-all ${!notification.is_read ? 'text-foreground dark:text-white' : 'text-slate-500 dark:text-slate-400 font-medium'}`}>
+                                {notification.title}
+                              </h4>
+                              <span className="text-[8px] text-slate-400 dark:text-slate-500 font-bold uppercase tracking-widest whitespace-nowrap mt-0.5 opacity-80">
+                                {formatDistanceToNow(new Date(notification.created_at), { addSuffix: true })}
                               </span>
-                            <button
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                handleMarkAsRead(notification.id);
-                              }}
-                              className="text-[9px] font-black text-slate-400 hover:text-[var(--color-text-primary)] dark:text-[var(--color-text-secondary)] dark:hover:text-white uppercase tracking-[0.2em] transition-colors"
-                            >
-                              Mark Read
-                            </button>
+                            </div>
+                            
+                            <p className={`text-[10px] leading-relaxed line-clamp-2 mb-1.5 font-light ${
+                              !notification.is_read ? 'text-slate-600 dark:text-slate-300' : 'text-slate-400 dark:text-slate-500'
+                            }`}>
+                              {notification.message || notification.description}
+                            </p>
+
+                            <div className="flex items-center gap-3 opacity-0 group-hover:opacity-100 transition-all translate-y-1 group-hover:translate-y-0">
+                              <span className="text-[9px] font-bold text-[var(--color-primary)] uppercase tracking-widest flex items-center gap-1">
+                                View
+                              </span>
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleMarkAsRead(notification.id);
+                                }}
+                                className="text-[9px] font-bold text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300 uppercase tracking-widest transition-colors"
+                              >
+                                Dismiss
+                              </button>
+                            </div>
                           </div>
                         </div>
                       </div>
-                      
-                      {/* Elegant hover background accent */}
-                      {!notification.is_read && (
-                          <div className="absolute top-0 right-0 w-32 h-32 bg-[var(--color-primary)]/[0.03] blur-[60px] -mr-16 -mt-16 group-hover:bg-[var(--color-primary)]/10 transition-all" />
-                      )}
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
+                    ))}
+                  </div>
+                )}
+              </div>
 
-            {/* Footer */}
-            <div className="p-4 border-t border-slate-100 dark:border-white/5 bg-white dark:bg-white/[0.01] flex-shrink-0">
-              <Link
-                to="/notifications"
-                onClick={() => setIsOpen(false)}
-                className="block w-full text-center py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest text-[var(--color-text-tertiary)] hover:text-[var(--color-text-primary)] hover:bg-white border border-[var(--color-border-primary)] shadow-sm dark:text-slate-400 dark:hover:text-white dark:hover:bg-white/5 dark:border-white/5 transition-all duration-500"
-              >
-                Settings
-              </Link>
-            </div>
-          </motion.div>
-          </>
+              {/* Footer */}
+              <div className="p-3 border-t border-slate-100 dark:border-white/5 bg-slate-50/50 dark:bg-white/[0.01] flex-shrink-0">
+                <Link
+                  to="/notifications"
+                  onClick={() => setIsOpen(false)}
+                  className="block w-full text-center py-2.5 rounded-xl text-[9px] font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400 hover:text-foreground dark:hover:text-white bg-slate-100 dark:bg-white/5 hover:bg-slate-200 border border-slate-200 dark:border-white/5 transition-all duration-300"
+                >
+                  All Notifications
+                </Link>
+              </div>
+            </motion.div>
         )}
       </AnimatePresence>
     </div>

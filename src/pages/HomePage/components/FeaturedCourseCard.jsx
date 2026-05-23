@@ -76,7 +76,7 @@ const FeaturedCourseCard = ({ job, index }) => {
       className="group relative h-full cursor-pointer select-none w-full max-w-[400px] mx-auto sm:max-w-none"
       onClick={handleCardClick}
     >
-      <div className="relative flex flex-col h-full rounded-[1.2rem] bg-white dark:bg-[#111827] border border-[var(--color-border-primary)] dark:border-white/[0.05] shadow-[0_4px_20px_-4px_rgba(0,0,0,0.06)] dark:shadow-none hover:shadow-xl transition-all duration-500 overflow-hidden">
+      <div className="relative flex flex-col h-full rounded-[2rem] bg-white dark:bg-[#111827] border border-[var(--color-border-primary)] dark:border-white/[0.05] shadow-[0_4px_20px_-4px_rgba(0,0,0,0.06)] dark:shadow-none hover:shadow-xl transition-all duration-500 overflow-hidden">
         
         {/* Top Accent Line */}
         <div className="h-[2px] w-full" style={{ backgroundColor: accent }} />
@@ -144,8 +144,8 @@ const FeaturedCourseCard = ({ job, index }) => {
               </div>
             ) : (
               <div className="flex items-center gap-2 group/btn">
-                <div className="flex-1 flex items-center justify-between py-2 px-4 rounded-xl bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] active:scale-[0.98] transition-all shadow-lg shadow-[var(--color-primary)]/20 group/action">
-                  <span className="text-[10px] font-bold uppercase tracking-[0.1em] text-white">
+                <div className="flex-1 flex items-center justify-between py-2.5 px-5 rounded-2xl bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-primary-hover)] transition-all shadow-md shadow-[var(--color-primary)]/15 hover:shadow-lg hover:shadow-[var(--color-primary)]/25 hover:scale-[1.02] active:scale-[0.98] group/action">
+                  <span className="text-[10px] font-black uppercase tracking-[0.15em] text-white">
                     View Course Details
                   </span>
                   <ArrowUpRight size={14} className="text-white group-hover/action:translate-x-0.5 group-hover/action:-translate-y-0.5 transition-transform" />

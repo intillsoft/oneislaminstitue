@@ -77,7 +77,7 @@ const DepartmentProfileCard = ({ company }) => {
       <div className="grid grid-cols-1 gap-4 mb-8">
         {[
           { icon: 'Users', label: 'SCHOLARS', value: company?.size || '1,000+ Students' },
-          { icon: 'MapPin', label: 'CAMPUS', value: company?.location || 'Islamic Center, NY' },
+          { icon: 'Globe', label: 'PLATFORM', value: 'Hope Online Portal' },
         ].map((item, i) => (
           <div key={i} className="flex items-center gap-4 bg-white/[0.02] p-4 rounded-2xl border border-white/5">
             <div className="w-10 h-10 rounded-xl bg-workflow-primary/10 flex items-center justify-center border border-workflow-primary/10">
