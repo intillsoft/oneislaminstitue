@@ -203,6 +203,17 @@ const AdvisorWrapper = () => {
   return null;
 };
 
+const MobileNavWrapper = () => {
+  const location = useLocation();
+  const dashboardPaths = ['/dashboard', '/instructor', '/admin', '/profile', '/billing', '/notifications'];
+  const isDashboard = dashboardPaths.some(path => location.pathname === path || location.pathname.startsWith(path));
+
+  if (isDashboard) {
+    return <DashboardMobileNav />;
+  }
+  return <MobileBottomNav />;
+};
+
 const Routes = () => {
   return (
     <BrowserRouter>
@@ -214,8 +225,7 @@ const Routes = () => {
             <AnimatedRoutes />
             <GlobalAIPanel />
             <AdvisorWrapper />
-            <MobileBottomNav />
-            <DashboardMobileNav />
+            <MobileNavWrapper />
           </AIPanelProvider>
         </DonationProvider>
       </ErrorBoundary>

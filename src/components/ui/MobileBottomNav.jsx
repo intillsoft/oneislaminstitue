@@ -38,6 +38,7 @@ const MobileBottomNav = ({ type = 'student' }) => {
         borderTop: '1px solid var(--color-border-primary, #e2e8f0)',
         boxShadow: '0 -4px 24px rgba(0,0,0,0.07)',
         paddingBottom: 'env(safe-area-inset-bottom, 0px)',
+        transition: 'background-color 200ms ease, border-color 200ms ease, box-shadow 200ms ease',
       }}
     >
       <div className="flex items-stretch justify-around h-16">

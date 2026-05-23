@@ -17,7 +17,6 @@ import DemographicInsights from './components/DemographicInsights';
 import PaymentHistory from './components/PaymentHistory';
 import CompanyManagementSection from './components/CompanyManagementSection';
 import DashboardAIAssistant from '../../components/ui/DashboardAIAssistant';
-import MobileBottomNav from '../../components/ui/MobileBottomNav';
 import { courseService } from '../../services/jobService';
 /* ─── No ambient overlay on white bg ─── */
 const InstructorAmbient = () => null;
@@ -248,7 +247,7 @@ const InstructorPortal = () => {
 
   if (isMobile) {
     return (
-      <div className="relative pb-24 pt-6 px-4 min-h-screen bg-[#0A0E27] text-white selection:bg-[var(--primary)]/30">
+      <div className="relative pb-24 pt-6 px-4 min-h-screen bg-[var(--color-bg-primary)] text-[var(--color-text-primary)] transition-colors duration-200">
         <InstructorAmbient />
         <DashboardAIAssistant dashboardType="instructor" contextData={{ companyInfo, activeTab }} />
 
@@ -259,26 +258,26 @@ const InstructorPortal = () => {
               <img src={companyInfo.logo} alt="Logo" className="w-full h-full object-cover" />
             </div>
             <div>
-              <h1 className="text-xl font-black text-white tracking-tight">Instructor Panel</h1>
+              <h1 className="text-xl font-black text-[var(--color-text-primary)] tracking-tight">Instructor Panel</h1>
               <p className="text-[9px] font-bold text-[var(--primary)]/60 uppercase tracking-widest mt-0.5">{companyInfo.name}</p>
             </div>
           </div>
-          <button onClick={() => navigate('/notifications/instructor')} className="w-10 h-10 rounded-xl bg-white/[0.03] border border-[var(--primary)]/10 flex items-center justify-center text-[var(--primary)]">
+          <button onClick={() => navigate('/notifications/instructor')} className="w-10 h-10 rounded-xl bg-[var(--card)] border border-[var(--border)] flex items-center justify-center text-[var(--primary)]">
             <Icon name="Bell" size={18} />
           </button>
         </header>
 
         {/* 📊 Quick Stat Pill Bubbles */}
         <div className="grid grid-cols-2 gap-3 mb-8">
-          <div className="relative overflow-hidden rounded-2xl bg-white/[0.02] border border-[var(--primary)]/10 p-4">
+          <div className="relative overflow-hidden rounded-2xl bg-[var(--card)] border border-[var(--border)] p-4">
             <div className="absolute top-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-[var(--primary)] to-transparent" />
             <p className="text-[8px] font-black text-[var(--muted-foreground)] uppercase tracking-[0.2em] mb-1">Status</p>
-            <p className="text-sm font-black text-white">{companyInfo.subscription}</p>
+            <p className="text-sm font-black text-[var(--color-text-primary)]">{companyInfo.subscription}</p>
           </div>
-          <div className="relative overflow-hidden rounded-2xl bg-white/[0.02] border border-[var(--primary)]/10 p-4">
+          <div className="relative overflow-hidden rounded-2xl bg-[var(--card)] border border-[var(--border)] p-4">
             <div className="absolute top-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-fuchsia-500 to-transparent" />
             <p className="text-[8px] font-black text-fuchsia-200/40 uppercase tracking-[0.2em] mb-1">Renew Target</p>
-            <p className="text-sm font-black text-white">Annual</p>
+            <p className="text-sm font-black text-[var(--color-text-primary)]">Annual</p>
           </div>
         </div>
 
@@ -289,16 +288,15 @@ const InstructorPortal = () => {
             <button
               key={idx}
               onClick={() => navigate(`/instructor/dashboard/${item.id}`)}
-              className="flex flex-col items-center justify-center p-6 bg-white/[0.03] border border-[var(--primary)]/10 rounded-2xl aspect-square hover:bg-[var(--primary)]/5 active:scale-95 transition-all duration-200"
+              className="flex flex-col items-center justify-center p-6 bg-[var(--card)] border border-[var(--border)] rounded-2xl aspect-square hover:bg-[var(--color-primary-light)] active:scale-95 transition-all duration-200"
             >
-              <div className="w-12 h-12 rounded-2xl bg-[var(--primary)]/10 border border-[var(--primary)]/20 flex items-center justify-center mb-4 text-[var(--primary)] shadow-md">
+              <div className="w-12 h-12 rounded-2xl bg-[var(--color-primary-light)] border border-[var(--color-border-secondary)] flex items-center justify-center mb-4 text-[var(--primary)] shadow-md">
                 <Icon name={item.icon} size={24} className="text-[var(--primary)]" />
               </div>
-              <span className="text-[11px] font-black uppercase tracking-[0.12em] text-slate-200">{item.label}</span>
+              <span className="text-[11px] font-black uppercase tracking-[0.12em] text-[var(--color-text-secondary)]">{item.label}</span>
             </button>
           ))}
         </div>
-        <MobileBottomNav type="instructor" />
       </div>
     );
   }

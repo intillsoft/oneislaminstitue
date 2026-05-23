@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Moon, Sun } from 'lucide-react';
 import { useTheme } from '../../contexts/ThemeContext';
 
@@ -10,32 +10,41 @@ const DarkModeToggle = () => {
   return (
     <motion.button
       onClick={toggleTheme}
-      className="relative w-11 h-6 rounded-full bg-secondary dark:bg-muted p-0.5 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background transition-colors duration-200"
+      className="relative w-9 h-9 flex items-center justify-center rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-white/5 dark:hover:bg-white/10 border border-slate-200 dark:border-white/10 text-foreground transition-all duration-300 focus:outline-none overflow-hidden"
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
       aria-label="Toggle dark mode"
+      style={{
+        transition: 'background-color 200ms ease, border-color 200ms ease, color 200ms ease',
+      }}
     >
-      <motion.div
-        className="absolute top-0.5 left-0.5 w-5 h-5 rounded-full bg-card flex items-center justify-center shadow-md border border-border transition-colors duration-200"
-        animate={{
-          x: isDark ? 20 : 0,
-        }}
-        transition={{
-          type: 'spring',
-          stiffness: 500,
-          damping: 30,
-        }}
-      >
+      <AnimatePresence mode="wait" initial={false}>
         {isDark ? (
-          <Moon className="w-3 h-3 text-foreground transition-colors duration-200" />
+          <motion.div
+            key="moon"
+            initial={{ y: 20, rotate: -90, opacity: 0 }}
+            animate={{ y: 0, rotate: 0, opacity: 1 }}
+            exit={{ y: -20, rotate: 90, opacity: 0 }}
+            transition={{ duration: 0.25, ease: 'easeInOut' }}
+            className="flex items-center justify-center text-primary"
+          >
+            <Moon className="w-4.5 h-4.5 text-[#fbbf24]" fill="#fbbf24" />
+          </motion.div>
         ) : (
-          <Sun className="w-3 h-3 text-primary transition-colors duration-200" />
+          <motion.div
+            key="sun"
+            initial={{ y: 20, rotate: -90, opacity: 0 }}
+            animate={{ y: 0, rotate: 0, opacity: 1 }}
+            exit={{ y: -20, rotate: 90, opacity: 0 }}
+            transition={{ duration: 0.25, ease: 'easeInOut' }}
+            className="flex items-center justify-center"
+          >
+            <Sun className="w-4.5 h-4.5 text-[#f59e0b]" />
+          </motion.div>
         )}
-      </motion.div>
+      </AnimatePresence>
     </motion.button>
   );
 };
 
 export default DarkModeToggle;
-
-

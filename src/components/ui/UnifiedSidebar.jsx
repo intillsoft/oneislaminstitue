@@ -329,44 +329,15 @@ const UnifiedSidebar = () => {
 
   return (
     <DndProvider backend={HTML5Backend}>
-      {isMobile ? (
-        <div className="fixed bottom-6 left-5 right-5 z-[999] bg-white/95 backdrop-blur-lg border border-[#E2E8F0] rounded-2xl p-2 flex justify-around items-center shadow-modal">
-             {navigationItems.slice(0, 4).map((item, i) => {
-                  const active = isActive(item.path);
-                  return (
-                      <button 
-                         key={i} 
-                         onClick={() => handleNavClick(item.path)} 
-                         className={`flex flex-col items-center gap-1 p-2.5 px-3.5 rounded-xl transition-all relative ${active ? 'text-[#0078D4]' : 'text-[#94A3B8] hover:text-[#0078D4]'}`}
-                      >
-                           {active && (
-                               <motion.div 
-                                  layoutId="mobileNav" 
-                                  className="absolute inset-0 bg-[#EFF6FF] rounded-xl border border-[#C8E0F4]" 
-                                  transition={{ duration: 0.2 }}
-                               />
-                           )}
-                           <div className={`relative z-10 ${active ? 'scale-110' : ''} transition-transform`}>
-                               <Icon name={item.icon} size={18} className={active ? 'text-[#0078D4]' : 'text-[#94A3B8]'} />
-                           </div>
-                           <span className={`text-[7px] font-bold uppercase tracking-[0.14em] relative z-10 ${active ? 'text-[#0078D4]' : 'text-[#94A3B8]'}`}>
-                               {item.label}
-                           </span>
-                      </button>
-                  );
-             })}
-        </div>
-      ) : (
-        <>
-          <motion.aside
-            initial={false}
-            animate={{ width: isCollapsed ? 80 : 260 }}
-            transition={{ duration: 0.2 }}
-            className="fixed left-0 top-16 bottom-0 z-[90] hidden lg:block"
-          >
-            {sidebarContent}
-          </motion.aside>
-        </>
+      {!isMobile && (
+        <motion.aside
+          initial={false}
+          animate={{ width: isCollapsed ? 80 : 260 }}
+          transition={{ duration: 0.2 }}
+          className="fixed left-0 top-16 bottom-0 z-[90] hidden lg:block"
+        >
+          {sidebarContent}
+        </motion.aside>
       )}
       <SidebarCustomizationModal
         isOpen={showCustomizationModal}

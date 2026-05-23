@@ -14,7 +14,6 @@ import ApplicationTracker from './components/ApplicationTracker';
 import SavedCourses from './components/SavedCourses';
 import ProfileCompletion from './components/ProfileCompletion';
 import DashboardAIAssistant from '../../components/ui/DashboardAIAssistant';
-import MobileBottomNav from '../../components/ui/MobileBottomNav';
 import { courseService } from '../../services/jobService';
 import AILoader from '../../components/ui/AILoader';
 
@@ -233,7 +232,6 @@ const StudentDashboard = () => {
             </button>
           ))}
         </div>
-        <MobileBottomNav type="student" />
       </div>
     );
   }
