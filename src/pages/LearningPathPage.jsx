@@ -7,7 +7,7 @@ import { motion } from 'framer-motion';
 
 const LearningPathPage = () => {
     return (
-        <div className="min-h-screen bg-bg text-white pb-20 px-4">
+        <div className="min-h-screen bg-[var(--color-bg-primary)] pb-20 px-4">
             <div className="max-w-7xl mx-auto">
                 {/* Header Section */}
                 <div className="mb-8">
@@ -18,12 +18,12 @@ const LearningPathPage = () => {
                     >
                         <div className="flex items-center gap-2">
                             <Zap size={16} className="text-[var(--color-primary)]" />
-                            <span className="text-sm font-semibold text-slate-400 uppercase tracking-widest">Enrollments</span>
+                            <span className="text-sm font-semibold text-[var(--color-text-tertiary)] uppercase tracking-widest">Enrollments</span>
                         </div>
-                        <h1 className="text-3xl md:text-4xl font-black text-white uppercase tracking-tighter leading-none">
+                        <h1 className="text-3xl md:text-4xl font-black text-[var(--color-text-primary)] uppercase tracking-tighter leading-none">
                             My Enrollments
                         </h1>
-                        <p className="text-slate-400 text-sm max-w-lg font-medium mb-6">
+                        <p className="text-[var(--color-text-tertiary)] text-sm max-w-lg font-medium mb-6">
                             Track your enrolled courses and application status.
                         </p>
                     </motion.div>
