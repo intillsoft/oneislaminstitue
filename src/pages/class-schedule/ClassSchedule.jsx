@@ -46,7 +46,7 @@ const EventCard = ({ event, index, onPrepTips }) => {
       animate={{ opacity: 1, x: 0 }}
       transition={{ delay: index * 0.06 }}
     >
-        <EliteCard className={`p-0 relative overflow-hidden group hover:border-[var(--color-primary)]/30 transition-all duration-300 ${today ? 'border-[var(--color-primary)]/40 shadow-lg shadow-emerald-500/5' : ''}`}>
+        <EliteCard className={`p-0 relative overflow-hidden group hover:border-[var(--color-primary)]/30 transition-all duration-300 ${today ? 'border-[var(--color-primary)]/40 shadow-lg shadow-[var(--color-primary)]/10' : ''}`}>
              <div className={`absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b ${config.color || 'from-slate-400 to-slate-500'}`}/>
              
              <div className="p-5 pl-7">
@@ -67,17 +67,17 @@ const EventCard = ({ event, index, onPrepTips }) => {
                     
                     <div className="flex-1 min-w-0">
                         <div className="mb-1">
-                            <h3 className="text-sm font-bold text-text-primary truncate">{event.title}</h3>
-                            <p className="text-[10px] text-text-muted font-medium uppercase tracking-wider">{event.course?.title || 'Course Event'}</p>
+                            <h3 className="text-sm font-bold text-[var(--foreground)] truncate">{event.title}</h3>
+                            <p className="text-[10px] text-[var(--muted-foreground)] font-medium uppercase tracking-wider">{event.course?.title || 'Course Event'}</p>
                         </div>
                         
                         <div className="flex flex-wrap items-center gap-3 mt-3 text-xs">
-                             <span className="flex items-center gap-1.5 font-bold text-text-primary px-2 py-1 rounded-lg bg-surface-elevated border border-border">
-                                <Clock size={12} className="text-text-muted" />
+                             <span className="flex items-center gap-1.5 font-bold text-[var(--foreground)] px-2 py-1 rounded-lg bg-[var(--secondary)] border border-[var(--border)]">
+                                <Clock size={12} className="text-[var(--muted-foreground)]" />
                                 {formatTime(event.start_time)} - {formatTime(event.end_time)}
                             </span>
                             {/* Only show date if grouping header isn't enough, but usually nice to have */}
-                            <span className="flex items-center gap-1.5 text-text-muted">
+                            <span className="flex items-center gap-1.5 text-[var(--muted-foreground)]">
                                 <Calendar size={12} />
                                 {formatDate(event.start_time)}
                             </span>
@@ -85,15 +85,15 @@ const EventCard = ({ event, index, onPrepTips }) => {
                         </div>
                         
                          {/* Action buttons */}
-                        <div className="flex items-center gap-2 mt-4 pt-3 border-t border-border">
+                        <div className="flex items-center gap-2 mt-4 pt-3 border-t border-[var(--border)]">
                             {event.meeting_url && (
                                 <a href={event.meeting_url} target="_blank" rel="noopener noreferrer"
-                                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[var(--color-primary)] text-white text-[10px] font-black uppercase tracking-wider hover:bg-[var(--color-primary-hover)] transition-all shadow-lg shadow-[var(--color-primary)]/20">
+                                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[var(--primary)] text-white text-[10px] font-black uppercase tracking-wider hover:bg-[var(--primary)]/90 transition-all shadow-lg shadow-[var(--primary)]/20">
                                     <Video size={11} /> Join Class
                                 </a>
                             )}
                             <button onClick={() => onPrepTips(event)}
-                                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[var(--color-primary)]/10 text-[var(--color-primary)] text-[10px] font-black uppercase tracking-wider hover:bg-[var(--color-primary)]/20 transition-all border border-[var(--color-primary)]/20 group-hover:border-[var(--color-primary)]/40">
+                                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[var(--primary)]/10 text-[var(--primary)] text-[10px] font-black uppercase tracking-wider hover:bg-[var(--primary)]/20 transition-all border border-[var(--primary)]/20 group-hover:border-[var(--primary)]/40">
                                 <Sparkles size={11} /> AI Prep Tips
                             </button>
                              <div className="ml-auto">
@@ -118,9 +118,9 @@ const PrepTipsModal = ({ event, onClose }) => {
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
       className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[200] flex items-center justify-center p-4" onClick={onClose}>
       <motion.div initial={{ scale: 0.95, y: 20 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.95, y: 20 }}
-        onClick={e => e.stopPropagation()} className="bg-surface border border-border rounded-2xl p-0 max-w-lg w-full shadow-2xl overflow-hidden">
+        onClick={e => e.stopPropagation()} className="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-0 max-w-lg w-full shadow-2xl overflow-hidden">
         
-        <div className="p-6 bg-gradient-to-br from-[var(--color-primary)] to-sky-700 text-white relative overflow-hidden">
+        <div className="p-6 bg-gradient-to-br from-[var(--primary)] to-sky-700 text-white relative overflow-hidden">
              <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl -mr-10 -mt-10"></div>
              <div className="flex items-center gap-4 relative z-10">
                 <div className="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center backdrop-blur-sm shadow-lg">
@@ -133,30 +133,30 @@ const PrepTipsModal = ({ event, onClose }) => {
              </div>
         </div>
 
-        <div className="p-6 bg-bg">
+        <div className="p-6 bg-[var(--card)]">
              <div className="flex items-center gap-4 mb-6">
-                 <div className="flex-1 p-3 rounded-xl bg-surface border border-border flex items-center gap-3">
+                 <div className="flex-1 p-3 rounded-xl bg-[var(--secondary)] border border-[var(--border)] flex items-center gap-3">
                      <span className="text-2xl">{prep.icon}</span>
                      <div>
-                         <p className="text-[10px] font-bold text-text-muted uppercase tracking-widest">Prep Time</p>
-                         <p className="text-sm font-black text-text-primary">{prep.estimatedPrepTime} min</p>
+                         <p className="text-[10px] font-bold text-[var(--muted-foreground)] uppercase tracking-widest">Prep Time</p>
+                         <p className="text-sm font-black text-[var(--foreground)]">{prep.estimatedPrepTime} min</p>
                      </div>
                  </div>
-                 <div className="flex-1 p-3 rounded-xl bg-surface border border-border flex items-center gap-3">
+                 <div className="flex-1 p-3 rounded-xl bg-[var(--secondary)] border border-[var(--border)] flex items-center gap-3">
                      <span className="text-2xl">⚡</span>
                      <div>
-                         <p className="text-[10px] font-bold text-text-muted uppercase tracking-widest">Difficulty</p>
-                         <p className="text-sm font-black text-text-primary capitalize">{prep.difficulty}</p>
+                         <p className="text-[10px] font-bold text-[var(--muted-foreground)] uppercase tracking-widest">Difficulty</p>
+                         <p className="text-sm font-black text-[var(--foreground)] capitalize">{prep.difficulty}</p>
                      </div>
                  </div>
              </div>
 
              <div className="space-y-4 mb-6">
                 <div>
-                    <p className="text-[10px] font-black text-text-muted uppercase tracking-widest mb-3">Recommended Steps</p>
+                    <p className="text-[10px] font-black text-[var(--muted-foreground)] uppercase tracking-widest mb-3">Recommended Steps</p>
                     <ul className="space-y-2">
                         {prep.tips.map((tip, i) => (
-                            <li key={i} className="flex items-start gap-2 text-sm text-text-secondary">
+                            <li key={i} className="flex items-start gap-2 text-sm text-[var(--muted-foreground)]">
                                 <Lightbulb size={14} className="text-amber-500 mt-0.5 flex-shrink-0" />
                                 <span>{tip}</span>
                             </li>
@@ -165,17 +165,17 @@ const PrepTipsModal = ({ event, onClose }) => {
                 </div>
                 
                 {prep.customTip && (
-                    <div className="p-4 rounded-xl bg-[var(--color-primary)]/5 border border-[var(--color-primary)]/10">
+                    <div className="p-4 rounded-xl bg-[var(--primary)]/5 border border-[var(--primary)]/10">
                         <div className="flex items-center gap-2 mb-1.5">
-                            <Brain size={12} className="text-[var(--color-primary)]" />
-                            <span className="text-[9px] font-bold text-[var(--color-primary)] uppercase tracking-widest">AI Custom Insight</span>
+                            <Brain size={12} className="text-[var(--primary)]" />
+                            <span className="text-[9px] font-bold text-[var(--primary)] uppercase tracking-widest">AI Custom Insight</span>
                         </div>
-                        <p className="text-xs text-text-secondary leading-relaxed">{prep.customTip}</p>
+                        <p className="text-xs text-[var(--muted-foreground)] leading-relaxed">{prep.customTip}</p>
                     </div>
                 )}
              </div>
 
-             <button onClick={onClose} className="w-full py-3 rounded-xl bg-[var(--color-primary)] text-white text-xs font-black uppercase tracking-widest hover:bg-[var(--color-primary-hover)] transition-all shadow-lg shadow-[var(--color-primary)]/20">
+             <button onClick={onClose} className="w-full py-3 rounded-xl bg-[var(--primary)] text-white text-xs font-black uppercase tracking-widest hover:bg-[var(--primary)]/90 transition-all shadow-lg shadow-[var(--primary)]/20">
                 Mark as Prepared
              </button>
         </div>
@@ -284,22 +284,22 @@ const ClassSchedule = () => {
                 <EliteCard className={`
                     ${dailySummary.priority === 'high' ? 'bg-gradient-to-r from-red-500/5 to-orange-500/5 border-orange-500/20' : 
                       dailySummary.priority === 'medium' ? 'bg-gradient-to-r from-blue-500/5 to-indigo-500/5 border-blue-500/20' : 
-                      'bg-gradient-to-r from-[var(--color-primary)]/5 to-teal-500/5 border-[var(--color-primary)]/20'}
+                      'bg-gradient-to-r from-[var(--primary)]/5 to-teal-500/5 border-[var(--primary)]/20'}
                 `}>
                     <div className="flex items-start gap-4">
-                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[var(--color-primary)] to-sky-600 flex items-center justify-center shadow-lg shadow-[var(--color-primary)]/20 flex-shrink-0">
+                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[var(--primary)] to-sky-600 flex items-center justify-center shadow-lg shadow-[var(--primary)]/20 flex-shrink-0">
                             <Brain size={18} className="text-white" />
                         </div>
                         <div className="flex-1">
                             <div className="flex items-center gap-2 mb-1">
-                                <h3 className="text-sm font-black text-text-primary">{dailySummary.greeting}</h3>
-                                <span className="text-[9px] font-bold px-2 py-0.5 rounded-full bg-[var(--color-primary)]/10 text-[var(--color-primary)] border border-[var(--color-primary)]/20">AI BRIEFING</span>
+                                <h3 className="text-sm font-black text-[var(--foreground)]">{dailySummary.greeting}</h3>
+                                <span className="text-[9px] font-bold px-2 py-0.5 rounded-full bg-[var(--primary)]/10 text-[var(--primary)] border border-[var(--primary)]/20">AI BRIEFING</span>
                             </div>
-                            <p className="text-sm text-text-secondary leading-relaxed mb-3 max-w-2xl">{dailySummary.message}</p>
+                            <p className="text-sm text-[var(--muted-foreground)] leading-relaxed mb-3 max-w-2xl">{dailySummary.message}</p>
                             
                             <div className="flex flex-wrap gap-2">
                                 {dailySummary.actionItems.map((item, i) => (
-                                    <span key={i} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface border border-border text-[10px] font-bold text-text-secondary">
+                                    <span key={i} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[var(--secondary)] border border-[var(--border)] text-[10px] font-bold text-[var(--muted-foreground)]">
                                         <Lightbulb size={10} className="text-amber-500" /> {item}
                                     </span>
                                 ))}
@@ -315,11 +315,11 @@ const ClassSchedule = () => {
                 groupedEvents.map(([dateKey, dayEvents], gi) => (
                     <motion.div key={dateKey} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: gi * 0.1 }}>
                         <div className="flex items-center gap-3 mb-4 pl-1">
-                            <div className={`w-2.5 h-2.5 rounded-full ${isToday(dayEvents[0].start_time) ? 'bg-[var(--color-primary)] shadow-lg shadow-emerald-500/50' : 'bg-text-muted/30'}`} />
-                            <h2 className={`text-sm font-black uppercase tracking-widest ${isToday(dayEvents[0].start_time) ? 'text-[var(--color-primary)]' : 'text-text-muted'}`}>
+                            <div className={`w-2.5 h-2.5 rounded-full ${isToday(dayEvents[0].start_time) ? 'bg-[var(--color-primary)] shadow-lg shadow-emerald-500/50' : 'bg-[var(--muted-foreground)]/30'}`} />
+                            <h2 className={`text-sm font-black uppercase tracking-widest ${isToday(dayEvents[0].start_time) ? 'text-[var(--color-primary)]' : 'text-[var(--muted-foreground)]'}`}>
                                 {isToday(dayEvents[0].start_time) ? 'Today' : isTomorrow(dayEvents[0].start_time) ? 'Tomorrow' : formatDate(dayEvents[0].start_time)}
                             </h2>
-                            <div className="flex-1 h-px bg-border/50" />
+                            <div className="flex-1 h-px bg-[var(--border)]" />
                         </div>
                         
                         <div className="space-y-4">
@@ -331,12 +331,12 @@ const ClassSchedule = () => {
                 ))
             ) : (
                 <EliteCard className="text-center py-20 dashed-border">
-                    <Calendar size={48} className="text-text-muted/20 mx-auto mb-4" />
-                    <h3 className="text-lg font-bold text-text-primary mb-2">Schedule is Clear</h3>
-                    <p className="text-sm text-text-muted mb-6 max-w-md mx-auto">
+                    <Calendar size={48} className="text-[var(--muted-foreground)]/20 mx-auto mb-4" />
+                    <h3 className="text-lg font-bold text-[var(--foreground)] mb-2">Schedule is Clear</h3>
+                    <p className="text-sm text-[var(--muted-foreground)] mb-6 max-w-md mx-auto">
                         No upcoming classes or deadlines found. This is a great time to browse new courses or review past material.
                     </p>
-                    <button onClick={() => navigate('/courses')} className="px-8 py-3 bg-[var(--color-primary)] text-white rounded-xl text-xs font-black uppercase tracking-widest hover:bg-[var(--color-primary-hover)] transition-all shadow-lg hover:shadow-emerald-500/30">
+                    <button onClick={() => navigate('/courses')} className="px-8 py-3 bg-[var(--primary)] text-white rounded-xl text-xs font-black uppercase tracking-widest hover:bg-[var(--primary)]/90 transition-all shadow-lg hover:shadow-emerald-500/30">
                         Explore Courses
                     </button>
                 </EliteCard>

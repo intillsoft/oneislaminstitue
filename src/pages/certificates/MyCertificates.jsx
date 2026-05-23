@@ -44,8 +44,8 @@ const CertificateCard = ({ cert, index, onShare, onDownload }) => {
                         <Award size={24} />
                     </div>
                     <div>
-                        <h3 className="font-bold text-lg leading-tight text-text-primary mb-1">{cert.title}</h3>
-                        <p className="text-xs text-text-muted uppercase tracking-wide font-medium">{cert.course?.company || 'Hope Dawah Institute'}</p>
+                        <h3 className="font-bold text-lg leading-tight text-[var(--foreground)] mb-1">{cert.title}</h3>
+                        <p className="text-xs text-[var(--muted-foreground)] uppercase tracking-wide font-medium">{cert.course?.company || 'Hope Dawah Institute'}</p>
                     </div>
                 </div>
                 <span className={`px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-wider border ${gradeBg[cert.grade] || gradeBg['Pass']}`}>
@@ -53,25 +53,25 @@ const CertificateCard = ({ cert, index, onShare, onDownload }) => {
                 </span>
             </div>
 
-            <div className="grid grid-cols-3 gap-2 py-5 border-y border-border mb-5">
+            <div className="grid grid-cols-3 gap-2 py-5 border-y border-[var(--border)] mb-5">
                 <div className="text-center">
-                    <span className="block text-2xl font-black text-text-primary">{cert.score}%</span>
-                    <span className="text-[9px] text-text-muted uppercase tracking-widest font-bold">Score</span>
+                    <span className="block text-2xl font-black text-[var(--foreground)]">{cert.score}%</span>
+                    <span className="text-[9px] text-[var(--muted-foreground)] uppercase tracking-widest font-bold">Score</span>
                 </div>
-                 <div className="text-center border-l border-border relative">
-                    <span className="block text-sm font-bold mt-1.5 text-text-primary">{new Date(cert.issued_at).toLocaleDateString('en', { month: 'short', year: 'numeric' })}</span>
-                    <span className="text-[9px] text-text-muted uppercase tracking-widest font-bold absolute bottom-0 left-0 right-0">Issued</span>
+                 <div className="text-center border-l border-[var(--border)] relative">
+                    <span className="block text-sm font-bold mt-1.5 text-[var(--foreground)]">{new Date(cert.issued_at).toLocaleDateString('en', { month: 'short', year: 'numeric' })}</span>
+                    <span className="text-[9px] text-[var(--muted-foreground)] uppercase tracking-widest font-bold absolute bottom-0 left-0 right-0">Issued</span>
                 </div>
-                 <div className="text-center border-l border-border relative">
-                    <span className="block text-[var(--color-primary)] font-bold text-sm flex items-center justify-center gap-1 mt-1.5"><Shield size={12}/> Verified</span>
-                    <span className="text-[9px] text-text-muted uppercase tracking-widest font-bold absolute bottom-0 left-0 right-0">Status</span>
+                 <div className="text-center border-l border-[var(--border)] relative">
+                    <span className="block text-[var(--primary)] font-bold text-sm flex items-center justify-center gap-1 mt-1.5"><Shield size={12}/> Verified</span>
+                    <span className="text-[9px] text-[var(--muted-foreground)] uppercase tracking-widest font-bold absolute bottom-0 left-0 right-0">Status</span>
                 </div>
             </div>
 
             <div className="flex-1 mb-6">
                  <div className="flex flex-wrap gap-2">
                     {(cert.skills_earned || []).map(s => (
-                        <span key={s} className="text-[10px] font-bold px-2.5 py-1 bg-surface-elevated rounded-lg border border-border text-text-secondary">
+                        <span key={s} className="text-[10px] font-bold px-2.5 py-1 bg-[var(--secondary)] rounded-lg border border-[var(--border)] text-[var(--muted-foreground)]">
                             {s}
                         </span>
                     ))}
@@ -79,12 +79,12 @@ const CertificateCard = ({ cert, index, onShare, onDownload }) => {
             </div>
 
             <div className="flex justify-between items-center pt-2">
-                <span className="font-mono text-[10px] text-text-muted tracking-wider">{cert.certificate_number}</span>
+                <span className="font-mono text-[10px] text-[var(--muted-foreground)] tracking-wider">{cert.certificate_number}</span>
                 <div className="flex gap-2">
-                    <button onClick={() => onShare(cert)} className="p-2 hover:bg-surface-elevated rounded-xl text-text-muted hover:text-[var(--color-primary)] transition-colors" title="Share">
+                    <button onClick={() => onShare(cert)} className="p-2 hover:bg-[var(--secondary)] rounded-xl text-[var(--muted-foreground)] hover:text-[var(--primary)] transition-colors" title="Share">
                         <Share2 size={16}/>
                     </button>
-                    <button onClick={() => onDownload(cert)} className="p-2 hover:bg-surface-elevated rounded-xl text-text-muted hover:text-[var(--color-primary)] transition-colors" title="Download">
+                    <button onClick={() => onDownload(cert)} className="p-2 hover:bg-[var(--secondary)] rounded-xl text-[var(--muted-foreground)] hover:text-[var(--primary)] transition-colors" title="Download">
                         <Download size={16}/>
                     </button>
                 </div>
@@ -156,15 +156,15 @@ const MyCertificates = () => {
             subtitle="Your verified academic achievements and credentials."
             badge="Credentials"
         >
-             <div className="mt-6 flex justify-end">
+                     <div className="mt-6 flex justify-end">
                 <div className="relative w-full max-w-sm">
-                    <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted" />
+                    <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--muted-foreground)]" />
                     <input
                       type="text"
                       value={searchQuery}
                       onChange={e => setSearchQuery(e.target.value)}
                       placeholder="Search certificates..."
-                      className="w-full pl-11 pr-4 py-3 rounded-2xl bg-surface border border-border text-sm text-text-primary placeholder:text-text-muted focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20 transition-all"
+                      className="w-full pl-11 pr-4 py-3 rounded-2xl bg-[var(--secondary)] border border-[var(--border)] text-sm text-[var(--foreground)] placeholder:text-[var(--muted-foreground)] focus:outline-none focus:border-[var(--primary)]/50 focus:ring-1 focus:ring-[var(--primary)]/20 transition-all"
                     />
                 </div>
             </div>
@@ -207,33 +207,33 @@ const MyCertificates = () => {
                         </div>
                         <div className="flex-1">
                              <div className="flex items-center gap-2 mb-2">
-                                <h3 className="text-sm font-black text-text-primary uppercase tracking-wider">AI Achievement Analysis</h3>
+                                <h3 className="text-sm font-black text-[var(--foreground)] uppercase tracking-wider">AI Achievement Analysis</h3>
                                 <span className="text-[9px] font-bold px-2 py-0.5 rounded-full bg-[var(--primary)]/10 text-[var(--primary)] border border-[var(--primary)]/20">BETA</span>
                             </div>
-                            <p className="text-sm text-text-secondary leading-relaxed mb-4 max-w-3xl">{aiSummary.summary}</p>
+                            <p className="text-sm text-[var(--muted-foreground)] leading-relaxed mb-4 max-w-3xl">{aiSummary.summary}</p>
                             
                             <div className="flex flex-wrap gap-4">
                                 <div>
-                                    <p className="text-[10px] font-bold text-text-muted uppercase tracking-widest mb-2">Top Skills</p>
+                                    <p className="text-[10px] font-bold text-[var(--muted-foreground)] uppercase tracking-widest mb-2">Top Skills</p>
                                     <div className="flex gap-2">
                                         {aiSummary.skillProfile?.topSkills?.map(skill => (
-                                            <span key={skill} className="px-2.5 py-1 rounded-lg bg-surface border border-border text-[10px] font-bold text-[var(--primary)] flex items-center gap-1">
+                                            <span key={skill} className="px-2.5 py-1 rounded-lg bg-[var(--secondary)] border border-[var(--border)] text-[10px] font-bold text-[var(--primary)] flex items-center gap-1">
                                                 <Star size={10} className="fill-[var(--primary)] text-[var(--primary)]" /> {skill}
                                             </span>
                                         ))}
                                     </div>
                                 </div>
-                                <div className="hidden md:block w-px bg-border mx-2"></div>
+                                <div className="hidden md:block w-px bg-[var(--border)] mx-2"></div>
                                 <div>
-                                     <p className="text-[10px] font-bold text-text-muted uppercase tracking-widest mb-2">Recommendation</p>
-                                     <p className="text-xs text-text-secondary italic">"{aiSummary.recommendations?.[0]}"</p>
+                                     <p className="text-[10px] font-bold text-[var(--muted-foreground)] uppercase tracking-widest mb-2">Recommendation</p>
+                                     <p className="text-xs text-[var(--muted-foreground)] italic">"{aiSummary.recommendations?.[0]}"</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </EliteCard>
              </motion.div>
-        )}
+         )}
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {filteredCerts.length > 0 ? (
@@ -243,19 +243,19 @@ const MyCertificates = () => {
             ) : (
                 <div className="col-span-full">
                      <EliteCard className="text-center py-16 dashed-border">
-                        <div className="w-16 h-16 bg-surface-elevated rounded-full flex items-center justify-center mx-auto mb-4">
-                            <Award className="text-text-muted/40 w-8 h-8" />
+                        <div className="w-16 h-16 bg-[var(--secondary)] rounded-full flex items-center justify-center mx-auto mb-4">
+                            <Award className="text-[var(--muted-foreground)]/40 w-8 h-8" />
                         </div>
-                        <h3 className="text-lg font-bold text-text-primary mb-2">
+                        <h3 className="text-lg font-bold text-[var(--foreground)] mb-2">
                             {searchQuery ? 'No certificates found' : 'No Certificates Earned Yet'}
                         </h3>
-                        <p className="text-sm text-text-muted max-w-md mx-auto mb-6">
+                        <p className="text-sm text-[var(--muted-foreground)] max-w-md mx-auto mb-6">
                             {searchQuery ? 'Try adjusting your search terms.' : 'Complete courses to earn verified credentials that showcase your expertise.'}
                         </p>
                         {!searchQuery && (
                             <button
                                 onClick={() => navigate('/courses')}
-                                className="px-8 py-3 bg-[var(--color-primary)] text-white rounded-xl text-xs font-black uppercase tracking-widest hover:bg-[var(--color-primary-hover)] transition-all shadow-lg hover:shadow-emerald-500/30"
+                                className="px-8 py-3 bg-[var(--primary)] text-white rounded-xl text-xs font-black uppercase tracking-widest hover:bg-[var(--primary)]/90 transition-all shadow-lg hover:shadow-emerald-500/30"
                             >
                                 Browse Courses
                             </button>
@@ -267,9 +267,9 @@ const MyCertificates = () => {
 
         {certificates.length > 0 && (
              <div className="mt-8 flex justify-center">
-                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--color-primary)]/5 border border-[var(--color-primary)]/10">
-                    <Shield size={14} className="text-[var(--color-primary)]" />
-                    <span className="text-[10px] font-bold text-[var(--color-primary)] uppercase tracking-wide">Securely Verified on Blockchain</span>
+                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--primary)]/5 border border-[var(--primary)]/10">
+                    <Shield size={14} className="text-[var(--primary)]" />
+                    <span className="text-[10px] font-bold text-[var(--primary)] uppercase tracking-wide">Securely Verified on Blockchain</span>
                 </div>
              </div>
         )}

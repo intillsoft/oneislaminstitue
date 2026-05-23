@@ -78,22 +78,22 @@ const ApplicationsChart = () => {
   const CustomTooltip = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
       return (
-        <div className="bg-bg/95 backdrop-blur-xl p-4 border border-border dark:border-white/10 rounded-2xl shadow-2xl">
-          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-text-muted dark:text-[var(--color-text-tertiary)] mb-3">{label}</p>
+        <div className="bg-[var(--card)] backdrop-blur-xl p-4 border border-[var(--border)] rounded-2xl shadow-2xl">
+          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--muted-foreground)] mb-3">{label}</p>
           <div className="space-y-2">
             <div className="flex items-center justify-between gap-8">
               <div className="flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-workflow-primary" />
-                <span className="text-xs font-black text-text-primary dark:text-white uppercase tracking-widest">Applications</span>
+                <div className="w-2.5 h-2.5 rounded-full bg-[#0046FF]" />
+                <span className="text-xs font-black text-[var(--foreground)] uppercase tracking-widest">Applications</span>
               </div>
-              <span className="text-xs font-black text-white">{payload[0]?.value || 0}</span>
+              <span className="text-xs font-black text-[var(--foreground)]">{payload[0]?.value || 0}</span>
             </div>
             <div className="flex items-center justify-between gap-8">
               <div className="flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-workflow-accent" />
-                <span className="text-xs font-black text-text-primary dark:text-white uppercase tracking-widest">Interviews</span>
+                <div className="w-2.5 h-2.5 rounded-full bg-[#8B5CF6]" />
+                <span className="text-xs font-black text-[var(--foreground)] uppercase tracking-widest">Interviews</span>
               </div>
-              <span className="text-xs font-black text-white">{payload[1]?.value || 0}</span>
+              <span className="text-xs font-black text-[var(--foreground)]">{payload[1]?.value || 0}</span>
             </div>
           </div>
         </div>
@@ -104,32 +104,32 @@ const ApplicationsChart = () => {
 
   if (loading) {
     return (
-      <EliteCard className="p-8 border-border animate-pulse bg-surface/50">
+      <EliteCard className="p-8 animate-pulse bg-[var(--card)]/50 border-[var(--border)]">
         <div className="h-64 flex items-center justify-center">
-          <Icon name="Activity" className="w-8 h-8 text-workflow-primary/20" />
+          <Icon name="Activity" className="w-8 h-8 text-[var(--primary)]/20" />
         </div>
       </EliteCard>
     );
   }
 
   return (
-    <div className="p-8 bg-[#0C1236]/30 backdrop-blur-xl border border-white/[0.04] rounded-3xl relative overflow-hidden shadow-2xl h-full flex flex-col">
-      <div className="absolute top-0 right-0 p-8 opacity-10 text-white/20">
+    <EliteCard className="p-8 relative overflow-hidden h-full flex flex-col" hover={false}>
+      <div className="absolute top-0 right-0 p-8 opacity-5 text-[var(--foreground)]/10 pointer-events-none">
         <Icon name="Activity" size={120} />
       </div>
 
       <div className="relative z-10 flex-1 flex flex-col">
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h3 className="text-[10px] font-black text-white/40 uppercase tracking-[0.2em] mb-1">Volume Analysis</h3>
-            <h2 className="text-xl font-black text-white uppercase tracking-tight">Application Trajectory</h2>
+            <h3 className="text-[10px] font-black text-[var(--muted-foreground)] uppercase tracking-[0.2em] mb-1">Volume Analysis</h3>
+            <h2 className="text-xl font-black text-[var(--foreground)] uppercase tracking-tight">Application Trajectory</h2>
           </div>
-          <div className="flex p-1 bg-white/[0.02] rounded-xl border border-white/[0.05]">
+          <div className="flex p-1 bg-[var(--secondary)] rounded-xl border border-[var(--border)]">
             <button
               onClick={() => setChartView('weekly')}
               className={`px-4 py-1.5 text-[10px] font-black uppercase tracking-widest rounded-lg transition-all ${chartView === 'weekly'
                 ? 'bg-[var(--primary)] text-white shadow-lg'
-                : 'text-white/40 hover:text-white'
+                : 'text-[var(--muted-foreground)] hover:text-[var(--foreground)]'
                 }`}
             >
               Weekly
@@ -138,7 +138,7 @@ const ApplicationsChart = () => {
               onClick={() => setChartView('monthly')}
               className={`px-4 py-1.5 text-[10px] font-black uppercase tracking-widest rounded-lg transition-all ${chartView === 'monthly'
                 ? 'bg-[var(--primary)] text-white shadow-lg'
-                : 'text-white/40 hover:text-white'
+                : 'text-[var(--muted-foreground)] hover:text-[var(--foreground)]'
                 }`}
             >
               Monthly
@@ -148,7 +148,7 @@ const ApplicationsChart = () => {
 
         <div className="h-72">
           {chartData.length === 0 ? (
-            <div className="h-full flex items-center justify-center text-text-muted opacity-50">
+            <div className="h-full flex items-center justify-center text-[var(--muted-foreground)] opacity-50">
               <p className="text-[10px] font-black uppercase tracking-widest">No Analytical Data</p>
             </div>
           ) : (
@@ -167,7 +167,7 @@ const ApplicationsChart = () => {
                     <stop offset="95%" stopColor="#8B5CF6" stopOpacity={0} />
                   </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255,255,255,0.03)" />
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--border)" opacity={0.3} />
                 <XAxis
                   dataKey="name"
                   axisLine={false}
@@ -179,7 +179,7 @@ const ApplicationsChart = () => {
                   tickLine={false}
                   tick={{ fontSize: 10, fontWeight: 900, fill: '#64748B' }}
                 />
-                <Tooltip content={<CustomTooltip />} cursor={{ stroke: 'rgba(255,255,255,0.1)', strokeWidth: 1 }} />
+                <Tooltip content={<CustomTooltip />} cursor={{ stroke: 'var(--border)', strokeWidth: 1 }} />
                 <Area
                   type="monotone"
                   dataKey="applications"
@@ -203,23 +203,23 @@ const ApplicationsChart = () => {
           )}
         </div>
 
-        <div className="flex items-center gap-6 mt-6 pt-6 border-t border-border">
+        <div className="flex items-center gap-6 mt-6 pt-6 border-t border-[var(--border)]">
           <div className="flex items-center gap-2">
-            <div className="w-2 h-2 rounded-full bg-workflow-primary shadow-[0_0_10px_rgba(0,70,255,0.3)]" />
-            <span className="text-[10px] font-black uppercase tracking-widest text-text-muted">Applications</span>
+            <div className="w-2.5 h-2.5 rounded-full bg-[#0046FF] shadow-[0_0_10px_rgba(0,70,255,0.3)]" />
+            <span className="text-[10px] font-black uppercase tracking-widest text-[var(--muted-foreground)]">Applications</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-2 h-2 rounded-full bg-workflow-accent shadow-[0_0_10px_rgba(139,92,246,0.3)]" />
-            <span className="text-[10px] font-black uppercase tracking-widest text-text-muted">Interviews</span>
+            <div className="w-2.5 h-2.5 rounded-full bg-[#8B5CF6] shadow-[0_0_10px_rgba(139,92,246,0.3)]" />
+            <span className="text-[10px] font-black uppercase tracking-widest text-[var(--muted-foreground)]">Interviews</span>
           </div>
           <div className="ml-auto">
-            <span className="px-2 py-1 rounded bg-workflow-primary/10 text-[8px] font-black text-workflow-primary uppercase tracking-widest border border-workflow-primary/20">
+            <span className="px-2 py-1 rounded bg-[var(--primary)]/10 text-[8px] font-black text-[var(--primary)] uppercase tracking-widest border border-[var(--primary)]/20">
               Live Feed
             </span>
           </div>
         </div>
       </div>
-    </div>
+    </EliteCard>
   );
 };
 

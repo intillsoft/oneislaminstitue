@@ -10,6 +10,7 @@ import {
   BarChart3, BookOpen, Clock, Flame, CheckCircle2, Circle, Sparkles
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { progressService } from '../../services/progressService';
 import { useAuthContext } from '../../contexts/AuthContext';
 import { ElitePageHeader, EliteCard, EliteStatCard, EliteProgressBar } from '../../components/ui/EliteCard';
@@ -61,6 +62,83 @@ const StreakHeatmap = ({ streakData }) => (
     </div>
   </EliteCard>
 );
+
+const WeeklyStudyTrend = ({ weekData }) => {
+  const chartData = (weekData || []).map(day => ({
+    name: day.day,
+    minutes: day.minutes || 0
+  }));
+
+  const CustomTooltip = ({ active, payload, label }) => {
+    if (active && payload && payload.length) {
+      return (
+        <div className="bg-[var(--card)] backdrop-blur-xl p-3 border border-[var(--border)] rounded-2xl shadow-xl">
+          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--muted-foreground)] mb-1">{label}</p>
+          <div className="flex items-center gap-2">
+            <div className="w-2 h-2 rounded-full bg-[var(--primary)]" />
+            <span className="text-xs font-black text-[var(--foreground)]">{payload[0].value} mins studied</span>
+          </div>
+        </div>
+      );
+    }
+    return null;
+  };
+
+  return (
+    <EliteCard className="mb-6">
+      <div className="flex items-center gap-3 mb-5">
+        <div className="w-10 h-10 rounded-xl bg-[var(--primary)]/10 flex items-center justify-center">
+          <Clock size={20} className="text-[var(--primary)]" />
+        </div>
+        <div>
+          <h3 className="text-sm font-black text-[var(--foreground)] uppercase tracking-widest">Study Trajectory</h3>
+          <p className="text-xs text-[var(--muted-foreground)]">Your active study minutes for this week</p>
+        </div>
+      </div>
+
+      <div className="h-48 w-full">
+        {chartData.length === 0 ? (
+          <div className="h-full flex items-center justify-center text-[var(--muted-foreground)]">
+            <p className="text-[10px] font-black uppercase tracking-widest">No Study Minutes Found</p>
+          </div>
+        ) : (
+          <ResponsiveContainer width="100%" height="100%">
+            <AreaChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+              <defs>
+                <linearGradient id="studyGlow" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="var(--primary)" stopOpacity={0.3} />
+                  <stop offset="95%" stopColor="var(--primary)" stopOpacity={0} />
+                </linearGradient>
+              </defs>
+              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--border)" opacity={0.3} />
+              <XAxis
+                dataKey="name"
+                axisLine={false}
+                tickLine={false}
+                tick={{ fontSize: 10, fontWeight: 900, fill: '#64748B' }}
+              />
+              <YAxis
+                axisLine={false}
+                tickLine={false}
+                tick={{ fontSize: 10, fontWeight: 900, fill: '#64748B' }}
+              />
+              <Tooltip content={<CustomTooltip />} cursor={{ stroke: 'var(--border)', strokeWidth: 1 }} />
+              <Area
+                type="monotone"
+                dataKey="minutes"
+                stroke="var(--primary)"
+                strokeWidth={3}
+                fillOpacity={1}
+                fill="url(#studyGlow)"
+                animationDuration={1500}
+              />
+            </AreaChart>
+          </ResponsiveContainer>
+        )}
+      </div>
+    </EliteCard>
+  );
+};
 
 const StudyProgressTracker = () => {
   const navigate = useNavigate();
@@ -172,6 +250,7 @@ const StudyProgressTracker = () => {
             {/* Main Content Area */}
             <div className="lg:col-span-2 space-y-6">
                  <StreakHeatmap streakData={streakData} />
+                 <WeeklyStudyTrend weekData={streakData?.weekData} />
 
                  <EliteCard>
                     <div className="flex items-center gap-3 mb-6">

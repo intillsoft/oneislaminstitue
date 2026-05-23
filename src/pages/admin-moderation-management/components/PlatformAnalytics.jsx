@@ -1,6 +1,7 @@
 // src/pages/admin-moderation-management/components/PlatformAnalytics.jsx
 import React, { useState, useEffect } from 'react';
 import Icon from 'components/AppIcon';
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { jobService } from '../../../services/jobService';
 import { applicationService } from '../../../services/applicationService';
 import { adminService } from '../../../services/adminService';
@@ -9,6 +10,40 @@ import { supabase } from '../../../lib/supabase';
 import { useAuthContext } from '../../../contexts/AuthContext';
 import { useToast } from '../../../components/ui/Toast';
 import ComponentAIAssistant from '../../../components/ui/ComponentAIAssistant';
+
+const CustomTooltip = ({ active, payload, label }) => {
+  if (active && payload && payload.length) {
+    return (
+      <div className="bg-slate-900/95 backdrop-blur-xl p-4 border border-white/10 rounded-2xl shadow-2xl">
+        <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-text-tertiary)] mb-3">{label}</p>
+        <div className="space-y-2">
+          <div className="flex items-center justify-between gap-8">
+            <div className="flex items-center gap-2">
+              <div className="w-2.5 h-2.5 rounded-full bg-blue-500" />
+              <span className="text-xs font-black text-white uppercase tracking-widest">Students</span>
+            </div>
+            <span className="text-xs font-black text-white">{payload[0]?.value || 0}</span>
+          </div>
+          <div className="flex items-center justify-between gap-8">
+            <div className="flex items-center gap-2">
+              <div className="w-2.5 h-2.5 rounded-full bg-[var(--color-primary)]" />
+              <span className="text-xs font-black text-white uppercase tracking-widest">Instructors</span>
+            </div>
+            <span className="text-xs font-black text-white">{payload[1]?.value || 0}</span>
+          </div>
+          <div className="flex items-center justify-between gap-8">
+            <div className="flex items-center gap-2">
+              <div className="w-2.5 h-2.5 rounded-full bg-purple-500" />
+              <span className="text-xs font-black text-white uppercase tracking-widest">Faculties</span>
+            </div>
+            <span className="text-xs font-black text-white">{payload[2]?.value || 0}</span>
+          </div>
+        </div>
+      </div>
+    );
+  }
+  return null;
+};
 
 const PlatformAnalytics = ({ dateRange }) => {
   const { user, profile } = useAuthContext();
@@ -431,38 +466,71 @@ const PlatformAnalytics = ({ dateRange }) => {
           </div>
 
           {/* Chart Representation */}
-          <div className="h-64 bg-surface-100 dark:bg-surface-800 rounded-lg flex items-center justify-center overflow-x-auto px-4">
-            <div className="w-full min-w-max">
-              <div className="flex items-end justify-between h-48 gap-2">
-                {userGrowth.map((data, index) => {
-                  const maxJobSeekers = Math.max(...userGrowth.map(d => d.jobSeekers || 0), 1);
-                  const maxRecruiters = Math.max(...userGrowth.map(d => d.recruiters || 0), 1);
-                  const maxCompanies = Math.max(...userGrowth.map(d => d.companies || 0), 1);
-                  return (
-                    <div key={index} className="flex-1 flex flex-col items-center min-w-[60px]">
-                      <div className="w-full flex flex-col items-center justify-end h-full gap-1">
-                        <div
-                          className="w-full bg-blue-500 dark:bg-blue-600 rounded-t transition-all"
-                          style={{ height: `${((data.jobSeekers || 0) / maxJobSeekers) * 100}%`, minHeight: maxJobSeekers > 0 ? '2px' : '0' }}
-                          title={`Students: ${data.jobSeekers || 0}`}
-                        ></div>
-                        <div
-                          className="w-full bg-green-500 dark:bg-green-600 rounded-t transition-all"
-                          style={{ height: `${((data.recruiters || 0) / maxRecruiters) * 100}%`, minHeight: maxRecruiters > 0 ? '2px' : '0' }}
-                          title={`Instructors: ${data.recruiters || 0}`}
-                        ></div>
-                        <div
-                          className="w-full bg-purple-500 dark:bg-purple-600 rounded-t transition-all"
-                          style={{ height: `${((data.companies || 0) / maxCompanies) * 100}%`, minHeight: maxCompanies > 0 ? '2px' : '0' }}
-                          title={`Faculties: ${data.companies || 0}`}
-                        ></div>
-                      </div>
-                      <span className="text-xs text-text-secondary dark:text-gray-400 mt-2 whitespace-nowrap">{data.month}</span>
-                    </div>
-                  );
-                })}
+          <div className="h-72 w-full mt-4">
+            {userGrowth.length === 0 ? (
+              <div className="h-full flex items-center justify-center text-white/30">
+                <p className="text-[10px] font-black uppercase tracking-widest">No Growth Data Available</p>
               </div>
-            </div>
+            ) : (
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart data={userGrowth} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                  <defs>
+                    <linearGradient id="colorStudents" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.25} />
+                      <stop offset="95%" stopColor="#3b82f6" stopOpacity={0} />
+                    </linearGradient>
+                    <linearGradient id="colorInstructors" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="var(--color-primary)" stopOpacity={0.25} />
+                      <stop offset="95%" stopColor="var(--color-primary)" stopOpacity={0} />
+                    </linearGradient>
+                    <linearGradient id="colorFaculties" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#a855f7" stopOpacity={0.25} />
+                      <stop offset="95%" stopColor="#a855f7" stopOpacity={0} />
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255,255,255,0.03)" />
+                  <XAxis
+                    dataKey="month"
+                    axisLine={false}
+                    tickLine={false}
+                    tick={{ fontSize: 10, fontWeight: 900, fill: '#64748B', textTransform: 'uppercase' }}
+                  />
+                  <YAxis
+                    axisLine={false}
+                    tickLine={false}
+                    tick={{ fontSize: 10, fontWeight: 900, fill: '#64748B' }}
+                  />
+                  <Tooltip content={<CustomTooltip />} cursor={{ stroke: 'rgba(255,255,255,0.1)', strokeWidth: 1 }} />
+                  <Area
+                    type="monotone"
+                    dataKey="jobSeekers"
+                    stroke="#3b82f6"
+                    strokeWidth={3}
+                    fillOpacity={1}
+                    fill="url(#colorStudents)"
+                    animationDuration={1500}
+                  />
+                  <Area
+                    type="monotone"
+                    dataKey="recruiters"
+                    stroke="var(--color-primary)"
+                    strokeWidth={3}
+                    fillOpacity={1}
+                    fill="url(#colorInstructors)"
+                    animationDuration={1500}
+                  />
+                  <Area
+                    type="monotone"
+                    dataKey="companies"
+                    stroke="#a855f7"
+                    strokeWidth={3}
+                    fillOpacity={1}
+                    fill="url(#colorFaculties)"
+                    animationDuration={1500}
+                  />
+                </AreaChart>
+              </ResponsiveContainer>
+            )}
           </div>
         </div>
       </div>

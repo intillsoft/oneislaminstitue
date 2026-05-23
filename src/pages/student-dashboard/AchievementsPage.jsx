@@ -151,7 +151,7 @@ const AchievementsPage = () => {
                         </div>
                         <div>
                             <p className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-tertiary)]">Total Scholarly XP</p>
-                            <h3 className="text-2xl font-black text-white">{stats.xp.toLocaleString()}</h3>
+                            <h3 className="text-2xl font-black text-[var(--foreground)]">{stats.xp.toLocaleString()}</h3>
                         </div>
                     </div>
                 </EliteCard>
@@ -163,7 +163,7 @@ const AchievementsPage = () => {
                         </div>
                         <div>
                             <p className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-tertiary)]">One Coins</p>
-                            <h3 className="text-2xl font-black text-white">{stats.coins.toLocaleString()}</h3>
+                            <h3 className="text-2xl font-black text-[var(--foreground)]">{stats.coins.toLocaleString()}</h3>
                         </div>
                     </div>
                 </EliteCard>
@@ -175,49 +175,43 @@ const AchievementsPage = () => {
                         </div>
                         <div>
                             <p className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-tertiary)]">Unlocked Badges</p>
-                            <h3 className="text-2xl font-black text-white">{userBadges.length} / {badges.length}</h3>
+                            <h3 className="text-2xl font-black text-[var(--foreground)]">{userBadges.length} / {badges.length}</h3>
                         </div>
                     </div>
                 </EliteCard>
             </div>
 
             {/* Section Tabs */}
-            <div className="flex items-center gap-8 border-b border-white/5 pb-2">
-                <button
-                    onClick={() => setActiveSection('badges')}
-                    className={`pb-4 px-2 text-xs font-black uppercase tracking-[0.3em] transition-all relative ${
-                        activeSection === 'badges' ? 'text-[var(--color-primary)]' : 'text-[var(--color-text-tertiary)] hover:text-slate-300'
-                    }`}
-                >
-                    Divine Badges
-                    {activeSection === 'badges' && (
-                        <motion.div layoutId="activeAchieve" className="absolute bottom-0 left-0 right-0 h-1 bg-[var(--color-primary)] rounded-full" />
-                    )}
-                </button>
-                <button
-                    onClick={() => setActiveSection('certificates')}
-                    className={`pb-4 px-2 text-xs font-black uppercase tracking-[0.3em] transition-all relative ${
-                        activeSection === 'certificates' ? 'text-[var(--color-primary)]' : 'text-[var(--color-text-tertiary)] hover:text-slate-300'
-                    }`}
-                >
-                    Academic Certificates
-                    {activeSection === 'certificates' && (
-                        <motion.div layoutId="activeAchieve" className="absolute bottom-0 left-0 right-0 h-1 bg-[var(--color-primary)] rounded-full" />
-                    )}
-                </button>
+            <div className="flex justify-center mb-6">
+                <div className="native-segmented-control max-w-md w-full">
+                    <button
+                        onClick={() => setActiveSection('badges')}
+                        className={`native-segmented-tab ${activeSection === 'badges' ? 'native-segmented-tab-active' : ''}`}
+                    >
+                        <Icon name="Shield" size={14} />
+                        Divine Badges
+                    </button>
+                    <button
+                        onClick={() => setActiveSection('certificates')}
+                        className={`native-segmented-tab ${activeSection === 'certificates' ? 'native-segmented-tab-active' : ''}`}
+                    >
+                        <Icon name="Award" size={14} />
+                        Academic Certificates
+                    </button>
+                </div>
             </div>
 
             {/* Filters */}
             {activeSection === 'badges' && (
-                <div className="flex items-center gap-4 py-2">
+                <div className="flex items-center justify-center gap-2 p-1 bg-[var(--secondary)] rounded-xl border border-[var(--border)] max-w-xs mx-auto mb-6">
                     {['all', 'unlocked', 'locked'].map((f) => (
                         <button
                             key={f}
                             onClick={() => setFilter(f)}
-                            className={`px-6 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${
+                            className={`flex-1 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all ${
                                 filter === f 
-                                ? 'bg-[var(--color-primary)] text-white shadow-lg shadow-[var(--color-primary)]/20' 
-                                : 'bg-white/5 text-[var(--color-text-tertiary)] hover:text-white'
+                                ? 'bg-[var(--primary)] text-white shadow-sm' 
+                                : 'text-[var(--muted-foreground)] hover:text-[var(--foreground)]'
                             }`}
                         >
                             {f}
@@ -249,16 +243,16 @@ const AchievementsPage = () => {
                                         <div className="flex flex-col items-center text-center">
                                             <div className="relative mb-6">
                                                 <div className={`w-20 h-20 rounded-full flex items-center justify-center border-2 ${
-                                                    unlocked ? 'bg-white/5 border-[var(--color-primary)]/30' : 'bg-slate-900 border-white/5'
+                                                    unlocked ? 'bg-[var(--secondary)] border-[var(--color-primary)]/30' : 'bg-[var(--secondary)] border-[var(--border)]'
                                                 }`}>
                                                     <Icon 
                                                         name={unlocked ? "Shield" : "Lock"} 
-                                                        className={unlocked ? "text-[var(--color-primary)]" : "text-slate-700"} 
+                                                        className={unlocked ? "text-[var(--color-primary)]" : "text-[var(--muted-foreground)]"} 
                                                         size={32} 
                                                     />
                                                 </div>
                                                 {unlocked && (
-                                                    <div className="absolute -top-1 -right-1 w-6 h-6 bg-[var(--color-primary)] rounded-full flex items-center justify-center border-2 border-slate-950">
+                                                    <div className="absolute -top-1 -right-1 w-6 h-6 bg-[var(--color-primary)] rounded-full flex items-center justify-center border-2 border-[var(--card)]">
                                                         <Icon name="Check" size={12} className="text-white" />
                                                     </div>
                                                 )}
@@ -267,21 +261,21 @@ const AchievementsPage = () => {
                                             <div className={`text-[8px] font-black uppercase tracking-widest mb-2 px-3 py-1 rounded-full border ${rarityColors[badge.rarity]}`}>
                                                 {badge.rarity}
                                             </div>
-                                            <h4 className="text-sm font-black text-white uppercase tracking-tight mb-2 group-hover:text-[var(--color-primary)] transition-colors">
+                                            <h4 className="text-sm font-black text-[var(--foreground)] uppercase tracking-tight mb-2 group-hover:text-[var(--color-primary)] transition-colors">
                                                 {badge.name}
                                             </h4>
-                                            <p className="text-[10px] font-medium text-[var(--color-text-tertiary)] leading-relaxed mb-4">
+                                            <p className="text-[10px] font-medium text-[var(--muted-foreground)] leading-relaxed mb-4">
                                                 {badge.description}
                                             </p>
 
-                                            <div className="w-full mt-auto pt-4 border-t border-white/5">
+                                            <div className="w-full mt-auto pt-4 border-t border-[var(--border)]">
                                                 <div className="flex items-center justify-between mb-2">
-                                                    <span className="text-[9px] font-black text-[var(--color-text-secondary)] uppercase tracking-widest">Requirement</span>
+                                                    <span className="text-[9px] font-black text-[var(--muted-foreground)] uppercase tracking-widest">Requirement</span>
                                                     <span className="text-[9px] font-black text-[var(--color-primary)] uppercase tracking-widest">
                                                         {badge.requirement_value || 0} {(badge.requirement_type || 'unknown').toUpperCase()}
                                                     </span>
                                                 </div>
-                                                <div className="h-1 bg-white/5 rounded-full overflow-hidden">
+                                                <div className="h-1 bg-[var(--secondary)] rounded-full overflow-hidden">
                                                     <div 
                                                         className={`h-full bg-[var(--color-primary)] transition-all duration-1000 ${unlocked ? 'w-full' : 'w-0'}`}
                                                     />
@@ -301,16 +295,16 @@ const AchievementsPage = () => {
                             className="grid grid-cols-1 md:grid-cols-2 gap-8"
                         >
                             {certificates.length === 0 ? (
-                                <div className="col-span-full py-20 text-center border-2 border-dashed border-white/5 rounded-[3rem]">
-                                    <Icon name="Award" size={48} className="mx-auto text-slate-700 mb-6 opacity-30" />
-                                    <p className="text-xs font-black uppercase tracking-[0.3em] text-[var(--color-text-tertiary)]">No Certificates Earned Yet</p>
-                                    <p className="text-[10px] text-[var(--color-text-secondary)] mt-2 font-bold">Complete lessons or courses to unlock your scrolls.</p>
+                                <div className="col-span-full py-20 text-center border-2 border-dashed border-[var(--border)] rounded-[3rem]">
+                                    <Icon name="Award" size={48} className="mx-auto text-[var(--muted-foreground)] mb-6 opacity-30" />
+                                    <p className="text-xs font-black uppercase tracking-[0.3em] text-[var(--muted-foreground)]">No Certificates Earned Yet</p>
+                                    <p className="text-[10px] text-[var(--muted-foreground)] mt-2 font-bold">Complete lessons or courses to unlock your scrolls.</p>
                                 </div>
                             ) : (
                                 certificates.map((cert) => (
                                     <EliteCard 
                                         key={cert.id}
-                                        className="group p-8 bg-surface-elevated border-[var(--color-primary)]/20 hover:border-[var(--color-primary)]/50 hover:bg-[var(--color-primary)]/[0.02] transition-all h-full flex flex-col"
+                                        className="group p-8 bg-[var(--secondary)] border-[var(--color-primary)]/20 hover:border-[var(--color-primary)]/50 hover:bg-[var(--color-primary)]/[0.02] transition-all h-full flex flex-col"
                                     >
                                         <div className="flex items-start justify-between mb-8">
                                             <div className="w-14 h-14 rounded-2xl bg-[var(--color-primary)]/10 flex items-center justify-center border border-[var(--color-primary)]/20 group-hover:scale-110 transition-transform">
@@ -318,7 +312,7 @@ const AchievementsPage = () => {
                                             </div>
                                             <div className="text-right">
                                                 <p className="text-[9px] font-black text-[var(--color-primary)] uppercase tracking-widest mb-1">{cert.certificate_number}</p>
-                                                <p className="text-[9px] font-bold text-[var(--color-text-tertiary)] uppercase tracking-widest">Issued: {new Date(cert.issued_at).toLocaleDateString()}</p>
+                                                <p className="text-[9px] font-bold text-[var(--muted-foreground)] uppercase tracking-widest">Issued: {new Date(cert.issued_at).toLocaleDateString()}</p>
                                             </div>
                                         </div>
 
@@ -328,26 +322,26 @@ const AchievementsPage = () => {
                                                     {cert.lesson_id ? 'Lesson Milestone' : 'Course Mastery'}
                                                 </span>
                                             </div>
-                                            <h3 className="text-xl font-black text-white mb-2 leading-tight">
+                                            <h3 className="text-xl font-black text-[var(--foreground)] mb-2 leading-tight">
                                                 {cert.title || cert.course?.title}
                                             </h3>
-                                            <p className="text-[11px] font-medium text-slate-400 line-clamp-2">
+                                            <p className="text-[11px] font-medium text-[var(--muted-foreground)] line-clamp-2">
                                                 {cert.lesson_id ? 'This achievement marks successful completion of a core module.' : cert.course?.description}
                                             </p>
                                         </div>
 
-                                        <div className="mt-8 pt-6 border-t border-white/5 flex items-center justify-between">
+                                        <div className="mt-8 pt-6 border-t border-[var(--border)] flex items-center justify-between">
                                             <div className="flex gap-4">
                                                 <div className="text-center">
-                                                    <p className="text-[8px] font-black text-[var(--color-text-tertiary)] uppercase tracking-widest mb-1">Grade</p>
-                                                    <p className="text-sm font-black text-white">{cert.grade || 'Pass'}</p>
+                                                    <p className="text-[8px] font-black text-[var(--muted-foreground)] uppercase tracking-widest mb-1">Grade</p>
+                                                    <p className="text-sm font-black text-[var(--foreground)]">{cert.grade || 'Pass'}</p>
                                                 </div>
                                                 <div className="text-center">
-                                                    <p className="text-[8px] font-black text-[var(--color-text-tertiary)] uppercase tracking-widest mb-1">Score</p>
+                                                    <p className="text-[8px] font-black text-[var(--muted-foreground)] uppercase tracking-widest mb-1">Score</p>
                                                     <p className="text-sm font-black text-[var(--color-primary)]">{cert.score}%</p>
                                                 </div>
                                             </div>
-                                            <button className="flex items-center gap-2 px-6 py-2.5 rounded-xl bg-white/5 text-white text-[9px] font-black uppercase tracking-widest hover:bg-[var(--color-primary)] transition-all">
+                                            <button className="flex items-center gap-2 px-6 py-2.5 rounded-xl bg-[var(--secondary)] text-[var(--foreground)] border border-[var(--border)] text-[9px] font-black uppercase tracking-widest hover:bg-[var(--color-primary)] hover:text-white hover:border-transparent transition-all">
                                                 View Scroll <Icon name="ExternalLink" size={12} />
                                             </button>
                                         </div>
