@@ -204,10 +204,6 @@ const ApplicationTracker = () => {
                       </Link>
                       <p className="text-xs md:text-sm font-medium text-[var(--color-text-tertiary)] mt-0.5">{job.company}</p>
                       <div className="flex flex-wrap items-center gap-2 md:gap-3 mt-2 text-xs font-medium text-[var(--color-text-tertiary)]">
-                        <span className="flex items-center gap-1.5 px-2 py-1 rounded-md bg-[var(--color-bg-secondary)]">
-                          <Icon name="MapPin" size={12} />
-                          {job.location}
-                        </span>
                         {application.applied_at && (
                           <span className="flex items-center gap-1.5 px-2 py-1 rounded-md bg-[var(--color-bg-secondary)]">
                             <Icon name="Clock" size={12} />

@@ -37,25 +37,7 @@ const JobPreview = ({ formValues }) => {
     return periods?.[formValues?.salary?.period] || '';
   };
   
-  const formatLocation = () => {
-    const { location } = formValues;
-    
-    if (location?.type === 'remote') {
-      return 'Remote';
-    } else if (location?.type === 'hybrid') {
-      if (location?.city && location?.state) {
-        return `Hybrid · ${location?.city}, ${location?.state}`;
-      }
-      return 'Hybrid';
-    } else if (location?.type === 'onsite') {
-      if (location?.city && location?.state) {
-        return `${location?.city}, ${location?.state}`;
-      }
-      return 'On-site';
-    }
-    
-    return '';
-  };
+  
   
   const formatEmploymentType = () => {
     const types = {
@@ -114,12 +96,7 @@ const JobPreview = ({ formValues }) => {
             <span>Your Company</span>
           </div>
           
-          {formatLocation() && (
-            <div className="flex items-center mr-4">
-              <Icon name="MapPin" size={16} className="mr-1" />
-              <span>{formatLocation()}</span>
-            </div>
-          )}
+          
           
           {formatEmploymentType() && (
             <div className="flex items-center mr-4">

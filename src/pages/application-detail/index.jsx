@@ -228,10 +228,6 @@ const ApplicationDetail = () => {
                         <Icon name="Building" size={16} />
                         {job.company || 'Company'}
                       </span>
-                      <span className="flex items-center gap-1">
-                        <Icon name="MapPin" size={16} />
-                        {job.location || 'Location'}
-                      </span>
                       {job.salary && (
                         <span className="flex items-center gap-1">
                           <Icon name="DollarSign" size={16} />

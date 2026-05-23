@@ -3,11 +3,7 @@ import Icon from 'components/AppIcon';
 import { motion } from 'framer-motion';
 
 const CoursePreview = ({ formValues }) => {
-  const formatLocation = () => {
-    const { location } = formValues;
-    if (typeof location === 'string') return location;
-    return 'Online Protocol';
-  };
+
   
   const formatPedagogy = () => {
     const types = {
@@ -85,12 +81,7 @@ const CoursePreview = ({ formValues }) => {
               </div>
               <span className="text-xs font-bold">{formatPedagogy()}</span>
             </div>
-            <div className="flex items-center gap-3 text-text-secondary">
-              <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center border border-white/10">
-                <Icon name="MapPin" size={14} />
-              </div>
-              <span className="text-xs font-bold">{formatLocation()}</span>
-            </div>
+
           </div>
 
           <div className="pt-6 border-t border-white/5">

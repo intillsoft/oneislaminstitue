@@ -81,12 +81,7 @@ const EventCard = ({ event, index, onPrepTips }) => {
                                 <Calendar size={12} />
                                 {formatDate(event.start_time)}
                             </span>
-                            {event.location && (
-                                <span className="flex items-center gap-1.5 text-text-muted">
-                                    <MapPin size={12} />
-                                    {event.location}
-                                </span>
-                            )}
+
                         </div>
                         
                          {/* Action buttons */}
