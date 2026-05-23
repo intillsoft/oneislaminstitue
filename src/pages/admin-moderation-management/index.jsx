@@ -186,45 +186,50 @@ const AcademicCentralCommand = () => {
   // ─── Cinematic Mobile-Native Display ───
   if (isMobile) {
     return (
-      <div className="relative min-h-screen bg-[var(--color-bg-primary)] text-[var(--color-text-primary)] transition-colors duration-200 pb-28 pt-6 px-4">
+      <div className="native-app-canvas px-4">
         <AdminAmbient />
         <DashboardAIAssistant dashboardType="admin" contextData={{ stats, activeTab }} />
 
-        {/* Header App Bar */}
-        <header className="flex items-center justify-between mb-8 px-2">
-          <div>
-            <h1 className="text-2xl font-black text-[var(--color-text-primary)] tracking-tight">Command Panel</h1>
-            <p className="text-[10px] font-bold text-[var(--color-primary)]/60 uppercase tracking-widest mt-0.5">Admin authority</p>
+        {/* 📱 Native Admin Welcome Cap */}
+        <div className="flex items-center gap-4 mb-6 p-4 bg-[var(--card)] border border-[var(--border)] rounded-2xl transition-colors duration-200">
+          <div className="w-12 h-12 rounded-full bg-[var(--color-primary-light)] flex items-center justify-center text-[var(--color-primary)] text-lg font-black border border-[var(--color-border-secondary)] flex-shrink-0">
+            <Icon name="Shield" size={24} />
           </div>
-          <button onClick={loadStats} className="w-10 h-10 rounded-xl bg-[var(--card)] border border-[var(--border)] flex items-center justify-center text-[var(--color-primary)]">
-            <Icon name="RefreshCw" size={16} className={loadingStats ? 'animate-spin' : ''} />
-          </button>
-        </header>
+          <div>
+            <span className="text-[9px] font-bold text-[var(--color-primary)] uppercase tracking-widest leading-none block mb-1">Governance Portal</span>
+            <h1 className="text-xl font-bold text-[var(--color-text-primary)] tracking-tight">Academic Command</h1>
+          </div>
+        </div>
 
-        {/* Compact Stat Bubbles */}
-        <div className="grid grid-cols-2 gap-3 mb-8">
-          {statCards.map(s => (
-            <div key={s.label} className="relative overflow-hidden rounded-2xl bg-[var(--card)] border border-[var(--border)] p-4">
-              <div className={`absolute top-0 left-0 right-0 h-[1.5px] ${s.accentClass}`} />
-              <p className="text-[8px] font-black text-[var(--muted-foreground)] uppercase tracking-[0.2em] mb-1">{s.label}</p>
-              <p className="text-lg font-black text-[var(--color-text-primary)]">{s.value}</p>
+        {/* 📊 Compact Native Stat Cards */}
+        <div className="grid grid-cols-2 gap-3 mb-6">
+          {statCards.slice(0, 2).map(s => (
+            <div key={s.label} className="native-metric-card" style={{ borderTopColor: 'var(--color-stat-border-1)' }}>
+              <p className="text-[10px] font-bold text-[var(--color-text-tertiary)] uppercase tracking-wider mb-1">{s.label.split(' ')[0]} Tasks</p>
+              <p className="text-xl font-black text-[var(--color-text-primary)] mt-1">{s.value}</p>
             </div>
           ))}
         </div>
 
-        {/* 2x2 Action Tiles (App format) */}
-        <p className="px-2 mb-3 text-[9px] font-black text-[var(--muted-foreground)] uppercase tracking-[0.3em]">Management Modules</p>
-        <div className="grid grid-cols-2 gap-4">
-          {flatItems.map(item => (
+        {/* 📱 iOS-Style Management Modules Menu */}
+        <p className="px-2 mb-3 text-[10px] font-bold text-[var(--color-text-tertiary)] uppercase tracking-wider">Governance Modules</p>
+        <div className="native-list-group mb-6">
+          {flatItems.map((item, idx) => (
             <button
-              key={item.id}
+              key={idx}
               onClick={() => navigate(`/admin/dashboard/${item.id}`)}
-              className="flex flex-col items-center justify-center p-6 bg-[var(--card)] border border-[var(--border)] rounded-3xl aspect-square hover:bg-[var(--color-primary-light)] active:scale-95 transition-all duration-200"
+              className="native-list-row"
             >
-              <div className="w-12 h-12 rounded-2xl bg-[var(--color-primary-light)] border border-[var(--color-border-secondary)] flex items-center justify-center mb-4 text-[var(--color-primary)]">
-                <Icon name={item.icon} size={24} className={item.color} />
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl bg-[var(--color-primary-light)] flex items-center justify-center text-[var(--primary)] border border-[var(--color-border-secondary)]">
+                  <Icon name={item.icon} size={18} className={item.color} />
+                </div>
+                <div>
+                  <p className="text-sm font-bold text-[var(--color-text-primary)]">{item.label}</p>
+                  <p className="text-[10px] text-[var(--color-text-tertiary)]">Access platform {item.label.toLowerCase()}</p>
+                </div>
               </div>
-              <span className="text-[11px] font-black uppercase tracking-[0.15em] text-[var(--color-text-secondary)]">{item.label}</span>
+              <Icon name="ChevronRight" size={16} className="text-[var(--color-text-tertiary)]" />
             </button>
           ))}
         </div>

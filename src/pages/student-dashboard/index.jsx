@@ -183,52 +183,58 @@ const StudentDashboard = () => {
 
   if (isMobile) {
     return (
-      <div className="relative pb-24 pt-6 px-4 min-h-screen bg-[var(--color-bg-secondary)]">
+      <div className="native-app-canvas px-4">
         <DashboardAIAssistant
           dashboardType="student"
           contextData={{ metrics, profileCompletion: userData?.profileCompletion, activeTab }}
         />
 
-        {/* 📱 Header App Bar */}
-        <header className="flex items-center justify-between mb-8 px-2">
-          <div>
-            <div className="flex items-center gap-2 mb-1">
-              <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-primary)] animate-pulse" />
-              <span className="text-[9px] font-bold text-[var(--color-primary)] uppercase tracking-widest leading-none">Scholar Account</span>
+        {/* 📱 Native Profile Welcome Cap */}
+        <div className="flex items-center gap-4 mb-6 p-4 bg-[var(--card)] border border-[var(--border)] rounded-2xl transition-colors duration-200">
+          {profile?.avatar_url ? (
+            <img src={profile.avatar_url} alt="" className="w-12 h-12 rounded-full object-cover border-2 border-[var(--color-primary)]/20" />
+          ) : (
+            <div className="w-12 h-12 rounded-full bg-[var(--color-primary-light)] flex items-center justify-center text-[var(--color-primary)] text-lg font-black border border-[var(--color-border-secondary)]">
+              {userData.name.charAt(0).toUpperCase()}
             </div>
-            <h1 className="text-2xl font-bold text-[var(--color-text-primary)] tracking-tight">{getGreeting()}</h1>
-          </div>
-          <button onClick={() => navigate('/notifications')} className="w-10 h-10 rounded-lg bg-[var(--card)] border border-[var(--border)] flex items-center justify-center text-[var(--color-text-tertiary)]">
-            <Icon name="Bell" size={18} />
-          </button>
-        </header>
-
-        {/* 📊 Compact Stat Cards */}
-        <div className="grid grid-cols-2 gap-3 mb-8">
-          <div className="relative overflow-hidden rounded-xl bg-[var(--card)] border border-[var(--border)] p-4" style={{ borderTopWidth: '3px', borderTopColor: 'var(--color-stat-border-1)' }}>
-            <p className="text-[10px] font-medium text-[var(--color-text-tertiary)] uppercase tracking-wider mb-1">Enrolled</p>
-            <p className="text-lg font-bold text-[var(--color-text-primary)]">{metrics.enrollmentsActive}</p>
-          </div>
-          <div className="relative overflow-hidden rounded-xl bg-[var(--card)] border border-[var(--border)] p-4" style={{ borderTopWidth: '3px', borderTopColor: 'var(--color-stat-border-4)' }}>
-            <p className="text-[10px] font-medium text-[var(--color-text-tertiary)] uppercase tracking-wider mb-1">Certificates</p>
-            <p className="text-lg font-bold text-[var(--color-text-primary)]">{metrics.certificatesEarned}</p>
+          )}
+          <div>
+            <span className="text-[9px] font-bold text-[var(--color-primary)] uppercase tracking-widest leading-none block mb-1">Scholar Profile</span>
+            <h1 className="text-xl font-bold text-[var(--color-text-primary)] tracking-tight">Assalamu Alaikum, {userData.name}!</h1>
           </div>
         </div>
 
-        {/* 📱 Quick Utilities */}
-        <p className="px-2 mb-3 text-[10px] font-medium text-[var(--color-text-tertiary)] uppercase tracking-wider">Quick Utilities</p>
-        <div className="grid grid-cols-2 gap-4">
+        {/* 📊 Compact Native Stat Cards */}
+        <div className="grid grid-cols-2 gap-3 mb-6">
+          <div className="native-metric-card" style={{ borderTopColor: 'var(--color-stat-border-1)' }}>
+            <p className="text-[10px] font-bold text-[var(--color-text-tertiary)] uppercase tracking-wider mb-1">Courses Enrolled</p>
+            <p className="text-2xl font-black text-[var(--color-text-primary)]">{metrics.enrollmentsActive}</p>
+          </div>
+          <div className="native-metric-card" style={{ borderTopColor: 'var(--color-stat-border-4)' }}>
+            <p className="text-[10px] font-bold text-[var(--color-text-tertiary)] uppercase tracking-wider mb-1">Certificates Earned</p>
+            <p className="text-2xl font-black text-[var(--color-text-primary)]">{metrics.certificatesEarned}</p>
+          </div>
+        </div>
+
+        {/* 📱 iOS-Style Academic Services Menu */}
+        <p className="px-2 mb-3 text-[10px] font-bold text-[var(--color-text-tertiary)] uppercase tracking-wider">Academic Services</p>
+        <div className="native-list-group mb-6">
           {mobileActions.map((item, idx) => (
             <button
               key={idx}
               onClick={() => navigate(item.path)}
-              className="flex flex-col items-center justify-center p-6 bg-[var(--card)] border border-[var(--border)] rounded-xl aspect-square hover:bg-[var(--color-primary-light)] active:scale-95 transition-all duration-150"
-              style={{ boxShadow: 'var(--shadow-card)' }}
+              className="native-list-row"
             >
-              <div className="w-12 h-12 rounded-xl bg-[var(--color-primary-light)] border border-[var(--color-border-secondary)] flex items-center justify-center mb-4">
-                <item.icon size={24} className={item.color} />
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl bg-[var(--color-primary-light)] flex items-center justify-center text-[var(--color-primary)] border border-[var(--color-border-secondary)]">
+                  <Icon name={item.icon} size={18} />
+                </div>
+                <div>
+                  <p className="text-sm font-bold text-[var(--color-text-primary)]">{item.label}</p>
+                  <p className="text-[10px] text-[var(--color-text-tertiary)]">Manage your course {item.label.toLowerCase()}</p>
+                </div>
               </div>
-              <span className="text-[11px] font-bold uppercase tracking-wider text-[var(--color-text-secondary)]">{item.label}</span>
+              <Icon name="ChevronRight" size={16} className="text-[var(--color-text-tertiary)]" />
             </button>
           ))}
         </div>

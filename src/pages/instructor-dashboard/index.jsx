@@ -247,53 +247,52 @@ const InstructorPortal = () => {
 
   if (isMobile) {
     return (
-      <div className="relative pb-24 pt-6 px-4 min-h-screen bg-[var(--color-bg-primary)] text-[var(--color-text-primary)] transition-colors duration-200">
+      <div className="native-app-canvas px-4">
         <InstructorAmbient />
         <DashboardAIAssistant dashboardType="instructor" contextData={{ companyInfo, activeTab }} />
 
-        {/* 📱 Header App Bar */}
-        <header className="flex items-center justify-between mb-8 px-2">
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl overflow-hidden border border-[var(--primary)]/20 shadow-lg">
-              <img src={companyInfo.logo} alt="Logo" className="w-full h-full object-cover" />
-            </div>
-            <div>
-              <h1 className="text-xl font-black text-[var(--color-text-primary)] tracking-tight">Instructor Panel</h1>
-              <p className="text-[9px] font-bold text-[var(--primary)]/60 uppercase tracking-widest mt-0.5">{companyInfo.name}</p>
-            </div>
+        {/* 📱 Native Institution Welcome Cap */}
+        <div className="flex items-center gap-4 mb-6 p-4 bg-[var(--card)] border border-[var(--border)] rounded-2xl transition-colors duration-200">
+          <div className="w-12 h-12 rounded-xl overflow-hidden border border-[var(--primary)]/20 shadow-sm flex-shrink-0">
+            <img src={companyInfo.logo} alt="Logo" className="w-full h-full object-cover" />
           </div>
-          <button onClick={() => navigate('/notifications/instructor')} className="w-10 h-10 rounded-xl bg-[var(--card)] border border-[var(--border)] flex items-center justify-center text-[var(--primary)]">
-            <Icon name="Bell" size={18} />
-          </button>
-        </header>
-
-        {/* 📊 Quick Stat Pill Bubbles */}
-        <div className="grid grid-cols-2 gap-3 mb-8">
-          <div className="relative overflow-hidden rounded-2xl bg-[var(--card)] border border-[var(--border)] p-4">
-            <div className="absolute top-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-[var(--primary)] to-transparent" />
-            <p className="text-[8px] font-black text-[var(--muted-foreground)] uppercase tracking-[0.2em] mb-1">Status</p>
-            <p className="text-sm font-black text-[var(--color-text-primary)]">{companyInfo.subscription}</p>
-          </div>
-          <div className="relative overflow-hidden rounded-2xl bg-[var(--card)] border border-[var(--border)] p-4">
-            <div className="absolute top-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-fuchsia-500 to-transparent" />
-            <p className="text-[8px] font-black text-fuchsia-200/40 uppercase tracking-[0.2em] mb-1">Renew Target</p>
-            <p className="text-sm font-black text-[var(--color-text-primary)]">Annual</p>
+          <div>
+            <span className="text-[9px] font-bold text-[var(--color-primary)] uppercase tracking-widest leading-none block mb-1">Faculty Account</span>
+            <h1 className="text-xl font-bold text-[var(--color-text-primary)] tracking-tight">{companyInfo.name}</h1>
           </div>
         </div>
 
-        {/* 📱 2x2 Dashboard App Navigation */}
-        <p className="px-2 mb-3 text-[9px] font-black text-[var(--muted-foreground)] uppercase tracking-[0.3em]">Instructor Modules</p>
-        <div className="grid grid-cols-2 gap-4">
+        {/* 📊 Compact Native Stat Cards */}
+        <div className="grid grid-cols-2 gap-3 mb-6">
+          <div className="native-metric-card" style={{ borderTopColor: 'var(--color-stat-border-1)' }}>
+            <p className="text-[10px] font-bold text-[var(--color-text-tertiary)] uppercase tracking-wider mb-1">Academy Status</p>
+            <p className="text-sm font-black text-[var(--color-text-primary)] mt-1">{companyInfo.subscription}</p>
+          </div>
+          <div className="native-metric-card" style={{ borderTopColor: 'var(--color-stat-border-4)' }}>
+            <p className="text-[10px] font-bold text-[var(--color-text-tertiary)] uppercase tracking-wider mb-1">Renew Target</p>
+            <p className="text-sm font-black text-[var(--color-text-primary)] mt-1">Annual Cycle</p>
+          </div>
+        </div>
+
+        {/* 📱 iOS-Style Instructor Modules Menu */}
+        <p className="px-2 mb-3 text-[10px] font-bold text-[var(--color-text-tertiary)] uppercase tracking-wider">Instructor Modules</p>
+        <div className="native-list-group mb-6">
           {TABS.map((item, idx) => (
             <button
               key={idx}
               onClick={() => navigate(`/instructor/dashboard/${item.id}`)}
-              className="flex flex-col items-center justify-center p-6 bg-[var(--card)] border border-[var(--border)] rounded-2xl aspect-square hover:bg-[var(--color-primary-light)] active:scale-95 transition-all duration-200"
+              className="native-list-row"
             >
-              <div className="w-12 h-12 rounded-2xl bg-[var(--color-primary-light)] border border-[var(--color-border-secondary)] flex items-center justify-center mb-4 text-[var(--primary)] shadow-md">
-                <Icon name={item.icon} size={24} className="text-[var(--primary)]" />
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl bg-[var(--color-primary-light)] flex items-center justify-center text-[var(--primary)] border border-[var(--color-border-secondary)]">
+                  <Icon name={item.icon} size={18} />
+                </div>
+                <div>
+                  <p className="text-sm font-bold text-[var(--color-text-primary)]">{item.label}</p>
+                  <p className="text-[10px] text-[var(--color-text-tertiary)]">Access faculty {item.label.toLowerCase()} system</p>
+                </div>
               </div>
-              <span className="text-[11px] font-black uppercase tracking-[0.12em] text-[var(--color-text-secondary)]">{item.label}</span>
+              <Icon name="ChevronRight" size={16} className="text-[var(--color-text-tertiary)]" />
             </button>
           ))}
         </div>

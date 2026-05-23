@@ -53,7 +53,7 @@
   }
 
   .active-bg:active {
-    @apply bg-slate-100 dark:bg-white/5;
+    background-color: var(--color-bg-secondary);
   }
   
   /* Smooth scrolling */
@@ -66,6 +66,99 @@
   button, a {
     min-height: 44px;
     min-width: 44px;
+  }
+
+  /* --- NATIVE MOBILE APP DESIGN UTILITY SYSTEM --- */
+  
+  /* Full screen app container that switches beautifully with active themes */
+  .native-app-canvas {
+    min-height: 100vh;
+    background-color: var(--color-bg-primary);
+    color: var(--color-text-primary);
+    padding-top: calc(var(--header-height) + 12px);
+    padding-bottom: calc(var(--bottom-nav-height) + env(safe-area-inset-bottom, 16px) + 20px);
+    transition: background-color 200ms ease, color 200ms ease;
+  }
+
+  /* Compact top-accented mobile metrics card */
+  .native-metric-card {
+    background: var(--color-card-bg);
+    border: 1px solid var(--color-border-primary);
+    border-radius: 16px;
+    padding: 16px;
+    box-shadow: 0 2px 8px var(--color-card-shadow);
+    transition: background-color 200ms ease, border-color 200ms ease;
+  }
+
+  /* iOS-Style Pill Segmented Control Container */
+  .native-segmented-control {
+    display: flex;
+    background-color: var(--color-bg-secondary);
+    border: 1px solid var(--color-border-primary);
+    padding: 4px;
+    border-radius: 14px;
+    width: 100%;
+    gap: 4px;
+    transition: background-color 200ms ease, border-color 200ms ease;
+  }
+
+  /* individual segmented pill tab button */
+  .native-segmented-tab {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--color-text-tertiary);
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+  }
+
+  .native-segmented-tab-active {
+    background: var(--color-card-bg);
+    color: var(--color-primary);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+  }
+
+  /* iOS-style List View Container */
+  .native-list-group {
+    background: var(--color-card-bg);
+    border: 1px solid var(--color-border-primary);
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px var(--color-card-shadow);
+    transition: background-color 200ms ease, border-color 200ms ease;
+  }
+
+  /* iOS-style stacked list row item */
+  .native-list-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px;
+    border-bottom: 1px solid var(--color-border-primary);
+    background: transparent;
+    border-left: none;
+    border-right: none;
+    width: 100%;
+    text-align: left;
+    transition: background-color 0.15s ease;
+  }
+
+  .native-list-row:last-child {
+    border-bottom: none;
+  }
+
+  .native-list-row:active {
+    background-color: var(--color-bg-secondary);
   }
 }
 
