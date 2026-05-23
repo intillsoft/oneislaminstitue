@@ -201,7 +201,7 @@ const GlobalAIPanel = () => {
               width: isMobile ? '100%' : (isExpanded ? '100vw' : panelWidth),
               height: isMobile ? '88dvh' : '100dvh' 
             }}
-            className={`fixed ${isMobile ? 'bottom-0 left-0 right-0' : 'top-0 bottom-0 right-0'} bg-background/95 dark:bg-background/90 backdrop-blur-2xl z-[9999] shadow-[-1px_-10px_40px_rgba(0,0,0,0.08)] dark:shadow-[-5px_-20px_60px_rgba(0,0,0,0.4)] flex flex-col border-border/30 ${isMobile ? 'border-t rounded-t-[2.5rem]' : 'border-l rounded-l-[2.5rem]'} overflow-hidden ${
+            className={`fixed ${isMobile ? 'bottom-0 left-0 right-0' : 'top-0 bottom-0 right-0'} bg-white dark:bg-[var(--color-bg-dark)] z-[9999] shadow-[-1px_-10px_40px_rgba(0,0,0,0.08)] dark:shadow-[-5px_-20px_60px_rgba(0,0,0,0.4)] flex flex-col border-[var(--color-border-primary)] ${isMobile ? 'border-t rounded-t-[2.5rem]' : 'border-l rounded-l-[2.5rem]'} overflow-hidden ${
               !isResizing && !isExpanded && 'transition-all duration-300'
             }`}
           >
@@ -220,7 +220,7 @@ const GlobalAIPanel = () => {
               />
             )}
             {/* Header */}
-            <div className="flex items-center justify-between px-6 py-5 border-b border-border/30 bg-transparent flex-shrink-0">
+            <div className="flex items-center justify-between px-6 py-5 border-b border-[var(--color-border-primary)] bg-[var(--color-bg-secondary)] dark:bg-[var(--color-bg-sidebar)] flex-shrink-0">
               <div className="flex items-center gap-3">
                 <div className="w-8 h-8 flex items-center justify-center rounded-xl bg-gradient-to-br from-primary to-accent shadow-sm shadow-primary/20">
                   <Sparkles className="w-4 h-4 text-white drop-shadow-sm" />
@@ -293,8 +293,8 @@ const GlobalAIPanel = () => {
                         
                         <div className={`p-4 rounded-2xl shadow-soft ${
                           msg.role === 'user' 
-                            ? 'bg-primary text-primary-foreground rounded-tr-sm font-medium' 
-                            : 'bg-card/60 backdrop-blur-md border border-border/30 text-foreground prose prose-sm dark:prose-invert prose-p:leading-relaxed max-w-none rounded-tl-sm'
+                            ? 'bg-[var(--color-primary)] text-white rounded-tr-sm font-medium' 
+                            : 'bg-[var(--color-bg-secondary)] dark:bg-[#1a2236] border border-[var(--color-border-primary)] text-[var(--color-text-primary)] prose prose-sm dark:prose-invert prose-p:leading-relaxed max-w-none rounded-tl-sm'
                         }`}>
                           {msg.role === 'user' ? (
                             <p className="whitespace-pre-wrap break-words overflow-hidden text-sm" style={{ wordBreak: 'break-word' }}>
@@ -327,7 +327,7 @@ const GlobalAIPanel = () => {
                         <div className="absolute inset-0 rounded-xl border border-white/15"></div>
                         <Sparkles className="w-4 h-4 text-white drop-shadow-sm" />
                       </div>
-                      <div className="flex items-center gap-2 bg-card/60 backdrop-blur-md border border-border/30 px-5 py-4 rounded-2xl rounded-tl-sm shadow-soft">
+                      <div className="flex items-center gap-2 bg-[var(--color-bg-secondary)] dark:bg-[#1a2236] border border-[var(--color-border-primary)] px-5 py-4 rounded-2xl rounded-tl-sm shadow-soft">
                         <span className="w-1.5 h-1.5 rounded-full bg-primary animate-bounce [animation-delay:-0.3s]"></span>
                         <span className="w-1.5 h-1.5 rounded-full bg-primary animate-bounce [animation-delay:-0.15s]"></span>
                         <span className="w-1.5 h-1.5 rounded-full bg-primary animate-bounce"></span>
@@ -340,7 +340,7 @@ const GlobalAIPanel = () => {
             </div>
 
             {/* Input Overlay */}
-            <div className="p-5 bg-transparent border-t border-border/30 relative flex-shrink-0">
+            <div className="p-5 bg-[var(--color-bg-secondary)] dark:bg-[var(--color-bg-sidebar)] border-t border-[var(--color-border-primary)] relative flex-shrink-0">
               {showScrollDown && (
                 <button
                   onClick={() => scrollToBottom()}
@@ -350,7 +350,7 @@ const GlobalAIPanel = () => {
                 </button>
               )}
               
-              <div className="relative flex items-end w-full px-3 py-2 bg-card/45 backdrop-blur-md rounded-2xl border border-border/50 focus-within:border-primary/50 focus-within:ring-2 focus-within:ring-primary/10 transition-all shadow-soft focus-within:shadow-md">
+              <div className="relative flex items-end w-full px-3 py-2 bg-white dark:bg-[var(--color-bg-dark)] rounded-2xl border border-[var(--color-border-primary)] focus-within:border-[var(--color-primary)] focus-within:ring-2 focus-within:ring-[var(--color-primary)]/10 transition-all shadow-soft focus-within:shadow-md">
                 <textarea
                   ref={textareaRef}
                   value={input}
