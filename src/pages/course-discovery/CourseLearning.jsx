@@ -186,7 +186,7 @@ const CourseLearning = () => {
                     <div className="space-y-4">
                         <Link 
                             to={`/courses/detail/${courseId}`} 
-                            className="inline-flex items-center gap-2 text-[var(--color-text-tertiary)] hover:text-[var(--color-primary)] transition-colors bg-white dark:bg-slate-900 px-4 py-2 rounded-xl border border-[var(--color-border-primary)] dark:border-white/10 w-fit"
+                            className="inline-flex items-center gap-2 text-white hover:brightness-110 transition-all bg-[var(--color-primary)] px-4 py-2 rounded-xl border border-[var(--color-primary)] w-fit shadow-md shadow-[var(--color-primary)]/20"
                         >
                             <ChevronLeft size={16} />
                             <span className="text-[10px] font-black uppercase tracking-widest">Course Detail</span>
