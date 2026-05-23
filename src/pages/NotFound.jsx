@@ -4,7 +4,7 @@ import Icon from 'components/AppIcon';
 
 const NotFound = () => {
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-50 flex items-center justify-center px-4">
+    <div className="min-h-screen bg-[var(--background)] flex items-center justify-center px-4">
       <div className="max-w-md w-full text-center">
         <div className="mb-8">
           <div className="w-24 h-24 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-6">

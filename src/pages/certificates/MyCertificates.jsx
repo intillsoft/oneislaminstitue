@@ -200,15 +200,15 @@ const MyCertificates = () => {
         {/* AI Summary Section */}
         {aiSummary && (
              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
-                <EliteCard className="bg-gradient-to-r from-violet-600/5 via-fuchsia-600/5 to-indigo-600/5 border-violet-500/10">
+                <EliteCard className="bg-gradient-to-r from-[var(--primary)]/5 via-sky-500/5 to-[var(--primary)]/5 border-[var(--primary)]/10">
                     <div className="flex flex-col md:flex-row gap-6 items-start">
-                        <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-violet-600 to-indigo-600 flex items-center justify-center shrink-0 shadow-lg shadow-violet-500/20">
+                        <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[var(--primary)] to-sky-600 flex items-center justify-center shrink-0 shadow-lg shadow-[var(--primary)]/20">
                             <Sparkles size={24} className="text-white" />
                         </div>
                         <div className="flex-1">
                              <div className="flex items-center gap-2 mb-2">
                                 <h3 className="text-sm font-black text-text-primary uppercase tracking-wider">AI Achievement Analysis</h3>
-                                <span className="text-[9px] font-bold px-2 py-0.5 rounded-full bg-violet-500/10 text-violet-600 border border-violet-500/20">BETA</span>
+                                <span className="text-[9px] font-bold px-2 py-0.5 rounded-full bg-[var(--primary)]/10 text-[var(--primary)] border border-[var(--primary)]/20">BETA</span>
                             </div>
                             <p className="text-sm text-text-secondary leading-relaxed mb-4 max-w-3xl">{aiSummary.summary}</p>
                             
@@ -217,8 +217,8 @@ const MyCertificates = () => {
                                     <p className="text-[10px] font-bold text-text-muted uppercase tracking-widest mb-2">Top Skills</p>
                                     <div className="flex gap-2">
                                         {aiSummary.skillProfile?.topSkills?.map(skill => (
-                                            <span key={skill} className="px-2.5 py-1 rounded-lg bg-surface border border-border text-[10px] font-bold text-violet-600 flex items-center gap-1">
-                                                <Star size={10} className="fill-violet-600 text-violet-600" /> {skill}
+                                            <span key={skill} className="px-2.5 py-1 rounded-lg bg-surface border border-border text-[10px] font-bold text-[var(--primary)] flex items-center gap-1">
+                                                <Star size={10} className="fill-[var(--primary)] text-[var(--primary)]" /> {skill}
                                             </span>
                                         ))}
                                     </div>

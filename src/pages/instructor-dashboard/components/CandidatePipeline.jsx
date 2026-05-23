@@ -97,7 +97,7 @@ const CandidatePipeline = () => {
 
   return (
     <div className="bg-[#0C1236]/30 backdrop-blur-xl border border-white/[0.04] rounded-3xl relative overflow-hidden shadow-2xl h-full flex flex-col">
-      <div className="absolute top-0 right-0 w-80 h-80 bg-violet-500/[0.02] blur-3xl rounded-full -z-10" />
+      <div className="absolute top-0 right-0 w-80 h-80 bg-[var(--primary)]/[0.02] blur-3xl rounded-full -z-10" />
 
       <div className="p-8 pb-4">
         <div className="flex flex-col xl:flex-row items-start xl:items-center justify-between gap-6 mb-8">
@@ -124,7 +124,7 @@ const CandidatePipeline = () => {
                 key={stage.id}
                 onClick={() => setActiveStage(stage.id)}
                 className={`group relative flex items-center gap-3 px-5 py-2.5 rounded-2xl border transition-all whitespace-nowrap ${isActive
-                  ? 'bg-violet-600 border-violet-500 text-white shadow-lg shadow-violet-600/30'
+                  ? 'bg-[var(--primary)] border-[var(--primary)] text-white shadow-lg shadow-[var(--primary)]/30'
                   : 'bg-white/[0.03] border-white/5 text-white/40 hover:border-white/20 hover:text-white'
                   }`}
               >

@@ -29,7 +29,7 @@ const InstructorTab = ({ active, onClick, icon, label }) => (
     className={`flex-shrink-0 flex items-center gap-2 px-4 py-2 rounded-full text-[11px] font-bold uppercase tracking-widest transition-all duration-200 whitespace-nowrap ${
       active
         ? 'bg-[#0078D4] text-white shadow-sm'
-        : 'text-[#475569] hover:text-[#0078D4] hover:bg-[#EFF6FF]'
+        : 'text-[var(--muted-foreground)] hover:text-[#0078D4] hover:bg-[var(--secondary)]'
     }`}
   >
     <Icon name={icon} size={13} />
@@ -39,10 +39,10 @@ const InstructorTab = ({ active, onClick, icon, label }) => (
 
 /* ─── Quick-info banner at the top of the page ─── */
 const InfoPill = ({ icon, label, value, color }) => (
-  <div className={`flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-[#E2E8F0]`} style={{ boxShadow: '0 1px 4px rgba(0,0,0,0.04)' }}>
+  <div className={`flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--card)] border border-[var(--border)]`} style={{ boxShadow: '0 1px 4px rgba(0,0,0,0.04)' }}>
     <Icon name={icon} size={12} className="text-[#0078D4]" />
-    <span className="text-[10px] font-bold text-[#94A3B8]">{label}</span>
-    <span className="text-xs font-bold text-[#0F172A]">{value}</span>
+    <span className="text-[10px] font-bold text-[var(--muted-foreground)]">{label}</span>
+    <span className="text-xs font-bold text-[var(--foreground)]">{value}</span>
   </div>
 );
 
@@ -167,7 +167,7 @@ const InstructorPortal = () => {
               </div>
               <Link
                 to="/instructor/courses/new"
-                className="flex items-center gap-2 px-4 py-2.5 bg-violet-600 hover:bg-violet-500 text-white rounded-xl font-bold text-xs uppercase tracking-wider shadow-lg shadow-violet-600/20 transition-all"
+                className="flex items-center gap-2 px-4 py-2.5 bg-[var(--primary)] hover:bg-[var(--primary)]/90 text-white rounded-xl font-bold text-xs uppercase tracking-wider shadow-lg shadow-[var(--primary)]/20 transition-all"
               >
                 <Icon name="Plus" size={14} />
                 New Course
@@ -195,16 +195,16 @@ const InstructorPortal = () => {
               ].map(card => (
                 <div key={card.title} className="p-6 rounded-2xl border border-white/[0.06] bg-white/[0.02]">
                   <div className="flex items-center gap-3 mb-6">
-                    <Icon name={card.icon} size={15} className="text-violet-400" />
+                    <Icon name={card.icon} size={15} className="text-[var(--primary)]" />
                     <h3 className="text-xs font-bold text-white/40 uppercase tracking-widest">{card.title}</h3>
                   </div>
                   <div className="h-48 bg-white/[0.02] rounded-xl border border-white/[0.04] flex flex-col items-start justify-end p-5 relative overflow-hidden">
                     <div className="absolute top-4 right-4">
-                      <Icon name={card.icon} size={20} className="text-violet-400 opacity-20" />
+                      <Icon name={card.icon} size={20} className="text-[var(--primary)] opacity-20" />
                     </div>
                     <p className="text-3xl font-black text-white/90 mb-1">
                       {card.value}
-                      {card.unit && <span className="text-violet-400 text-lg ml-1">{card.unit}</span>}
+                      {card.unit && <span className="text-[var(--primary)] text-lg ml-1">{card.unit}</span>}
                     </p>
                     <p className="text-[10px] font-bold uppercase tracking-widest text-white/25">{card.sub}</p>
                   </div>
@@ -248,34 +248,34 @@ const InstructorPortal = () => {
 
   if (isMobile) {
     return (
-      <div className="relative pb-24 pt-6 px-4 min-h-screen bg-[#0A0E27] text-white selection:bg-violet-500/30">
+      <div className="relative pb-24 pt-6 px-4 min-h-screen bg-[#0A0E27] text-white selection:bg-[var(--primary)]/30">
         <InstructorAmbient />
         <DashboardAIAssistant dashboardType="instructor" contextData={{ companyInfo, activeTab }} />
 
         {/* 📱 Header App Bar */}
         <header className="flex items-center justify-between mb-8 px-2">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl overflow-hidden border border-violet-500/20 shadow-lg">
+            <div className="w-9 h-9 rounded-xl overflow-hidden border border-[var(--primary)]/20 shadow-lg">
               <img src={companyInfo.logo} alt="Logo" className="w-full h-full object-cover" />
             </div>
             <div>
               <h1 className="text-xl font-black text-white tracking-tight">Instructor Panel</h1>
-              <p className="text-[9px] font-bold text-violet-400/60 uppercase tracking-widest mt-0.5">{companyInfo.name}</p>
+              <p className="text-[9px] font-bold text-[var(--primary)]/60 uppercase tracking-widest mt-0.5">{companyInfo.name}</p>
             </div>
           </div>
-          <button onClick={() => navigate('/notifications/instructor')} className="w-10 h-10 rounded-xl bg-white/[0.03] border border-violet-500/10 flex items-center justify-center text-violet-400">
+          <button onClick={() => navigate('/notifications/instructor')} className="w-10 h-10 rounded-xl bg-white/[0.03] border border-[var(--primary)]/10 flex items-center justify-center text-[var(--primary)]">
             <Icon name="Bell" size={18} />
           </button>
         </header>
 
         {/* 📊 Quick Stat Pill Bubbles */}
         <div className="grid grid-cols-2 gap-3 mb-8">
-          <div className="relative overflow-hidden rounded-2xl bg-white/[0.02] border border-violet-500/10 p-4">
-            <div className="absolute top-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-violet-500 to-transparent" />
-            <p className="text-[8px] font-black text-violet-200/40 uppercase tracking-[0.2em] mb-1">Status</p>
+          <div className="relative overflow-hidden rounded-2xl bg-white/[0.02] border border-[var(--primary)]/10 p-4">
+            <div className="absolute top-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-[var(--primary)] to-transparent" />
+            <p className="text-[8px] font-black text-[var(--muted-foreground)] uppercase tracking-[0.2em] mb-1">Status</p>
             <p className="text-sm font-black text-white">{companyInfo.subscription}</p>
           </div>
-          <div className="relative overflow-hidden rounded-2xl bg-white/[0.02] border border-violet-500/10 p-4">
+          <div className="relative overflow-hidden rounded-2xl bg-white/[0.02] border border-[var(--primary)]/10 p-4">
             <div className="absolute top-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-fuchsia-500 to-transparent" />
             <p className="text-[8px] font-black text-fuchsia-200/40 uppercase tracking-[0.2em] mb-1">Renew Target</p>
             <p className="text-sm font-black text-white">Annual</p>
@@ -283,16 +283,16 @@ const InstructorPortal = () => {
         </div>
 
         {/* 📱 2x2 Dashboard App Navigation */}
-        <p className="px-2 mb-3 text-[9px] font-black text-violet-200/40 uppercase tracking-[0.3em]">Instructor Modules</p>
+        <p className="px-2 mb-3 text-[9px] font-black text-[var(--muted-foreground)] uppercase tracking-[0.3em]">Instructor Modules</p>
         <div className="grid grid-cols-2 gap-4">
           {TABS.map((item, idx) => (
             <button
               key={idx}
               onClick={() => navigate(`/instructor/dashboard/${item.id}`)}
-              className="flex flex-col items-center justify-center p-6 bg-white/[0.03] border border-violet-500/10 rounded-2xl aspect-square hover:bg-violet-500/5 active:scale-95 transition-all duration-200"
+              className="flex flex-col items-center justify-center p-6 bg-white/[0.03] border border-[var(--primary)]/10 rounded-2xl aspect-square hover:bg-[var(--primary)]/5 active:scale-95 transition-all duration-200"
             >
-              <div className="w-12 h-12 rounded-2xl bg-violet-500/10 border border-violet-500/20 flex items-center justify-center mb-4 text-violet-400 shadow-md">
-                <Icon name={item.icon} size={24} className="text-violet-400" />
+              <div className="w-12 h-12 rounded-2xl bg-[var(--primary)]/10 border border-[var(--primary)]/20 flex items-center justify-center mb-4 text-[var(--primary)] shadow-md">
+                <Icon name={item.icon} size={24} className="text-[var(--primary)]" />
               </div>
               <span className="text-[11px] font-black uppercase tracking-[0.12em] text-slate-200">{item.label}</span>
             </button>
@@ -304,7 +304,7 @@ const InstructorPortal = () => {
   }
 
   return (
-    <div className="relative pb-24 md:pb-16 min-h-screen text-[#0F172A]">
+    <div className="relative pb-24 md:pb-16 min-h-screen text-[var(--foreground)]">
       <InstructorAmbient />
       <DashboardAIAssistant
         dashboardType="instructor"
@@ -343,7 +343,7 @@ const InstructorPortal = () => {
           </div>
 
           {/* 🍱 TAB NAVIGATION BENTO BRIDGE */}
-          <div className="flex items-center gap-2 p-1.5 bg-white border border-[#E2E8F0] rounded-full self-start overflow-x-auto max-w-full scrollbar-hide" style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.06)' }}>
+          <div className="flex items-center gap-2 p-1.5 bg-[var(--card)] border border-[var(--border)] rounded-full self-start overflow-x-auto max-w-full scrollbar-hide" style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.06)' }}>
             {TABS.map(tab => (
               <InstructorTab
                 key={tab.id}

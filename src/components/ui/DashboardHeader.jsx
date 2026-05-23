@@ -29,11 +29,11 @@ const ROLE_CONFIG = {
         label: 'Instructor',
         fullLabel: 'Instructor',
         icon: GraduationCap,
-        color: 'text-violet-400',
-        activeBg: 'bg-violet-500/10',
-        activeBorder: 'border-violet-500/30',
-        dot: 'bg-violet-400',
-        glow: 'shadow-violet-500/20',
+        color: 'text-sky-400',
+        activeBg: 'bg-sky-500/10',
+        activeBorder: 'border-sky-500/30',
+        dot: 'bg-sky-400',
+        glow: 'shadow-sky-500/20',
         path: '/instructor/dashboard',
     },
     student: {
@@ -214,6 +214,10 @@ const DashboardHeader = () => {
                     )}
 
                     <NotificationBell />
+
+                    <div className="flex items-center justify-center mx-1">
+                        <DarkModeToggle />
+                    </div>
 
                     <div className="h-5 w-px bg-slate-200 dark:bg-white/[0.08]" />
 

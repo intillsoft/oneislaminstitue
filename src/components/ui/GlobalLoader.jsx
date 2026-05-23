@@ -3,33 +3,41 @@ import AILoader from './AILoader';
 
 /**
  * GlobalLoader component
- * A full-screen, centered loader used for initial app loading or route transitions.
+ * A premium, non-blocking page transition loader with a top-bar progress indicator
+ * and a glassmorphic, blurred subtle backdrop.
  */
 const GlobalLoader = ({ text = "Securing access..." }) => {
-  const [show, setShow] = React.useState(true);
-
-  React.useEffect(() => {
-    // Ensure loader shows for at least 2.5 seconds for a smooth aesthetic
-    const timer = setTimeout(() => {
-      // We don't hide it here because Suspense unmounts it, 
-      // but we can add a fade-out if the parent supports it.
-      // For now, this component just ensures the initial visual is impactful.
-    }, 2500);
-    return () => clearTimeout(timer);
-  }, []);
-
   return (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-white dark:bg-[var(--color-bg-dark)] transition-all duration-700 ease-in-out">
-      <div className="flex flex-col items-center">
-        <AILoader variant="pulse" size="large" text={text} />
-        
-        {/* Subtle background ornamentation */}
-        <div className="absolute inset-0 pointer-events-none overflow-hidden flex items-center justify-center">
-             <div className="w-[800px] h-[800px] border-[1px] border-[var(--color-primary)]/10 rounded-full animate-ping" />
-             <div className="absolute w-[600px] h-[600px] border-[1px] border-[var(--color-primary)]/5 rounded-full" />
+    <>
+      <style>{`
+        @keyframes loadingBarProgress {
+          0% {
+            transform: translateX(-100%);
+          }
+          50% {
+            transform: translateX(0%);
+          }
+          100% {
+            transform: translateX(100%);
+          }
+        }
+        .animate-loading-bar {
+          animation: loadingBarProgress 1.8s infinite ease-in-out;
+        }
+      `}</style>
+
+      {/* Modern Top-Bar Progress Indicator */}
+      <div className="fixed top-0 left-0 right-0 h-1 z-[10000] overflow-hidden bg-primary/10">
+        <div className="h-full bg-gradient-to-r from-[var(--primary)] via-[var(--accent)] to-[var(--primary)] w-full animate-loading-bar origin-left" />
+      </div>
+
+      {/* Glassmorphic, non-blocking centered overlay */}
+      <div className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-background/20 backdrop-blur-md transition-all duration-300">
+        <div className="flex flex-col items-center p-6 rounded-2xl bg-card/40 border border-border/20 shadow-xl backdrop-blur-xl">
+          <AILoader variant="neural" size="default" text={text} />
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

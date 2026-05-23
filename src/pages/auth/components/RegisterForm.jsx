@@ -146,7 +146,7 @@ const RegisterForm = ({ onSuccess, isLoading: externalLoading }) => {
   const loading = isLoading || externalLoading;
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className="space-y-3.5">
       {/* General Error */}
       {errors?.general && (
         <div className="bg-error-50 dark:bg-error-900/20 border border-error-100 dark:border-error-800 rounded-md p-3">
@@ -157,58 +157,61 @@ const RegisterForm = ({ onSuccess, isLoading: externalLoading }) => {
         </div>
       )}
 
-      {/* Full Name Field */}
-      <div>
-        <label htmlFor="fullName" className="elite-label">
-          Full Name
-        </label>
-        <input
-          type="text"
-          id="fullName"
-          name="fullName"
-          value={formData?.fullName}
-          onChange={handleChange}
-          className={`elite-input ${errors?.fullName ? 'elite-input-error' : ''}`}
-          placeholder="Enter your full name"
-          disabled={loading}
-        />
-        {errors?.fullName && (
-          <p className="elite-error-text flex items-center">
-            <Icon name="AlertCircle" size={14} className="mr-1" />
-            {errors?.fullName}
-          </p>
-        )}
-      </div>
-
-      {/* Email Field */}
-      <div>
-        <label htmlFor="email" className="elite-label">
-          Email Address
-        </label>
-        <div className="relative">
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <Icon name="Mail" size={16} color="#64748B" />
-          </div>
+      {/* Row 1: Full Name & Email */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* Full Name Field */}
+        <div>
+          <label htmlFor="fullName" className="elite-label">
+            Full Name
+          </label>
           <input
-            type="email"
-            id="email"
-            name="email"
-            value={formData?.email}
+            type="text"
+            id="fullName"
+            name="fullName"
+            value={formData?.fullName}
             onChange={handleChange}
-            className={`elite-input pl-10 ${errors?.email ? 'elite-input-error' : ''}`}
-            placeholder="Enter your email"
+            className={`elite-input ${errors?.fullName ? 'elite-input-error' : ''}`}
+            placeholder="Enter your full name"
             disabled={loading}
           />
+          {errors?.fullName && (
+            <p className="elite-error-text flex items-center">
+              <Icon name="AlertCircle" size={14} className="mr-1" />
+              {errors?.fullName}
+            </p>
+          )}
         </div>
-        {errors?.email && (
-          <p className="elite-error-text flex items-center">
-            <Icon name="AlertCircle" size={14} className="mr-1" />
-            {errors?.email}
-          </p>
-        )}
+
+        {/* Email Field */}
+        <div>
+          <label htmlFor="email" className="elite-label">
+            Email Address
+          </label>
+          <div className="relative">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <Icon name="Mail" size={16} color="#64748B" />
+            </div>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value={formData?.email}
+              onChange={handleChange}
+              className={`elite-input pl-10 ${errors?.email ? 'elite-input-error' : ''}`}
+              placeholder="Enter your email"
+              disabled={loading}
+            />
+          </div>
+          {errors?.email && (
+            <p className="elite-error-text flex items-center">
+              <Icon name="AlertCircle" size={14} className="mr-1" />
+              {errors?.email}
+            </p>
+          )}
+        </div>
       </div>
 
-      {/* Professional Title Field */}
+      {/* Row 2: Professional Title */}
       <div>
         <label htmlFor="professionalTitle" className="elite-label">
           Professional Title
@@ -231,105 +234,108 @@ const RegisterForm = ({ onSuccess, isLoading: externalLoading }) => {
         )}
       </div>
 
-      {/* Password Field */}
-      <div>
-        <label htmlFor="password" className="elite-label">
-          Password
-        </label>
-        <div className="relative">
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <Icon name="Lock" size={16} color="#64748B" />
-          </div>
-          <input
-            type={showPassword ? 'text' : 'password'}
-            id="password"
-            name="password"
-            value={formData?.password}
-            onChange={handleChange}
-            className={`elite-input pl-10 pr-10 ${errors?.password ? 'elite-input-error' : ''}`}
-            placeholder="Create a password"
-            disabled={loading}
-          />
-          <button
-            type="button"
-            onClick={() => setShowPassword(!showPassword)}
-            className="absolute inset-y-0 right-0 pr-3 flex items-center"
-            disabled={loading}
-          >
-            <Icon
-              name={showPassword ? "EyeOff" : "Eye"}
-              size={16}
-              color="#64748B"
-              className="hover:text-white transition-smooth"
-            />
-          </button>
-        </div>
-        {formData?.password && (
-          <div className="mt-3">
-            <div className="flex items-center gap-2 mb-1.5">
-              <div className="flex-1 h-1.5 bg-white/5 rounded-full overflow-hidden">
-                <div
-                  className={`h-full transition-all ${getPasswordStrengthColor(passwordStrength)} brightness-110 shadow-[0_0_10px_rgba(255,255,255,0.1)]`}
-                  style={{ width: `${(passwordStrength / 5) * 100}%` }}
-                />
-              </div>
-              <span className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-tertiary)]">
-                {getPasswordStrengthText(passwordStrength)}
-              </span>
+      {/* Row 3: Password & Confirm Password */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* Password Field */}
+        <div>
+          <label htmlFor="password" className="elite-label">
+            Password
+          </label>
+          <div className="relative">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <Icon name="Lock" size={16} color="#64748B" />
             </div>
-          </div>
-        )}
-        {errors?.password && (
-          <p className="elite-error-text flex items-center">
-            <Icon name="AlertCircle" size={14} className="mr-1" />
-            {errors?.password}
-          </p>
-        )}
-      </div>
-
-      {/* Confirm Password Field */}
-      <div>
-        <label htmlFor="confirmPassword" className="elite-label">
-          Confirm Password
-        </label>
-        <div className="relative">
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <Icon name="Lock" size={16} color="#64748B" />
-          </div>
-          <input
-            type={showConfirmPassword ? 'text' : 'password'}
-            id="confirmPassword"
-            name="confirmPassword"
-            value={formData?.confirmPassword}
-            onChange={handleChange}
-            className={`elite-input pl-10 pr-10 ${errors?.confirmPassword ? 'elite-input-error' : ''}`}
-            placeholder="Confirm your password"
-            disabled={loading}
-          />
-          <button
-            type="button"
-            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-            className="absolute inset-y-0 right-0 pr-3 flex items-center"
-            disabled={loading}
-          >
-            <Icon
-              name={showConfirmPassword ? "EyeOff" : "Eye"}
-              size={16}
-              color="#64748B"
-              className="hover:text-white transition-smooth"
+            <input
+              type={showPassword ? 'text' : 'password'}
+              id="password"
+              name="password"
+              value={formData?.password}
+              onChange={handleChange}
+              className={`elite-input pl-10 pr-10 ${errors?.password ? 'elite-input-error' : ''}`}
+              placeholder="Create a password"
+              disabled={loading}
             />
-          </button>
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute inset-y-0 right-0 pr-3 flex items-center"
+              disabled={loading}
+            >
+              <Icon
+                name={showPassword ? "EyeOff" : "Eye"}
+                size={16}
+                color="#64748B"
+                className="hover:text-white transition-smooth"
+              />
+            </button>
+          </div>
+          {formData?.password && (
+            <div className="mt-2">
+              <div className="flex items-center gap-2 mb-1">
+                <div className="flex-1 h-1.5 bg-white/5 rounded-full overflow-hidden">
+                  <div
+                    className={`h-full transition-all ${getPasswordStrengthColor(passwordStrength)} brightness-110 shadow-[0_0_10px_rgba(255,255,255,0.1)]`}
+                    style={{ width: `${(passwordStrength / 5) * 100}%` }}
+                  />
+                </div>
+                <span className="text-[8px] font-black uppercase tracking-widest text-[var(--color-text-tertiary)]">
+                  {getPasswordStrengthText(passwordStrength)}
+                </span>
+              </div>
+            </div>
+          )}
+          {errors?.password && (
+            <p className="elite-error-text flex items-center">
+              <Icon name="AlertCircle" size={14} className="mr-1" />
+              {errors?.password}
+            </p>
+          )}
         </div>
-        {errors?.confirmPassword && (
-          <p className="elite-error-text flex items-center">
-            <Icon name="AlertCircle" size={14} className="mr-1" />
-            {errors?.confirmPassword}
-          </p>
-        )}
+
+        {/* Confirm Password Field */}
+        <div>
+          <label htmlFor="confirmPassword" className="elite-label">
+            Confirm Password
+          </label>
+          <div className="relative">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <Icon name="Lock" size={16} color="#64748B" />
+            </div>
+            <input
+              type={showConfirmPassword ? 'text' : 'password'}
+              id="confirmPassword"
+              name="confirmPassword"
+              value={formData?.confirmPassword}
+              onChange={handleChange}
+              className={`elite-input pl-10 pr-10 ${errors?.confirmPassword ? 'elite-input-error' : ''}`}
+              placeholder="Confirm your password"
+              disabled={loading}
+            />
+            <button
+              type="button"
+              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              className="absolute inset-y-0 right-0 pr-3 flex items-center"
+              disabled={loading}
+            >
+              <Icon
+                name={showConfirmPassword ? "EyeOff" : "Eye"}
+                size={16}
+                color="#64748B"
+                className="hover:text-white transition-smooth"
+              />
+            </button>
+          </div>
+          {errors?.confirmPassword && (
+            <p className="elite-error-text flex items-center">
+              <Icon name="AlertCircle" size={14} className="mr-1" />
+              {errors?.confirmPassword}
+            </p>
+          )}
+        </div>
       </div>
 
       {/* Terms Agreement */}
-      <div className="py-2">
+      <div className="py-1">
         <label className="flex items-start cursor-pointer group">
           <input
             type="checkbox"
@@ -339,7 +345,7 @@ const RegisterForm = ({ onSuccess, isLoading: externalLoading }) => {
             className="mt-1 h-4 w-4 text-workflow-primary focus:ring-workflow-primary/40 bg-white/5 border-white/10 rounded"
             disabled={loading}
           />
-          <span className="ml-3 text-[10px] font-bold uppercase tracking-widest text-[var(--color-text-tertiary)] group-hover:text-slate-400">
+          <span className="ml-3 text-[9px] font-bold uppercase tracking-widest text-[var(--color-text-tertiary)] group-hover:text-slate-400">
             I agree to the{' '}
             <a href="/terms" className="text-workflow-primary hover:text-workflow-primary-400 underline underline-offset-4 decoration-workflow-primary/30">
               Terms of Service
@@ -362,7 +368,7 @@ const RegisterForm = ({ onSuccess, isLoading: externalLoading }) => {
       <button
         type="submit"
         disabled={loading}
-        className="w-full elite-button-primary mt-4"
+        className="w-full elite-button-primary mt-2"
       >
         {loading ? (
           <>

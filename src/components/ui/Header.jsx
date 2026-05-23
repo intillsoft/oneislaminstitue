@@ -197,6 +197,10 @@ const Header = () => {
 
              {/* HERO CTA + AI PANEL TRIGGER */}
              <div className="flex items-center gap-2">
+               <div className="flex items-center justify-center mr-1">
+                 <DarkModeToggle />
+               </div>
+
                <button
                  onClick={() => openPanel()}
                  className="hidden md:flex px-3.5 py-1.5 bg-white/15 hover:bg-white/25 text-white rounded-md text-xs font-bold border border-white/30 transition-all items-center gap-2 group"

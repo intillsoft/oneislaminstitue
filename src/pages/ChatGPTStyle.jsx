@@ -107,7 +107,7 @@ export default function ChatGPTStyle() {
   }, [messages]);
 
   return (
-    <div className="flex w-full h-[calc(100vh-60px)] bg-white dark:bg-[#0F172A] overflow-hidden">
+    <div className="flex w-full h-[calc(100vh-60px)] bg-[var(--background)] overflow-hidden">
       {/* Sidebar */}
       <AnimatePresence>
         {sidebarOpen && (
@@ -116,7 +116,7 @@ export default function ChatGPTStyle() {
             animate={{ x: 0, opacity: 1 }}
             exit={{ x: -300, opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="w-64 bg-white dark:bg-[#1A1F2E] border-r border-gray-200 dark:border-gray-700 flex flex-col overflow-hidden"
+            className="w-64 bg-[var(--card)] border-r border-[var(--border)] flex flex-col overflow-hidden"
           >
             {/* New Chat Button */}
             <div className="p-3 border-b border-gray-100 dark:border-gray-800">
@@ -180,9 +180,9 @@ export default function ChatGPTStyle() {
       </AnimatePresence>
 
       {/* Main Chat Area */}
-      <div className="flex-1 flex flex-col bg-white dark:bg-[#0F172A] overflow-hidden">
+      <div className="flex-1 flex flex-col bg-[var(--background)] overflow-hidden">
         {/* Top Bar */}
-        <div className="border-b border-gray-100 dark:border-gray-800 bg-white dark:bg-[#1A1F2E] px-4 py-3 flex items-center gap-4">
+        <div className="border-b border-[var(--border)] bg-[var(--card)] px-4 py-3 flex items-center gap-4">
           {!sidebarOpen && (
             <button
               onClick={() => setSidebarOpen(true)}
@@ -292,7 +292,7 @@ export default function ChatGPTStyle() {
         </div>
 
         {/* Input Area */}
-        <div className="border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-[#1A1F2E] p-4">
+        <div className="border-t border-[var(--border)] bg-[var(--card)] p-4">
           <div className="flex gap-3">
             <input
               ref={inputRef}

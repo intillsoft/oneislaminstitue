@@ -104,7 +104,7 @@ const QuickActions = () => {
                 className="p-8 h-full flex flex-col justify-between border border-white/[0.04] bg-[#0C1236]/30 backdrop-blur-xl hover:bg-[#0C1236]/50 hover:border-white/[0.08] transition-all rounded-3xl relative overflow-hidden shadow-2xl group cursor-pointer"
               >
                 {action.badge && (
-                  <div className="absolute top-4 right-4 translate-x-12 translate-y-[-12px] rotate-45 bg-violet-600 px-10 py-1 text-[8px] font-black uppercase tracking-widest text-white shadow-lg">
+                  <div className="absolute top-4 right-4 translate-x-12 translate-y-[-12px] rotate-45 bg-[var(--primary)] px-10 py-1 text-[8px] font-black uppercase tracking-widest text-white shadow-lg">
                     {action.badge}
                   </div>
                 )}
@@ -118,7 +118,7 @@ const QuickActions = () => {
                     />
                   </div>
 
-                  <h3 className="text-sm font-black text-white uppercase tracking-wider mb-2 group-hover:text-violet-400 transition-colors">
+                  <h3 className="text-sm font-black text-white uppercase tracking-wider mb-2 group-hover:text-[var(--primary)] transition-colors">
                     {action?.title}
                   </h3>
                   <p className="text-xs font-medium text-white/40 mb-6 leading-relaxed">

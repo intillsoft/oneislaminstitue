@@ -20,7 +20,7 @@ const EVENT_CONFIG = {
   lesson: { icon: BookOpen, color: 'from-blue-500 to-indigo-600', bg: 'bg-blue-500/10', text: 'text-blue-600', border: 'border-blue-500/20', label: 'Lesson' },
   live_session: { icon: Video, color: 'from-[var(--color-primary)] to-teal-600', bg: 'bg-[var(--color-primary)]/10', text: 'text-[var(--color-primary)]', border: 'border-[var(--color-primary)]/20', label: 'Live Session' },
   assignment_due: { icon: FileText, color: 'from-orange-500 to-red-500', bg: 'bg-orange-500/10', text: 'text-orange-600', border: 'border-orange-500/20', label: 'Assignment' },
-  quiz: { icon: CheckSquare, color: 'from-violet-500 to-purple-600', bg: 'bg-violet-500/10', text: 'text-violet-600', border: 'border-violet-500/20', label: 'Quiz' },
+  quiz: { icon: CheckSquare, color: 'from-sky-500 to-blue-600', bg: 'bg-sky-500/10', text: 'text-sky-600', border: 'border-sky-500/20', label: 'Quiz' },
   exam: { icon: AlertTriangle, color: 'from-red-500 to-rose-600', bg: 'bg-red-500/10', text: 'text-red-600', border: 'border-red-500/20', label: 'Exam' },
   office_hours: { icon: Users, color: 'from-teal-500 to-cyan-600', bg: 'bg-teal-500/10', text: 'text-teal-600', border: 'border-teal-500/20', label: 'Office Hours' },
   workshop: { icon: Zap, color: 'from-amber-500 to-yellow-600', bg: 'bg-amber-500/10', text: 'text-amber-600', border: 'border-amber-500/20', label: 'Workshop' },
@@ -98,7 +98,7 @@ const EventCard = ({ event, index, onPrepTips }) => {
                                 </a>
                             )}
                             <button onClick={() => onPrepTips(event)}
-                                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-violet-500/10 text-violet-600 text-[10px] font-black uppercase tracking-wider hover:bg-violet-500/20 transition-all border border-violet-500/20 group-hover:border-violet-500/40">
+                                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[var(--color-primary)]/10 text-[var(--color-primary)] text-[10px] font-black uppercase tracking-wider hover:bg-[var(--color-primary)]/20 transition-all border border-[var(--color-primary)]/20 group-hover:border-[var(--color-primary)]/40">
                                 <Sparkles size={11} /> AI Prep Tips
                             </button>
                              <div className="ml-auto">
@@ -125,7 +125,7 @@ const PrepTipsModal = ({ event, onClose }) => {
       <motion.div initial={{ scale: 0.95, y: 20 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.95, y: 20 }}
         onClick={e => e.stopPropagation()} className="bg-surface border border-border rounded-2xl p-0 max-w-lg w-full shadow-2xl overflow-hidden">
         
-        <div className="p-6 bg-gradient-to-br from-violet-600 to-indigo-700 text-white relative overflow-hidden">
+        <div className="p-6 bg-gradient-to-br from-[var(--color-primary)] to-sky-700 text-white relative overflow-hidden">
              <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl -mr-10 -mt-10"></div>
              <div className="flex items-center gap-4 relative z-10">
                 <div className="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center backdrop-blur-sm shadow-lg">
@@ -170,10 +170,10 @@ const PrepTipsModal = ({ event, onClose }) => {
                 </div>
                 
                 {prep.customTip && (
-                    <div className="p-4 rounded-xl bg-violet-500/5 border border-violet-500/10">
+                    <div className="p-4 rounded-xl bg-[var(--color-primary)]/5 border border-[var(--color-primary)]/10">
                         <div className="flex items-center gap-2 mb-1.5">
-                            <Brain size={12} className="text-violet-500" />
-                            <span className="text-[9px] font-bold text-violet-500 uppercase tracking-widest">AI Custom Insight</span>
+                            <Brain size={12} className="text-[var(--color-primary)]" />
+                            <span className="text-[9px] font-bold text-[var(--color-primary)] uppercase tracking-widest">AI Custom Insight</span>
                         </div>
                         <p className="text-xs text-text-secondary leading-relaxed">{prep.customTip}</p>
                     </div>
@@ -292,13 +292,13 @@ const ClassSchedule = () => {
                       'bg-gradient-to-r from-[var(--color-primary)]/5 to-teal-500/5 border-[var(--color-primary)]/20'}
                 `}>
                     <div className="flex items-start gap-4">
-                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-600 to-indigo-600 flex items-center justify-center shadow-lg shadow-violet-500/20 flex-shrink-0">
+                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[var(--color-primary)] to-sky-600 flex items-center justify-center shadow-lg shadow-[var(--color-primary)]/20 flex-shrink-0">
                             <Brain size={18} className="text-white" />
                         </div>
                         <div className="flex-1">
                             <div className="flex items-center gap-2 mb-1">
                                 <h3 className="text-sm font-black text-text-primary">{dailySummary.greeting}</h3>
-                                <span className="text-[9px] font-bold px-2 py-0.5 rounded-full bg-violet-500/10 text-violet-500 border border-violet-500/20">AI BRIEFING</span>
+                                <span className="text-[9px] font-bold px-2 py-0.5 rounded-full bg-[var(--color-primary)]/10 text-[var(--color-primary)] border border-[var(--color-primary)]/20">AI BRIEFING</span>
                             </div>
                             <p className="text-sm text-text-secondary leading-relaxed mb-3 max-w-2xl">{dailySummary.message}</p>
                             

@@ -128,7 +128,7 @@ const ApplicationsChart = () => {
             <button
               onClick={() => setChartView('weekly')}
               className={`px-4 py-1.5 text-[10px] font-black uppercase tracking-widest rounded-lg transition-all ${chartView === 'weekly'
-                ? 'bg-violet-600 text-white shadow-lg'
+                ? 'bg-[var(--primary)] text-white shadow-lg'
                 : 'text-white/40 hover:text-white'
                 }`}
             >
@@ -137,7 +137,7 @@ const ApplicationsChart = () => {
             <button
               onClick={() => setChartView('monthly')}
               className={`px-4 py-1.5 text-[10px] font-black uppercase tracking-widest rounded-lg transition-all ${chartView === 'monthly'
-                ? 'bg-violet-600 text-white shadow-lg'
+                ? 'bg-[var(--primary)] text-white shadow-lg'
                 : 'text-white/40 hover:text-white'
                 }`}
             >

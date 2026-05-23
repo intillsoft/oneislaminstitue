@@ -24,8 +24,8 @@ const TabBtn = ({ active, onClick, icon: TabIcon, label }) => (
     onClick={onClick}
     className={`relative flex items-center gap-2 px-5 py-2 rounded-full text-[12px] font-bold transition-all duration-150 whitespace-nowrap ${
       active
-        ? 'text-white bg-[#0078D4] shadow-sm'
-        : 'text-[#475569] hover:text-[#0078D4] hover:bg-[#EFF6FF]'
+        ? 'text-white bg-[var(--primary)] shadow-sm'
+        : 'text-[var(--muted-foreground)] hover:text-[var(--primary)] hover:bg-[var(--secondary)]'
     }`}
   >
     <TabIcon size={14} />
@@ -136,7 +136,7 @@ const StudentDashboard = () => {
         return <SavedCourses />;
       default:
         return (
-          <div className="text-center py-20 bg-white rounded-xl border border-[var(--color-card-border)]" style={{ boxShadow: 'var(--shadow-card)' }}>
+          <div className="text-center py-20 bg-[var(--card)] rounded-xl border border-[var(--border)]" style={{ boxShadow: 'var(--shadow-card)' }}>
             <Icon name="Search" size={48} className="mx-auto text-[var(--color-border-secondary)] mb-4" />
             <p className="text-[var(--color-text-tertiary)] font-medium text-sm">Content for this module is being curated.</p>
           </div>
@@ -156,7 +156,7 @@ const StudentDashboard = () => {
     return (
       <div className="flex items-center justify-center py-32">
         <div className="text-center">
-          <div className="w-20 h-20 rounded-xl bg-[var(--color-bg-secondary)] flex items-center justify-center mx-auto mb-6 border border-[var(--color-card-border)]">
+          <div className="w-20 h-20 rounded-xl bg-[var(--color-bg-secondary)] flex items-center justify-center mx-auto mb-6 border border-[var(--border)]">
             <Icon name="Lock" className="w-10 h-10 text-[var(--color-text-tertiary)]" />
           </div>
           <h2 className="text-2xl font-bold text-[var(--color-text-primary)] mb-2">Sign in required</h2>
@@ -199,18 +199,18 @@ const StudentDashboard = () => {
             </div>
             <h1 className="text-2xl font-bold text-[var(--color-text-primary)] tracking-tight">{getGreeting()}</h1>
           </div>
-          <button onClick={() => navigate('/notifications')} className="w-10 h-10 rounded-lg bg-white border border-[var(--color-card-border)] flex items-center justify-center text-[var(--color-text-tertiary)]">
+          <button onClick={() => navigate('/notifications')} className="w-10 h-10 rounded-lg bg-[var(--card)] border border-[var(--border)] flex items-center justify-center text-[var(--color-text-tertiary)]">
             <Icon name="Bell" size={18} />
           </button>
         </header>
 
         {/* 📊 Compact Stat Cards */}
         <div className="grid grid-cols-2 gap-3 mb-8">
-          <div className="relative overflow-hidden rounded-xl bg-white border border-[var(--color-card-border)] p-4" style={{ borderTopWidth: '3px', borderTopColor: 'var(--color-stat-border-1)' }}>
+          <div className="relative overflow-hidden rounded-xl bg-[var(--card)] border border-[var(--border)] p-4" style={{ borderTopWidth: '3px', borderTopColor: 'var(--color-stat-border-1)' }}>
             <p className="text-[10px] font-medium text-[var(--color-text-tertiary)] uppercase tracking-wider mb-1">Enrolled</p>
             <p className="text-lg font-bold text-[var(--color-text-primary)]">{metrics.enrollmentsActive}</p>
           </div>
-          <div className="relative overflow-hidden rounded-xl bg-white border border-[var(--color-card-border)] p-4" style={{ borderTopWidth: '3px', borderTopColor: 'var(--color-stat-border-4)' }}>
+          <div className="relative overflow-hidden rounded-xl bg-[var(--card)] border border-[var(--border)] p-4" style={{ borderTopWidth: '3px', borderTopColor: 'var(--color-stat-border-4)' }}>
             <p className="text-[10px] font-medium text-[var(--color-text-tertiary)] uppercase tracking-wider mb-1">Certificates</p>
             <p className="text-lg font-bold text-[var(--color-text-primary)]">{metrics.certificatesEarned}</p>
           </div>
@@ -223,7 +223,7 @@ const StudentDashboard = () => {
             <button
               key={idx}
               onClick={() => navigate(item.path)}
-              className="flex flex-col items-center justify-center p-6 bg-white border border-[var(--color-card-border)] rounded-xl aspect-square hover:bg-[var(--color-primary-light)] active:scale-95 transition-all duration-150"
+              className="flex flex-col items-center justify-center p-6 bg-[var(--card)] border border-[var(--border)] rounded-xl aspect-square hover:bg-[var(--color-primary-light)] active:scale-95 transition-all duration-150"
               style={{ boxShadow: 'var(--shadow-card)' }}
             >
               <div className="w-12 h-12 rounded-xl bg-[var(--color-primary-light)] border border-[var(--color-border-secondary)] flex items-center justify-center mb-4">
@@ -262,7 +262,7 @@ const StudentDashboard = () => {
             </div>
 
             <div className="flex items-center gap-3">
-              <Link to="/courses" className="flex items-center gap-2 px-5 py-3 bg-white hover:bg-[#EFF6FF] text-[#0078D4] rounded-lg font-bold text-xs uppercase tracking-wider transition-all hover:scale-[1.02]">
+              <Link to="/courses" className="flex items-center gap-2 px-5 py-3 bg-white hover:bg-[var(--secondary)] text-[var(--primary)] rounded-lg font-bold text-xs uppercase tracking-wider transition-all hover:scale-[1.02]">
                 <Search size={13} /> Find Courses
               </Link>
               <Link to="/profile" className="flex items-center gap-2 px-5 py-3 bg-white/15 hover:bg-white/25 text-white rounded-lg font-bold text-xs uppercase tracking-wider border border-white/40 transition-all">
@@ -272,7 +272,7 @@ const StudentDashboard = () => {
           </div>
 
           {/* TAB NAVIGATION */}
-          <div className="flex items-center gap-2 p-1.5 bg-white border border-[#E2E8F0] rounded-full self-start" style={{ boxShadow: 'var(--shadow-card)' }}>
+          <div className="flex items-center gap-2 p-1.5 bg-[var(--card)] border border-[var(--border)] rounded-full self-start" style={{ boxShadow: 'var(--shadow-card)' }}>
             {TABS.map(tab => (
               <TabBtn key={tab.id} active={activeTab === tab.id} onClick={() => setActiveTab(tab.id)} icon={tab.icon} label={tab.label} />
             ))}

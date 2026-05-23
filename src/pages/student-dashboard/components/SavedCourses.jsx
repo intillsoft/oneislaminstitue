@@ -53,7 +53,7 @@ const SavedCourses = ({ limit, showViewAll = false, setActiveTab }) => {
     return (
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {[1, 2, 3, 4].map(i => (
-          <div key={i} className="h-48 bg-white rounded-xl animate-pulse border border-[var(--color-card-border)]"></div>
+          <div key={i} className="h-48 bg-[var(--card)] rounded-xl animate-pulse border border-[var(--border)]"></div>
         ))}
       </div>
     );
@@ -95,7 +95,7 @@ const SavedCourses = ({ limit, showViewAll = false, setActiveTab }) => {
         {showViewAll && (
           <button 
             onClick={() => setActiveTab?.('saved')}
-            className="group flex items-center gap-2 px-6 py-3 rounded-md bg-white border border-[var(--color-card-border)] text-xs font-bold text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] hover:border-[var(--color-primary)] transition-all"
+            className="group flex items-center gap-2 px-6 py-3 rounded-md bg-[var(--card)] border border-[var(--border)] text-xs font-bold text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] hover:border-[var(--color-primary)] transition-all"
           >
             Full Library
             <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
@@ -116,13 +116,13 @@ const SavedCourses = ({ limit, showViewAll = false, setActiveTab }) => {
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
-                className="group relative p-6 rounded-xl bg-white border border-[var(--color-card-border)] hover:border-[var(--color-primary)] transition-all duration-150 overflow-hidden"
+                className="group relative p-6 rounded-xl bg-[var(--card)] border border-[var(--border)] hover:border-[var(--color-primary)] transition-all duration-150 overflow-hidden"
                 style={{ boxShadow: 'var(--shadow-card)' }}
               >
                 <div className="relative flex gap-5">
                   {/* Course Identity */}
                   <div className="flex-shrink-0">
-                    <div className="w-14 h-14 rounded-lg overflow-hidden border border-[var(--color-card-border)] bg-[var(--color-bg-secondary)]">
+                    <div className="w-14 h-14 rounded-lg overflow-hidden border border-[var(--border)] bg-[var(--color-bg-secondary)]">
                       <Image 
                         src={course.logo || 'https://images.unsplash.com/photo-1541339907198-e08756ebafe3?auto=format&fit=crop&q=80'} 
                         className="w-full h-full object-cover" 

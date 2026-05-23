@@ -54,7 +54,7 @@ const ApplicationTracker = () => {
 
   if (!user) {
     return (
-      <div className="bg-white border border-[var(--color-card-border)] rounded-xl p-6" style={{ boxShadow: 'var(--shadow-card)' }}>
+      <div className="bg-[var(--card)] border border-[var(--border)] rounded-xl p-6" style={{ boxShadow: 'var(--shadow-card)' }}>
         <div className="text-center py-12">
           <div className="w-20 h-20 rounded-xl bg-[var(--color-bg-secondary)] flex items-center justify-center mx-auto mb-4">
             <Icon name="FileText" className="w-10 h-10 text-[var(--color-text-tertiary)]" />
@@ -104,7 +104,7 @@ const ApplicationTracker = () => {
     return (
       <div className="space-y-4">
         {[1, 2, 3].map(i => (
-          <div key={i} className="animate-pulse h-32 bg-white rounded-xl border border-[var(--color-card-border)]"></div>
+          <div key={i} className="animate-pulse h-32 bg-[var(--card)] rounded-xl border border-[var(--border)]"></div>
         ))}
       </div>
     );
@@ -112,7 +112,7 @@ const ApplicationTracker = () => {
 
   if (applications.length === 0) {
     return (
-      <div className="bg-white border border-[var(--color-card-border)] rounded-xl p-6" style={{ boxShadow: 'var(--shadow-card)' }}>
+      <div className="bg-[var(--card)] border border-[var(--border)] rounded-xl p-6" style={{ boxShadow: 'var(--shadow-card)' }}>
         <div className="text-center py-12">
           <div className="w-20 h-20 rounded-xl bg-[var(--color-bg-secondary)] flex items-center justify-center mx-auto mb-4">
             <Icon name="FileText" className="w-10 h-10 text-[var(--color-text-tertiary)]" />
@@ -157,7 +157,7 @@ const ApplicationTracker = () => {
             onClick={() => setFilter(status)}
             className={`px-5 py-2.5 rounded-full text-xs font-bold transition-all border ${filter === status
               ? 'bg-[var(--color-primary)] text-white border-[var(--color-primary)]'
-              : 'bg-white text-[var(--color-text-tertiary)] border-[var(--color-card-border)] hover:bg-[var(--color-primary-light)] hover:text-[var(--color-primary)] hover:border-[var(--color-border-secondary)]'
+              : 'bg-[var(--card)] text-[var(--color-text-tertiary)] border-[var(--border)] hover:bg-[var(--color-primary-light)] hover:text-[var(--color-primary)] hover:border-[var(--color-border-secondary)]'
               } tracking-wide`}
           >
             {status === 'all' ? 'All' : status === 'applied' ? 'Active' : status.charAt(0).toUpperCase() + status.slice(1)}
@@ -176,14 +176,14 @@ const ApplicationTracker = () => {
           return (
             <div
               key={application.id}
-              className="group relative overflow-hidden rounded-xl bg-white border border-[var(--color-card-border)] hover:border-[var(--color-border-secondary)] transition-all duration-150 hover:-translate-y-0.5 p-6 sm:p-8"
+              className="group relative overflow-hidden rounded-xl bg-[var(--card)] border border-[var(--border)] hover:border-[var(--color-border-secondary)] transition-all duration-150 hover:-translate-y-0.5 p-6 sm:p-8"
               style={{ boxShadow: 'var(--shadow-card)' }}
             >
               <div className="flex flex-col md:flex-row md:items-start justify-between gap-3 md:gap-4">
                 <div className="flex-1">
                   <div className="flex items-start gap-3">
                     {job.logo ? (
-                      <div className="w-11 h-11 rounded-lg border border-[var(--color-card-border)] overflow-hidden flex-shrink-0">
+                      <div className="w-11 h-11 rounded-lg border border-[var(--border)] overflow-hidden flex-shrink-0">
                         <Image
                           src={job.logo}
                           alt={job.company}
@@ -256,7 +256,7 @@ const ApplicationTracker = () => {
                 </div>
               </div>
               {application.notes && (
-                <div className="mt-4 pt-4 border-t border-[var(--color-card-border)]">
+                <div className="mt-4 pt-4 border-t border-[var(--border)]">
                   <p className="text-[11px] md:text-sm italic font-medium text-[var(--color-text-tertiary)] line-clamp-2">"{application.notes}"</p>
                 </div>
               )}

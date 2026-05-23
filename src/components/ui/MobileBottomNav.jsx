@@ -38,7 +38,7 @@ const MobileBottomNav = ({ type = 'student' }) => {
         className="pointer-events-auto h-16 w-full max-w-md mx-auto rounded-2xl bg-[#0B0F29]/80 backdrop-blur-xl border border-white/[0.05] shadow-2xl flex items-center justify-around px-2 relative overflow-hidden"
       >
         {/* Soft immersive glow stream underneath */}
-        <div className="absolute inset-0 -z-10 bg-gradient-to-r from-[var(--color-primary)]/5 via-violet-500/5 to-cyan-500/5 opacity-50" />
+        <div className="absolute inset-0 -z-10 bg-gradient-to-r from-[var(--color-primary)]/5 via-[var(--color-primary)]/5 to-cyan-500/5 opacity-50" />
 
         {items.map((item, idx) => {
           const isActive = location.pathname === item.path || (item.path !== '/' && location.pathname.startsWith(item.path));

@@ -10,13 +10,13 @@ const DarkModeToggle = () => {
   return (
     <motion.button
       onClick={toggleTheme}
-      className="relative w-11 h-6 rounded-full bg-slate-200 dark:bg-dark-surface p-0.5 focus:outline-none focus:ring-2 focus:ring-workflow-primary focus:ring-offset-2 dark:focus:ring-offset-dark-bg transition-colors duration-300"
+      className="relative w-11 h-6 rounded-full bg-secondary dark:bg-muted p-0.5 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background transition-colors duration-200"
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
       aria-label="Toggle dark mode"
     >
       <motion.div
-        className="absolute top-0.5 w-5 h-5 rounded-full bg-white dark:bg-dark-surface-elevated flex items-center justify-center shadow-md border border-[var(--color-border-primary)] dark:border-dark-border"
+        className="absolute top-0.5 left-0.5 w-5 h-5 rounded-full bg-card flex items-center justify-center shadow-md border border-border transition-colors duration-200"
         animate={{
           x: isDark ? 20 : 0,
         }}
@@ -27,9 +27,9 @@ const DarkModeToggle = () => {
         }}
       >
         {isDark ? (
-          <Moon className="w-3 h-3 text-gray-600 dark:text-gray-300" />
+          <Moon className="w-3 h-3 text-foreground transition-colors duration-200" />
         ) : (
-          <Sun className="w-3 h-3 text-yellow-500" />
+          <Sun className="w-3 h-3 text-primary transition-colors duration-200" />
         )}
       </motion.div>
     </motion.button>
@@ -37,4 +37,5 @@ const DarkModeToggle = () => {
 };
 
 export default DarkModeToggle;
+
 

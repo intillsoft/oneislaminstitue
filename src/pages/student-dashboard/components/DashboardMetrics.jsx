@@ -6,7 +6,7 @@ import * as LucideIcons from 'lucide-react';
 const StatCard = ({ icon: IconComp, label, value, borderColor, iconColor, loading, delay = 0 }) => {
   if (loading) {
     return (
-      <div className="animate-pulse h-28 bg-white border border-[var(--color-card-border)] rounded-xl" />
+      <div className="animate-pulse h-28 bg-[var(--card)] border border-[var(--border)] rounded-xl" />
     );
   }
 
@@ -16,7 +16,7 @@ const StatCard = ({ icon: IconComp, label, value, borderColor, iconColor, loadin
       animate={{ opacity: 1, y: 0 }}
       whileHover={{ y: -4, boxShadow: '0 4px 16px rgba(0, 120, 212, 0.12)' }}
       transition={{ type: 'spring', stiffness: 260, damping: 20 }}
-      className="relative overflow-hidden rounded-xl border border-[var(--color-card-border)] bg-white p-6 transition-all duration-150"
+      className="relative overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--card)] p-6 transition-all duration-150"
       style={{ borderTopWidth: '4px', borderTopColor: borderColor, boxShadow: '0 2px 8px rgba(0,0,0,0.06)' }}
     >
       <div className="flex items-start justify-between">

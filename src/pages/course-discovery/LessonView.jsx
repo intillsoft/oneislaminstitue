@@ -40,29 +40,29 @@ const CompletionModal = ({ isOpen, type, coins, onNext }) => {
     const isCourse = type === 'course';
 
     return (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-950/40 backdrop-blur-sm">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-background/40 backdrop-blur-sm">
             <motion.div 
                 initial={{ opacity: 0, scale: 0.95, y: 20 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
-                className="relative bg-white dark:bg-[var(--color-bg-dark)] rounded-3xl p-6 md:p-8 max-w-2xl w-full border border-[var(--color-primary)]/20 shadow-2xl overflow-hidden"
+                className="relative bg-card rounded-3xl p-6 md:p-8 max-w-2xl w-full border border-primary/20 shadow-2xl overflow-hidden transition-colors duration-200"
             >
                 <div className="flex flex-col md:flex-row items-center gap-6">
                     {/* Icon Section */}
                     <div className="flex-shrink-0">
-                        <div className="w-16 h-16 bg-[var(--color-primary)] rounded-2xl flex items-center justify-center shadow-lg shadow-[var(--color-primary)]/20">
-                            {isCourse || isModule ? <Trophy size={32} className="text-white" /> : <Award size={32} className="text-white" />}
+                        <div className="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center shadow-lg shadow-primary/20">
+                            {isCourse || isModule ? <Trophy size={32} className="text-primary-foreground" /> : <Award size={32} className="text-primary-foreground" />}
                         </div>
                     </div>
 
                     {/* Content Section */}
                     <div className="flex-1 text-center md:text-left space-y-1">
-                        <span className="text-[10px] font-black text-[var(--color-primary)] uppercase tracking-widest block">
+                        <span className="text-[10px] font-black text-primary uppercase tracking-widest block">
                             {isCourse ? 'Course Certified' : isModule ? 'Module Mastered' : 'Lesson Mastered'}
                         </span>
-                        <h2 className="text-xl font-black text-[var(--color-text-primary)] dark:text-white uppercase tracking-tight">
+                        <h2 className="text-xl font-black text-foreground uppercase tracking-tight">
                             Well done, Scholar
                         </h2>
-                        <p className="text-xs font-medium text-[var(--color-text-tertiary)] dark:text-slate-400">
+                        <p className="text-xs font-medium text-muted-foreground">
                             {isCourse 
                                 ? "You have officially completed the curriculum for this course."
                                 : "Your progress has been synchronized with the scholarly archives."
@@ -73,14 +73,14 @@ const CompletionModal = ({ isOpen, type, coins, onNext }) => {
                     {/* Rewards & Action */}
                     <div className="flex flex-col items-center md:items-end gap-3 min-w-[140px]">
                         {coins > 0 && (
-                            <div className="flex items-center gap-2 px-3 py-1.5 bg-[var(--color-primary)]/10 border border-[var(--color-primary)]/20 rounded-full">
-                                <Zap size={14} className="text-[var(--color-primary)] fill-[var(--color-primary)]" />
-                                <span className="text-[10px] font-black text-[var(--color-primary)]">+{coins} COINS</span>
+                            <div className="flex items-center gap-2 px-3 py-1.5 bg-primary/10 border border-primary/20 rounded-full">
+                                <Zap size={14} className="text-primary fill-primary" />
+                                <span className="text-[10px] font-black text-primary">+{coins} COINS</span>
                             </div>
                         )}
                         <button 
                             onClick={onNext}
-                            className="group flex items-center gap-2 px-6 py-3 bg-[var(--color-primary)] text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-[var(--color-primary)] transition-all active:scale-95 shadow-lg shadow-[var(--color-primary)]/20"
+                            className="group flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-primary/90 transition-all active:scale-95 shadow-lg shadow-primary/20"
                         >
                             Continue <ChevronRight size={14} className="group-hover:translate-x-0.5 transition-transform" />
                         </button>
@@ -88,12 +88,12 @@ const CompletionModal = ({ isOpen, type, coins, onNext }) => {
                 </div>
                 
                 {/* Auto-timer progress bar at the bottom */}
-                <div className="absolute bottom-0 left-0 h-1 bg-[var(--color-primary)]/10 w-full">
+                <div className="absolute bottom-0 left-0 h-1 bg-primary/10 w-full">
                     <motion.div 
                         initial={{ width: "0%" }}
                         animate={{ width: "100%" }}
                         transition={{ duration: (isModule || isCourse ? 6 : 4), ease: "linear" }}
-                        className="h-full bg-[var(--color-primary)]"
+                        className="h-full bg-primary"
                     />
                 </div>
             </motion.div>
@@ -411,7 +411,7 @@ const LessonView = () => {
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-white dark:bg-[var(--color-bg-dark)] flex items-center justify-center">
+            <div className="min-h-screen bg-background flex items-center justify-center transition-colors duration-200">
                 <AILoader variant="pulse" text="Securing scholar content..." />
             </div>
         );
@@ -419,14 +419,14 @@ const LessonView = () => {
 
     if (modules.length === 0 || !activeLesson) {
         return (
-            <div className="min-h-screen bg-white dark:bg-[var(--color-bg-dark)] flex items-center justify-center p-6">
-                <EliteCard className="p-12 text-center max-w-md w-full border-dashed border-slate-300 dark:border-white/10 shadow-none">
-                    <BookOpen className="w-16 h-16 text-slate-300 dark:text-slate-700 mx-auto mx-w mb-6" />
-                    <h2 className="text-xl font-black text-[var(--color-text-primary)] dark:text-white uppercase tracking-tight mb-2">Curriculum Unavailable</h2>
-                    <p className="text-sm font-medium text-[var(--color-text-tertiary)] mb-8 leading-relaxed">The scholarly content for this course has not been published yet.</p>
+            <div className="min-h-screen bg-background flex items-center justify-center p-6 transition-colors duration-200">
+                <EliteCard className="p-12 text-center max-w-md w-full border-dashed border-border shadow-none">
+                    <BookOpen className="w-16 h-16 text-muted-foreground opacity-30 mx-auto max-w mb-6" />
+                    <h2 className="text-xl font-black text-foreground uppercase tracking-tight mb-2">Curriculum Unavailable</h2>
+                    <p className="text-sm font-medium text-muted-foreground mb-8 leading-relaxed">The scholarly content for this course has not been published yet.</p>
                     <button 
                         onClick={() => navigate(`/courses/detail/${courseId}`)}
-                        className="w-full px-6 py-4 bg-[var(--color-primary)] text-white rounded-2xl font-black uppercase tracking-widest text-[10px] shadow-lg shadow-[var(--color-primary)]/20"
+                        className="w-full px-6 py-4 bg-primary text-primary-foreground rounded-2xl font-black uppercase tracking-widest text-[10px] shadow-lg shadow-primary/20"
                     >
                         Return to Course
                     </button>
@@ -440,7 +440,7 @@ const LessonView = () => {
     const completionPercentage = courseProgress?.completion_percentage || 0;
 
     return (
-        <div className="h-[calc(100vh-var(--header-height))] bg-white dark:bg-[var(--color-bg-dark)] flex flex-col lg:flex-row overflow-hidden pt-0 mt-[var(--header-height)] relative">
+        <div className="h-[calc(100vh-var(--header-height))] bg-background flex flex-col lg:flex-row overflow-hidden pt-0 mt-[var(--header-height)] relative transition-colors duration-200">
             <AnimatePresence>
                 {showRewardModal && (
                     <CompletionModal 
@@ -470,11 +470,11 @@ const LessonView = () => {
                 className={`flex-1 overflow-y-auto scroll-native relative w-full transition-all duration-500 ease-in-out ${sidebarOpen ? 'lg:pl-[332px]' : ''}`}
             >
                 {/* Header Navbar transparent overlay natively flawlessly setup frame */}
-                <div className="sticky top-0 z-30 bg-white/100 dark:bg-[var(--color-bg-dark)] border-b border-white/[0.03] h-[var(--header-height)] px-4 lg:px-12 flex justify-between items-center transition-all">
+                <div className="sticky top-0 z-30 bg-card border-b border-border h-[var(--header-height)] px-4 lg:px-12 flex justify-between items-center transition-colors duration-200">
                     <div className="flex items-center gap-4 lg:gap-6">
                         <button 
                             onClick={() => setSidebarOpen(!sidebarOpen)}
-                            className="flex items-center gap-3 p-2 text-slate-400 hover:text-[var(--color-primary)] transition-colors active:scale-90"
+                            className="flex items-center gap-3 p-2 text-muted-foreground hover:text-primary transition-colors active:scale-90"
                         >
                             <div className="w-5 h-5 flex flex-col justify-center gap-1">
                                 <span className={`h-0.5 bg-current rounded-full transition-all ${sidebarOpen ? 'w-5 translate-y-1.5 rotate-45' : 'w-5'}`} />
@@ -485,23 +485,23 @@ const LessonView = () => {
                         </button>
                         
                         <div className="hidden lg:flex items-center gap-3">
-                            <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-primary)] animate-pulse" />
-                            <h4 className="text-sm font-bold text-slate-800 dark:text-slate-100 truncate max-w-[300px]">{activeLesson.title}</h4>
+                            <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+                            <h4 className="text-sm font-bold text-foreground truncate max-w-[300px]">{activeLesson.title}</h4>
                         </div>
                     </div>
 
                     {/* Compact Progress Bar for Mobile/Tablet */}
                     <div className="flex-1 max-w-[120px] md:max-w-[200px] lg:max-w-[250px] px-2 md:px-6">
                         <div className="w-full flex items-center justify-between mb-1">
-                            <span className="hidden md:inline text-[9px] font-medium text-slate-400">Progress</span>
-                            <span className="text-[9px] font-bold text-slate-700 dark:text-slate-300 ml-auto">{Math.round(completionPercentage)}%</span>
+                            <span className="hidden md:inline text-[9px] font-medium text-muted-foreground">Progress</span>
+                            <span className="text-[9px] font-bold text-foreground ml-auto">{Math.round(completionPercentage)}%</span>
                         </div>
-                        <div className="w-full h-2 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden border border-[var(--color-border-primary)]/20 dark:border-white/5">
+                        <div className="w-full h-2 bg-muted rounded-full overflow-hidden border border-border/20">
                             <motion.div 
                                 initial={{ width: 0 }}
                                 animate={{ width: `${completionPercentage}%` }}
                                 transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
-                                className="h-full bg-[var(--color-primary)] rounded-full shadow-[0_0_8px_rgba(16,185,129,0.3)]"
+                                className="h-full bg-primary rounded-full shadow-[0_0_8px_rgba(16,185,129,0.3)]"
                             />
                         </div>
                     </div>
@@ -572,8 +572,8 @@ const LessonView = () => {
                                         disabled={!hasChanges}
                                         className={`flex items-center gap-1 px-3 py-2 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all ${
                                             hasChanges 
-                                            ? 'bg-[var(--color-primary)] text-white shadow-[var(--color-primary)]/20 animate-pulse' 
-                                            : 'bg-white/5 text-[var(--color-text-tertiary)] disabled:opacity-40'
+                                            ? 'bg-primary text-primary-foreground shadow-primary/20 animate-pulse' 
+                                            : 'bg-muted/50 text-muted-foreground disabled:opacity-40'
                                         }`}
                                     >
                                         <Icon name="Save" size={12} /> Save
@@ -592,8 +592,8 @@ const LessonView = () => {
                                     }}
                                     className={`flex items-center gap-2 px-3 lg:px-4 py-2 rounded-xl text-[9px] font-black uppercase tracking-[0.15em] transition-all border ${
                                         isEditing 
-                                        ? 'bg-white/5 border-white/10 text-slate-400 hover:text-white hover:bg-white/10' 
-                                        : 'bg-[var(--color-primary)] text-white border-[var(--color-primary)] shadow-[var(--color-primary)]/20'
+                                        ? 'bg-muted border-border text-muted-foreground hover:text-foreground hover:bg-muted/80' 
+                                        : 'bg-primary text-primary-foreground border-primary shadow-primary/20'
                                     }`}
                                 >
                                     <Icon name={isEditing ? 'Eye' : 'Edit3'} size={12} />
@@ -607,9 +607,9 @@ const LessonView = () => {
                             disabled={isCompleteButtonDisabled}
                             className={`flex items-center gap-1.5 px-3 lg:px-4 py-2 rounded-xl text-[8px] font-semibold uppercase tracking-[0.18em] transition-all shadow-md active:scale-95 disabled:opacity-30 disabled:grayscale ${
                                 isAlreadyCompleted 
-                                ? 'bg-[var(--color-primary)] text-white shadow-[var(--color-primary)]/10' 
+                                ? 'bg-primary text-primary-foreground shadow-primary/10' 
                                 : nextLesson
-                                    ? 'bg-[var(--color-primary)] text-white shadow-[var(--color-primary)]/20'
+                                    ? 'bg-primary text-primary-foreground shadow-primary/20'
                                     : 'bg-amber-500 text-white shadow-amber-500/20'
                             }`}
                         >
@@ -622,41 +622,41 @@ const LessonView = () => {
                 <div className="max-w-5xl mx-auto p-4 sm:p-8 lg:p-12 lg:px-20 pb-28 sm:pb-32 mt-4 sm:mt-0">
                     {/* Lesson Header */}
                     {activeLesson.title?.toLowerCase().includes('assessment') || activeLesson.title?.toLowerCase().includes('exam') ? (
-                        <div className="space-y-4 mb-10 pb-8 border-b border-[var(--color-border-primary)] dark:border-slate-800">
-                            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-[var(--color-text-tertiary)] text-[10px] font-bold uppercase tracking-widest border border-[var(--color-border-primary)] dark:border-slate-700">
+                        <div className="space-y-4 mb-10 pb-8 border-b border-border">
+                            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-muted text-muted-foreground text-[10px] font-bold uppercase tracking-widest border border-border">
                                 <Target size={12} />
                                 Official Evaluation
                             </div>
-                            <h1 className="text-2xl sm:text-3xl md:text-4xl font-[900] tracking-tight text-[var(--color-text-primary)] dark:text-slate-100 leading-tight">
+                            <h1 className="text-2xl sm:text-3xl md:text-4xl font-[900] tracking-tight text-foreground leading-tight">
                                 {activeLesson.title}
                             </h1>
                             {activeLesson.description && (
-                                <p className="text-sm sm:text-base text-[var(--color-text-tertiary)] font-medium max-w-2xl leading-relaxed">
+                                <p className="text-sm sm:text-base text-muted-foreground font-medium max-w-2xl leading-relaxed">
                                     {activeLesson.description}
                                 </p>
                             )}
-                            <div className="flex flex-wrap items-center gap-4 mt-4 text-[10px] font-bold uppercase tracking-widest text-slate-400">
+                            <div className="flex flex-wrap items-center gap-4 mt-4 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
                                 <span className="flex items-center gap-1.5"><CheckCircle size={14} /> Must Pass All Questions</span>
                                 <span className="flex items-center gap-1.5"><RefreshCw size={14} /> Retries Allowed</span>
                             </div>
                         </div>
                     ) : (
                         <div className="space-y-3 sm:space-y-4 mb-6 sm:mb-8">
-                            <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1 sm:py-1.5 rounded-full bg-[var(--color-primary)]/10 text-[var(--color-primary)] text-[9px] sm:text-[10px] font-bold uppercase tracking-widest border border-[var(--color-primary)]/20 shadow-sm shadow-[var(--color-primary)]/5">
+                            <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1 sm:py-1.5 rounded-full bg-primary/10 text-primary text-[9px] sm:text-[10px] font-bold uppercase tracking-widest border border-primary/20 shadow-sm shadow-primary/5">
                                 <Sparkles size={12} className="animate-pulse" />
                                 Active Module
                             </div>
-                            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight text-slate-900 dark:text-white leading-tight">
+                            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight text-foreground leading-tight">
                                 {activeLesson.title}
                             </h1>
                             
                             {activeLesson.description && (
-                                <p className="text-sm sm:text-lg text-[var(--color-text-secondary)] dark:text-slate-400 leading-relaxed font-medium">
+                                <p className="text-sm sm:text-lg text-muted-foreground leading-relaxed font-medium">
                                     {activeLesson.description}
                                 </p>
                             )}
 
-                            <div className="flex items-center gap-4 text-xs font-semibold uppercase tracking-widest text-slate-400">
+                            <div className="flex items-center gap-4 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
                                 <span className="flex items-center gap-1.5"><Clock size={14} /> {activeLesson.duration_minutes || 0} Minutes</span>
                                 {activeLesson.xp_reward > 0 && <span className="flex items-center gap-1.5 text-amber-500"><Award size={14} /> +{activeLesson.xp_reward} COINS</span>}
                             </div>
@@ -681,11 +681,11 @@ const LessonView = () => {
                         <>
                             {hasPages && (
                                 <div className="flex flex-col items-center mb-10">
-                                    <span className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-primary)] mb-3">Page {currentPage} of {totalPages}</span>
+                                    <span className="text-[10px] font-black uppercase tracking-[0.2em] text-primary mb-3">Page {currentPage} of {totalPages}</span>
                                     <div className="flex w-full max-w-xl gap-2">
                                         {pages.map(p => (
-                                            <div key={p.page_number} className={`h-1.5 flex-1 rounded-full overflow-hidden bg-slate-200 dark:bg-slate-800`}>
-                                                <div className={`h-full bg-[var(--color-primary)] transition-all duration-500 ${p.page_number <= currentPage ? 'w-full' : 'w-0'}`} />
+                                            <div key={p.page_number} className="h-1.5 flex-1 rounded-full overflow-hidden bg-secondary transition-colors duration-200">
+                                                <div className={`h-full bg-primary transition-all duration-500 ${p.page_number <= currentPage ? 'w-full' : 'w-0'}`} />
                                             </div>
                                         ))}
                                     </div>
@@ -697,13 +697,13 @@ const LessonView = () => {
                     )}
 
                     {/* Navigation Buttons Footer */}
-                    <div className="flex flex-col sm:flex-row justify-between items-center gap-3 sm:gap-4 pt-8 sm:pt-12 mt-8 sm:mt-12 border-t border-[var(--color-border-secondary)] dark:border-[var(--color-primary)]/10">
+                    <div className="flex flex-col sm:flex-row justify-between items-center gap-3 sm:gap-4 pt-8 sm:pt-12 mt-8 sm:mt-12 border-t border-border transition-colors duration-200">
                         {hasPages ? (
                             <>
                                 {currentPage > 1 ? (
                                     <button 
                                         onClick={handlePrevPage}
-                                        className="w-full sm:w-auto flex justify-center items-center gap-2 sm:gap-3 px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl sm:rounded-2xl bg-[var(--color-primary-light)] dark:bg-[var(--color-primary)]/10 text-[var(--color-primary)] dark:text-[var(--color-primary)] font-bold uppercase tracking-widest text-[9px] sm:text-[10px] hover:bg-[var(--color-primary-light)] dark:hover:bg-[var(--color-primary)]/20 transition-all border border-[var(--color-border-secondary)] dark:border-[var(--color-primary)]/10 active:scale-[0.98]"
+                                        className="w-full sm:w-auto flex justify-center items-center gap-2 sm:gap-3 px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl sm:rounded-2xl bg-secondary text-primary font-bold uppercase tracking-widest text-[9px] sm:text-[10px] hover:bg-secondary/80 border border-border active:scale-[0.98] transition-all duration-200"
                                     >
                                         <ChevronLeft size={16} /> Previous
                                     </button>
@@ -711,7 +711,7 @@ const LessonView = () => {
                                     prevLesson ? (
                                         <button 
                                             onClick={() => navigate(`/courses/${courseId}/lessons/${prevLesson.id}`)}
-                                            className="w-full sm:w-auto flex justify-center items-center gap-2 sm:gap-3 px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl sm:rounded-2xl bg-white dark:bg-slate-800 text-[var(--color-text-tertiary)] font-bold uppercase tracking-widest text-[9px] sm:text-[10px] hover:bg-slate-100 dark:hover:bg-slate-700 transition-all active:scale-[0.98]"
+                                            className="w-full sm:w-auto flex justify-center items-center gap-2 sm:gap-3 px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl sm:rounded-2xl bg-card text-muted-foreground font-bold uppercase tracking-widest text-[9px] sm:text-[10px] hover:bg-muted border border-border active:scale-[0.98] transition-all duration-200"
                                         >
                                             <ChevronLeft size={16} /> Previous Lesson
                                         </button>
@@ -721,7 +721,7 @@ const LessonView = () => {
                                 {!isLastPage ? (
                                     <button 
                                         onClick={handleNextPage}
-                                        className="w-full sm:w-auto flex justify-center items-center gap-2 px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl sm:rounded-2xl bg-[var(--color-primary)] text-white font-bold uppercase tracking-[0.2em] text-[9px] sm:text-[10px] shadow-md transition-all hover:bg-[var(--color-primary)] active:scale-[0.98]"
+                                        className="w-full sm:w-auto flex justify-center items-center gap-2 px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl sm:rounded-2xl bg-primary text-primary-foreground font-bold uppercase tracking-[0.2em] text-[9px] sm:text-[10px] shadow-md hover:bg-primary/95 active:scale-[0.98] transition-all duration-200"
                                     >
                                         Next <ChevronRight size={14} />
                                     </button>
@@ -729,11 +729,11 @@ const LessonView = () => {
                                     <button 
                                         onClick={handleCompleteLesson}
                                         disabled={completing || (!isAlreadyCompleted && isCompleteButtonDisabled)}
-                                        className={`w-full sm:w-auto flex justify-center items-center gap-2 px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl sm:rounded-2xl font-bold uppercase tracking-[0.2em] text-[9px] sm:text-[10px] shadow-md transition-all disabled:opacity-50 cursor-pointer ${
+                                        className={`w-full sm:w-auto flex justify-center items-center gap-2 px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl sm:rounded-2xl font-bold uppercase tracking-[0.2em] text-[9px] sm:text-[10px] shadow-md transition-all duration-200 disabled:opacity-50 cursor-pointer ${
                                             isAlreadyCompleted
-                                            ? 'bg-[var(--color-primary)] text-white shadow-[var(--color-primary)]/20'
+                                            ? 'bg-primary text-primary-foreground shadow-primary/20 hover:bg-primary/95'
                                             : nextLesson 
-                                                ? 'bg-[var(--color-primary)] text-white shadow-[var(--color-primary)]/20 hover:bg-[var(--color-primary)] active:scale-[0.98]' 
+                                                ? 'bg-primary text-primary-foreground shadow-primary/20 hover:bg-primary/95 active:scale-[0.98]' 
                                                 : 'bg-amber-500 text-white shadow-amber-500/20 hover:bg-amber-400 active:scale-[0.98]'
                                         }`}
                                     >
@@ -747,7 +747,7 @@ const LessonView = () => {
                                 {prevLesson ? (
                                     <button 
                                         onClick={() => navigate(`/courses/${courseId}/lessons/${prevLesson.id}`)}
-                                        className="w-full sm:w-auto flex justify-center items-center gap-2 sm:gap-3 px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl sm:rounded-2xl bg-[var(--color-primary-light)] dark:bg-[var(--color-primary)]/10 text-[var(--color-primary)] dark:text-[var(--color-primary)] font-bold uppercase tracking-widest text-[9px] sm:text-[10px] hover:bg-[var(--color-primary-light)] dark:hover:bg-[var(--color-primary)]/20 transition-all border border-[var(--color-border-secondary)] dark:border-[var(--color-primary)]/10 active:scale-[0.98]"
+                                        className="w-full sm:w-auto flex justify-center items-center gap-2 sm:gap-3 px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl sm:rounded-2xl bg-secondary text-primary font-bold uppercase tracking-widest text-[9px] sm:text-[10px] hover:bg-secondary/80 border border-border active:scale-[0.98] transition-all duration-200"
                                     >
                                         <ChevronLeft size={16} /> Previous Lesson
                                     </button>
@@ -756,11 +756,11 @@ const LessonView = () => {
                                 <button 
                                     onClick={handleCompleteLesson}
                                     disabled={completing || (!isAlreadyCompleted && isCompleteButtonDisabled)}
-                                    className={`w-full sm:w-auto flex justify-center items-center gap-2 px-6 sm:px-8 py-3.5 sm:py-3.5 rounded-xl sm:rounded-2xl font-bold uppercase tracking-[0.2em] text-[9px] sm:text-[10px] shadow-md transition-all disabled:opacity-50 cursor-pointer ${
+                                    className={`w-full sm:w-auto flex justify-center items-center gap-2 px-6 sm:px-8 py-3.5 sm:py-3.5 rounded-xl sm:rounded-2xl font-bold uppercase tracking-[0.2em] text-[9px] sm:text-[10px] shadow-md transition-all duration-200 disabled:opacity-50 cursor-pointer ${
                                         isAlreadyCompleted
-                                        ? 'bg-[var(--color-primary)] text-white shadow-[var(--color-primary)]/20'
+                                        ? 'bg-primary text-primary-foreground shadow-primary/20 hover:bg-primary/95'
                                         : nextLesson 
-                                            ? 'bg-[var(--color-primary)] text-white shadow-[var(--color-primary)]/20 hover:bg-[var(--color-primary)] active:scale-[0.98]' 
+                                            ? 'bg-primary text-primary-foreground shadow-primary/20 hover:bg-primary/95 active:scale-[0.98]' 
                                             : 'bg-amber-500 text-white shadow-amber-500/20 hover:bg-amber-400 active:scale-[0.98]'
                                     }`}
                                 >

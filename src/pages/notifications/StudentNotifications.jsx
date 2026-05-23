@@ -109,12 +109,12 @@ const StudentNotifications = () => {
     const unreadCount = notifications.filter(n => !n.is_read).length;
 
     return (
-        <div className="min-h-screen bg-white dark:bg-[var(--color-bg-dark)] relative overflow-hidden flex flex-col">
+        <div className="min-h-screen bg-background text-foreground relative overflow-hidden flex flex-col">
             {/* Elite Background Accents */}
             <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-7xl">
-                    <div className="absolute top-[-5%] right-[-12%] w-[45%] h-[45%] bg-[var(--color-primary)]/10 rounded-full blur-[140px]" />
-                    <div className="absolute bottom-[-10%] left-[-10%] w-[35%] h-[35%] bg-blue-500/10 rounded-full blur-[110px]" />
+                    <div className="absolute top-[-5%] right-[-12%] w-[45%] h-[45%] bg-primary/10 rounded-full blur-[140px]" />
+                    <div className="absolute bottom-[-10%] left-[-10%] w-[35%] h-[35%] bg-accent/10 rounded-full blur-[110px]" />
                 </div>
             </div>
 
@@ -132,24 +132,24 @@ const StudentNotifications = () => {
                             <div className="flex flex-col md:flex-row md:items-end justify-between gap-12 mb-20 px-2">
                                 <div>
                                     <div className="flex items-center gap-4 mb-4">
-                                        <div className="w-10 h-0.5 bg-[var(--color-primary)] rounded-full" />
-                                        <span className="text-[10px] font-bold uppercase tracking-[0.6em] text-[var(--color-primary)]">Secure Node</span>
+                                        <div className="w-10 h-0.5 bg-primary rounded-full" />
+                                        <span className="text-[10px] font-bold uppercase tracking-[0.6em] text-primary">Secure Node</span>
                                     </div>
-                                    <h1 className="text-2xl sm:text-3xl font-bold text-white tracking-tight uppercase">
-                                        Notifications<span className="text-[var(--color-primary)]">.</span>
+                                    <h1 className="text-2xl sm:text-3xl font-bold text-foreground tracking-tight uppercase">
+                                        Notifications<span className="text-primary">.</span>
                                     </h1>
                                 </div>
 
-                                <div className="flex items-center gap-10 border-l border-white/5 pl-10 hidden lg:flex">
+                                <div className="flex items-center gap-10 border-l border-border/40 pl-10 hidden lg:flex">
                                     <div className="group cursor-default text-right">
-                                        <p className="text-[9px] font-bold text-slate-700 uppercase tracking-[0.4em] mb-1">Unread Alerts</p>
-                                        <p className="text-2xl font-bold text-white tracking-tight">{unreadCount}</p>
+                                        <p className="text-[9px] font-bold text-muted-foreground uppercase tracking-[0.4em] mb-1">Unread Alerts</p>
+                                        <p className="text-2xl font-bold text-foreground tracking-tight">{unreadCount}</p>
                                     </div>
                                 </div>
                             </div>
 
                             {/* Navigation Filters */}
-                            <div className="flex flex-col md:flex-row gap-8 md:items-center justify-between mb-8 px-6 pb-2 border-b border-white/5">
+                            <div className="flex flex-col md:flex-row gap-8 md:items-center justify-between mb-8 px-6 pb-2 border-b border-border/40">
                                 <div className="flex gap-16">
                                     {[
                                         { id: 'all', label: 'All Mail' },
@@ -161,13 +161,13 @@ const StudentNotifications = () => {
                                             onClick={() => setFilter(t.id)}
                                             className={`py-4 text-[11px] font-bold uppercase tracking-[0.4em] transition-all relative ${
                                                 filter === t.id
-                                                    ? 'text-white'
-                                                    : 'text-slate-800 hover:text-slate-400'
+                                                    ? 'text-foreground'
+                                                    : 'text-muted-foreground hover:text-foreground'
                                             }`}
                                         >
                                             {t.label}
                                             {filter === t.id && (
-                                                <motion.div layoutId="student-brief-tab" className="absolute bottom-[-1px] left-0 right-0 h-0.5 bg-[var(--color-primary)]" />
+                                                <motion.div layoutId="student-brief-tab" className="absolute bottom-[-1px] left-0 right-0 h-0.5 bg-primary" />
                                             )}
                                         </button>
                                     ))}
@@ -176,20 +176,20 @@ const StudentNotifications = () => {
 
                             {/* Message Registry */}
                             <div className="flex-1 min-h-0 mb-20">
-                                <div className="bg-[#0C1236]/40 border border-white/[0.04] rounded-3xl overflow-hidden backdrop-blur-3xl shadow-2xl">
+                                <div className="bg-card/45 border border-border/40 rounded-3xl overflow-hidden backdrop-blur-3xl shadow-2xl">
                                     {loading && !notifications.length ? (
                                         <div className="flex justify-center py-40">
-                                            <div className="w-10 h-10 border-2 border-white/5 border-t-emerald-500 rounded-full animate-spin" />
+                                            <div className="w-10 h-10 border-2 border-border/40 border-t-primary rounded-full animate-spin" />
                                         </div>
                                     ) : notifications.length === 0 ? (
                                         <div className="py-60 text-center bg-transparent">
-                                            <div className="w-16 h-16 rounded-3xl bg-white/5 flex items-center justify-center mx-auto mb-10 border border-white/5">
-                                                <Icon name="Inbox" size={24} className="text-slate-800 opacity-20" />
+                                            <div className="w-16 h-16 rounded-3xl bg-muted/30 flex items-center justify-center mx-auto mb-10 border border-border/40">
+                                                <Icon name="Inbox" size={24} className="text-muted-foreground opacity-40" />
                                             </div>
-                                            <h3 className="text-[11px] font-bold text-[var(--color-text-primary)] uppercase tracking-[0.8em]">Briefing Registry Null</h3>
+                                            <h3 className="text-[11px] font-bold text-muted-foreground uppercase tracking-[0.8em]">Briefing Registry Null</h3>
                                         </div>
                                     ) : (
-                                        <div className="divide-y divide-white/[0.03]">
+                                        <div className="divide-y divide-border/40">
                                             <AnimatePresence mode="popLayout">
                                                 {notifications.map((notification) => {
                                                     const isUnread = !notification.is_read;
@@ -203,29 +203,29 @@ const StudentNotifications = () => {
                                                             exit={{ opacity: 0 }}
                                                             transition={{ duration: 0.2 }}
                                                             onClick={() => handleViewNotification(notification)}
-                                                            className={`group flex items-center gap-8 py-7 px-10 cursor-pointer transition-all duration-300 ${isUnread ? 'bg-white/[0.01] hover:bg-white/[0.03]' : 'bg-transparent opacity-60'}`}
+                                                            className={`group flex items-center gap-8 py-7 px-10 cursor-pointer transition-all duration-300 ${isUnread ? 'bg-primary/[0.03] hover:bg-primary/[0.06]' : 'bg-transparent hover:bg-muted/10 opacity-75'}`}
                                                         >
-                                                            <div className={`flex-shrink-0 w-2.5 h-2.5 rounded-full ${isUnread ? 'bg-[var(--color-primary)] shadow-[0_0_15px_rgba(16,185,129,0.5)]' : 'bg-slate-900'}`} />
+                                                            <div className={`flex-shrink-0 w-2.5 h-2.5 rounded-full ${isUnread ? 'bg-primary shadow-[0_0_15px_rgba(30,120,255,0.5)]' : 'bg-muted-foreground/30'}`} />
                                                             
                                                             <div className="w-48 lg:w-64 flex-shrink-0">
-                                                                <span className={`text-[11px] uppercase tracking-[0.2em] truncate block ${isUnread ? 'font-black text-white' : 'font-bold text-[var(--color-text-secondary)]'}`}>
+                                                                <span className={`text-[11px] uppercase tracking-[0.2em] truncate block ${isUnread ? 'font-black text-foreground' : 'font-bold text-muted-foreground'}`}>
                                                                     {sender}
                                                                 </span>
                                                             </div>
 
                                                             <div className="flex-1 min-w-0">
                                                                 <div className="flex items-center gap-4">
-                                                                    <span className={`text-[11px] uppercase tracking-widest truncate ${isUnread ? 'font-black text-white' : 'font-bold text-[var(--color-text-tertiary)]'}`}>
+                                                                    <span className={`text-[11px] uppercase tracking-widest truncate ${isUnread ? 'font-black text-foreground' : 'font-bold text-muted-foreground'}`}>
                                                                         {notification.title}
                                                                     </span>
-                                                                    <span className="text-slate-800 text-[10px] uppercase font-bold tracking-widest truncate opacity-20 group-hover:opacity-100 transition-opacity">
+                                                                    <span className="text-muted-foreground text-[10px] uppercase font-bold tracking-widest truncate opacity-40 group-hover:opacity-100 transition-opacity">
                                                                         - {notification.message}
                                                                     </span>
                                                                 </div>
                                                             </div>
 
                                                             <div className="flex-shrink-0 w-32 text-right">
-                                                                <span className="text-[9px] font-black text-slate-800 uppercase tracking-widest">
+                                                                <span className="text-[9px] font-black text-muted-foreground uppercase tracking-widest">
                                                                     {formatDistanceToNow(new Date(notification.created_at), { addSuffix: false })}
                                                                 </span>
                                                             </div>
@@ -250,7 +250,7 @@ const StudentNotifications = () => {
                             <div className="flex items-center justify-between mb-16 pt-4">
                                 <button
                                     onClick={() => setSelectedNotification(null)}
-                                    className="flex items-center gap-4 px-4 py-2 rounded-xl bg-white/[0.03] border border-white/5 text-[var(--color-text-secondary)] hover:text-white transition-all active:scale-95 group"
+                                    className="flex items-center gap-4 px-4 py-2 rounded-xl bg-muted/30 border border-border/40 text-muted-foreground hover:text-foreground transition-all active:scale-95 group"
                                 >
                                     <Icon name="ArrowLeft" size={16} className="group-hover:-translate-x-1 transition-transform" />
                                     <span className="text-[10px] font-bold uppercase tracking-[0.3em]">Back to Inbox</span>
@@ -259,14 +259,14 @@ const StudentNotifications = () => {
                                 <div className="flex items-center gap-4">
                                     <button
                                         onClick={() => markAsRead(selectedNotification.id, selectedNotification.is_read)}
-                                        className="p-3 rounded-xl bg-white/[0.03] border border-white/5 text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] transition-all active:scale-95"
+                                        className="p-3 rounded-xl bg-muted/30 border border-border/40 text-muted-foreground hover:text-primary transition-all active:scale-95"
                                         title={selectedNotification.is_read ? "Mark unread" : "Mark read"}
                                     >
                                         <Icon name={selectedNotification.is_read ? "Mail" : "MailOpen"} size={18} />
                                     </button>
                                     <button
                                         onClick={() => deleteNotification(selectedNotification.id)}
-                                        className="p-3 rounded-xl bg-white/[0.03] border border-white/5 text-[var(--color-text-secondary)] hover:text-rose-500 transition-all active:scale-95"
+                                        className="p-3 rounded-xl bg-muted/30 border border-border/40 text-muted-foreground hover:text-rose-500 transition-all active:scale-95"
                                         title="Delete"
                                     >
                                         <Icon name="Trash2" size={18} />
@@ -275,46 +275,46 @@ const StudentNotifications = () => {
                             </div>
 
                             {/* Detailed View Container */}
-                            <div className="bg-[#0C1236]/40 border border-white/[0.04] rounded-3xl overflow-hidden backdrop-blur-3xl shadow-2xl p-6 lg:p-10 relative">
-                                <div className="absolute top-0 right-0 w-64 h-64 bg-violet-500/5 rounded-full blur-[100px] -mr-32 -mt-32 pointer-events-none" />
+                            <div className="bg-card/45 border border-border/40 rounded-3xl overflow-hidden backdrop-blur-3xl shadow-2xl p-6 lg:p-10 relative">
+                                <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-[100px] -mr-32 -mt-32 pointer-events-none" />
                                 
                                 <div className="max-w-4xl mx-auto space-y-12">
                                     <div className="space-y-8">
                                         <div className="flex items-center gap-5">
-                                            <div className="w-10 h-10 rounded-xl bg-[var(--color-primary)]/10 flex items-center justify-center border border-[var(--color-primary)]/20">
-                                                <Icon name="Mail" size={18} className="text-[var(--color-primary)]" />
+                                            <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center border border-primary/20">
+                                                <Icon name="Mail" size={18} className="text-primary" />
                                             </div>
                                             <div>
-                                                <p className="text-[10px] font-bold text-[var(--color-primary)] uppercase tracking-widest mb-1">Authenticated Message</p>
-                                                <h2 className="text-xl lg:text-2xl font-bold text-white uppercase tracking-tight leading-tight">
+                                                <p className="text-[10px] font-bold text-primary uppercase tracking-widest mb-1">Authenticated Message</p>
+                                                <h2 className="text-xl lg:text-2xl font-bold text-foreground uppercase tracking-tight leading-tight">
                                                     {selectedNotification.title}
                                                 </h2>
                                             </div>
                                         </div>
 
-                                        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pt-6 border-t border-white/5">
+                                        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pt-6 border-t border-border/40">
                                             <div className="flex items-center gap-4">
-                                                <div className="w-10 h-10 rounded-full bg-slate-900 border border-white/5 flex items-center justify-center text-[10px] font-black text-slate-400">
+                                                <div className="w-10 h-10 rounded-full bg-muted border border-border/40 flex items-center justify-center text-[10px] font-black text-muted-foreground">
                                                     {(selectedNotification.data?.sender_name || 'SA')[0]}
                                                 </div>
                                                 <div>
-                                                    <p className="text-[11px] font-black text-white uppercase tracking-widest">
+                                                    <p className="text-[11px] font-black text-foreground uppercase tracking-widest">
                                                         {selectedNotification.data?.sender_name || 'System Administrator'}
                                                     </p>
-                                                    <p className="text-[9px] font-black text-slate-700 uppercase tracking-widest mt-1">
+                                                    <p className="text-[9px] font-black text-muted-foreground/80 uppercase tracking-widest mt-1">
                                                         Authenticated Source
                                                     </p>
                                                 </div>
                                             </div>
                                             <div className="flex flex-col md:items-end gap-1">
-                                                <p className="text-[10px] font-black text-[var(--color-text-secondary)] uppercase tracking-widest">
+                                                <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">
                                                     {new Date(selectedNotification.created_at).toLocaleDateString('en-US', { 
                                                         year: 'numeric', 
                                                         month: 'short', 
                                                         day: 'numeric' 
                                                     })}
                                                 </p>
-                                                <p className="text-[9px] font-black text-slate-800 uppercase tracking-widest">
+                                                <p className="text-[9px] font-black text-muted-foreground/80 uppercase tracking-widest">
                                                     {new Date(selectedNotification.created_at).toLocaleTimeString()}
                                                 </p>
                                             </div>
@@ -322,18 +322,18 @@ const StudentNotifications = () => {
                                     </div>
 
                                     <div className="prose prose-invert max-w-none pt-4">
-                                        <p className="text-lg text-slate-400 font-medium leading-[1.8] whitespace-pre-wrap selection:bg-[var(--color-primary)]/20 select-text">
+                                        <p className="text-lg text-foreground/85 font-medium leading-[1.8] whitespace-pre-wrap selection:bg-primary/20 select-text">
                                             {selectedNotification.message}
                                         </p>
                                     </div>
 
-                                    <div className="pt-12 border-t border-white/5 flex items-center justify-between">
-                                         <p className="text-[9px] font-black text-[var(--color-text-primary)] uppercase tracking-[0.5em]">
+                                    <div className="pt-12 border-t border-border/40 flex items-center justify-between">
+                                         <p className="text-[9px] font-black text-muted-foreground uppercase tracking-[0.5em]">
                                             Digital Signature - {selectedNotification.id.substring(0, 12)}
                                          </p>
                                         <button 
                                             onClick={() => setSelectedNotification(null)}
-                                            className="px-8 py-3 rounded-xl bg-white text-black text-[10px] font-bold uppercase tracking-widest hover:bg-[var(--color-primary)] hover:text-white transition-all active:scale-95"
+                                            className="px-8 py-3 rounded-xl bg-primary text-primary-foreground text-[10px] font-bold uppercase tracking-widest hover:bg-primary/90 transition-all active:scale-95"
                                         >
                                             Dismiss View
                                         </button>

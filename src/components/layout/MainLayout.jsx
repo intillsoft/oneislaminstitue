@@ -8,7 +8,7 @@ const MainLayout = ({ children }) => {
     const { isCollapsed } = useSidebar();
 
     return (
-        <div className="flex flex-col min-h-screen bg-[var(--color-bg-secondary)] text-[var(--color-text-primary)] transition-colors duration-300">
+        <div className="flex flex-col min-h-screen bg-background text-foreground transition-colors duration-200">
             <div className="flex flex-1 relative min-h-screen">
                 <UnifiedSidebar />
 

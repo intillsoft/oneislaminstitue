@@ -42,7 +42,7 @@ const ProfileCompletion = ({ completion }) => {
   const status = getCompletionStatus();
 
   return (
-    <div className="p-8 bg-white border border-[var(--color-card-border)] rounded-xl h-full flex flex-col justify-between" style={{ boxShadow: 'var(--shadow-card)' }}>
+    <div className="p-8 bg-[var(--card)] border border-[var(--border)] rounded-xl h-full flex flex-col justify-between" style={{ boxShadow: 'var(--shadow-card)' }}>
       <div>
         <div className="mb-6">
           <h3 className="text-xl font-bold text-[var(--color-text-primary)]">Profile Completion</h3>
@@ -61,7 +61,7 @@ const ProfileCompletion = ({ completion }) => {
               {completion}%
             </span>
           </div>
-          <div className="h-2 rounded-full bg-[var(--color-bg-secondary)] border border-[var(--color-card-border)] overflow-hidden">
+          <div className="h-2 rounded-full bg-[var(--color-bg-secondary)] border border-[var(--border)] overflow-hidden">
             <motion.div 
               initial={{ width: 0 }}
               animate={{ width: `${completion}%` }}
@@ -82,7 +82,7 @@ const ProfileCompletion = ({ completion }) => {
             <li key={suggestion?.id}>
               <Link
                 to={suggestion?.path}
-                className="flex items-center p-3 rounded-lg bg-[var(--color-bg-secondary)] hover:bg-[var(--color-primary-light)] border border-[var(--color-card-border)] hover:border-[var(--color-border-secondary)] transition-all group"
+                className="flex items-center p-3 rounded-lg bg-[var(--color-bg-secondary)] hover:bg-[var(--color-primary-light)] border border-[var(--border)] hover:border-[var(--color-border-secondary)] transition-all group"
               >
                 <div className="w-9 h-9 rounded-lg bg-[var(--color-primary-light)] flex items-center justify-center mr-3 group-hover:scale-105 transition-transform flex-shrink-0 border border-[var(--color-border-secondary)]">
                   <Icon name={suggestion?.icon} size={16} className="text-[var(--color-primary)]" />

@@ -47,14 +47,12 @@ const StudentRegistrationLogin = () => {
   }
 
   return (
-    <div className="min-h-screen bg-mesh-elite">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <Breadcrumb customItems={breadcrumbItems} />
-
+    <div className="min-h-screen lg:h-screen lg:overflow-hidden flex flex-col justify-center bg-mesh-elite py-4 lg:py-2">
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-md mx-auto">
           {/* Header */}
-          <div className="text-center mb-10 flex flex-col items-center">
-            <Logo size="lg" className="mb-6" />
+          <div className="text-center mb-4 flex flex-col items-center">
+            <Logo size="lg" darkBg={true} className="mb-2" />
             <p className="text-slate-400 font-medium uppercase text-[10px] tracking-[0.2em] px-4">
               {activeTab === 'login'
                 ? 'Sign in to access your learning dashboard'
@@ -64,10 +62,10 @@ const StudentRegistrationLogin = () => {
           </div>
 
           {/* Separate Navigation Buttons - Refactored for Elite Look */}
-          <div className="flex bg-white/5 p-1.5 rounded-2xl border border-white/10 mb-8">
+          <div className="flex bg-white/5 p-1 rounded-2xl border border-white/10 mb-4">
             <Link
               to="/login"
-              className={`flex-1 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest text-center transition-all ${activeTab === 'login'
+              className={`flex-1 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest text-center transition-all ${activeTab === 'login'
                 ? 'bg-[var(--color-primary)] text-white shadow-lg'
                 : 'text-[var(--color-text-tertiary)] hover:text-white hover:bg-white/5'
                 }`}
@@ -76,7 +74,7 @@ const StudentRegistrationLogin = () => {
             </Link>
             <Link
               to="/register"
-              className={`flex-1 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest text-center transition-all ${activeTab === 'register'
+              className={`flex-1 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest text-center transition-all ${activeTab === 'register'
                 ? 'bg-[var(--color-primary)] text-white shadow-lg'
                 : 'text-[var(--color-text-tertiary)] hover:text-white hover:bg-white/5'
                 }`}
@@ -86,7 +84,7 @@ const StudentRegistrationLogin = () => {
           </div>
 
           {/* Form Container */}
-          <div className="glass-elite rounded-3xl p-8 mb-8 relative overflow-hidden">
+          <div className="glass-elite rounded-3xl p-5 lg:p-5 mb-4 relative overflow-hidden">
             <div className="absolute top-0 right-0 w-32 h-32 bg-[var(--color-primary)]/10 blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
 
             {/* Forms */}
@@ -98,7 +96,7 @@ const StudentRegistrationLogin = () => {
           </div>
 
           {/* Footer Links */}
-          <div className="text-center space-y-6">
+          <div className="text-center space-y-3">
             <div className="flex items-center justify-center space-x-6 text-[10px] font-black uppercase tracking-widest text-[var(--color-text-tertiary)]">
               <Link
                 to="/terms"

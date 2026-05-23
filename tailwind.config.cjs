@@ -8,19 +8,76 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        /* ── Brand / Primary ─────────────────────── */
-        'primary': 'var(--color-primary)',
+        /* ── NEW PREMIUM OKLCH THEME (DYNAMIC STATE MAPPINGS) ── */
+        'background': 'var(--background)',
+        'foreground': 'var(--foreground)',
+        'card': {
+          DEFAULT: 'var(--card)',
+          foreground: 'var(--card-foreground)',
+          'bg': 'var(--card)',
+          'border': 'var(--border)',
+        },
+        'popover': {
+          DEFAULT: 'var(--popover)',
+          foreground: 'var(--popover-foreground)',
+        },
+        'primary': {
+          DEFAULT: 'var(--primary)',
+          foreground: 'var(--primary-foreground)',
+          'hover': 'var(--accent)',
+          'light': 'var(--secondary)',
+          'dark': 'var(--primary)',
+        },
+        'secondary': {
+          DEFAULT: 'var(--secondary)',
+          foreground: 'var(--secondary-foreground)',
+          '100': '#F5F5F5',
+          '200': '#E0E0E0',
+          '300': '#C8E0E0',
+          '400': '#A0A0A0',
+          '500': '#767676',
+          '600': '#444444',
+        },
+        'muted': {
+          DEFAULT: 'var(--muted)',
+          foreground: 'var(--muted-foreground)',
+        },
+        'accent': {
+          DEFAULT: 'var(--accent)',
+          foreground: 'var(--accent-foreground)',
+        },
+        'destructive': {
+          DEFAULT: 'var(--destructive)',
+          foreground: 'var(--destructive-foreground)',
+        },
+        'border': 'var(--border)',
+        'input': 'var(--input)',
+        'ring': 'var(--ring)',
+        'sidebar': {
+          DEFAULT: 'var(--sidebar)',
+          foreground: 'var(--sidebar-foreground)',
+          primary: 'var(--sidebar-primary)',
+          'primary-foreground': 'var(--sidebar-primary-foreground)',
+          accent: 'var(--sidebar-accent)',
+          'accent-foreground': 'var(--sidebar-accent-foreground)',
+          border: 'var(--sidebar-border)',
+          ring: 'var(--sidebar-ring)',
+          'bg': 'var(--sidebar)',
+          'text': 'var(--sidebar-foreground)',
+          'active': 'var(--sidebar-primary-foreground)',
+          'item-active': 'var(--sidebar-accent)',
+          'item-hover': 'var(--sidebar-accent)',
+          'icon': 'var(--sidebar-primary)',
+          'icon-active': 'var(--sidebar-primary-foreground)',
+        },
+
+        /* ── Legacy Mappings for compatibility with old codebases ── */
         'primary-hover': 'var(--color-primary-hover)',
         'primary-light': 'var(--color-primary-light)',
         'primary-dark': 'var(--color-primary-dark)',
-
-        /* Legacy aliases for existing component references */
-        'accent': 'var(--color-primary)',
         'workflow-primary': 'var(--color-primary)',
         'workflow-primary-600': 'var(--color-primary-hover)',
         'sapphire': 'var(--color-primary)',
-
-        /* ── Backgrounds ─────────────────────────── */
         'bg': 'var(--color-bg-primary)',
         'bg-secondary': 'var(--color-bg-secondary)',
         'bg-tertiary': 'var(--color-bg-tertiary)',
@@ -28,19 +85,13 @@ module.exports = {
         'surface-elevated': 'var(--color-bg-secondary)',
         'private': 'var(--color-bg-primary)',
         'white': '#FFFFFF',
-
-        /* ── Text ────────────────────────────────── */
         'text-primary': 'var(--color-text-primary)',
         'text-secondary': 'var(--color-text-secondary)',
         'text-muted': 'var(--color-text-tertiary)',
-
-        /* ── Borders ─────────────────────────────── */
-        'border': 'var(--color-border-primary)',
         'border-primary': 'var(--color-border-primary)',
         'border-secondary': 'var(--color-border-secondary)',
         'border-focus': 'var(--color-border-focus)',
 
-        /* ── Status / Semantic ────────────────────── */
         'success': {
           DEFAULT: 'var(--color-success)',
           'bg': 'var(--color-success-bg)',
@@ -69,20 +120,6 @@ module.exports = {
           DEFAULT: 'var(--color-info)',
           'bg': 'var(--color-info-bg)',
         },
-
-        /* ── Sidebar ─────────────────────────────── */
-        'sidebar': {
-          'bg': 'var(--color-sidebar-bg)',
-          'text': 'var(--color-sidebar-text)',
-          'active': 'var(--color-sidebar-text-active)',
-          'item-active': 'var(--color-sidebar-item-active)',
-          'item-hover': 'var(--color-sidebar-item-hover)',
-          'border': 'var(--color-sidebar-border)',
-          'icon': 'var(--color-sidebar-icon)',
-          'icon-active': 'var(--color-sidebar-icon-active)',
-        },
-
-        /* ── Nav ─────────────────────────────────── */
         'nav': {
           'bg': 'var(--color-nav-bg)',
           'text': 'var(--color-nav-text)',
@@ -90,32 +127,12 @@ module.exports = {
           'border': 'var(--color-nav-border)',
           'active': 'var(--color-nav-active)',
         },
-
-        /* ── Cards ───────────────────────────────── */
-        'card': {
-          'bg': 'var(--color-card-bg)',
-          'border': 'var(--color-card-border)',
-        },
-
-        /* ── Stat card borders ───────────────────── */
         'stat': {
           'blue': 'var(--color-stat-border-1)',
           'green': 'var(--color-stat-border-2)',
           'amber': 'var(--color-stat-border-3)',
           'purple': 'var(--color-stat-border-4)',
         },
-
-        /* ── Secondary shades (used in some components) */
-        'secondary': {
-          '100': '#F5F5F5',
-          '200': '#E0E0E0',
-          '300': '#C8C8C8',
-          '400': '#A0A0A0',
-          '500': '#767676',
-          '600': '#444444',
-        },
-
-        /* ── Dark section colors ─────────────────── */
         'dark': {
           'bg': '#0B1120',
           'surface': '#0F172A',
@@ -126,7 +143,6 @@ module.exports = {
           'text-muted': '#94A3B8',
           'accent': 'var(--color-primary)',
         },
-
         'ink': '#1A1A1A',
         'ink-light': '#444444',
         'bg-bg': 'var(--color-bg-primary)',

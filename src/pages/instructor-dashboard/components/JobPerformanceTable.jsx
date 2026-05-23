@@ -104,7 +104,7 @@ const JobPerformanceTable = () => {
 
   return (
     <div className="bg-[#0C1236]/30 backdrop-blur-xl border border-white/[0.04] rounded-3xl relative overflow-hidden shadow-2xl h-full flex flex-col">
-      <div className="absolute top-0 right-0 w-80 h-80 bg-violet-500/[0.02] blur-3xl rounded-full -z-10" />
+      <div className="absolute top-0 right-0 w-80 h-80 bg-[var(--primary)]/[0.02] blur-3xl rounded-full -z-10" />
 
       <div className="flex flex-col xl:flex-row items-start xl:items-center justify-between p-8 gap-6">
         <div>
@@ -117,7 +117,7 @@ const JobPerformanceTable = () => {
             <select
               value={filter}
               onChange={(e) => setFilter(e?.target?.value)}
-              className="appearance-none bg-white/[0.02] border border-white/[0.05] rounded-xl py-2 pl-4 pr-10 text-[10px] font-black uppercase tracking-widest text-white/70 outline-none focus:ring-1 focus:ring-violet-500/50 transition-all cursor-pointer hover:bg-white/[0.04]"
+              className="appearance-none bg-white/[0.02] border border-white/[0.05] rounded-xl py-2 pl-4 pr-10 text-[10px] font-black uppercase tracking-widest text-white/70 outline-none focus:ring-1 focus:ring-[var(--primary)]/50 transition-all cursor-pointer hover:bg-white/[0.04]"
             >
               <option value="all">System: All Courses</option>
               <option value="active">Active Cluster</option>
@@ -132,7 +132,7 @@ const JobPerformanceTable = () => {
             <input
               type="text"
               placeholder="QUERIES..."
-              className="w-full bg-white/[0.02] border border-white/[0.05] rounded-xl py-2 pl-10 pr-4 text-[10px] font-black uppercase tracking-widest text-white outline-none focus:ring-1 focus:ring-violet-500/50 transition-all placeholder:text-white/20"
+              className="w-full bg-white/[0.02] border border-white/[0.05] rounded-xl py-2 pl-10 pr-4 text-[10px] font-black uppercase tracking-widest text-white outline-none focus:ring-1 focus:ring-[var(--primary)]/50 transition-all placeholder:text-white/20"
             />
           </div>
         </div>

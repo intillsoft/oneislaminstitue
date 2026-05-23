@@ -38,22 +38,22 @@ const AdminStatCard = ({ label, value, icon, accentClass, loading }) => (
   <motion.div
     whileHover={{ y: -2, boxShadow: '0 6px 24px rgba(0,120,212,0.15)' }}
     transition={{ duration: 0.2 }}
-    className="group relative overflow-hidden rounded-xl bg-white border border-[#E2E8F0] p-6 transition-all duration-300"
-    style={{ boxShadow: '0 2px 12px rgba(0,0,0,0.08)' }}
+    className="group relative overflow-hidden rounded-xl bg-[var(--card)] border border-[var(--border)] p-6 transition-all duration-300"
+    style={{ boxShadow: 'var(--shadow-card)' }}
   >
     {/* Thin top-accent stripe */}
     <div className={`absolute top-0 left-0 right-0 h-[3px] ${accentClass}`} />
 
     <div className="flex items-start justify-between mb-4">
-      <div className="w-9 h-9 rounded-lg bg-[#EFF6FF] border border-[#C8E0F4] flex items-center justify-center">
+      <div className="w-9 h-9 rounded-lg bg-[var(--secondary)] border border-[var(--border)] flex items-center justify-center">
         <Icon name={icon} size={16} className="text-[#0078D4]" />
       </div>
     </div>
 
-    <p className="text-[10px] font-bold text-[#94A3B8] uppercase tracking-[0.15em] mb-1.5">{label}</p>
-    <p className="text-2xl font-extrabold text-[#0F172A] tracking-tight">
+    <p className="text-[10px] font-bold text-[var(--muted-foreground)] uppercase tracking-[0.15em] mb-1.5">{label}</p>
+    <p className="text-2xl font-extrabold text-[var(--foreground)] tracking-tight">
       {loading
-        ? <span className="inline-block w-12 h-6 bg-[#EFF6FF] rounded animate-pulse" />
+        ? <span className="inline-block w-12 h-6 bg-[var(--secondary)] rounded animate-pulse" />
         : value}
     </p>
   </motion.div>
@@ -62,7 +62,7 @@ const AdminStatCard = ({ label, value, icon, accentClass, loading }) => (
 /* ─── Sidebar nav group — clean white ─── */
 const NavGroup = ({ title, items, activeTab, onSelect }) => (
   <div className="space-y-0.5">
-    <p className="px-3 mb-2 text-[9px] font-bold text-[#94A3B8] uppercase tracking-[0.2em]">{title}</p>
+    <p className="px-3 mb-2 text-[9px] font-bold text-[var(--muted-foreground)] uppercase tracking-[0.2em]">{title}</p>
     {items.map(item => {
       const active = activeTab === item.id;
       return (
@@ -71,20 +71,20 @@ const NavGroup = ({ title, items, activeTab, onSelect }) => (
           onClick={() => onSelect(item.id)}
           className={`w-full group flex items-center gap-3 px-3 py-2.5 rounded-lg text-left transition-all duration-200 ${
             active
-              ? 'bg-[#EFF6FF] text-[#0078D4] border border-[#C8E0F4]'
-              : 'text-[#475569] hover:text-[#0078D4] hover:bg-[#F8FAFC]'
+              ? 'bg-[var(--secondary)] text-[var(--primary)] border border-[var(--border)]'
+              : 'text-[var(--muted-foreground)] hover:text-[var(--primary)] hover:bg-[var(--secondary)]'
           }`}
         >
           <Icon
             name={item.icon}
             size={14}
             className={`flex-shrink-0 transition-colors ${
-              active ? 'text-[#0078D4]' : 'text-[#94A3B8] group-hover:text-[#0078D4]'
+              active ? 'text-[var(--primary)]' : 'text-[var(--muted-foreground)] group-hover:text-[var(--primary)]'
             }`}
           />
           <span className="text-[11px] font-bold tracking-wide flex-1">{item.label}</span>
           {active && (
-            <div className="w-1.5 h-1.5 rounded-full bg-[#0078D4] flex-shrink-0" />
+            <div className="w-1.5 h-1.5 rounded-full bg-[var(--primary)] flex-shrink-0" />
           )}
         </button>
       );
@@ -146,7 +146,7 @@ const AcademicCentralCommand = () => {
       items: [
         { id: 'moderation',    label: 'Accreditation',   icon: 'Shield',    color: 'text-[var(--color-primary)]' },
         { id: 'content',       label: 'Curriculum',       icon: 'BookOpen',  color: 'text-sky-400'     },
-        { id: 'users',         label: 'Userbase',         icon: 'Users',     color: 'text-violet-400'  },
+        { id: 'users',         label: 'Userbase',         icon: 'Users',     color: 'text-[var(--primary)]'  },
         { id: 'role-requests', label: 'Curator Entry',    icon: 'UserPlus',  color: 'text-amber-400'   },
       ]
     },
@@ -240,7 +240,7 @@ const AcademicCentralCommand = () => {
 
   // ─── Standard Desktop View ───
   return (
-    <div className="relative min-h-screen text-[#0F172A]">
+    <div className="relative min-h-screen text-[var(--foreground)]">
       <DashboardAIAssistant dashboardType="admin" contextData={{ stats, activeTab }} />
 
       <div className="relative z-10 max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
@@ -254,17 +254,17 @@ const AcademicCentralCommand = () => {
                 Command Authority Active
               </span>
             </div>
-            <h1 className="text-3xl sm:text-4xl font-extrabold text-[#0F172A] tracking-tight leading-none mb-2">
-              Central <span className="text-[#0078D4]">Command</span>
+            <h1 className="text-3xl sm:text-4xl font-extrabold text-[var(--foreground)] tracking-tight leading-none mb-2">
+              Central <span className="text-[var(--primary)]">Command</span>
             </h1>
-            <p className="text-[11px] font-bold text-[#94A3B8] uppercase tracking-[0.18em]">
+            <p className="text-[11px] font-bold text-[var(--muted-foreground)] uppercase tracking-[0.18em]">
               Master Governance &amp; Academic Orchestration
             </p>
           </div>
 
           <div className="flex items-center gap-3">
-            <button className="flex items-center gap-2.5 h-10 px-5 rounded-lg bg-white border border-[#E2E8F0] text-[10px] font-bold uppercase tracking-widest text-[#475569] hover:bg-[#EFF6FF] hover:text-[#0078D4] hover:border-[#C8E0F4] transition-all" style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.06)' }}>
-              <Icon name="Activity" size={14} className="text-[#0078D4]" />
+            <button className="flex items-center gap-2.5 h-10 px-5 rounded-lg bg-[var(--card)] border border-[var(--border)] text-[10px] font-bold uppercase tracking-widest text-[var(--muted-foreground)] hover:bg-[var(--secondary)] hover:text-[var(--primary)] hover:border-[var(--border)] transition-all" style={{ boxShadow: 'var(--shadow-card)' }}>
+              <Icon name="Activity" size={14} className="text-[var(--primary)]" />
               Platform Pulse
             </button>
             <button className="flex items-center gap-2.5 h-10 px-5 rounded-lg bg-[#0078D4] hover:bg-[#005A9E] text-white text-[10px] font-bold uppercase tracking-widest transition-all" style={{ boxShadow: '0 2px 8px rgba(0,120,212,0.3)' }}>
@@ -286,7 +286,7 @@ const AcademicCentralCommand = () => {
 
           {/* Sidebar */}
           <aside className="xl:w-[200px] flex-shrink-0">
-            <div className="xl:sticky xl:top-24 space-y-5 bg-white border border-[#E2E8F0] rounded-xl p-3" style={{ boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
+            <div className="xl:sticky xl:top-24 space-y-5 bg-[var(--card)] border border-[var(--border)] rounded-xl p-3" style={{ boxShadow: 'var(--shadow-card)' }}>
               {navGroups.map(g => (
                 <NavGroup
                   key={g.title}
@@ -308,8 +308,8 @@ const AcademicCentralCommand = () => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.2, ease: 'easeOut' }}
-                className="bg-white border border-[#E2E8F0] rounded-xl p-6 sm:p-8 min-h-[700px]"
-                style={{ boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}
+                className="bg-[var(--card)] border border-[var(--border)] rounded-xl p-6 sm:p-8 min-h-[700px]"
+                style={{ boxShadow: 'var(--shadow-card)' }}
               >
                 <Outlet />
               </motion.div>

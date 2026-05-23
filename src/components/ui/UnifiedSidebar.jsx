@@ -155,34 +155,32 @@ const UnifiedSidebar = () => {
   const sections = getSections();
 
   const sidebarContent = (
-    <div className="flex flex-col h-full transition-all duration-300 ease-in-out pointer-events-auto"
-      style={{ background: '#003D6B', boxShadow: '2px 0 8px rgba(0,0,0,0.15)' }}
+    <div className="flex flex-col h-full transition-all duration-200 ease-in-out pointer-events-auto bg-sidebar border-r border-sidebar-border shadow-premium"
     >
 
       {isMobile && (
-        <div className="flex items-center justify-between p-5 border-b border-white/10">
+        <div className="flex items-center justify-between p-5 border-b border-sidebar-border">
           <Logo size="sm" darkBg={true} className="z-50" />
-          <button onClick={() => setIsMobileOpen(false)} className="p-2 rounded-lg hover:bg-white/10 transition-all text-[#A8CAEC]">
+          <button onClick={() => setIsMobileOpen(false)} className="p-2 rounded-lg hover:bg-sidebar-accent transition-all text-sidebar-foreground">
             <Icon name="X" size={18} />
           </button>
         </div>
       )}
 
       {!isMobile && (
-        <div className={`flex items-center ${isCollapsed ? 'justify-center' : 'justify-between px-6'} border-b border-white/10 h-16 transition-all duration-300`}
-          style={{ background: 'rgba(0,0,0,0.2)' }}
+        <div className={`flex items-center ${isCollapsed ? 'justify-center' : 'justify-between px-6'} border-b border-sidebar-border h-16 transition-all duration-200 bg-sidebar`}
         >
           {!isCollapsed && (
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-[#0078D4] flex items-center justify-center">
-                <Icon name="GraduationCap" size={16} className="text-white" />
+              <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
+                <Icon name="GraduationCap" size={16} className="text-primary-foreground" />
               </div>
-              <span className="text-[11px] font-bold uppercase tracking-[0.15em] text-white">Institute</span>
+              <span className="text-[11px] font-bold uppercase tracking-[0.15em] text-foreground">Institute</span>
             </div>
           )}
           <button
             onClick={handleToggle}
-            className={`p-2 rounded-lg text-[#A8CAEC] hover:text-white hover:bg-white/10 transition-all ${isCollapsed ? 'mx-auto' : ''}`}
+            className={`p-2 rounded-lg text-sidebar-foreground hover:text-foreground hover:bg-sidebar-accent transition-all ${isCollapsed ? 'mx-auto' : ''}`}
             title={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
           >
             <Icon name={isCollapsed ? "PanelLeft" : "PanelLeftClose"} size={18} />
@@ -197,7 +195,7 @@ const UnifiedSidebar = () => {
             <div key={section} className="space-y-1">
               {!isCollapsed && (
                 <div className="px-4 mb-2">
-                  <span className="text-[10px] font-semibold uppercase tracking-[2px]" style={{ color: '#4BA8E8' }}>{section}</span>
+                  <span className="text-[10px] font-semibold uppercase tracking-[2px] text-sidebar-primary">{section}</span>
                 </div>
               )}
               <div className="space-y-0.5">
@@ -210,24 +208,24 @@ const UnifiedSidebar = () => {
                       className={`w-full flex items-center ${isCollapsed ? 'justify-center px-0' : 'justify-start px-4'} py-2.5 text-[13px] font-medium transition-all relative group`}
                       style={{
                         borderRadius: active ? '0 8px 8px 0' : '8px',
-                        background: active ? 'rgba(255,255,255,0.15)' : 'transparent',
-                        color: active ? '#FFFFFF' : '#A8CAEC',
+                        background: active ? 'var(--sidebar-accent)' : 'transparent',
+                        color: active ? 'var(--sidebar-primary-foreground)' : 'var(--sidebar-foreground)',
                         fontWeight: active ? 600 : 500,
-                        borderLeft: active ? '3px solid #FFFFFF' : '3px solid transparent',
+                        borderLeft: active ? '3px solid var(--sidebar-primary)' : '3px solid transparent',
                       }}
                       whileHover={{ x: isCollapsed ? 0 : 2 }}
-                      onMouseEnter={(e) => { if (!active) { e.currentTarget.style.background = 'rgba(255,255,255,0.08)'; e.currentTarget.style.color = '#FFFFFF'; }}}
-                      onMouseLeave={(e) => { if (!active) { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#A8CAEC'; }}}
+                      onMouseEnter={(e) => { if (!active) { e.currentTarget.style.background = 'var(--sidebar-accent)'; e.currentTarget.style.color = 'var(--sidebar-foreground)'; }}}
+                      onMouseLeave={(e) => { if (!active) { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = 'var(--sidebar-foreground)'; }}}
                     >
                       <Icon 
                         name={item.icon} 
                         size={isCollapsed ? 20 : 18} 
                         className="flex-shrink-0 transition-colors"
-                        style={{ color: active ? '#FFFFFF' : '#4BA8E8' }}
+                        style={{ color: active ? 'var(--sidebar-primary)' : 'var(--sidebar-foreground)' }}
                       />
                       {!isCollapsed && <span className="ml-3 truncate">{item.label}</span>}
                       {isCollapsed && (
-                        <div className="absolute left-full ml-4 px-3 py-2 bg-[#0F172A] text-white text-[11px] font-bold rounded-lg opacity-0 group-hover:opacity-100 transition-all scale-95 group-hover:scale-100 whitespace-nowrap z-[100] pointer-events-none shadow-modal">
+                        <div className="absolute left-full ml-4 px-3 py-2 bg-card text-foreground text-[11px] font-bold rounded-lg opacity-0 group-hover:opacity-100 transition-all scale-95 group-hover:scale-100 whitespace-nowrap z-[100] pointer-events-none shadow-modal border border-border">
                           {item.label}
                         </div>
                       )}
@@ -240,22 +238,22 @@ const UnifiedSidebar = () => {
         })}
       </nav>
 
-      <div className="p-4 border-t border-white/10 space-y-4" style={{ background: 'rgba(0,0,0,0.25)' }}>
+      <div className="p-4 border-t border-sidebar-border space-y-4 bg-sidebar" >
         {user && (
           <div className="relative group">
             <button
               onClick={() => setShowUserMenu(!showUserMenu)}
-              className={`w-full flex items-center ${isCollapsed ? 'justify-center' : 'justify-between'} p-2 rounded-lg hover:bg-white/10 transition-all`}
+              className="w-full flex items-center justify-between p-2 rounded-lg hover:bg-sidebar-accent transition-all"
             >
               <div className="flex items-center space-x-3 min-w-0">
                 <div className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 overflow-hidden"
-                  style={{ border: '2px solid #4BA8E8' }}
+                  style={{ border: '2px solid var(--sidebar-primary)' }}
                 >
                   {profile?.avatar_url ? (
                     <Image src={profile.avatar_url} className="w-full h-full rounded-lg object-cover" />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center bg-[#0078D4]">
-                      <span className="text-white font-bold text-xs">
+                    <div className="w-full h-full flex items-center justify-center bg-primary">
+                      <span className="text-primary-foreground font-bold text-xs">
                         {profile?.name ? profile.name.charAt(0).toUpperCase() : 'S'}
                       </span>
                     </div>
@@ -263,16 +261,15 @@ const UnifiedSidebar = () => {
                 </div>
                 {!isCollapsed && (
                   <div className="flex-1 min-w-0 text-left">
-                    <p className="text-[12px] font-bold text-white truncate">{profile?.name || user?.email?.split('@')[0] || 'Scholar'}</p>
+                    <p className="text-[12px] font-bold text-foreground truncate">{profile?.name || user?.email?.split('@')[0] || 'Scholar'}</p>
                     <div className="flex items-center gap-1.5">
-                      <span className="text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wide"
-                        style={{ background: '#4ADE80', color: '#003D6B' }}
+                      <span className="text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wide bg-emerald-500/20 text-emerald-400"
                       >{userRole || 'Student'}</span>
                     </div>
                   </div>
                 )}
               </div>
-              {!isCollapsed && <Icon name="ChevronUp" size={14} className={`text-[#A8CAEC] transition-transform duration-300 ${showUserMenu ? 'rotate-180' : ''}`} />}
+              {!isCollapsed && <Icon name="ChevronUp" size={14} className="text-sidebar-foreground transition-transform duration-300" />}
             </button>
 
             <AnimatePresence>
@@ -281,14 +278,14 @@ const UnifiedSidebar = () => {
                   initial={{ opacity: 0, scale: 0.95, y: 10 }}
                   animate={{ opacity: 1, scale: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.95, y: 10 }}
-                  className={`absolute ${isCollapsed ? 'left-full bottom-0 ml-4' : 'bottom-full mb-3 left-0 right-0'} bg-white rounded-xl shadow-modal border border-[#E2E8F0] overflow-hidden z-[100] min-w-[220px] p-2`}
+                  className={`absolute ${isCollapsed ? 'left-full bottom-0 ml-4' : 'bottom-full mb-3 left-0 right-0'} bg-card rounded-xl shadow-modal border border-border overflow-hidden z-[100] min-w-[220px] p-2`}
                 >
                   <Link
                     to="/profile"
                     onClick={() => setShowUserMenu(false)}
-                    className="flex items-center space-x-3 px-4 py-3 text-[12px] font-bold text-[#0F172A] rounded-lg hover:bg-[#EFF6FF] transition-all"
+                    className="flex items-center space-x-3 px-4 py-3 text-[12px] font-bold text-foreground rounded-lg hover:bg-secondary transition-all"
                   >
-                    <div className="w-8 h-8 rounded-lg bg-[#EFF6FF] flex items-center justify-center text-[#0078D4]">
+                    <div className="w-8 h-8 rounded-lg bg-secondary flex items-center justify-center text-primary">
                       <Icon name="User" size={16} />
                     </div>
                     <span>Scholar Profile</span>
@@ -296,23 +293,23 @@ const UnifiedSidebar = () => {
                   <Link
                     to="/billing"
                     onClick={() => setShowUserMenu(false)}
-                    className="flex items-center space-x-3 px-4 py-3 text-[12px] font-bold text-[#0F172A] rounded-lg hover:bg-[#EFF6FF] transition-all"
+                    className="flex items-center space-x-3 px-4 py-3 text-[12px] font-bold text-foreground rounded-lg hover:bg-secondary transition-all"
                   >
-                    <div className="w-8 h-8 rounded-lg bg-[#EFF6FF] flex items-center justify-center text-[#0078D4]">
+                    <div className="w-8 h-8 rounded-lg bg-secondary flex items-center justify-center text-primary">
                       <Icon name="Heart" size={16} />
                     </div>
                     <span>Impact & Support</span>
                   </Link>
-                  <div className="h-px bg-[#E2E8F0] my-2 mx-2" />
+                  <div className="h-px bg-border my-2 mx-2" />
                   <button
                     onClick={async () => {
                       setShowUserMenu(false);
                       await signOut();
                       navigate('/login');
                     }}
-                    className="w-full flex items-center space-x-3 px-4 py-3 text-[12px] font-bold text-[#D13438] rounded-lg hover:bg-[#FDE7E9] transition-all"
+                    className="w-full flex items-center space-x-3 px-4 py-3 text-[12px] font-bold text-destructive rounded-lg hover:bg-destructive/10 transition-all"
                   >
-                    <div className="w-8 h-8 rounded-lg bg-[#FDE7E9] flex items-center justify-center">
+                    <div className="w-8 h-8 rounded-lg bg-destructive/10 flex items-center justify-center">
                       <Icon name="LogOut" size={16} />
                     </div>
                     <span>Sign Out</span>

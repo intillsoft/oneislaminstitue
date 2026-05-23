@@ -174,7 +174,7 @@ const CourseCurriculum = ({ courseId, courseTitle }) => {
         {/* Ask AI Button */}
         <button
           onClick={() => setAiOpen(!aiOpen)}
-          className="flex items-center gap-2 px-3 py-2 bg-violet-600 text-white text-xs font-semibold uppercase tracking-wider rounded-md hover:opacity-95 transition-colors"
+          className="flex items-center gap-2 px-3 py-2 bg-[var(--color-primary)] text-white text-xs font-semibold uppercase tracking-wider rounded-md hover:opacity-95 transition-colors"
         >
           <Sparkles size={14} />
           Ask AI
@@ -193,7 +193,7 @@ const CourseCurriculum = ({ courseId, courseTitle }) => {
             <div className="bg-white dark:bg-slate-900 rounded-md border border-slate-100 dark:border-slate-800 p-4">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-sm bg-violet-600 flex items-center justify-center">
+                  <div className="w-8 h-8 rounded-sm bg-[var(--color-primary)] flex items-center justify-center">
                     <Sparkles size={14} className="text-white" />
                   </div>
                   <div>
@@ -201,7 +201,7 @@ const CourseCurriculum = ({ courseId, courseTitle }) => {
                     <p className="text-[10px] text-[var(--color-text-tertiary)] dark:text-slate-400">Ask about topics, difficulty, or what you'll learn</p>
                   </div>
                 </div>
-                <button onClick={() => setAiOpen(false)} className="p-1.5 rounded-lg hover:bg-violet-100 dark:hover:bg-violet-900/30 transition-colors">
+                <button onClick={() => setAiOpen(false)} className="p-1.5 rounded-lg hover:bg-[var(--color-primary)]/10 dark:hover:bg-[var(--color-primary)]/20 transition-colors">
                   <X size={14} className="text-slate-400" />
                 </button>
               </div>
@@ -213,7 +213,7 @@ const CourseCurriculum = ({ courseId, courseTitle }) => {
                     <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                       <div className={`max-w-[85%] px-3 py-2 rounded-md text-sm leading-relaxed ${
                         msg.role === 'user'
-                          ? 'bg-violet-600 text-white'
+                          ? 'bg-[var(--color-primary)] text-white'
                           : 'bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-100 dark:border-slate-800'
                       }`}>
                         {msg.content}
@@ -223,7 +223,7 @@ const CourseCurriculum = ({ courseId, courseTitle }) => {
                   {aiLoading && (
                     <div className="flex justify-start">
                       <div className="px-3 py-2 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-md">
-                        <Loader2 size={16} className="text-violet-500 animate-spin" />
+                        <Loader2 size={16} className="text-[var(--color-primary)] animate-spin" />
                       </div>
                     </div>
                   )}
@@ -238,13 +238,13 @@ const CourseCurriculum = ({ courseId, courseTitle }) => {
                   onChange={e => setAiQuery(e.target.value)}
                   onKeyDown={e => e.key === 'Enter' && handleAskAI()}
                   placeholder="e.g. What will I learn in Module 2?"
-                  className="flex-1 px-4 py-2.5 rounded-xl bg-white dark:bg-slate-800 border border-violet-200 dark:border-violet-800/50 text-sm text-[var(--color-text-primary)] dark:text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-violet-500/30"
+                  className="flex-1 px-4 py-2.5 rounded-xl bg-white dark:bg-slate-800 border border-[var(--color-primary)]/20 dark:border-[var(--color-primary)]/30 text-sm text-[var(--color-text-primary)] dark:text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/30"
                   disabled={aiLoading}
                 />
                 <button
                   onClick={handleAskAI}
                   disabled={aiLoading || !aiQuery.trim()}
-                  className="p-2.5 bg-violet-500 hover:bg-violet-600 text-white rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="p-2.5 bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <Send size={16} />
                 </button>

@@ -63,20 +63,20 @@ const RecentActivity = () => {
 
   const getStatusBadge = (status) => {
     const badges = {
-      applied: 'bg-[var(--color-info-bg)] text-[var(--color-primary)] border-[var(--color-border-secondary)]',
-      reviewed: 'bg-[var(--color-bg-secondary)] text-[var(--color-text-tertiary)] border-[var(--color-card-border)]',
+      applied: 'bg-[var(--color-info-bg)] text-[var(--color-primary)] border-[var(--border)]',
+      reviewed: 'bg-[var(--color-bg-secondary)] text-[var(--color-text-tertiary)] border-[var(--border)]',
       interview: 'bg-[var(--color-success-bg)] text-[var(--color-success)] border-green-200',
       offer: 'bg-[var(--color-success-bg)] text-[var(--color-success)] border-green-200',
       rejected: 'bg-[var(--color-error-bg)] text-[var(--color-error)] border-red-200',
     };
-    return badges[status] || 'bg-[var(--color-bg-secondary)] text-[var(--color-text-tertiary)] border-[var(--color-card-border)]';
+    return badges[status] || 'bg-[var(--color-bg-secondary)] text-[var(--color-text-tertiary)] border-[var(--border)]';
   };
 
   if (loading) {
     return (
       <div className="space-y-3">
         {[1, 2, 3].map(i => (
-          <div key={i} className="animate-pulse h-24 bg-white border border-[var(--color-card-border)] rounded-xl"></div>
+          <div key={i} className="animate-pulse h-24 bg-[var(--card)] border border-[var(--border)] rounded-xl"></div>
         ))}
       </div>
     );
@@ -84,9 +84,9 @@ const RecentActivity = () => {
 
   if (activities.length === 0) {
     return (
-      <div className="bg-white border border-[var(--color-card-border)] rounded-xl p-6" style={{ boxShadow: 'var(--shadow-card)' }}>
+      <div className="bg-[var(--card)] border border-[var(--border)] rounded-xl p-6" style={{ boxShadow: 'var(--shadow-card)' }}>
         <div className="text-center py-8">
-          <div className="w-16 h-16 rounded-xl bg-[var(--color-bg-secondary)] border border-[var(--color-card-border)] flex items-center justify-center mx-auto mb-4">
+          <div className="w-16 h-16 rounded-xl bg-[var(--color-bg-secondary)] border border-[var(--border)] flex items-center justify-center mx-auto mb-4">
             <Icon name="Activity" className="w-8 h-8 text-[var(--color-text-tertiary)]" />
           </div>
           <h3 className="text-lg font-bold text-[var(--color-text-primary)] mb-2">No recent activity</h3>
@@ -101,12 +101,12 @@ const RecentActivity = () => {
       {activities.map((activity) => (
         <div
           key={activity.id}
-          className="p-4 rounded-xl bg-white border border-[var(--color-card-border)] hover:border-[var(--color-border-secondary)] transition-all"
+          className="p-4 rounded-xl bg-[var(--card)] border border-[var(--border)] hover:border-[var(--color-border-secondary)] transition-all"
           style={{ boxShadow: 'var(--shadow-card)' }}
         >
           <div className="flex items-start gap-3">
             {activity.companyLogo && (
-              <div className="w-10 h-10 rounded-lg overflow-hidden flex-shrink-0 border border-[var(--color-card-border)]">
+              <div className="w-10 h-10 rounded-lg overflow-hidden flex-shrink-0 border border-[var(--border)]">
                 <Image
                   src={activity.companyLogo}
                   alt={activity.company}

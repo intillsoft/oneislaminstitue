@@ -213,34 +213,25 @@ const LoginForm = ({ onSuccess, isLoading: externalLoading }) => {
       </button>
 
       {/* Divider */}
-      <div className="relative my-6">
+      <div className="relative my-4">
         <div className="absolute inset-0 flex items-center">
-          <div className="w-full border-t border-[#E2E8F0] dark:border-[#1E2640]"></div>
+          <div className="w-full border-t border-white/10"></div>
         </div>
         <div className="relative flex justify-center text-sm">
-          <span className="px-2 bg-white dark:bg-[var(--color-bg-dark)] text-[#64748B] dark:text-[#8B92A3]">Or continue with</span>
+          <span className="px-2 bg-[var(--card)] text-[var(--muted-foreground)] text-[9px] font-black uppercase tracking-widest">Or continue with</span>
         </div>
       </div>
 
       {/* OAuth Buttons */}
-      <div className="grid grid-cols-2 gap-3">
+      <div className="flex flex-col">
         <button
           type="button"
           onClick={() => handleOAuthLogin('google')}
           disabled={loading}
-          className="flex items-center justify-center space-x-2 px-4 py-2 border border-[#E2E8F0] dark:border-[#1E2640] rounded-lg hover:bg-[#F8FAFC] dark:hover:bg-[#1A2139] transition-colors disabled:opacity-50"
+          className="w-full flex items-center justify-center space-x-2.5 px-4 py-3 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 transition-all duration-200 disabled:opacity-50 font-bold uppercase tracking-widest text-[10px]"
         >
-          <Icon name="Chrome" size={18} />
-          <span className="text-sm font-medium text-[#0F172A] dark:text-[#E8EAED]">Google</span>
-        </button>
-        <button
-          type="button"
-          onClick={() => handleOAuthLogin('github')}
-          disabled={loading}
-          className="flex items-center justify-center space-x-2 px-4 py-2 border border-[#E2E8F0] dark:border-[#1E2640] rounded-lg hover:bg-[#F8FAFC] dark:hover:bg-[#1A2139] transition-colors disabled:opacity-50"
-        >
-          <Icon name="Github" size={18} />
-          <span className="text-sm font-medium text-[#0F172A] dark:text-[#E8EAED]">GitHub</span>
+          <Icon name="Chrome" size={14} className="text-primary" />
+          <span className="text-white">Google</span>
         </button>
       </div>
     </form>
