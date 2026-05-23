@@ -151,7 +151,7 @@ const CourseLearning = () => {
     }
 
     return (
-        <div className="min-h-screen bg-white dark:bg-[var(--color-bg-dark)] py-6 sm:py-12 px-3 sm:px-6 lg:px-8 relative pt-[calc(var(--header-height)+1rem)]">
+        <div className="min-h-screen bg-white dark:bg-[var(--color-bg-dark)] pt-24 sm:pt-[calc(var(--header-height)+2rem)] pb-12 sm:pb-24 px-3 sm:px-6 lg:px-8 relative">
             {/* Admin Bypass Banner */}
             {isAdminOrInstructor && (
                 <div className="max-w-4xl mx-auto mb-8">
