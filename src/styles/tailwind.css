@@ -37,10 +37,10 @@
     --destructive: oklch(0.577 0.245 27.325);
     --destructive-foreground: oklch(1.000 0.028 299.02);
     
-    /* Ice-Blue Borders (#E2E8F0 variant) */
-    --border: oklch(0.929 0.045 288.02);
-    --input: oklch(0.929 0.045 288.02);
-    --ring: oklch(0.60 0.22 250.0);
+    /* Blue-Tinted Premium Borders */
+    --border: oklch(0.53 0.20 250.0 / 0.25);
+    --input: oklch(0.53 0.20 250.0 / 0.25);
+    --ring: oklch(0.53 0.20 250.0);
     
     /* Sidebar Mapping (Clean Solid Card light mode) */
     --sidebar: oklch(1.000 0.028 299.02);
@@ -189,9 +189,9 @@
     --destructive: oklch(0.396 0.141 25.723);
     --destructive-foreground: oklch(0.637 0.237 25.331);
     
-    /* Navy-Slate Borders (#22334B) */
-    --border: oklch(0.318 0.081 275.41);
-    --input: oklch(0.318 0.081 275.41);
+    /* Navy-Slate Blue-Tinted Borders */
+    --border: oklch(0.60 0.22 250.0 / 0.15);
+    --input: oklch(0.60 0.22 250.0 / 0.15);
     --ring: oklch(0.60 0.22 250.0);
     
     /* Sidebar Mapping */

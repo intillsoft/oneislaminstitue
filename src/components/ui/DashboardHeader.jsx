@@ -108,40 +108,43 @@ const DashboardHeader = () => {
     const canSwitch = availableRoles.length > 1;
 
     return (
-        <header className="fixed top-0 left-0 right-0 z-[100] h-[var(--header-height)] bg-white/95 dark:bg-[var(--color-bg-dark)] border-b border-white/[0.03] shadow-sm dark:shadow-md transition-all duration-300">
-            <div className="h-full px-4 sm:px-6 flex items-center justify-between gap-4">
+        <header className="fixed top-0 left-0 right-0 z-[100] h-[var(--header-height)] bg-[var(--color-primary)] dark:bg-[var(--color-bg-dark)] border-b border-transparent dark:border-[var(--border)] shadow-sm dark:shadow-md transition-all duration-300 backdrop-blur-xl">
+            <div className="h-full px-4 sm:px-6 grid grid-cols-2 lg:grid-cols-3 items-center">
 
-                {/* Left: Logo + Nav */}
-                <div className="flex items-center gap-3 lg:gap-6 flex-shrink-0">
-                    <Logo size="sm" horizontal={true} />
+                {/* Left: Logo */}
+                <div className="flex items-center justify-start">
+                    <Logo size="sm" horizontal={true} inverse={true} />
+                </div>
 
-                    <nav className="hidden lg:flex items-center gap-0.5">
+                {/* Center: Nav (Pill Style) */}
+                <div className="hidden lg:flex items-center justify-center">
+                    <nav className="flex items-center gap-1 bg-black/10 dark:bg-white/5 p-1 rounded-full border border-black/5 dark:border-white/5 shadow-inner">
                         <Link
                             to={userRole === 'admin' ? '/admin/dashboard' : (userRole === 'instructor' ? '/instructor/dashboard' : '/dashboard')}
-                            className={`px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-widest transition-all flex items-center gap-1.5 ${location.pathname.includes('/dashboard') ? 'text-[var(--color-text-primary)] bg-slate-100 dark:text-white dark:bg-white/10' : 'text-[var(--color-text-tertiary)] hover:text-[var(--color-text-primary)] hover:bg-white dark:text-white/40 dark:hover:text-white/80 dark:hover:bg-white/5'}`}
+                            className={`px-4 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-widest transition-all flex items-center gap-2 ${location.pathname.includes('/dashboard') ? 'text-[var(--color-primary)] bg-white dark:text-white dark:bg-white/10 shadow-sm' : 'text-white/80 hover:text-white hover:bg-white/20 dark:text-white/40 dark:hover:text-white/80 dark:hover:bg-white/5'}`}
                         >
-                            <LayoutDashboard className="w-3 h-3" />
+                            <LayoutDashboard className="w-3.5 h-3.5" />
                             Overview
                         </Link>
                         <Link
                             to="/courses"
-                            className={`px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-widest transition-all flex items-center gap-1.5 ${location.pathname === '/courses' ? 'text-[var(--color-text-primary)] bg-slate-100 dark:text-white dark:bg-white/10' : 'text-[var(--color-text-tertiary)] hover:text-[var(--color-text-primary)] hover:bg-white dark:text-white/40 dark:hover:text-white/80 dark:hover:bg-white/5'}`}
+                            className={`px-4 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-widest transition-all flex items-center gap-2 ${location.pathname === '/courses' ? 'text-[var(--color-primary)] bg-white dark:text-white dark:bg-white/10 shadow-sm' : 'text-white/80 hover:text-white hover:bg-white/20 dark:text-white/40 dark:hover:text-white/80 dark:hover:bg-white/5'}`}
                         >
-                            <Briefcase className="w-3 h-3" />
+                            <Briefcase className="w-3.5 h-3.5" />
                             Courses
                         </Link>
                     </nav>
                 </div>
 
                 {/* Right: Actions */}
-                <div className="flex items-center gap-2 sm:gap-3 ml-auto">
+                <div className="flex items-center gap-2 sm:gap-3 justify-end">
 
                     {/* Role Switcher - only for admin/instructor */}
                     {user && canSwitch && (
-                        <div className="hidden sm:block relative" ref={roleMenuRef}>
+                        <div className="relative" ref={roleMenuRef}>
                             <button
                                 onClick={() => setIsRoleMenuOpen(!isRoleMenuOpen)}
-                                className={`group flex items-center gap-2 pl-2.5 pr-3 py-1.5 rounded-full border transition-all duration-300 ${isRoleMenuOpen ? `${currentRole.activeBg} ${currentRole.activeBorder}` : 'bg-white border-[var(--color-border-primary)] hover:bg-white hover:border-slate-300 dark:bg-white/[0.04] dark:border-white/10 dark:hover:bg-white/[0.07] dark:hover:border-white/20 shadow-sm dark:shadow-none'}`}
+                                className={`group flex items-center gap-1.5 sm:gap-2 pl-2 sm:pl-2.5 pr-2 sm:pr-3 py-1.5 rounded-full border transition-all duration-300 ${isRoleMenuOpen ? `${currentRole.activeBg} ${currentRole.activeBorder}` : 'bg-white border-transparent shadow-sm dark:bg-white/[0.04] dark:border-white/10 dark:hover:bg-white/[0.07] dark:hover:border-white/20 dark:shadow-none'}`}
                                 title="Switch perspective"
                             >
                                 {/* Status dot */}
@@ -151,7 +154,7 @@ const DashboardHeader = () => {
 
                                 {/* Role icon + label */}
                                 <CurrentRoleIcon className={`w-3 h-3 ${currentRole.color}`} />
-                                <span className={`text-[10px] font-bold tracking-widest uppercase ${currentRole.color} whitespace-nowrap`}>
+                                <span className={`hidden sm:inline text-[10px] font-bold tracking-widest uppercase ${currentRole.color} whitespace-nowrap`}>
                                     {currentRole.label}
                                 </span>
 
@@ -219,13 +222,13 @@ const DashboardHeader = () => {
                         <DarkModeToggle />
                     </div>
 
-                    <div className="h-5 w-px bg-slate-200 dark:bg-white/[0.08]" />
+                    <div className="h-5 w-px bg-white/20 dark:bg-white/[0.08]" />
 
                     {/* Profile Menu */}
                     <div className="relative" ref={userMenuRef}>
                         <button
                             onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                            className="flex items-center gap-2 p-0.5 rounded-full border border-[var(--color-border-primary)] hover:border-slate-300 dark:border-white/10 dark:hover:border-white/25 transition-all duration-200 group bg-white dark:bg-transparent shadow-sm dark:shadow-none"
+                            className="flex items-center gap-2 p-0.5 rounded-full border border-transparent dark:border-white/10 dark:hover:border-white/25 transition-all duration-200 group bg-white dark:bg-transparent shadow-sm dark:shadow-none"
                         >
                             {profile?.avatar_url ? (
                                 <img src={profile.avatar_url} alt="" className="w-8 h-8 rounded-full object-cover" />

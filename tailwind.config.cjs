@@ -149,8 +149,8 @@ module.exports = {
         'bg-elevated': 'var(--color-bg-secondary)',
       },
       fontFamily: {
-        'sans': ['Inter', 'Segoe UI', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
-        'display': ['Inter', 'Segoe UI', 'sans-serif'],
+        'sans': ['Outfit', 'Inter', 'Segoe UI', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+        'display': ['Outfit', 'Inter', 'Segoe UI', 'sans-serif'],
         'mono': ['JetBrains Mono', 'SF Mono', 'Monaco', 'monospace'],
       },
       fontSize: {

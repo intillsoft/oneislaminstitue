@@ -121,13 +121,16 @@ Provide helpful, actionable insights and recommendations. Be specific and data-d
       setMessages(prev => [...prev, aiMessage]);
     } catch (error) {
       console.error('AI assistant error:', error);
+      const isTechnicalError = dashboardType === 'admin';
+      const errorMessage = isTechnicalError ? `❌ Technical Error: ${error.message}` : 'I apologize, but I am currently experiencing high demand. Please try again in a moment.';
+      
       setMessages(prev => [...prev, {
         role: 'assistant',
-        content: 'I apologize, but I encountered an error. Please try again.',
+        content: errorMessage,
         timestamp: new Date(),
         id: Date.now() + 1
       }]);
-      showError('Failed to get AI response. Please try again.');
+      showError(isTechnicalError ? error.message : 'Assistant is busy. Please try again.');
     } finally {
       setIsTyping(false);
     }
@@ -160,7 +163,7 @@ Provide helpful, actionable insights and recommendations. Be specific and data-d
               className="bg-white dark:bg-[var(--color-bg-dark)] rounded-2xl shadow-2xl max-w-2xl w-full h-[600px] flex flex-col"
             >
               {/* Header */}
-              <div className="flex items-center justify-between p-6 border-b border-[#E2E8F0] dark:border-[#1E2640]">
+              <div className="flex items-center justify-between p-6 border-b border-[var(--color-border-primary)] bg-white dark:bg-transparent flex-shrink-0">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-full bg-gradient-to-br from-workflow-primary to-workflow-primary-600 flex items-center justify-center">
                     {config.icon}
@@ -172,22 +175,22 @@ Provide helpful, actionable insights and recommendations. Be specific and data-d
                 </div>
                 <button
                   onClick={() => setIsOpen(false)}
-                  className="p-2 hover:bg-surface-100 dark:hover:bg-[#1A2139] rounded-lg transition-colors"
+                  className="p-2 hover:bg-slate-50 dark:hover:bg-white/[0.05] rounded-xl transition-colors"
                 >
-                  <X className="w-5 h-5 text-text-secondary dark:text-[#8B92A3]" />
+                  <X className="w-5 h-5 text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300" />
                 </button>
               </div>
 
               {/* Quick Prompts */}
               {messages.length <= 1 && (
-                <div className="p-6 border-b border-[#E2E8F0] dark:border-[#1E2640]">
+                <div className="p-6 border-b border-[var(--color-border-primary)]">
                   <p className="text-sm font-medium text-text-primary dark:text-[#E8EAED] mb-3">Quick Questions:</p>
                   <div className="grid grid-cols-2 gap-2">
                     {config.quickPrompts.map((prompt, idx) => (
                       <button
                         key={idx}
                         onClick={() => handleQuickPrompt(prompt)}
-                        className="text-left px-3 py-2 text-sm bg-surface-50 dark:bg-[#1A2139] hover:bg-surface-100 dark:hover:bg-[#1E2640] rounded-lg text-text-secondary dark:text-[#8B92A3] hover:text-workflow-primary transition-colors"
+                        className="text-left px-4 py-2.5 text-sm bg-slate-50 dark:bg-white/[0.02] hover:bg-slate-100 dark:hover:bg-white/[0.05] border border-[var(--color-border-primary)] rounded-xl text-slate-600 dark:text-slate-300 hover:text-primary transition-colors shadow-sm"
                       >
                         {prompt}
                       </button>
@@ -221,21 +224,25 @@ Provide helpful, actionable insights and recommendations. Be specific and data-d
               </div>
 
               {/* Input */}
-              <div className="p-6 border-t border-[#E2E8F0] dark:border-[#1E2640]">
-                <div className="flex gap-2">
+              <div className="p-5 bg-white dark:bg-transparent border-t border-[var(--color-border-primary)] flex-shrink-0">
+                <div className="flex gap-2 bg-white dark:bg-[var(--color-bg-dark)] border border-[var(--color-border-primary)] focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/10 rounded-2xl p-1.5 shadow-sm transition-all">
                   <input
                     type="text"
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     onKeyPress={(e) => e.key === 'Enter' && handleSend()}
                     placeholder="Ask workflowAI..."
-                    className="flex-1 px-4 py-2 border border-[#E2E8F0] dark:border-[#1E2640] rounded-lg bg-background dark:bg-[var(--color-bg-dark)] text-text-primary dark:text-[#E8EAED] focus:outline-none focus:ring-2 focus:ring-workflow-primary"
+                    className="flex-1 px-3 py-2 bg-transparent text-text-primary dark:text-[#E8EAED] focus:outline-none focus:ring-0"
                     disabled={isTyping}
                   />
                   <button
                     onClick={handleSend}
                     disabled={isTyping || !input.trim()}
-                    className="px-6 py-2 bg-workflow-primary text-white rounded-lg hover:bg-workflow-primary-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
+                    className={`px-5 py-2 rounded-xl transition-all flex items-center justify-center gap-2 ${
+                      input.trim() && !isTyping
+                        ? 'bg-primary text-white hover:bg-accent shadow-sm'
+                        : 'bg-slate-100 dark:bg-white/[0.02] text-slate-400 dark:text-slate-600 cursor-not-allowed'
+                    }`}
                   >
                     {isTyping ? (
                       <Loader2 className="w-5 h-5 animate-spin" />

@@ -160,14 +160,13 @@ const CourseDiscovery = () => {
                       setSelectedFilters(p => ({ ...p, location: val ? [val] : [] }));
                       setCurrentPage(1);
                     }}
-                    className="w-full appearance-none bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-white/5 rounded-xl pl-4 pr-10 py-2.5 text-xs font-bold text-slate-700 dark:text-slate-300 outline-none focus:border-[var(--color-primary)] transition-all cursor-pointer uppercase tracking-wider"
+                    className="w-full bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-white/5 rounded-xl pl-4 pr-8 py-2.5 text-xs font-bold text-slate-700 dark:text-slate-300 outline-none focus:border-[var(--color-primary)] transition-all cursor-pointer uppercase tracking-wider"
                   >
                     <option value="">All Subjects</option>
                     {['Quran & Tajweed', 'Islamic Studies', 'Hadith', 'Islamic History', 'Fiqh (Islamic Law)', 'Islamic Theology', 'Arabic Language', 'Islamic Ethics', 'Quranic Tafsir'].map(cat => (
                       <option key={cat} value={cat}>{cat}</option>
                     ))}
                   </select>
-                  <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400 pointer-events-none" />
                 </div>
 
                 {/* Study Format Dropdown */}
@@ -179,14 +178,13 @@ const CourseDiscovery = () => {
                       setSelectedFilters(p => ({ ...p, employmentType: val ? [val] : [] }));
                       setCurrentPage(1);
                     }}
-                    className="w-full appearance-none bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-white/5 rounded-xl pl-4 pr-10 py-2.5 text-xs font-bold text-slate-700 dark:text-slate-300 outline-none focus:border-[var(--color-primary)] transition-all cursor-pointer uppercase tracking-wider"
+                    className="w-full bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-white/5 rounded-xl pl-4 pr-8 py-2.5 text-xs font-bold text-slate-700 dark:text-slate-300 outline-none focus:border-[var(--color-primary)] transition-all cursor-pointer uppercase tracking-wider"
                   >
                     <option value="">All Formats</option>
                     {['Live Classes', 'Recorded', 'Self-Paced', 'Hybrid'].map(mode => (
                       <option key={mode} value={mode}>{mode}</option>
                     ))}
                   </select>
-                  <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400 pointer-events-none" />
                 </div>
 
                 {/* Level Dropdown */}
@@ -197,14 +195,13 @@ const CourseDiscovery = () => {
                       setSelectedFilters(p => ({ ...p, experienceLevel: e.target.value }));
                       setCurrentPage(1);
                     }}
-                    className="w-full appearance-none bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-white/5 rounded-xl pl-4 pr-10 py-2.5 text-xs font-bold text-slate-700 dark:text-slate-300 outline-none focus:border-[var(--color-primary)] transition-all cursor-pointer uppercase tracking-wider"
+                    className="w-full bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-white/5 rounded-xl pl-4 pr-8 py-2.5 text-xs font-bold text-slate-700 dark:text-slate-300 outline-none focus:border-[var(--color-primary)] transition-all cursor-pointer uppercase tracking-wider"
                   >
                     <option value="">All Levels</option>
                     {['Beginner', 'Intermediate', 'Advanced'].map(lvl => (
                       <option key={lvl} value={lvl}>{lvl}</option>
                     ))}
                   </select>
-                  <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400 pointer-events-none" />
                 </div>
 
                 {/* Language Dropdown */}
@@ -215,14 +212,13 @@ const CourseDiscovery = () => {
                       setSelectedFilters(p => ({ ...p, companySize: e.target.value }));
                       setCurrentPage(1);
                     }}
-                    className="w-full appearance-none bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-white/5 rounded-xl pl-4 pr-10 py-2.5 text-xs font-bold text-slate-700 dark:text-slate-300 outline-none focus:border-[var(--color-primary)] transition-all cursor-pointer uppercase tracking-wider"
+                    className="w-full bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-white/5 rounded-xl pl-4 pr-8 py-2.5 text-xs font-bold text-slate-700 dark:text-slate-300 outline-none focus:border-[var(--color-primary)] transition-all cursor-pointer uppercase tracking-wider"
                   >
                     <option value="">All Languages</option>
                     {['English', 'Arabic', 'Urdu', 'French', 'Spanish', 'Turkish'].map(lang => (
                       <option key={lang} value={lang}>{lang}</option>
                     ))}
                   </select>
-                  <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400 pointer-events-none" />
                 </div>
 
                 {/* Self-Paced Toggle */}
@@ -281,13 +277,12 @@ const CourseDiscovery = () => {
                   <select
                     value={sortBy}
                     onChange={(e) => setSortBy(e.target.value)}
-                    className="appearance-none bg-white dark:bg-slate-900 border border-[var(--color-border-primary)] dark:border-white/10 rounded-full pl-6 pr-12 py-2.5 text-xs font-black text-[var(--color-text-secondary)] dark:text-slate-400 outline-none focus:border-[var(--color-primary)] transition-all cursor-pointer uppercase tracking-widest"
+                    className="bg-white dark:bg-slate-900 border border-[var(--color-border-primary)] dark:border-white/10 rounded-full pl-6 pr-8 py-2.5 text-xs font-black text-[var(--color-text-secondary)] dark:text-slate-400 outline-none focus:border-[var(--color-primary)] transition-all cursor-pointer uppercase tracking-widest"
                   >
                     <option value="relevance">Relevance</option>
                     <option value="created_at">Newest</option>
                     <option value="salary">Academic Level</option>
                   </select>
-                  <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
                 </div>
             </div>
 

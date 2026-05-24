@@ -183,7 +183,6 @@ const AcademicCentralCommand = () => {
 
   const flatItems = navGroups.flatMap(g => g.items);
 
-  // ─── Cinematic Mobile-Native Display ───
   if (isMobile) {
     return (
       <div className="native-app-canvas px-4">
@@ -191,46 +190,56 @@ const AcademicCentralCommand = () => {
         <DashboardAIAssistant dashboardType="admin" contextData={{ stats, activeTab }} />
 
         {/* 📱 Native Admin Welcome Cap */}
-        <div className="flex items-center gap-4 mb-6 p-4 bg-[var(--card)] border border-[var(--border)] rounded-2xl transition-colors duration-200">
-          <div className="w-12 h-12 rounded-full bg-[var(--color-primary-light)] flex items-center justify-center text-[var(--color-primary)] text-lg font-black border border-[var(--color-border-secondary)] flex-shrink-0">
+        <div className="native-welcome-card mb-6">
+          <div className="native-welcome-avatar-placeholder">
             <Icon name="Shield" size={24} />
           </div>
           <div>
-            <span className="text-[9px] font-bold text-[var(--color-primary)] uppercase tracking-widest leading-none block mb-1">Governance Portal</span>
-            <h1 className="text-xl font-bold text-[var(--color-text-primary)] tracking-tight">Academic Command</h1>
+            <span className="native-welcome-badge">Governance Portal</span>
+            <h1 className="native-welcome-name">Academic Command</h1>
           </div>
         </div>
 
-        {/* 📊 Compact Native Stat Cards */}
+        {/* 📊 Compact Native Stat Cards (2x2 Grid) */}
         <div className="grid grid-cols-2 gap-3 mb-6">
-          {statCards.slice(0, 2).map(s => (
-            <div key={s.label} className="native-metric-card" style={{ borderTopColor: 'var(--color-stat-border-1)' }}>
-              <p className="text-[10px] font-bold text-[var(--color-text-tertiary)] uppercase tracking-wider mb-1">{s.label.split(' ')[0]} Tasks</p>
-              <p className="text-xl font-black text-[var(--color-text-primary)] mt-1">{s.value}</p>
+          {statCards.map((s, idx) => (
+            <div key={idx} className="native-metric-card" style={{ borderTopColor: s.accentClass.includes('amber') ? '#f59e0b' : s.accentClass.includes('sky') ? '#0ea5e9' : s.accentClass.includes('teal') ? '#14b8a6' : 'var(--primary)' }}>
+              <div className="flex justify-between items-start mb-1">
+                <p className="text-[10px] font-bold text-[var(--muted-foreground)] uppercase tracking-wider">{s.label.split(' ')[0]} Tasks</p>
+                <Icon name={s.icon} size={14} className={s.accentClass.includes('amber') ? 'text-amber-500' : s.accentClass.includes('sky') ? 'text-sky-500' : s.accentClass.includes('teal') ? 'text-teal-500' : 'text-[var(--primary)]'} />
+              </div>
+              <p className="text-xl font-black text-[var(--foreground)] mt-1">{loadingStats ? '...' : s.value}</p>
             </div>
           ))}
         </div>
 
         {/* 📱 iOS-Style Management Modules Menu */}
-        <p className="px-2 mb-3 text-[10px] font-bold text-[var(--color-text-tertiary)] uppercase tracking-wider">Governance Modules</p>
+        <div className="native-section-header">
+          <h2 className="native-section-title">Governance Modules</h2>
+        </div>
         <div className="native-list-group mb-6">
-          {flatItems.map((item, idx) => (
-            <button
-              key={idx}
-              onClick={() => navigate(`/admin/dashboard/${item.id}`)}
-              className="native-list-row"
-            >
-              <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-xl bg-[var(--color-primary-light)] flex items-center justify-center text-[var(--primary)] border border-[var(--color-border-secondary)]">
-                  <Icon name={item.icon} size={18} className={item.color} />
-                </div>
-                <div>
-                  <p className="text-sm font-bold text-[var(--color-text-primary)]">{item.label}</p>
-                  <p className="text-[10px] text-[var(--color-text-tertiary)]">Access platform {item.label.toLowerCase()}</p>
-                </div>
-              </div>
-              <Icon name="ChevronRight" size={16} className="text-[var(--color-text-tertiary)]" />
-            </button>
+          {navGroups.map((group, groupIdx) => (
+            <React.Fragment key={groupIdx}>
+              <div className={`native-list-section-divider border-[var(--border)] pb-2 pt-3 ${groupIdx !== 0 ? 'border-t border-b' : 'border-b'}`}>{group.title}</div>
+              {group.items.map((item, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => navigate(`/admin/dashboard/${item.id}`)}
+                  className="native-list-row"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-9 h-9 rounded-xl bg-[var(--secondary)] flex items-center justify-center border border-[var(--border)]">
+                      <Icon name={item.icon} size={18} className={item.color} />
+                    </div>
+                    <div>
+                      <p className="text-sm font-bold text-[var(--foreground)]">{item.label}</p>
+                      <p className="text-[10px] text-[var(--muted-foreground)]">Access platform {item.label.toLowerCase()}</p>
+                    </div>
+                  </div>
+                  <Icon name="ChevronRight" size={16} className="text-[var(--muted-foreground)]" />
+                </button>
+              ))}
+            </React.Fragment>
           ))}
         </div>
 

@@ -7,7 +7,7 @@ import { motion } from 'framer-motion';
 
 const SavedCoursesPage = () => {
     return (
-        <div className="min-h-screen bg-bg text-white pb-20 px-4">
+        <div className="min-h-screen bg-transparent pb-20 px-4">
             <div className="max-w-7xl mx-auto">
                 {/* Header Section */}
                 <div className="mb-8">
@@ -18,12 +18,12 @@ const SavedCoursesPage = () => {
                     >
                         <div className="flex items-center gap-2">
                             <Bookmark size={16} className="text-[var(--color-primary)]" />
-                            <span className="text-sm font-semibold text-slate-400">Bookmarked Courses</span>
+                            <span className="text-sm font-semibold text-muted-foreground">Bookmarked Courses</span>
                         </div>
-                        <h1 className="text-3xl md:text-4xl text-white uppercase font-black tracking-tighter leading-none">
+                        <h1 className="text-3xl md:text-4xl text-foreground uppercase font-black tracking-tighter leading-none">
                             Your Bookmarks
                         </h1>
-                        <p className="text-slate-400 text-sm max-w-lg font-normal mb-6">
+                        <p className="text-muted-foreground text-sm max-w-lg font-normal mb-6">
                             Courses you've saved for later. Review and continue your learning journey.
                         </p>
                     </motion.div>

@@ -63,7 +63,7 @@ const CourseCard = ({ job: course, isSaved, onSave, index = 0 }) => {
       className="group relative flex flex-col h-full cursor-pointer select-none w-full max-w-[400px] mx-auto sm:max-w-none"
       onClick={handleCardClick}
     >
-      <div className="relative flex flex-col h-full rounded-[2rem] overflow-hidden bg-white dark:bg-[#111827] border border-[var(--color-border-primary)] dark:border-white/[0.05] shadow-[0_4px_20px_-4px_rgba(0,0,0,0.06)] dark:shadow-none hover:shadow-xl transition-all duration-500">
+      <div className="relative flex flex-col h-full rounded-xl overflow-hidden bg-white dark:bg-[#111827] border border-slate-200 dark:border-white/[0.08] shadow-sm hover:shadow-md transition-all duration-300">
         
         {/* Top Accent line */}
         <div className="h-[2px] w-full" style={{ backgroundColor: accent }} />

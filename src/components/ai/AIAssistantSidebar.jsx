@@ -10,9 +10,11 @@ import {
     MessageCircle, Lightbulb, FileText, TrendingUp
 } from 'lucide-react';
 import { apiService } from '../../lib/api';
+import { useAuthContext } from '../../contexts/AuthContext';
 import './AIAssistantSidebar.css';
 
 const AIAssistantSidebar = ({ isOpen, onClose, context = {}, type = 'job' }) => {
+    const { profile } = useAuthContext();
     const [messages, setMessages] = useState([]);
     const [input, setInput] = useState('');
     const [isLoading, setIsLoading] = useState(false);
@@ -93,10 +95,13 @@ const AIAssistantSidebar = ({ isOpen, onClose, context = {}, type = 'job' }) => 
             setMessages(prev => [...prev, aiMessage]);
         } catch (error) {
             console.error('AI Assistant error:', error);
+            const isTechnicalError = profile?.role === 'admin';
+            const errorMessageText = isTechnicalError ? `❌ Technical Error: ${error.message}` : 'I apologize, but I am currently experiencing high demand. Please try again in a moment.';
+            
             const errorMessage = {
                 id: Date.now() + 1,
                 role: 'assistant',
-                content: 'I apologize, but I encountered an error. Please try again.',
+                content: errorMessageText,
                 isError: true,
                 timestamp: new Date(),
             };

@@ -190,51 +190,67 @@ const StudentDashboard = () => {
         />
 
         {/* 📱 Native Profile Welcome Cap */}
-        <div className="flex items-center gap-4 mb-6 p-4 bg-[var(--card)] border border-[var(--border)] rounded-2xl transition-colors duration-200">
+        <div className="native-welcome-card mb-6">
           {profile?.avatar_url ? (
-            <img src={profile.avatar_url} alt="" className="w-12 h-12 rounded-full object-cover border-2 border-[var(--color-primary)]/20" />
+            <img src={profile.avatar_url} alt="" className="native-welcome-avatar" />
           ) : (
-            <div className="w-12 h-12 rounded-full bg-[var(--color-primary-light)] flex items-center justify-center text-[var(--color-primary)] text-lg font-black border border-[var(--color-border-secondary)]">
+            <div className="native-welcome-avatar-placeholder">
               {userData.name.charAt(0).toUpperCase()}
             </div>
           )}
           <div>
-            <span className="text-[9px] font-bold text-[var(--color-primary)] uppercase tracking-widest leading-none block mb-1">Scholar Profile</span>
-            <h1 className="text-xl font-bold text-[var(--color-text-primary)] tracking-tight">Assalamu Alaikum, {userData.name}!</h1>
+            <span className="native-welcome-badge">Scholar Profile</span>
+            <h1 className="native-welcome-name">Assalamu Alaikum,<br/>{userData.name}!</h1>
           </div>
         </div>
 
-        {/* 📊 Compact Native Stat Cards */}
+        {/* 📊 Compact Native Stat Cards (2x2 Grid) */}
         <div className="grid grid-cols-2 gap-3 mb-6">
-          <div className="native-metric-card" style={{ borderTopColor: 'var(--color-stat-border-1)' }}>
-            <p className="text-[10px] font-bold text-[var(--color-text-tertiary)] uppercase tracking-wider mb-1">Courses Enrolled</p>
-            <p className="text-2xl font-black text-[var(--color-text-primary)]">{metrics.enrollmentsActive}</p>
+          <div className="native-metric-card" style={{ borderTopColor: 'var(--primary)' }}>
+            <div className="flex justify-between items-start mb-1">
+              <p className="text-[10px] font-bold text-[var(--muted-foreground)] uppercase tracking-wider">Courses</p>
+              <Icon name="BookOpen" size={14} className="text-[var(--primary)]" />
+            </div>
+            <p className="text-2xl font-black text-[var(--foreground)]">{metrics.enrollmentsActive}</p>
           </div>
-          <div className="native-metric-card" style={{ borderTopColor: 'var(--color-stat-border-4)' }}>
-            <p className="text-[10px] font-bold text-[var(--color-text-tertiary)] uppercase tracking-wider mb-1">Certificates Earned</p>
-            <p className="text-2xl font-black text-[var(--color-text-primary)]">{metrics.certificatesEarned}</p>
+          <div className="native-metric-card" style={{ borderTopColor: 'var(--color-stat-border-4, #10b981)' }}>
+            <div className="flex justify-between items-start mb-1">
+              <p className="text-[10px] font-bold text-[var(--muted-foreground)] uppercase tracking-wider">Certificates</p>
+              <Icon name="Award" size={14} className="text-[#10b981]" />
+            </div>
+            <p className="text-2xl font-black text-[var(--foreground)]">{metrics.certificatesEarned}</p>
+          </div>
+          <div className="native-metric-card" style={{ borderTopColor: 'var(--color-stat-border-2, #f59e0b)' }}>
+            <div className="flex justify-between items-start mb-1">
+              <p className="text-[10px] font-bold text-[var(--muted-foreground)] uppercase tracking-wider">Assessments</p>
+              <Icon name="Target" size={14} className="text-[#f59e0b]" />
+            </div>
+            <p className="text-2xl font-black text-[var(--foreground)]">{metrics.assessmentsScheduled}</p>
+          </div>
+          <div className="native-metric-card" style={{ borderTopColor: 'var(--color-stat-border-3, #8b5cf6)' }}>
+            <div className="flex justify-between items-start mb-1">
+              <p className="text-[10px] font-bold text-[var(--muted-foreground)] uppercase tracking-wider">Saved</p>
+              <Icon name="Bookmark" size={14} className="text-[#8b5cf6]" />
+            </div>
+            <p className="text-2xl font-black text-[var(--foreground)]">{metrics.savedCourses}</p>
           </div>
         </div>
 
-        {/* 📱 iOS-Style Academic Services Menu */}
-        <p className="px-2 mb-3 text-[10px] font-bold text-[var(--color-text-tertiary)] uppercase tracking-wider">Academic Services</p>
-        <div className="native-list-group mb-6">
+        {/* 📱 iOS-Style Action Grid */}
+        <div className="native-section-header">
+          <h2 className="native-section-title">Academic Services</h2>
+        </div>
+        <div className="native-action-grid mb-6">
           {mobileActions.map((item, idx) => (
             <button
               key={idx}
               onClick={() => navigate(item.path)}
-              className="native-list-row"
+              className="native-action-item"
             >
-              <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-xl bg-[var(--color-primary-light)] flex items-center justify-center text-[var(--color-primary)] border border-[var(--color-border-secondary)]">
-                  <Icon name={item.icon} size={18} />
-                </div>
-                <div>
-                  <p className="text-sm font-bold text-[var(--color-text-primary)]">{item.label}</p>
-                  <p className="text-[10px] text-[var(--color-text-tertiary)]">Manage your course {item.label.toLowerCase()}</p>
-                </div>
+              <div className="native-action-icon bg-[var(--secondary)]">
+                <Icon name={item.icon.render ? item.icon.render().props.name : (typeof item.icon === 'string' ? item.icon : item.icon.name || 'Box')} size={20} className={item.color} />
               </div>
-              <Icon name="ChevronRight" size={16} className="text-[var(--color-text-tertiary)]" />
+              <p className="native-action-label">{item.label}</p>
             </button>
           ))}
         </div>

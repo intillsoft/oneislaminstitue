@@ -276,7 +276,7 @@ const HomePage = () => {
           <meta name="description" content="Access a structured Islamic curriculum curated from verified sources. Hope Dawah Institute offers a comprehensive gateway to master sacred sciences with academic excellence." />
           <meta name="keywords" content="Islamic Courses, Authentic Islam, Quran, Hadith, Seerah, Fiqh, Islamic Research, Traditional Islamic Knowledge, Muslim Student Platform" />
         </Helmet>
-        <div className="min-h-screen bg-background text-foreground selection:bg-primary/20 transition-colors duration-200">
+        <div className="min-h-screen bg-transparent text-foreground selection:bg-primary/20 transition-colors duration-200">
           {/* Subtle Background - Professional Academic */}
           <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-7xl">

@@ -252,47 +252,102 @@ const InstructorPortal = () => {
         <DashboardAIAssistant dashboardType="instructor" contextData={{ companyInfo, activeTab }} />
 
         {/* 📱 Native Institution Welcome Cap */}
-        <div className="flex items-center gap-4 mb-6 p-4 bg-[var(--card)] border border-[var(--border)] rounded-2xl transition-colors duration-200">
-          <div className="w-12 h-12 rounded-xl overflow-hidden border border-[var(--primary)]/20 shadow-sm flex-shrink-0">
-            <img src={companyInfo.logo} alt="Logo" className="w-full h-full object-cover" />
-          </div>
+        <div className="native-welcome-card mb-6">
+          <img src={companyInfo.logo} alt="Logo" className="native-welcome-avatar" />
           <div>
-            <span className="text-[9px] font-bold text-[var(--color-primary)] uppercase tracking-widest leading-none block mb-1">Faculty Account</span>
-            <h1 className="text-xl font-bold text-[var(--color-text-primary)] tracking-tight">{companyInfo.name}</h1>
+            <span className="native-welcome-badge">Faculty Account</span>
+            <h1 className="native-welcome-name">{companyInfo.name}</h1>
           </div>
         </div>
 
-        {/* 📊 Compact Native Stat Cards */}
-        <div className="grid grid-cols-2 gap-3 mb-6">
-          <div className="native-metric-card" style={{ borderTopColor: 'var(--color-stat-border-1)' }}>
-            <p className="text-[10px] font-bold text-[var(--color-text-tertiary)] uppercase tracking-wider mb-1">Academy Status</p>
-            <p className="text-sm font-black text-[var(--color-text-primary)] mt-1">{companyInfo.subscription}</p>
+        {/* 📊 Horizontal Scrolling Native Stats Row */}
+        <div className="native-chip-row mb-6 pb-2">
+          <div className="native-stat-mini">
+            <div>
+              <p className="native-stat-mini-label">Academy Status</p>
+              <p className="native-stat-mini-value">{companyInfo.subscription}</p>
+            </div>
+            <Icon name="Award" size={20} className="text-[#0078D4]" />
           </div>
-          <div className="native-metric-card" style={{ borderTopColor: 'var(--color-stat-border-4)' }}>
-            <p className="text-[10px] font-bold text-[var(--color-text-tertiary)] uppercase tracking-wider mb-1">Renew Target</p>
-            <p className="text-sm font-black text-[var(--color-text-primary)] mt-1">Annual Cycle</p>
+          <div className="native-stat-mini">
+            <div>
+              <p className="native-stat-mini-label">Renew Target</p>
+              <p className="native-stat-mini-value">Annual Cycle</p>
+            </div>
+            <Icon name="Calendar" size={20} className="text-[#10b981]" />
           </div>
         </div>
 
-        {/* 📱 iOS-Style Instructor Modules Menu */}
-        <p className="px-2 mb-3 text-[10px] font-bold text-[var(--color-text-tertiary)] uppercase tracking-wider">Instructor Modules</p>
+        {/* 📱 iOS-Style Grouped Instructor Modules Menu */}
+        <div className="native-section-header">
+          <h2 className="native-section-title">Instructor Modules</h2>
+        </div>
         <div className="native-list-group mb-6">
-          {TABS.map((item, idx) => (
-            <button
-              key={idx}
-              onClick={() => navigate(`/instructor/dashboard/${item.id}`)}
-              className="native-list-row"
-            >
+          {/* Core Group */}
+          <div className="native-list-section-divider border-b border-[var(--border)] pb-2 pt-3">Core</div>
+          {TABS.filter(t => ['overview', 'jobs'].includes(t.id)).map((item, idx) => (
+            <button key={idx} onClick={() => navigate(`/instructor/dashboard/${item.id}`)} className="native-list-row">
               <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-xl bg-[var(--color-primary-light)] flex items-center justify-center text-[var(--primary)] border border-[var(--color-border-secondary)]">
+                <div className="w-9 h-9 rounded-xl bg-[var(--primary)]/10 flex items-center justify-center text-[var(--primary)]">
                   <Icon name={item.icon} size={18} />
                 </div>
                 <div>
-                  <p className="text-sm font-bold text-[var(--color-text-primary)]">{item.label}</p>
-                  <p className="text-[10px] text-[var(--color-text-tertiary)]">Access faculty {item.label.toLowerCase()} system</p>
+                  <p className="text-sm font-bold text-[var(--foreground)]">{item.label}</p>
+                  <p className="text-[10px] text-[var(--muted-foreground)]">Access {item.label.toLowerCase()} system</p>
                 </div>
               </div>
-              <Icon name="ChevronRight" size={16} className="text-[var(--color-text-tertiary)]" />
+              <Icon name="ChevronRight" size={16} className="text-[var(--muted-foreground)]" />
+            </button>
+          ))}
+
+          {/* People Group */}
+          <div className="native-list-section-divider border-t border-[var(--border)] border-b pb-2 pt-3">People</div>
+          {TABS.filter(t => ['candidates'].includes(t.id)).map((item, idx) => (
+            <button key={idx} onClick={() => navigate(`/instructor/dashboard/${item.id}`)} className="native-list-row">
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl bg-[#10b981]/10 flex items-center justify-center text-[#10b981]">
+                  <Icon name={item.icon} size={18} />
+                </div>
+                <div>
+                  <p className="text-sm font-bold text-[var(--foreground)]">{item.label}</p>
+                  <p className="text-[10px] text-[var(--muted-foreground)]">Manage your {item.label.toLowerCase()}</p>
+                </div>
+              </div>
+              <Icon name="ChevronRight" size={16} className="text-[var(--muted-foreground)]" />
+            </button>
+          ))}
+
+          {/* Intelligence Group */}
+          <div className="native-list-section-divider border-t border-[var(--border)] border-b pb-2 pt-3">Intelligence</div>
+          {TABS.filter(t => ['analytics', 'billing'].includes(t.id)).map((item, idx) => (
+            <button key={idx} onClick={() => navigate(`/instructor/dashboard/${item.id}`)} className="native-list-row">
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl bg-[#f59e0b]/10 flex items-center justify-center text-[#f59e0b]">
+                  <Icon name={item.icon} size={18} />
+                </div>
+                <div>
+                  <p className="text-sm font-bold text-[var(--foreground)]">{item.label}</p>
+                  <p className="text-[10px] text-[var(--muted-foreground)]">View {item.label.toLowerCase()}</p>
+                </div>
+              </div>
+              <Icon name="ChevronRight" size={16} className="text-[var(--muted-foreground)]" />
+            </button>
+          ))}
+
+          {/* Admin Group */}
+          <div className="native-list-section-divider border-t border-[var(--border)] border-b pb-2 pt-3">Administration</div>
+          {TABS.filter(t => ['company', 'settings'].includes(t.id)).map((item, idx) => (
+            <button key={idx} onClick={() => navigate(`/instructor/dashboard/${item.id}`)} className="native-list-row">
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl bg-[#8b5cf6]/10 flex items-center justify-center text-[#8b5cf6]">
+                  <Icon name={item.icon} size={18} />
+                </div>
+                <div>
+                  <p className="text-sm font-bold text-[var(--foreground)]">{item.label}</p>
+                  <p className="text-[10px] text-[var(--muted-foreground)]">Configure {item.label.toLowerCase()}</p>
+                </div>
+              </div>
+              <Icon name="ChevronRight" size={16} className="text-[var(--muted-foreground)]" />
             </button>
           ))}
         </div>

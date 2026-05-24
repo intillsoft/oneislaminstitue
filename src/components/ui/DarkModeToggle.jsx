@@ -10,7 +10,7 @@ const DarkModeToggle = () => {
   return (
     <motion.button
       onClick={toggleTheme}
-      className="relative w-9 h-9 flex items-center justify-center rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-white/5 dark:hover:bg-white/10 border border-slate-200 dark:border-white/10 text-foreground transition-all duration-300 focus:outline-none overflow-hidden"
+      className="relative w-9 h-9 flex items-center justify-center rounded-xl bg-white text-[var(--color-primary)] shadow-sm hover:shadow-md dark:bg-white/5 dark:hover:bg-white/10 border border-transparent dark:border-white/10 dark:text-white transition-all duration-300 focus:outline-none overflow-hidden"
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
       aria-label="Toggle dark mode"

@@ -18,8 +18,8 @@ const ProtectedRoute = ({
   const { user, loading, profile, loadingProfile } = useAuthContext();
   const location = useLocation();
 
-  // Show loading while checking auth or profile
-  if (loading || loadingProfile) {
+  // Show loading while checking auth or profile (only block if we don't have data yet)
+  if (loading || (loadingProfile && !profile)) {
     return (
       <div className="flex items-center justify-center min-vh-screen min-h-screen bg-bg">
         <AILoader variant="pulse" text="Securing access..." />

@@ -40,6 +40,23 @@ body {
   overflow-x: hidden;
   width: 100%;
   overscroll-behavior: none;
+  /* Light theme: visible dot pattern + mesh gradient */
+  background-image: 
+    radial-gradient(rgba(0, 120, 212, 0.25) 2px, transparent 2px),
+    radial-gradient(at 100% 0%, rgba(0, 120, 212, 0.15) 0px, transparent 40%),
+    radial-gradient(at 0% 100%, rgba(0, 120, 212, 0.10) 0px, transparent 40%);
+  background-size: 32px 32px, 100% 100%, 100% 100%;
+  background-attachment: fixed;
+}
+
+html.dark body {
+  /* Dark theme: visible light dots + dark mesh gradient */
+  background-image: 
+    radial-gradient(rgba(255, 255, 255, 0.15) 2px, transparent 2px),
+    radial-gradient(at 100% 0%, rgba(0, 120, 212, 0.25) 0px, transparent 40%),
+    radial-gradient(at 0% 100%, rgba(0, 120, 212, 0.20) 0px, transparent 40%);
+  background-size: 32px 32px, 100% 100%, 100% 100%;
+  background-attachment: fixed;
 }
 
 /* Fluid Typography */

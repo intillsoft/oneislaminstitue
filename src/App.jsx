@@ -14,7 +14,7 @@ function App() {
       <SidebarProvider>
         <ToastProvider>
           <AuthProvider>
-            <div className="min-h-screen pb-16 md:pb-0 overflow-x-hidden relative bg-background text-foreground transition-colors duration-200">
+            <div className="min-h-screen pb-16 md:pb-0 overflow-x-hidden relative bg-transparent text-foreground transition-colors duration-200">
               <div className="pt-0">
                 <Routes />
               </div>

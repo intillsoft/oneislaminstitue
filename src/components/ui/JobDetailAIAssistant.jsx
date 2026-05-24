@@ -5,11 +5,13 @@ import { aiService } from '../../services/aiService';
 import TypingIndicator from './TypingIndicator';
 import AIMessage from './AIMessage';
 import { useToast } from './Toast';
+import { useAuthContext } from '../../contexts/AuthContext';
 
 /**
  * AI Assistant for Job Detail Page
  */
 const JobDetailAIAssistant = ({ job }) => {
+  const { profile } = useAuthContext();
   const [isOpen, setIsOpen] = useState(false);
   const [userQuestion, setUserQuestion] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -65,13 +67,16 @@ Provide a helpful, detailed answer about this job posting. Be friendly, professi
       setMessages(prev => [...prev, aiMsg]);
     } catch (error) {
       console.error('AI job detail error:', error);
+      const isTechnicalError = profile?.role === 'admin';
+      const errorMessage = isTechnicalError ? `❌ Technical Error: ${error.message}` : 'I apologize, but I am currently experiencing high demand. Please try again in a moment.';
+
       setMessages(prev => [...prev, {
         role: 'assistant',
-        content: 'I apologize, but I encountered an error. Please try again.',
+        content: errorMessage,
         timestamp: new Date(),
         id: Date.now() + 1,
       }]);
-      showError('Failed to get AI response. Please try again.');
+      showError(isTechnicalError ? error.message : 'Assistant is busy. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -101,10 +106,10 @@ Provide a helpful, detailed answer about this job posting. Be friendly, professi
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.9 }}
-              className="bg-white dark:bg-[#13182E] rounded-2xl shadow-2xl max-w-2xl w-full max-h-[80vh] flex flex-col"
+              className="bg-white dark:bg-[var(--color-bg-dark)] rounded-2xl shadow-2xl max-w-2xl w-full max-h-[80vh] flex flex-col border border-[var(--color-border-primary)]"
             >
               {/* Header */}
-              <div className="flex items-center justify-between p-6 border-b border-[#E2E8F0] dark:border-[#1E2640]">
+              <div className="flex items-center justify-between p-6 border-b border-[var(--color-border-primary)] bg-white dark:bg-transparent flex-shrink-0">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-full bg-gradient-to-br from-workflow-primary to-workflow-primary-600 flex items-center justify-center">
                     <Sparkles className="w-5 h-5 text-white" />
@@ -116,15 +121,15 @@ Provide a helpful, detailed answer about this job posting. Be friendly, professi
                 </div>
                 <button
                   onClick={() => setIsOpen(false)}
-                  className="p-2 hover:bg-surface-100 dark:hover:bg-[#1A2139] rounded-lg transition-colors"
+                  className="p-2 hover:bg-slate-50 dark:hover:bg-white/[0.05] rounded-xl transition-colors"
                 >
-                  <X className="w-5 h-5 text-text-secondary dark:text-[#8B92A3]" />
+                  <X className="w-5 h-5 text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300" />
                 </button>
               </div>
 
               {/* Quick Questions */}
               {messages.length === 0 && (
-                <div className="p-6 border-b border-[#E2E8F0] dark:border-[#1E2640]">
+                <div className="p-6 border-b border-[var(--color-border-primary)]">
                   <p className="text-sm font-medium text-text-primary dark:text-[#E8EAED] mb-3">Quick Questions:</p>
                   <div className="grid grid-cols-2 gap-2">
                     {quickQuestions.map((q, idx) => (
@@ -134,7 +139,7 @@ Provide a helpful, detailed answer about this job posting. Be friendly, professi
                           setUserQuestion(q);
                           setTimeout(() => handleAskAI(), 100);
                         }}
-                        className="text-left px-3 py-2 text-sm bg-surface-50 dark:bg-[#1A2139] hover:bg-surface-100 dark:hover:bg-[#1E2640] rounded-lg text-text-secondary dark:text-[#8B92A3] hover:text-workflow-primary transition-colors"
+                        className="text-left px-4 py-2.5 text-sm bg-slate-50 dark:bg-white/[0.02] hover:bg-slate-100 dark:hover:bg-white/[0.05] border border-[var(--color-border-primary)] rounded-xl text-slate-600 dark:text-slate-300 hover:text-primary transition-colors shadow-sm"
                       >
                         {q}
                       </button>
@@ -206,7 +211,8 @@ Provide a helpful, detailed answer about this job posting. Be friendly, professi
                             setMessages(prev => [...prev, aiMsg]);
                           } catch (error) {
                             console.error('AI regeneration error:', error);
-                            showError('Failed to regenerate response. Please try again.');
+                            const isTechnicalError = profile?.role === 'admin';
+                            showError(isTechnicalError ? `Error: ${error.message}` : 'Failed to regenerate response due to high demand. Please try again.');
                           } finally {
                             setIsLoading(false);
                           }
@@ -227,7 +233,7 @@ Provide a helpful, detailed answer about this job posting. Be friendly, professi
 
               {/* Input - Suspended Style */}
               <div className="absolute bottom-4 left-4 right-4">
-                <div className="flex gap-2 bg-white dark:bg-[#13182E] p-2 rounded-xl shadow-[0_0_15px_rgba(0,0,0,0.1)] dark:shadow-[0_0_15px_rgba(0,0,0,0.3)] border border-[#E2E8F0] dark:border-[#1E2640]">
+                <div className="flex gap-2 bg-white dark:bg-[var(--color-bg-dark)] p-2 rounded-2xl shadow-sm border border-[var(--color-border-primary)] focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/10 transition-all">
                   <input
                     type="text"
                     value={userQuestion}
@@ -240,7 +246,11 @@ Provide a helpful, detailed answer about this job posting. Be friendly, professi
                   <button
                     onClick={handleAskAI}
                     disabled={isLoading || !userQuestion.trim()}
-                    className="px-4 py-2 bg-workflow-primary text-white rounded-lg hover:bg-workflow-primary-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-md hover:shadow-lg"
+                    className={`px-5 py-2 rounded-xl transition-all flex items-center justify-center gap-2 ${
+                      userQuestion.trim() && !isLoading
+                        ? 'bg-primary text-white hover:bg-accent shadow-sm'
+                        : 'bg-slate-100 dark:bg-white/[0.02] text-slate-400 dark:text-slate-600 cursor-not-allowed'
+                    }`}
                   >
                     {isLoading ? (
                       <Loader2 className="w-5 h-5 animate-spin" />

@@ -267,57 +267,59 @@ const CourseDetail = () => {
               <p className="text-sm sm:text-base md:text-lg text-[var(--color-text-secondary)] dark:text-slate-400 leading-relaxed max-w-2xl">
                 {course.description || 'A comprehensive learning experience designed to deepen your understanding.'}
               </p>
+
+              {/* Intro Course Video Plate */}
+              {course.preview_video_url && (
+                <div className="mt-8 rounded-xl overflow-hidden border border-slate-200 dark:border-white/10 aspect-video relative group shadow-lg bg-black">
+                    {(() => {
+                        const url = course.preview_video_url;
+                        if (url.includes('youtube.com') || url.includes('youtu.be')) {
+                            let vid = '';
+                            if (url.includes('watch?v=')) {
+                                vid = url.split('watch?v=')[1].split('&')[0];
+                            } else {
+                                vid = url.split('/').pop().split('?')[0];
+                            }
+                            return (
+                                <iframe 
+                                    src={`https://www.youtube.com/embed/${vid}?autoplay=0&controls=1&modestbranding=1&rel=0`}
+                                    className="w-full h-full border-0"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    allowFullScreen
+                                />
+                            );
+                        } else if (url.includes('vimeo.com')) {
+                            const vid = url.split('/').pop().split('?')[0];
+                            return (
+                                <iframe 
+                                    src={`https://player.vimeo.com/video/${vid}?controls=1`}
+                                    className="w-full h-full border-0"
+                                    allow="autoplay; fullscreen; picture-in-picture"
+                                    allowFullScreen
+                                />
+                            );
+                        } else {
+                            return (
+                                <video 
+                                    src={url} 
+                                    controls={true} 
+                                    className="w-full h-full object-cover"
+                                    poster={course.thumbnail_url}
+                                    playsInline
+                                    disablePictureInPicture={false}
+                                    controlsList="nodownload"
+                                />
+                            );
+                        }
+                    })()}
+                </div>
+              )}
             </div>
 
             {/* Sidebar / Mobile Action Card */}
             <aside className="lg:block">
               <div className="lg:sticky lg:top-28 space-y-6">
-                {/* Intro Course Video Plate layout flawslessly Cinematic Cinematic */}
-                {course.preview_video_url && (
-                    <div className="rounded-[2.5rem] overflow-hidden border border-[var(--color-border-primary)] dark:border-white/5 aspect-video relative group shadow-2xl shadow-emerald-500/10 bg-black">
-                        {(() => {
-                            const url = course.preview_video_url;
-                            if (url.includes('youtube.com') || url.includes('youtu.be')) {
-                                let vid = '';
-                                if (url.includes('watch?v=')) {
-                                    vid = url.split('watch?v=')[1].split('&')[0];
-                                } else {
-                                    vid = url.split('/').pop().split('?')[0];
-                                }
-                                return (
-                                    <iframe 
-                                        src={`https://www.youtube.com/embed/${vid}?autoplay=0&controls=1&modestbranding=1&rel=0`}
-                                        className="w-full h-full border-0"
-                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                        allowFullScreen
-                                    />
-                                );
-                            } else if (url.includes('vimeo.com')) {
-                                const vid = url.split('/').pop().split('?')[0];
-                                return (
-                                    <iframe 
-                                        src={`https://player.vimeo.com/video/${vid}?controls=1`}
-                                        className="w-full h-full border-0"
-                                        allow="autoplay; fullscreen; picture-in-picture"
-                                        allowFullScreen
-                                    />
-                                );
-                            } else {
-                                return (
-                                    <video 
-                                        src={url} 
-                                        controls={true} 
-                                        className="w-full h-full object-cover"
-                                        poster={course.thumbnail_url}
-                                        playsInline
-                                        disablePictureInPicture={false}
-                                        controlsList="nodownload"
-                                    />
-                                );
-                            }
-                        })()}
-                    </div>
-                )}
+
                 
                 <div className="bg-white dark:bg-[#0f1429] rounded-[2.5rem] border border-slate-100 dark:border-white/5 p-7 shadow-2xl shadow-emerald-500/5 overflow-hidden relative">
                   <div className="absolute top-0 right-0 w-24 h-24 bg-[var(--color-primary)]/5 rounded-full blur-2xl -mr-8 -mt-8" />

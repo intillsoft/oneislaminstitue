@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Maximize2, Minimize2, Send, Bot, Copy, Check, User, ArrowDown, Sparkles } from 'lucide-react';
+import { X, PanelRightClose, Maximize2, Minimize2, Send, Bot, Copy, Check, User, ArrowDown, Sparkles } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { useAIPanel } from '../../contexts/AIPanelContext';
@@ -138,7 +138,9 @@ const GlobalAIPanel = () => {
       setMessages([...newMessages, assistantMessage]);
     } catch (error) {
       console.error('Error sending message:', error);
-      setMessages([...newMessages, { role: 'assistant', content: `❌ Error: ${error.message}` }]);
+      const isTechnicalError = profile?.role === 'admin';
+      const errorMessage = isTechnicalError ? `❌ Technical Error: ${error.message}` : "I'm currently experiencing high demand and couldn't process your request. Please try again in a moment.";
+      setMessages([...newMessages, { role: 'assistant', content: errorMessage }]);
     } finally {
       setLoading(false);
       setTimeout(() => textareaRef.current?.focus(), 100);
@@ -201,7 +203,7 @@ const GlobalAIPanel = () => {
               width: isMobile ? '100%' : (isExpanded ? '100vw' : panelWidth),
               height: isMobile ? '88dvh' : '100dvh' 
             }}
-            className={`fixed ${isMobile ? 'bottom-0 left-0 right-0' : 'top-0 bottom-0 right-0'} bg-white dark:bg-[var(--color-bg-dark)] z-[9999] shadow-[-1px_-10px_40px_rgba(0,0,0,0.08)] dark:shadow-[-5px_-20px_60px_rgba(0,0,0,0.4)] flex flex-col border-[var(--color-border-primary)] ${isMobile ? 'border-t rounded-t-[2.5rem]' : 'border-l rounded-l-[2.5rem]'} overflow-hidden ${
+            className={`fixed ${isMobile ? 'bottom-0 left-0 right-0' : 'top-0 bottom-0 right-0'} bg-white dark:bg-[var(--color-bg-dark)] z-[9999] shadow-[-1px_-10px_40px_rgba(0,0,0,0.08)] dark:shadow-[-5px_-20px_60px_rgba(0,0,0,0.4)] flex flex-col border-[var(--color-border-primary)] ${isMobile ? 'border-t rounded-t-2xl' : 'border-l rounded-l-2xl'} overflow-hidden ${
               !isResizing && !isExpanded && 'transition-all duration-300'
             }`}
           >
@@ -215,15 +217,18 @@ const GlobalAIPanel = () => {
             {/* Resizer Handle */}
             {!isMobile && !isExpanded && (
               <div 
-                className="absolute top-0 left-0 w-2 h-full cursor-ew-resize hover:bg-primary/20 active:bg-primary/40 transition-colors z-[10000]"
+                className="absolute top-0 left-0 w-4 h-full cursor-ew-resize hover:bg-primary/5 active:bg-primary/10 transition-colors z-[10000] flex items-center justify-center group"
                 onMouseDown={startResizing}
-              />
+                title="Drag to resize panel"
+              >
+                <div className="w-1 h-12 bg-primary/40 dark:bg-primary/60 rounded-full group-hover:bg-primary/70 group-active:bg-primary transition-colors shadow-sm" />
+              </div>
             )}
             {/* Header */}
-            <div className="flex items-center justify-between px-6 py-5 border-b border-[var(--color-border-primary)] bg-[var(--color-bg-secondary)] dark:bg-[var(--color-bg-sidebar)] flex-shrink-0">
+            <div className="flex items-center justify-between px-6 py-5 border-b border-[var(--color-border-primary)] bg-white dark:bg-transparent flex-shrink-0">
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 flex items-center justify-center rounded-xl bg-gradient-to-br from-primary to-accent shadow-sm shadow-primary/20">
-                  <Sparkles className="w-4 h-4 text-white drop-shadow-sm" />
+                <div className="w-8 h-8 flex items-center justify-center rounded-xl bg-gradient-to-br from-primary to-accent shadow-sm shadow-primary/20 p-1.5">
+                  <img src="/favicon.svg" alt="AI" className="w-full h-full object-contain brightness-0 invert" />
                 </div>
                 <div>
                   <h3 className="text-sm font-bold text-foreground leading-tight">Academic Assistant</h3>
@@ -240,10 +245,10 @@ const GlobalAIPanel = () => {
                 </button>
                 <button
                   onClick={closePanel}
-                  className="p-2 rounded-md hover:bg-muted/50 text-muted-foreground hover:text-destructive transition-colors"
+                  className="w-8 h-8 flex items-center justify-center rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-white/10 dark:hover:bg-white/20 text-slate-500 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-all duration-300 hover:rotate-90 shadow-sm group"
                   title="Close panel"
                 >
-                  <X className="w-5 h-5" />
+                  <X className="w-4 h-4 transition-transform group-hover:scale-110" />
                 </button>
               </div>
             </div>
@@ -256,9 +261,9 @@ const GlobalAIPanel = () => {
             >
               {messages.length === 0 ? (
                 <div className="h-full flex flex-col items-center justify-center text-center p-6">
-                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary to-accent flex items-center justify-center mb-6 shadow-lg shadow-primary/20 relative">
+                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary to-accent flex items-center justify-center mb-6 shadow-lg shadow-primary/20 relative p-3">
                     <div className="absolute inset-0 rounded-2xl border border-white/15"></div>
-                    <Sparkles className="w-8 h-8 text-white drop-shadow-sm" />
+                    <img src="/favicon.svg" alt="AI" className="w-full h-full object-contain brightness-0 invert relative z-10" />
                   </div>
                   <h3 className="text-2xl font-bold text-foreground mb-2 tracking-tight">How can I help you today?</h3>
                   <p className="text-sm text-muted-foreground max-w-[280px] leading-relaxed font-light">
@@ -279,9 +284,9 @@ const GlobalAIPanel = () => {
                             )}
                           </div>
                         ) : (
-                          <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-sm shadow-primary/20 relative">
+                          <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-sm shadow-primary/20 relative p-1.5">
                             <div className="absolute inset-0 rounded-xl border border-white/15"></div>
-                            <Sparkles className="w-4 h-4 text-white drop-shadow-sm" />
+                            <img src="/favicon.svg" alt="AI" className="w-full h-full object-contain brightness-0 invert relative z-10" />
                           </div>
                         )}
                       </div>
@@ -291,10 +296,10 @@ const GlobalAIPanel = () => {
                           {msg.role === 'user' ? 'You' : 'Assistant'}
                         </span>
                         
-                        <div className={`p-4 rounded-2xl shadow-soft ${
+                        <div className={`p-4 rounded-2xl shadow-sm ${
                           msg.role === 'user' 
                             ? 'bg-[var(--color-primary)] text-white rounded-tr-sm font-medium' 
-                            : 'bg-[var(--color-bg-secondary)] dark:bg-[#1a2236] border border-[var(--color-border-primary)] text-[var(--color-text-primary)] prose prose-sm dark:prose-invert prose-p:leading-relaxed max-w-none rounded-tl-sm'
+                            : 'bg-slate-50 dark:bg-white/[0.02] border border-[var(--color-border-primary)] text-[var(--color-text-primary)] prose prose-sm dark:prose-invert prose-p:leading-relaxed max-w-none rounded-tl-sm'
                         }`}>
                           {msg.role === 'user' ? (
                             <p className="whitespace-pre-wrap break-words overflow-hidden text-sm" style={{ wordBreak: 'break-word' }}>
@@ -327,7 +332,7 @@ const GlobalAIPanel = () => {
                         <div className="absolute inset-0 rounded-xl border border-white/15"></div>
                         <Sparkles className="w-4 h-4 text-white drop-shadow-sm" />
                       </div>
-                      <div className="flex items-center gap-2 bg-[var(--color-bg-secondary)] dark:bg-[#1a2236] border border-[var(--color-border-primary)] px-5 py-4 rounded-2xl rounded-tl-sm shadow-soft">
+                      <div className="flex items-center gap-2 bg-slate-50 dark:bg-white/[0.02] border border-[var(--color-border-primary)] px-5 py-4 rounded-2xl rounded-tl-sm shadow-sm">
                         <span className="w-1.5 h-1.5 rounded-full bg-primary animate-bounce [animation-delay:-0.3s]"></span>
                         <span className="w-1.5 h-1.5 rounded-full bg-primary animate-bounce [animation-delay:-0.15s]"></span>
                         <span className="w-1.5 h-1.5 rounded-full bg-primary animate-bounce"></span>
@@ -340,7 +345,7 @@ const GlobalAIPanel = () => {
             </div>
 
             {/* Input Overlay */}
-            <div className="p-5 bg-[var(--color-bg-secondary)] dark:bg-[var(--color-bg-sidebar)] border-t border-[var(--color-border-primary)] relative flex-shrink-0">
+            <div className="p-5 bg-white dark:bg-transparent border-t border-[var(--color-border-primary)] relative flex-shrink-0">
               {showScrollDown && (
                 <button
                   onClick={() => scrollToBottom()}

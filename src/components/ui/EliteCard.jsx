@@ -18,15 +18,15 @@ export const EliteCard = ({
             onClick={onClick}
             className={`
                 bg-[var(--card)]
-                border border-[var(--border)]
+                border border-[var(--primary)]/20 dark:border-[var(--primary)]/15
                 rounded-2xl 
                 p-4 sm:p-5
                 transition-all
                 duration-300
-                ${onClick ? 'cursor-pointer hover:border-[var(--primary)]/40 active:scale-[0.98]' : ''}
+                ${onClick ? 'cursor-pointer hover:border-[var(--primary)]/50 active:scale-[0.98]' : ''}
                 ${className}
             `}
-            style={{ boxShadow: 'var(--shadow-card)' }}
+            style={{ boxShadow: '0 4px 24px rgba(0, 120, 212, 0.06)' }}
             {...props}
         >
             {children}

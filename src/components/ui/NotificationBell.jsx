@@ -143,10 +143,10 @@ const NotificationBell = () => {
             loadNotifications();
           }
         }}
-        className={`relative p-2.5 transition-all duration-300 rounded-xl border ${
+        className={`relative p-2.5 transition-all duration-300 rounded-xl border border-transparent ${
           isOpen
-            ? 'bg-slate-100 border-[var(--color-border-primary)] text-[var(--color-text-primary)] shadow-inner dark:bg-white/[0.08] dark:border-white/10 dark:text-white'
-            : 'text-[var(--color-text-tertiary)] hover:text-[var(--color-text-primary)] dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5 border-transparent hover:border-[var(--color-border-primary)] dark:hover:border-white/5'
+            ? 'bg-white text-[var(--color-primary)] shadow-md dark:bg-white/[0.08] dark:border-white/10 dark:text-white scale-95'
+            : 'bg-white text-[var(--color-primary)] shadow-sm hover:shadow-md dark:bg-white/[0.04] dark:hover:bg-white/[0.08] dark:text-white/80 dark:hover:text-white'
         }`}
       >
         <Bell className="w-5 h-5" />
