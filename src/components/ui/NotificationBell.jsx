@@ -143,10 +143,10 @@ const NotificationBell = () => {
             loadNotifications();
           }
         }}
-        className={`relative p-2.5 transition-all duration-300 rounded-xl border border-transparent ${
+        className={`relative p-2.5 transition-all duration-300 rounded-lg border border-transparent ${
           isOpen
-            ? 'bg-white text-[var(--color-primary)] shadow-md dark:bg-white/[0.08] dark:border-white/10 dark:text-white scale-95'
-            : 'bg-white text-[var(--color-primary)] shadow-sm hover:shadow-md dark:bg-white/[0.04] dark:hover:bg-white/[0.08] dark:text-white/80 dark:hover:text-white'
+            ? 'bg-white text-[var(--color-primary)] shadow-md dark:bg-white/10 dark:border-white/10 dark:text-white scale-95'
+            : 'bg-white/10 text-white shadow-sm hover:bg-white/20 dark:bg-white/5 dark:hover:bg-white/10 dark:text-white/80 dark:hover:text-white'
         }`}
       >
         <Bell className="w-5 h-5" />
@@ -162,10 +162,10 @@ const NotificationBell = () => {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 15, scale: 0.95 }}
             transition={{ duration: 0.2, ease: 'easeOut' }}
-            className="absolute right-0 top-12 mt-2 w-[320px] bg-white dark:bg-[#0f152d] border border-slate-200/80 dark:border-white/10 rounded-[1.5rem] shadow-xl dark:shadow-[0_20px_50px_rgba(0,0,0,0.5)] z-[100] flex flex-col overflow-hidden backdrop-blur-xl"
+            className="absolute right-0 top-12 mt-2 w-[320px] bg-card dark:bg-[#0A111F] border border-border/40 dark:border-white/10 rounded-xl shadow-modal z-[100] flex flex-col overflow-hidden backdrop-blur-xl"
           >
               {/* Header */}
-              <div className="flex items-center justify-between p-4 border-b border-slate-100 dark:border-white/5 bg-slate-50/50 dark:bg-white/[0.02] flex-shrink-0">
+              <div className="flex items-center justify-between p-4 border-b border-border/40 bg-muted/20 dark:bg-white/[0.02] flex-shrink-0">
                 <div>
                   <h3 className="text-[10px] font-black text-foreground dark:text-white uppercase tracking-[0.25em]">Notifications</h3>
                   <p className="text-[9px] text-muted-foreground font-bold uppercase tracking-widest mt-1 flex items-center gap-1.5">
@@ -258,11 +258,11 @@ const NotificationBell = () => {
               </div>
 
               {/* Footer */}
-              <div className="p-3 border-t border-slate-100 dark:border-white/5 bg-slate-50/50 dark:bg-white/[0.01] flex-shrink-0">
+              <div className="p-3 border-t border-border/40 bg-muted/20 dark:bg-white/[0.01] flex-shrink-0">
                 <Link
                   to="/notifications"
                   onClick={() => setIsOpen(false)}
-                  className="block w-full text-center py-2.5 rounded-xl text-[9px] font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400 hover:text-foreground dark:hover:text-white bg-slate-100 dark:bg-white/5 hover:bg-slate-200 border border-slate-200 dark:border-white/5 transition-all duration-300"
+                  className="block w-full text-center py-2.5 rounded-lg text-[9px] font-bold uppercase tracking-widest text-muted-foreground hover:text-foreground dark:hover:text-white bg-card dark:bg-white/5 hover:bg-muted border border-border/40 transition-all duration-300"
                 >
                   All Notifications
                 </Link>

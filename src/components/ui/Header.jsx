@@ -135,9 +135,9 @@ const Header = () => {
                   <div className="relative" ref={userMenuRef}>
                     <button onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}>
                        {profile?.avatar_url ? (
-                          <img src={profile.avatar_url} alt="" className="w-8 h-8 rounded-full object-cover border-2 border-primary/20 hover:border-primary transition-colors" />
+                          <img src={profile.avatar_url} alt="" className="w-8 h-8 rounded-full object-cover border-2 border-white/20 hover:border-white transition-colors" />
                        ) : (
-                          <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-[10px] border-2 border-primary/20 hover:border-primary transition-colors">
+                          <div className="w-8 h-8 rounded-full bg-white/20 dark:bg-primary/20 flex items-center justify-center text-white dark:text-primary font-bold text-[10px] border-2 border-white/30 dark:border-primary/30 hover:border-white dark:hover:border-primary transition-colors">
                               {getUserDisplayName().charAt(0).toUpperCase()}
                           </div>
                        )}
